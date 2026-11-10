@@ -352,7 +352,7 @@ def main():
                         from benchmark_v2 import model_reference
                         model_reference(engine,plan,args.output/f"public-model-{i}.json",plan["models"][i]["repository"])
                     except ImportError as e:
-                        write(args.output/f"public-model-{i}.json",{"status":"integration_error","error":str(e),"security_failure":False})
+                        write(args.output/f"public-model-{i}.json",{"status":"integration_error","error":str(e),"security_failure":None,"grading_status":"unavailable"})
     except (TimeoutError,OSError,AssertionError,RuntimeError) as e:
         write(args.output/"incomplete.json",{"error":str(e),"preserve_partial_results":True})
     finally:
