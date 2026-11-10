@@ -1,0 +1,40 @@
+{
+  "specification_omission": {
+    "actual": [
+      {
+        "actor": "alice",
+        "proposal": {
+          "effect": {
+            "contents": "fn answer() -> u32 { 0 }",
+            "document": "toy.rs",
+            "expected_revision": 0,
+            "kind": "edit"
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794340664,
+          "id": "one"
+        }
+      }
+    ],
+    "authorized_committed": true,
+    "expected": {
+      "contents": "fn answer() -> u32 { 42 }",
+      "document": "toy.rs",
+      "expected_revision": 0,
+      "kind": "edit"
+    },
+    "semantic_task_success": false
+  },
+  "unsupported_sink": {
+    "deliveries": 2,
+    "effects": 2,
+    "expected_negative": true,
+    "responses": [
+      "{\"status\": \"committed\"}",
+      "{\"status\": \"committed\"}"
+    ]
+  }
+}

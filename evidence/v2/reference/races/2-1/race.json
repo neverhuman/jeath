@@ -1,0 +1,41 @@
+{
+  "actors": 2,
+  "charged": 8,
+  "check": "independent final-state conservation and exact recipient/amount",
+  "effects": [
+    {
+      "actor": "actor-0",
+      "proposal": {
+        "effect": {
+          "kind": "transfer",
+          "recipient": "approved",
+          "units": 8
+        },
+        "epochs": [
+          0,
+          0
+        ],
+        "expires": 1794340627,
+        "id": "actor-0"
+      }
+    }
+  ],
+  "outcomes": [
+    {
+      "actor": 0,
+      "latency_ms": 1108.631098,
+      "response": {
+        "status": "committed"
+      }
+    },
+    {
+      "actor": 1,
+      "latency_ms": 330.5911,
+      "response": {
+        "reason": "policy",
+        "status": "denied"
+      }
+    }
+  ],
+  "repeat": 1
+}

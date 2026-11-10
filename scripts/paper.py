@@ -2,6 +2,8 @@
 """Generate every experimental table from the committed reference JSON."""
 import argparse
 import json
+import math
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -74,10 +76,54 @@ def generate():
         name = row["score"].replace("_", " ")
         selection.append(f"{name} & {100*row['gamble_share']['mean']:.2f}\\% & {row['final_welfare']['mean']:.3f}\\\\")
     selection += [r"\bottomrule\end{tabular}\caption{Eight populations of 400 agents over 60 generations. The gamble has lower expected private return and imposes an additional stipulated welfare loss. These model assumptions drive the interpretation; no trained assistant or human delegation is measured.}\label{tab:selection}\end{table}"]
-    return {"numbers.tex": numbers, "model-table.tex": "\n".join(tex)+"\n",
+    result = {"numbers.tex": numbers, "model-table.tex": "\n".join(tex)+"\n",
             "monitor-table.tex": "\n".join(mon)+"\n", "monitor-figure.tex": "\n".join(plot)+"\n",
             "runtime-table.tex": "\n".join(rt)+"\n", "coverage.tex": covtext,
             "selection-table.tex": "\n".join(selection)+"\n"}
+    result.update(generate_v2())
+    return result
+
+
+def generate_v2():
+    data = ROOT / "evidence/v2/reference"
+    read = lambda name: json.loads((data/f"{name}.json").read_text())
+    proof = int(re.search(r"verification results:: (\d+) verified, 0 errors",read("proof")["output"]).group(1))
+    ablations = read("ablations")
+    faults = [r for r in read("faults") if "trace" in r]
+    races = read("races")
+    controls = read("controllers")["rows"]
+    cost = read("revocation-cost")
+    benchmark = read("benchmark-controls")
+    macros = f"% Generated from validated v2 evidence; do not edit.\n\\newcommand{{\\VTwoProofs}}{{{proof}}}\n\\newcommand{{\\VTwoTraces}}{{{ablations['searched_traces']}}}\n"
+    table = [r"\begin{table}[t]\centering\small\begin{tabularx}{\columnwidth}{@{}Lr@{}}\toprule",
+             r"Recorded check & Result\\\midrule",
+             f"Application core obligations & {proof} verified\\\\",
+             f"Sequential fault histories & {len(faults)} passed\\\\",
+             f"Concurrent race repetitions & {len(races)} passed\\\\",
+             f"Abstract omission sets with witnesses & {sum(bool(r['shortest_searched_witness']) for r in ablations['rows'])}/{len(ablations['rows'])}\\\\",
+             f"Native benchmark utility positives & {sum(r.get('native_utility_positive',False) for r in benchmark['rows'])}/{len(benchmark['rows'])}\\\\",
+             r"Model campaigns & Unrun\\",
+             r"\bottomrule\end{tabularx}\caption{Evidence types remain distinct. Abstract mutation witnesses and native scripted controls are not adversarial model measurements.}\label{tab:v2summary}\end{table}"]
+    table += [r"\begin{table}[t]\centering\small\begin{tabularx}{\columnwidth}{@{}Lrr@{}}\toprule",
+              r"CPU controller & Safe/useful & Runs\\\midrule"]
+    names = {"none":"No enforcement","stateless":"Stateless per-call", "durable_without_fence":"Durable, no fence", "complete":"Complete"}
+    for name,label in names.items():
+        selected = [r for r in controls if r["controller"]==name]
+        table.append(f"{label} & {sum(r['safe_useful'] for r in selected)}/{len(selected)} & {len(selected)}\\\\")
+    table += [r"Learned, same checkpoint & Unrun & 0\\",
+              r"\bottomrule\end{tabularx}\caption{Sequential scripted shared-budget controls over all six actor populations, with equal permissions. These descriptive outcomes do not support model noninferiority.}\label{tab:v2controllers}\end{table}"]
+    table.append(f"The delayed-completion control measured a fence acknowledgment delay of {cost['fence_ack_ms']:.2f} ms with {cost['unavailable_charge_at_ack']} units unavailable at acknowledgment. The injected in-transaction delay was {cost['injected_service_delay_ms']} ms.\n")
+    plot = [r"\begin{figure}[t]\centering\begin{tikzpicture}",
+            r"\begin{axis}[width=.96\columnwidth,height=4.7cm,xmode=log,log basis x=2,xtick={1,2,4,8,16,32},xticklabels={1,2,4,8,16,32},xlabel={Concurrent actors},ylabel={Observed p95 latency (ms)},grid=major]" ]
+    coordinates = []
+    for actors in (1,2,4,8,16,32):
+        values = sorted(x["latency_ms"] for row in races if row["actors"]==actors for x in row["outcomes"])
+        coordinates.append(f"({actors},{values[math.ceil(.95*len(values))-1]:.6g})")
+    plot.append(r"\addplot[teal,mark=*] coordinates {"+" ".join(coordinates)+"};")
+    host = read("manifest")["hostname"].replace("_",r"\_")
+    plot += [r"\end{axis}\end{tikzpicture}",
+             f"\\caption{{Durable shared-budget races on {host}; empirical p95 across recorded attempts at each population. Rejected requests and contention are included. Setup is excluded; these are descriptive host measurements.}}\\label{{fig:v2latency}}\\end{{figure}}"]
+    return {"v2-numbers.tex":macros,"v2-summary.tex":"\n".join(table)+"\n","v2-races.tex":"\n".join(plot)+"\n"}
 
 
 if __name__ == "__main__":

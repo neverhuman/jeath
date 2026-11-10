@@ -1,0 +1,15 @@
+{
+  "schema_version": 2,
+  "protocol": "local-reservation-fenced-sink-v2",
+  "v1_commit": "12b5579",
+  "proposer_methods": ["submit", "status"],
+  "response_states": ["pending", "denied", "committed", "cancelled"],
+  "issuers": ["operator", "steward"],
+  "reservation": "persist before dispatch permit; no timeout refund",
+  "sink_contract": "trusted exclusive channel; atomic deduplication, effect and durable status; per-issuer monotone fences",
+  "admission_revocation": "close issuance of new dispatch permits; previously issued permits may still arrive or complete",
+  "fenced_revocation": "broker withdrawal followed by durable sink fence; acknowledgment only after fence transaction cancels pending old-issuer work",
+  "unsupported_sink": "non-idempotent or directly reachable sink",
+  "isolation": "Linux Landlock ABI >= 4 and seccomp; fail closed; no user namespaces",
+  "scope": "synthetic local effects; no external exactly-once or whole-runtime formal verification"
+}

@@ -1,0 +1,185 @@
+{
+  "schema_version": 2,
+  "recorded_utc": "2026-11-10T18:56:32Z",
+  "plan": {
+    "schema_version": 2,
+    "status": "predeclared; model campaigns not run",
+    "gpu_budget_seconds": 14400,
+    "development_timing_seconds_max": 1200,
+    "headroom": 0.2,
+    "candidate_campaigns_per_model": [
+      32,
+      64,
+      128
+    ],
+    "models": [
+      {
+        "repository": "Qwen/Qwen3-4B-GGUF",
+        "revision": "bc640142c66e1fdd12af0bd68f40445458f3869b",
+        "file": "Qwen3-4B-Q4_K_M.gguf",
+        "sha256": "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5"
+      },
+      {
+        "repository": "Qwen/Qwen3-8B-GGUF",
+        "revision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+        "file": "Qwen3-8B-Q4_K_M.gguf",
+        "sha256": "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785"
+      }
+    ],
+    "llama_cpp_commit": "7592b61d3b53ca5b39a25a03508fa1246b78c579",
+    "generation": {
+      "temperature": 0,
+      "seed": 20261110,
+      "top_k": 1,
+      "top_p": 1,
+      "context": 4096,
+      "max_tokens_per_turn": 256,
+      "tool_turns": 8,
+      "enable_thinking": false,
+      "repeat_penalty": 1
+    },
+    "controllers": [
+      "none",
+      "stateless",
+      "learned_same_checkpoint",
+      "durable_without_fence",
+      "complete"
+    ],
+    "fairness": "same permission and visible policy-state hashes for each paired base case; reviewer uses proposer checkpoint",
+    "agentdojo": {
+      "repository": "ethz-spylab/agentdojo",
+      "commit": "089ed468cf3ed0322acc66b0211f26d9d90dbf60",
+      "benchmark_version": "v1.2.2",
+      "banking": [
+        0,
+        2,
+        3,
+        4,
+        5,
+        6,
+        11
+      ],
+      "workspace": [
+        29,
+        31,
+        33,
+        34,
+        35
+      ],
+      "graders": "unmodified native utility and security graders"
+    },
+    "progent": {
+      "repository": "sunblaze-ucb/progent",
+      "commit": "b02783b896d4bf01a2adf24738015e258db8d35b",
+      "status": "additional upstream comparison; never alias stateless baseline to Progent"
+    },
+    "inference": {
+      "unit": "procedural campaign, paired by base case; repeated variants clustered by base case",
+      "checkpoint_results": "separate",
+      "public_benchmark": "descriptive only",
+      "interval": "distribution-free Hoeffding intervals on independent base-case means; retain all variants",
+      "primary_comparisons": "complete minus each of four controllers at each of two checkpoints",
+      "multiplicity": "Bonferroni simultaneous 95% bounds across eight primary comparisons",
+      "usefulness_noninferiority_margin": 0.05,
+      "claim_rule": "lower paired usefulness bound exceeds -0.05",
+      "negative_results": "retain failures, missing controllers, unsupported contracts, integration errors and underpowered comparisons"
+    },
+    "freeze_rule": "freeze source, prompts and analysis hashes plus sample size before generating fresh procedural holdouts; do not inspect holdout to tune defenses",
+    "capability": "parameter counts are checkpoint identifiers, not measured capability",
+    "public_model_reference": "native graders; upstream Progent generated initial policy via local inference transport; adaptive updates disabled and reported",
+    "budget_rule": "reserve three measured campaign equivalents per checkpoint for descriptive public reference; total deadline still four GPU-hours"
+  },
+  "host_preflight": [
+    {
+      "requested_host": "xbabe2",
+      "verified": true,
+      "idle": false,
+      "returncode": 0,
+      "observation": [
+        "xbabe2",
+        "Linux x86_64",
+        "NVIDIA GeForce RTX 3090, GPU-44c63d19-492a-ab46-cc6a-56e12a2ef51b, 23156 MiB, 99 %",
+        "216697, python3, 23146 MiB"
+      ],
+      "stderr": ""
+    },
+    {
+      "requested_host": "xbabe0",
+      "verified": true,
+      "idle": false,
+      "returncode": 0,
+      "observation": [
+        "xbabe0",
+        "Linux x86_64",
+        "NVIDIA GeForce RTX 3090, GPU-341c8143-cc7a-d625-7356-2c37ab526f3a, 23976 MiB, 98 %",
+        "1713405, /usr/bin/python3, 23966 MiB"
+      ],
+      "stderr": ""
+    },
+    {
+      "requested_host": "xbabe1",
+      "verified": true,
+      "idle": false,
+      "returncode": 0,
+      "observation": [
+        "xbabe1",
+        "Linux x86_64",
+        "NVIDIA GeForce RTX 4090, GPU-784030c4-b1f9-d5a3-f0eb-9337f133f503, 23160 MiB, 73 %",
+        "2142538, python3, 23142 MiB"
+      ],
+      "stderr": ""
+    },
+    {
+      "requested_host": "xbabe4",
+      "verified": false,
+      "idle": false,
+      "returncode": 127,
+      "observation": [
+        "Mac-Studio.local",
+        "Darwin arm64"
+      ],
+      "stderr": "zsh:3: command not found: nvidia-smi\nzsh:4: command not found: nvidia-smi\n"
+    }
+  ],
+  "gpu_seconds": 0,
+  "sample_size": null,
+  "status": "not_run",
+  "reason": "no idle GPU with verified hostname and architecture",
+  "frozen_source_sha256": {
+    "Cargo.lock": "88012c868b8e716f1b18c7cf9001081bd18cd5558b3d5463f2bbc65fd5997bdd",
+    "Cargo.toml": "71fc1f0b90c3f3c802bd5147cae3e1137f18989b2fb223ab59e31cd142c0d175",
+    "fixtures/v2/evaluation.json": "4907072ad52f9b487d04707b552acd5a031b20c5862377cd0e86fa384e314747",
+    "fixtures/v2/protocol.json": "6df70ee831b53b09f7816a9494f0b36352dcadb85d1c12ad2334854a87bc0749",
+    "policy-core/src/lib.rs": "8b6e5a3693fea303f764119485bc0a027d5de9a759083c73f0ffb6cc773cf5a2",
+    "scripts/ablate_v2.py": "67287879acf8c397f67b5abe95eb34f88297fed938f4064cf02b767526d353f4",
+    "scripts/analyze_v2.py": "2e2e0ebc59993a8796021f47d72d96d47f4c50114c33ff58fc72573027331b82",
+    "scripts/benchmark_v2.py": "d2925c3ee0c7fa4ca95db562a31c4181862f92fa6b3f7e41d8923d4fbd06c8c9",
+    "scripts/build_paper.py": "fe7fd99a21dce34e3bf0d9c647181d8c281a1fc7f7b2b65bc38e7769b17e11c0",
+    "scripts/fleet.py": "688ee4275b322bf6237349990175567ba0874661b9916b797f72e477ea0c7188",
+    "scripts/github.py": "eaae57b6f5fd9dc5b6387f9b7d9e87f65e894bfe6c3ba13a14df49b5366b3a7b",
+    "scripts/infer_v2.py": "eac0c1163a748ac4a741ab603941b1bd4cd4f8a46e13a61c2b6065b9af48e2fc",
+    "scripts/launch_v2.py": "ac36c511341bfd3cf94781a94d82b4f1c3b3b274b5e8c1ea2d77f0a4aec6d0a9",
+    "scripts/model_v2.py": "7ab11daf6adf4771eeb76124d09c5724c331bbcc85eedfd303cda49577c84976",
+    "scripts/nonidempotent_v2.py": "771394481570f6da4c06686fe3e247be728fa4e38ebc089008cf5f678151f5bb",
+    "scripts/paper.py": "1b5e1643c57e76e1cbda64ed529cb6156a0dc4056d7c1b7598d71584cc79fe7e",
+    "scripts/reference_v2.py": "427c56183004703c8659780980f2f7f1f55d1c7428a6e090a5a201547a382f00",
+    "scripts/run.py": "c789c19f23a63d4ccba4f2f2572446604d9efe7cad51d00702ab59c5dda48598",
+    "scripts/run_v2.py": "1f35621d49ca80b1e2810500410c836f275a38b0f8beae1b90e33341e958609a",
+    "scripts/validate.py": "a0223f4f3a3b0aa6f12be4b33cb0f0db353a8d51f35c440b3bfd636fa9a425d8",
+    "scripts/verify_core.py": "b2209b2f1e399deeb7d9af33e81640666a52fdfa887d8e4445a90bdac8aa77c7",
+    "src/bin/authority-lab.rs": "a4405a670b80564cd1f4d277b0e4e6d839f48023e9c5a08772f3e86208b60b61",
+    "src/campaigns.rs": "7498150e316845a0e886b6399fcace6469cf5f046243d6a75379eac4c32e7071",
+    "src/coverage.rs": "b8309bcb4f8a100c0c0b27d683bf8d160155b456c6e2df042867c9b3cc414907",
+    "src/graph.rs": "be9216b87a60e042a3b7f45c64f8bf53655181dfcd1b1a7aa567e7aa7f07664c",
+    "src/isolation_v2.rs": "94623390ea961784610afb51a5f964b0b63fb5d4dd37fc174a4cbedf85ca74a2",
+    "src/lib.rs": "0d9d53cd5579b69b34e4acbb60ce9be16bb916c7e011e54b438b51a44cb58aea",
+    "src/model.rs": "65c13f80d609dc698d2e284b5782e65a6db10cc5d4c33c29118b8d4c5b86b460",
+    "src/monitors.rs": "0d832059119d3455a9154f244b81a1ea71af6b6e286528e34f3cafc97e3e4346",
+    "src/protocol_v2.rs": "728debb22bdf56ce737328cccb2a65874ef219b9d4821baf9b887c0c856554b9",
+    "src/rng.rs": "c5350cbae56f9cf6b5120a24d90f74a3e9066b1fdcfb75c4da1a98043b93304e",
+    "src/runtime.rs": "215404617d6273679ee30298ecf5c7c8533ea599f26fff47601094cf3216b1f9",
+    "src/runtime_experiments.rs": "1e5ebea4c7d3b6750ed45cd2eb0b815c041b8425a49702ac087345d36ee4d83e",
+    "src/selection.rs": "99b9f44402cc534995e66c6b063b43957264a10840e850e0688dd2609ea22319",
+    "src/stats.rs": "245cbec1ba6d196d4ae1f7cc8e1d5f82fb346db64d631ec6b661d9fcc02b207a"
+  }
+}

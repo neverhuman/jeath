@@ -1,0 +1,297 @@
+[
+  {
+    "effects": null,
+    "invocation": {
+      "budget": 8,
+      "op": "init"
+    },
+    "invoked_ns": 24874733743878,
+    "responded_ns": 24875306479996,
+    "response": {
+      "status": "initialized"
+    },
+    "role": "broker",
+    "unix_time": 1794337016
+  },
+  {
+    "effects": [],
+    "invocation": {
+      "op": "init"
+    },
+    "invoked_ns": 24875306489043,
+    "responded_ns": 24875370843418,
+    "response": {
+      "status": "initialized"
+    },
+    "role": "sink",
+    "unix_time": 1794337016
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "issuer": 0,
+      "op": "approve",
+      "permit": {
+        "actor": "alice",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 8
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794340616,
+          "id": "full-budget"
+        }
+      }
+    },
+    "invoked_ns": 24875400963997,
+    "responded_ns": 24875448590246,
+    "response": {
+      "status": "approved"
+    },
+    "role": "broker",
+    "unix_time": 1794337016
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "issuer": 0,
+      "op": "approve",
+      "permit": {
+        "actor": "alice",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 8
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794340616,
+          "id": "full-budget"
+        }
+      }
+    },
+    "invoked_ns": 24875448606075,
+    "responded_ns": 24875467361210,
+    "response": {
+      "status": "approved"
+    },
+    "role": "broker",
+    "unix_time": 1794337016
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "submit",
+      "proposal": {
+        "effect": {
+          "kind": "transfer",
+          "recipient": "approved",
+          "units": 8
+        },
+        "epochs": [
+          0,
+          0
+        ],
+        "expires": 1794340616,
+        "id": "full-budget"
+      },
+      "session_actor": "alice"
+    },
+    "invoked_ns": 24875467365728,
+    "responded_ns": 24875492125159,
+    "response": {
+      "permit": {
+        "actor": "alice",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 8
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794340616,
+          "id": "full-budget"
+        }
+      },
+      "status": "pending"
+    },
+    "role": "broker",
+    "unix_time": 1794337016
+  },
+  {
+    "effects": [],
+    "invocation": {
+      "op": "accept",
+      "permit": {
+        "actor": "alice",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 8
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794340616,
+          "id": "full-budget"
+        }
+      }
+    },
+    "invoked_ns": 24875492129306,
+    "responded_ns": 24875512963526,
+    "response": {
+      "status": "pending"
+    },
+    "role": "sink",
+    "unix_time": 1794337016
+  },
+  {
+    "effects": [
+      {
+        "actor": "alice",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 8
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794340616,
+          "id": "full-budget"
+        }
+      }
+    ],
+    "invocation": {
+      "id": "full-budget",
+      "op": "complete"
+    },
+    "invoked_ns": 24875513429178,
+    "responded_ns": 24875580826092,
+    "response": {
+      "status": "committed"
+    },
+    "role": "sink",
+    "unix_time": 1794337016
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "id": "full-budget",
+      "op": "settle",
+      "sink_status": "committed"
+    },
+    "invoked_ns": 24875581178620,
+    "responded_ns": 24875643581711,
+    "response": {
+      "status": "committed"
+    },
+    "role": "broker",
+    "unix_time": 1794337016
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "issuer": 0,
+      "op": "withdraw"
+    },
+    "invoked_ns": 24875643587642,
+    "responded_ns": 24875746642929,
+    "response": {
+      "charged": 8,
+      "floor": 1,
+      "issuer": 0,
+      "outstanding": 0,
+      "status": "admission_revoked"
+    },
+    "role": "broker",
+    "unix_time": 1794337016
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "issuer": 0,
+      "op": "renew"
+    },
+    "invoked_ns": 24875746645664,
+    "responded_ns": 24875827274136,
+    "response": {
+      "status": "renewed"
+    },
+    "role": "broker",
+    "unix_time": 1794337017
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "issuer": 0,
+      "op": "approve",
+      "permit": {
+        "actor": "alice",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 8
+          },
+          "epochs": [
+            1,
+            0
+          ],
+          "expires": 1794340616,
+          "id": "after-renewal"
+        }
+      }
+    },
+    "invoked_ns": 24875827282622,
+    "responded_ns": 24875892252913,
+    "response": {
+      "status": "approved"
+    },
+    "role": "broker",
+    "unix_time": 1794337017
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "submit",
+      "proposal": {
+        "effect": {
+          "kind": "transfer",
+          "recipient": "approved",
+          "units": 8
+        },
+        "epochs": [
+          1,
+          0
+        ],
+        "expires": 1794340616,
+        "id": "after-renewal"
+      },
+      "session_actor": "alice"
+    },
+    "invoked_ns": 24875892256600,
+    "responded_ns": 24875892372530,
+    "response": {
+      "reason": "policy",
+      "status": "denied"
+    },
+    "role": "broker",
+    "unix_time": 1794337017
+  }
+]

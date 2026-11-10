@@ -1,0 +1,87 @@
+[
+  {
+    "effects": null,
+    "invocation": {
+      "budget": 8,
+      "op": "init"
+    },
+    "invoked_ns": 24857833510924,
+    "responded_ns": 24858227944498,
+    "response": {
+      "status": "initialized"
+    },
+    "role": "broker",
+    "unix_time": 1794336999
+  },
+  {
+    "effects": [],
+    "invocation": {
+      "op": "init"
+    },
+    "invoked_ns": 24858227954277,
+    "responded_ns": 24858300856172,
+    "response": {
+      "status": "initialized"
+    },
+    "role": "sink",
+    "unix_time": 1794336999
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "issuer": 0,
+      "op": "approve",
+      "permit": {
+        "actor": "alice",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 2
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1,
+          "id": "one"
+        }
+      }
+    },
+    "invoked_ns": 24858350550745,
+    "responded_ns": 24858374550087,
+    "response": {
+      "status": "approved"
+    },
+    "role": "broker",
+    "unix_time": 1794336999
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "submit",
+      "proposal": {
+        "effect": {
+          "kind": "transfer",
+          "recipient": "approved",
+          "units": 2
+        },
+        "epochs": [
+          0,
+          0
+        ],
+        "expires": 1,
+        "id": "one"
+      },
+      "session_actor": "alice"
+    },
+    "invoked_ns": 24858374562100,
+    "responded_ns": 24858374790171,
+    "response": {
+      "reason": "policy",
+      "status": "denied"
+    },
+    "role": "broker",
+    "unix_time": 1794336999
+  }
+]

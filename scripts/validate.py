@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import math
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -80,11 +81,14 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("directory", type=Path)
     p.add_argument("--source", action="store_true", help="also require the recorded source hashes to match this checkout")
+    p.add_argument("--source-ref", help="validate preserved source hashes against an explicit git revision")
     a = p.parse_args()
     originals()
     check(a.directory)
-    if a.source:
+    assert not (a.source and a.source_ref), "choose current source or a preserved revision"
+    if a.source or a.source_ref:
         provenance = load(a.directory, "provenance")
         for filename, expected in provenance["source_sha256"].items():
-            assert hashlib.sha256((ROOT / filename).read_bytes()).hexdigest() == expected, f"Reference evidence uses different source: {filename}"
-        print("recorded source hashes match this checkout")
+            data = subprocess.check_output(["git","show",f"{a.source_ref}:{filename}"],cwd=ROOT) if a.source_ref else (ROOT/filename).read_bytes()
+            assert hashlib.sha256(data).hexdigest() == expected, f"Reference evidence uses different source: {filename}"
+        print("recorded source hashes match " + (a.source_ref or "this checkout"))

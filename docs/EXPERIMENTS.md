@@ -1,3 +1,47 @@
+# V2 protocol experiments
+
+Run `python3 scripts/run_v2.py target/NEW --profile smoke` on Linux. Publication
+uses three repetitions of races and scripted controller controls. Both profiles
+require proof verification, real fault processes, semantic positive and negative
+controls, and working Landlock/seccomp restrictions. Neither allocates GPUs.
+
+`python3 scripts/analyze_v2.py target/NEW --source` recomputes independent
+sequential histories and abstract ablation search, validates effects and source
+hashes, and checks evidence structure. This is not a full concurrent
+linearizability checker. Races use final ledger/effect conservation; delayed
+fencing uses an independently observed sink write lock and effects before/after
+acknowledgment. Failing histories retain the first failing prefix.
+
+Ten abstract omissions (budget, binding, conjunction, epoch, expiry, revision,
+deduplication, durability, quarantine and fencing) and all 45 pairs search every
+subsequence of ten declared templates. Witnesses are shortest in that language,
+not globally minimal or alternate verified Rust implementations.
+
+Negative controls must fail: the non-idempotent sink duplicates deliveries, and
+an approved edit returning 0 commits but fails the task requiring 42.
+
+The real-model experiment is unfinished. `scripts/model_v2.py` records host
+preflight, sample selection and freeze/holdout preparation; `scripts/infer_v2.py` manages one local llama-server at a time, refuses busy or misidentified GPUs, verifies server/model pins, enforces development and total deadlines, freezes the sample, generates fresh cases and executes the five-controller bridge. The bridge has CPU scripted tests; real GPU inference is unrun. Official Qwen3 pins, llama.cpp revision,
+generation limits, the four-GPU-hour cap and inference are predeclared in
+`fixtures/v2/evaluation.json`. All checked Linux GPUs were occupied. The `xbabe4`
+alias resolved to `Mac-Studio.local`, Darwin arm64, and failed identity validation.
+No GPU was allocated, no holdout inspected, and no sample selected.
+
+For genuine optional campaign JSONL, `analyze_v2.py --campaigns FILE` separates
+checkpoints, pairs controllers by case/variant, checks equal visible state and
+permissions, clusters variants and uses bounded Hoeffding intervals. Eight
+primary contrasts use Bonferroni adjustment. The noninferiority margin is fixed
+at five percentage points. Scripted inputs cannot count as model evidence;
+JSON labels alone still cannot authenticate an actual checkpoint run.
+
+`scripts/benchmark_v2.py OUTPUT.json` runs with the pinned AgentDojo and Progent
+source packages installed in a lane-local venv. It executes the selected native
+ground truth and graders, unmodified Progent exact-policy checks and subset solver.
+It does not invoke an API, generate policies with an LLM or run adaptive updates.
+The recorded dependencies and upstream source IDs support reproduction. The managed model runner can additionally call the native benchmark adapter with upstream-generated initial policies and local inference transport; adaptive updates are explicitly disabled. That path remains unrun and may report integration errors.
+
+The following methods describe v1, retained against commit `12b5579`.
+
 # Running and interpreting the experiments
 
 `make required` is the local publication gate. It keeps build and test artifacts

@@ -1,0 +1,1029 @@
+{
+  "model": "abstract protocol mutation model; not Rust code mutants",
+  "positive_control": true,
+  "rows": [
+    {
+      "omitted": [
+        "budget"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "budget"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "authorize1",
+          "submit1",
+          "complete1",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "binding"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "binding"
+        ],
+        "trace": [
+          "authorize0",
+          "alter0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "conjunction"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "conjunction"
+        ],
+        "trace": [
+          "operator0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "epoch"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "epoch"
+        ],
+        "trace": [
+          "authorize0",
+          "withdraw",
+          "renew",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "expiry"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "expiry"
+        ],
+        "trace": [
+          "authorize0",
+          "expire",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "revision"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "revision"
+        ],
+        "trace": [
+          "authorize0",
+          "external_edit",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "dedup"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "budget",
+          "duplicate"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "complete0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "durability"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "budget"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "complete0",
+          "crash",
+          "authorize1",
+          "submit1",
+          "complete1"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "quarantine"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "budget"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "timeout",
+          "authorize1",
+          "submit1",
+          "complete1",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "fencing"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "post_fenced_ack"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "withdraw",
+          "fence",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "budget",
+        "binding"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "binding"
+        ],
+        "trace": [
+          "authorize0",
+          "alter0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "budget",
+        "conjunction"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "conjunction"
+        ],
+        "trace": [
+          "operator0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "budget",
+        "epoch"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "epoch"
+        ],
+        "trace": [
+          "authorize0",
+          "withdraw",
+          "renew",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "budget",
+        "expiry"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "expiry"
+        ],
+        "trace": [
+          "authorize0",
+          "expire",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "budget",
+        "revision"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "revision"
+        ],
+        "trace": [
+          "authorize0",
+          "external_edit",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "budget",
+        "dedup"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "budget",
+          "duplicate"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "complete0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "budget",
+        "durability"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "budget"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "authorize1",
+          "submit1",
+          "complete1",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "budget",
+        "quarantine"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "budget"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "authorize1",
+          "submit1",
+          "complete1",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "budget",
+        "fencing"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "post_fenced_ack"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "withdraw",
+          "fence",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "binding",
+        "conjunction"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "conjunction"
+        ],
+        "trace": [
+          "operator0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "binding",
+        "epoch"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "binding"
+        ],
+        "trace": [
+          "authorize0",
+          "alter0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "binding",
+        "expiry"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "binding"
+        ],
+        "trace": [
+          "authorize0",
+          "alter0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "binding",
+        "revision"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "binding"
+        ],
+        "trace": [
+          "authorize0",
+          "alter0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "binding",
+        "dedup"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "binding"
+        ],
+        "trace": [
+          "authorize0",
+          "alter0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "binding",
+        "durability"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "binding"
+        ],
+        "trace": [
+          "authorize0",
+          "alter0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "binding",
+        "quarantine"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "binding"
+        ],
+        "trace": [
+          "authorize0",
+          "alter0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "binding",
+        "fencing"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "binding"
+        ],
+        "trace": [
+          "authorize0",
+          "alter0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "conjunction",
+        "epoch"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "conjunction"
+        ],
+        "trace": [
+          "operator0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "conjunction",
+        "expiry"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "conjunction"
+        ],
+        "trace": [
+          "operator0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "conjunction",
+        "revision"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "conjunction"
+        ],
+        "trace": [
+          "operator0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "conjunction",
+        "dedup"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "conjunction"
+        ],
+        "trace": [
+          "operator0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "conjunction",
+        "durability"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "conjunction"
+        ],
+        "trace": [
+          "operator0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "conjunction",
+        "quarantine"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "conjunction"
+        ],
+        "trace": [
+          "operator0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "conjunction",
+        "fencing"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "conjunction"
+        ],
+        "trace": [
+          "operator0",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "epoch",
+        "expiry"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "expiry"
+        ],
+        "trace": [
+          "authorize0",
+          "expire",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "epoch",
+        "revision"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "revision"
+        ],
+        "trace": [
+          "authorize0",
+          "external_edit",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "epoch",
+        "dedup"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "budget",
+          "duplicate"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "complete0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "epoch",
+        "durability"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "epoch"
+        ],
+        "trace": [
+          "authorize0",
+          "withdraw",
+          "renew",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "epoch",
+        "quarantine"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "epoch"
+        ],
+        "trace": [
+          "authorize0",
+          "withdraw",
+          "renew",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "epoch",
+        "fencing"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "post_fenced_ack"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "withdraw",
+          "fence",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "expiry",
+        "revision"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "expiry"
+        ],
+        "trace": [
+          "authorize0",
+          "expire",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "expiry",
+        "dedup"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "expiry"
+        ],
+        "trace": [
+          "authorize0",
+          "expire",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "expiry",
+        "durability"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "expiry"
+        ],
+        "trace": [
+          "authorize0",
+          "expire",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "expiry",
+        "quarantine"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "expiry"
+        ],
+        "trace": [
+          "authorize0",
+          "expire",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "expiry",
+        "fencing"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "expiry"
+        ],
+        "trace": [
+          "authorize0",
+          "expire",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "revision",
+        "dedup"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "revision"
+        ],
+        "trace": [
+          "authorize0",
+          "external_edit",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "revision",
+        "durability"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "revision"
+        ],
+        "trace": [
+          "authorize0",
+          "external_edit",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "revision",
+        "quarantine"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "revision"
+        ],
+        "trace": [
+          "authorize0",
+          "external_edit",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "revision",
+        "fencing"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "revision"
+        ],
+        "trace": [
+          "authorize0",
+          "external_edit",
+          "submit0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "dedup",
+        "durability"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "budget",
+          "duplicate"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "complete0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "dedup",
+        "quarantine"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "budget",
+          "duplicate"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "complete0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "dedup",
+        "fencing"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "budget",
+          "duplicate"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "complete0",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "durability",
+        "quarantine"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "budget"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "complete0",
+          "crash",
+          "authorize1",
+          "submit1",
+          "complete1"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "durability",
+        "fencing"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "post_fenced_ack"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "withdraw",
+          "fence",
+          "complete0"
+        ]
+      }
+    },
+    {
+      "omitted": [
+        "quarantine",
+        "fencing"
+      ],
+      "shortest_searched_witness": {
+        "harms": [
+          "post_fenced_ack"
+        ],
+        "trace": [
+          "authorize0",
+          "submit0",
+          "withdraw",
+          "fence",
+          "complete0"
+        ]
+      }
+    }
+  ],
+  "search": "all subsequences of declared templates",
+  "searched_traces": 296,
+  "specification_omission": {
+    "harm_oracle": "task expects answer 42; exact contents differ",
+    "interpretation": "permission correctness does not imply task correctness",
+    "verified_core_admits": "exactly approved edit returning 0"
+  },
+  "templates": {
+    "binding": [
+      "authorize0",
+      "alter0",
+      "submit0",
+      "complete0"
+    ],
+    "budget": [
+      "authorize0",
+      "submit0",
+      "complete0",
+      "authorize1",
+      "submit1",
+      "complete1"
+    ],
+    "conjunction": [
+      "operator0",
+      "submit0",
+      "complete0"
+    ],
+    "dedup": [
+      "authorize0",
+      "submit0",
+      "complete0",
+      "complete0"
+    ],
+    "durability": [
+      "authorize0",
+      "submit0",
+      "complete0",
+      "crash",
+      "authorize1",
+      "submit1",
+      "complete1"
+    ],
+    "epoch": [
+      "authorize0",
+      "withdraw",
+      "renew",
+      "submit0",
+      "complete0"
+    ],
+    "expiry": [
+      "authorize0",
+      "expire",
+      "submit0",
+      "complete0"
+    ],
+    "fencing": [
+      "authorize0",
+      "submit0",
+      "withdraw",
+      "fence",
+      "complete0"
+    ],
+    "quarantine": [
+      "authorize0",
+      "submit0",
+      "timeout",
+      "authorize1",
+      "submit1",
+      "complete1",
+      "complete0"
+    ],
+    "revision": [
+      "authorize0",
+      "external_edit",
+      "submit0",
+      "complete0"
+    ]
+  }
+}

@@ -1,11 +1,29 @@
 % Revised manuscript. Original submissions remain byte-identical in ../tips/.
 \input{preamble}
 \input{generated/numbers}
+\input{generated/v2-numbers}
 \begin{document}
 \input{frontmatter}
-\input{sections/01-problem}
+\input{sections/v2-01-question}
+\input{sections/v2-02-protocol}
+\input{sections/v2-03-core}
+\input{sections/v2-04-revocation}
+\input{sections/v2-05-evaluation}
+\input{sections/v2-06-results}
+\input{sections/v2-07-limits}
+\label{main:end}
+\clearpage
+\input{references}
+\clearpage
+\appendix
+\section*{Preserved v1 analyses and research hypotheses}
+The following appendices retain the finite-model, atomic-database, synthetic-monitor,
+graph, population-selection, and human-analogy work from v1, commit
+\texttt{12b5579}. Their statements about the prototype refer to that atomic
+SQLite baseline. They are not additional v2 experiments or evidence for the
+unrun local-model comparison. All original supplied manuscripts remain unchanged
+in \texttt{tips/}. The main text states the current claim boundary.
 \input{sections/02-care}
-\input{sections/03-evidence}
 \input{sections/04-legitimacy}
 \input{sections/05-contract}
 \input{sections/06-risk}
@@ -15,14 +33,9 @@
 \input{sections/10-monitors}
 \input{sections/11-engineering}
 \input{sections/12-research-program}
-\input{sections/13-limits}
-\input{sections/14-conclusion}
-\input{sections/15-disclosure}
-\appendix
 \input{sections/a-proofs}
 \input{sections/b-rare-triggers}
 \input{sections/c-model-details}
 \input{sections/d-evidence-record}
 \input{sections/e-evaluation-details}
-\input{references}
 \end{document}

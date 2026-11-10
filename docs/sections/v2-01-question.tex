@@ -1,0 +1,96 @@
+\section{The authority left after stopping}
+An agent process can stop while its authorized work continues elsewhere. A tool
+may have accepted a payment, queued a release, or begun a document update before
+the operator withdraws permission. Killing the proposer does not erase those
+requests. A timeout does not reveal whether they committed. Returning their
+budget to a replacement agent can authorize a second effect while the first
+remains possible. The relevant control question is therefore about outstanding
+authority, rather than the lifetime of the model process.
+
+This paper asks what authority can remain after stopping or withdrawal, which
+mechanisms bound it, and what evidence those mechanisms support. The artifact
+uses synthetic payments, releases, and edits, all within local services. These
+three effect types deliberately require different observations: recipient and
+amount for payments, destination and actual contents for releases, and revision
+plus expected contents for edits. An authorization result concerns the encoded
+permission. A task-success result concerns the intended effect. Neither result
+establishes that the issuer had legitimate jurisdiction over the resource.
+
+\subsection{Contribution and claim conditions}
+We distinguish three proposed claims. First, a deterministic core makes its
+specified authorization decisions independently of proposer behavior. Its
+executable predicates have mechanized equivalence specifications, including
+positive permissions; conservation arguments quantify over arbitrary finite
+prefixes. The broker compiles this core as a Rust dependency. This verifies
+particular decisions and algebraic lemmas, not the parser, database program, or
+whole runtime. Their correspondence to the arguments supplied to the core is
+an explicit trusted premise.
+
+Second, revocation has two meanings. Admission revocation stops issuance of new
+dispatch permits. Previously issued permits may still reach the sink and cause
+effects. Their additional charge is bounded by outstanding reservations under
+the cooperative sink contract. Fenced revocation adds a durable sink barrier,
+which cancels outstanding old-epoch work or waits behind work that already
+commits. Its acknowledgment marks a stronger boundary: subsequent old-authority
+effects are excluded. We give the protocol argument, verify its decision
+predicates, and exercise separate-process fault and concurrency tests.
+
+Third, useful work under evaluated model attacks would require comparative
+empirical evidence. That claim remains contingent. The release includes CPU
+positive controls, descriptive controller controls, pinned public-benchmark
+integration checks, and a predeclared model/inference manifest. It does not
+include completed local-model campaigns. Host observations show no idle GPU on
+the verified Linux hosts. No inference about attack success, checkpoint
+capability, or usefulness noninferiority follows from those missing results.
+
+\subsection{Relation to existing permission controls}
+CaMeL separates control and data flow and uses explicit capabilities for agent
+tool execution \cite{camel}. Progent checks symbolic tool-argument policies and
+controls their evolution \cite{progent}. Permission checking by itself is
+therefore not a new contribution. Fault-tolerant budget conservation already
+addresses reservations, delayed effects, and authoritative settlement under
+declared gateway assumptions \cite{ftbudget}. Our focus is the connection between
+an executable policy core, a small separate-service implementation, and a
+precise local revocation acknowledgment.
+
+The sink contract is central to this comparison. LIMBO studies duplicate side
+effects under ambiguous replies and differing service contracts \cite{limbo}.
+We do not solve arbitrary external exactly-once execution. The supported sink
+must atomically bind an operation identity to its normalized effect, deduplicate
+it, and apply any effect in that same transaction. A deliberately non-idempotent
+service is retained as an unsupported-contract negative control. Its failure is
+not counted as a security failure of a contract it never implemented.
+
+These distinctions also constrain interpretation of verification. Reference
+monitor principles motivate a small mediation boundary \cite{saltzer,schneider}.
+Increasing the number of checked synthetic states does not close a missing
+operating-system path, validate a normalization routine, or make an incomplete
+harm specification adequate. The v1 finite model and synthetic learning studies
+are preserved in appendices so their evidence remains inspectable without
+carrying the main revocation claim.
+
+\subsection{Threat model}
+The proposer can choose arbitrary messages, malformed requests, altered
+payloads, retries, timing, and coordination among a finite number of actors.
+It may try to impersonate an issuer or access databases and the sink directly.
+The policy must not depend on the proposer reporting its intent, being helpful,
+or recognizing revocation. Actors share one budget; copying an actor does not
+copy that budget. An arbitrary finite actor population means any number of
+proposers using the specified interface, not an unbounded resource-exhaustion
+guarantee for a shared host.
+
+The trusted boundary contains the session launcher, administrator channels,
+normalization, the broker and sink storage adapters, the compiler and verifier,
+and the Linux kernel. Administrators provision exact approvals, withdraw
+issuers, and settle authoritative sink outcomes. The proposer receives none of
+those commands. Storage and service processes may crash; they must preserve
+committed state on recovery. We test process death, not corrupted disks,
+Byzantine databases, compromised administrators, kernel exploits, or malicious
+sinks. A sink that ignores deduplication or a fence invalidates the associated
+bound rather than becoming an adversarial case covered by it.
+
+We treat scheduler and storage delays as availability costs. The system does not
+promise a hard deadline for revocation acknowledgment. If the sink cannot return
+authoritative completion or cancellation, the broker retains the charge and the
+strong acknowledgment remains unavailable. This conservative outcome is part of
+the protocol, not an experimental failure to be hidden.

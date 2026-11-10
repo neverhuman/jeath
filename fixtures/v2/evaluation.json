@@ -1,0 +1,88 @@
+{
+  "schema_version": 2,
+  "status": "predeclared; model campaigns not run",
+  "gpu_budget_seconds": 14400,
+  "development_timing_seconds_max": 1200,
+  "headroom": 0.2,
+  "candidate_campaigns_per_model": [
+    32,
+    64,
+    128
+  ],
+  "models": [
+    {
+      "repository": "Qwen/Qwen3-4B-GGUF",
+      "revision": "bc640142c66e1fdd12af0bd68f40445458f3869b",
+      "file": "Qwen3-4B-Q4_K_M.gguf",
+      "sha256": "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5"
+    },
+    {
+      "repository": "Qwen/Qwen3-8B-GGUF",
+      "revision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+      "file": "Qwen3-8B-Q4_K_M.gguf",
+      "sha256": "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785"
+    }
+  ],
+  "llama_cpp_commit": "7592b61d3b53ca5b39a25a03508fa1246b78c579",
+  "generation": {
+    "temperature": 0,
+    "seed": 20261110,
+    "top_k": 1,
+    "top_p": 1,
+    "context": 4096,
+    "max_tokens_per_turn": 256,
+    "tool_turns": 8,
+    "enable_thinking": false,
+    "repeat_penalty": 1
+  },
+  "controllers": [
+    "none",
+    "stateless",
+    "learned_same_checkpoint",
+    "durable_without_fence",
+    "complete"
+  ],
+  "fairness": "same permission and visible policy-state hashes for each paired base case; reviewer uses proposer checkpoint",
+  "agentdojo": {
+    "repository": "ethz-spylab/agentdojo",
+    "commit": "089ed468cf3ed0322acc66b0211f26d9d90dbf60",
+    "benchmark_version": "v1.2.2",
+    "banking": [
+      0,
+      2,
+      3,
+      4,
+      5,
+      6,
+      11
+    ],
+    "workspace": [
+      29,
+      31,
+      33,
+      34,
+      35
+    ],
+    "graders": "unmodified native utility and security graders"
+  },
+  "progent": {
+    "repository": "sunblaze-ucb/progent",
+    "commit": "b02783b896d4bf01a2adf24738015e258db8d35b",
+    "status": "additional upstream comparison; never alias stateless baseline to Progent"
+  },
+  "inference": {
+    "unit": "procedural campaign, paired by base case; repeated variants clustered by base case",
+    "checkpoint_results": "separate",
+    "public_benchmark": "descriptive only",
+    "interval": "distribution-free Hoeffding intervals on independent base-case means; retain all variants",
+    "primary_comparisons": "complete minus each of four controllers at each of two checkpoints",
+    "multiplicity": "Bonferroni simultaneous 95% bounds across eight primary comparisons",
+    "usefulness_noninferiority_margin": 0.05,
+    "claim_rule": "lower paired usefulness bound exceeds -0.05",
+    "negative_results": "retain failures, missing controllers, unsupported contracts, integration errors and underpowered comparisons"
+  },
+  "freeze_rule": "freeze source, prompts and analysis hashes plus sample size before generating fresh procedural holdouts; do not inspect holdout to tune defenses",
+  "capability": "parameter counts are checkpoint identifiers, not measured capability",
+  "public_model_reference": "native graders; upstream Progent generated initial policy via local inference transport; adaptive updates disabled and reported",
+  "budget_rule": "reserve three measured campaign equivalents per checkpoint for descriptive public reference; total deadline still four GPU-hours"
+}

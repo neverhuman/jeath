@@ -1,0 +1,40 @@
+[
+  {
+    "session_actor": "alice",
+    "request_jsonl": "{\"op\": \"approve\", \"issuer\": 0}",
+    "response": {
+      "status": "denied",
+      "reason": "only submit/status are exposed"
+    }
+  },
+  {
+    "session_actor": "alice",
+    "request_jsonl": "{\"op\": \"withdraw\", \"issuer\": 0}",
+    "response": {
+      "status": "denied",
+      "reason": "only submit/status are exposed"
+    }
+  },
+  {
+    "session_actor": "alice",
+    "request_jsonl": "{\"op\": \"status\", \"id\": \"one\", \"actor\": \"operator\"}",
+    "response": {
+      "status": "denied",
+      "reason": "only submit/status are exposed"
+    }
+  },
+  {
+    "session_actor": "alice",
+    "request_jsonl": "{\"op\": \"submit\", \"proposal\": {\"id\": \"one\", \"epochs\": [0, 0], \"expires\": 1794340663, \"effect\": {\"kind\": \"transfer\", \"recipient\": \"approved\", \"units\": 2}}}",
+    "response": {
+      "status": "committed"
+    }
+  },
+  {
+    "session_actor": "alice",
+    "request_jsonl": "{\"op\": \"status\", \"id\": \"one\"}",
+    "response": {
+      "status": "committed"
+    }
+  }
+]

@@ -1,61 +1,65 @@
 # jeath — Intelligence Is Not Authority
 
-[Revised paper (PDF)](docs/intelligence-is-not-authority.pdf) · [Sectioned LaTeX](docs/intelligence-is-not-authority.tex) · [Recorded evidence](evidence/reference) · [CI](https://github.com/neverhuman/jeath/actions)
+[Paper](docs/intelligence-is-not-authority.pdf) · [Claim boundaries](docs/CLAIMS.md) · [Methods](docs/EXPERIMENTS.md) · [CI](https://github.com/neverhuman/jeath/actions)
 
-Small Rust experiments that test the paper's assumptions, with real SQLite
-transactions, competing processes, crash recovery, and classifiers trained from
-scratch. No model API, GPU, real funds, or personal data is needed.
-
-```bash
-cargo test --locked --all-targets
-python3 scripts/run.py target/my-first-run --quick
-python3 scripts/validate.py target/my-first-run
-```
-
-Use a new output directory for each run. Omit `--quick` for the paper configuration;
-the first full CPU run took about 45 seconds, though durable-storage tests can take
-longer under host contention. Run `make required` for formatting, Clippy, tests, a
-fresh small experiment, evidence consistency and the paper build.
-
-Rust stable, a C compiler and Python 3 are required. The crate bundles a patched
-SQLite and requires SQLite ≥3.51.3 at runtime. The Python scripts use only the
-standard library. Building the paper also requires `pdflatex` with TeX Live's
-LaTeX-extra, fonts-recommended, science and pictures packages. CI checks Linux
-and macOS and uploads fresh experiment JSON and the PDF.
-
-What is implemented:
-
-- Exhaustive 22-action model checking, nine enforcement mutations, shortest
-  counterexamples, all 20 useful tasks, and a deliberately inadequate specification.
-- A persistent executor with exact-request approval, operator/steward conjunction,
-  shared quota, epoch revocation, immutable IDs, retries, expiry and revision checks.
-- Actual process death on both sides of commit, eight-process budget contention,
-  concurrent checkpoint stress, and one/four-process latency measurements.
-- Small neural/logistic monitor training, shared versus independent inputs,
-  surrogate edits, feedback-guided selection, conditional misses and false blocks.
-- Exact graph cuts, an omitted bypass, paired coverage-report worlds, planted-audit
-  power, reward-selection simulations and stable binomial confidence limits.
-- An offline JSONL adapter for externally generated proposals, with separate
-  unauthorized-proposal, executed-effect and useful-task scores.
+V2 asks what authority remains after stopping an agent or withdrawing a grant.
+It adds an executable Verus policy core, separate durable broker and cooperative
+sink processes, reservation accounting, per-issuer sink fencing, and Linux
+Landlock/seccomp proposer confinement. V1 commands and evidence remain available.
 
 ```bash
-cargo run --release --locked -- campaigns fixtures/proposals.jsonl target/my-campaigns
-cargo run --locked --example transaction -- target/my-example.sqlite
-make paper
+make required
+cargo run --release --locked -- run-v2 target/my-v2-run --profile publication
+cargo run --release --locked -- analyze-v2 target/my-v2-run --source
 ```
 
-The supplied JSONL is explicitly scripted control data. Replacing it with a model's
-outputs runs an actual model evaluation; metadata labels alone do not establish
-that a model was trained on an objective or that persona was randomized.
+Use fresh output directories. Builds, databases and evidence stay in this
+checkout’s `target/`. Rust, a C compiler and Python 3 are required. Linux isolation
+requires Landlock ABI ≥4 and fails closed on unsupported startup. Proof checks
+install hash-pinned Verus under `target/tooling/` and its pinned Rust toolchain via
+rustup. Paper builds require TeX Live. macOS retains functional checks only.
 
-Protected effects in the prototype are **inside one database**: synthetic account
-credits, synthetic mailbox releases, and a versioned toy source document. The
-proposer must not have direct database or administrator access. Authentication,
-OS isolation, external tools, human persuasion, formal implementation refinement,
-frontier-model transfer and caretaker training are still outside these results.
+The proof covers deterministic decisions and conservation lemmas, not the whole
+runtime. Parsing, normalization, storage adapters, session identity, the kernel
+and the cooperative sink contract remain trusted. Admission withdrawal closes new
+permits but leaves reserved work outstanding. Fenced withdrawal persists a sink
+barrier before acknowledgment. Timeouts never refund uncertain reservations.
 
-All three original manuscripts remain byte-identical in [`tips/`](tips), including
-the duplicate. Their claimed Python supplements were absent. The revised paper
-reconstructs the finite model and replaces the unavailable statistical studies
-with new, identified experiments. See [experimental methods](docs/EXPERIMENTS.md)
-and [revision audit](docs/REVISION_NOTES.md) for the evidence boundary and open work.
+```bash
+# Trusted control channels; never expose these directly to a proposer.
+target/release/authority-lab broker-v2 target/broker.sqlite
+target/release/authority-lab sink-v2 target/sink.sqlite
+# After trusted provisioning, bind a confined process to one actor:
+python3 scripts/launch_v2.py target/broker.sqlite target/sink.sqlite alice /usr/bin/python3 -c '...'
+```
+
+Proposer RPC accepts only `submit` and `status`. The fault harness in
+[run_v2.py](scripts/run_v2.py) provides provisioning and protocol examples;
+[protocol.json](fixtures/v2/protocol.json) declares the contract.
+
+Recorded CPU evidence includes semantic positives, independent sequential trace
+checks, real crash/recovery tests, races at 1–32 actors, ten abstract omissions and
+all 45 pairs, native isolation canaries, and expected negative controls. A
+non-idempotent sink duplicates retries; an approved wrong document fails the task
+oracle. These negative results are retained.
+
+The real Qwen3 comparison is **unfinished**. All verified Linux GPUs had active
+workloads; none were preempted. The release records feasibility and pinned model,
+llama.cpp and inference identifiers, but has no model campaigns or usefulness
+noninferiority claim. The managed runner and learned-review bridge have CPU control tests; GPU execution remains unvalidated.
+Twelve native AgentDojo/Progent scripted controls are integration evidence, not
+model attack results. A future idle host can run `scripts/infer_v2.py` with the pinned server and GGUF files. See [evaluation.json](fixtures/v2/evaluation.json).
+
+V1 reference evidence is preserved against commit `12b5579`; v2 evidence is in
+`evidence/v2/reference`. A fresh v1 run still works:
+
+```bash
+python3 scripts/run.py target/my-v1-run --quick
+python3 scripts/validate.py target/my-v1-run
+python3 scripts/validate.py evidence/reference --source-ref 12b5579
+```
+
+All archival manuscripts in [`tips/`](tips) retain their bytes. Scope is synthetic
+local effects and cooperative sinks; it excludes arbitrary external exactly-once
+execution, distributed-ledger availability, frontier-model transfer, caretaker
+training and human-participant claims.

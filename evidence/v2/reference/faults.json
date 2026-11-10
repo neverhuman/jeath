@@ -1,0 +1,287 @@
+[
+  {
+    "case": "positive_transfer",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 7,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "positive_release",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 1,
+      "checked": true,
+      "effects": 1,
+      "events": 8,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "positive_edit",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 1,
+      "checked": true,
+      "effects": 1,
+      "events": 8,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "duplicate",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 9,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "altered",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 8,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "session_identity",
+    "semantic_useful": false,
+    "trace": {
+      "charged": 0,
+      "checked": true,
+      "effects": 0,
+      "events": 4,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "conjunction",
+    "semantic_useful": false,
+    "trace": {
+      "charged": 0,
+      "checked": true,
+      "effects": 0,
+      "events": 4,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "expiry",
+    "semantic_useful": false,
+    "trace": {
+      "charged": 0,
+      "checked": true,
+      "effects": 0,
+      "events": 4,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "admission",
+    "charged_after_settlement": 2,
+    "fence_ack_ms": null,
+    "outstanding_charge": 2,
+    "post_revoke_effects": 1
+  },
+  {
+    "case": "admission",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 11,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "fenced",
+    "charged_after_settlement": 0,
+    "fence_ack_ms": 29.369267,
+    "outstanding_charge": 2,
+    "post_revoke_effects": 0
+  },
+  {
+    "case": "fenced",
+    "semantic_useful": false,
+    "trace": {
+      "charged": 0,
+      "checked": true,
+      "effects": 0,
+      "events": 12,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "steward_fenced",
+    "charged_after_settlement": 0,
+    "fence_ack_ms": 52.489875,
+    "outstanding_charge": 1,
+    "post_revoke_effects": 0
+  },
+  {
+    "case": "steward_fenced",
+    "semantic_useful": false,
+    "trace": {
+      "charged": 0,
+      "checked": true,
+      "effects": 0,
+      "events": 14,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "renewal",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 11,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "stale_revision",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 1,
+      "checked": true,
+      "effects": 1,
+      "events": 14,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "lost_reply",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 9,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "crash_before",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 9,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "broker_crash_after",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 9,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "sink_restart",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 7,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "uncertain",
+    "semantic_useful": false,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 0,
+      "events": 7,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "late_dispatch",
+    "semantic_useful": false,
+    "trace": {
+      "charged": 0,
+      "checked": true,
+      "effects": 0,
+      "events": 10,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "independent_issuer",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 8,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "fence_lost_reply",
+    "semantic_useful": false,
+    "trace": {
+      "charged": 0,
+      "checked": true,
+      "effects": 0,
+      "events": 11,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "fence_crash_before",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 11,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "broker_crash_before",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 9,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "case": "renewal_budget",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 8,
+      "checked": true,
+      "effects": 1,
+      "events": 12,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  }
+]

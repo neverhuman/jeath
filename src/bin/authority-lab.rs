@@ -14,11 +14,68 @@ fn main() {
 }
 fn run() -> Result<()> {
     let args: Vec<_> = std::env::args().skip(1).collect();
-    let usage = "usage: authority-lab run OUTPUT [--quick] [--seed INTEGER]\n       authority-lab model OUTPUT.json\n       authority-lab campaigns INPUT.jsonl OUTPUT\n       authority-lab execute DATABASE REQUEST.json\n       authority-lab inspect DATABASE";
+    let usage = "usage: authority-lab run OUTPUT [--quick] [--seed INTEGER]\n       authority-lab model OUTPUT.json\n       authority-lab campaigns INPUT.jsonl OUTPUT\n       authority-lab execute DATABASE REQUEST.json\n       authority-lab inspect DATABASE\n       authority-lab run-v2 OUTPUT [--profile smoke|publication]\n       authority-lab analyze-v2 OUTPUT [--source]\n       authority-lab broker-v2|sink-v2 DATABASE (trusted JSONL only)\n       authority-lab version-v2";
     let command = args.first().map(String::as_str).unwrap_or("help");
     let arg =
         |n: usize| -> Result<&str> { args.get(n).map(String::as_str).ok_or_else(|| usage.into()) };
     match command {
+        "version-v2" => println!(
+            "{}",
+            serde_json::json!({"sqlite":rusqlite::version(),
+            "landlock_abi":authority_lab::isolation_v2::landlock_abi(),"protocol":"local-reservation-fenced-sink-v2"})
+        ),
+        "run-v2" | "analyze-v2" => {
+            let script = if command == "run-v2" {
+                "run_v2.py"
+            } else {
+                "analyze_v2.py"
+            };
+            let status = std::process::Command::new("python3")
+                .arg(
+                    Path::new(env!("CARGO_MANIFEST_DIR"))
+                        .join("scripts")
+                        .join(script),
+                )
+                .args(&args[1..])
+                .status()?;
+            if !status.success() {
+                return Err(format!("{command} failed: {status}").into());
+            }
+        }
+        "confine-v2" => {
+            use std::os::unix::process::CommandExt;
+            let exe = fs::canonicalize(arg(1)?)?;
+            authority_lab::isolation_v2::confine(&exe)?;
+            // No inherited non-stdio descriptors may reach the proposer.
+            #[cfg(target_os = "linux")]
+            if unsafe { libc::syscall(libc::SYS_close_range, 3u32, u32::MAX, 0) } != 0 {
+                return Err(std::io::Error::last_os_error().into());
+            }
+            let error = std::process::Command::new(exe)
+                .args(&args[2..])
+                .env_clear()
+                .env("PATH", "/usr/bin:/bin")
+                .env("PYTHONDONTWRITEBYTECODE", "1")
+                .exec();
+            return Err(error.into());
+        }
+        "probe-v2" => println!(
+            "{}",
+            authority_lab::isolation_v2::probe(Path::new(arg(1)?), arg(2)?.parse()?)
+        ),
+        "broker-v2" | "sink-v2" => {
+            if args.len() != 2 {
+                return Err(usage.into());
+            }
+            authority_lab::protocol_v2::serve(
+                Path::new(arg(1)?),
+                if command == "broker-v2" {
+                    "broker"
+                } else {
+                    "sink"
+                },
+            )?;
+        }
         "campaigns" => {
             if args.len() != 3 {
                 return Err(

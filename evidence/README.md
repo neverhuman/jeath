@@ -1,3 +1,19 @@
+# V2 evidence
+
+`v2/reference/` records the publication CPU profile: pinned core proof output,
+24 sequential fault histories, repeated 1–32 actor races, scripted controller
+controls, native Linux confinement probes, negative controls, and the abstract
+single/pairwise omission search. It includes native AgentDojo/Progent scripted
+integration controls and a separate model feasibility report. No model campaign
+or learned-review result is present. Raw SQLite databases remain in the worktree’s
+`target/v2-release/`; committed JSON preserves invocations, responses
+and independently read sink effects. Kernel, source, protocol, tool and checkpoint
+identifiers are recorded in the manifests.
+
+`reference/` below remains the v1 record against commit `12b5579`, with one added
+`v2-status.json` pointer. Validate preserved source with `--source-ref 12b5579`.
+Original v1 evidence documentation follows.
+
 # Recorded evidence
 
 `reference/` is the full CPU configuration used for the paper's generated tables.
