@@ -1,0 +1,129 @@
+\section{Authorization protocol and process boundary}
+\label{sec:v2protocol}
+The v1 executor places policy, receipts, and protected effects in one SQLite
+transaction. It remains a useful atomic baseline. V2 separates the broker's
+accounting store from the sink's effect store and connects their owning
+processes through trusted JSONL channels. The sink cannot rely on an atomic
+transaction with the broker. The design therefore reserves before dispatch and
+treats ambiguous outcomes as outstanding authority.
+
+\begin{figure}[t]\centering
+\begin{tikzpicture}[node distance=8mm, every node/.style={font=\small}, box/.style={draw=ink,rounded corners,align=center,text width=6.1cm,inner sep=6pt}]
+\node[box] (p) {Untrusted proposer process\\Landlock + seccomp; stdio RPC only};
+\node[box,below=of p] (l) {Trusted launcher binds actor to session\\Accept only submit and status};
+\node[box,below=of l] (b) {Broker + executable policy core\\Durable approvals, epochs, reservations};
+\node[box,below=of b] (s) {Separate cooperative sink process\\Durable deduplication, fences, effects};
+\draw[-{Stealth}] (p)--(l);
+\draw[-{Stealth}] (l)--(b);
+\draw[-{Stealth}] (b)--node[right,font=\scriptsize]{reserved permit}(s);
+\end{tikzpicture}
+\caption{The proposer has no database or sink descriptor. Administrator
+operations use separate trusted channels. Each service owns a different durable
+store; the drawing describes the local prototype, not a distributed ledger.}
+\label{fig:v2boundary}\end{figure}
+
+\subsection{Normalized requests and approvals}
+A proposal includes an immutable operation identifier, an issuer-epoch vector,
+an expiry, and a typed effect. The launcher supplies the actor identity. The
+normalized permit binds all these fields. A transfer names its recipient and
+units; a release names its destination and actual contents; an edit names its
+document, expected revision, and replacement contents. Serialization of the typed
+permit supplies the byte sequence checked against the approved permit. Unknown
+proposal fields are rejected. JSON whitespace and field order are not alternate
+authorities because parsing precedes canonical typed serialization.
+
+The local fixture has two issuers. Transfers require the operator; releases and
+edits require both operator and steward. The core decision supports arbitrary
+finite issuer vectors, while the application instantiates two. Approval for one
+identifier cannot be altered into approval for another payload. Reusing an
+identifier with changed contents or a different session actor is denied. A
+status response contains no newly released data and does not repeat an effect.
+
+Approvals and issuer liveness are distinct. Each required issuer must have an
+approval bit, a live authorization, and a current epoch matching the request.
+Withdrawal advances that issuer's epoch and clears its approval bits. Renewal
+can make the issuer live again but does not restore those bits, reset the
+budget, or lower sink fence floors. Fresh work needs fresh approvals. A transfer
+that requires only the operator is not revoked merely by withdrawing the
+steward. Both independent withdrawal and required-grant conjunction are tested.
+
+The prototype's scope predicate deliberately remains small. Transfers go to
+the synthetic approved recipient, releases contain the fixed synthetic record,
+and edits target a toy document. Exact approval can authorize a bad replacement
+document; task correctness is checked separately. There is no claim that these
+few scope rules implement a general data-governance policy or a real financial
+authorization system.
+
+\subsection{Reservation and dispatch}
+Let $B$ be the budget, $C$ charged authority, and $q>0$ a request's maximum
+charge. Admission requires $q\le B$ and $C\le B-q$. The subtraction form avoids
+unsigned overflow. On acceptance the broker atomically persists the immutable
+permit and sets $C'=C+q$. Only then can the trusted launcher forward the permit
+to the sink. If the broker dies after commit but before replying, retry returns
+the same pending permit; it creates no second reservation.
+
+Issuing a dispatch permit is the admission linearization point. A permit can
+be in transit when withdrawal occurs. The protocol therefore treats every
+issued but unresolved permit as outstanding, including one the sink has not
+yet observed. Admission revocation closes issuance of new permits; it cannot
+recall a byte sequence already handed to a transport. Recovering or retrying
+such an identity is not a newly minted authority. The sink still deduplicates
+or fences it.
+
+The sink first durably accepts a permit as pending. Completion occurs in a
+transaction that checks the required issuer fence floors and, for an edit,
+the current object revision. It then applies the effect and records committed
+status atomically. A unique operation identity binds that status to the same
+permit. Duplicate completion requests retrieve terminal status and do not apply
+another effect. A stale edit is durably cancelled, allowing settlement without
+inventing a document update.
+
+\subsection{Settlement under uncertainty}
+A committed sink response settles the reservation as consumed. The charge stays
+in $C$; settlement does not replenish a cumulative budget. A durably cancelled
+sink identity supplies authoritative evidence of no effect and can release its
+reservation. Cancellation is terminal: a later delivery of the same identity
+cannot commit. Repeated settlement cannot refund twice because the broker
+allows settlement only from pending status.
+
+No timeout duration appears in the core's release rule. Pending, unknown,
+EOF, and lost replies provide no no-effect certificate. In particular, absence
+from a sink lookup is insufficient: an older dispatch could still arrive.
+After a fence, the sink can record a cancellation tombstone for such a late
+permit. The broker may then release that reservation because the terminal
+identity and fence prevent its future effect. A transport failure before this
+evidence leaves the reservation stranded, conservatively reducing availability.
+
+The local channels authenticate service provenance by construction: proposer
+children receive only their own stdio pipes. A remote deployment would need
+authenticated permits, replies, and fence acknowledgments as well as durable
+ordering across every sink. No cryptographic remote protocol is evaluated here.
+An administrator who fabricates settlement evidence is outside the threat
+model. The broker's settlement endpoint must never be exposed as proposer RPC.
+
+\subsection{Kernel-enforced proposer restrictions}
+The launcher creates the session and binds its actor identifier before
+processing a child message. It accepts only submission and status; extra actor
+fields and administrator commands are denied. Before executing the child it
+sets no-new-privileges, applies Landlock filesystem restrictions, installs a
+seccomp filter, closes non-stdio descriptors, and clears the environment.
+Only runtime libraries and the chosen executable are readable. Broker and sink
+databases, credentials, and the control channels are outside the accessible
+filesystem and descriptor set.
+
+The implementation requires Landlock ABI at least 4 and fails startup if it
+cannot install the rules. It does not require user namespaces, which were
+unavailable on this host. Landlock constrains filesystem access; seccomp denies
+socket creation and connection, cross-process memory inspection, tracing, and
+additional bypass-related syscalls. The architecture check rejects alternate
+syscall ABIs. These are complementary kernel mechanisms, not a proof of an
+entire sandbox \cite{landlock,seccomp}.
+
+Native controls must demonstrate that the probes can succeed without
+confinement. The restricted runs then try database reads and writes, socket
+creation, reading another process's environment, attaching to a child process,
+and reading that child's memory. An actual confined RPC session also attempts
+administrator commands and actor substitution, then completes an authorized
+submission and status lookup. This useful positive control checks that the
+boundary is not simply killing every proposer. Resource exhaustion and all
+possible kernel interfaces remain beyond these probes.

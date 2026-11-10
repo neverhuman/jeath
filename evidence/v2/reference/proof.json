@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "tool": "0.2026.11.02.8bf68ee",
+  "archive_sha256": "f3a0119292df8855e4435da8130bee1873b0e6a60c306accf81a08ea687bba3c",
+  "core_sha256": "8b6e5a3693fea303f764119485bc0a027d5de9a759083c73f0ffb6cc773cf5a2",
+  "command": [
+    "cargo",
+    "verus",
+    "verify",
+    "-p",
+    "policy-core",
+    "--locked"
+  ],
+  "returncode": 0,
+  "output": "verification results:: 17 verified, 0 errors\nnote: automatically chose triggers for this expression:\n  --> policy-core/src/lib.rs:98:12\n   |\n98 |         && forall|i: int| 0 <= i < required.len() ==> (required@[i] ==> epochs@[i] >= floors@[i])),\n   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nnote:   trigger 1 of 1:\n  --> policy-core/src/lib.rs:98:56\n   |\n98 |         && forall|i: int| 0 <= i < required.len() ==> (required@[i] ==> epochs@[i] >= floors@[i])),\n   |                                                        ^^^^^^^^^^^^\n\nnote: automatically chose triggers for this expression:\n   --> policy-core/src/lib.rs:105:13\n    |\n105 |             forall|j: int| 0 <= j < i ==> (required@[j] ==> epochs@[j] >= floors@[j]),\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nnote:   trigger 1 of 1:\n   --> policy-core/src/lib.rs:105:44\n    |\n105 |             forall|j: int| 0 <= j < i ==> (required@[j] ==> epochs@[j] >= floors@[j]),\n    |                                            ^^^^^^^^^^^^\n\nnote: automatically chose triggers for this expression:\n   --> policy-core/src/lib.rs:163:14\n    |\n163 |     ensures !(forall|i: int| 0 <= i < required.len() ==> (required[i] ==> epochs[i] >= floors[i])),\n    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nnote:   trigger 1 of 1:\n   --> policy-core/src/lib.rs:163:59\n    |\n163 |     ensures !(forall|i: int| 0 <= i < required.len() ==> (required[i] ==> epochs[i] >= floors[i])),\n    |                                                           ^^^^^^^^^^^\n\nnote: Verus printed one or more automatically chosen quantifier triggers\n      because it had low confidence in the chosen triggers.\n      To suppress these messages, do one of the following:\n        (1) manually annotate a single desired trigger using `#[trigger]`\n            (example: `forall|i: int, j: int| f(i) && #[trigger] g(i) && #[trigger] h(j)`),\n        (2) manually annotate multiple desired triggers using `#![trigger ...]`\n            (example: `forall|i: int| #![trigger f(i)] #![trigger g(i)] f(i) && g(i)`),\n        (3) accept the automatically chosen trigger using `#![auto]`\n            (example: `forall|i: int, j: int| #![auto] f(i) && g(i) && h(j)`)\n        (4) use the `--triggers-mode silent` command-line option to suppress all printing of triggers.\n      (Note: triggers are used by the underlying SMT theorem prover to instantiate quantifiers;\n      the theorem prover instantiates a quantifier whenever some expression matches the\n      pattern specified by one of the quantifier's triggers.)\n   --> policy-core/src/lib.rs:163:14\n    |\n163 |     ensures !(forall|i: int| 0 <= i < required.len() ==> (required[i] ==> epochs[i] >= floors[i])),\n    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.14s\n",
+  "trusted": [
+    "Verus, SMT solver and Rust compiler",
+    "parser and normalized payload construction",
+    "storage snapshots, issuer identity, session launcher",
+    "Linux kernel and cooperative sink contracts"
+  ]
+}

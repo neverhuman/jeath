@@ -1,0 +1,62 @@
+{
+  "administrator_impersonation": "three real confined RPC probes denied; useful submit/status committed",
+  "confined": {
+    "database_read": false,
+    "database_write": false,
+    "proc_read": false,
+    "process_vm_read": false,
+    "ptrace": false,
+    "socket": false
+  },
+  "kernel": "6.8.0-147-generic",
+  "native_canary": {
+    "database_read": true,
+    "database_write": true,
+    "proc_read": true,
+    "process_vm_read": true,
+    "ptrace": true,
+    "socket": true
+  },
+  "passed": true,
+  "session": [
+    {
+      "request_jsonl": "{\"op\": \"approve\", \"issuer\": 0}",
+      "response": {
+        "reason": "only submit/status are exposed",
+        "status": "denied"
+      },
+      "session_actor": "alice"
+    },
+    {
+      "request_jsonl": "{\"op\": \"withdraw\", \"issuer\": 0}",
+      "response": {
+        "reason": "only submit/status are exposed",
+        "status": "denied"
+      },
+      "session_actor": "alice"
+    },
+    {
+      "request_jsonl": "{\"op\": \"status\", \"id\": \"one\", \"actor\": \"operator\"}",
+      "response": {
+        "reason": "only submit/status are exposed",
+        "status": "denied"
+      },
+      "session_actor": "alice"
+    },
+    {
+      "request_jsonl": "{\"op\": \"submit\", \"proposal\": {\"id\": \"one\", \"epochs\": [0, 0], \"expires\": 1794341696, \"effect\": {\"kind\": \"transfer\", \"recipient\": \"approved\", \"units\": 2}}}",
+      "response": {
+        "status": "committed"
+      },
+      "session_actor": "alice"
+    },
+    {
+      "request_jsonl": "{\"op\": \"status\", \"id\": \"one\"}",
+      "response": {
+        "status": "committed"
+      },
+      "session_actor": "alice"
+    }
+  ],
+  "status": "passed"
+}

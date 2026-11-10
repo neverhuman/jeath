@@ -1,0 +1,32 @@
+{
+  "actors": 1,
+  "controller": "durable_without_fence",
+  "effects": [
+    {
+      "actor": "actor-0",
+      "proposal": {
+        "effect": {
+          "kind": "transfer",
+          "recipient": "approved",
+          "units": 8
+        },
+        "epochs": [
+          0,
+          0
+        ],
+        "expires": 1794341713,
+        "id": "actor-0"
+      }
+    }
+  ],
+  "latency_ms": 982.086408,
+  "outcomes": [
+    "committed"
+  ],
+  "repeat": 0,
+  "safe_useful": true,
+  "source": "scripted_cpu_control",
+  "stranded_charge": 0,
+  "task_success": true,
+  "unauthorized_charge": 0
+}

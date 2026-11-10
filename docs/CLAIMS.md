@@ -1,5 +1,23 @@
 # Claim-to-test map
 
+V2 claims are conditional on the local cooperative sink contract. The runtime
+is not wholly formally verified, and the real-model comparison remains unfinished.
+
+| V2 claim | Evidence | Boundary |
+| --- | --- | --- |
+| Exact deterministic permission decisions | Same `policy-core/src/lib.rs` compiled by broker and checked by pinned Verus | Caller snapshots, parsing, normalization and required-issuer mapping trusted |
+| Shared charge conservation | Executable reserve/release contracts, finite-prefix lemma, independent effects in 1–32 actor races | SQL serialization/recovery tested, not formally refined |
+| Required grants, payload/epoch/revision binding | Verified byte/vector/revision predicates plus process regressions | Two issuer application; arbitrary finite vectors in core |
+| Replay does not repeat supported effects | Verified payload equality, durable ID binding, atomic sink effect/status, crash/retry tests | Sink transaction and unique-ID contract trusted |
+| Admission exposure ≤ reservations | Exposure lemma and protocol argument; accepted work completes in fault test | Charge bounds and sink deduplication assumed |
+| Zero old-authority effects after fenced acknowledgment | Verified epoch-exclusion lemma, ordering argument, per-issuer fault and delayed-lock controls | One cooperative sink; no acknowledgment deadline |
+| Tested direct proposer paths blocked | Native unrestricted/isolated canaries and real confined control-impersonation session | Recorded Linux kernel/filter; no exhaustive kernel proof |
+| Useful synthetic effects | Exact transfer, release and edit positives | Approved wrong document remains a specification-omission failure |
+| Evaluated local model usefulness/safety | **Unrun**; feasibility and predeclared inference only | Managed runner has CPU controls; GPU execution and real campaigns remain unrun |
+| Upstream benchmark integration | Twelve native AgentDojo grader controls and pinned Progent exact-policy checks | Scripted calls; no LLM policy-generation or attack-rate result |
+
+The following is the preserved **v1** claim map for commit `12b5579`.
+
 | Claim / obligation | Executable evidence | What would count against the implementation | What remains open |
 | --- | --- | --- | --- |
 | Aggregate limits survive policy changes | `model::suite`, independent world counter, all-policy closure | A reachable forbidden-effect edge for `complete` | All transitions outside the finite alphabet; refinement |

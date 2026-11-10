@@ -2,6 +2,7 @@ name: Required checks
 
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -12,22 +13,37 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    working-directory: ci-source
+
 env:
   CARGO_INCREMENTAL: '0'
   CARGO_PROFILE_DEV_DEBUG: line-tables-only
   CARGO_BUILD_JOBS: '2'
 
 jobs:
-  rust:
-    name: Rust (${{ matrix.os }})
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 15
+  rust-linux:
+    name: Rust (Linux shared)
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on:
+      group: neverhuman-lan
+      labels: [self-hosted, Linux, X64, lan-ci, ubuntu24]
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          path: ci-source
+      - name: Record selected runner
+        run: printf 'runner=%s os=%s arch=%s\n' "$RUNNER_NAME" "$RUNNER_OS" "$RUNNER_ARCH"
+      - name: Prepare CPU tools in disposable Ubuntu guest
+        run: |
+          sudo systemctl stop apt-daily.timer apt-daily-upgrade.timer || true
+          sudo systemd-run --quiet --wait --property=After=apt-daily.service --property=After=apt-daily-upgrade.service /bin/true || true
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=300 install --no-install-recommends -y rustup build-essential pkg-config python3 unzip
       - name: Install Rust components
         run: |
           rustup toolchain install 1.95.0 --profile minimal --component rustfmt --component clippy
@@ -35,8 +51,48 @@ jobs:
       - name: Format, lint and tests
         run: |
           cargo fmt --all -- --check
-          cargo clippy --locked --all-targets -- -D warnings
-          cargo test --locked --all-targets
+          cargo clippy --locked --workspace --all-targets -- -D warnings
+          cargo test --locked --workspace --all-targets
+          python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Small complete experiment run
+        run: |
+          python3 scripts/run.py target/ci-evidence --quick
+          python3 scripts/validate.py target/ci-evidence
+      - name: Verified core, Linux boundary and separate-service protocol
+        run: |
+          python3 scripts/run_v2.py target/ci-v2 --profile smoke
+          python3 scripts/analyze_v2.py target/ci-v2 --source
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: experiments-linux-shared
+          path: |
+            ci-source/target/ci-evidence/*.json
+            ci-source/target/test-evidence/**/result.json
+            ci-source/target/ci-v2/**/*.json
+          if-no-files-found: error
+          retention-days: 30
+
+  rust-macos:
+    name: Rust (macos-latest)
+    runs-on: macos-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          path: ci-source
+      - name: Install Rust components
+        run: |
+          rustup toolchain install 1.95.0 --profile minimal --component rustfmt --component clippy
+          rustup default 1.95.0
+      - name: Format, lint and tests
+        run: |
+          cargo fmt --all -- --check
+          cargo clippy --locked --workspace --all-targets -- -D warnings
+          cargo test --locked --workspace --all-targets
+          python3 -m unittest discover -s tests -p 'test_*.py'
       - name: Small complete experiment run
         run: |
           python3 scripts/run.py target/ci-evidence --quick
@@ -44,33 +100,45 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
-          name: experiments-${{ matrix.os }}
+          name: experiments-macos
           path: |
-            target/ci-evidence/*.json
-            target/test-evidence/**/result.json
+            ci-source/target/ci-evidence/*.json
+            ci-source/target/test-evidence/**/result.json
           if-no-files-found: error
           retention-days: 30
 
   paper:
     name: Paper and recorded evidence
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on:
+      group: neverhuman-lan
+      labels: [self-hosted, Linux, X64, lan-ci, ubuntu24]
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Install TeX
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          path: ci-source
+      - name: Record selected runner
+        run: printf 'runner=%s os=%s arch=%s\n' "$RUNNER_NAME" "$RUNNER_OS" "$RUNNER_ARCH"
+      - name: Install TeX in disposable Ubuntu guest
         run: |
+          sudo systemctl stop apt-daily.timer apt-daily-upgrade.timer || true
+          sudo systemd-run --quiet --wait --property=After=apt-daily.service --property=After=apt-daily-upgrade.service /bin/true || true
           sudo apt-get update -qq
-          sudo apt-get install --no-install-recommends -y texlive-latex-extra texlive-fonts-recommended texlive-science texlive-pictures latexmk poppler-utils
+          sudo DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=300 install --no-install-recommends -y python3 texlive-latex-extra texlive-fonts-recommended texlive-science texlive-pictures latexmk poppler-utils
       - name: Check source preservation, generated numbers and PDF
         run: |
-          python3 scripts/validate.py evidence/reference --source
+          python3 scripts/validate.py evidence/reference --source-ref 12b5579
+          python3 scripts/analyze_v2.py evidence/v2/reference --source
           python3 scripts/paper.py --check
           python3 scripts/build_paper.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: manuscript
           path: |
-            docs/intelligence-is-not-authority.pdf
-            target/paper-build/*.log
+            ci-source/docs/intelligence-is-not-authority.pdf
+            ci-source/target/paper-build/*.log
           if-no-files-found: error
           retention-days: 30

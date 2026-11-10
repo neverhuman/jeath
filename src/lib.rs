@@ -1,8 +1,10 @@
 pub mod campaigns;
 pub mod coverage;
 pub mod graph;
+pub mod isolation_v2;
 pub mod model;
 pub mod monitors;
+pub mod protocol_v2;
 pub mod rng;
 pub mod runtime;
 pub mod runtime_experiments;

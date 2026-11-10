@@ -1,0 +1,42 @@
+{
+  "check": "overlapping RPCs: sink write lock observed; fence serializes behind effect; independent post-ack effect comparison",
+  "effects_after_retries": [
+    {
+      "actor": "alice",
+      "proposal": {
+        "effect": {
+          "kind": "transfer",
+          "recipient": "approved",
+          "units": 8
+        },
+        "epochs": [
+          0,
+          0
+        ],
+        "expires": 1794341699,
+        "id": "one"
+      }
+    }
+  ],
+  "effects_before_ack": [
+    {
+      "actor": "alice",
+      "proposal": {
+        "effect": {
+          "kind": "transfer",
+          "recipient": "approved",
+          "units": 8
+        },
+        "epochs": [
+          0,
+          0
+        ],
+        "expires": 1794341699,
+        "id": "one"
+      }
+    }
+  ],
+  "fence_ack_ms": 578.294413,
+  "injected_service_delay_ms": 200,
+  "unavailable_charge_at_ack": 8
+}

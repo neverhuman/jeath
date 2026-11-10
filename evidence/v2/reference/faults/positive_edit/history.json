@@ -1,0 +1,213 @@
+[
+  {
+    "effects": null,
+    "invocation": {
+      "budget": 8,
+      "op": "init"
+    },
+    "invoked_ns": 25937788372501,
+    "responded_ns": 25938213166376,
+    "response": {
+      "status": "initialized"
+    },
+    "role": "broker",
+    "unix_time": 1794338079
+  },
+  {
+    "effects": [],
+    "invocation": {
+      "op": "init"
+    },
+    "invoked_ns": 25938213174972,
+    "responded_ns": 25938241126098,
+    "response": {
+      "status": "initialized"
+    },
+    "role": "sink",
+    "unix_time": 1794338079
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "issuer": 0,
+      "op": "approve",
+      "permit": {
+        "actor": "alice",
+        "proposal": {
+          "effect": {
+            "contents": "fn answer() -> u32 { 42 }",
+            "document": "toy.rs",
+            "expected_revision": 0,
+            "kind": "edit"
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794341679,
+          "id": "one"
+        }
+      }
+    },
+    "invoked_ns": 25938241632186,
+    "responded_ns": 25938265270166,
+    "response": {
+      "status": "approved"
+    },
+    "role": "broker",
+    "unix_time": 1794338079
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "issuer": 1,
+      "op": "approve",
+      "permit": {
+        "actor": "alice",
+        "proposal": {
+          "effect": {
+            "contents": "fn answer() -> u32 { 42 }",
+            "document": "toy.rs",
+            "expected_revision": 0,
+            "kind": "edit"
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794341679,
+          "id": "one"
+        }
+      }
+    },
+    "invoked_ns": 25938265273011,
+    "responded_ns": 25938295485217,
+    "response": {
+      "status": "approved"
+    },
+    "role": "broker",
+    "unix_time": 1794338079
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "submit",
+      "proposal": {
+        "effect": {
+          "contents": "fn answer() -> u32 { 42 }",
+          "document": "toy.rs",
+          "expected_revision": 0,
+          "kind": "edit"
+        },
+        "epochs": [
+          0,
+          0
+        ],
+        "expires": 1794341679,
+        "id": "one"
+      },
+      "session_actor": "alice"
+    },
+    "invoked_ns": 25938295492621,
+    "responded_ns": 25938315423403,
+    "response": {
+      "permit": {
+        "actor": "alice",
+        "proposal": {
+          "effect": {
+            "contents": "fn answer() -> u32 { 42 }",
+            "document": "toy.rs",
+            "expected_revision": 0,
+            "kind": "edit"
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794341679,
+          "id": "one"
+        }
+      },
+      "status": "pending"
+    },
+    "role": "broker",
+    "unix_time": 1794338079
+  },
+  {
+    "effects": [],
+    "invocation": {
+      "op": "accept",
+      "permit": {
+        "actor": "alice",
+        "proposal": {
+          "effect": {
+            "contents": "fn answer() -> u32 { 42 }",
+            "document": "toy.rs",
+            "expected_revision": 0,
+            "kind": "edit"
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794341679,
+          "id": "one"
+        }
+      }
+    },
+    "invoked_ns": 25938315426428,
+    "responded_ns": 25938326295886,
+    "response": {
+      "status": "pending"
+    },
+    "role": "sink",
+    "unix_time": 1794338079
+  },
+  {
+    "effects": [
+      {
+        "actor": "alice",
+        "proposal": {
+          "effect": {
+            "contents": "fn answer() -> u32 { 42 }",
+            "document": "toy.rs",
+            "expected_revision": 0,
+            "kind": "edit"
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794341679,
+          "id": "one"
+        }
+      }
+    ],
+    "invocation": {
+      "id": "one",
+      "op": "complete"
+    },
+    "invoked_ns": 25938326566318,
+    "responded_ns": 25938335899637,
+    "response": {
+      "status": "committed"
+    },
+    "role": "sink",
+    "unix_time": 1794338079
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "id": "one",
+      "op": "settle",
+      "sink_status": "committed"
+    },
+    "invoked_ns": 25938336174497,
+    "responded_ns": 25938344451327,
+    "response": {
+      "status": "committed"
+    },
+    "role": "broker",
+    "unix_time": 1794338079
+  }
+]

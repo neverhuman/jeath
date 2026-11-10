@@ -1,3 +1,25 @@
+# V2 revision status
+
+Implemented: shared executable Verus core; separate broker/sink processes and
+stores; uncertain reservations; immutable normalized permits; per-issuer
+withdrawal, renewal and sink fencing; Landlock/seccomp sessions; semantic controls;
+independent sequential history checking; CPU races/controller controls; ten
+abstract omissions and 45 pairs; versioned manifests; native pinned
+AgentDojo/Progent controls; predeclared inference and model feasibility.
+
+The main manuscript centers revocation exposure, the proof boundary and local
+results. Historical synthetic and human-analogy material is in appendices. V1
+evidence and `tips/` are unchanged; a separate v2 status pointer is added.
+
+Added managed inference with hash checks, fixed deadlines, one-server scheduling, learned review and CPU bridge controls. Open: GPU execution and five-controller Qwen3 campaigns; model-driven
+AgentDojo/Progent comparison; full concurrent history checking; mechanized SQL
+adapter/whole-protocol refinement. All verified Linux GPUs were occupied. These
+gaps are disclosed, not filled with scripted checkpoint labels. The PR is a
+reviewable implementation revision with narrowed claims, not acceptance of all
+three target claims.
+
+Earlier v1 revision notes follow.
+
 # Revision and evidence audit
 
 The supplied folder had three TeX sources and no Git repository, scripts, numbers

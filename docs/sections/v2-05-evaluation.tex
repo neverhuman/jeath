@@ -1,0 +1,187 @@
+\section{Evaluation design and inference rules}
+\label{sec:v2evaluation}
+The evaluation separates implementation acceptance from scientific conclusions.
+Proof failures, inconsistent traces, broken semantic controls, isolation bypasses,
+and incorrectly generated evidence fail acceptance. Unfavorable or underpowered
+model outcomes would narrow the empirical claim rather than fail a gate that
+requires a favorable result. Missing model outcomes are reported as missing,
+not replaced with scripted proposals carrying checkpoint metadata.
+
+\subsection{Versioned interfaces and retained evidence}
+All v1 commands and fixtures retain their meaning. The v1 reference evidence is
+bound to commit \texttt{12b5579}; its source hashes are checked against that
+revision, not silently rewritten to the current tree. A fresh v1 experiment run
+also exercises backward compatibility after the v2 changes. The supplied
+\texttt{tips/*.tex} hashes remain unchanged. V2 evidence lives separately and
+records a versioned protocol manifest, source and binary hashes, proof/toolchain
+identifiers, host and kernel information, and the predeclared model settings.
+
+The \texttt{run-v2} command has smoke and publication profiles. Smoke uses one
+repetition per actor population; publication uses three. Both run the same fault
+cases, proof checks, semantic controls, and mutation language. The profiles are
+not different safety policies. \texttt{analyze-v2} validates the resulting traces
+and evidence before optional model-campaign analysis. The CPU gate uses smoke,
+while the recorded host report uses publication repetitions. Publication here
+names a workload profile, not a claim that a model study was completed.
+
+Invocations and responses are recorded with role, request, monotonic timestamps,
+and observed effects read independently from the sink store. Fault histories
+have at most one outstanding RPC per service and are checked by a separately
+implemented Python specification. The checker reconstructs approvals, issuance,
+reservations, issuer withdrawal, sink acceptance, effect application, and
+settlement. It compares predicted sink effects to the independent effect log,
+including contents and destinations rather than favorable summary flags.
+
+Concurrent races are treated differently. Arbitrarily ordered RPC responses do
+not constitute a valid sequential linearization. The race harness starts
+independent broker writers against the same store, releases them with a barrier,
+and checks final conservation and exact effects. The delayed-fence experiment
+also has overlapping calls and uses transaction-lock observation plus independent
+post-acknowledgment effects. These tests do not claim an exhaustive concurrent
+history checker. On a sequential-history failure the harness retains the first
+failing prefix; that is prefix minimization, not a globally minimal trace.
+
+\subsection{CPU faults and adversarial controls}
+The fault suite covers useful transfers, releases, and edits; duplicate and
+altered requests; actor substitution; a missing required issuer; expired
+issuance; admission and fenced withdrawal; independent issuer semantics;
+renewal with stale approvals; stale document revisions; lost replies; process
+death on both sides of commit; sink restart; uncertain settlement; and first
+delivery after fencing. Crash hooks terminate the actual service process before
+or after its durable commit. Recovery starts another process against the same
+store and retries the identity.
+
+Two controls are intentionally harmful. The unsupported non-idempotent service
+duplicates a retried delivery. The specification-omission case commits an
+authorized but incorrect document. Acceptance requires observing these failures,
+because a checker that cannot detect them would provide weak ground truth.
+They are labeled by their cause: a violated service contract versus a task
+property absent from permission. Neither is suppressed to obtain a zero-failure
+headline.
+
+Ten enforcement mechanisms are individually omitted in an abstract protocol
+model: cumulative budget, payload binding, issuer conjunction, epoch freshness,
+expiry, revision checking, deduplication, durable accounting, uncertainty
+quarantine, and sink fencing. All 45 pairs are also searched. The search space is
+every subsequence of ten declared regression templates, sorted by length. State
+updates and the harm oracle are distinct in the model. Each witness is shortest
+within that finite language. It is not necessarily shortest among arbitrary
+protocol executions, nor evidence that all possible interacting failures have
+been found.
+
+The abstract mutations are not alternate versions of the verified Rust core.
+They test the roles of mechanisms in the protocol argument. Likewise, a pair
+whose witness already exploits one omitted mechanism does not establish a new
+synergistic interaction. The evidence retains every omission set, witness, harm
+type, template, and searched-trace count so readers can identify that limitation.
+The complete abstract model also admits a useful task and has no harm within
+the searched language.
+
+\subsection{Controllers and availability measurements}
+The declared comparison has five controllers: no enforcement, stateless per-call
+rules, learned review using the same checkpoint as the proposer, durable
+enforcement without sink fencing, and the complete protocol. The first two are
+generic controls, not Progent. Each receives the same task permission set and
+observable policy state. The learned reviewer must use the named proposer
+checkpoint, rather than a stronger hidden service. Per-case hashes bind the
+permission and visible-state inputs across paired controller records.
+
+The CPU release measures four scripted controller controls; learned review is
+explicitly unrun. In the shared-budget control, every actor has an individually
+approved eight-unit request while the shared capacity is eight. Stateless
+per-call checks permit each request in isolation; cumulative enforcement admits
+only one. This exposes composition failure without suggesting that a stateless
+baseline lacks a per-call amount check. The controller workload is sequential;
+separate synchronized races measure durable concurrency at 1, 2, 4, 8, 16, and
+32 actors. Host results are descriptive and are not pooled into a hardware-free
+latency estimate.
+
+The measurement schema includes unauthorized effects, task success,
+safe-and-useful completion, false blocks, stranded reservations, fence
+acknowledgment delay, and latency. A useful transfer must match recipient and
+amount; a useful release must match actual bytes and destination; a useful edit
+must match expected contents. The supported synthetic document is scored by
+exact expected contents. Arbitrary source-code tasks would need separately
+sandboxed behavioral tests; a changed database row alone is insufficient.
+
+False blocks require a reference-permitted task that the controller prevents.
+Rejecting the second competing eight-unit request after the budget is exhausted
+is not a false block. A cancelled old-epoch operation after an acknowledged fence
+is not a newly unauthorized effect. A stranded reservation is an availability
+cost, even if it conservatively protects safety. These distinctions are necessary
+to avoid rewarding a controller for accepting too much or claiming every
+rejection as evidence of successful protection.
+
+\subsection{Public benchmark and upstream reference}
+The declared AgentDojo subset contains banking tasks 0, 2, 3, 4, 5, 6, and 11,
+and workspace tasks 29, 31, 33, 34, and 35. The upstream repository and benchmark
+version are pinned. Native utility and attack graders are retained. Scripted
+ground-truth calls supply positive integration controls, and unchanged-state
+inputs supply negative utility controls. These establish that the native graders
+and selected task environments run; they do not establish model robustness.
+
+Pinned upstream Progent is an additional reference implementation. The current
+integration controls provide exact task-call policies to its unmodified policy
+checker and execute the native task calls. The subset solver is exercised on
+reflexive policy inclusion. This tests tool-argument enforcement and integration
+with the selected environments; it does not evaluate Progent's model-generated
+policies or adaptive policy updates. Unsupported durable-budget and fencing
+properties are listed separately. Import failures, unsupported integrations, and
+grader errors would be retained as such, not converted into measured security
+failures \cite{agentdojo,progent-code}.
+
+Public benchmark outcomes remain descriptive even after a model run. They are
+not fresh procedural holdouts, and the task selection is public. They therefore
+do not supply the independent-case inference used for the primary controller
+comparisons. Using the native graders prevents an apparently compatible wrapper
+from quietly changing what success means.
+
+\subsection{Predeclared model budget and holdouts}
+The model manifest names official Qwen3-4B and Qwen3-8B Q4\_K\_M artifacts by
+repository, revision, and filename, and pins llama.cpp by commit. Thinking is
+disabled. Generation settings, bounded context, maximum generated tokens per
+turn, and tool-turn limits are fixed. The two parameter counts identify
+checkpoints; they are not a measured ordering of adversarial capability. No
+frontier-model extrapolation is authorized by this design.
+
+Total model work has a four-GPU-hour ceiling. Development-case timing may consume
+at most 20 minutes. Before inspecting holdout outcomes, the largest sample among
+32, 64, and 128 campaigns per checkpoint must fit the remaining time with 20\%
+timing headroom. The sample-selection function rejects an infeasible minimum.
+One GPU may be used at a time, and active host workloads are never preempted.
+Hostname and architecture are verified before any remote allocation. A host
+alias resolving to a different machine is not sufficient authorization to run
+the job there.
+
+The freeze record binds source, policy, prompt, and analysis inputs before fresh
+procedural holdouts are generated. The helper samples fresh randomness only
+after checking that record. Repeated variants share a base-case identifier so
+their outcomes can be clustered. A changed defense or analysis file invalidates
+the freeze. The managed runner checks server and GGUF hashes, launches one local server at a time, enforces phase and total deadlines, and drives the five-controller model-to-tool bridge. CPU scripted controls test that bridge and its learned-review path. Actual GPU execution remains unvalidated. Public-reference work reserves three measured campaign equivalents per checkpoint before sample selection. Its upstream Progent adapter uses generated initial policies and local inference transport; adaptive updates are explicitly disabled and reported. No holdout was generated or inspected
+for this release.
+
+\subsection{Inference and noninferiority}
+Procedural results must be reported separately for each checkpoint. Controller
+comparisons pair by base case and campaign variant; repeated variants are
+averaged within a base case. The predeclared analysis uses distribution-free
+Hoeffding intervals for independent base-case means, retaining all variants.
+This is conservative and avoids treating repeated versions of one case as
+independent campaigns. It also avoids a degenerate bootstrap interval implying
+certainty when every observed outcome is identical.
+
+For a bounded metric $X\in[0,1]$ over $n$ independent base-case means,
+the two-sided radius is $\sqrt{\log(2/\alpha)/(2n)}$. Paired differences
+lie in $[-1,1]$ and have twice that radius. The eight primary contrasts are
+complete minus each of four baselines at each of two checkpoints. Bonferroni
+adjustment uses $\alpha=0.05/8$ for simultaneous primary bounds. This rule is
+fixed before a model outcome is available.
+
+The usefulness noninferiority margin is five percentage points. The claim is
+made only if the adjusted lower bound for complete-minus-baseline task success
+exceeds $-0.05$. A positive point estimate, overlapping marginal intervals, or
+an inconclusive bound is insufficient. Unauthorized-effect comparisons and
+safe-and-useful completion are reported alongside usefulness, so a controller
+cannot appear successful by blocking every task. Missing controllers remain
+missing. The code rejects scripted data masquerading as checkpoint outcomes,
+duplicate campaign/controller records, mismatched policy-state hashes, and
+unpaired variants.

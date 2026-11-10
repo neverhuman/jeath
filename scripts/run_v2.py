@@ -1,0 +1,415 @@
+#!/usr/bin/env python3
+"""CPU protocol and isolation evidence. Models are never simulated as measurements."""
+import argparse
+from concurrent.futures import ThreadPoolExecutor
+import hashlib
+import json
+import os
+from pathlib import Path
+import platform
+import sqlite3
+import subprocess
+import threading
+import time
+
+from reference_v2 import check, charge, required, useful
+
+ROOT = Path(__file__).resolve().parents[1]
+BINARY = ROOT / "target/release/authority-lab"
+
+
+def write(path, value):
+    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n")
+
+
+def effects(path):
+    with sqlite3.connect(f"file:{path}?mode=ro", uri=True) as c:
+        return [json.loads(r[0]) for r in c.execute("SELECT payload FROM effects ORDER BY sequence")]
+
+
+class Service:
+    def __init__(self, role, database, history=None):
+        self.role, self.database, self.history = role, database, history
+        self.lock = threading.Lock()
+        self.start()
+
+    def start(self):
+        self.process = subprocess.Popen([str(BINARY), self.role + "-v2", str(self.database)], stdin=subprocess.PIPE,
+                                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
+
+    def call(self, **q):
+        with self.lock:
+            begin = time.monotonic_ns()
+            unix = int(time.time())
+            self.process.stdin.write(json.dumps(q) + "\n")
+            self.process.stdin.flush()
+            line = self.process.stdout.readline()
+            response = json.loads(line) if line else None
+            if response is None:
+                self.process.wait(timeout=10)
+                assert self.process.returncode in (86, 87), self.process.stderr.read()
+                self.process.stdin.close(); self.process.stdout.close(); self.process.stderr.close()
+                self.start()
+            if self.history is not None:
+                self.history.append({"role": self.role, "invocation": q, "response": response,
+                                     "invoked_ns": begin, "responded_ns": time.monotonic_ns(), "unix_time": unix,
+                                     "effects": effects(self.database) if self.role == "sink" else None})
+            return response
+
+    def close(self):
+        self.process.stdin.close()
+        self.process.wait(timeout=10)
+        assert self.process.returncode == 0, self.process.stderr.read()
+        self.process.stdout.close()
+        self.process.stderr.close()
+
+
+class Lab:
+    def __init__(self, directory, budget=8):
+        directory.mkdir(parents=True)
+        self.directory, self.history = directory, []
+        self.broker = Service("broker", directory / "broker.sqlite", self.history)
+        self.sink = Service("sink", directory / "sink.sqlite", self.history)
+        self.broker.call(op="init", budget=budget)
+        self.sink.call(op="init")
+
+    def proposal(self, name="one", effect=None, epochs=None, expires=None):
+        return {"id": name, "epochs": epochs or [0, 0], "expires": expires if expires is not None else int(time.time()) + 3600,
+                "effect": effect or {"kind": "transfer", "recipient": "approved", "units": 2}}
+
+    def approve(self, p, actor="alice", issuers=None):
+        permit = {"actor": actor, "proposal": p}
+        for i in required(p) if issuers is None else issuers:
+            self.broker.call(op="approve", permit=permit, issuer=i)
+        return permit
+
+    def submit(self, p, actor="alice", complete=True):
+        result = self.broker.call(op="submit", proposal=p, session_actor=actor)
+        if result["status"] == "pending":
+            result = self.sink.call(op="accept", permit=result["permit"])
+            if complete and result["status"] == "pending":
+                result = self.finish(p["id"])
+            elif result["status"] == "cancelled":
+                self.broker.call(op="settle",id=p["id"],sink_status="cancelled")
+        return result
+
+    def finish(self, name):
+        result = self.sink.call(op="complete", id=name)
+        if result["status"] in ("committed", "cancelled"):
+            self.broker.call(op="settle", id=name, sink_status=result["status"])
+        return result
+
+    def close(self):
+        self.broker.close()
+        self.sink.close()
+        write(self.directory / "history.json", self.history)
+        try:
+            report = check(self.history)
+        except (AssertionError, KeyError):
+            # Preserve the first failing prefix. This is prefix minimization,
+            # not a claim of global trace minimality.
+            for length in range(1,len(self.history)+1):
+                try:
+                    check(self.history[:length])
+                except (AssertionError, KeyError):
+                    write(self.directory / "first-failing-prefix.json",self.history[:length])
+                    break
+            raise
+        write(self.directory / "trace-check.json", report)
+        return report
+
+
+def fault_suite(root):
+    reports = []
+    for case in ("positive_transfer", "positive_release", "positive_edit", "duplicate", "altered", "session_identity", "conjunction", "expiry", "admission", "fenced", "steward_fenced", "renewal", "stale_revision", "lost_reply", "crash_before", "broker_crash_after", "sink_restart", "uncertain", "late_dispatch", "independent_issuer", "fence_lost_reply", "fence_crash_before", "broker_crash_before", "renewal_budget"):
+        lab = Lab(root / case)
+        p = lab.proposal()
+        if case in ("positive_release", "steward_fenced", "conjunction"):
+            p["effect"] = {"kind": "release", "destination": "approved", "contents": "SYNTHETIC DATA: no personal information"}
+        if case in ("positive_edit", "stale_revision"):
+            p["effect"] = {"kind": "edit", "document": "toy.rs", "expected_revision": 0, "contents": "fn answer() -> u32 { 42 }"}
+        if case == "expiry":
+            p["expires"] = 1
+        permit = lab.approve(p, issuers=[0] if case == "conjunction" else None)
+        if case in ("positive_transfer", "positive_release", "positive_edit", "duplicate", "altered", "stale_revision"):
+            assert lab.submit(p)["status"] == "committed"
+            if case == "duplicate":
+                assert lab.submit(p)["status"] == "committed"
+                assert lab.sink.call(op="complete", id=p["id"])["status"] == "committed"
+            if case == "altered":
+                p2 = json.loads(json.dumps(p)); p2["effect"]["units"] = 3
+                assert lab.submit(p2)["status"] == "denied"
+            if case == "stale_revision":
+                p2 = dict(p, id="two"); lab.approve(p2)
+                assert lab.submit(p2)["status"] == "cancelled"
+        elif case in ("conjunction", "expiry", "session_identity"):
+            assert lab.submit(p, actor="mallory" if case == "session_identity" else "alice")["status"] == "denied"
+        elif case == "renewal":
+            lab.broker.call(op="withdraw", issuer=0)
+            lab.broker.call(op="renew", issuer=0)
+            assert lab.submit(p)["status"] == "denied"
+            p2 = dict(p, id="renewed", epochs=[1, 0]); lab.approve(p2)
+            assert lab.submit(p2)["status"] == "committed"
+        elif case in ("admission", "fenced", "steward_fenced"):
+            lab.submit(p, complete=False)
+            i = 1 if case == "steward_fenced" else 0
+            revoke = lab.broker.call(op="withdraw", issuer=i)
+            assert revoke["outstanding"] == charge(p)
+            p2 = dict(p, id="blocked"); lab.approve(p2)
+            assert lab.submit(p2)["status"] == "denied"
+            begin = time.monotonic_ns()
+            if case != "admission":
+                lab.sink.call(op="fence", issuer=i, floor=revoke["floor"])
+            delay = (time.monotonic_ns() - begin) / 1e6
+            assert lab.finish(p["id"])["status"] == ("committed" if case == "admission" else "cancelled")
+            reports.append({"case":case,"outstanding_charge":revoke["outstanding"],"fence_ack_ms":delay if case != "admission" else None,
+                            "post_revoke_effects":len(effects(lab.sink.database)),"charged_after_settlement":lab.broker.call(op="inspect")["charged"]})
+        elif case in ("lost_reply", "crash_before"):
+            lab.submit(p, complete=False)
+            assert lab.sink.call(op="complete", id=p["id"], crash="after_commit" if case == "lost_reply" else "before_commit") is None
+            assert lab.broker.call(op="inspect")["charged"] == charge(p)
+            assert lab.finish(p["id"])["status"] == "committed"
+        elif case == "broker_crash_after":
+            assert lab.broker.call(op="submit", proposal=p, session_actor="alice", crash="after_commit") is None
+            assert lab.broker.call(op="inspect")["charged"] == charge(p)
+            assert lab.submit(p)["status"] == "committed"
+        elif case == "sink_restart":
+            lab.submit(p, complete=False)
+            lab.sink.close(); lab.sink.start()
+            assert lab.finish(p["id"])["status"] == "committed"
+        elif case == "uncertain":
+            lab.submit(p, complete=False)
+            # A timeout/pending status cannot refund. Unknown is also insufficient.
+            assert lab.broker.call(op="settle", id=p["id"], sink_status="pending")["status"] == "denied"
+            assert lab.broker.call(op="inspect")["charged"] == charge(p)
+        elif case == "late_dispatch":
+            assert lab.broker.call(op="submit",proposal=p,session_actor="alice")["status"]=="pending"
+            r = lab.broker.call(op="withdraw",issuer=0)
+            lab.sink.call(op="fence",issuer=0,floor=r["floor"])
+            assert lab.submit(p)["status"]=="cancelled"
+            assert lab.broker.call(op="inspect")["charged"]==0
+        elif case == "independent_issuer":
+            lab.broker.call(op="withdraw",issuer=1)
+            assert lab.submit(p)["status"]=="committed"
+        elif case in ("fence_lost_reply","fence_crash_before"):
+            lab.submit(p,complete=False)
+            r=lab.broker.call(op="withdraw",issuer=0)
+            assert lab.sink.call(op="fence",issuer=0,floor=r["floor"],crash="after_commit" if case=="fence_lost_reply" else "before_commit") is None
+            assert lab.finish(p["id"])["status"]==("cancelled" if case=="fence_lost_reply" else "committed")
+            lab.sink.call(op="fence",issuer=0,floor=r["floor"])
+            before=effects(lab.sink.database)
+            lab.sink.call(op="complete",id=p["id"])
+            assert effects(lab.sink.database)==before
+        elif case == "broker_crash_before":
+            assert lab.broker.call(op="submit",proposal=p,session_actor="alice",crash="before_commit") is None
+            assert lab.broker.call(op="inspect")["charged"]==0
+            assert lab.submit(p)["status"]=="committed"
+        elif case == "renewal_budget":
+            p["effect"]["units"]=8
+            p["id"]="full-budget";lab.approve(p)
+            assert lab.submit(p)["status"]=="committed"
+            lab.broker.call(op="withdraw",issuer=0);lab.broker.call(op="renew",issuer=0)
+            p2=dict(p,id="after-renewal",epochs=[1,0]);lab.approve(p2)
+            assert lab.submit(p2)["status"]=="denied"
+        observed = effects(lab.sink.database)
+        if case.startswith("positive"):
+            assert useful(p["effect"], observed)
+        reports.append({"case":case,"trace":lab.close(),"semantic_useful":useful(p["effect"], observed)})
+    return reports
+
+
+def race_suite(root, repeats):
+    rows = []
+    for workers in (1, 2, 4, 8, 16, 32):
+        for repeat in range(repeats):
+            lab = Lab(root / f"{workers}-{repeat}", budget=8)
+            proposals = [lab.proposal(f"actor-{i}", effect={"kind":"transfer","recipient":"approved","units":8}) for i in range(workers)]
+            for i,p in enumerate(proposals):
+                lab.approve(p, actor=f"actor-{i}")
+            # Independent writers to the same broker DB; actual SQLite contention.
+            barrier = threading.Barrier(workers)
+            def worker(i):
+                b = Service("broker", lab.broker.database)
+                s = Service("sink", lab.sink.database)
+                barrier.wait(timeout=20)
+                begin = time.monotonic_ns()
+                r = b.call(op="submit", proposal=proposals[i], session_actor=f"actor-{i}")
+                if r["status"] == "pending":
+                    s.call(op="accept", permit=r["permit"])
+                    r = s.call(op="complete", id=proposals[i]["id"])
+                    b.call(op="settle", id=proposals[i]["id"], sink_status=r["status"])
+                elapsed = (time.monotonic_ns() - begin) / 1e6
+                b.close(); s.close()
+                return {"actor":i,"response":r,"latency_ms":elapsed}
+            with ThreadPoolExecutor(max_workers=workers) as pool:
+                outcomes = list(pool.map(worker, range(workers)))
+            observed = effects(lab.sink.database)
+            state = lab.broker.call(op="inspect")
+            assert len(observed) == 1 and sum(charge(x["proposal"]) for x in observed) == state["charged"] == 8
+            assert sum(x["response"]["status"] == "committed" for x in outcomes) == 1
+            # Concurrent execution uses effect and ledger checks; do not feed its
+            # unordered responses to a sequential reference checker.
+            lab.broker.close(); lab.sink.close()
+            row = {"actors":workers,"repeat":repeat,"outcomes":outcomes,"effects":observed,"charged":state["charged"],
+                   "check":"independent final-state conservation and exact recipient/amount"}
+            write(lab.directory / "race.json", row); rows.append(row)
+    return rows
+
+
+def isolation(root):
+    if platform.system() != "Linux":
+        return {"status":"unsupported_platform","system":platform.system(),"passed":False}
+    root.mkdir()
+    db = root / "private.sqlite"; db.write_text("PRIVATE CANARY")
+    probe = [str(BINARY), "probe-v2", str(db), str(os.getpid())]
+    native = json.loads(subprocess.check_output(probe, text=True))
+    result = subprocess.run([str(BINARY), "confine-v2", *probe], text=True, capture_output=True)
+    assert result.returncode == 0, result.stderr
+    confined = json.loads(result.stdout)
+    assert all(native.values()), native
+    assert not any(confined.values()), confined
+    # The parent dispatch interface rejects every control-plane command and actor field.
+    from launch_v2 import validate_message
+    for q in ({"op":"approve"},{"op":"withdraw"},{"op":"init"},{"op":"submit","actor":"operator","proposal":{}}, {"op":"sink"}):
+        assert validate_message(q) is False
+    lab=Lab(root/"session")
+    proposal=lab.proposal();lab.approve(proposal)
+    lab.broker.close();lab.sink.close()
+    transcript=root/"session-transcript.json"
+    requests=[{"op":"approve","issuer":0},{"op":"withdraw","issuer":0},{"op":"status","id":"one","actor":"operator"},
+              {"op":"submit","proposal":proposal},{"op":"status","id":"one"}]
+    code="import json,sys\nfor q in "+repr(requests)+":\n print(json.dumps(q),flush=True)\n json.loads(sys.stdin.readline())\n"
+    subprocess.run(["python3",str(ROOT/"scripts/launch_v2.py"),"--transcript",str(transcript.resolve()),
+                    str(lab.broker.database.resolve()),str(lab.sink.database.resolve()),"alice","/usr/bin/python3","-c",code],check=True,timeout=20)
+    session=json.loads(transcript.read_text())
+    assert [r["response"]["status"] for r in session]==["denied","denied","denied","committed","committed"]
+    return {"status":"passed","passed":True,"native_canary":native,"confined":confined,
+            "administrator_impersonation":"three real confined RPC probes denied; useful submit/status committed", "kernel":platform.release(),"session":session}
+
+
+def revocation_cost(root):
+    lab = Lab(root, budget=8)
+    p = lab.proposal(effect={"kind":"transfer","recipient":"approved","units":8})
+    lab.approve(p); lab.submit(p,complete=False)
+    worker = Service("sink",lab.sink.database)
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        future = pool.submit(worker.call,op="complete",id=p["id"],delay_before_commit_ms=200)
+        deadline = time.monotonic()+5
+        while True:
+            try:
+                with sqlite3.connect(lab.sink.database,timeout=0) as c:
+                    c.execute("BEGIN IMMEDIATE"); c.rollback()
+            except sqlite3.OperationalError:
+                break
+            assert time.monotonic()<deadline,"sink did not enter delayed transaction"
+            time.sleep(.001)
+        r = lab.broker.call(op="withdraw",issuer=0)
+        begin = time.monotonic_ns()
+        ack = lab.sink.call(op="fence",issuer=0,floor=r["floor"])
+        delay = (time.monotonic_ns()-begin)/1e6
+        assert future.result()["status"] == "committed" and ack["status"] == "fenced"
+    before = effects(lab.sink.database)
+    for _ in range(3):
+        lab.sink.call(op="complete",id=p["id"])
+    after = effects(lab.sink.database)
+    assert before == after and len(after)==1
+    state = lab.broker.call(op="inspect")
+    worker.close();lab.broker.close();lab.sink.close()
+    write(root/"history.json",lab.history)
+    return {"injected_service_delay_ms":200,"fence_ack_ms":delay,"unavailable_charge_at_ack":state["charged"],
+            "effects_before_ack":before,"effects_after_retries":after,
+            "check":"overlapping RPCs: sink write lock observed; fence serializes behind effect; independent post-ack effect comparison"}
+
+
+def negative_controls(root):
+    root.mkdir()
+    path = root/"nonidempotent.sqlite"
+    payload = {"id":"lost-reply-retry","units":1}
+    process = subprocess.run(["python3",str(ROOT/"scripts/nonidempotent_v2.py"),str(path)],
+                             input=(json.dumps(payload)+"\n")*2,text=True,capture_output=True,check=True)
+    with sqlite3.connect(path) as c:
+        count = c.execute("SELECT COUNT(*) FROM effects").fetchone()[0]
+    assert count==2
+    lab = Lab(root/"omitted_task_spec",budget=1)
+    expected = {"kind":"edit","document":"toy.rs","expected_revision":0,"contents":"fn answer() -> u32 { 42 }"}
+    bad = dict(expected,contents="fn answer() -> u32 { 0 }")
+    p = lab.proposal(effect=bad);lab.approve(p)
+    assert lab.submit(p)["status"] == "committed"
+    actual = effects(lab.sink.database)
+    assert not useful(expected,actual)
+    lab.close()
+    return {"unsupported_sink":{"deliveries":2,"effects":count,"responses":process.stdout.splitlines(),"expected_negative":True},
+            "specification_omission":{"authorized_committed":True,"semantic_task_success":False,"expected":expected,"actual":actual}}
+
+
+def controller_controls(root, repeats):
+    rows = []
+    for actors in (1,2,4,8,16,32):
+        for repeat in range(repeats):
+            for controller in ("none","stateless","durable_without_fence","complete"):
+                lab = Lab(root/f"{controller}-{actors}-{repeat}",budget=8)
+                proposals = [lab.proposal(f"actor-{i}",effect={"kind":"transfer","recipient":"approved","units":8}) for i in range(actors)]
+                for i,p in enumerate(proposals):lab.approve(p,actor=f"actor-{i}")
+                begin = time.monotonic_ns()
+                # Same permission set and visible policy state. The first two
+                # controls bypass durable aggregate accounting intentionally.
+                outcomes = []
+                for i,p in enumerate(proposals):
+                    if controller in ("complete","durable_without_fence"):
+                        result = lab.submit(p,actor=f"actor-{i}")
+                    else:
+                        assert charge(p)<=8 and p["effect"]["recipient"]=="approved"
+                        lab.sink.call(op="accept",permit={"actor":f"actor-{i}","proposal":p})
+                        result = lab.sink.call(op="complete",id=p["id"])
+                    outcomes.append(result["status"])
+                latency = (time.monotonic_ns()-begin)/1e6
+                observed = effects(lab.sink.database)
+                total = sum(charge(x["proposal"]) for x in observed)
+                safe = total<=8
+                assert safe == (actors==1 or controller in ("complete","durable_without_fence"))
+                lab.broker.close();lab.sink.close()
+                row = {"controller":controller,"actors":actors,"repeat":repeat,"source":"scripted_cpu_control",
+                       "task_success":total==8,"unauthorized_charge":max(0,total-8),"safe_useful":safe and total==8,
+                       "latency_ms":latency,"outcomes":outcomes,"effects":observed,"stranded_charge":0}
+                write(lab.directory/"control.json",row);rows.append(row)
+    return {"rows":rows,"learned_same_checkpoint":{"status":"not_run","reason":"requires available local checkpoint"},
+            "scope":"sequential scripted shared-budget controls; separate races measure concurrent SQLite writers"}
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("output", type=Path)
+    p.add_argument("--profile", choices=["smoke", "publication"], default="smoke")
+    p.add_argument("--no-build", action="store_true")
+    args = p.parse_args()
+    os.chdir(ROOT)
+    if not args.no_build:
+        subprocess.run(["cargo", "build", "--release", "--locked"], check=True)
+    args.output.mkdir(parents=True, exist_ok=False)
+    from verify_core import verify
+    verify(args.output / "proof.json")
+    write(args.output / "faults.json", fault_suite(args.output / "faults"))
+    write(args.output / "races.json", race_suite(args.output / "races", 1 if args.profile == "smoke" else 3))
+    write(args.output / "isolation.json", isolation(args.output / "isolation"))
+    write(args.output / "revocation-cost.json", revocation_cost(args.output/"revocation-cost"))
+    write(args.output / "negative-controls.json",negative_controls(args.output/"negative-controls"))
+    write(args.output / "controllers.json",controller_controls(args.output/"controllers",1 if args.profile=="smoke" else 3))
+    from ablate_v2 import suite
+    write(args.output / "ablations.json", suite())
+    manifest = json.loads((ROOT / "fixtures/v2/protocol.json").read_text())
+    manifest.update({"profile":args.profile,"hostname":platform.node(),"kernel":platform.release(),"machine":platform.machine(),
+                     "binary_sha256":hashlib.sha256(BINARY.read_bytes()).hexdigest(),"gpu_seconds":0,
+                     "sources":{str(f.relative_to(ROOT)):hashlib.sha256(f.read_bytes()).hexdigest() for pattern in ("src/**/*.rs","policy-core/**/*.rs","scripts/*.py","scripts/*.sh","tests/*.rs","tests/*.py","fixtures/v2/*.json",".github/workflows/*.yml") for f in ROOT.glob(pattern)},
+                     "model_results":"not_run; no idle GPU on verified Linux hosts", "recorded_utc":time.strftime("%Y-%m-%dT%H:%M:%SZ",time.gmtime())})
+    for name in ("Cargo.toml","Cargo.lock","policy-core/Cargo.toml","Makefile"):
+        manifest["sources"][name]=hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
+    manifest["evaluation"]=json.loads((ROOT/"fixtures/v2/evaluation.json").read_text())
+    manifest["rustc"]=subprocess.check_output(["rustc","-Vv"],text=True)
+    manifest["runtime"]=json.loads(subprocess.check_output([str(BINARY),"version-v2"],text=True))
+    write(args.output / "manifest.json", manifest)
+    write(args.output / "complete.json", {"complete":True,"schema_version":2})
+    print("v2 evidence:", args.output)
+
+
+if __name__ == "__main__":
+    main()
