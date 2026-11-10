@@ -1,10 +1,101 @@
 {
   "actors": 4,
+  "audit": {
+    "broker": {
+      "budget": 8,
+      "cancelled_charge": 0,
+      "charged": 8,
+      "committed_charge": 8,
+      "consistent": true,
+      "delegations_consistent": true,
+      "integrity": "ok",
+      "pending_charge": 0,
+      "records": 1,
+      "status": "ok"
+    },
+    "sink": {
+      "cancelled_permits": 0,
+      "committed_permits": 1,
+      "consistent": true,
+      "effects": 1,
+      "floors": [
+        0,
+        0
+      ],
+      "integrity": "ok",
+      "pending_permits": 0,
+      "pending_unfenced": true,
+      "revision": 0,
+      "status": "ok"
+    }
+  },
   "charged": 8,
-  "check": "independent final-state conservation and exact recipient/amount",
+  "check": "bounded reference linearization + independent final-state conservation",
+  "concurrent_check": {
+    "calls": 13,
+    "checked": true,
+    "effects": 1,
+    "linearization": [
+      {
+        "committed": true,
+        "event": 0
+      },
+      {
+        "committed": true,
+        "event": 1
+      },
+      {
+        "committed": true,
+        "event": 2
+      },
+      {
+        "committed": true,
+        "event": 3
+      },
+      {
+        "committed": true,
+        "event": 4
+      },
+      {
+        "committed": true,
+        "event": 5
+      },
+      {
+        "committed": true,
+        "event": 6
+      },
+      {
+        "committed": true,
+        "event": 7
+      },
+      {
+        "committed": true,
+        "event": 8
+      },
+      {
+        "committed": true,
+        "event": 9
+      },
+      {
+        "committed": true,
+        "event": 10
+      },
+      {
+        "committed": true,
+        "event": 11
+      },
+      {
+        "committed": true,
+        "event": 12
+      }
+    ],
+    "nodes": 13,
+    "scope": "recorded decisions/public status + real-time order + final effects; inspect/audit snapshots excluded",
+    "status": "linearizable_in_declared_scope"
+  },
   "effects": [
     {
-      "actor": "actor-0",
+      "actor": "actor-1",
       "proposal": {
         "effect": {
           "kind": "transfer",
@@ -15,30 +106,30 @@
           0,
           0
         ],
-        "expires": 1794341686,
-        "id": "actor-0"
+        "expires": 1794353478,
+        "id": "actor-1"
       }
     }
   ],
   "outcomes": [
     {
       "actor": 0,
-      "latency_ms": 88.929716,
-      "response": {
-        "status": "committed"
-      }
-    },
-    {
-      "actor": 1,
-      "latency_ms": 54.198045,
+      "latency_ms": 229.269715,
       "response": {
         "reason": "policy",
         "status": "denied"
       }
     },
     {
+      "actor": 1,
+      "latency_ms": 625.426543,
+      "response": {
+        "status": "committed"
+      }
+    },
+    {
       "actor": 2,
-      "latency_ms": 34.086651,
+      "latency_ms": 229.994517,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -46,7 +137,7 @@
     },
     {
       "actor": 3,
-      "latency_ms": 33.602855,
+      "latency_ms": 330.043453,
       "response": {
         "reason": "policy",
         "status": "denied"

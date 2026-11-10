@@ -62,6 +62,10 @@ jobs:
         run: |
           python3 scripts/run_v2.py target/ci-v2 --profile smoke
           python3 scripts/analyze_v2.py target/ci-v2 --source
+      - name: Pure-Rust V3 mechanism, graph, coverage, monitor and selection suite
+        run: |
+          python3 scripts/run_v3.py target/ci-v3 --quick --no-build
+          python3 scripts/validate_v3.py target/ci-v3 --source
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
@@ -70,6 +74,7 @@ jobs:
             ci-source/target/ci-evidence/*.json
             ci-source/target/test-evidence/**/result.json
             ci-source/target/ci-v2/**/*.json
+            ci-source/target/ci-v3/*.json
           if-no-files-found: error
           retention-days: 30
 
@@ -97,6 +102,8 @@ jobs:
         run: |
           python3 scripts/run.py target/ci-evidence --quick
           python3 scripts/validate.py target/ci-evidence
+          python3 scripts/run_v3.py target/ci-v3 --quick --no-build
+          python3 scripts/validate_v3.py target/ci-v3 --source
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
@@ -104,6 +111,7 @@ jobs:
           path: |
             ci-source/target/ci-evidence/*.json
             ci-source/target/test-evidence/**/result.json
+            ci-source/target/ci-v3/*.json
           if-no-files-found: error
           retention-days: 30
 
@@ -132,6 +140,7 @@ jobs:
         run: |
           python3 scripts/validate.py evidence/reference --source-ref 12b5579
           python3 scripts/analyze_v2.py evidence/v2/reference --source
+          python3 scripts/validate_v3.py evidence/v3/reference --source
           python3 scripts/paper.py --check
           python3 scripts/build_paper.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

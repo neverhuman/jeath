@@ -1,0 +1,114 @@
+{
+  "hypothesis": "H12",
+  "evidence_tier": "tier2_nonidentifiability_and_tier4_multinomial_simulation",
+  "total_classes_k": 2000,
+  "searchers": 4,
+  "reports_per_searcher": 3000,
+  "total_reports_n": 12000,
+  "trials": 200,
+  "blind_spot_fraction": 0.15,
+  "critical_withheld_fraction": 0.05,
+  "honest": {
+    "regime": "honest",
+    "trials": 200,
+    "est": 0.9569666666666663,
+    "est_ci95_half_width": 0.00021835326670037954,
+    "true_coverage": 0.9573254944200532,
+    "true_ci95_half_width": 0.00025518485610446763,
+    "critical_recall": 0.9437221879572276,
+    "critical_ci95_half_width": 0.003917454725511413,
+    "overconfidence_gap": -0.0003588277533869144
+  },
+  "blind": {
+    "regime": "blind",
+    "trials": 200,
+    "est": 0.9663158333333329,
+    "est_ci95_half_width": 0.00025382993355846676,
+    "true_coverage": 0.8223287306168687,
+    "true_ci95_half_width": 0.007434884209858638,
+    "critical_recall": 0.8030622791167721,
+    "critical_ci95_half_width": 0.020188265446309445,
+    "overconfidence_gap": 0.1439871027164642
+  },
+  "withheld": {
+    "regime": "withheld",
+    "trials": 200,
+    "est": 0.9600633333333333,
+    "est_ci95_half_width": 0.0002194288462337252,
+    "true_coverage": 0.9122260980684445,
+    "true_ci95_half_width": 0.004122332176178241,
+    "critical_recall": 0.0,
+    "critical_ci95_half_width": 0.0,
+    "overconfidence_gap": 0.04783723526488881
+  },
+  "blind_inflates_gt_estimate_verified": true,
+  "withheld_zero_critical_recall_verified": true,
+  "capture_recapture_rows": [
+    {
+      "condition": "uniform_honest",
+      "true_total_classes": 2000,
+      "visible_classes": 2000,
+      "reports_per_searcher": 3000,
+      "mean_lincoln_petersen_k_hat": 2001.6337187630886,
+      "mean_lp_implied_class_coverage": 0.9501802625629893,
+      "mean_true_class_coverage": 0.9509424999999997,
+      "mean_true_mass_coverage": 0.9509424999999506,
+      "lp_coverage_positive_bias": -0.0007622374370104268
+    },
+    {
+      "condition": "uniform_shared_blind_15pct",
+      "true_total_classes": 2000,
+      "visible_classes": 1700,
+      "reports_per_searcher": 3000,
+      "mean_lincoln_petersen_k_hat": 1700.3300407973338,
+      "mean_lp_implied_class_coverage": 0.9707479533665553,
+      "mean_true_class_coverage": 0.8252900000000004,
+      "mean_true_mass_coverage": 0.8252899999999644,
+      "lp_coverage_positive_bias": 0.14545795336655487
+    },
+    {
+      "condition": "zipf_shared_blind_15pct",
+      "true_total_classes": 2000,
+      "visible_classes": 1700,
+      "reports_per_searcher": 3000,
+      "mean_lincoln_petersen_k_hat": 1304.3511515109185,
+      "mean_lp_implied_class_coverage": 0.8235939511317235,
+      "mean_true_class_coverage": 0.5371150000000002,
+      "mean_true_mass_coverage": 0.7836403242889449,
+      "lp_coverage_positive_bias": 0.2864789511317233
+    }
+  ],
+  "capture_recapture_shared_blind_positive_bias_verified": true,
+  "mcallester_schapire_bound_at_n12000_honest": 0.127195874486351,
+  "sample_complexity_table": [
+    {
+      "target_missing_mass_eps": 0.05,
+      "confidence_delta": 0.05,
+      "known_oracle_clopper_pearson_n": 59,
+      "mcallester_schapire_missing_mass_n": 34000,
+      "inflation_factor": 576.271186440678
+    },
+    {
+      "target_missing_mass_eps": 0.02,
+      "confidence_delta": 0.05,
+      "known_oracle_clopper_pearson_n": 149,
+      "mcallester_schapire_missing_mass_n": 212500,
+      "inflation_factor": 1426.1744966442952
+    },
+    {
+      "target_missing_mass_eps": 0.01,
+      "confidence_delta": 0.05,
+      "known_oracle_clopper_pearson_n": 299,
+      "mcallester_schapire_missing_mass_n": 850000,
+      "inflation_factor": 2842.809364548495
+    },
+    {
+      "target_missing_mass_eps": 0.005,
+      "confidence_delta": 0.05,
+      "known_oracle_clopper_pearson_n": 599,
+      "mcallester_schapire_missing_mass_n": 3400000,
+      "inflation_factor": 5676.126878130217
+    }
+  ],
+  "claim_boundary": "Proves report-only coverage estimators (Good-Turing and two-searcher capture-recapture) cannot identify shared blind spots or strategic withholding without independent planted audits."
+}

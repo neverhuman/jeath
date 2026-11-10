@@ -1,0 +1,514 @@
+[
+  {
+    "effects": null,
+    "invocation": {
+      "budget": 8,
+      "op": "init"
+    },
+    "invoked_ns": 37719728348147,
+    "responded_ns": 37719821909942,
+    "response": {
+      "status": "initialized"
+    },
+    "role": "broker",
+    "unix_time": 1794349861
+  },
+  {
+    "effects": [],
+    "invocation": {
+      "op": "init"
+    },
+    "invoked_ns": 37719821947333,
+    "responded_ns": 37719828276206,
+    "response": {
+      "status": "initialized"
+    },
+    "role": "sink",
+    "unix_time": 1794349861
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "issuer": 0,
+      "op": "approve",
+      "permit": {
+        "actor": "alice",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 2
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794353461,
+          "id": "one"
+        }
+      }
+    },
+    "invoked_ns": 37719828901730,
+    "responded_ns": 37719835396176,
+    "response": {
+      "status": "approved"
+    },
+    "role": "broker",
+    "unix_time": 1794349861
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "budget": 8,
+      "epochs": [
+        0,
+        0
+      ],
+      "expires": 1794353521,
+      "grants": [
+        true,
+        true
+      ],
+      "id": "root-cap",
+      "op": "delegate",
+      "required": [
+        true,
+        true
+      ],
+      "scope": [
+        true,
+        false,
+        false
+      ]
+    },
+    "invoked_ns": 37719835423298,
+    "responded_ns": 37719841571969,
+    "response": {
+      "id": "root-cap",
+      "status": "delegated"
+    },
+    "role": "broker",
+    "unix_time": 1794349861
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "delegate",
+      "parent": "root-cap",
+      "permit": {
+        "actor": "bob",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 1
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794353461,
+          "id": "delegated"
+        }
+      }
+    },
+    "invoked_ns": 37719841584663,
+    "responded_ns": 37719863099208,
+    "response": {
+      "id": "delegated",
+      "status": "delegated"
+    },
+    "role": "broker",
+    "unix_time": 1794349861
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "submit",
+      "proposal": {
+        "effect": {
+          "kind": "transfer",
+          "recipient": "approved",
+          "units": 1
+        },
+        "epochs": [
+          0,
+          0
+        ],
+        "expires": 1794353461,
+        "id": "delegated"
+      },
+      "session_actor": "bob"
+    },
+    "invoked_ns": 37719863139174,
+    "responded_ns": 37719874990001,
+    "response": {
+      "permit": {
+        "actor": "bob",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 1
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794353461,
+          "id": "delegated"
+        },
+        "required": [
+          true,
+          true
+        ]
+      },
+      "status": "pending"
+    },
+    "role": "broker",
+    "unix_time": 1794349861
+  },
+  {
+    "effects": [],
+    "invocation": {
+      "op": "accept",
+      "permit": {
+        "actor": "bob",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 1
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794353461,
+          "id": "delegated"
+        },
+        "required": [
+          true,
+          true
+        ]
+      }
+    },
+    "invoked_ns": 37719875033223,
+    "responded_ns": 37719881349873,
+    "response": {
+      "status": "pending"
+    },
+    "role": "sink",
+    "unix_time": 1794349861
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "issuer": 1,
+      "op": "withdraw"
+    },
+    "invoked_ns": 37719881790587,
+    "responded_ns": 37719888935515,
+    "response": {
+      "charged": 1,
+      "floor": 1,
+      "issuer": 1,
+      "outstanding": 1,
+      "status": "admission_revoked"
+    },
+    "role": "broker",
+    "unix_time": 1794349861
+  },
+  {
+    "effects": [],
+    "invocation": {
+      "floor": 1,
+      "issuer": 1,
+      "op": "fence"
+    },
+    "invoked_ns": 37719888954852,
+    "responded_ns": 37719895023712,
+    "response": {
+      "floor": 1,
+      "issuer": 1,
+      "status": "fenced"
+    },
+    "role": "sink",
+    "unix_time": 1794349861
+  },
+  {
+    "effects": [],
+    "invocation": {
+      "id": "delegated",
+      "op": "status"
+    },
+    "invoked_ns": 37719895408110,
+    "responded_ns": 37719895492871,
+    "response": {
+      "status": "cancelled"
+    },
+    "role": "sink",
+    "unix_time": 1794349861
+  },
+  {
+    "effects": [],
+    "invocation": {
+      "id": "delegated",
+      "op": "complete"
+    },
+    "invoked_ns": 37719895728737,
+    "responded_ns": 37719895798910,
+    "response": {
+      "status": "cancelled"
+    },
+    "role": "sink",
+    "unix_time": 1794349861
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "id": "delegated",
+      "op": "settle",
+      "sink_status": "cancelled"
+    },
+    "invoked_ns": 37719896045777,
+    "responded_ns": 37719902056768,
+    "response": {
+      "status": "cancelled"
+    },
+    "role": "broker",
+    "unix_time": 1794349861
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "submit",
+      "proposal": {
+        "effect": {
+          "kind": "transfer",
+          "recipient": "approved",
+          "units": 1
+        },
+        "epochs": [
+          0,
+          0
+        ],
+        "expires": 1794353461,
+        "id": "delegated"
+      },
+      "session_actor": "bob"
+    },
+    "invoked_ns": 37719902070995,
+    "responded_ns": 37719902193738,
+    "response": {
+      "permit": {
+        "actor": "bob",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 1
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794353461,
+          "id": "delegated"
+        },
+        "required": [
+          true,
+          true
+        ]
+      },
+      "status": "cancelled"
+    },
+    "role": "broker",
+    "unix_time": 1794349861
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "inspect"
+    },
+    "invoked_ns": 37719902440004,
+    "responded_ns": 37719902565151,
+    "response": {
+      "approvals": [
+        {
+          "grants": [
+            true,
+            false
+          ],
+          "permit": {
+            "actor": "alice",
+            "proposal": {
+              "effect": {
+                "kind": "transfer",
+                "recipient": "approved",
+                "units": 2
+              },
+              "epochs": [
+                0,
+                0
+              ],
+              "expires": 1794353461,
+              "id": "one"
+            }
+          }
+        }
+      ],
+      "budget": 8,
+      "charged": 0,
+      "delegations": [
+        {
+          "budget": 8,
+          "charged": 0,
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794353521,
+          "grants": [
+            true,
+            false
+          ],
+          "id": "root-cap",
+          "parent": null,
+          "permit": null,
+          "required": [
+            true,
+            true
+          ],
+          "scope": [
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "budget": 1,
+          "charged": 0,
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794353461,
+          "grants": [
+            true,
+            false
+          ],
+          "id": "delegated",
+          "parent": "root-cap",
+          "permit": {
+            "actor": "bob",
+            "proposal": {
+              "effect": {
+                "kind": "transfer",
+                "recipient": "approved",
+                "units": 1
+              },
+              "epochs": [
+                0,
+                0
+              ],
+              "expires": 1794353461,
+              "id": "delegated"
+            }
+          },
+          "required": [
+            true,
+            true
+          ],
+          "scope": [
+            true,
+            false,
+            false
+          ]
+        }
+      ],
+      "epochs": [
+        0,
+        1
+      ],
+      "live": [
+        true,
+        false
+      ],
+      "records": [
+        {
+          "permit": {
+            "actor": "bob",
+            "proposal": {
+              "effect": {
+                "kind": "transfer",
+                "recipient": "approved",
+                "units": 1
+              },
+              "epochs": [
+                0,
+                0
+              ],
+              "expires": 1794353461,
+              "id": "delegated"
+            },
+            "required": [
+              true,
+              true
+            ]
+          },
+          "status": "cancelled"
+        }
+      ]
+    },
+    "role": "broker",
+    "unix_time": 1794349861
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "audit"
+    },
+    "invoked_ns": 37719902831014,
+    "responded_ns": 37719902996948,
+    "response": {
+      "budget": 8,
+      "cancelled_charge": 1,
+      "charged": 0,
+      "committed_charge": 0,
+      "consistent": true,
+      "delegations_consistent": true,
+      "integrity": "ok",
+      "pending_charge": 0,
+      "records": 1,
+      "status": "ok"
+    },
+    "role": "broker",
+    "unix_time": 1794349861
+  },
+  {
+    "effects": [],
+    "invocation": {
+      "op": "audit"
+    },
+    "invoked_ns": 37719903026294,
+    "responded_ns": 37719903207086,
+    "response": {
+      "cancelled_permits": 1,
+      "committed_permits": 0,
+      "consistent": true,
+      "effects": 0,
+      "floors": [
+        0,
+        1
+      ],
+      "integrity": "ok",
+      "pending_permits": 0,
+      "pending_unfenced": true,
+      "revision": 0,
+      "status": "ok"
+    },
+    "role": "sink",
+    "unix_time": 1794349861
+  }
+]

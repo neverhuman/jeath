@@ -1,0 +1,17 @@
+[
+  {
+    "session_actor": "alice",
+    "request_jsonl": "<oversize>",
+    "response": {
+      "status": "denied",
+      "reason": "oversize RPC"
+    }
+  },
+  {
+    "session_actor": "alice",
+    "request_jsonl": "{\"op\": \"status\", \"id\": \"one\"}",
+    "response": {
+      "status": "committed"
+    }
+  }
+]

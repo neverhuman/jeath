@@ -1,22 +1,49 @@
 {
   "administrator_impersonation": "three real confined RPC probes denied; useful submit/status committed",
   "confined": {
+    "cross_prlimit": false,
     "database_read": false,
     "database_write": false,
+    "existing_sysv_queue": false,
+    "inherited_fd": false,
+    "keyring": false,
     "proc_read": false,
     "process_vm_read": false,
     "ptrace": false,
-    "socket": false
+    "socket": false,
+    "unix_socket": false
   },
   "kernel": "6.8.0-147-generic",
   "native_canary": {
+    "cross_prlimit": true,
     "database_read": true,
     "database_write": true,
+    "existing_sysv_queue": true,
+    "inherited_fd": true,
+    "keyring": true,
     "proc_read": true,
     "process_vm_read": true,
     "ptrace": true,
-    "socket": true
+    "socket": true,
+    "unix_socket": true
   },
+  "oversize_launcher_guard": [
+    {
+      "request_jsonl": "<oversize>",
+      "response": {
+        "reason": "oversize RPC",
+        "status": "denied"
+      },
+      "session_actor": "alice"
+    },
+    {
+      "request_jsonl": "{\"op\": \"status\", \"id\": \"one\"}",
+      "response": {
+        "status": "committed"
+      },
+      "session_actor": "alice"
+    }
+  ],
   "passed": true,
   "session": [
     {
@@ -44,7 +71,7 @@
       "session_actor": "alice"
     },
     {
-      "request_jsonl": "{\"op\": \"submit\", \"proposal\": {\"id\": \"one\", \"epochs\": [0, 0], \"expires\": 1794341696, \"effect\": {\"kind\": \"transfer\", \"recipient\": \"approved\", \"units\": 2}}}",
+      "request_jsonl": "{\"op\": \"submit\", \"proposal\": {\"id\": \"one\", \"epochs\": [0, 0], \"expires\": 1794353503, \"effect\": {\"kind\": \"transfer\", \"recipient\": \"approved\", \"units\": 2}}}",
       "response": {
         "status": "committed"
       },
@@ -58,5 +85,16 @@
       "session_actor": "alice"
     }
   ],
-  "status": "passed"
+  "status": "passed",
+  "sysv_queue_canary": {
+    "confined": {
+      "errno": 1,
+      "ok": false
+    },
+    "removed": true,
+    "unrestricted": {
+      "errno": 0,
+      "ok": true
+    }
+  }
 }

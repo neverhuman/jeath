@@ -1,7 +1,74 @@
 {
   "actors": 1,
+  "audit": {
+    "broker": {
+      "budget": 8,
+      "cancelled_charge": 0,
+      "charged": 8,
+      "committed_charge": 8,
+      "consistent": true,
+      "delegations_consistent": true,
+      "integrity": "ok",
+      "pending_charge": 0,
+      "records": 1,
+      "status": "ok"
+    },
+    "sink": {
+      "cancelled_permits": 0,
+      "committed_permits": 1,
+      "consistent": true,
+      "effects": 1,
+      "floors": [
+        0,
+        0
+      ],
+      "integrity": "ok",
+      "pending_permits": 0,
+      "pending_unfenced": true,
+      "revision": 0,
+      "status": "ok"
+    }
+  },
   "charged": 8,
-  "check": "independent final-state conservation and exact recipient/amount",
+  "check": "bounded reference linearization + independent final-state conservation",
+  "concurrent_check": {
+    "calls": 7,
+    "checked": true,
+    "effects": 1,
+    "linearization": [
+      {
+        "committed": true,
+        "event": 0
+      },
+      {
+        "committed": true,
+        "event": 1
+      },
+      {
+        "committed": true,
+        "event": 2
+      },
+      {
+        "committed": true,
+        "event": 3
+      },
+      {
+        "committed": true,
+        "event": 4
+      },
+      {
+        "committed": true,
+        "event": 5
+      },
+      {
+        "committed": true,
+        "event": 6
+      }
+    ],
+    "nodes": 7,
+    "scope": "recorded decisions/public status + real-time order + final effects; inspect/audit snapshots excluded",
+    "status": "linearizable_in_declared_scope"
+  },
   "effects": [
     {
       "actor": "actor-0",
@@ -15,7 +82,7 @@
           0,
           0
         ],
-        "expires": 1794341684,
+        "expires": 1794353465,
         "id": "actor-0"
       }
     }
@@ -23,7 +90,7 @@
   "outcomes": [
     {
       "actor": 0,
-      "latency_ms": 63.510134,
+      "latency_ms": 1569.525338,
       "response": {
         "status": "committed"
       }

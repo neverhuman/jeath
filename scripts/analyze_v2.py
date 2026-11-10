@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Validate v2 CPU evidence; analyze optional genuine model campaign JSONL."""
 import argparse
+import errno
 import hashlib
 import json
 import math
@@ -8,6 +9,7 @@ from pathlib import Path
 
 from ablate_v2 import suite
 from campaign_analysis import analyze as analyze_campaigns, bounded_interval, load_freeze
+from concurrent_v3 import check_concurrent
 from reference_v2 import check
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,6 +25,7 @@ EXPECTED_PROBES = {
     "inherited_fd",
     "ptrace",
     "process_vm_read",
+    "existing_sysv_queue",
 }
 
 EXPECTED_NEW_FAULTS = {
@@ -68,16 +71,29 @@ def validate(directory, source=False):
     revoke = [r for r in faults if "post_revoke_effects" in r]
     assert len(revoke) == 3
     assert all(r["post_revoke_effects"] == (r["case"] == "admission") for r in revoke)
-    for row in load(directory / "races.json"):
+    races = load(directory / "races.json")
+    for row in races:
         assert row["charged"] == 8 and len(row["effects"]) == 1
         assert row["effects"][0]["proposal"]["effect"] == {"kind": "transfer", "recipient": "approved", "units": 8}
         assert all(math.isfinite(r["latency_ms"]) and r["latency_ms"] >= 0 for r in row["outcomes"])
         assert row["audit"]["broker"]["consistent"] is True and row["audit"]["sink"]["consistent"] is True
-    assert {r["actors"] for r in load(directory / "races.json")} == {1, 2, 4, 8, 16, 32}
+        race_dir = directory / "races" / f"{row['actors']}-{row['repeat']}"
+        if row["actors"] in (1, 2, 4):
+            recorded_history = load(race_dir / "history.json")
+            recorded_check = load(race_dir / "concurrent-check.json")
+            recomputed = check_concurrent(recorded_history, row["effects"])
+            assert recomputed["checked"] is True
+            assert recomputed == recorded_check == row["concurrent_check"]
+        else:
+            assert row.get("concurrent_check") is None
+    assert {r["actors"] for r in races} == {1, 2, 4, 8, 16, 32}
     isolated = load(directory / "isolation.json")
     assert isolated["passed"] and all(isolated["native_canary"].values()) and not any(isolated["confined"].values())
     assert set(isolated["native_canary"]) == EXPECTED_PROBES
     assert set(isolated["confined"]) == EXPECTED_PROBES
+    assert isolated["sysv_queue_canary"]["unrestricted"] == {"ok": True, "errno": 0}
+    assert isolated["sysv_queue_canary"]["confined"] == {"ok": False, "errno": errno.EPERM}
+    assert isolated["sysv_queue_canary"]["removed"] is True
     assert [r["response"]["status"] for r in isolated["session"]] == [
         "denied",
         "denied",
@@ -113,7 +129,10 @@ def validate(directory, source=False):
     return {
         "validated": True,
         "fault_histories": len(list((directory / "faults").glob("*/history.json"))),
-        "race_runs": len(load(directory / "races.json")),
+        "race_runs": len(races),
+        "concurrent_linearized_runs": sum(
+            1 for r in races if r.get("concurrent_check") and r["concurrent_check"]["checked"]
+        ),
         "confinement_probes": len(isolated["confined"]),
         "model_campaigns": 0,
     }

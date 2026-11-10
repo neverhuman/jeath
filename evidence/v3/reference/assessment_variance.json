@@ -1,0 +1,352 @@
+{
+  "claim_boundary": "Synthetic 20D nonlinear teacher and parametric copula/variance mechanics only; not frontier-LLM monitor transfer or human-subject evidence.",
+  "seed": 20261110,
+  "mc_subjects": 10000,
+  "portfolio": {
+    "v_g": 1.0,
+    "omega_sq": 0.2,
+    "sigma_c_sq": 4.0,
+    "sigma_e_sq": 6.0,
+    "shared_bias_ceiling": 0.8333333333333334,
+    "single_domain_ceiling": 0.1923076923076923,
+    "repeat_64": 0.18890200708382526,
+    "diverse_64": 0.7373271889400922,
+    "repeated_single_domain_curve": [
+      {
+        "budget_n": 1,
+        "k_domains": 1,
+        "n_per_domain": 1,
+        "exact_r_g": 0.08928571428571429,
+        "mc_r_g": 0.08320037761680989,
+        "abs_error": 0.006085336668904401
+      },
+      {
+        "budget_n": 2,
+        "k_domains": 1,
+        "n_per_domain": 2,
+        "exact_r_g": 0.12195121951219513,
+        "mc_r_g": 0.12014418388410812,
+        "abs_error": 0.0018070356280870115
+      },
+      {
+        "budget_n": 4,
+        "k_domains": 1,
+        "n_per_domain": 4,
+        "exact_r_g": 0.14925373134328357,
+        "mc_r_g": 0.14709867137026783,
+        "abs_error": 0.0021550599730157383
+      },
+      {
+        "budget_n": 8,
+        "k_domains": 1,
+        "n_per_domain": 8,
+        "exact_r_g": 0.1680672268907563,
+        "mc_r_g": 0.16785729171290406,
+        "abs_error": 0.00020993517785222737
+      },
+      {
+        "budget_n": 16,
+        "k_domains": 1,
+        "n_per_domain": 16,
+        "exact_r_g": 0.17937219730941703,
+        "mc_r_g": 0.1808587081806989,
+        "abs_error": 0.0014865108712818764
+      },
+      {
+        "budget_n": 32,
+        "k_domains": 1,
+        "n_per_domain": 32,
+        "exact_r_g": 0.18561484918793503,
+        "mc_r_g": 0.1809838320600243,
+        "abs_error": 0.004631017127910725
+      },
+      {
+        "budget_n": 64,
+        "k_domains": 1,
+        "n_per_domain": 64,
+        "exact_r_g": 0.18890200708382526,
+        "mc_r_g": 0.18089664199186,
+        "abs_error": 0.008005365091965255
+      }
+    ],
+    "diverse_domains_curve": [
+      {
+        "budget_n": 1,
+        "k_domains": 1,
+        "n_per_domain": 1,
+        "exact_r_g": 0.08928571428571429,
+        "mc_r_g": 0.09632354989798561,
+        "abs_error": 0.007037835612271323
+      },
+      {
+        "budget_n": 2,
+        "k_domains": 2,
+        "n_per_domain": 1,
+        "exact_r_g": 0.16129032258064516,
+        "mc_r_g": 0.1612013355145328,
+        "abs_error": 0.00008898706611235041
+      },
+      {
+        "budget_n": 4,
+        "k_domains": 4,
+        "n_per_domain": 1,
+        "exact_r_g": 0.27027027027027023,
+        "mc_r_g": 0.26407762963461956,
+        "abs_error": 0.00619264063565067
+      },
+      {
+        "budget_n": 8,
+        "k_domains": 8,
+        "n_per_domain": 1,
+        "exact_r_g": 0.4081632653061224,
+        "mc_r_g": 0.41196342413316595,
+        "abs_error": 0.0038001588270435427
+      },
+      {
+        "budget_n": 16,
+        "k_domains": 16,
+        "n_per_domain": 1,
+        "exact_r_g": 0.547945205479452,
+        "mc_r_g": 0.5513857212411903,
+        "abs_error": 0.0034405157617383164
+      },
+      {
+        "budget_n": 32,
+        "k_domains": 32,
+        "n_per_domain": 1,
+        "exact_r_g": 0.6611570247933884,
+        "mc_r_g": 0.6540606129373682,
+        "abs_error": 0.007096411856020279
+      },
+      {
+        "budget_n": 64,
+        "k_domains": 64,
+        "n_per_domain": 1,
+        "exact_r_g": 0.7373271889400922,
+        "mc_r_g": 0.7274105852243474,
+        "abs_error": 0.009916603715744765
+      }
+    ],
+    "fixed_budget_64_tradeoff": [
+      {
+        "budget_n": 64,
+        "k_domains": 1,
+        "n_per_domain": 64,
+        "exact_r_g": 0.18890200708382526,
+        "mc_r_g": 0.18269890182768092,
+        "abs_error": 0.006203105256144342
+      },
+      {
+        "budget_n": 64,
+        "k_domains": 2,
+        "n_per_domain": 32,
+        "exact_r_g": 0.3036053130929791,
+        "mc_r_g": 0.2983154833492486,
+        "abs_error": 0.00528982974373049
+      },
+      {
+        "budget_n": 64,
+        "k_domains": 4,
+        "n_per_domain": 16,
+        "exact_r_g": 0.435967302452316,
+        "mc_r_g": 0.4548960969518438,
+        "abs_error": 0.01892879449952778
+      },
+      {
+        "budget_n": 64,
+        "k_domains": 8,
+        "n_per_domain": 8,
+        "exact_r_g": 0.5574912891986062,
+        "mc_r_g": 0.5552754795554329,
+        "abs_error": 0.002215809643173361
+      },
+      {
+        "budget_n": 64,
+        "k_domains": 16,
+        "n_per_domain": 4,
+        "exact_r_g": 0.6477732793522267,
+        "mc_r_g": 0.6454981099834427,
+        "abs_error": 0.0022751693687840246
+      },
+      {
+        "budget_n": 64,
+        "k_domains": 32,
+        "n_per_domain": 2,
+        "exact_r_g": 0.7048458149779736,
+        "mc_r_g": 0.7022679374420573,
+        "abs_error": 0.0025778775359163175
+      },
+      {
+        "budget_n": 64,
+        "k_domains": 64,
+        "n_per_domain": 1,
+        "exact_r_g": 0.7373271889400922,
+        "mc_r_g": 0.7436665227114109,
+        "abs_error": 0.006339333771318678
+      }
+    ]
+  },
+  "crossed_generalizability": {
+    "citation": "Cronbach et al. (1972) Generalizability Theory",
+    "v_t": 1.0,
+    "v_u": 0.2,
+    "v_delta": 3.0,
+    "v_eta": 1.0,
+    "v_eps": 4.0,
+    "shared_bias_ceiling": 0.8333333333333334,
+    "single_context_panel_ceiling": 0.23809523809523808,
+    "panel_scaling_k1": [
+      {
+        "m_evaluators": 1,
+        "k_contexts": 1,
+        "exact_v_mk": 0.10869565217391305,
+        "mc_v_mk": 0.11717520848184305,
+        "abs_error": 0.00847955630793
+      },
+      {
+        "m_evaluators": 2,
+        "k_contexts": 1,
+        "exact_v_mk": 0.14925373134328357,
+        "mc_v_mk": 0.15009244773342553,
+        "abs_error": 0.0008387163901419636
+      },
+      {
+        "m_evaluators": 4,
+        "k_contexts": 1,
+        "exact_v_mk": 0.18348623853211007,
+        "mc_v_mk": 0.18996674708705294,
+        "abs_error": 0.006480508554942865
+      },
+      {
+        "m_evaluators": 8,
+        "k_contexts": 1,
+        "exact_v_mk": 0.20725388601036268,
+        "mc_v_mk": 0.22836360079420548,
+        "abs_error": 0.021109714783842798
+      },
+      {
+        "m_evaluators": 16,
+        "k_contexts": 1,
+        "exact_v_mk": 0.22160664819944598,
+        "mc_v_mk": 0.22470320884337247,
+        "abs_error": 0.0030965606439264937
+      },
+      {
+        "m_evaluators": 32,
+        "k_contexts": 1,
+        "exact_v_mk": 0.22955523672883787,
+        "mc_v_mk": 0.22525412660997884,
+        "abs_error": 0.004301110118859031
+      },
+      {
+        "m_evaluators": 64,
+        "k_contexts": 1,
+        "exact_v_mk": 0.23374726077428779,
+        "mc_v_mk": 0.23479546250904693,
+        "abs_error": 0.001048201734759141
+      }
+    ],
+    "context_scaling_m1": [
+      {
+        "m_evaluators": 1,
+        "k_contexts": 1,
+        "exact_v_mk": 0.10869565217391305,
+        "mc_v_mk": 0.10311552902192632,
+        "abs_error": 0.005580123151986735
+      },
+      {
+        "m_evaluators": 1,
+        "k_contexts": 2,
+        "exact_v_mk": 0.17543859649122806,
+        "mc_v_mk": 0.17364255479226232,
+        "abs_error": 0.0017960416989657446
+      },
+      {
+        "m_evaluators": 1,
+        "k_contexts": 4,
+        "exact_v_mk": 0.2531645569620253,
+        "mc_v_mk": 0.24276883508217706,
+        "abs_error": 0.010395721879848219
+      },
+      {
+        "m_evaluators": 1,
+        "k_contexts": 8,
+        "exact_v_mk": 0.3252032520325203,
+        "mc_v_mk": 0.33160235638326624,
+        "abs_error": 0.006399104350745921
+      },
+      {
+        "m_evaluators": 1,
+        "k_contexts": 16,
+        "exact_v_mk": 0.3791469194312796,
+        "mc_v_mk": 0.395993552386381,
+        "abs_error": 0.016846632955101415
+      },
+      {
+        "m_evaluators": 1,
+        "k_contexts": 32,
+        "exact_v_mk": 0.4134366925064599,
+        "mc_v_mk": 0.40110405580474623,
+        "abs_error": 0.012332636701713695
+      },
+      {
+        "m_evaluators": 1,
+        "k_contexts": 64,
+        "exact_v_mk": 0.4330175913396481,
+        "mc_v_mk": 0.43191861539662685,
+        "abs_error": 0.0010989759430212742
+      }
+    ],
+    "context_scaling_m4": [
+      {
+        "m_evaluators": 4,
+        "k_contexts": 1,
+        "exact_v_mk": 0.18348623853211007,
+        "mc_v_mk": 0.17962076064947693,
+        "abs_error": 0.0038654778826331393
+      },
+      {
+        "m_evaluators": 4,
+        "k_contexts": 2,
+        "exact_v_mk": 0.2898550724637681,
+        "mc_v_mk": 0.29199957617022543,
+        "abs_error": 0.0021445037064573014
+      },
+      {
+        "m_evaluators": 4,
+        "k_contexts": 4,
+        "exact_v_mk": 0.4081632653061224,
+        "mc_v_mk": 0.4096720897270619,
+        "abs_error": 0.0015088244209395252
+      },
+      {
+        "m_evaluators": 4,
+        "k_contexts": 8,
+        "exact_v_mk": 0.5128205128205129,
+        "mc_v_mk": 0.5217987882436402,
+        "abs_error": 0.008978275423127346
+      },
+      {
+        "m_evaluators": 4,
+        "k_contexts": 16,
+        "exact_v_mk": 0.5882352941176471,
+        "mc_v_mk": 0.5977465096526984,
+        "abs_error": 0.009511215535051298
+      },
+      {
+        "m_evaluators": 4,
+        "k_contexts": 32,
+        "exact_v_mk": 0.6349206349206349,
+        "mc_v_mk": 0.6318455498130973,
+        "abs_error": 0.003075085107537623
+      },
+      {
+        "m_evaluators": 4,
+        "k_contexts": 64,
+        "exact_v_mk": 0.6611570247933884,
+        "mc_v_mk": 0.653000459390605,
+        "abs_error": 0.008156565402783422
+      }
+    ]
+  }
+}

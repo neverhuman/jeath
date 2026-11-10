@@ -1,10 +1,85 @@
 {
   "actors": 2,
+  "audit": {
+    "broker": {
+      "budget": 8,
+      "cancelled_charge": 0,
+      "charged": 8,
+      "committed_charge": 8,
+      "consistent": true,
+      "delegations_consistent": true,
+      "integrity": "ok",
+      "pending_charge": 0,
+      "records": 1,
+      "status": "ok"
+    },
+    "sink": {
+      "cancelled_permits": 0,
+      "committed_permits": 1,
+      "consistent": true,
+      "effects": 1,
+      "floors": [
+        0,
+        0
+      ],
+      "integrity": "ok",
+      "pending_permits": 0,
+      "pending_unfenced": true,
+      "revision": 0,
+      "status": "ok"
+    }
+  },
   "charged": 8,
-  "check": "independent final-state conservation and exact recipient/amount",
+  "check": "bounded reference linearization + independent final-state conservation",
+  "concurrent_check": {
+    "calls": 9,
+    "checked": true,
+    "effects": 1,
+    "linearization": [
+      {
+        "committed": true,
+        "event": 0
+      },
+      {
+        "committed": true,
+        "event": 1
+      },
+      {
+        "committed": true,
+        "event": 2
+      },
+      {
+        "committed": true,
+        "event": 3
+      },
+      {
+        "committed": true,
+        "event": 4
+      },
+      {
+        "committed": true,
+        "event": 5
+      },
+      {
+        "committed": true,
+        "event": 6
+      },
+      {
+        "committed": true,
+        "event": 7
+      },
+      {
+        "committed": true,
+        "event": 8
+      }
+    ],
+    "nodes": 9,
+    "scope": "recorded decisions/public status + real-time order + final effects; inspect/audit snapshots excluded",
+    "status": "linearizable_in_declared_scope"
+  },
   "effects": [
     {
-      "actor": "actor-1",
+      "actor": "actor-0",
       "proposal": {
         "effect": {
           "kind": "transfer",
@@ -15,25 +90,25 @@
           0,
           0
         ],
-        "expires": 1794341685,
-        "id": "actor-1"
+        "expires": 1794353472,
+        "id": "actor-0"
       }
     }
   ],
   "outcomes": [
     {
       "actor": 0,
-      "latency_ms": 34.349078,
+      "latency_ms": 548.30529,
       "response": {
-        "reason": "policy",
-        "status": "denied"
+        "status": "committed"
       }
     },
     {
       "actor": 1,
-      "latency_ms": 83.518402,
+      "latency_ms": 129.048574,
       "response": {
-        "status": "committed"
+        "reason": "policy",
+        "status": "denied"
       }
     }
   ],

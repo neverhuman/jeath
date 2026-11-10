@@ -5,26 +5,26 @@
       "budget": 8,
       "op": "init"
     },
-    "invoked_ns": 25941257575980,
-    "responded_ns": 25941419211108,
+    "invoked_ns": 37715578065561,
+    "responded_ns": 37715728269360,
     "response": {
       "status": "initialized"
     },
     "role": "broker",
-    "unix_time": 1794338082
+    "unix_time": 1794349856
   },
   {
     "effects": [],
     "invocation": {
       "op": "init"
     },
-    "invoked_ns": 25941419220385,
-    "responded_ns": 25941428454457,
+    "invoked_ns": 37715728308394,
+    "responded_ns": 37715740596449,
     "response": {
       "status": "initialized"
     },
     "role": "sink",
-    "unix_time": 1794338082
+    "unix_time": 1794349857
   },
   {
     "effects": null,
@@ -43,18 +43,18 @@
             0,
             0
           ],
-          "expires": 1794341682,
+          "expires": 1794353457,
           "id": "one"
         }
       }
     },
-    "invoked_ns": 25941429083488,
-    "responded_ns": 25941438470839,
+    "invoked_ns": 37715741242643,
+    "responded_ns": 37715764206421,
     "response": {
       "status": "approved"
     },
     "role": "broker",
-    "unix_time": 1794338082
+    "unix_time": 1794349857
   },
   {
     "effects": null,
@@ -70,13 +70,13 @@
           0,
           0
         ],
-        "expires": 1794341682,
+        "expires": 1794353457,
         "id": "one"
       },
       "session_actor": "alice"
     },
-    "invoked_ns": 25941438478865,
-    "responded_ns": 25941448139373,
+    "invoked_ns": 37715764239344,
+    "responded_ns": 37715782757926,
     "response": {
       "permit": {
         "actor": "alice",
@@ -90,14 +90,14 @@
             0,
             0
           ],
-          "expires": 1794341682,
+          "expires": 1794353457,
           "id": "one"
         }
       },
       "status": "pending"
     },
     "role": "broker",
-    "unix_time": 1794338082
+    "unix_time": 1794349857
   },
   {
     "effects": [],
@@ -115,18 +115,18 @@
             0,
             0
           ],
-          "expires": 1794341682,
+          "expires": 1794353457,
           "id": "one"
         }
       }
     },
-    "invoked_ns": 25941448141918,
-    "responded_ns": 25941459851336,
+    "invoked_ns": 37715782789145,
+    "responded_ns": 37715804147935,
     "response": {
       "status": "pending"
     },
     "role": "sink",
-    "unix_time": 1794338082
+    "unix_time": 1794349857
   },
   {
     "effects": [
@@ -142,7 +142,7 @@
             0,
             0
           ],
-          "expires": 1794341682,
+          "expires": 1794353457,
           "id": "one"
         }
       }
@@ -151,13 +151,13 @@
       "id": "one",
       "op": "complete"
     },
-    "invoked_ns": 25941461933537,
-    "responded_ns": 25941483541735,
+    "invoked_ns": 37715806320048,
+    "responded_ns": 37715837063255,
     "response": {
       "status": "committed"
     },
     "role": "sink",
-    "unix_time": 1794338082
+    "unix_time": 1794349857
   },
   {
     "effects": null,
@@ -166,12 +166,76 @@
       "op": "settle",
       "sink_status": "committed"
     },
-    "invoked_ns": 25941483903911,
-    "responded_ns": 25941493826105,
+    "invoked_ns": 37715837464986,
+    "responded_ns": 37715855987426,
     "response": {
       "status": "committed"
     },
     "role": "broker",
-    "unix_time": 1794338082
+    "unix_time": 1794349857
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "audit"
+    },
+    "invoked_ns": 37715856672222,
+    "responded_ns": 37715856908189,
+    "response": {
+      "budget": 8,
+      "cancelled_charge": 0,
+      "charged": 2,
+      "committed_charge": 2,
+      "consistent": true,
+      "delegations_consistent": true,
+      "integrity": "ok",
+      "pending_charge": 0,
+      "records": 1,
+      "status": "ok"
+    },
+    "role": "broker",
+    "unix_time": 1794349857
+  },
+  {
+    "effects": [
+      {
+        "actor": "alice",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 2
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794353457,
+          "id": "one"
+        }
+      }
+    ],
+    "invocation": {
+      "op": "audit"
+    },
+    "invoked_ns": 37715856918138,
+    "responded_ns": 37715857132363,
+    "response": {
+      "cancelled_permits": 0,
+      "committed_permits": 1,
+      "consistent": true,
+      "effects": 1,
+      "floors": [
+        0,
+        0
+      ],
+      "integrity": "ok",
+      "pending_permits": 0,
+      "pending_unfenced": true,
+      "revision": 0,
+      "status": "ok"
+    },
+    "role": "sink",
+    "unix_time": 1794349857
   }
 ]

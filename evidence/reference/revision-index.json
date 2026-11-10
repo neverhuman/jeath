@@ -1,0 +1,38 @@
+{
+  "schema_version": 3,
+  "tiers": [
+    {
+      "id": "v1_archival_baseline",
+      "directory": "evidence/reference",
+      "source_commit": "12b5579",
+      "status": "preserved byte-for-byte; validated via scripts/validate.py --source-ref 12b5579"
+    },
+    {
+      "id": "v2_prior_pr1_baseline",
+      "source_commit": "68783a0",
+      "status": "retained in git history; superseded in working tree by refreshed Wave 2 V2 reference"
+    },
+    {
+      "id": "v2_refreshed_protocol_and_boundary",
+      "directory": "evidence/v2/reference",
+      "profile": "publication",
+      "verified_obligations": 43,
+      "fault_histories": 31,
+      "concurrent_linearized_populations": [
+        1,
+        2,
+        4
+      ],
+      "confinement_probes": 11,
+      "model_campaigns_run": 0,
+      "gpu_seconds": 0
+    },
+    {
+      "id": "v3_pure_rust_mechanisms_graphs_coverage_monitors_selection",
+      "directory": "evidence/v3/reference",
+      "profile": "publication",
+      "seed": 20261110,
+      "gpu_seconds": 0
+    }
+  ]
+}

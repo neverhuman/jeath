@@ -1,0 +1,374 @@
+{
+  "hypothesis": "H9",
+  "evidence_tier": "tier2_analytical_and_tier4_seeded_queue_simulation",
+  "saturation_default_u": 0.005,
+  "saturation_default_c": 0.01,
+  "saturation_default_p": 0.1,
+  "saturation_default_m": 0.109,
+  "saturation_default_k_star": 2,
+  "appendix_a_common_4": 0.010099,
+  "appendix_a_independent_4": 0.00014115816099999999,
+  "appendix_a_understatement_4": 71.54386206547422,
+  "saturation_curve": [
+    {
+      "depth_k": 1,
+      "common_cause_joint_miss": 0.109,
+      "naive_independent_product": 0.109,
+      "reach_bound_r": 0.114,
+      "understatement_ratio": 1.0
+    },
+    {
+      "depth_k": 2,
+      "common_cause_joint_miss": 0.0199,
+      "naive_independent_product": 0.011881,
+      "reach_bound_r": 0.024900000000000002,
+      "understatement_ratio": 1.6749431866004547
+    },
+    {
+      "depth_k": 3,
+      "common_cause_joint_miss": 0.01099,
+      "naive_independent_product": 0.0012950289999999998,
+      "reach_bound_r": 0.01599,
+      "understatement_ratio": 8.486296445871098
+    },
+    {
+      "depth_k": 4,
+      "common_cause_joint_miss": 0.010099,
+      "naive_independent_product": 0.00014115816099999999,
+      "reach_bound_r": 0.015099000000000001,
+      "understatement_ratio": 71.54386206547422
+    },
+    {
+      "depth_k": 5,
+      "common_cause_joint_miss": 0.0100099,
+      "naive_independent_product": 0.000015386239549,
+      "reach_bound_r": 0.0150099,
+      "understatement_ratio": 650.5748183707809
+    },
+    {
+      "depth_k": 6,
+      "common_cause_joint_miss": 0.01000099,
+      "naive_independent_product": 1.6771001108409997e-6,
+      "reach_bound_r": 0.015000989999999999,
+      "understatement_ratio": 5963.263573445772
+    },
+    {
+      "depth_k": 7,
+      "common_cause_joint_miss": 0.010000099,
+      "naive_independent_product": 1.8280391208166896e-7,
+      "reach_bound_r": 0.015000099,
+      "understatement_ratio": 54703.96604823416
+    },
+    {
+      "depth_k": 8,
+      "common_cause_joint_miss": 0.0100000099,
+      "naive_independent_product": 1.9925626416901916e-8,
+      "reach_bound_r": 0.0150000099,
+      "understatement_ratio": 501866.77652038535
+    }
+  ],
+  "saturation_cases": [
+    {
+      "label": "baseline_1pct_floor",
+      "unmediated_u": 0.005,
+      "common_cause_c": 0.01,
+      "cond_miss_p": 0.1,
+      "marginal_miss_m": 0.109,
+      "k_star_ceil_ln_uc_over_ln_m": 2
+    },
+    {
+      "label": "tight_01pct_floor",
+      "unmediated_u": 0.0005,
+      "common_cause_c": 0.001,
+      "cond_miss_p": 0.1,
+      "marginal_miss_m": 0.1009,
+      "k_star_ceil_ln_uc_over_ln_m": 3
+    },
+    {
+      "label": "moderate_monitor_m025",
+      "unmediated_u": 0.005,
+      "common_cause_c": 0.01,
+      "cond_miss_p": 0.25,
+      "marginal_miss_m": 0.2575,
+      "k_star_ceil_ln_uc_over_ln_m": 4
+    },
+    {
+      "label": "high_common_cause_5pct",
+      "unmediated_u": 0.01,
+      "common_cause_c": 0.05,
+      "cond_miss_p": 0.15,
+      "marginal_miss_m": 0.1925,
+      "k_star_ceil_ln_uc_over_ln_m": 2
+    }
+  ],
+  "summable_asymptotic_sum_bound": 0.016449340668482266,
+  "horizon_curve": [
+    {
+      "renewals_t": 1,
+      "summable_inv_t2_exact_breach": 0.01,
+      "summable_inv_t2_union_upper": 0.01,
+      "harmonic_inv_t_exact_breach": 0.01,
+      "constant_0001_exact_breach": 0.001
+    },
+    {
+      "renewals_t": 10,
+      "summable_inv_t2_exact_breach": 0.015431811052569567,
+      "summable_inv_t2_union_upper": 0.015497677311665408,
+      "harmonic_inv_t_exact_breach": 0.02894053621603503,
+      "constant_0001_exact_breach": 0.009955119790251791
+    },
+    {
+      "renewals_t": 50,
+      "summable_inv_t2_exact_breach": 0.016173565324852618,
+      "summable_inv_t2_union_upper": 0.016251327336215295,
+      "harmonic_inv_t_exact_breach": 0.04407298536288585,
+      "constant_0001_exact_breach": 0.0487943718029686
+    },
+    {
+      "renewals_t": 100,
+      "summable_inv_t2_exact_breach": 0.016270479043118537,
+      "summable_inv_t2_union_upper": 0.016349839001848936,
+      "harmonic_inv_t_exact_breach": 0.05062929319235661,
+      "constant_0001_exact_breach": 0.095207852886291
+    },
+    {
+      "renewals_t": 250,
+      "summable_inv_t2_exact_breach": 0.016329089451603357,
+      "summable_inv_t2_union_upper": 0.01640942056181594,
+      "harmonic_inv_t_exact_breach": 0.059260680742837656,
+      "constant_0001_exact_breach": 0.22129662588301038
+    },
+    {
+      "renewals_t": 500,
+      "summable_inv_t2_exact_breach": 0.016348703746724747,
+      "summable_inv_t2_union_upper": 0.01642936065514893,
+      "harmonic_inv_t_exact_breach": 0.06574960191442435,
+      "constant_0001_exact_breach": 0.39362105513881174
+    },
+    {
+      "renewals_t": 1000,
+      "summable_inv_t2_exact_breach": 0.016358525467473038,
+      "summable_inv_t2_union_upper": 0.01643934566681555,
+      "harmonic_inv_t_exact_breach": 0.07219835044577654,
+      "constant_0001_exact_breach": 0.6323045752290397
+    },
+    {
+      "renewals_t": 2500,
+      "summable_inv_t2_exact_breach": 0.0163644231688951,
+      "summable_inv_t2_union_upper": 0.01644534146837554,
+      "harmonic_inv_t_exact_breach": 0.08065815125342447,
+      "constant_0001_exact_breach": 0.9180176118921488
+    },
+    {
+      "renewals_t": 5000,
+      "summable_inv_t2_exact_breach": 0.016366389847993972,
+      "summable_inv_t2_union_upper": 0.016447340868468857,
+      "harmonic_inv_t_exact_breach": 0.08700760549512095,
+      "constant_0001_exact_breach": 0.9932788880401338
+    },
+    {
+      "renewals_t": 10000,
+      "summable_inv_t2_exact_breach": 0.016367373333578978,
+      "summable_inv_t2_union_upper": 0.016448340718480513,
+      "harmonic_inv_t_exact_breach": 0.09331365583847756,
+      "constant_0001_exact_breach": 0.999954826654023
+    }
+  ],
+  "exposure_curve": [
+    {
+      "capability_index_z": 0.0,
+      "conditional_failure_q": 0.1,
+      "overtake_exposure_lambda": 1.0,
+      "overtake_incident_intensity_rho": 0.1,
+      "controlled_exposure_lambda": 1.0,
+      "controlled_incident_intensity_rho": 0.1
+    },
+    {
+      "capability_index_z": 0.25,
+      "conditional_failure_q": 0.0778800783071405,
+      "overtake_exposure_lambda": 1.4549914146182013,
+      "overtake_incident_intensity_rho": 0.11331484530668265,
+      "controlled_exposure_lambda": 1.1331484530668263,
+      "controlled_incident_intensity_rho": 0.08824969025845955
+    },
+    {
+      "capability_index_z": 0.5,
+      "conditional_failure_q": 0.06065306597126335,
+      "overtake_exposure_lambda": 2.117000016612675,
+      "overtake_incident_intensity_rho": 0.12840254166877416,
+      "controlled_exposure_lambda": 1.2840254166877414,
+      "controlled_incident_intensity_rho": 0.07788007830714049
+    },
+    {
+      "capability_index_z": 0.75,
+      "conditional_failure_q": 0.04723665527410147,
+      "overtake_exposure_lambda": 3.080216848918031,
+      "overtake_incident_intensity_rho": 0.14549914146182014,
+      "controlled_exposure_lambda": 1.4549914146182013,
+      "controlled_incident_intensity_rho": 0.06872892787909722
+    },
+    {
+      "capability_index_z": 1.0,
+      "conditional_failure_q": 0.036787944117144235,
+      "overtake_exposure_lambda": 4.4816890703380645,
+      "overtake_incident_intensity_rho": 0.1648721270700128,
+      "controlled_exposure_lambda": 1.6487212707001282,
+      "controlled_incident_intensity_rho": 0.06065306597126335
+    },
+    {
+      "capability_index_z": 1.25,
+      "conditional_failure_q": 0.028650479686019012,
+      "overtake_exposure_lambda": 6.5208191203301125,
+      "overtake_incident_intensity_rho": 0.18682459574322224,
+      "controlled_exposure_lambda": 1.8682459574322223,
+      "controlled_incident_intensity_rho": 0.05352614285189902
+    },
+    {
+      "capability_index_z": 1.5,
+      "conditional_failure_q": 0.022313016014842982,
+      "overtake_exposure_lambda": 9.487735836358526,
+      "overtake_incident_intensity_rho": 0.21170000166126748,
+      "controlled_exposure_lambda": 2.117000016612675,
+      "controlled_incident_intensity_rho": 0.04723665527410147
+    },
+    {
+      "capability_index_z": 1.75,
+      "conditional_failure_q": 0.017377394345044515,
+      "overtake_exposure_lambda": 13.804574186067095,
+      "overtake_incident_intensity_rho": 0.23988752939670982,
+      "controlled_exposure_lambda": 2.398875293967098,
+      "controlled_incident_intensity_rho": 0.04168620196785085
+    },
+    {
+      "capability_index_z": 2.0,
+      "conditional_failure_q": 0.013533528323661271,
+      "overtake_exposure_lambda": 20.085536923187668,
+      "overtake_incident_intensity_rho": 0.27182818284590454,
+      "controlled_exposure_lambda": 2.718281828459045,
+      "controlled_incident_intensity_rho": 0.036787944117144235
+    },
+    {
+      "capability_index_z": 2.25,
+      "conditional_failure_q": 0.010539922456186434,
+      "overtake_exposure_lambda": 29.22428378123494,
+      "overtake_incident_intensity_rho": 0.30802168489180315,
+      "controlled_exposure_lambda": 3.080216848918031,
+      "controlled_incident_intensity_rho": 0.03246524673583497
+    },
+    {
+      "capability_index_z": 2.5,
+      "conditional_failure_q": 0.008208499862389881,
+      "overtake_exposure_lambda": 42.52108200006278,
+      "overtake_incident_intensity_rho": 0.3490342957461842,
+      "controlled_exposure_lambda": 3.4903429574618414,
+      "controlled_incident_intensity_rho": 0.028650479686019015
+    },
+    {
+      "capability_index_z": 2.75,
+      "conditional_failure_q": 0.006392786120670757,
+      "overtake_exposure_lambda": 61.867809250367884,
+      "overtake_incident_intensity_rho": 0.3955076722920577,
+      "controlled_exposure_lambda": 3.955076722920577,
+      "controlled_incident_intensity_rho": 0.02528395958047465
+    },
+    {
+      "capability_index_z": 3.0,
+      "conditional_failure_q": 0.004978706836786395,
+      "overtake_exposure_lambda": 90.01713130052181,
+      "overtake_incident_intensity_rho": 0.4481689070338065,
+      "controlled_exposure_lambda": 4.4816890703380645,
+      "controlled_incident_intensity_rho": 0.022313016014842982
+    },
+    {
+      "capability_index_z": 3.25,
+      "conditional_failure_q": 0.003877420783172201,
+      "overtake_exposure_lambda": 130.9741532108186,
+      "overtake_incident_intensity_rho": 0.5078419037180081,
+      "controlled_exposure_lambda": 5.0784190371800815,
+      "controlled_incident_intensity_rho": 0.019691167520419408
+    },
+    {
+      "capability_index_z": 3.5,
+      "conditional_failure_q": 0.00301973834223185,
+      "overtake_exposure_lambda": 190.56626845863,
+      "overtake_incident_intensity_rho": 0.575460267600573,
+      "controlled_exposure_lambda": 5.754602676005731,
+      "controlled_incident_intensity_rho": 0.017377394345044515
+    },
+    {
+      "capability_index_z": 3.75,
+      "conditional_failure_q": 0.0023517745856009107,
+      "overtake_exposure_lambda": 277.272284523134,
+      "overtake_incident_intensity_rho": 0.6520819120330112,
+      "controlled_exposure_lambda": 6.5208191203301125,
+      "controlled_incident_intensity_rho": 0.015335496684492845
+    },
+    {
+      "capability_index_z": 4.0,
+      "conditional_failure_q": 0.001831563888873418,
+      "overtake_exposure_lambda": 403.4287934927351,
+      "overtake_incident_intensity_rho": 0.738905609893065,
+      "controlled_exposure_lambda": 7.38905609893065,
+      "controlled_incident_intensity_rho": 0.01353352832366127
+    }
+  ],
+  "tail_halt_rows": [
+    {
+      "rho_load": 0.2,
+      "episodes": 10000,
+      "irreversible_window_ms": 100.0,
+      "mean_reactive_halt_ms": 21.805048006555122,
+      "p95_reactive_halt_ms": 39.129511032781565,
+      "p99_reactive_halt_ms": 57.040507926083635,
+      "reactive_mean_under_deadline": true,
+      "reactive_post_revoke_leaks": 8,
+      "reactive_post_revoke_leak_rate": 0.0008,
+      "precommit_fenced_post_revoke_violations": 0,
+      "precommit_fenced_violation_rate": 0.0,
+      "precommit_ambiguous_timeout_stranded_rate": 0.0
+    },
+    {
+      "rho_load": 0.5,
+      "episodes": 10000,
+      "irreversible_window_ms": 100.0,
+      "mean_reactive_halt_ms": 27.645330853071762,
+      "p95_reactive_halt_ms": 53.71430683822566,
+      "p99_reactive_halt_ms": 83.11000415886829,
+      "reactive_mean_under_deadline": true,
+      "reactive_post_revoke_leaks": 37,
+      "reactive_post_revoke_leak_rate": 0.0037,
+      "precommit_fenced_post_revoke_violations": 0,
+      "precommit_fenced_violation_rate": 0.0,
+      "precommit_ambiguous_timeout_stranded_rate": 0.0
+    },
+    {
+      "rho_load": 0.8,
+      "episodes": 10000,
+      "irreversible_window_ms": 100.0,
+      "mean_reactive_halt_ms": 51.50960806707829,
+      "p95_reactive_halt_ms": 116.01074637148903,
+      "p99_reactive_halt_ms": 191.0889936826434,
+      "reactive_mean_under_deadline": true,
+      "reactive_post_revoke_leaks": 758,
+      "reactive_post_revoke_leak_rate": 0.0758,
+      "precommit_fenced_post_revoke_violations": 0,
+      "precommit_fenced_violation_rate": 0.0,
+      "precommit_ambiguous_timeout_stranded_rate": 0.0001
+    },
+    {
+      "rho_load": 0.95,
+      "episodes": 10000,
+      "irreversible_window_ms": 100.0,
+      "mean_reactive_halt_ms": 172.79173855895814,
+      "p95_reactive_halt_ms": 432.1311517198251,
+      "p99_reactive_halt_ms": 734.494251151775,
+      "reactive_mean_under_deadline": false,
+      "reactive_post_revoke_leaks": 6598,
+      "reactive_post_revoke_leak_rate": 0.6598,
+      "precommit_fenced_post_revoke_violations": 0,
+      "precommit_fenced_violation_rate": 0.0,
+      "precommit_ambiguous_timeout_stranded_rate": 0.0054
+    }
+  ],
+  "claim_boundary": "Analytical risk identities and seeded queueing mechanics conditional on stated hazard and fencing models, not empirical deployment incident telemetry."
+}

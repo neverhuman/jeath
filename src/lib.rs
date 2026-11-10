@@ -10,3 +10,8 @@ pub mod runtime;
 pub mod runtime_experiments;
 pub mod selection;
 pub mod stats;
+pub mod v3_core_models;
+pub mod v3_coverage;
+pub mod v3_graphs;
+pub mod v3_monitors;
+pub mod v3_selection;

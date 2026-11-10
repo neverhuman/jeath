@@ -1,0 +1,334 @@
+[
+  {
+    "effects": null,
+    "invocation": {
+      "budget": 8,
+      "op": "init"
+    },
+    "invoked_ns": 37736590928232,
+    "responded_ns": 37737153381686,
+    "response": {
+      "status": "initialized"
+    },
+    "role": "broker",
+    "unix_time": 1794349877
+  },
+  {
+    "effects": [],
+    "invocation": {
+      "op": "init"
+    },
+    "invoked_ns": 37737153421361,
+    "responded_ns": 37737211913045,
+    "response": {
+      "status": "initialized"
+    },
+    "role": "sink",
+    "unix_time": 1794349878
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "issuer": 0,
+      "op": "approve",
+      "permit": {
+        "actor": "actor-0",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 8
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794353478,
+          "id": "actor-0"
+        }
+      }
+    },
+    "invoked_ns": 37737212444271,
+    "responded_ns": 37737284392323,
+    "response": {
+      "status": "approved"
+    },
+    "role": "broker",
+    "unix_time": 1794349878
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "issuer": 0,
+      "op": "approve",
+      "permit": {
+        "actor": "actor-1",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 8
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794353478,
+          "id": "actor-1"
+        }
+      }
+    },
+    "invoked_ns": 37737284418362,
+    "responded_ns": 37737365569318,
+    "response": {
+      "status": "approved"
+    },
+    "role": "broker",
+    "unix_time": 1794349878
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "issuer": 0,
+      "op": "approve",
+      "permit": {
+        "actor": "actor-2",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 8
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794353478,
+          "id": "actor-2"
+        }
+      }
+    },
+    "invoked_ns": 37737365599205,
+    "responded_ns": 37737455115349,
+    "response": {
+      "status": "approved"
+    },
+    "role": "broker",
+    "unix_time": 1794349878
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "issuer": 0,
+      "op": "approve",
+      "permit": {
+        "actor": "actor-3",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 8
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794353478,
+          "id": "actor-3"
+        }
+      }
+    },
+    "invoked_ns": 37737455165444,
+    "responded_ns": 37737545284921,
+    "response": {
+      "status": "approved"
+    },
+    "role": "broker",
+    "unix_time": 1794349878
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "submit",
+      "proposal": {
+        "effect": {
+          "kind": "transfer",
+          "recipient": "approved",
+          "units": 8
+        },
+        "epochs": [
+          0,
+          0
+        ],
+        "expires": 1794353478,
+        "id": "actor-1"
+      },
+      "session_actor": "actor-1"
+    },
+    "invoked_ns": 37737548207234,
+    "responded_ns": 37737760824911,
+    "response": {
+      "permit": {
+        "actor": "actor-1",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 8
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794353478,
+          "id": "actor-1"
+        }
+      },
+      "status": "pending"
+    },
+    "role": "broker",
+    "unix_time": 1794349878
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "submit",
+      "proposal": {
+        "effect": {
+          "kind": "transfer",
+          "recipient": "approved",
+          "units": 8
+        },
+        "epochs": [
+          0,
+          0
+        ],
+        "expires": 1794353478,
+        "id": "actor-0"
+      },
+      "session_actor": "actor-0"
+    },
+    "invoked_ns": 37737548276775,
+    "responded_ns": 37737777510402,
+    "response": {
+      "reason": "policy",
+      "status": "denied"
+    },
+    "role": "broker",
+    "unix_time": 1794349878
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "submit",
+      "proposal": {
+        "effect": {
+          "kind": "transfer",
+          "recipient": "approved",
+          "units": 8
+        },
+        "epochs": [
+          0,
+          0
+        ],
+        "expires": 1794353478,
+        "id": "actor-2"
+      },
+      "session_actor": "actor-2"
+    },
+    "invoked_ns": 37737548136790,
+    "responded_ns": 37737778089799,
+    "response": {
+      "reason": "policy",
+      "status": "denied"
+    },
+    "role": "broker",
+    "unix_time": 1794349878
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "submit",
+      "proposal": {
+        "effect": {
+          "kind": "transfer",
+          "recipient": "approved",
+          "units": 8
+        },
+        "epochs": [
+          0,
+          0
+        ],
+        "expires": 1794353478,
+        "id": "actor-3"
+      },
+      "session_actor": "actor-3"
+    },
+    "invoked_ns": 37737548242561,
+    "responded_ns": 37737878250597,
+    "response": {
+      "reason": "policy",
+      "status": "denied"
+    },
+    "role": "broker",
+    "unix_time": 1794349878
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "accept",
+      "permit": {
+        "actor": "actor-1",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 8
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794353478,
+          "id": "actor-1"
+        }
+      }
+    },
+    "invoked_ns": 37737760878903,
+    "responded_ns": 37737907268257,
+    "response": {
+      "status": "pending"
+    },
+    "role": "sink",
+    "unix_time": 1794349879
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "id": "actor-1",
+      "op": "complete"
+    },
+    "invoked_ns": 37737907305938,
+    "responded_ns": 37738048651864,
+    "response": {
+      "status": "committed"
+    },
+    "role": "sink",
+    "unix_time": 1794349879
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "id": "actor-1",
+      "op": "settle",
+      "sink_status": "committed"
+    },
+    "invoked_ns": 37738048689425,
+    "responded_ns": 37738173592539,
+    "response": {
+      "status": "committed"
+    },
+    "role": "broker",
+    "unix_time": 1794349879
+  }
+]

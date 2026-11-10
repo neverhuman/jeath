@@ -1,7 +1,37 @@
 {
   "actors": 16,
+  "audit": {
+    "broker": {
+      "budget": 8,
+      "cancelled_charge": 0,
+      "charged": 8,
+      "committed_charge": 8,
+      "consistent": true,
+      "delegations_consistent": true,
+      "integrity": "ok",
+      "pending_charge": 0,
+      "records": 1,
+      "status": "ok"
+    },
+    "sink": {
+      "cancelled_permits": 0,
+      "committed_permits": 1,
+      "consistent": true,
+      "effects": 1,
+      "floors": [
+        0,
+        0
+      ],
+      "integrity": "ok",
+      "pending_permits": 0,
+      "pending_unfenced": true,
+      "revision": 0,
+      "status": "ok"
+    }
+  },
   "charged": 8,
   "check": "independent final-state conservation and exact recipient/amount",
+  "concurrent_check": null,
   "effects": [
     {
       "actor": "actor-15",
@@ -15,7 +45,7 @@
           0,
           0
         ],
-        "expires": 1794341690,
+        "expires": 1794353489,
         "id": "actor-15"
       }
     }
@@ -23,7 +53,7 @@
   "outcomes": [
     {
       "actor": 0,
-      "latency_ms": 103.956595,
+      "latency_ms": 1130.47037,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -31,7 +61,7 @@
     },
     {
       "actor": 1,
-      "latency_ms": 33.744934,
+      "latency_ms": 429.528678,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -39,7 +69,7 @@
     },
     {
       "actor": 2,
-      "latency_ms": 53.756629,
+      "latency_ms": 529.669888,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -47,7 +77,7 @@
     },
     {
       "actor": 3,
-      "latency_ms": 78.793647,
+      "latency_ms": 429.45013,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -55,7 +85,7 @@
     },
     {
       "actor": 4,
-      "latency_ms": 33.724565,
+      "latency_ms": 629.559372,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -63,7 +93,7 @@
     },
     {
       "actor": 5,
-      "latency_ms": 33.625127,
+      "latency_ms": 729.713516,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -71,7 +101,7 @@
     },
     {
       "actor": 6,
-      "latency_ms": 78.792735,
+      "latency_ms": 971.357957,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -79,7 +109,7 @@
     },
     {
       "actor": 7,
-      "latency_ms": 103.854491,
+      "latency_ms": 1029.93299,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -87,7 +117,7 @@
     },
     {
       "actor": 8,
-      "latency_ms": 78.883217,
+      "latency_ms": 929.825263,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -95,7 +125,7 @@
     },
     {
       "actor": 9,
-      "latency_ms": 33.741227,
+      "latency_ms": 529.679667,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -103,7 +133,7 @@
     },
     {
       "actor": 10,
-      "latency_ms": 53.765847,
+      "latency_ms": 429.274677,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -111,7 +141,7 @@
     },
     {
       "actor": 11,
-      "latency_ms": 103.90113,
+      "latency_ms": 1230.178609,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -119,7 +149,7 @@
     },
     {
       "actor": 12,
-      "latency_ms": 179.085534,
+      "latency_ms": 1071.328845,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -127,7 +157,7 @@
     },
     {
       "actor": 13,
-      "latency_ms": 128.953527,
+      "latency_ms": 629.541478,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -135,7 +165,7 @@
     },
     {
       "actor": 14,
-      "latency_ms": 53.678672,
+      "latency_ms": 730.080761,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -143,7 +173,7 @@
     },
     {
       "actor": 15,
-      "latency_ms": 65.200393,
+      "latency_ms": 927.920466,
       "response": {
         "status": "committed"
       }

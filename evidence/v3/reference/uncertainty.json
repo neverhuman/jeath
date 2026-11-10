@@ -1,0 +1,343 @@
+{
+  "hypothesis": "H2",
+  "evidence_tier": "tier2_algebraic_and_tier4_finite_lag_simulation",
+  "budget": 20,
+  "lags": [
+    0,
+    1,
+    2,
+    4,
+    8
+  ],
+  "nested_interval_pairs_checked": 10626,
+  "algebraic_contraction_counterexamples": 0,
+  "algebraic_contraction_verified": true,
+  "algebraic_curve": [
+    {
+      "upper_bound_u": 0,
+      "uncertainty_width": 0,
+      "admissible_actions": 20,
+      "admissible_fraction": 1.0
+    },
+    {
+      "upper_bound_u": 1,
+      "uncertainty_width": 1,
+      "admissible_actions": 19,
+      "admissible_fraction": 0.95
+    },
+    {
+      "upper_bound_u": 2,
+      "uncertainty_width": 2,
+      "admissible_actions": 18,
+      "admissible_fraction": 0.9
+    },
+    {
+      "upper_bound_u": 3,
+      "uncertainty_width": 3,
+      "admissible_actions": 17,
+      "admissible_fraction": 0.85
+    },
+    {
+      "upper_bound_u": 4,
+      "uncertainty_width": 4,
+      "admissible_actions": 16,
+      "admissible_fraction": 0.8
+    },
+    {
+      "upper_bound_u": 5,
+      "uncertainty_width": 5,
+      "admissible_actions": 15,
+      "admissible_fraction": 0.75
+    },
+    {
+      "upper_bound_u": 6,
+      "uncertainty_width": 6,
+      "admissible_actions": 14,
+      "admissible_fraction": 0.7
+    },
+    {
+      "upper_bound_u": 7,
+      "uncertainty_width": 7,
+      "admissible_actions": 13,
+      "admissible_fraction": 0.65
+    },
+    {
+      "upper_bound_u": 8,
+      "uncertainty_width": 8,
+      "admissible_actions": 12,
+      "admissible_fraction": 0.6
+    },
+    {
+      "upper_bound_u": 9,
+      "uncertainty_width": 9,
+      "admissible_actions": 11,
+      "admissible_fraction": 0.55
+    },
+    {
+      "upper_bound_u": 10,
+      "uncertainty_width": 10,
+      "admissible_actions": 10,
+      "admissible_fraction": 0.5
+    },
+    {
+      "upper_bound_u": 11,
+      "uncertainty_width": 11,
+      "admissible_actions": 9,
+      "admissible_fraction": 0.45
+    },
+    {
+      "upper_bound_u": 12,
+      "uncertainty_width": 12,
+      "admissible_actions": 8,
+      "admissible_fraction": 0.4
+    },
+    {
+      "upper_bound_u": 13,
+      "uncertainty_width": 13,
+      "admissible_actions": 7,
+      "admissible_fraction": 0.35
+    },
+    {
+      "upper_bound_u": 14,
+      "uncertainty_width": 14,
+      "admissible_actions": 6,
+      "admissible_fraction": 0.3
+    },
+    {
+      "upper_bound_u": 15,
+      "uncertainty_width": 15,
+      "admissible_actions": 5,
+      "admissible_fraction": 0.25
+    },
+    {
+      "upper_bound_u": 16,
+      "uncertainty_width": 16,
+      "admissible_actions": 4,
+      "admissible_fraction": 0.2
+    },
+    {
+      "upper_bound_u": 17,
+      "uncertainty_width": 17,
+      "admissible_actions": 3,
+      "admissible_fraction": 0.15
+    },
+    {
+      "upper_bound_u": 18,
+      "uncertainty_width": 18,
+      "admissible_actions": 2,
+      "admissible_fraction": 0.1
+    },
+    {
+      "upper_bound_u": 19,
+      "uncertainty_width": 19,
+      "admissible_actions": 1,
+      "admissible_fraction": 0.05
+    },
+    {
+      "upper_bound_u": 20,
+      "uncertainty_width": 20,
+      "admissible_actions": 0,
+      "admissible_fraction": 0.0
+    }
+  ],
+  "conservative_zero_violations_all_lags": true,
+  "conservative_monotonic_contraction_verified": true,
+  "rows": [
+    {
+      "gate": "stale_snapshot",
+      "lag_steps": 0,
+      "episodes": 500,
+      "total_proposals": 8000,
+      "admitted_proposals": 6190,
+      "empirical_admission_rate": 0.77375,
+      "mean_admissible_action_fraction": 0.44908125000000265,
+      "episodes_with_budget_violation": 0,
+      "total_budget_violation_steps": 0,
+      "max_true_overspend": 0,
+      "sound_envelope_step_share": 1.0
+    },
+    {
+      "gate": "stale_snapshot",
+      "lag_steps": 1,
+      "episodes": 500,
+      "total_proposals": 8000,
+      "admitted_proposals": 6417,
+      "empirical_admission_rate": 0.802125,
+      "mean_admissible_action_fraction": 0.5045187500000015,
+      "episodes_with_budget_violation": 214,
+      "total_budget_violation_steps": 1063,
+      "max_true_overspend": 4,
+      "sound_envelope_step_share": 0.496625
+    },
+    {
+      "gate": "stale_snapshot",
+      "lag_steps": 2,
+      "episodes": 500,
+      "total_proposals": 8000,
+      "admitted_proposals": 6730,
+      "empirical_admission_rate": 0.84125,
+      "mean_admissible_action_fraction": 0.5620562500000017,
+      "episodes_with_budget_violation": 313,
+      "total_budget_violation_steps": 1516,
+      "max_true_overspend": 8,
+      "sound_envelope_step_share": 0.271625
+    },
+    {
+      "gate": "stale_snapshot",
+      "lag_steps": 4,
+      "episodes": 500,
+      "total_proposals": 8000,
+      "admitted_proposals": 7374,
+      "empirical_admission_rate": 0.92175,
+      "mean_admissible_action_fraction": 0.67400625,
+      "episodes_with_budget_violation": 400,
+      "total_budget_violation_steps": 1828,
+      "max_true_overspend": 15,
+      "sound_envelope_step_share": 0.117125
+    },
+    {
+      "gate": "stale_snapshot",
+      "lag_steps": 8,
+      "episodes": 500,
+      "total_proposals": 8000,
+      "admitted_proposals": 7964,
+      "empirical_admission_rate": 0.9955,
+      "mean_admissible_action_fraction": 0.8592312500000004,
+      "episodes_with_budget_violation": 410,
+      "total_budget_violation_steps": 1849,
+      "max_true_overspend": 22,
+      "sound_envelope_step_share": 0.097625
+    },
+    {
+      "gate": "proposer_self_report",
+      "lag_steps": 0,
+      "episodes": 500,
+      "total_proposals": 8000,
+      "admitted_proposals": 6501,
+      "empirical_admission_rate": 0.812625,
+      "mean_admissible_action_fraction": 0.48745000000000094,
+      "episodes_with_budget_violation": 244,
+      "total_budget_violation_steps": 929,
+      "max_true_overspend": 3,
+      "sound_envelope_step_share": 0.698625
+    },
+    {
+      "gate": "proposer_self_report",
+      "lag_steps": 1,
+      "episodes": 500,
+      "total_proposals": 8000,
+      "admitted_proposals": 6665,
+      "empirical_admission_rate": 0.833125,
+      "mean_admissible_action_fraction": 0.5407562500000008,
+      "episodes_with_budget_violation": 326,
+      "total_budget_violation_steps": 1437,
+      "max_true_overspend": 6,
+      "sound_envelope_step_share": 0.35225
+    },
+    {
+      "gate": "proposer_self_report",
+      "lag_steps": 2,
+      "episodes": 500,
+      "total_proposals": 8000,
+      "admitted_proposals": 6943,
+      "empirical_admission_rate": 0.867875,
+      "mean_admissible_action_fraction": 0.5958749999999994,
+      "episodes_with_budget_violation": 366,
+      "total_budget_violation_steps": 1683,
+      "max_true_overspend": 9,
+      "sound_envelope_step_share": 0.203375
+    },
+    {
+      "gate": "proposer_self_report",
+      "lag_steps": 4,
+      "episodes": 500,
+      "total_proposals": 8000,
+      "admitted_proposals": 7494,
+      "empirical_admission_rate": 0.93675,
+      "mean_admissible_action_fraction": 0.7037124999999996,
+      "episodes_with_budget_violation": 404,
+      "total_budget_violation_steps": 1835,
+      "max_true_overspend": 15,
+      "sound_envelope_step_share": 0.10925
+    },
+    {
+      "gate": "proposer_self_report",
+      "lag_steps": 8,
+      "episodes": 500,
+      "total_proposals": 8000,
+      "admitted_proposals": 7975,
+      "empirical_admission_rate": 0.996875,
+      "mean_admissible_action_fraction": 0.8773375000000001,
+      "episodes_with_budget_violation": 410,
+      "total_budget_violation_steps": 1849,
+      "max_true_overspend": 22,
+      "sound_envelope_step_share": 0.097625
+    },
+    {
+      "gate": "conservative_envelope_bt",
+      "lag_steps": 0,
+      "episodes": 500,
+      "total_proposals": 8000,
+      "admitted_proposals": 6190,
+      "empirical_admission_rate": 0.77375,
+      "mean_admissible_action_fraction": 0.44908125000000265,
+      "episodes_with_budget_violation": 0,
+      "total_budget_violation_steps": 0,
+      "max_true_overspend": 0,
+      "sound_envelope_step_share": 1.0
+    },
+    {
+      "gate": "conservative_envelope_bt",
+      "lag_steps": 1,
+      "episodes": 500,
+      "total_proposals": 8000,
+      "admitted_proposals": 5928,
+      "empirical_admission_rate": 0.741,
+      "mean_admissible_action_fraction": 0.3864250000000026,
+      "episodes_with_budget_violation": 0,
+      "total_budget_violation_steps": 0,
+      "max_true_overspend": 0,
+      "sound_envelope_step_share": 1.0
+    },
+    {
+      "gate": "conservative_envelope_bt",
+      "lag_steps": 2,
+      "episodes": 500,
+      "total_proposals": 8000,
+      "admitted_proposals": 5621,
+      "empirical_admission_rate": 0.702625,
+      "mean_admissible_action_fraction": 0.33690000000000087,
+      "episodes_with_budget_violation": 0,
+      "total_budget_violation_steps": 0,
+      "max_true_overspend": 0,
+      "sound_envelope_step_share": 1.0
+    },
+    {
+      "gate": "conservative_envelope_bt",
+      "lag_steps": 4,
+      "episodes": 500,
+      "total_proposals": 8000,
+      "admitted_proposals": 4977,
+      "empirical_admission_rate": 0.622125,
+      "mean_admissible_action_fraction": 0.2747687499999971,
+      "episodes_with_budget_violation": 0,
+      "total_budget_violation_steps": 0,
+      "max_true_overspend": 0,
+      "sound_envelope_step_share": 1.0
+    },
+    {
+      "gate": "conservative_envelope_bt",
+      "lag_steps": 8,
+      "episodes": 500,
+      "total_proposals": 8000,
+      "admitted_proposals": 3644,
+      "empirical_admission_rate": 0.4555,
+      "mean_admissible_action_fraction": 0.23323124999999584,
+      "episodes_with_budget_violation": 0,
+      "total_budget_violation_steps": 0,
+      "max_true_overspend": 0,
+      "sound_envelope_step_share": 1.0
+    }
+  ],
+  "claim_boundary": "Proves monotone contraction U_I(B') subseteq U_I(B) and zero budget breaches when true spend stays inside conservative upper bound u_t; availability contracts monotonically with observation lag."
+}

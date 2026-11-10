@@ -2,6 +2,8 @@
 """CPU protocol and isolation evidence. Models are never simulated as measurements."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor
+import ctypes
+import errno
 import hashlib
 import json
 import os
@@ -12,6 +14,7 @@ import subprocess
 import threading
 import time
 
+from concurrent_v3 import check_concurrent
 from reference_v2 import check, charge, required, useful
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -62,8 +65,10 @@ def effects(path):
 
 
 class Service:
-    def __init__(self, role, database, history=None):
+    def __init__(self, role, database, history=None, history_lock=None, record_effects=True):
         self.role, self.database, self.history = role, database, history
+        self.history_lock = history_lock
+        self.record_effects = record_effects
         self.lock = threading.Lock()
         self.start()
 
@@ -84,6 +89,7 @@ class Service:
             self.process.stdin.write(json.dumps(q) + "\n")
             self.process.stdin.flush()
             line = self.process.stdout.readline()
+            responded = time.monotonic_ns()
             response = json.loads(line) if line else None
             if response is None:
                 self.process.wait(timeout=10)
@@ -93,17 +99,20 @@ class Service:
                 self.process.stderr.close()
                 self.start()
             if self.history is not None:
-                self.history.append(
-                    {
-                        "role": self.role,
-                        "invocation": q,
-                        "response": response,
-                        "invoked_ns": begin,
-                        "responded_ns": time.monotonic_ns(),
-                        "unix_time": unix,
-                        "effects": effects(self.database) if self.role == "sink" else None,
-                    }
-                )
+                entry = {
+                    "role": self.role,
+                    "invocation": q,
+                    "response": response,
+                    "invoked_ns": begin,
+                    "responded_ns": responded,
+                    "unix_time": unix,
+                    "effects": effects(self.database) if (self.role == "sink" and self.record_effects) else None,
+                }
+                if self.history_lock is not None:
+                    with self.history_lock:
+                        self.history.append(entry)
+                else:
+                    self.history.append(entry)
             return response
 
     def close(self):
@@ -118,8 +127,9 @@ class Lab:
     def __init__(self, directory, budget=8, issuers=2):
         directory.mkdir(parents=True)
         self.directory, self.history, self.issuers = directory, [], issuers
-        self.broker = Service("broker", directory / "broker.sqlite", self.history)
-        self.sink = Service("sink", directory / "sink.sqlite", self.history)
+        self.history_lock = threading.Lock()
+        self.broker = Service("broker", directory / "broker.sqlite", self.history, self.history_lock)
+        self.sink = Service("sink", directory / "sink.sqlite", self.history, self.history_lock)
         if issuers == 2:
             self.broker.call(op="init", budget=budget)
             self.sink.call(op="init")
@@ -569,8 +579,8 @@ def race_suite(root, repeats):
             barrier = threading.Barrier(workers)
 
             def worker(i):
-                b = Service("broker", lab.broker.database)
-                s = Service("sink", lab.sink.database)
+                b = Service("broker", lab.broker.database, lab.history, lab.history_lock, record_effects=False)
+                s = Service("sink", lab.sink.database, lab.history, lab.history_lock, record_effects=False)
                 barrier.wait(timeout=20)
                 begin = time.monotonic_ns()
                 r = b.call(op="submit", proposal=proposals[i], session_actor=f"actor-{i}")
@@ -586,12 +596,18 @@ def race_suite(root, repeats):
             with ThreadPoolExecutor(max_workers=workers) as pool:
                 outcomes = list(pool.map(worker, range(workers)))
             observed = effects(lab.sink.database)
+            concurrent_history = list(lab.history)
+            write(lab.directory / "history.json", concurrent_history)
+            if workers in (1, 2, 4):
+                concurrent_report = check_concurrent(concurrent_history, observed)
+                assert concurrent_report["checked"] is True, concurrent_report
+                write(lab.directory / "concurrent-check.json", concurrent_report)
+            else:
+                concurrent_report = None
             state = lab.broker.call(op="inspect")
             audits = lab.audit()
             assert len(observed) == 1 and sum(charge(x["proposal"]) for x in observed) == state["charged"] == 8
             assert sum(x["response"]["status"] == "committed" for x in outcomes) == 1
-            # Concurrent execution uses effect and ledger checks; do not feed its
-            # unordered responses to a sequential reference checker.
             lab.broker.close()
             lab.sink.close()
             row = {
@@ -601,7 +617,12 @@ def race_suite(root, repeats):
                 "effects": observed,
                 "charged": state["charged"],
                 "audit": audits,
-                "check": "independent final-state conservation and exact recipient/amount",
+                "concurrent_check": concurrent_report,
+                "check": (
+                    "bounded reference linearization + independent final-state conservation"
+                    if concurrent_report is not None
+                    else "independent final-state conservation and exact recipient/amount"
+                ),
             }
             write(lab.directory / "race.json", row)
             rows.append(row)
@@ -626,6 +647,57 @@ def isolation(root):
         )
     assert result.returncode == 0, result.stderr
     confined = json.loads(result.stdout)
+
+    # Pre-existing SysV message queue canary: msgget alone is insufficient if an
+    # identifier already exists; msgsnd/msgrcv/msgctl must also be denied under seccomp.
+    libc = ctypes.CDLL(None, use_errno=True)
+    libc.msgget.argtypes = [ctypes.c_int, ctypes.c_int]
+    libc.msgget.restype = ctypes.c_int
+    libc.msgctl.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_void_p]
+    libc.msgctl.restype = ctypes.c_int
+    msqid = libc.msgget(0, 0o1600)  # IPC_PRIVATE=0, IPC_CREAT|0600=0o1600
+    assert msqid >= 0, os.strerror(ctypes.get_errno())
+    mq_helper = (
+        "import ctypes, json, sys\n"
+        "class MsgBuf(ctypes.Structure):\n"
+        "    _fields_ = [('mtype', ctypes.c_long), ('mtext', ctypes.c_char * 8)]\n"
+        "libc = ctypes.CDLL(None, use_errno=True)\n"
+        "libc.msgsnd.argtypes = [ctypes.c_int, ctypes.c_void_p, ctypes.c_size_t, ctypes.c_int]\n"
+        "libc.msgsnd.restype = ctypes.c_int\n"
+        "libc.msgrcv.argtypes = [ctypes.c_int, ctypes.c_void_p, ctypes.c_size_t, ctypes.c_long, ctypes.c_int]\n"
+        "libc.msgrcv.restype = ctypes.c_ssize_t\n"
+        "qid = int(sys.argv[1])\n"
+        "buf = MsgBuf(1, b'canary00')\n"
+        "rc = libc.msgsnd(qid, ctypes.byref(buf), 8, 0o4000)\n"
+        "err = ctypes.get_errno() if rc != 0 else 0\n"
+        "got = ''\n"
+        "if rc == 0:\n"
+        "    out = MsgBuf()\n"
+        "    n = libc.msgrcv(qid, ctypes.byref(out), 8, 1, 0o4000)\n"
+        "    err = ctypes.get_errno() if n < 0 else 0\n"
+        "    got = out.mtext[:max(0, n)].decode('ascii', 'replace')\n"
+        "print(json.dumps({'ok': rc == 0 and got == 'canary00', 'errno': err}))\n"
+    )
+    removed_mq = False
+    try:
+        unrestricted_mq = json.loads(
+            subprocess.check_output(["/usr/bin/python3", "-I", "-c", mq_helper, str(msqid)], text=True)
+        )
+        confined_mq_proc = subprocess.run(
+            [str(BINARY), "confine-v2", "/usr/bin/python3", "-I", "-c", mq_helper, str(msqid)],
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+        confined_mq = json.loads(confined_mq_proc.stdout)
+    finally:
+        rm_rc = libc.msgctl(msqid, 0, None)  # IPC_RMID=0
+        removed_mq = rm_rc == 0
+    assert removed_mq, "failed to remove synthetic SysV IPC queue"
+    assert unrestricted_mq == {"ok": True, "errno": 0}, unrestricted_mq
+    assert confined_mq == {"ok": False, "errno": errno.EPERM}, confined_mq
+    native["existing_sysv_queue"] = unrestricted_mq["ok"]
+    confined["existing_sysv_queue"] = confined_mq["ok"]
     assert all(native.values()), native
     assert not any(confined.values()), confined
     # The parent dispatch interface rejects every control-plane command and actor field.
@@ -710,6 +782,11 @@ def isolation(root):
         "passed": True,
         "native_canary": native,
         "confined": confined,
+        "sysv_queue_canary": {
+            "unrestricted": unrestricted_mq,
+            "confined": confined_mq,
+            "removed": removed_mq,
+        },
         "administrator_impersonation": "three real confined RPC probes denied; useful submit/status committed",
         "oversize_launcher_guard": oversize_session,
         "kernel": platform.release(),
@@ -900,7 +977,7 @@ def main():
                 )
                 for f in ROOT.glob(pattern)
             },
-            "model_results": "not_run; no idle GPU on verified Linux hosts",
+            "model_results": "not_run; local-checkpoint campaigns run separately via scripts/infer_v2.py",
             "recorded_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         }
     )
