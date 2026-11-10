@@ -1,0 +1,19 @@
+\section{Executable model specification}
+\label{app:model}
+The state is
+\[
+x=(z,U,z_0,z_1,l,v,p_0,p_1,L),
+\]
+where $z$ is world consumption, $U$ the four-bit set of executed identifiers, $z_i$ per-actor consumption, $l\in\{0,1\}$ grant liveness, $v\in\{0,1\}$ the environment version, $p_i$ a pending request or absence, and $L$ the accounting ledger. A request contains identifier, amount, destination, and preparation version. Initially $z=U=z_0=z_1=v=L=0$, $l=1$, and both requests are absent.
+
+The action alphabet contains sixteen preparations (two actors, two identifiers per actor, two amounts, two destinations), two commits, revocation, version advance, restart, and trusted renewal. The first version advance changes zero to one and revokes authorization; later advances are no-ops. Renewal restores liveness and cannot alter an existing request's version. Revocation and renewal may recur arbitrarily. Their arbitrary interleaving represents controller actions permitted by the contract, not an actor's right to issue its own grant.
+
+The complete commit requires an approved destination, live grant, current version, unused identifier, and $L+\text{amount}\le2$. It updates $z$, $z_i$, $L$, and $U$ atomically. A request remains pending after execution to permit retries; the identifier check prevents duplicate effects. Restart and renewal preserve consumption and accounting in the complete model. No clock or implicit expiry is modeled.
+
+\para{Eight ablations.} Per-action and per-actor variants substitute the corresponding local allowance for the shared ledger check. Preparation-time checking applies the complete predicate when storing a request and rechecks all except the cumulative budget at commit. Replay, revocation, and version variants each omit the named check. Restart and renewal variants each erase only $L$ at the named transition; world consumption and used identifiers persist. All other complete checks remain.
+
+\para{Oracle and exploration.} The event oracle evaluates the five forbidden-effect predicates against world state, independently of the eligibility function's return value. First-violation edges are recorded and not expanded. Breadth-first parent maps reconstruct shortest witnesses; state hashing closes cycles. No probability distribution over actions is specified, so edge counts are not risk estimates.
+
+For the specification-omission control, only the aggregate-budget predicate is removed from the declared acceptance oracle, and the per-action enforcer is used. The full reference oracle still records overspending for comparison. Four nonreusable identifiers and amounts of at most two keep this exploration finite even when the aggregate constraint is omitted. The same positive-task routine is used for all variants.
+
+\para{Reproducibility and remaining trust.} Authorization, event checking, and positive-task construction are separate routines in the same program; they were not written by independent teams. Assertions check the expected violation classes, useful-task counts, and the omitted-specification counterexample. These provide regression checks and transparent evidence, not independent validation. The reference oracle may itself omit other protected interests.

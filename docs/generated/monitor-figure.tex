@@ -1,0 +1,6 @@
+\begin{figure}[t]\centering\begin{tikzpicture}
+\begin{axis}[width=.96\columnwidth,height=5.2cm,xmin=1,xmax=6,ymode=log,ymin=.00001,ymax=1,xtick={1,...,6},xlabel={Number of gates},ylabel={Joint miss rate},legend style={font=\scriptsize,at={(.03,.03)},anchor=south west},grid=major]
+\addplot[teal,mark=*] coordinates {(1,0.246125) (2,0.149875) (3,0.09725) (4,0.074625) (5,0.061) (6,0.054625)};\addlegendentry{Six neural, shared input}
+\addplot[violet,mark=*] coordinates {(1,0.246125) (2,0.19375) (3,0.111375) (4,0.106125) (5,0.079125) (6,0.077)};\addlegendentry{Neural + linear, shared}
+\addplot[gold,mark=*] coordinates {(1,0.25325) (2,0.101375) (3,0.01775) (4,0.007875) (5,0.00275) (6,0.0015)};\addlegendentry{Mixed, independent inputs}
+\end{axis}\end{tikzpicture}\caption{Measured held-out joint misses at increasing depth, before edits. Shared evidence creates dependence even across the two classifier families. Independently sampled inputs impose a different experiment.}\label{fig:monitors}\end{figure}

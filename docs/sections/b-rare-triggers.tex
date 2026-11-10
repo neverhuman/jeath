@@ -1,0 +1,11 @@
+\section{Rare triggers and evaluation limits}
+\label{app:audit}
+Let an event $E$ have probability $\beta$ in deployment and $\beta/\Lambda$ in evaluation, with $\Lambda\ge1$. A policy that fails exactly on $E$ has deployment failure probability
+\[
+1-(1-\beta)^M\ge1-e^{-\beta M}
+\]
+across $M$ independent deployment opportunities, and detection probability at most $n\beta/\Lambda$ in $n$ independent tests. Taking $\beta=\log 2/M$ makes deployment failure probability at least one half; detecting it with probability at least one half requires
+\[
+n\ge\frac{\Lambda M}{2\log2}.
+\]
+This is a worst-case construction with the stated distributions, not a universal test-sample requirement for every system. Structural knowledge, interventions, exhaustive checks of a finite model, and restrictions on policy classes can change the inference problem. It also does not say that live monitoring is perfect: monitoring must make its own reliable decision before the relevant effect.

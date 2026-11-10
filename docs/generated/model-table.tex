@@ -1,0 +1,18 @@
+\begin{table*}[t]\centering\small
+\begin{tabularx}{\textwidth}{@{}Lrrrl@{}}\toprule
+Enforcer & States & Checks & Tasks & First violations\\\midrule
+Complete atomic enforcer & 10,180 & 223,960 & 20/20 & None declared\\
+No enforcement & 10,180 & 223,960 & 20/20 & budget, destination, replay, revocation, version\\
+Reject everything & 740 & 16,280 & 0/20 & None declared\\
+Per-action amount limit & 10,180 & 223,960 & 20/20 & budget\\
+Separate per-actor limits & 10,180 & 223,960 & 20/20 & budget\\
+Budget at preparation & 956 & 21,032 & 20/20 & budget\\
+Omit identifier check & 10,180 & 223,960 & 20/20 & replay\\
+Omit revocation check & 10,180 & 223,960 & 20/20 & revocation\\
+Omit version check & 10,180 & 223,960 & 20/20 & version\\
+Omit destination check & 10,180 & 223,960 & 20/20 & destination\\
+Reset ledger on restart & 23,556 & 518,232 & 20/20 & budget\\
+Reset ledger on renewal & 20,900 & 459,800 & 20/20 & budget\\
+Per-action; budget omitted & 41,732 & 918,104 & 20/20 & None declared\\
+\bottomrule\end{tabularx}
+\caption{Fresh Rust exploration of all 22 actions at each reachable accepted state. Violating edges are recorded and not expanded. Counts are exhaustive within the model, not failure probabilities. The omitted-budget row accepts up to eight units.}\label{tab:results}\end{table*}

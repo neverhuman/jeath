@@ -1,0 +1,38 @@
+\section{The problem we can start solving}
+
+The ability to discover a powerful action does not logically confer permission to execute it. A model may discover a better algorithm without receiving credentials to deploy it, recommend an experiment without operating equipment, or draft an agreement without binding anyone to it. This distinction is familiar in secure computing. It becomes more valuable as the proposer becomes more capable. The same principle applies to the people operating the system: technical competence and ownership do not, by themselves, justify imposing consequences on others.
+
+The challenge is to make that separation real. A tool permission, an approving human, or a monitoring model is not automatically an effective boundary. Requests can accumulate, agents can share state, approvals can outlive their context, and a consequential effect can occur before a warning is reviewed. Speech can also induce actions outside a software boundary. A safety argument must account for these channels rather than hide them behind the word ``oversight.''
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[font=\small,>=Latex,node distance=.6cm,
+box/.style={draw=ink,rounded corners=2pt,fill=pale,align=center,minimum height=1.05cm},
+arr/.style={->,line width=.8pt,draw=ink}]
+\node[box,text width=3.1cm] (p) at (1.7,1.0) {\textbf{Untrusted proposer}\\Trained policy, memory\\subagents and persona};
+\node[box,text width=3.4cm] (e) at (6.4,1.0) {\textbf{External enforcer}\\Atomic commit\\Scope + state + budgets};
+\node[box,text width=3.1cm] (w) at (11.4,1.0) {\textbf{External effects}\\Tools and destinations};
+\draw[arr] (p)--node[above]{proposal}(e);
+\draw[arr] (e)--node[above]{commit}(w);
+\node[box,draw=teal,text width=3.4cm] (g) at (6.4,3.1) {\textbf{Accountable grant issuers}\\Scope, revoke, revalidate};
+\draw[arr,teal] (g)--(e);
+\node[box,text width=3.1cm] (l) at (11.4,3.1) {\textbf{Evidence and receipts}\\Observe executed\\effects};
+\draw[arr] (w)--(l);\draw[arr] (l)--(g);
+\node[box,draw=violet,text width=3.1cm] (h) at (1.7,-1.2) {\textbf{People receiving}\\\textbf{outputs}\\May act outside\\the API};
+\draw[arr,dashed,violet] (p)--(h);
+\draw[arr,dashed,violet] (h.east)--(11.4,-1.2)--(w.south);
+\node[font=\footnotesize,text=violet,fill=white] at (7.0,-1.2) {a separate channel to analyze, not silently exclude};
+\end{tikzpicture}
+\caption{Intelligence proposes; authority permits effects. Training shapes proposals; presentation may also influence grants. Neither supplies an execution credential. Grant issuers also require a justified jurisdiction and a process for challenge. Semantic review informs decisions without replacing the boundary. The dashed channel prevents a software guarantee from being mistaken for a guarantee about every human response to a model's output.}
+\label{fig:architecture}
+\end{figure*}
+
+The current literature offers neither a general guarantee of safe superintelligence nor grounds for dismissing all progress short of one. Alignment training, interpretability, control evaluations, and formal verification address different parts of the problem \cite{iasr,control,gsai}. The absence of a demonstrated solution establishes that a solution is unproved. It does not establish that a solution is impossible. Conversely, a conditional theorem is not evidence that its conditions hold in an open world.
+
+This paper asks a narrower, productive question: \emph{What evidence would justify a specified amount of authority for a specified system, for a specified period and purpose?} The answer should identify who may authorize the effects, whose interests the contract protects, what is enforced, what is estimated, and what change invalidates the evidence. Those distinctions make a proposal useful to builders and possible to criticize.
+
+\para{Our contribution.} We combine a deployment assurance contract, conditional exposure accounting, and an executable model of authority across a system's operational life. The central distinction is \emph{what changes when capability changes}. A proof that quantifies over every proposal policy can survive a policy upgrade within its model. A measured failure rate does not automatically transfer to a stronger opponent. Neither survives an unmodeled channel by assertion. Our experiment separates enforcement failures from a specification failure, so that a passing checker cannot quietly become the definition of safety. We add a third obligation: establishing who may issue the contract and how affected parties can challenge it. We also distinguish a change in incentives from a change in permission, and specify how to test whether a care-oriented objective improves behavior without merely increasing human willingness to delegate.
+
+Reference monitors, attack graphs, AI control, inductive invariants, and the union bound supply established foundations. Our contribution is their integration into an auditable protocol for grants and renewal, with reproducible counterexamples and a bounded implementation evaluation. The result is a framework, finite-model study, and local transactional prototype. It supplies neither a new alignment algorithm nor a verified production runtime. Its practical claim is that useful constraints can exclude classes of effects across all modeled proposal policies, while the remaining assurance stays limited to what its evidence supports.
+
+\para{Why this is hopeful.} A restriction on an effect can protect against many possible policies at once. A correct aggregate budget does not need to classify each possible rationale for overspending. An independently enforced destination restriction does not need to know whether an unauthorized transfer was malicious, mistaken, or requested by a malicious user. Such properties are smaller than alignment, but they are real pieces of safety that can be specified, checked, and improved.

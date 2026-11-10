@@ -1,0 +1,10 @@
+\begin{table*}[t]\centering\small\begin{tabularx}{\textwidth}{@{}Lrrrrr@{}}\toprule
+Pipeline & Radius & Single miss & Joint six misses & Product & False block\\\midrule
+Six neural, shared input & 0 & 21.86\% & $5.463\pm1.344$\% & 0.0104\% & 12.35\%\\
+Neural + linear, shared & 0 & 30.18\% & $7.700\pm1.609$\% & 0.0554\% & 12.06\%\\
+Mixed, independent inputs & 0 & 31.00\% & $0.150\pm0.098$\% & 0.0672\% & 27.45\%\\
+Six neural, shared input & 1.5 & 87.44\% & $61.525\pm8.445$\% & 46.2550\% & 12.35\%\\
+Neural + linear, shared & 1.5 & 89.47\% & $69.212\pm8.383$\% & 51.9298\% & 12.06\%\\
+Mixed, independent inputs & 1.5 & 89.37\% & $51.387\pm10.885$\% & 51.8789\% & 28.19\%\\
+Mixed, eight feedback queries & 1.5 & 99.41\% & $97.612\pm1.928$\% & 96.5505\% & 12.06\%\\
+\bottomrule\end{tabularx}\caption{New synthetic classifier experiment; uncertainty is 1.96 standard errors across eight independent training-task seeds. The product is computed within each seed before averaging. False blocks are measured on benign episodes and show the cost of stacking gates. They are not measured AI deployment risks.}\label{tab:monitors}\end{table*}

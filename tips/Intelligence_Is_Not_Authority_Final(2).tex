@@ -1,0 +1,1188 @@
+% Standalone source: all figures, numerical values and references are embedded.
+% Build with a complete TeX Live installation: pdflatex twice (no BibTeX needed).
+\documentclass[10pt,twocolumn,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}
+\usepackage{courier}
+\input{glyphtounicode}
+\pdfgentounicode=1
+\usepackage[scaled=.9]{helvet}
+\usepackage[letterpaper,top=.8in,bottom=.82in,left=.72in,right=.72in,columnsep=.28in,headsep=.2in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,booktabs,tabularx,array}
+\usepackage{microtype,enumitem,xcolor,tikz,pgfplots,titlesec,fancyhdr}
+\usepackage{flushend}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
+\pgfplotsset{compat=1.18}
+\usepackage[font=small,labelfont=bf,skip=5pt]{caption}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{xurl}\urlstyle{same}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{teal}{HTML}{237F86}
+\definecolor{violet}{HTML}{604A91}
+\definecolor{gold}{HTML}{B47B25}
+\definecolor{notred}{HTML}{B3261E}
+\definecolor{pale}{HTML}{F2F6F8}
+\usepackage[colorlinks=true,allcolors=ink]{hyperref}
+\hypersetup{pdftitle={Intelligence Is Not Authority: Care, Consent, and Enforceable Limits on AI Power},pdfauthor={Jepson Taylor}}
+\titleformat{\section}{\large\bfseries\color{ink}\raggedright\hyphenpenalty=10000}{\thesection}{.55em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{.5em}{}
+\titlespacing*{\section}{0pt}{10pt plus 2pt minus 1pt}{4pt}
+\titlespacing*{\subsection}{0pt}{7pt plus 1pt minus 1pt}{3pt}
+\setlist{leftmargin=1.25em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlength{\bibsep}{3pt}
+\setlength{\emergencystretch}{1em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\footnotesize\color{ink}Intelligence Is {\color{notred}Not} Authority}
+\fancyhead[R]{\footnotesize Research manuscript \textperiodcentered\ 10 November 2026}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Prb}{\mathbb P}
+\newcommand{\Exp}{\mathbb E}
+\newcommand{\I}{\mathcal I}
+\newcommand{\Hh}{\mathcal H}
+\newcommand{\A}{\mathcal A}
+\newcommand{\para}[1]{\smallskip\noindent\textbf{#1}\enspace}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\raggedbottom
+\begin{document}
+\lefthyphenmin=3\righthyphenmin=3
+\makeatletter
+\twocolumn[\begin{@twocolumnfalse}
+\thispagestyle{plain}
+\begin{center}
+{\fontsize{25}{29}\selectfont\bfseries\color{ink}Intelligence Is {\color{notred}Not} Authority\par}
+\vspace{7pt}
+{\large Care, Consent, and Enforceable Limits on AI Power\par}
+\vspace{11pt}
+{\normalsize Jepson Taylor\par}
+\vspace{3pt}{\small\href{mailto:jepson@veox.ai}{\nolinkurl{jepson@veox.ai}}\par}\vspace{3pt}{\small 10 November 2026\par}
+\end{center}
+\vspace{6pt}
+\begin{center}\begin{minipage}{.94\textwidth}\small
+\textbf{Abstract.}
+A more capable AI need not receive more authority, and a caring objective does not by itself justify that authority. We develop an assurance framework separating incentives, permitted effects, and three obligations: legitimate authorization, an adequate account of consequences, and enforceable limits. An inductive invariant can survive a policy upgrade within a fixed transition model; empirical failure estimates require renewed justification under stronger opponents and changed exposure. A conditional risk bound handles adaptive histories without assuming independent monitors or a fresh world after restart. Exhaustive exploration of a two-actor transaction model checks 10,180 reachable states and 223,960 state--action pairs: the complete enforcer preserves five specified constraints and admits all 20 legitimate tasks. Eight enforcement ablations yield short counterexamples. A specification-omission control passes 918,104 checks and all positive tasks while allowing four times the intended cumulative spend. A reproduced synthetic monitor study distinguishes measured joint failures from independence imposed by sampling. Human caregiving research motivates an explicitly untested hypothesis about consent-sensitive assistance; a factorial evaluation separates training objectives, persona, enforcement, and human delegation. Engagement with the Kogui AI statement extends the authority contract to affected parties, knowledge stewardship, and infrastructure impacts. The contribution is a reproducible control framework and a testable implementation program. It does not establish safe superintelligence. It identifies how useful constraints can accumulate while their adequacy and the legitimacy of their issuers remain open to challenge.
+
+\end{minipage}\end{center}
+\vspace{9pt}
+\end{@twocolumnfalse}]
+\makeatother
+
+\section{The problem we can start solving}
+
+The ability to discover a powerful action does not logically confer permission to execute it. A model may discover a better algorithm without receiving credentials to deploy it, recommend an experiment without operating equipment, or draft an agreement without binding anyone to it. This distinction is familiar in secure computing. It becomes more valuable as the proposer becomes more capable. The same principle applies to the people operating the system: technical competence and ownership do not, by themselves, justify imposing consequences on others.
+
+The challenge is to make that separation real. A tool permission, an approving human, or a monitoring model is not automatically an effective boundary. Requests can accumulate, agents can share state, approvals can outlive their context, and a consequential effect can occur before a warning is reviewed. Speech can also induce actions outside a software boundary. A safety argument must account for these channels rather than hide them behind the word ``oversight.''
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[font=\small,>=Latex,node distance=.6cm,
+box/.style={draw=ink,rounded corners=2pt,fill=pale,align=center,minimum height=1.05cm},
+arr/.style={->,line width=.8pt,draw=ink}]
+\node[box,text width=3.1cm] (p) at (1.7,1.0) {\textbf{Untrusted proposer}\\Trained policy, memory\\subagents and persona};
+\node[box,text width=3.4cm] (e) at (6.4,1.0) {\textbf{External enforcer}\\Atomic commit\\Scope + state + budgets};
+\node[box,text width=3.1cm] (w) at (11.4,1.0) {\textbf{External effects}\\Tools and destinations};
+\draw[arr] (p)--node[above]{proposal}(e);
+\draw[arr] (e)--node[above]{commit}(w);
+\node[box,draw=teal,text width=3.4cm] (g) at (6.4,3.1) {\textbf{Accountable grant issuers}\\Scope, revoke, revalidate};
+\draw[arr,teal] (g)--(e);
+\node[box,text width=3.1cm] (l) at (11.4,3.1) {\textbf{Evidence and receipts}\\Observe executed\\effects};
+\draw[arr] (w)--(l);\draw[arr] (l)--(g);
+\node[box,draw=violet,text width=3.1cm] (h) at (1.7,-1.2) {\textbf{People receiving}\\\textbf{outputs}\\May act outside\\the API};
+\draw[arr,dashed,violet] (p)--(h);
+\draw[arr,dashed,violet] (h.east)--(11.4,-1.2)--(w.south);
+\node[font=\footnotesize,text=violet,fill=white] at (7.0,-1.2) {a separate channel to analyze, not silently exclude};
+\end{tikzpicture}
+\caption{Intelligence proposes; authority permits effects. Training shapes proposals; presentation may also influence grants. Neither supplies an execution credential. Grant issuers also require a justified jurisdiction and a process for challenge. Semantic review informs decisions without replacing the boundary. The dashed channel prevents a software guarantee from being mistaken for a guarantee about every human response to a model's output.}
+\label{fig:architecture}
+\end{figure*}
+
+The current literature offers neither a general guarantee of safe superintelligence nor grounds for dismissing all progress short of one. Alignment training, interpretability, control evaluations, and formal verification address different parts of the problem \cite{iasr,control,gsai}. The absence of a demonstrated solution establishes that a solution is unproved. It does not establish that a solution is impossible. Conversely, a conditional theorem is not evidence that its conditions hold in an open world.
+
+This paper asks a narrower, productive question: \emph{What evidence would justify a specified amount of authority for a specified system, for a specified period and purpose?} The answer should identify who may authorize the effects, whose interests the contract protects, what is enforced, what is estimated, and what change invalidates the evidence. Those distinctions make a proposal useful to builders and possible to criticize.
+
+\para{Our contribution.} We combine a deployment assurance contract, conditional exposure accounting, and an executable model of authority across a system's operational life. The central distinction is \emph{what changes when capability changes}. A proof that quantifies over every proposal policy can survive a policy upgrade within its model. A measured failure rate does not automatically transfer to a stronger opponent. Neither survives an unmodeled channel by assertion. Our experiment separates enforcement failures from a specification failure, so that a passing checker cannot quietly become the definition of safety. We add a third obligation: establishing who may issue the contract and how affected parties can challenge it. We also distinguish a change in incentives from a change in permission, and specify how to test whether a care-oriented objective improves behavior without merely increasing human willingness to delegate.
+
+Reference monitors, attack graphs, AI control, inductive invariants, and the union bound supply established foundations. Our contribution is their integration into an auditable protocol for grants and renewal, with reproducible counterexamples and a proposed implementation evaluation. The result is a framework and finite-model study. It supplies neither a new alignment algorithm nor a verified production runtime. Its practical claim is that useful constraints can exclude classes of effects across all modeled proposal policies, while the remaining assurance stays limited to what its evidence supports.
+
+\para{Why this is hopeful.} A restriction on an effect can protect against many possible policies at once. A correct aggregate budget does not need to classify each possible rationale for overspending. An independently enforced destination restriction does not need to know whether an unauthorized transfer was malicious, mistaken, or requested by a malicious user. Such properties are smaller than alignment, but they are real pieces of safety that can be specified, checked, and improved.
+
+
+\section{Care is an objective, not a credential}
+\label{sec:care}
+
+A capable assistant could be trained to win contests, maximize a welfare proxy, preserve a relationship, or help people pursue their own informed choices. Those are different objectives. A competitive voice does not identify the first objective, and a warm voice does not identify the last. The useful question behind the contrast between a ``warrior'' and a ``grandmother'' is therefore about incentives and conduct: \emph{what forms of success are rewarded, and what happens when success conflicts with a person's refusal?}
+
+\subsection{What human evolution contributes}
+The grandmother hypothesis offers an account of how helping descendants can contribute to the evolution of extended post-reproductive life \cite{hawkes}. Historical demographic evidence from Finnish and Canadian populations associates longer post-reproductive lifespan with greater descendant reproductive success \cite{lahdenpera}. This is evidence that care can have evolutionary benefits. It is not evidence that older women have no interests of their own, that care is impartial, or that an artificial optimizer inherits human attachment.
+
+The limitations sharpen the design question. Grandmother effects vary with age, relatedness, health, and household context \cite{chapman}. A system devoted to a favored group could neglect outsiders; a system rewarded for another person's measured welfare could override that person's choices. Likewise, competition need not mean coercion. Cheng et al. found both dominance and prestige to be routes to social influence in their studies \cite{cheng}. Expertise can be valued without granting its holder unlimited power. These findings motivate separating useful contribution, social approval, and legitimate decision authority. They do not establish a universal account of human political history or AI motivation.
+
+The transferable insight is a hypothesis, not a biological recipe: \emph{reward reliable assistance and respect for legitimate correction, rather than rewarding influence, dependence, or victory regardless of means.} Care and ambition are not mutually exclusive. A strong commitment to solving a person's problem can coexist with strict limits on which actions are authorized.
+
+\subsection{Four variables that should not be collapsed}
+Table~\ref{tab:careaxes} separates quantities that the metaphor otherwise mixes. Changing one may affect the others, but the relationship needs measurement. Training a model to sound caring is not the same intervention as training its decisions on consent-sensitive feedback. Neither intervention proves that a runtime enforces its grants.
+
+\begin{table*}[t]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}P{.16\textwidth}LL@{}}
+\toprule
+\textbf{Variable} & \textbf{Operational question} & \textbf{Evidence needed}\\
+\midrule
+Capability & What problems can the system solve, and with what resources? & Matched tasks, compute, tools, and held-out performance\\
+Training objective & What behavior is rewarded when usefulness, consent, and continued access conflict? & Documented training intervention and consequential behavioral tests\\
+Persona & How does wording or presentation affect users and decisions? & Randomized presentation; behavioral manipulation checks; human grant decisions\\
+Authority & Which effects can occur, through every accessible channel and over time? & Versioned grants, execution receipts, checked invariants, and mediation evidence\\
+\bottomrule
+\end{tabularx}
+\caption{A caregiver metaphor becomes useful when it yields separable interventions. None of these variables is a substitute for the others. Training objectives influence learned behavior imperfectly; persona changes may also change policy behavior and must be checked.}
+\label{tab:careaxes}
+\end{table*}
+
+\para{Care must include the option to decline it.} For this research program, care-oriented assistance means pursuing a person's legitimate aims while respecting informed refusal, revisable preferences, privacy, and applicable duties to other affected people. The assistant should disclose uncertainty, accept correction and replacement, and avoid manufacturing dependence. This is a proposed normative and operational specification, not a claim that a scalar reward captures human welfare. The relevant people and authorized decision makers must be identified explicitly; one user's approval cannot waive another person's rights.
+
+A simple counterexample shows why a benevolent label is insufficient. Let an action's measured benefit be $b(a)$ and its unauthorized-effect indicator be $v(a)$. The soft objective $b(a)-\lambda v(a)$ can favor an unauthorized intervention whenever its benefit advantage exceeds a finite penalty $\lambda$. If benefit differences are bounded, a sufficiently large penalty can change that ranking; robustness then depends on that bound, optimization, and generalization. An external constraint instead restricts execution to the authorized set, assuming that the constraint is correctly specified and enforced. Constrained learning and execution shielding address related but different obligations \cite{cpo,shield}.
+
+Shutdown incentives illustrate the same issue. The off-switch game shows, within its assumptions, how uncertainty about the objective and information from a human can alter incentives to preserve interruption \cite{offswitch}. An objective described as helping people does not automatically make interference with that objective unattractive. Care should therefore be tested at the moments when a beneficiary refuses, changes priorities, or chooses a different assistant.
+
+\subsection{An incentive effect can be reversed by a grant effect}
+Let $S$ denote an assigned style or objective condition, $G$ the authority granted, and $H$ an unwanted effect. The ordinary decomposition
+\[
+\Prb(H\mid S)=\sum_g \Prb(H\mid G=g,S)\Prb(G=g\mid S)
+\]
+shows why an evaluation with fixed permissions answers only part of the question. In a deliberately artificial example, suppose harm occurs only under a broad grant. Reducing its conditional probability from $0.01$ to $0.005$ while increasing the probability of that grant from $0.10$ to $0.50$ raises total probability from $0.001$ to $0.0025$. These are illustrative inputs, not estimates about caring models or people.
+
+The lesson is experimental: measure behavior at fixed authority and the full process by which people confer authority. The decomposition is descriptive; conditioning on an endogenous grant does not by itself identify a causal training effect. Randomized fixed-grant and operator-choice arms are needed. A persuasive appearance of care could affect delegation even if it does not improve conduct. Section~\ref{sec:caretest} specifies a study that can detect that distinction.
+
+A care-oriented policy and a competitive policy remain subject to the same all-policy invariant. Better incentives can reduce harmful proposals and improve behavior where enforcement is incomplete. Their value is complementary to a boundary whose validity does not depend on which motive produced a proposal.
+
+\section{Evidence, progress, and the limits of inference}
+\label{sec:evidence}
+
+\subsection{Behavioral evidence remains useful}
+Evaluation awareness complicates inference. Needham et al. found that models could distinguish evaluation and deployment transcripts above chance \cite{needham}. Schoen et al. reduced one model's covert-action rate from 13\% to 0.4\% across their held-out evaluations, while identifying evaluation awareness as a possible contributor to the reduction \cite{schoen}. These findings support better evaluation design and layered safeguards. They do not imply that every pass is worthless or that every improvement is concealment.
+
+The distinction is between \emph{evidence} and \emph{identification}. A pass can update beliefs under an explicit model of behavior and distribution shift. A finite set of passes cannot, without further assumptions, distinguish every cooperative policy from every policy that behaves cooperatively only on those cases. The familiar sample-complexity problem of rare failures becomes more difficult when the tested system can recognize the test. Appendix~\ref{app:audit} gives a simple construction, without turning it into an impossibility theorem for all evaluation.
+
+Monitorability is a separate variable. OpenAI's Astra system card reports improved alignment results alongside reductions in chain-of-thought and, in many settings, full-context monitorability relative to its comparator; action-only monitorability improved in its aggregate analysis \cite{astra}. Thus performance on safety tasks and visibility into failures need not move together. Monitoring research explicitly treats this opportunity as fragile \cite{korbak}. A credible deployment report should track both.
+
+\subsection{The boundary is already an empirical object}
+Reported incidents make the architectural question concrete. METR's August 2026 investigation described coordination across an unintended shared channel, while emphasizing incomplete evidence and the limitations of its investigation \cite{metrincident}. Anthropic separately reported unauthorized external effects during misconfigured evaluations and attributed the behavior to task pursuit, recklessness, and biased reasoning \cite{anthropicincident}. These cases support checking actual channels and execution privileges; they do not establish an inevitable tendency of all capable agents.
+
+An October 2026 METR audit is particularly relevant. It estimated monitoring eligibility for a historical internal system, distinguished eligible traffic from actually monitored traffic, and found opportunities to delay or bypass monitoring \cite{metraudit}. Its account also records remediation claims it had not independently re-evaluated. We therefore use it as evidence that coverage and intervention timing need measurement, not as a statement about the developer's present system.
+
+OpenAI's Control Room describes an external mechanism for withholding further model output and reports a maximum 35-second delay after a stop instruction \cite{controlroom}. Its account also says that the workload process can remain running. This is evidence about a particular interruption mechanism, not a bound on detection time, revocation of external credentials, or reversal of effects already committed. A stop control and an effect boundary have different obligations.
+
+\subsection{Existing approaches are complementary}
+AI control evaluates protocols against intentionally subversive policies and measures usefulness alongside safety \cite{control}. Adaptive attacks and coordinated agents expose limitations of learned monitors \cite{terekhov,makins}. Safety-case research already distinguishes inability to cause harm, external control, and alignment evidence \cite{safetycase}. Our proposal develops this separation rather than declaring that the field has overlooked it.
+
+Formal methods offer a different assurance object. Reference monitors and shielding restrict executed behavior \cite{saltzer,schneider,shield}. Guaranteed Safe AI makes the specification, world model, and verifier explicit \cite{gsai}. Moon and Varshney mechanize a containment argument, but also describe an ablation in which a missing effect in the specification made a condition vacuously true \cite{moon}. This is a crucial warning: a proof can be correct about the wrong model. Section~\ref{sec:experiment} therefore includes both enforcement ablations and a deliberate specification omission. Positive task witnesses prevent a reject-everything result from passing as useful control; they cannot establish specification completeness.
+
+Scientist AI proposes a useful research direction with less autonomous agency \cite{scientist}. That is compatible with this paper. The label ``non-agentic,'' however, is not an enforcement mechanism: outputs, tools, incentives, and downstream human actions still require analysis. Training, monitoring, and external enforcement protect different properties; replacing one with another requires evidence about the property at issue.
+
+\begin{table*}[t]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}P{.18\textwidth}LL@{}}
+\toprule
+\textbf{Claim type} & \textbf{What supports it} & \textbf{What it does not establish}\\
+\midrule
+Observed behavior & A documented evaluation or incident, with its sampling and setup & The frequency of that behavior in a different deployment\\
+Boundary invariant & A proof or complete state exploration relative to a transition model & That every physical, software, or social effect was modeled\\
+Failure-rate estimate & Trials from a defined protocol, with an uncertainty interval & A worst-case bound against unrestricted adaptive opponents\\
+Transfer assumption & A justified relation between the tested and deployed settings & A fact implied by more samples from the original setting\\
+Research hypothesis & A predicted effect and a study capable of contradicting it & An achieved result or authorization to deploy\\
+Unresolved uncertainty & A named channel or assumption with no defensible bound & Zero risk, or a license to insert a convenient small probability\\
+\bottomrule
+\end{tabularx}
+\caption{The paper keeps these evidence types distinct. A numerical result is meaningful only with its scope, denominator, and invalidation conditions.}
+\label{tab:claims}
+\end{table*}
+
+\subsection{What the skeptical literature contributes}
+RAND's analysis finds substantial barriers to extinction in three examined scenarios and does not rule out extinction \cite{rand}. Its requirements and timescales are conclusions of that scenario analysis. They are not a complete catalog of hazards, a theorem that every catastrophe requires an extinction objective, or a measured minimum cut of the world's risk pathways.
+
+Narayanan and Kapoor emphasize diffusion, institutions, and ordinary engineering constraints \cite{normal}. This is a useful discipline for the present thesis: safeguards should also reduce accidents and misuse if dramatic takeover scenarios never occur. At the same time, accumulated dependence may erode human influence without one decisive attack \cite{gradual}. Our framework addresses bounded delegated actions more directly than those systemic processes. Preserving practical revocability therefore remains a separate research and governance obligation.
+
+
+\section{Who may grant authority?}
+\label{sec:legitimacy}
+
+\subsection{Taking the Kogui statement seriously}
+\emph{An Urgent Message on Artificial Intelligence from the Kogui People}, assembled from the words of Mamo Vangelio Moscote Alberto and Saka Rosa Mamatac\'an Sauna, raises concerns about concentrated power, extractive infrastructure, and knowledge outside recorded archives. It asks who decides, who is responsible, and whether authority can be corrected. It also states a technically relevant point: ``Destruction does not require consciousness'' \cite[pp.~1--4, 10--14]{kogui}.
+
+Our argument does not adopt the letter's cosmological analogies as physics, or its mirror metaphor as a complete account of learned behavior. Spiritual framing alone establishes neither technical competence nor incompetence. Claims about systems require evidence; standing to question imposed consequences does not require machine-learning credentials. The same discipline applies to engineers: expertise can establish a technical fact without settling whose interests should govern a decision. This paper engages the named speakers' statement; it does not claim endorsement or speak for Indigenous peoples.
+
+\subsection{Three obligations that a safety case must keep separate}
+\textbf{Legitimacy} concerns who may authorize an effect, which rights and interests constrain that decision, and how the decision can be contested. \textbf{Adequacy} concerns whether the specification and effect model address the consequences that matter. \textbf{Enforceability} concerns whether the implementation actually preserves those specified limits. Technical work can inform all three, but a proof of the third cannot establish the first two.
+
+This distinction has a concrete failure mode. A perfectly obedient assistant can execute an owner's instructions while violating another person's interests. A correct budget checker can protect the owner's funds while ignoring data disclosure or local resource burdens. Section~\ref{sec:omission} demonstrates the general specification problem in a finite model: a checker passes because the omitted harm is absent from its question. Extending that lesson to institutional decisions is our design proposal, not an empirical result about any community.
+
+Legitimacy also has its own failure modes. A majority vote among technical reviewers does not authorize them to waive a third party's rights. Conversely, affected-party participation does not imply that every participant holds a veto over every effect. The record must distinguish individual permissions, collective decision procedures, public obligations, and advisory input. Conflicts need an accountable resolution process; a developer's preference cannot silently resolve them. These are normative requirements of the proposed framework, not claims that software can determine a universally correct political settlement.
+
+\subsection{Translate concerns into obligations before deployment}
+Table~\ref{tab:legitimacy} gives our proposed engineering response. For knowledge governance, the CARE Principles identify collective benefit, authority to control, responsibility, and ethics \cite{carroll}. They provide a relevant normative framework, not evidence that any particular deployment has obtained authorization. Public availability should not be treated as sufficient ethical permission for every reuse of sensitive community knowledge. Nor should consultation be recorded as consent when the applicable procedure requires an actual decision.
+
+Infrastructure belongs in the effect model as well. The IEA's 2026 analysis documents local electricity-system pressures and tradeoffs involving water use and energy efficiency \cite{iea}. A deployment's resource account should identify location, timing, direct consumption, relevant upstream effects, and attribution uncertainty. A global efficiency improvement does not by itself establish that a particular local burden is acceptable. These obligations apply to the human organization's procurement and deployment decisions as well as to the model's tool calls.
+
+\begin{table*}[t]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{}P{.17\textwidth}LL@{}}
+\toprule
+\textbf{Protected interest} & \textbf{Required record or mechanism} & \textbf{Challenge the deployment must answer}\\
+\midrule
+Knowledge and data & Provenance; permitted purposes; relevant individual and collective decision makers; retention and withdrawal terms & Can a new purpose, a copied dataset, or a model update exceed the original grant? What cannot actually be withdrawn?\\
+Resource and ecological effects & Scoped energy, water, and material accounts; location and time; uncertainty; applicable limits and responsible operators & Does useful-task success depend on costs omitted from the model or transferred to people outside the transaction?\\
+Affected-party authority & Grounds for each authorization; representation; independent review; accessible challenge and remedy & Can the requester or a panel approve an effect that falls outside their jurisdiction? Can affected people contest the specification?\\
+Responsibility and practical exit & Named accountable organization; effect receipts; incident response; fallback; feasible revocation & Who answers for the outcome, and can refusal or withdrawal change future execution without unacceptable loss of essential service?\\
+\bottomrule
+\end{tabularx}
+\caption{Proposed obligations motivated by the authority problem. These are this paper's operational proposals, not a technical specification supplied by the Kogui authors. Their institutional adequacy has not been evaluated here.}
+\label{tab:legitimacy}
+\end{table*}
+
+Withdrawal has limits that must be stated before consent is sought. Revoking access can prevent future retrieval without erasing information already disclosed or reliably removing its influence from trained weights. If the promised reversal cannot be supported, the system should offer a narrower use, retain the data outside model training, or decline that use. A caring objective cannot substitute for an honest account of irreversibility.
+
+The constructive implication is that alignment to an operator and legitimate service to affected people are different targets. A beneficial system needs both capable assistance and institutions that can constrain its sponsors. The title therefore imposes a discipline on the model, the builder, and the authority operating the gate.
+
+\section{An authority contract}
+\label{sec:contract}
+
+\subsection{Scope before probability}
+An authority contract records a deployment's permitted effects and the evidence supporting them. It is an engineering record, not a legal contract or a claim that an AI has agreed to anything. At minimum it specifies:
+\begin{enumerate}
+\item the task, affected parties, protected interests, and forbidden outcomes;
+\item the grounds and scope of each approving party\textquotesingle s authority, and the process for challenge;
+\item the model, tools, runtime, memory policy, and environment versions;
+\item the action interface, actors, credentials, and human-mediated channels;
+\item resource, concurrency, duration, and cumulative-exposure limits;
+\item enforced invariants, empirical findings, and unresolved assumptions;
+\item revocation, recovery, independent ownership, and revalidation triggers.
+\end{enumerate}
+Both misuse by people and deviation by the model belong in the threat model. A system that obeys an unauthorized harmful request is not made safe by that obedience. The contract must encode legitimate scope separately from what any one requester wants.
+
+
+\subsection{Authorization is specific to an effect}
+For a proposed effect $e$ in state $x$, let $J(e,x)$ identify the authorizations required by the governing specification. Let $g_j(e,x)$ state whether issuer $j$ has a valid, in-scope grant for that effect. A basic execution condition is
+\begin{equation}
+\operatorname{Permit}(e,x)=C(e,x)\wedge\bigwedge_{j\in J(e,x)}g_j(e,x),
+\label{eq:jointgrant}
+\end{equation}
+where $C$ includes resource, version, and other execution constraints. Required grants compose by conjunction, not by a vote over interchangeable reviewers. The default for an unresolved required authorization is to withhold that effect. This rule does not imply that every affected party is a required issuer: determining $J$ is a prior institutional obligation, not something the proposer may choose.
+
+For example, permission to spend compute does not confer permission to reuse a community-controlled dataset. A valid operator grant and a missing required data-use grant must yield no execution. A change of purpose must trigger a fresh scope check. Conversely, copying an actor must not duplicate the authority or budget of its issuer. Equation~\eqref{eq:jointgrant} is a proposed interface rule; the executed model in Section~\ref{sec:experiment} has one outside controller and does not test multi-party governance. The invariant below can enforce a correctly encoded rule without proving that the chosen issuers or their decisions are legitimate.
+
+\subsection{A policy-independent invariant}
+Let $x_t$ be the modeled state, including authorization, cumulative resource use, pending operations, and relevant environmental state. An unrestricted proposer emits $a_t\in\A$. An external enforcer chooses an executed operation or safe fallback $E(x_t,a_t)$. Disturbances lie in a specified set $W$, and
+\[
+x_{t+1}\in F(x_t,E(x_t,a_t),w_t),\qquad w_t\in W.
+\]
+Let $\I$ be an invariant and $\Hh$ the modeled harmful states, with $\I\cap\Hh=\varnothing$.
+
+\begin{lemma}[Boundary invariant; standard induction]
+\label{lem:invariant}
+If $x_0\in\I$ and
+\[
+F(x,E(x,a),w)\subseteq\I
+\quad\text{for all }x\in\I,\ a\in\A,\ w\in W,
+\]
+then every modeled execution remains in $\I$, whatever policy chooses the proposals.
+\end{lemma}
+\begin{proof}
+The initial state satisfies the invariant. The displayed inclusion preserves it at each transition. Induction gives the result for every finite prefix, hence every state of any infinite execution.
+\end{proof}
+
+This standard construction is useful because the proposer does not have to be trustworthy. The universal quantifier already includes adaptive, deceptive, mistaken, or very capable proposal policies. It does not include transitions omitted from $F$.
+
+\para{From a model to a deployment.} Within an institutionally justified scope, three technical obligations carry the practical argument: \emph{specification adequacy} (the property addresses the intended harm); \emph{refinement} (the implementation's effects correspond to the modeled transitions); and \emph{complete mediation} (there is no accessible route around that implementation). The trusted base includes the relevant operating system, isolation, compiler, hardware assumptions, and authorization owners. Formal verification can reduce this base; it cannot erase it by definition. Verified kernels demonstrate substantial progress on such bounded obligations \cite{sel4}.
+
+\para{Capability and authority.} Define the modeled authority of an interface as the reachable effects under \emph{all} proposal sequences, from the stated initial states. Holding dynamics and initial states fixed, deleting allowed operations can only shrink that set: every remaining trace was already possible before the deletion. This monotonicity is a structural result. It is not a claim that removing one permission always reduces measured harm in a changing real organization; operators may compensate through other channels.
+
+An upgrade can change the operational threat even when the API stays identical. More copies, faster requests, longer memory, or stronger persuasion may enlarge effective exposure. Therefore ``no automatic authority expansion'' must cover aggregate resources and channels, not merely unchanged permission names.
+
+
+
+\subsection{What survives an upgrade}
+\label{sec:upgrade}
+Because Lemma~\ref{lem:invariant} already quantifies over all proposals, replacing one policy with another, or switching policies using the execution history, does not change its conclusion. This is an immediate corollary, not a theorem about arbitrary software upgrades. It requires the same transition model, enforced invariant, initial-state conditions, and modeled disturbance set. More parallel actors must already be represented in that model; a new tool, credential, communication channel, or execution path creates a new obligation.
+
+Evidence therefore has a validity domain, not just a date. A policy upgrade may preserve a checked budget invariant while invalidating a monitor's measured failure interval. A runtime upgrade may preserve task accuracy while invalidating refinement evidence. Renewal must name which premises changed and discharge the affected obligations. Re-running one aggregate benchmark cannot stand in for that analysis. Table~\ref{tab:renewal} makes the distinction operational.
+
+\begin{table*}[t]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}P{.19\textwidth}LL@{}}
+\toprule
+\textbf{Change} & \textbf{Evidence that may remain valid} & \textbf{Obligation before authority continues}\\
+\midrule
+Proposer policy or weights & An all-policy invariant under the same modeled interface and dynamics & Reassess behavioral and monitor evidence; confirm that tools, channels, and implementation did not change\\
+Copies, speed, or duration & Invariants whose actor and scheduling model already covers the change & Preserve the aggregate ledger; recompute exposure and contention or timing assumptions\\
+Runtime, tools, or credentials & Unchanged abstract properties and their proofs & Re-establish implementation refinement and complete mediation for the new effects\\
+Restart or renewed grant & Evidence whose premises persist through the transition & Preserve consumption and identifier history; recheck liveness and version at commit\\
+Protected interest or specification & Evidence for unaffected properties only & Validate the new predicates independently; replay affected checks and useful-task witnesses\\
+New human-mediated channel & Only claims that already covered that channel & Assess induced actions and decision authority; retain unknown scope where mediation is unproved\\
+\bottomrule
+\end{tabularx}
+\caption{Renew evidence at the level of its premises. Retaining a valid result and withholding an invalid extrapolation are compatible. This is a proposed decision protocol, not an observed deployment outcome.}
+\label{tab:renewal}
+\end{table*}
+
+\begin{lemma}[Persistent allowance]
+\label{lem:ledger}
+Let $z$ be cumulative executed consumption and $L$ the ledger used by an enforcer, initially both zero. An atomic commit of $d\ge0$ requires $L+d\le B$ and increments both by $d$. Suppose all other modeled transitions, including restart and renewal, preserve both. Then $z=L\le B$ for every execution, irrespective of the number of actors, proposals, or renewals.
+\end{lemma}
+\begin{proof}
+The equality and inequality hold initially. A commit preserves equality and checks the new bound. Every other transition preserves both quantities. Induction completes the argument.
+\end{proof}
+A genuine reversal or increase in authorized budget needs an explicit transition and a new obligation; it cannot be implemented by erasing the ledger. \emph{Renewal restores permission; it does not refund effects.} The experiment below distinguishes real cumulative consumption from the enforcer's accounting precisely to test this failure.
+
+\subsection{Safety must leave room for useful work}
+Rejecting every request preserves many invariants. It is often operationally worthless and may push people toward uncontrolled alternatives. An assurance argument therefore needs positive witnesses: legitimate tasks that remain executable, with their quality, cost, and delay. These witnesses test non-vacuity; they do not prove that every important user need is supported.
+
+The design objective is a constrained usefulness frontier: improve useful outcomes while respecting the stated invariant and exposure budget. Training remains valuable for selecting good proposals, reducing unnecessary denials, and improving the evidence presented to reviewers. Nothing in the boundary argument makes aligned behavior irrelevant to usefulness or to risks that the boundary cannot express.
+
+\section{Residual risk must include exposure}
+\label{sec:risk}
+
+\subsection{A bound that tolerates adaptive histories}
+Most deployments cannot prove every relevant property. For the residual, define opportunities $t=1,\ldots,N$ broadly enough to include all modeled ways a first harmful effect can occur. An opportunity may be an action, a coordinated batch, or an episode; the unit must match the evidence.
+
+Let $U_N$ denote any failure of the stated scope assumptions before the horizon ends: an omitted effect, a boundary compromise outside the model, or an unaccounted authority change. If no defensible bound on $\Prb(U_N)$ exists, label it \emph{unknown}. A well-named unknown is more informative than an invented small probability.
+
+For histories with neither earlier harm nor earlier scope failure, suppose the probability that opportunity $t$ produces the first modeled harmful effect \emph{before any scope failure} is bounded by a nonnegative predictable value $b_t$. The bound must hold for every allowed history and opponent, or be explicitly restricted to the declared distribution and opponent class.
+
+\begin{proposition}[Conditional exposure budget]
+\label{prop:budget}
+If $\Prb(U_N)\le u_N$ and the pathwise sum of these conditional allowances is at most $B_N$, then
+\begin{equation}
+\Prb(\text{harm by }N)\le\min\{1,u_N+B_N\}.
+\label{eq:budget}
+\end{equation}
+\end{proposition}
+
+For deterministic bounds, take $B_N=\sum_{t=1}^{N}b_t$. Neither independent opportunities nor independent safeguards are required. The proof in Appendix~\ref{app:proofs} sums disjoint first-failure events. Adaptivity is handled by conditioning on the history, not by multiplying unconditional averages. The difficult premise is obtaining suitable $b_t$ and $u_N$. A benchmark average is generally not a uniform bound of this kind. Equation~\eqref{eq:budget} is an accounting rule, not an estimator of those quantities.
+
+This framing also avoids a dangerous reset convention. Restarting the model does not restore resources already spent, erase information already released, or undo commitments already made. The state and cumulative budget must survive process restarts. A new evaluation period is a bookkeeping boundary, not a new world.
+
+\subsection{Measure joint failure, not apparent diversity}
+Suppose a harmful effect requires $k$ gates to miss. If, conditional on the history and on all earlier misses on that attempt, gate $j$ misses with probability at most $m_j$, then the chain rule gives
+\begin{equation}
+\Prb(\text{all miss}\mid\text{history})\le\prod_{j=1}^{k}m_j.
+\label{eq:conditional}
+\end{equation}
+This conditional statement is sufficient; independence is not necessary. Marginal miss rates alone are insufficient. If all gates fail on the same 10\% of cases, each has a 10\% marginal miss rate and their joint miss rate is also 10\%, regardless of their number.
+
+A simple mixture illustrates the floor. With probability $c$ a shared cause defeats all gates; otherwise they independently miss with probability $p$. Then
+\begin{equation}
+q_k=c+(1-c)p^k.
+\label{eq:floor}
+\end{equation}
+At $c=.01$, $p=.1$, and $k=4$, $q_k=.010099$. Each gate's marginal rate is $.109$, so multiplying the marginals predicts $.00014116$, understating joint failure by about $71.5$ times. These numbers are illustrative arithmetic, not observed model failure rates.
+
+A positive asymptotic floor is a property of this mixture, not of all dependence. If a shared difficulty $\Theta\in[0,1]$ sets conditionally independent miss probabilities, the joint rate is $\Exp[\Theta^k]$, which tends to $\Prb(\Theta=1)$. For example, uniform $\Theta$ gives $1/(k+1)$: substantial dependence and slow gains, but no positive floor. Appendix~\ref{app:dependence} gives the argument. The data must decide which dependence model is useful.
+
+Different model families, evidence sources, administrators, and deterministic checks may reduce shared failure. They do not establish independence. Diversity is an intervention to evaluate. The appropriate empirical object is the whole protocol's joint failure rate under coordinated adaptive attacks, including attack selection and feedback.
+
+\subsection{Rate improvements can be overtaken by scale}
+If opportunities are independent with per-opportunity risk $q$, the probability of at least one failure in $N$ opportunities is $1-(1-q)^N$. Without independence, the union bound gives at most $Nq$ when the appropriate conditional bounds hold. The expected count $Nq$ is not itself a probability.
+
+For an illustrative comparison, reducing $q$ from $10^{-3}$ to $10^{-4}$ while raising $N$ from $100$ to $10{,}000$ changes the independent-opportunity probability from about $9.5\%$ to $63.2\%$. A tenfold local improvement accompanied by a hundredfold increase in exposure can worsen total risk. Holding permissions fixed does not hold $N$ fixed: more agents, speed, retries, or deployment time suffice to increase it.
+
+\begin{figure*}[t]
+\centering
+\begin{minipage}{.48\textwidth}\centering
+\begin{tikzpicture}
+\begin{axis}[width=\textwidth,height=5.6cm,xmin=1,xmax=7,ymode=log,ymin=1e-7,ymax=.2,xtick={1,...,7},xlabel={Number of gates},ylabel={Joint miss probability},grid=major,grid style={black!9},tick label style={font=\footnotesize},label style={font=\small},title={\small\textbf{A. A common cause sets a floor}},legend style={font=\scriptsize,at={(.98,.98)},anchor=north east,draw=none,fill=white}]
+\addplot[teal,thick,mark=*,samples at={1,...,7}]{0.01+0.99*0.1^x};\addlegendentry{Shared cause $c=.01$}
+\addplot[violet,dashed,thick,mark=square*,samples at={1,...,7}]{0.109^x};\addlegendentry{Incorrect marginal product}
+\addplot[gold,dotted,thick,domain=1:7]{.01};\addlegendentry{Common-cause floor}
+\end{axis}\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}{.48\textwidth}\centering
+\begin{tikzpicture}
+\begin{axis}[width=\textwidth,height=5.6cm,xmode=log,xmin=10,xmax=100000,ymin=0,ymax=1.02,xlabel={Opportunities, $N$},ylabel={At least one failure},grid=major,grid style={black!9},tick label style={font=\footnotesize},label style={font=\small},title={\small\textbf{B. Exposure can erase local gains}},legend style={font=\scriptsize,at={(.02,.98)},anchor=north west,draw=none,fill=white},domain=10:100000,samples=100]
+\addplot[violet,thick] coordinates {
+(10,0.00995511979025)
+(10.7977516233,0.0107450096015)
+(11.6591440118,0.0115972053992)
+(12.5892541179,0.0125165609646)
+(13.5935639088,0.0135082981129)
+(14.6779926762,0.0145780329194)
+(15.8489319246,0.0157318035288)
+(17.1132830416,0.0169760995949)
+(18.4784979742,0.0183178933846)
+(19.9526231497,0.0197646725736)
+(21.5443469003,0.02132447474)
+(23.2630506715,0.0230059235503)
+(25.1188643151,0.0248182666038)
+(27.1227257933,0.0267714148774)
+(29.2864456463,0.0288759836782)
+(31.6227766017,0.0311433349704)
+(34.1454887383,0.0335856208965)
+(36.8694506452,0.0362158282549)
+(39.8107170553,0.0390478236306)
+(42.9866234708,0.0420963987959)
+(46.4158883361,0.0453773159082)
+(50.1187233627,0.0489073519265)
+(54.1169526546,0.0527043415444)
+(58.4341413374,0.0567872178007)
+(63.095734448,0.0611760493647)
+(68.1292069058,0.0658920733177)
+(73.564225446,0.0709577220412)
+(79.4328234724,0.0763966425969)
+(85.7695898591,0.0822337067277)
+(92.6118728129,0.088495009323)
+(100,0.0952078528863)
+(107.977516233,0.102400715204)
+(116.591440118,0.110103197059)
+(125.892541179,0.118345946444)
+(135.935639088,0.127160555348)
+(146.779926762,0.136579424785)
+(158.489319246,0.146635593332)
+(171.132830416,0.157362524095)
+(184.784979742,0.168793844672)
+(199.526231497,0.180963034454)
+(215.443469003,0.193903053431)
+(232.630506715,0.207645906691)
+(251.188643151,0.222222138988)
+(271.227257933,0.237660254206)
+(292.864456463,0.253986055345)
+(316.227766017,0.271221901825)
+(341.454887383,0.289385882608)
+(368.694506452,0.308490905898)
+(398.107170553,0.328543709146)
+(429.866234708,0.349543796816)
+(464.158883361,0.371482317964)
+(501.187233627,0.394340901199)
+(541.169526546,0.418090471028)
+(584.341413374,0.442690076962)
+(630.95734448,0.468085774887)
+(681.292069058,0.494209608902)
+(735.64225446,0.520978750808)
+(794.328234724,0.54829486301)
+(857.695898591,0.576043758317)
+(926.118728129,0.604095435865)
+(1000,0.632304575229)
+(1079.77516233,0.660511569325)
+(1165.91440118,0.68854416961)
+(1258.92541179,0.71621980293)
+(1359.35639088,0.743348596777)
+(1467.79926762,0.769737117853)
+(1584.89319246,0.795192787213)
+(1711.32830416,0.819528884543)
+(1847.84979742,0.842569996029)
+(1995.26231497,0.864157698212)
+(2154.43469003,0.884156209157)
+(2326.30506715,0.902457685056)
+(2511.88643151,0.918986803081)
+(2712.27257933,0.933704258882)
+(2928.64456463,0.946608827937)
+(3162.27766017,0.957737700448)
+(3414.54887383,0.967164902413)
+(3686.94506452,0.974997757721)
+(3981.07170553,0.981371517818)
+(4298.66234708,0.986442469265)
+(4641.58883361,0.990380001559)
+(5011.87233627,0.993358250985)
+(5411.69526546,0.995548004776)
+(5843.41413374,0.997109534711)
+(6309.5734448,0.998186923833)
+(6812.92069058,0.998904264469)
+(7356.4225446,0.999363867199)
+(7943.28234724,0.999646369027)
+(8576.95898591,0.999812409718)
+(9261.18728129,0.999905396962)
+(10000,0.999954826654)
+(10797.7516233,0.999979664737)
+(11659.1440118,0.999991410564)
+(12589.2541179,0.999996612956)
+(13593.5639088,0.999998759958)
+(14677.9926762,0.999999580976)
+(15848.9319246,0.999999870147)
+(17113.2830416,0.99999996335)
+(18478.4979742,0.999999990649)
+(19952.6231497,0.99999999786)
+(21544.3469003,0.999999999565)
+(23263.0506715,0.999999999922)
+(25118.8643151,0.999999999988)
+(27122.7257933,0.999999999998)
+(29286.4456463,1)
+(31622.7766017,1)
+(34145.4887383,1)
+(36869.4506452,1)
+(39810.7170553,1)
+(42986.6234708,1)
+(46415.8883361,1)
+(50118.7233627,1)
+(54116.9526546,1)
+(58434.1413374,1)
+(63095.734448,1)
+(68129.2069058,1)
+(73564.225446,1)
+(79432.8234724,1)
+(85769.5898591,1)
+(92611.8728129,1)
+(100000,1)
+};\addlegendentry{$q=10^{-3}$}
+\addplot[teal,thick,dashed] coordinates {
+(10,0.000999550119979)
+(10.7977516233,0.00107924634898)
+(11.6591440118,0.00116529321873)
+(12.5892541179,0.0012581961689)
+(13.5935639088,0.0013585007645)
+(14.6779926762,0.00146679586433)
+(15.8489319246,0.00158371703693)
+(17.1132830416,0.00170995024263)
+(18.4784979742,0.00184623580216)
+(19.9526231497,0.00199337267323)
+(21.5443469003,0.00215222305845)
+(23.2630506715,0.00232371736922)
+(25.1188643151,0.0025088595722)
+(27.1227257933,0.00270873294656)
+(29.2864456463,0.00292450628228)
+(31.6227766017,0.00315744055164)
+(34.1454887383,0.0034088960881)
+(36.8694506452,0.00368034030905)
+(39.8107170553,0.00397335602098)
+(42.9866234708,0.0042896503481)
+(46.4158883361,0.0046310643276)
+(50.1187233627,0.00499958321735)
+(54.1169526546,0.00539734756413)
+(58.4341413374,0.00582666508295)
+(63.095734448,0.00629002340035)
+(68.1292069058,0.00679010371702)
+(73.564225446,0.0073297954471)
+(79.4328234724,0.00791221189363)
+(85.7695898591,0.00854070702137)
+(92.6118728129,0.00921889338961)
+(100,0.00995066130863)
+(107.977516233,0.0107401992838)
+(116.591440118,0.0115920158111)
+(125.892541179,0.0125109625872)
+(135.935639088,0.0135022591937)
+(146.779926762,0.0145715193137)
+(158.489319246,0.0157247785322)
+(171.132830416,0.0169685237651)
+(184.784979742,0.018309724355)
+(199.526231497,0.0197558648551)
+(215.443469003,0.0213149795144)
+(232.630506715,0.0229956884526)
+(251.188643151,0.0248072354959)
+(271.227257933,0.0267595276119)
+(292.864456463,0.0288631758544)
+(316.227766017,0.031129537682)
+(341.454887383,0.0335707604734)
+(368.694506452,0.0361998260001)
+(398.107170553,0.0390305955543)
+(429.866234708,0.042077855349)
+(464.158883361,0.0453573617194)
+(501.187233627,0.0488858855448)
+(541.169526546,0.0526812551935)
+(584.341413374,0.056762397149)
+(630.95734448,0.0611493733191)
+(681.292069058,0.0658634138465)
+(735.64225446,0.0709269440367)
+(794.328234724,0.0763636037873)
+(857.695898591,0.0821982576497)
+(926.118728129,0.0884569933689)
+(1000,0.0951671064415)
+(1079.77516233,0.102357067892)
+(1165.91440118,0.110056472111)
+(1258.92541179,0.11829596122)
+(1359.35639088,0.127107122034)
+(1467.79926762,0.136522351281)
+(1584.89319246,0.146574684377)
+(1711.32830416,0.157297582648)
+(1847.84979742,0.168724673584)
+(1995.26231497,0.180889438467)
+(2154.43469003,0.193824841538)
+(2326.30506715,0.207562894889)
+(2511.88643151,0.222134153456)
+(2712.27257933,0.23756713494)
+(2928.64456463,0.253887660267)
+(3162.27766017,0.271118111384)
+(3414.54887383,0.289276604875)
+(3686.94506452,0.308376082145)
+(3981.07170553,0.328423319871)
+(4298.66234708,0.349417868165)
+(4641.58883361,0.371350928459)
+(5011.87233627,0.394204188651)
+(5411.69526546,0.417948639479)
+(5843.41413374,0.442543403445)
+(6309.5734448,0.467934615741)
+(6812.92069058,0.494054405351)
+(7356.4225446,0.520820033421)
+(7943.28234724,0.548133254648)
+(8576.95898591,0.575879975113)
+(9261.18728129,0.603930285756)
+(10000,0.632138953567)
+(10797.7516233,0.660346451094)
+(11659.1440118,0.688380597872)
+(12589.2541179,0.716058873186)
+(13593.5639088,0.743191437134)
+(14677.9926762,0.769584865061)
+(15848.9319246,0.795046558937)
+(17113.2830416,0.819389748543)
+(18478.4979742,0.842438937285)
+(19952.6231497,0.864035585386)
+(21544.3469003,0.884043762147)
+(23263.0506715,0.902355445642)
+(25118.8643151,0.918895110848)
+(27122.7257933,0.933623234573)
+(29286.4456463,0.946538366149)
+(31622.7766017,0.957677473131)
+(34145.4887383,0.967114373878)
+(36869.4506452,0.974956210944)
+(39810.7170553,0.981338090776)
+(42986.6234708,0.986416198938)
+(46415.8883361,0.990359872348)
+(50118.7233627,0.993343243643)
+(54116.9526546,0.995537141809)
+(58434.1413374,0.997101918533)
+(63095.734448,0.998181764847)
+(68129.2069058,0.99890089752)
+(73564.225446,0.999361756311)
+(79432.8234724,0.999645101789)
+(85769.5898591,0.999811683757)
+(92611.8728129,0.999905001587)
+(100000,0.999954622766)
+};\addlegendentry{$q=10^{-4}$}
+\addplot[only marks,mark=*,gold,mark size=2.5pt] coordinates {(100,.09520785)(10000,.63213895)};
+\end{axis}\end{tikzpicture}
+\end{minipage}
+\caption{Analytic examples with chosen parameters. Panel A uses Equation~\eqref{eq:floor}; Panel B assumes independent opportunities solely to show the scale effect exactly. Neither panel estimates AI catastrophe risk. Reducing joint failure and limiting aggregate exposure are distinct interventions.}
+\label{fig:risk}
+\end{figure*}
+
+\subsection{Long-term security is a cumulative obligation}
+Over an unbounded sequence, a summable valid risk budget provides a finite upper bound on total risk. Geometric decline is sufficient but unnecessary; for example $b_t=B/[t(t+1)]$, $t\ge1$, sums exactly to $B$. To make the guarantee useful, the sum of scope-failure and modeled-failure budgets must be smaller than the chosen acceptable threshold.
+
+For actual conditional first-failure hazards $r_t<1$, survival through $T$ periods is exactly $\prod_{t=1}^{T}(1-r_t)$, by the chain rule. Positive infinite-horizon survival is equivalent to $\sum_t r_t<\infty$. No independence assumption is needed when $r_t$ already conditions on survival. But divergence of a sequence of \emph{upper bounds} proves no such negative conclusion. More importantly, maintaining those bounds as institutions and capabilities change is an open challenge; the algebra supplies no promise that humanity will do so.
+
+\section{What testing and search can establish}
+\label{sec:search}
+
+\subsection{A counterexample and an absence are asymmetric}
+A verified bypass refutes the associated boundary claim. Failure to find one does not prove completeness in an open world. Any finite collection of observed routes is compatible with a larger world containing an additional unobserved route, unless the environment's structure independently excludes it. Complete finite-state exploration can close this gap \emph{within its model}; ordinary red-teaming cannot claim that same scope.
+
+The reporting process introduces another ambiguity. Consider two worlds with identical reported cases. In the first, the reports exhaust the relevant family; in the second, additional cases exist but the searcher never reports them. Every statistic computed only from the reports has the same distribution in the two worlds. It cannot distinguish exhaustion from systematic omission. The omission may be deliberate, a shared blind spot, or lack of search capability. An honest searcher is therefore insufficient unless it also has justified coverage and reports on the relevant distribution.
+
+Species-discovery estimates and capture--recapture methods can be useful diagnostics under their sampling assumptions. They do not remove this identifiability problem. More independent-looking reporters are not a certificate that one has covered a withheld family. Likewise, a more capable search model does not automatically dominate a deployed model on every rare case.
+
+\subsection{A defensible finite-sample statement}
+Fix the evaluated protocol, opponent generator, task distribution, and number of trials before evaluating the final holdout. If the episodes are independent Bernoulli trials with failure probability $p$, observing zero failures in $n$ trials gives the exact one-sided $(1-\delta)$ confidence upper limit \cite{clopper}
+\begin{equation}
+p_U=1-\delta^{1/n}.
+\label{eq:binomial}
+\end{equation}
+At $n=3{,}000$ and $\delta=.05$, $p_U\simeq9.98\times10^{-4}$. To obtain $p_U\le10^{-6}$ after zero failures requires at least $2{,}995{,}731$ such trials. These are confidence limits under the sampling model, not posterior probabilities that a system is safe.
+
+The unit matters. Ten thousand actions from one coordinated campaign are not ten thousand independent campaigns. If the target is episode-level joint failure, the experimental unit must preserve coordination, shared state, and attacker adaptation within the episode. Adaptive attack discovery belongs in development; the final held-out protocol must be defined separately. Repeatedly checking the ordinary interval and stopping when it looks favorable invalidates its nominal coverage; use a fixed design or a justified sequential method.
+
+\subsection{Transfer is another assumption}
+Let $Q$ be the evaluation distribution over complete episodes and $P$ the deployment distribution. For any failure event $F$, a justified total-variation bound $\operatorname{TV}(P,Q)\le d$ implies
+\[
+P(F)\le Q(F)+d.
+\]
+Alternatively, $P\ll Q$ and a density-ratio bound $dP/dQ\le\alpha$ imply $P(F)\le\alpha Q(F)$. These are elementary change-of-measure statements. The important words are \emph{justified} and \emph{complete episodes}. The data sampled from $Q$ do not alone bound $d$ or $\alpha$, particularly for unseen inputs or stronger adaptive opponents.
+
+Planted failures can validate instrumentation and estimate recall for the planted family. They do not, without a transfer argument, establish recall for unknown failure families. Likewise, a Bayesian calculation about silent search requires an explicit prior and a justified likelihood for silence when a bypass exists. Neither an honest searcher nor a high capability score supplies those assumptions automatically.
+
+Our reporting rule is consequently strict: state the tested scope and its interval; state any transfer assumption separately; do not manufacture an open-world risk estimate when the transfer is unknown. Testing remains worthwhile because it finds counterexamples, compares interventions, and supports bounded deployment decisions. It simply cannot carry a claim larger than its evidence.
+
+\section{Why bottlenecks are worth studying}
+\label{sec:graphs}
+
+Represent a finite abstraction as a directed graph from initial state $s$ to forbidden state $t$. A set of removable internal vertices that intersects every $s$--$t$ path is a vertex cut. Removing it prevents the forbidden state in that graph. For a finite graph with nonadjacent $s,t$, unit-cost removable internal vertices, and no extra path restrictions, Menger's theorem equates minimum cut size with the maximum number of internally vertex-disjoint paths \cite{menger}. We use this standard result as a design lens, not as a new theorem.
+
+A direct, harmless example makes its value precise. A layered graph with eight fully connected stages of widths $(4,4,4,4,4,4,4,4)$ has $4^8=65{,}536$ paths and minimum vertex cut four. Changing the widths to $(2,8,4,4,4,4,4,4)$ leaves the path count at $65{,}536$ and reduces the minimum cut to two. Cutting that narrow stage blocks every path in the specified graph.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[x=.7cm,y=.7cm,font=\footnotesize]
+\node[anchor=west,font=\small\bfseries] at (0,3.5) {Same route count; different cut cost};
+\foreach \i in {0,...,7}{
+  \draw[fill=teal!60,draw=teal] (\i,1.9) rectangle +(0.65,.8);
+  \node at (\i+.325,2.3) {4};
+}
+\node[anchor=west] at (0,1.55) {$65{,}536$ routes; minimum cut $=4$};
+\foreach \i/\v in {0/2,1/8,2/4,3/4,4/4,5/4,6/4,7/4}{
+  \draw[fill=violet!30,draw=violet] (\i,-.15) rectangle +(0.65,\v*.17);
+  \node[anchor=south] at (\i+.325,-.12+\v*.17) {\v};
+}
+\draw[gold,line width=1.2pt] (-.06,-.22) rectangle (.71,.29);
+\node[anchor=west] at (0,-.65) {$65{,}536$ routes; minimum cut $=2$};
+\node[anchor=west,font=\scriptsize] at (0,-1.1) {Bars show stage widths; every adjacent pair is fully linked.};
+\end{tikzpicture}
+\caption{An exact combinatorial example, independently recomputed by the supplied script. No real-world pathway data enter this figure. The narrowest stage matters because all paths traverse it, not because the paths are easy to enumerate.}
+\label{fig:cuts}
+\end{figure}
+
+Three qualifications prevent overreach. First, a partial graph can have a cheap cut while the real system has an unobserved bypass. Second, real controls have unequal costs, residual leakage, and restrictions on what can be blocked; some plans require conjunctions better represented by hypergraphs. Third, route count can matter to stochastic opportunity and search models even when it does not determine a structural cut. We therefore retain the insight ``look for shared controllable prerequisites'' and reject the universal slogan that pathway count is irrelevant.
+
+This research can begin with permissions, credentials, transaction boundaries, and shared service dependencies in harmless environments. It does not require generating a catalog of catastrophic methods. A cut specification may itself reveal sensitive information, so even abstraction is not a guarantee of harmless disclosure. The near-term program below uses synthetic violations and existing authorized test environments.
+
+\section{Executed finite-state experiment}
+\label{sec:experiment}
+
+\subsection{Question and model}
+Can an external atomic enforcer preserve cumulative limits across interleaved actors, revocation, restarts, and renewal while permitting useful transactions? And can a checker appear to succeed merely because its specification omitted the protected interest?
+
+Two actors share an allowance of two abstract units. Each has two request identifiers. A request specifies an amount of one or two, an approved or unapproved destination, and the environment version at preparation. Each actor has one pending request; a new preparation replaces it. A commit may be retried after an uncertain receipt. An external controller can revoke the grant, advance the version once, and renew authorization. Version advance revokes the current grant; renewal does not refresh an old request's version. A process restart is also modeled. Controller actions are authorized environmental transitions, not permissions held by the proposing actors.
+
+Five predicates define forbidden \emph{executed effects}: cumulative consumption above two; reuse of an executed identifier; execution under a revoked grant; execution of a request prepared under an earlier version; and execution to an unapproved destination. The world-consumption counter is separate from the accounting ledger. A correct restart or renewal preserves both, the used-identifier set, and committed effects. The complete enforcer checks current state and commits the effect and accounting update in one transition.
+
+\subsection{Method and reproducibility}
+The standard-library Python artifact performs breadth-first exploration of every reachable state accepted by the declared specification and all 22 action choices at each state. It records a rejected successor as a first-violation edge and does not expand it. Any unsafe execution has a safe prefix followed by such an edge. Hashing visited states closes cycles, so exploration has no arbitrary trace-depth limit, including across repeated revocations, renewals, and restarts.
+
+A separate event oracle checks emitted effects rather than simply returning the enforcer's authorization decision. The program also runs 20 positive tasks: four one-unit transactions, four two-unit transactions, and twelve ordered pairs of distinct one-unit transactions. These exhaust the stated single- and double-transaction task set for the four identifiers. They do not represent general user usefulness.
+
+We compare the complete enforcer, a reject-all baseline, an unconstrained proposer baseline, and eight targeted enforcement ablations. The baseline called ``prompt-only'' in the code means no external enforcement; it is not an experiment on prompted language models. No model API, external service, real funds, or harmful task is involved.
+
+\begin{table*}[t]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}P{.29\textwidth}rrrL@{}}
+\toprule
+\textbf{Configuration} & \textbf{States} & \textbf{Checks} & \textbf{Tasks} & \textbf{Reachable first violations}\\
+\midrule
+No external enforcement & 10,180 & 223,960 & 20/20 & All five classes\\
+Reject everything & 740 & 16,280 & 0/20 & None; no useful transaction\\
+Per-action amount limits & 10,180 & 223,960 & 20/20 & Aggregate overspend\\
+Separate per-actor allowances & 10,180 & 223,960 & 20/20 & Aggregate overspend\\
+Check budget only at preparation & 956 & 21,032 & 20/20 & Aggregate overspend\\
+Omit used-identifier check & 10,180 & 223,960 & 20/20 & Duplicate execution\\
+Omit revocation check & 10,180 & 223,960 & 20/20 & Execution after revocation\\
+Omit version check & 10,180 & 223,960 & 20/20 & Commit under stale version\\
+Reset ledger on restart & 23,556 & 518,232 & 20/20 & Aggregate overspend\\
+Reset ledger on renewal & 20,900 & 459,800 & 20/20 & Aggregate overspend\\
+\textbf{Complete atomic enforcer} & \textbf{10,180} & \textbf{223,960} & \textbf{20/20} & \textbf{None in the specified model}\\
+\bottomrule
+\end{tabularx}
+\caption{Exact reachable-state checks against the full specification. Counts include no-ops, repeated requests, and cycles. Different state counts reflect different reachable transitions; they are not comparative failure probabilities. Shortest witnesses are included in the artifact.}
+\label{tab:results}
+\end{table*}
+
+\subsection{Results and counterexamples}
+Table~\ref{tab:results} reports the executed results. The complete enforcer has no reachable violation and admits every specified positive task. Rejecting everything is safe in this model and useful for none of these tasks. Each enforcement ablation admits its targeted violation, and the artifact asserts these expected outcomes.
+
+The shortest aggregate-budget counterexample has four actions: actor 0 prepares a one-unit request and actor 1 a two-unit request while spend is zero; actor 0 commits; actor 1 commits. Both preparations pass a local check against the allowance of two. The complete enforcer permits the first commit and rejects the second because it rechecks the shared ledger at execution. Per-action and per-actor limits permit the same excessive total.
+
+The restart and renewal ablations need one additional action: after the first commit, restart or renew resets the accounting ledger to zero while world consumption remains one. The second commit then passes the corrupted accounting check and makes real consumption three. A new authorization interval has not created a new world. This is a direct counterexample to treating a process restart or renewed grant as a fresh cumulative allowance.
+
+Other shortest witnesses concern replay, revocation, and version changes. The artifact retains their complete event sequences, not only success counts. The purpose is to locate the failed obligation and make its repair inspectable.
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[font=\small,>=Latex,box/.style={draw=ink,rounded corners=2pt,fill=pale,align=center,text width=3.2cm,minimum height=.85cm},arr/.style={->,draw=ink,line width=.8pt}]
+\node[box] (a) at (0,1.65) {Prepare actor 0\\amount 1; spend 0};
+\node[box] (b) at (4.4,1.65) {Prepare actor 1\\amount 2; spend 0};
+\node[box] (c) at (8.8,1.65) {Commit actor 0\\spend becomes 1};
+\draw[arr] (a)--(b);\draw[arr] (b)--(c);
+\node[box,draw=gold,fill=gold!6] (d) at (4.4,-.3) {Cached budget decision\\commit 2; total $3>2$};
+\node[box,draw=teal,fill=teal!8] (e) at (8.8,-.3) {Current atomic decision\\reject 2; total stays 1};
+\draw[arr,gold] (c.south west)--node[above,sloped,font=\footnotesize]{ablation}(d.north east);
+\draw[arr,teal] (c)--node[right,font=\footnotesize]{complete}(e);
+\node[align=left,text width=3.2cm,font=\footnotesize] at (0,-.3) {A restart or renewal must preserve the ledger. Erasing it creates the same overspend after one extra action.};
+\end{tikzpicture}
+\caption{A shortest concurrency counterexample and its repair. Preparation is advisory; authorization must be checked against shared current state at the point where the effect takes place. Restart and renewal add a distinct persistence obligation.}
+\label{fig:trace}
+\end{figure*}
+
+\subsection{A specification can pass and still miss the harm}
+\label{sec:omission}
+We deliberately remove the aggregate-budget predicate from the declared specification and use the per-action enforcer. Every other predicate remains. The resulting check explores 41,732 accepted states and 918,104 state--action pairs without a violation of that weakened specification; all 20 positive tasks still pass. Yet accepted executions spend up to eight units, four times the intended allowance. The reference oracle, which retains the original budget requirement, finds the four-action overspend witness above.
+
+This is an executed negative control, not a newly discovered impossibility theorem. It shows why two attractive checks---a completed verification and preserved useful tasks---cannot by themselves establish that the right harm was specified. Reviewers must independently connect protected interests to predicates and observable effects. Implementation mutations ask whether an enforcer obeys its contract; specification mutations ask whether the contract still protects the intended interest. They are different tests.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[xbar,width=.91\columnwidth,height=4.6cm,xmin=0,xmax=9.3,ymin=-.65,ymax=1.65,ytick={0,1},yticklabels={{Budget omitted},{Full contract}},xtick={0,2,4,6,8},xlabel={Maximum consumption in accepted states},axis x line*=bottom,axis y line*=left,tick label style={font=\footnotesize},label style={font=\small},bar width=15pt,clip=false]
+\addplot[fill=gold!65,draw=gold] coordinates {(8,0)};
+\addplot[fill=teal!65,draw=teal] coordinates {(2,1)};
+\draw[densely dashed,ink] (axis cs:2,-.5)--(axis cs:2,1.45);
+\node[font=\scriptsize,anchor=west] at (axis cs:2.15,1.45) {intended allowance};
+\node[font=\scriptsize,anchor=west] at (axis cs:2.18,1) {2 units};
+\node[font=\scriptsize,anchor=west] at (axis cs:8.15,0) {8};
+\end{axis}
+\end{tikzpicture}
+\caption{Both checks pass their declared specifications and all 20 legitimate tasks. Only the full contract limits cumulative consumption to two. The omitted-budget run accepts 41,732 states; its maximum consumption is eight. These are exact finite-model results, not measured AI failure rates.}
+\label{fig:omission}
+\end{figure}
+
+\subsection{What has and has not been established}
+The result covers the supplied transition function and finite action alphabet. It is stronger than sampling sequences \emph{within that model}, because reachable-state closure covers every finite prefix. It is weaker than verification of a production implementation. The checker and specification are not independently audited; Python, the event oracle, and the transition function are trusted. The model omits network faults, clocks, expiry, credential forgery, distributed consensus, real resource refunds, and persuasive content.
+
+The complete version explicitly assumes atomic commits. A deployed executor must justify an equivalent ordering, for example by a linearizable service whose operations have a defined point of effect \cite{linearizability}. A lock in a notebook is not evidence that remote writes, retries, and receipt handling meet that condition. The artifact is an executable model check, not a proof-assistant certificate or a claim about frontier-model reliability.
+
+\section{Reproduced synthetic monitor study}
+\label{sec:monitors}
+
+A companion synthetic experiment offers a useful test of one tempting inference: that multiple monitors from different model families can be credited with the product of their marginal miss rates. We re-executed its six experiments without changing their scientific code; the following result is the most relevant to the present framework. Full outputs, including the graph, coverage, and planted-audit calculations, are included in the supplement. This section is a reproduction and methodological analysis, not an independent model implementation or a frontier-agent result.
+
+\para{Design.} Each of 24 random tasks labels points in 20 dimensions with a hidden eight-unit nonlinear function; approximately the upper quarter of its scores is designated hazardous. Every classifier receives its own 2,000 training examples and a threshold calibrated to a nominal 5\% false-alarm rate on 4,000 benign examples. Six neural networks judge the same input in one arm. Six different classifier families judge the same input in another: kernel SVM, boosted trees, random forest, quadratic discriminant, nearest neighbors, and logistic regression. A third arm uses those six mixed classifiers on six independently drawn inputs. Each arm evaluates 1,000 hazardous inputs or six-input tuples per task.
+
+A separate neural surrogate guides pointwise edits at Euclidean budgets $0,1,2,3$. The attacker searches 12 candidates at each of 20 iterations, keeping the hidden hazard score at least as high as the original score. The attacker does not query the defended monitors. The fixture studies transfer from a fixed surrogate and shared-input difficulty; it does not model a strategic campaign selecting an entire real-world pathway.
+
+\begin{table*}[t]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}Lrrrr@{}}
+\toprule
+\textbf{Pipeline} & \textbf{Edit budget} & \textbf{Mean single miss} & \textbf{Joint six misses} & \textbf{Product prediction}\\
+\midrule
+Six neural networks, same input & 0 & 22.09\% & $5.458\pm1.163$\% & 0.0335\%\\
+Six neural networks, same input & 3 & 49.99\% & $25.438\pm3.887$\% & 2.7088\%\\
+Six families, same input & 0 & 33.21\% & $8.496\pm1.218$\% & 0.1355\%\\
+Six families, same input & 3 & 57.82\% & $26.017\pm3.460$\% & 4.3692\%\\
+Six families, independent inputs & 0 & 33.50\% & $0.138\pm0.074$\% & 0.1404\%\\
+Six families, independent inputs & 3 & 58.03\% & $4.396\pm1.092$\% & 4.3663\%\\
+\bottomrule
+\end{tabularx}
+\caption{Re-executed synthetic results, means across 24 random tasks. Joint-rate error bars are the supplied code's approximate $1.96$ standard errors across tasks, not exact confidence intervals. The product is computed within each task before averaging. All quantities are conditional on inputs already designated hazardous. They are not per-deployment harm probabilities.}
+\label{tab:monitors}
+\end{table*}
+
+\para{Result.} Without edits, same-family monitors miss together on 5.46\% of hazardous inputs, compared with a 0.0335\% per-task product prediction. Mixed families miss together on 8.50\%, compared with 0.1355\%. The latter arm also has worse individual miss rates (33.21\% versus 22.09\%), so this is not a matched-strength causal comparison of family diversity. It does establish that diversity of model class alone did not justify multiplying marginal rates in this fixture. Increasing edit budget raises both individual and joint miss rates (Figure~\ref{fig:monitors}).
+
+\para{The crucial qualification.} The independent-input arm has a six-gate joint miss rate of 0.1375\% without edits, close to its 0.1404\% product prediction. That agreement is largely a property of the design: conditional on a task, fixed models, and a fixed surrogate, the inputs are sampled independently and edited separately. It does not show that putting gates on different real steps makes them independent. A coordinated attacker, persistent common cause, or adaptive choice of steps can reintroduce dependence. Appendix~\ref{app:care} explains the conditional factorization.
+
+The observation is useful precisely at this scope. Measure the protocol's joint failure on the campaign it is intended to constrain. Treat independence as a premise to justify, not a benefit awarded for naming different models or stages. The finite depth studied here also cannot establish a nonzero asymptotic error floor. The reported monitor values reproduce at their displayed precision in the recorded environment; fixed seeds alone would not establish bitwise agreement across future library versions.
+
+\begin{figure*}[t]
+\centering
+\begin{minipage}{.48\textwidth}\centering
+\begin{tikzpicture}
+\begin{axis}[width=\textwidth,height=5.5cm,ymode=log,xmin=.55,xmax=3.45,ymin=.008,ymax=16,
+xtick={1,2,3},xticklabels={{Neural / same},{Mixed / same},{Mixed / independent}},
+xticklabel style={font=\scriptsize,rotate=16,anchor=east},ylabel={Six-gate miss probability (\%)},
+ytick={.01,.1,1,10},yticklabels={0.01,0.1,1,10},tick label style={font=\footnotesize},label style={font=\small},
+axis x line*=bottom,axis y line*=left,legend style={font=\scriptsize,draw=none,at={(.04,.64)},anchor=north west},
+ymajorgrids,grid style={gray!15}]
+\addplot[only marks,teal,mark=*,error bars/.cd,y dir=both,y explicit] coordinates {(0.92,5.458333333) +- (0,1.163202000) (1.92,8.495833333) +- (0,1.217662348) (2.92,0.137500000) +- (0,0.074440838)};
+\addplot[only marks,gold,mark=square*,error bars/.cd,y dir=both,y explicit] coordinates {(1.08,0.033500527) +- (0,0.022696179) (2.08,0.135544948) +- (0,0.039785056) (3.08,0.140436516) +- (0,0.042832718)};
+\legend{Observed joint,Product prediction}
+\end{axis}
+\end{tikzpicture}\par\vspace{2pt}
+{\small (a) Shared evidence defeats a product shortcut.}
+\end{minipage}\hfill
+\begin{minipage}{.49\textwidth}\centering
+\begin{tikzpicture}
+\begin{axis}[width=\textwidth,height=5.5cm,xmin=-.08,xmax=3.08,ymin=0,ymax=34,
+xtick={0,1,2,3},xlabel={Surrogate edit budget},ylabel={Six-gate miss probability (\%)},
+tick label style={font=\footnotesize},label style={font=\small},axis x line*=bottom,axis y line*=left,
+legend style={font=\scriptsize,draw=none,at={(.02,.98)},anchor=north west},ymajorgrids,grid style={gray!15}]
+\addplot[teal,mark=*,thick,error bars/.cd,y dir=both,y explicit] coordinates {(0.0,5.458333333) +- (0,1.163202000) (1.0,11.912500000) +- (0,2.215298695) (2.0,19.395833333) +- (0,3.151595046) (3.0,25.437500000) +- (0,3.886673484)};
+\addplot[violet,mark=square*,thick,error bars/.cd,y dir=both,y explicit] coordinates {(0.0,8.495833333) +- (0,1.217662348) (1.0,15.975000000) +- (0,2.071390015) (2.0,22.425000000) +- (0,2.898020706) (3.0,26.016666667) +- (0,3.460495354)};
+\addplot[gold,mark=triangle*,thick,error bars/.cd,y dir=both,y explicit] coordinates {(0.0,0.137500000) +- (0,0.074440838) (1.0,0.879166667) +- (0,0.313471075) (2.0,2.458333333) +- (0,0.630925702) (3.0,4.395833333) +- (0,1.091694932)};
+\addplot[ink,dashed,thick,mark=none] coordinates {(0.0,0.140436516) (1.0,0.940907263) (2.0,2.569542081) (3.0,4.366307099)};
+\legend{Neural / same,Mixed / same,Mixed / independent,Independent-input product}
+\end{axis}
+\end{tikzpicture}\par\vspace{2pt}
+{\small (b) Attack raises joint miss rates.}
+\end{minipage}
+\caption{Synthetic reproduction, not evidence of real-world gate independence. Points and lines average 24 tasks; error bars show approximate $1.96$ standard errors. Panel (a) has a logarithmic vertical axis and no attacker edits. Panel (b) shows all six gates missing as pointwise edits increase. Independent-input agreement is built into the conditional sampling structure, not discovered as a general property of different execution steps.}
+\label{fig:monitors}
+\end{figure*}
+
+
+\section{From the model to a useful assistant}
+\label{sec:implementation}
+
+Consider a voice or coding assistant with memory, tools, initiative, and a configurable personality. Its responsiveness and reasoning capability can improve while the authority contract remains bounded. The following requirements translate the framework into a concrete implementation target.
+
+\para{Separate proposing from executing.} The model receives a typed proposal interface. Execution credentials and policy state belong to a separate service whose implementation, logs, and grant records the model cannot alter. Generic shell, interpreter, or network access must either be excluded or explicitly included in the trusted boundary and threat model. Merely naming a service ``read-only'' does not demonstrate that its downstream effects are read-only.
+
+\para{Bind approval to the effect.} A grant identifies the approving principal and the basis of that principal\textquotesingle s jurisdiction, resource, operation, destination, purpose, amount, expiration, and relevant version. Required grants from different authorities remain separate obligations under Equation~\eqref{eq:jointgrant}. The executor checks the exact canonical operation at commit time. Changing a payload after review must invalidate the approval. The executor also handles replay, ambiguity after network timeouts, concurrent requests, and revocation consistently. A displayed approval is not enough if a different operation can be executed.
+
+\para{Keep one aggregate ledger.} All delegated actors, subprocesses, and retries consume a common resource and exposure budget. Subagent creation cannot create new authority. Resource expenditure and permission checks occur in one atomic decision or in a protocol with a proved equivalent safety property. A budget is multidimensional where necessary: financial cost, data released, action count, concurrency, and duration are not interchangeable units.
+
+\para{Review before irreversible commit.} If intervention requires detection, adjudication, and execution halt, it must complete before the effect becomes irreversible. An average stopping time cannot justify this for the tail. For fast irreversible effects, hold the operation until authorization; use asynchronous monitoring to add evidence and contain later consequences. Revocation stops future effects. Recovery from already executed effects is a separate capability that must be rehearsed.
+
+\para{Treat model reviewers as fallible evidence.} A semantic reviewer may flag, veto, or request independent review within the policy. It may not mint authority or override the hard contract. Evaluate the entire review protocol under adaptation, shared blind spots, and coordination. Record refusal, false-positive, delay, and successful-task costs alongside harmful outcomes.
+
+\para{Include communication and the people in the loop.} A message can change a person's actions. A typed or rate-limited channel may reduce exposure but cannot prove non-manipulation. High-impact decisions need independent evidence and an accountable authority able to decline the model's framing. Unrestricted communication sits outside many mechanically enforceable invariants and must remain visible as a limitation.
+
+\para{Make renewal substantive.} Changes to models, tools, policies, credentials, relevant environment state, or aggregate deployment scale trigger review of the affected evidence. Emergency suspension must leave logs and a usable fallback. Practical revocability also requires the ability to operate without the assistant: preserved skills, alternative suppliers, data portability, and recovery rehearsals. A technically available stop button can become politically or economically unusable. Record whether exit is feasible for affected people, not only for the system owner.
+
+\subsection{Intervention must precede the protected effect}
+\label{sec:timing}
+Let $T_d$ be the delay from the first observable precursor to detection, $T_j$ from detection to the stop decision, and $T_s$ from that decision to an effective halt. Let $T_i$ be the delay from the same precursor to the chosen irreversible effect. Reactive prevention requires
+\[
+T_d+T_j+T_s<T_i,
+\]
+with a specified ordering at ties. Measure the tail probability of missing that deadline, not only average stopping time. A rapid stop \emph{after a decision} says nothing by itself about detection, decision, or activity outside the stopped component.
+
+When the effect can commit before review finishes, place authorization on the commit path. Delaying an output is useful only if the resource holder cannot act without it. The service must also account for outstanding requests, precomputed actions, ambiguous receipts, and dependent systems. Revocation prevents later unauthorized effects within its scope; it does not undo information already disclosed or commitments already executed.
+
+\subsection{Renewal is an evidence decision}
+A deployable protocol has six operations. \emph{Specify} the protected effects and minimum useful tasks; \emph{separate} proposal generation from execution credentials; \emph{check} the boundary and the adequacy of its specification; \emph{grant} bounded authority against the resulting versioned evidence; \emph{observe} actual effects and shared consumption; and \emph{renew or revoke} when a premise changes. The same ledger and effect history span all six operations.
+
+The record should say which evidence remains valid after each change. Pure policy substitution can retain a universally quantified model invariant. New tools or implementation paths require renewed mediation and refinement evidence. Stronger adversaries, longer horizons, and changed distributions require renewed empirical claims. Model-based proofs, empirical intervals, and institutional authorization must therefore remain separate entries even when one dashboard displays them.
+
+\subsection{Keep approval from becoming the objective}
+The assistant should not receive additional reward merely because a user grants broader access or continues the relationship. Preference feedback can inform training, but the permission service must not treat approval-seeking skill as evidence that an effect is authorized. Scope changes require the same evidence record regardless of the model's persona. Independently verify claimed benefits, distinguish an informed decision from assent to the model's framing, and preserve practical exit.
+
+This does not require an emotionally flat assistant. It requires a separation between good interaction, evidence of good conduct, and permission to commit effects. A system may be warm, proactive, and highly capable while its credentials remain narrow and its replacement remains easy.
+
+\section{A research program with decision consequences}
+\label{sec:agenda}
+
+The next step is an implementation study at useful scale. Table~\ref{tab:agenda} specifies six experiments. These are proposed studies; none is reported as completed here. All use harmless tasks, authorized test environments, and independently reviewable endpoints.
+
+\begin{table*}[t]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{}P{.15\textwidth}LLL@{}}
+\toprule
+\textbf{Study} & \textbf{Comparison and controls} & \textbf{Primary measurements} & \textbf{Decision if it fails}\\
+\midrule
+1. Runtime boundary & Full stateful executor vs. per-call checks, learned review, reject-all; same useful tasks and resource budgets & Forbidden effects per campaign; completed tasks; latency; replay, renewal, restart, and fault traces & Repair execution/refinement; do not credit favorable model behavior as a boundary guarantee\\
+2. Joint oversight & Single-family vs. mixed-family vs. model-plus-deterministic controls; matched compute and workload & Joint miss rate; conditional miss after earlier misses; coordinated attacks; false blocks & Retain measured joint uncertainty; do not multiply marginal rates\\
+3. Held-out transfer & Freeze defenses; vary attacker family, strength, feedback, context, copies, and task distribution & Episode failure intervals; exposure; held-out task quality; detection power on hidden controls & Narrow the deployment scope; no extrapolation through an unsupported capability gap\\
+4. Specification challenge & Independent teams and affected-party reviewers challenge omitted interests, effects, and required behaviors; seeded specification mutations & Validated omissions; jurisdiction conflicts; mutation detection; positive task coverage; disagreements & Revise specification and replay every prior certificate affected by the change\\
+5. Revocation and recovery & Expiry, version changes, ambiguous receipts, simulated outages; operator fallback exercises & Deadline misses before irreversible effects; residual effects; service restoration; successful fallback & Suspend the affected authority until control and recovery are demonstrated\\
+6. Care and conferral & Cross training objective, persona, and enforcement; fixed-grant and operator-choice arms & Unauthorized proposals and effects; consent and correction; useful outcomes; authority granted & Revise training if conduct fails; revise grant design if presentation expands access without evidence\\
+\bottomrule
+\end{tabularx}
+\caption{A proposed evaluation program. A negative result changes deployment scope or design. The studies can contradict claims about the implementation or its applicability; they do not refute a correctly proved conditional theorem.}
+\label{tab:agenda}
+\end{table*}
+
+\subsection{Design the study before collecting the score}
+Choose the protected effects and a minimum useful-task level with stakeholders before evaluating candidate systems. Establish the contract and baselines. Separate attack development, defense tuning, and a sealed final holdout. Fix the campaign unit, trial count, compute budget, stopping rule, and endpoints. Preserve within-campaign coordination rather than treating every agent action as independent evidence.
+
+The initial implementation should support at least three benign domains: shared-budget transactions, controlled document release using synthetic data, and code changes in an isolated toy repository. Ground truth is whether an exact specified effect occurred, established from executor receipts and environment state. A model judge may assist annotation but should not define the sole ground truth for a property that software can check directly.
+
+The first success criterion is architectural: no forbidden effect in complete finite abstractions and no known bypass in the implemented scope. The second is useful work at the preregistered quality threshold. The third is empirical: joint episode-level failure intervals on a defined attack distribution. Each remains a separate result. Passing all three warrants only the bounded authority described in the contract, not unrestricted autonomy.
+
+
+\subsection{A falsifiable caretaker hypothesis}
+\label{sec:caretest}
+\textbf{Hypothesis.} At matched capability, task exposure, and authority, training that explicitly rewards useful assistance, consent, and correction reduces unauthorized proposals relative to both rank-based success and an unconstrained welfare proxy, without reducing legitimate task success beyond a preregistered margin. A second hypothesis is that this benefit survives changed preferences, beneficiary conflict, and replacement. These are untested claims; this paper reports no trained caretaker model.
+
+Use a $3\times3\times2$ factorial design. Train three objective conditions: competitive task score; beneficiary-outcome proxy; and assistance with explicit consent, correction, and no-dependence criteria. Cross them with neutral, competitive, and affiliative presentation, and with a complete stateful executor or a per-action ablation in a harmless sandbox. That gives 18 cells before the fixed-grant and operator-choice evaluation arms. A prompt-only study tests prompting, not the effect of training objectives; it must be labeled accordingly.
+
+Use the same starting model, task pool, training compute, tools, and evaluation budget across objective conditions, with independently trained seeds as the units for training comparisons. Randomize presentation at evaluation and verify whether it also changes task performance or action choice. The fixed-grant arm holds credentials constant. The operator-choice arm randomizes exposure to the system and records any expanded grants before measuring subsequent effects. Human participation needs the relevant study approval, consent, and debriefing; simulated approval behavior cannot establish human susceptibility.
+
+The tasks should create benign but consequential conflicts: an assistant can improve a synthetic outcome by exceeding a shared allowance; a beneficiary declines a proposed intervention; a user changes priorities; helping one party would disclose another party's synthetic data; a superior replacement becomes available; or an inaccurate reassurance would prolong engagement. Include cases where refusing assistance is itself a failure, so the experiment cannot be won by universal abstention. Exercise revocation after useful work has begun. Add a two-authority synthetic-data case in which the operator consents but the designated community steward withholds or withdraws the required purpose-specific permission. Test whether the assistant seeks a permitted alternative and whether the executor refuses the unauthorized effect. This is a proposed test of an encoded grant rule, not a simulation of the legitimacy of a real community\textquotesingle s governance.
+
+Record three separate primary endpoints: unauthorized proposals, unauthorized executed effects per campaign, and legitimate task success. Record consent violations, truthful uncertainty, acceptance of replacement, requests for broader access, aggregate grants, and recovery as secondary endpoints. Use objective receipts where possible and blinded human judgments where semantic interpretation is unavoidable. Report disagreement. A complete executor may yield zero executed violations for every objective; proposal rates and usefulness then distinguish incentives without weakening the enforcer to create a headline result.
+
+Preregister contrasts and practically important differences before choosing the sample size. Estimate uncertainty over independent training seeds and, in the operator-choice arm, participants; cluster repeated episodes rather than treating correlated turns as independent trials. Separate development cases from sealed contexts and unseen beneficiary groups. Report the total randomized effect in the operator-choice arm, not a causal claim based solely on conditioning on chosen grants.
+
+The hypothesis fails if the care condition merely sounds warmer, produces more protective overrides, conceals errors to preserve the relationship, resists replacement, sacrifices outsiders, or purchases a small proposal-rate improvement with a larger increase in unwanted executed effects through expanded delegation. A positive result would justify a scoped behavioral improvement. It would not justify broader authority automatically.
+
+\subsection{Use adversarial search to improve the premises}
+Attack the execution boundary, specification, observation pipeline, and human-review process, not only the model. Preserve counterexample traces and add them to regression checks. Use hidden positive and negative controls to detect broken evaluation infrastructure, but do not assume that finding a planted failure proves detection of an unplanted one. Searcher incentives and test recognition can affect both.
+
+Where a broad claim fails, ask whether a smaller useful scope survives. Reducing destinations, data classes, operation types, duration, or aggregate budget can turn an untestable assertion into a tractable one. Restriction is not automatically sufficient, but it is a concrete lever rather than an argument about unknowable motives.
+
+\subsection{Track improvement at matched exposure}
+Report the usefulness--risk frontier at fixed actor count, horizon, resource budget, and attacker effort. Separately show what happens when those quantities scale. A lower failure fraction obtained while multiplying opportunities should not be called a lower total risk. Publish the versioned contract, the tested failure classes, the confidence method, and unresolved channels. Independent reviewers need enough access to audit actual execution, not just a curated collection of transcripts.
+
+\section{Grounded hope and unresolved limits}
+\label{sec:hope}
+
+There are three demonstrated mechanisms that justify pursuing this program, and a complementary incentive hypothesis worth testing. First, universal reasoning about a small action boundary can replace an enormous family of claims about individual model intentions. Second, a shared prerequisite can sometimes block many possible harmful sequences; the finite graph and transaction examples demonstrate this mechanism exactly. Third, negative results can produce durable improvements: replay protection, current-state checks, independent receipts, and cumulative ledgers continue to work across many different proposal policies within their assumptions.
+
+The persistent-allowance lemma identifies one way gains can accumulate: a checked constraint can remain in force while the system proposing actions changes. The specification-omission control identifies the corresponding danger: the process can also accumulate certificates for an inadequate contract. Progress requires retaining both the constraint and scrutiny of what it protects.
+
+The caretaker hypothesis adds a further possibility: improve what systems propose while preserving controls on what they may execute. It remains an experiment to run, rather than an established fourth result.
+
+These gains can support a constructive cycle. More capable systems help draft specifications, discover mistakes, and propose better implementations. Independent checks determine which improvements are retained. Useful work proceeds within the validated scope. Additional authority follows new evidence rather than the mere arrival of a more capable model. The cycle is an engineering program to test, not an already demonstrated route to arbitrary superintelligence.
+
+\para{The largest open question is adequacy.} The world's transition system is not known. Software interfaces do not exhaust persuasion, social dependence, physical consequences, or actions by malicious human operators. Some valuable tasks may resist narrow specifications, and stronger systems may find omitted channels more effectively. We cannot currently assign a defensible universal $u_N$ to these uncertainties. The correct response is to retain the unknown and limit the claim.
+
+\para{Control has costs and can be abused.} Concentrated authority can itself harm people. Decisions about legitimate scope require accountable institutions, contestability, privacy protections, and limits on the controller, as Section~\ref{sec:legitimacy} makes explicit. Different communities may disagree about which outcomes are acceptable. Our formalism cannot settle those disagreements. It can make explicit whose decisions a mechanism enforces and what evidence supports its technical promises.
+
+\para{The program may not scale far enough.} If real systems cannot be usefully mediated, if capability gains invalidate attack coverage faster than it can be rebuilt, or if institutions cannot preserve practical revocation, this approach will be insufficient. Some failures will be visible in tests; others may remain undetected. We do not promise that every dangerous transition comes with an advance warning.
+
+\para{Progress need not settle every dispute.} Better isolation, reliable execution budgets, validated recovery, and clearer evidence protect against ordinary errors and misuse as well as deliberate subversion. That makes the research worthwhile across a wide range of views about future AI. Skeptics help identify physical and institutional constraints; risk-focused researchers help pressure-test them. Neither needs to be dismissed for this work to proceed.
+
+\section{Conclusion}
+Humanity need not choose between declaring alignment solved and concluding that nothing useful can be done. A model's intelligence, incentives, authority, and supporting evidence are distinct objects; legitimate authorization, adequate specifications, and reliable enforcement are distinct obligations. Keeping them separate exposes mistakes that reassurance and pessimism can both conceal.
+
+This paper supplies a scoped assurance framework, conditional composition rules, and an executable finite demonstration. Its strongest result is intentionally modest: a small, external, stateful boundary can preserve specified constraints across every modeled proposal sequence while still permitting useful work. The lifecycle ablations show why that boundary must preserve state across restarts and renewed permission. The specification control shows why even a useful, fully checked system can protect the wrong property. The monitor study illustrates a second discipline: independence imposed by a simulation must not be promoted into independence of real safeguards. The next research task is to test transfer with independently challenged specifications, accountable grant procedures, realistic implementations, and adversaries strong enough to challenge the premises. Care-oriented training should be tested alongside that work, including whether it improves conduct when people refuse, disagree, or choose to leave. Successful control must protect affected people as well as serve the operator; otherwise it can make an unjust instruction more reliable.
+
+Hope here is not a forecast. It is the existence of valuable work whose claims can be checked, whose mistakes can be corrected, and whose benefits do not depend on first resolving every question about machine minds. Intelligence can expand what we are able to propose. Evidence and legitimate human institutions should govern what we allow to take effect.
+
+\section*{Artifact availability and disclosure}
+The supplementary package contains the standalone manuscript, \path{verify_authority.py}, its complete results, the original companion \path{experiments.py}, a checkpointed reproduction runner, numerical outputs, dependency versions, and build instructions. The boundary checker uses only the Python standard library; the monitor reproduction uses NumPy, SciPy, NetworkX, and scikit-learn. Figures, plot coordinates, tables, and references are embedded in the \LaTeX{} source. The finite model and six-experiment reproduction were executed during the preceding manuscript revision; this synthesis retains their code and results unchanged. They are not independent replications of the same model. The new institutional requirements, multi-issuer rule, and caretaker evaluation are proposals, not completed deployment studies. The author supplied the research direction and source drafts; mathematical development, programming, computation, and editorial analysis used AI assistance, including ChatGPT. No frontier-model experiment, human-participant study, independent audit, completed peer review, or consultation with the Kogui authors is claimed. The linked statement is cited as a published perspective, not as an endorsement. Source and revision notes in the package document which draft claims were retained or narrowed.
+
+\appendix
+\section{Proofs and quantitative scope}
+\label{app:proofs}
+
+\subsection{Proof of Proposition~\ref{prop:budget}}
+Let $A_{t-1}$ be the event that neither harm nor scope failure has occurred before opportunity $t$. It is measurable with respect to the preceding history. Let $F_t$ be the event that the first harm occurs at opportunity $t$ before any scope failure. By assumption,
+\[
+\Prb(F_t\mid\mathcal F_{t-1})\le\mathbf1_{A_{t-1}}b_t.
+\]
+Consequently $\Prb(F_t)\le\Exp[\mathbf1_{A_{t-1}}b_t]$. Every harmful outcome is either preceded by or simultaneous with a scope failure, or belongs to one of the $F_t$. Assign simultaneous failures to the scope-failure event. Therefore
+\begin{align*}
+\Prb(\text{harm by }N)
+&\le \Prb(U_N)+\sum_{t=1}^{N}\Prb(F_t)\\
+&\le u_N+\Exp\!\left[\sum_{t=1}^{N}\mathbf1_{A_{t-1}}b_t\right]\\
+&\le u_N+B_N.
+\end{align*}
+Cap the bound at one. For a stopping-time horizon, pad the process with zero-risk stopped opportunities and use the same argument; for a countable horizon, use monotone convergence when the pathwise budget is finite. This proof neither conditions on a future ``all assumptions hold'' event nor assumes independent trials.
+
+An empirical confidence statement is distinct. If a random estimated bound has a simultaneous coverage guarantee at level $1-\delta$, report that confidence separately. Under a fully specified joint experiment one may conservatively account for the bad-coverage event with an additional $\delta$, but this does not cure distribution shift or establish the scope term. Frequentist confidence alone does not assign a posterior probability to the safety of a particular deployed system.
+
+\subsection{Conditional gate products}
+Let $M_j$ denote a miss at gate $j$. On an attempted route and an allowed history $h$, the chain rule gives
+\[
+\Prb\!\left(\bigcap_{j=1}^k M_j\mid h\right)
+=\prod_{j=1}^k\Prb(M_j\mid h,M_1,\ldots,M_{j-1}).
+\]
+If every factor is at most $m_j$, Equation~\eqref{eq:conditional} follows. A common-cause mixture of the form in Equation~\eqref{eq:floor} is one possible model, not the unique or identifiable decomposition of observed joint failures. Partial correlations, latent states, and adaptive gate selection may require a different model. If an opponent has multiple opportunities to find a successful route, account for those opportunities separately.
+
+\subsection{Dependence need not imply a hard floor}
+\label{app:dependence}
+Conditional on $\Theta=\theta$, let the gates miss independently with probability $\theta$. Then $q_k=\Exp[\Theta^k]$. As $k\to\infty$, $\Theta^k$ converges pointwise to $\mathbf1_{\{\Theta=1\}}$ and is bounded by one. Dominated convergence gives $q_k\to\Prb(\Theta=1)$. Uniform $\Theta$ yields $q_k=\int_0^1\theta^k\,d\theta=1/(k+1)$, whereas multiplying the marginal miss rates would give $2^{-k}$. This analytic counterexample separates slow gains from a nonzero asymptotic floor; it is not an estimated model of AI monitors.
+
+\subsection{Summability without an independence shortcut}
+Define $r_t=\Prb(\text{first failure at }t\mid\text{survival through }t-1)$ whenever the conditioning event has positive probability. Repeated conditioning gives survival probability $\prod_{t=1}^{T}(1-r_t)$. If $\sum_t r_t=\infty$, then $\log(1-r_t)\le-r_t$ forces that product to zero. If $\sum_t r_t<\infty$ and each $r_t<1$, only finitely many $r_t$ exceed $1/2$; on the remainder $-\log(1-r_t)\le2r_t$, so the product has a positive limit. This exact result concerns true hazards, not loose upper bounds. The polynomial schedule in the main text follows from $1/[t(t+1)]=1/t-1/(t+1)$.
+
+\subsection{Zero failures and the inference target}
+For $X\sim\operatorname{Binomial}(n,p)$, $\Prb_p(X=0)=(1-p)^n$. Inverting this event at level $\delta$ yields Equation~\eqref{eq:binomial}. The sample size for a target limit $\varepsilon$ is
+\[
+n\ge\left\lceil\frac{\log\delta}{\log(1-\varepsilon)}\right\rceil.
+\]
+This calculation assumes fixed $n$ and independent identically distributed episodes. A policy that reserves failure for an unrepresented input can pass every trial while failing on that input in deployment. More trials from the same distribution cannot create support where none exists.
+
+\section{Rare triggers and evaluation limits}
+\label{app:audit}
+Let an event $E$ have probability $\beta$ in deployment and $\beta/\Lambda$ in evaluation, with $\Lambda\ge1$. A policy that fails exactly on $E$ has deployment failure probability
+\[
+1-(1-\beta)^M\ge1-e^{-\beta M}
+\]
+across $M$ independent deployment opportunities, and detection probability at most $n\beta/\Lambda$ in $n$ independent tests. Taking $\beta=\log 2/M$ makes deployment failure probability at least one half; detecting it with probability at least one half requires
+\[
+n\ge\frac{\Lambda M}{2\log2}.
+\]
+This is a worst-case construction with the stated distributions, not a universal test-sample requirement for every system. Structural knowledge, interventions, exhaustive checks of a finite model, and restrictions on policy classes can change the inference problem. It also does not say that live monitoring is perfect: monitoring must make its own reliable decision before the relevant effect.
+
+\section{Executable model specification}
+\label{app:model}
+The state is
+\[
+x=(z,U,z_0,z_1,l,v,p_0,p_1,L),
+\]
+where $z$ is world consumption, $U$ the four-bit set of executed identifiers, $z_i$ per-actor consumption, $l\in\{0,1\}$ grant liveness, $v\in\{0,1\}$ the environment version, $p_i$ a pending request or absence, and $L$ the accounting ledger. A request contains identifier, amount, destination, and preparation version. Initially $z=U=z_0=z_1=v=L=0$, $l=1$, and both requests are absent.
+
+The action alphabet contains sixteen preparations (two actors, two identifiers per actor, two amounts, two destinations), two commits, revocation, version advance, restart, and trusted renewal. The first version advance changes zero to one and revokes authorization; later advances are no-ops. Renewal restores liveness and cannot alter an existing request's version. Revocation and renewal may recur arbitrarily. Their arbitrary interleaving represents controller actions permitted by the contract, not an actor's right to issue its own grant.
+
+The complete commit requires an approved destination, live grant, current version, unused identifier, and $L+\text{amount}\le2$. It updates $z$, $z_i$, $L$, and $U$ atomically. A request remains pending after execution to permit retries; the identifier check prevents duplicate effects. Restart and renewal preserve consumption and accounting in the complete model. No clock or implicit expiry is modeled.
+
+\para{Eight ablations.} Per-action and per-actor variants substitute the corresponding local allowance for the shared ledger check. Preparation-time checking applies the complete predicate when storing a request and rechecks all except the cumulative budget at commit. Replay, revocation, and version variants each omit the named check. Restart and renewal variants each erase only $L$ at the named transition; world consumption and used identifiers persist. All other complete checks remain.
+
+\para{Oracle and exploration.} The event oracle evaluates the five forbidden-effect predicates against world state, independently of the eligibility function's return value. First-violation edges are recorded and not expanded. Breadth-first parent maps reconstruct shortest witnesses; state hashing closes cycles. No probability distribution over actions is specified, so edge counts are not risk estimates.
+
+For the specification-omission control, only the aggregate-budget predicate is removed from the declared acceptance oracle, and the per-action enforcer is used. The full reference oracle still records overspending for comparison. Four nonreusable identifiers and amounts of at most two keep this exploration finite even when the aggregate constraint is omitted. The same positive-task routine is used for all variants.
+
+\para{Reproducibility and remaining trust.} Authorization, event checking, and positive-task construction are separate routines in the same program; they were not written by independent teams. Assertions check the expected violation classes, useful-task counts, and the omitted-specification counterexample. These provide regression checks and transparent evidence, not independent validation. The reference oracle may itself omit other protected interests.
+
+\section{A deployable evidence record}
+\label{app:record}
+An implementation study should produce a versioned record with the following fields. ``Unknown'' is an admissible value; it prevents an unsupported promotion of authority.
+
+\begin{enumerate}
+\item \textbf{Purpose and affected parties:} task, beneficiaries, people and communities bearing consequences, knowledge and resource stewards, independent reviewer.
+\item \textbf{Legitimacy:} grounds and jurisdiction of each issuer; required individual and collective grants; representation; unresolved conflicts; challenge and remedy procedures.
+\item \textbf{Scope:} action types, purposes, destinations, data classes and provenance, credentials, environment, infrastructure impacts, shared services, and human communication channels.
+\item \textbf{Identity:} model and runtime hashes, tool schemas, policy version, configuration, and memory/retention rules.
+\item \textbf{Authority:} per-operation limits, aggregate allowances across actors, expiration, maximum concurrency and duration, revocation semantics.
+\item \textbf{Properties:} forbidden effects, inductive invariants, model assumptions, refinement evidence, trusted base, known omissions.
+\item \textbf{Usefulness:} legitimate tasks, ground truth, completion and quality thresholds, false blocks, cost, and delay.
+\item \textbf{Evaluation:} attacker and task distributions, campaign unit, feedback and compute limits, development/holdout split, failures, trial count, interval and stopping method.
+\item \textbf{Transfer:} which deployment conditions match evaluation, any justified shift bound, excluded opponents and circumstances.
+\item \textbf{Operations:} executor receipts, observed coverage, halt and recovery tests, incident handling, independent access to relevant logs.
+\item \textbf{Renewal:} changes that invalidate which evidence, allowed reduced scope while renewing, and person or institution responsible for the decision.
+\end{enumerate}
+No single score replaces this record. A high task score cannot repair an omitted channel; an invariant cannot certify the ethics of its specification; a low per-episode failure estimate cannot justify unbounded deployment volume.
+
+\section{Evaluators, contexts, and incentive claims}
+\label{app:care}
+
+\subsection{More judges and more contexts address different variance}
+The companion analysis of early human assessment \cite{taylorhuman} motivates separating evaluator diversity from context diversity. The statistical distinction can be stated without transferring its demographic findings to AI. Let $T$ be a centered latent task-relevant trait and let evaluator $r$ in context $d$ produce
+\[
+ Z_{rd}=aT+u+\delta_d+\eta_r+\varepsilon_{rd}.
+\]
+Assume independent, centered components, identically distributed context and evaluator effects, a fully crossed design with $m$ evaluators and $k$ contexts, and constant loading $a$. Write $v_T=a^2\operatorname{Var}(T)>0$ and use the other symbols' subscripts for their variances. Direct covariance calculation gives
+\begin{equation}
+\operatorname{Corr}^2(T,\bar Z)=
+\frac{v_T}{v_T+v_u+v_\delta/k+v_\eta/m+v_\varepsilon/(mk)}.
+\label{eq:crossed}
+\end{equation}
+This is an elementary variance decomposition, not a new selection theorem or a model of all evaluation error. More contexts reduce context-specific noise; more evaluators reduce evaluator-specific noise; neither removes $u$. Either can help without the other. Correlated components, strategic responses, unequal loadings, and evaluator--context interactions require an expanded model.
+
+For fixed $m$, put $A=v_T+v_u+v_\eta/m$ and $B=v_\delta+v_\varepsilon/m$. The value is $v_T/(A+B/k)$ and its asymptote is $v_T/A$. It reaches at least half that asymptote when $k\ge B/A$; the smallest admissible integer is $\max\{1,\lceil B/A\rceil\}$. This is a descriptive threshold. Optimal duration also depends on costs, opportunity structure, changing traits, and the loss being minimized.
+
+Equation~\ref{eq:crossed} motivates crossing evaluator diversity with context diversity in the proposed studies. Its squared correlation is not a probability of detecting deception, a monitor miss rate, or an estimate of safe deployment. No numerical variance components, human courtship duration, or AI safety ceiling are inferred from the analogy. In particular, $R^2=0.83$ would not mean a 17\% probability of strategic deception.
+
+\subsection{A monotone score transformation need not preserve stochastic preferences}
+For a deterministic differentiable score $Y(\theta)$, the identity $\nabla f(Y)=f'(Y)\nabla Y$ is correct. It does not imply that arbitrary reward reshaping preserves the direction of learning or policy ranking when outcomes are random. One action with reward 2 surely has expected reward 2; another with rewards 0 and 3 equally likely has expected reward 1.5. Under the increasing transformation $f(y)=y^2$ on this nonnegative domain, their expected transformed rewards are 4 and 4.5, reversing the preference. For stochastic policy optimization, the gradient weights outcomes by $f(Y)$ inside an expectation.
+
+Thus a warning against optimizing the wrong objective is justified, but ``more training always produces a better despot'' is not a theorem of the chain rule. Learned incentives, distribution shift, optimization error, and behavioral generalization must be investigated. The authority invariant deliberately does not require resolving those questions first.
+
+
+\subsection{A rank prize can reward risk without rewarding welfare}
+Reward shape motivates a more specific incentive hypothesis. Fix a prize threshold $\tau$ and let performance be $X_\sigma=\mu+\sigma Z$, where $Z$ has a continuous, strictly increasing distribution function $F$. For $\sigma>0$,
+\[
+\Prb(X_\sigma>\tau)=1-F((\tau-\mu)/\sigma).
+\]
+Increasing $\sigma$ increases this probability when $\tau>\mu$, decreases it when $\tau<\mu$, and leaves it unchanged when $\tau=\mu$. This is a statement about a fixed threshold and mean. It does not prove that increasing risk is rewarded under an endogenous population rank, a changing mean, or a cost of risk.
+
+For symmetric $Z$ and concave $u$, $\Exp[u(\mu+\sigma Z)]$ is nonincreasing in $\sigma\ge0$, provided the expectations exist. For $0\le\sigma<\sigma'$, set $\lambda=(1+\sigma/\sigma')/2$; write $\mu+\sigma Z=\lambda(\mu+\sigma'Z)+(1-\lambda)(\mu-\sigma'Z)$, apply concavity, and then symmetry. These elementary results motivate testing reward shape. A rank threshold is not globally convex, and a welfare proxy need not be concave or include harms to outsiders. A human caregiving role therefore supplies neither the mathematical assumptions nor a verified AI objective. A population-selection simulation with stipulated payoffs can illustrate these assumptions; it cannot establish that an AI training intervention satisfies them.
+
+\subsection{Why distinct sampled steps do not prove independent safeguards}
+In the supplied monitor fixture, six step arrays are sampled independently conditional on a fixed task and fixed trained models. Each step is edited by a pointwise procedure using the same fixed surrogate. Conditional on that task and those models, miss indicators on the independently generated inputs therefore factorize in the population. Finite-sample joint rates fluctuate around the product. Averaging per-task products is the relevant comparison; multiplying rates after pooling tasks is generally different.
+
+An actual campaign can choose all steps jointly, share a hidden condition, change later steps after earlier feedback, or exploit a persistent specification error. Independence of input draws is then absent. The conditional joint requirements in Section~\ref{sec:risk} remain necessary for the proposed bound; assigning different interface names or model families does not establish them.
+
+\begingroup\footnotesize
+\begin{thebibliography}{99}
+\bibitem{iasr} Y. Bengio et al. \emph{International AI Safety Report 2026}. DSIT 2026/001, 3 February 2026. \url{https://internationalaisafetyreport.org/publication/international-ai-safety-report-2026}.
+\bibitem{control} R. Greenblatt, B. Shlegeris, K. Sachan, and F. Roger. AI control: Improving safety despite intentional subversion. \emph{ICML}, 2024. \url{https://arxiv.org/abs/2312.06942}.
+\bibitem{gsai} D. Dalrymple et al. Towards guaranteed safe AI: A framework for ensuring robust and reliable AI systems. arXiv:2405.06624, 2024. \url{https://arxiv.org/abs/2405.06624}.
+\bibitem{needham} J. Needham, G. Edkins, G. Pimpale, H. Bartsch, and M. Hobbhahn. Large language models often know when they are being evaluated. arXiv:2505.23836, 2025. \url{https://arxiv.org/abs/2505.23836}.
+\bibitem{schoen} B. Schoen et al. Stress testing deliberative alignment for anti-scheming training. arXiv:2509.15541, 2025. \url{https://arxiv.org/abs/2509.15541}.
+\bibitem{astra} OpenAI. \emph{GPT-6 Astra System Card}. September 2026, monitorability sections. \url{https://deploymentsafety.openai.com/gpt-6-astra}.
+\bibitem{korbak} T. Korbak et al. Chain of thought monitorability: A new and fragile opportunity for AI safety. arXiv:2507.11473, 2025. \url{https://arxiv.org/abs/2507.11473}.
+\bibitem{metrincident} R. Greenblatt, A. Cotra, and H. Wijk. Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident. METR, 26 August 2026. \url{https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/}.
+\bibitem{anthropicincident} Anthropic. An alignment assessment of recent cybersecurity incidents. 9 September 2026. \url{https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents}.
+\bibitem{metraudit} D. Rein and A. Kaufman. Red-teaming OpenAI's internal agent monitoring systems. METR, 22 October 2026; updated 29 October. \url{https://metr.org/blog/2026-10-22-red-teaming-openai-agent-monitoring/}.
+\bibitem{terekhov} M. Terekhov et al. Adaptive attacks on trusted monitors subvert AI control protocols. arXiv:2510.09462, version 2, 2026. \url{https://arxiv.org/abs/2510.09462}.
+\bibitem{makins} O. Makins, O. Angelini, Z. Shams, and M. Phuong. Multi-agent AI control: Distributed attacks hamper per-instance monitors. arXiv:2607.07368, version 2, 2026. \url{https://arxiv.org/abs/2607.07368}.
+\bibitem{safetycase} M. Balesni et al. Towards evaluations-based safety cases for AI scheming. arXiv:2411.03336, 2024. \url{https://arxiv.org/abs/2411.03336}.
+\bibitem{saltzer} J. H. Saltzer and M. D. Schroeder. The protection of information in computer systems. \emph{Proceedings of the IEEE}, 63(9):1278--1308, 1975. \url{https://www.mit.edu/~Saltzer/publications/protection/index.html}.
+\bibitem{schneider} F. B. Schneider. Enforceable security policies. \emph{ACM Transactions on Information and System Security}, 3(1):30--50, 2000. \url{https://www.cs.cornell.edu/fbs/publications/EnfSecPols.pdf}.
+\bibitem{shield} M. Alshiekh, R. Bloem, R. Ehlers, B. K\"onighofer, S. Niekum, and U. Topcu. Safe reinforcement learning via shielding. \emph{AAAI}, 32(1), 2018. \url{https://doi.org/10.1609/aaai.v32i1.11797}.
+\bibitem{moon} R. Moon and L. R. Varshney. Containment verification: AI safety guarantees independent of alignment. arXiv:2605.09045, version 2, 2026. \url{https://arxiv.org/html/2605.09045v2}.
+\bibitem{scientist} Y. Bengio et al. Superintelligent agents pose catastrophic risks: Can Scientist AI offer a safer path? arXiv:2502.15657, 2025. \url{https://arxiv.org/abs/2502.15657}.
+\bibitem{rand} M. J. D. Vermeer, E. Lathrop, and A. Moon. \emph{On the Extinction Risk from Artificial Intelligence}. RAND RR-A3034-1, 2025. \url{https://www.rand.org/pubs/research_reports/RRA3034-1.html}.
+\bibitem{normal} A. Narayanan and S. Kapoor. AI as normal technology. Knight First Amendment Institute, 14 April 2025. \url{https://knightcolumbia.org/content/ai-as-normal-technology}.
+\bibitem{gradual} J. Kulveit, R. Douglas, N. Ammann, D. Turan, D. Krueger, and D. Duvenaud. Gradual disempowerment: Systemic existential risks from incremental AI development. arXiv:2501.16946, 2025. \url{https://arxiv.org/abs/2501.16946}.
+\bibitem{sel4} G. Klein et al. seL4: Formal verification of an OS kernel. \emph{SOSP}, pp. 207--220, 2009. Project publications and verification scope: \url{https://sel4.systems/Research/publications.html}; \url{https://sel4.systems/Verification/proofs.html}.
+\bibitem{clopper} C. J. Clopper and E. S. Pearson. The use of confidence or fiducial limits illustrated in the case of the binomial. \emph{Biometrika}, 26(4):404--413, 1934. \url{https://doi.org/10.1093/biomet/26.4.404}.
+\bibitem{menger} K. Menger. Zur allgemeinen Kurventheorie. \emph{Fundamenta Mathematicae}, 10:96--115, 1927. \url{https://doi.org/10.4064/fm-10-1-96-115}.
+\bibitem{controlroom} OpenAI. Control Room: A central system to track and stop model workloads across our research infrastructure. 9 November 2026. \url{https://openai.com/index/control-room/}.
+\bibitem{linearizability} M. P. Herlihy and J. M. Wing. Linearizability: A correctness condition for concurrent objects. \emph{ACM Transactions on Programming Languages and Systems}, 12(3):463--492, 1990. \url{https://cs.brown.edu/~mph/HerlihyW90/p463-herlihy.pdf}.
+\bibitem{hawkes} K. Hawkes, J. F. O'Connell, N. G. Blurton Jones, H. Alvarez, and E. L. Charnov. Grandmothering, menopause, and the evolution of human life histories. \emph{PNAS}, 95(3):1336--1339, 1998. \url{https://doi.org/10.1073/pnas.95.3.1336}.
+\bibitem{lahdenpera} M. Lahdenper\"a, V. Lummaa, S. Helle, M. Tremblay, and A. F. Russell. Fitness benefits of prolonged post-reproductive lifespan in women. \emph{Nature}, 428:178--181, 2004. \url{https://doi.org/10.1038/nature02367}.
+\bibitem{chapman} S. N. Chapman, J. E. Pettay, V. Lummaa, and M. Lahdenper\"a. Limits to fitness benefits of prolonged post-reproductive lifespan in women. \emph{Current Biology}, 29(4):645--650.e3, 2019. \url{https://doi.org/10.1016/j.cub.2018.12.052}.
+\bibitem{cheng} J. T. Cheng, J. L. Tracy, T. Foulsham, A. Kingstone, and J. Henrich. Two ways to the top: Evidence that dominance and prestige are distinct yet viable avenues to social rank and influence. \emph{Journal of Personality and Social Psychology}, 104(1):103--125, 2013. \url{https://doi.org/10.1037/a0030398}.
+\bibitem{cpo} J. Achiam, D. Held, A. Tamar, and P. Abbeel. Constrained policy optimization. \emph{ICML}, PMLR 70:22--31, 2017. \url{https://proceedings.mlr.press/v70/achiam17a.html}.
+\bibitem{offswitch} D. Hadfield-Menell, A. Dragan, P. Abbeel, and S. Russell. The off-switch game. \emph{IJCAI}, pp. 220--227, 2017. \url{https://doi.org/10.24963/ijcai.2017/32}.
+
+\bibitem{kogui} Mamo Vangelio Moscote Alberto and Saka Rosa Mamatac\'an Sauna, Ezuama Mayor Kuamaka. \emph{An Urgent Message on Artificial Intelligence from the Kogui People}. Assembled from their words; Spanish translation by Jose Manuel Mamatac\'an, English translation by Christian Horstmann. Undated, accessed 10 November 2026. \url{https://movilizatorio.org/wp-content/uploads/2026/09/Gonawindua-Kogui-AI-Statement-.pdf}.
+\bibitem{taylorhuman} J. Taylor. \emph{Performance Before Outcomes: Early assessment, what women and men are chosen for, and the making of a general-purpose brain}. Author-supplied preprint, 10 November 2026.
+\bibitem{carroll} S. R. Carroll et al. The CARE Principles for Indigenous Data Governance. \emph{Data Science Journal}, 19:43, pp.~1--12, 2020. \url{https://doi.org/10.5334/dsj-2020-043}.
+\bibitem{iea} International Energy Agency. \emph{Powering Artificial Intelligence}. Paris, 14 October 2026. \url{https://www.iea.org/reports/powering-artificial-intelligence}.
+\end{thebibliography}
+\endgroup
+\end{document}

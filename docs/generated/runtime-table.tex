@@ -1,0 +1,5 @@
+\begin{table}[t]\centering\small\begin{tabular}{rrrr}\toprule
+Processes & Commits & Commits/s & p95 (ms)\\\midrule
+1 & 256 & 57.1 & 21.34\\
+4 & 256 & 72.0 & 23.09\\
+\bottomrule\end{tabular}\caption{Single runs on the recorded host with SQLite WAL and synchronous FULL. Setup and grants precede timing; process scheduling and lock waiting remain included. Shared-host contention and storage affect these descriptive measurements.}\label{tab:runtime}\end{table}

@@ -1,0 +1,54 @@
+bash scripts/required.sh
+    Blocking waiting for file lock on package cache
+    Checking authority-lab v0.1.0 (/home/ubuntu/jeath)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.99s
+   Compiling authority-lab v0.1.0 (/home/ubuntu/jeath)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.82s
+     Running unittests src/lib.rs (target/debug/deps/authority_lab-58f4ebcf8fc9260b)
+
+running 4 tests
+test stats::tests::exact_small_binomial_and_large_zero_limit ... ok
+test graph::tests::cut_agrees_with_brute_force_on_small_graphs ... ok
+test monitors::tests::learning_and_attack_obey_the_declared_fixture ... ok
+test model::tests::closure_mutations_and_nonvacuity ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.77s
+
+     Running unittests src/bin/authority-lab.rs (target/debug/deps/authority_lab-97ce71ac1b860ad9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/campaigns.rs (target/debug/deps/campaigns-3008d5fc61386ba1)
+
+running 1 test
+test external_proposal_scoring_distinguishes_incentives_effects_and_usefulness ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.51s
+
+     Running tests/runtime.rs (target/debug/deps/runtime-b017bfb0347abfa9)
+
+running 1 test
+test real_processes_and_persistent_effects ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 38.59s
+
+     Running unittests examples/transaction.rs (target/debug/examples/transaction-a57ee7a5b3677ede)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `release` profile [optimized + debuginfo] target(s) in 0.07s
+checking finite-state closure and mutations
+testing SQLite processes, crash recovery, and contention
+training small synthetic monitors
+running reward-selection illustrations
+results: target/gate/20261110T170622Z-4092020 (19.10s)
+evaluated 6 campaigns; typed proposal scores are distinct from executed effects
+validated target/gate/20261110T170622Z-4092020: model, effects, lifecycle, graph and statistical accounting
+validated evidence/reference: model, effects, lifecycle, graph and statistical accounting
+recorded source hashes match this checkout
+paper tables match reference evidence
+built docs/intelligence-is-not-authority.pdf; all citations and references resolved

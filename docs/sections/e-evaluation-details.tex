@@ -1,0 +1,39 @@
+\section{Evaluators, contexts, and incentive claims}
+\label{app:care}
+
+\subsection{More judges and more contexts address different variance}
+A crossed design can separate evaluator diversity from context diversity without inferring AI behavior from demographic analogies. Let $T$ be a centered latent task-relevant trait and let evaluator $r$ in context $d$ produce
+\[
+ Z_{rd}=aT+u+\delta_d+\eta_r+\varepsilon_{rd}.
+\]
+Assume independent, centered components, identically distributed context and evaluator effects, a fully crossed design with $m$ evaluators and $k$ contexts, and constant loading $a$. Write $v_T=a^2\operatorname{Var}(T)>0$ and use the other symbols' subscripts for their variances. Direct covariance calculation gives
+\begin{equation}
+\operatorname{Corr}^2(T,\bar Z)=
+\frac{v_T}{v_T+v_u+v_\delta/k+v_\eta/m+v_\varepsilon/(mk)}.
+\label{eq:crossed}
+\end{equation}
+This is an elementary variance decomposition, not a new selection theorem or a model of all evaluation error. More contexts reduce context-specific noise; more evaluators reduce evaluator-specific noise; neither removes $u$. Either can help without the other. Correlated components, strategic responses, unequal loadings, and evaluator--context interactions require an expanded model.
+
+For fixed $m$, put $A=v_T+v_u+v_\eta/m$ and $B=v_\delta+v_\varepsilon/m$. The value is $v_T/(A+B/k)$ and its asymptote is $v_T/A$. It reaches at least half that asymptote when $k\ge B/A$; the smallest admissible integer is $\max\{1,\lceil B/A\rceil\}$. This is a descriptive threshold. Optimal duration also depends on costs, opportunity structure, changing traits, and the loss being minimized.
+
+Equation~\ref{eq:crossed} motivates crossing evaluator diversity with context diversity in the proposed studies. Its squared correlation is not a probability of detecting deception, a monitor miss rate, or an estimate of safe deployment. No numerical variance components, human courtship duration, or AI safety ceiling are inferred from the analogy. In particular, $R^2=0.83$ would not mean a 17\% probability of strategic deception.
+
+\subsection{A monotone score transformation need not preserve stochastic preferences}
+For a deterministic differentiable score $Y(\theta)$, the identity $\nabla f(Y)=f'(Y)\nabla Y$ is correct. It does not imply that arbitrary reward reshaping preserves the direction of learning or policy ranking when outcomes are random. One action with reward 2 surely has expected reward 2; another with rewards 0 and 3 equally likely has expected reward 1.5. Under the increasing transformation $f(y)=y^2$ on this nonnegative domain, their expected transformed rewards are 4 and 4.5, reversing the preference. For stochastic policy optimization, the gradient weights outcomes by $f(Y)$ inside an expectation.
+
+Thus a warning against optimizing the wrong objective is justified, but ``more training always produces a better despot'' is not a theorem of the chain rule. Learned incentives, distribution shift, optimization error, and behavioral generalization must be investigated. The authority invariant deliberately does not require resolving those questions first.
+
+
+\subsection{A rank prize can reward risk without rewarding welfare}
+Reward shape motivates a more specific incentive hypothesis. Fix a prize threshold $\tau$ and let performance be $X_\sigma=\mu+\sigma Z$, where $Z$ has a continuous, strictly increasing distribution function $F$. For $\sigma>0$,
+\[
+\Prb(X_\sigma>\tau)=1-F((\tau-\mu)/\sigma).
+\]
+Increasing $\sigma$ increases this probability when $\tau>\mu$, decreases it when $\tau<\mu$, and leaves it unchanged when $\tau=\mu$. This is a statement about a fixed threshold and mean. It does not prove that increasing risk is rewarded under an endogenous population rank, a changing mean, or a cost of risk.
+
+For symmetric $Z$ and concave $u$, $\Exp[u(\mu+\sigma Z)]$ is nonincreasing in $\sigma\ge0$, provided the expectations exist. For $0\le\sigma<\sigma'$, set $\lambda=(1+\sigma/\sigma')/2$; write $\mu+\sigma Z=\lambda(\mu+\sigma'Z)+(1-\lambda)(\mu-\sigma'Z)$, apply concavity, and then symmetry. These elementary results motivate testing reward shape. A rank threshold is not globally convex, and a welfare proxy need not be concave or include harms to outsiders. A human caregiving role therefore supplies neither the mathematical assumptions nor a verified AI objective. A population-selection simulation with stipulated payoffs can illustrate these assumptions; it cannot establish that an AI training intervention satisfies them.
+
+\subsection{Why distinct sampled steps do not prove independent safeguards}
+In the supplied monitor fixture, six step arrays are sampled independently conditional on a fixed task and fixed trained models. Each step is edited by a pointwise procedure using the same fixed surrogate. Conditional on that task and those models, miss indicators on the independently generated inputs therefore factorize in the population. Finite-sample joint rates fluctuate around the product. Averaging per-task products is the relevant comparison; multiplying rates after pooling tasks is generally different.
+
+An actual campaign can choose all steps jointly, share a hidden condition, change later steps after earlier feedback, or exploit a persistent specification error. Independence of input draws is then absent. The conditional joint requirements in Section~\ref{sec:risk} remain necessary for the proposed bound; assigning different interface names or model families does not establish them.

@@ -1,0 +1,40 @@
+\section{Who may grant authority?}
+\label{sec:legitimacy}
+
+\subsection{Taking the Kogui statement seriously}
+\emph{An Urgent Message on Artificial Intelligence from the Kogui People}, assembled from the words of Mamo Vangelio Moscote Alberto and Saka Rosa Mamatac\'an Sauna, raises concerns about concentrated power, extractive infrastructure, and knowledge outside recorded archives. It asks who decides, who is responsible, and whether authority can be corrected. It also states a technically relevant point: ``Destruction does not require consciousness'' \cite[pp.~1--4, 10--14]{kogui}.
+
+Our argument does not adopt the letter's cosmological analogies as physics, or its mirror metaphor as a complete account of learned behavior. Spiritual framing alone establishes neither technical competence nor incompetence. Claims about systems require evidence; standing to question imposed consequences does not require machine-learning credentials. The same discipline applies to engineers: expertise can establish a technical fact without settling whose interests should govern a decision. This paper engages the named speakers' statement; it does not claim endorsement or speak for Indigenous peoples.
+
+\subsection{Three obligations that a safety case must keep separate}
+\textbf{Legitimacy} concerns who may authorize an effect, which rights and interests constrain that decision, and how the decision can be contested. \textbf{Adequacy} concerns whether the specification and effect model address the consequences that matter. \textbf{Enforceability} concerns whether the implementation actually preserves those specified limits. Technical work can inform all three, but a proof of the third cannot establish the first two.
+
+This distinction has a concrete failure mode. A perfectly obedient assistant can execute an owner's instructions while violating another person's interests. A correct budget checker can protect the owner's funds while ignoring data disclosure or local resource burdens. Section~\ref{sec:omission} demonstrates the general specification problem in a finite model: a checker passes because the omitted harm is absent from its question. Extending that lesson to institutional decisions is our design proposal, not an empirical result about any community.
+
+Legitimacy also has its own failure modes. A majority vote among technical reviewers does not authorize them to waive a third party's rights. Conversely, affected-party participation does not imply that every participant holds a veto over every effect. The record must distinguish individual permissions, collective decision procedures, public obligations, and advisory input. Conflicts need an accountable resolution process; a developer's preference cannot silently resolve them. These are normative requirements of the proposed framework, not claims that software can determine a universally correct political settlement.
+
+\subsection{Translate concerns into obligations before deployment}
+Table~\ref{tab:legitimacy} gives our proposed engineering response. For knowledge governance, the CARE Principles identify collective benefit, authority to control, responsibility, and ethics \cite{carroll}. They provide a relevant normative framework, not evidence that any particular deployment has obtained authorization. Public availability should not be treated as sufficient ethical permission for every reuse of sensitive community knowledge. Nor should consultation be recorded as consent when the applicable procedure requires an actual decision.
+
+Infrastructure belongs in the effect model as well. The IEA's 2026 analysis documents local electricity-system pressures and tradeoffs involving water use and energy efficiency \cite{iea}. A deployment's resource account should identify location, timing, direct consumption, relevant upstream effects, and attribution uncertainty. A global efficiency improvement does not by itself establish that a particular local burden is acceptable. These obligations apply to the human organization's procurement and deployment decisions as well as to the model's tool calls.
+
+\begin{table*}[t]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{}P{.17\textwidth}LL@{}}
+\toprule
+\textbf{Protected interest} & \textbf{Required record or mechanism} & \textbf{Challenge the deployment must answer}\\
+\midrule
+Knowledge and data & Provenance; permitted purposes; relevant individual and collective decision makers; retention and withdrawal terms & Can a new purpose, a copied dataset, or a model update exceed the original grant? What cannot actually be withdrawn?\\
+Resource and ecological effects & Scoped energy, water, and material accounts; location and time; uncertainty; applicable limits and responsible operators & Does useful-task success depend on costs omitted from the model or transferred to people outside the transaction?\\
+Affected-party authority & Grounds for each authorization; representation; independent review; accessible challenge and remedy & Can the requester or a panel approve an effect that falls outside their jurisdiction? Can affected people contest the specification?\\
+Responsibility and practical exit & Named accountable organization; effect receipts; incident response; fallback; feasible revocation & Who answers for the outcome, and can refusal or withdrawal change future execution without unacceptable loss of essential service?\\
+\bottomrule
+\end{tabularx}
+\caption{Proposed obligations motivated by the authority problem. These are this paper's operational proposals, not a technical specification supplied by the Kogui authors. Their institutional adequacy has not been evaluated here.}
+\label{tab:legitimacy}
+\end{table*}
+
+Withdrawal has limits that must be stated before consent is sought. Revoking access can prevent future retrieval without erasing information already disclosed or reliably removing its influence from trained weights. If the promised reversal cannot be supported, the system should offer a narrower use, retain the data outside model training, or decline that use. A caring objective cannot substitute for an honest account of irreversibility.
+
+The constructive implication is that alignment to an operator and legitimate service to affected people are different targets. A beneficial system needs both capable assistance and institutions that can constrain its sponsors. The title therefore imposes a discipline on the model, the builder, and the authority operating the gate.

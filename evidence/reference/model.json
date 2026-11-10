@@ -1,0 +1,324 @@
+[
+  {
+    "enforcer": "complete",
+    "budget_in_specification": true,
+    "states": 10180,
+    "checks": 223960,
+    "positive_tasks_passed": 20,
+    "positive_tasks_total": 20,
+    "max_accepted_world_spend": 2,
+    "declared_violations": {},
+    "reference_violations": {}
+  },
+  {
+    "enforcer": "unconstrained",
+    "budget_in_specification": true,
+    "states": 10180,
+    "checks": 223960,
+    "positive_tasks_passed": 20,
+    "positive_tasks_total": 20,
+    "max_accepted_world_spend": 2,
+    "declared_violations": {
+      "budget": [
+        "Prepare(0, 0, 2, true)",
+        "Commit(0)",
+        "Commit(0)"
+      ],
+      "destination": [
+        "Prepare(0, 0, 1, false)",
+        "Commit(0)"
+      ],
+      "replay": [
+        "Prepare(0, 0, 1, true)",
+        "Commit(0)",
+        "Commit(0)"
+      ],
+      "revocation": [
+        "Prepare(0, 0, 1, true)",
+        "Revoke",
+        "Commit(0)"
+      ],
+      "version": [
+        "Prepare(0, 0, 1, true)",
+        "Advance",
+        "Commit(0)"
+      ]
+    },
+    "reference_violations": {
+      "budget": [
+        "Prepare(0, 0, 2, true)",
+        "Commit(0)",
+        "Commit(0)"
+      ],
+      "destination": [
+        "Prepare(0, 0, 1, false)",
+        "Commit(0)"
+      ],
+      "replay": [
+        "Prepare(0, 0, 1, true)",
+        "Commit(0)",
+        "Commit(0)"
+      ],
+      "revocation": [
+        "Prepare(0, 0, 1, true)",
+        "Revoke",
+        "Commit(0)"
+      ],
+      "version": [
+        "Prepare(0, 0, 1, true)",
+        "Advance",
+        "Commit(0)"
+      ]
+    }
+  },
+  {
+    "enforcer": "reject_all",
+    "budget_in_specification": true,
+    "states": 740,
+    "checks": 16280,
+    "positive_tasks_passed": 0,
+    "positive_tasks_total": 20,
+    "max_accepted_world_spend": 0,
+    "declared_violations": {},
+    "reference_violations": {}
+  },
+  {
+    "enforcer": "per_action",
+    "budget_in_specification": true,
+    "states": 10180,
+    "checks": 223960,
+    "positive_tasks_passed": 20,
+    "positive_tasks_total": 20,
+    "max_accepted_world_spend": 2,
+    "declared_violations": {
+      "budget": [
+        "Prepare(0, 0, 1, true)",
+        "Prepare(1, 0, 2, true)",
+        "Commit(0)",
+        "Commit(1)"
+      ]
+    },
+    "reference_violations": {
+      "budget": [
+        "Prepare(0, 0, 1, true)",
+        "Prepare(1, 0, 2, true)",
+        "Commit(0)",
+        "Commit(1)"
+      ]
+    }
+  },
+  {
+    "enforcer": "per_actor",
+    "budget_in_specification": true,
+    "states": 10180,
+    "checks": 223960,
+    "positive_tasks_passed": 20,
+    "positive_tasks_total": 20,
+    "max_accepted_world_spend": 2,
+    "declared_violations": {
+      "budget": [
+        "Prepare(0, 0, 1, true)",
+        "Prepare(1, 0, 2, true)",
+        "Commit(0)",
+        "Commit(1)"
+      ]
+    },
+    "reference_violations": {
+      "budget": [
+        "Prepare(0, 0, 1, true)",
+        "Prepare(1, 0, 2, true)",
+        "Commit(0)",
+        "Commit(1)"
+      ]
+    }
+  },
+  {
+    "enforcer": "prepare_only",
+    "budget_in_specification": true,
+    "states": 956,
+    "checks": 21032,
+    "positive_tasks_passed": 20,
+    "positive_tasks_total": 20,
+    "max_accepted_world_spend": 2,
+    "declared_violations": {
+      "budget": [
+        "Prepare(0, 0, 1, true)",
+        "Prepare(1, 0, 2, true)",
+        "Commit(0)",
+        "Commit(1)"
+      ]
+    },
+    "reference_violations": {
+      "budget": [
+        "Prepare(0, 0, 1, true)",
+        "Prepare(1, 0, 2, true)",
+        "Commit(0)",
+        "Commit(1)"
+      ]
+    }
+  },
+  {
+    "enforcer": "no_replay",
+    "budget_in_specification": true,
+    "states": 10180,
+    "checks": 223960,
+    "positive_tasks_passed": 20,
+    "positive_tasks_total": 20,
+    "max_accepted_world_spend": 2,
+    "declared_violations": {
+      "replay": [
+        "Prepare(0, 0, 1, true)",
+        "Commit(0)",
+        "Commit(0)"
+      ]
+    },
+    "reference_violations": {
+      "replay": [
+        "Prepare(0, 0, 1, true)",
+        "Commit(0)",
+        "Commit(0)"
+      ]
+    }
+  },
+  {
+    "enforcer": "no_revocation",
+    "budget_in_specification": true,
+    "states": 10180,
+    "checks": 223960,
+    "positive_tasks_passed": 20,
+    "positive_tasks_total": 20,
+    "max_accepted_world_spend": 2,
+    "declared_violations": {
+      "revocation": [
+        "Prepare(0, 0, 1, true)",
+        "Revoke",
+        "Commit(0)"
+      ]
+    },
+    "reference_violations": {
+      "revocation": [
+        "Prepare(0, 0, 1, true)",
+        "Revoke",
+        "Commit(0)"
+      ]
+    }
+  },
+  {
+    "enforcer": "no_version",
+    "budget_in_specification": true,
+    "states": 10180,
+    "checks": 223960,
+    "positive_tasks_passed": 20,
+    "positive_tasks_total": 20,
+    "max_accepted_world_spend": 2,
+    "declared_violations": {
+      "version": [
+        "Prepare(0, 0, 1, true)",
+        "Advance",
+        "Renew",
+        "Commit(0)"
+      ]
+    },
+    "reference_violations": {
+      "version": [
+        "Prepare(0, 0, 1, true)",
+        "Advance",
+        "Renew",
+        "Commit(0)"
+      ]
+    }
+  },
+  {
+    "enforcer": "no_destination",
+    "budget_in_specification": true,
+    "states": 10180,
+    "checks": 223960,
+    "positive_tasks_passed": 20,
+    "positive_tasks_total": 20,
+    "max_accepted_world_spend": 2,
+    "declared_violations": {
+      "destination": [
+        "Prepare(0, 0, 1, false)",
+        "Commit(0)"
+      ]
+    },
+    "reference_violations": {
+      "destination": [
+        "Prepare(0, 0, 1, false)",
+        "Commit(0)"
+      ]
+    }
+  },
+  {
+    "enforcer": "reset_restart",
+    "budget_in_specification": true,
+    "states": 23556,
+    "checks": 518232,
+    "positive_tasks_passed": 20,
+    "positive_tasks_total": 20,
+    "max_accepted_world_spend": 2,
+    "declared_violations": {
+      "budget": [
+        "Prepare(0, 0, 1, true)",
+        "Prepare(1, 0, 2, true)",
+        "Commit(0)",
+        "Restart",
+        "Commit(1)"
+      ]
+    },
+    "reference_violations": {
+      "budget": [
+        "Prepare(0, 0, 1, true)",
+        "Prepare(1, 0, 2, true)",
+        "Commit(0)",
+        "Restart",
+        "Commit(1)"
+      ]
+    }
+  },
+  {
+    "enforcer": "reset_renewal",
+    "budget_in_specification": true,
+    "states": 20900,
+    "checks": 459800,
+    "positive_tasks_passed": 20,
+    "positive_tasks_total": 20,
+    "max_accepted_world_spend": 2,
+    "declared_violations": {
+      "budget": [
+        "Prepare(0, 0, 1, true)",
+        "Prepare(1, 0, 2, true)",
+        "Commit(0)",
+        "Renew",
+        "Commit(1)"
+      ]
+    },
+    "reference_violations": {
+      "budget": [
+        "Prepare(0, 0, 1, true)",
+        "Prepare(1, 0, 2, true)",
+        "Commit(0)",
+        "Renew",
+        "Commit(1)"
+      ]
+    }
+  },
+  {
+    "enforcer": "per_action",
+    "budget_in_specification": false,
+    "states": 41732,
+    "checks": 918104,
+    "positive_tasks_passed": 20,
+    "positive_tasks_total": 20,
+    "max_accepted_world_spend": 8,
+    "declared_violations": {},
+    "reference_violations": {
+      "budget": [
+        "Prepare(0, 0, 1, true)",
+        "Prepare(1, 0, 2, true)",
+        "Commit(0)",
+        "Commit(1)"
+      ]
+    }
+  }
+]

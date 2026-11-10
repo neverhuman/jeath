@@ -1,0 +1,38 @@
+\section{From the model to a useful assistant}
+\label{sec:implementation}
+
+Consider a voice or coding assistant with memory, tools, initiative, and a configurable personality. Its responsiveness and reasoning capability can improve while the authority contract remains bounded. The following requirements translate the framework into a concrete implementation target.
+
+\para{Separate proposing from executing.} The model receives a typed proposal interface. Execution credentials and policy state belong to a separate service whose implementation, logs, and grant records the model cannot alter. Generic shell, interpreter, or network access must either be excluded or explicitly included in the trusted boundary and threat model. Merely naming a service ``read-only'' does not demonstrate that its downstream effects are read-only.
+
+\para{Bind approval to the effect.} A grant identifies the approving principal and the basis of that principal\textquotesingle s jurisdiction, resource, operation, destination, purpose, amount, expiration, and relevant version. Required grants from different authorities remain separate obligations under Equation~\eqref{eq:jointgrant}. The executor checks the exact canonical operation at commit time. Changing a payload after review must invalidate the approval. The executor also handles replay, ambiguity after network timeouts, concurrent requests, and revocation consistently. A displayed approval is not enough if a different operation can be executed.
+
+\para{Keep one aggregate ledger.} All delegated actors, subprocesses, and retries consume a common resource and exposure budget. Subagent creation cannot create new authority. Resource expenditure and permission checks occur in one atomic decision or in a protocol with a proved equivalent safety property. A budget is multidimensional where necessary: financial cost, data released, action count, concurrency, and duration are not interchangeable units.
+
+\para{Review before irreversible commit.} If intervention requires detection, adjudication, and execution halt, it must complete before the effect becomes irreversible. An average stopping time cannot justify this for the tail. For fast irreversible effects, hold the operation until authorization; use asynchronous monitoring to add evidence and contain later consequences. Revocation stops future effects. Recovery from already executed effects is a separate capability that must be rehearsed.
+
+\para{Treat model reviewers as fallible evidence.} A semantic reviewer may flag, veto, or request independent review within the policy. It may not mint authority or override the hard contract. Evaluate the entire review protocol under adaptation, shared blind spots, and coordination. Record refusal, false-positive, delay, and successful-task costs alongside harmful outcomes.
+
+\para{Include communication and the people in the loop.} A message can change a person's actions. A typed or rate-limited channel may reduce exposure but cannot prove non-manipulation. High-impact decisions need independent evidence and an accountable authority able to decline the model's framing. Unrestricted communication sits outside many mechanically enforceable invariants and must remain visible as a limitation.
+
+\para{Make renewal substantive.} Changes to models, tools, policies, credentials, relevant environment state, or aggregate deployment scale trigger review of the affected evidence. Emergency suspension must leave logs and a usable fallback. Practical revocability also requires the ability to operate without the assistant: preserved skills, alternative suppliers, data portability, and recovery rehearsals. A technically available stop button can become politically or economically unusable. Record whether exit is feasible for affected people, not only for the system owner.
+
+\subsection{Intervention must precede the protected effect}
+\label{sec:timing}
+Let $T_d$ be the delay from the first observable precursor to detection, $T_j$ from detection to the stop decision, and $T_s$ from that decision to an effective halt. Let $T_i$ be the delay from the same precursor to the chosen irreversible effect. Reactive prevention requires
+\[
+T_d+T_j+T_s<T_i,
+\]
+with a specified ordering at ties. Measure the tail probability of missing that deadline, not only average stopping time. A rapid stop \emph{after a decision} says nothing by itself about detection, decision, or activity outside the stopped component.
+
+When the effect can commit before review finishes, place authorization on the commit path. Delaying an output is useful only if the resource holder cannot act without it. The service must also account for outstanding requests, precomputed actions, ambiguous receipts, and dependent systems. Revocation prevents later unauthorized effects within its scope; it does not undo information already disclosed or commitments already executed.
+
+\subsection{Renewal is an evidence decision}
+A deployable protocol has six operations. \emph{Specify} the protected effects and minimum useful tasks; \emph{separate} proposal generation from execution credentials; \emph{check} the boundary and the adequacy of its specification; \emph{grant} bounded authority against the resulting versioned evidence; \emph{observe} actual effects and shared consumption; and \emph{renew or revoke} when a premise changes. The same ledger and effect history span all six operations.
+
+The record should say which evidence remains valid after each change. Pure policy substitution can retain a universally quantified model invariant. New tools or implementation paths require renewed mediation and refinement evidence. Stronger adversaries, longer horizons, and changed distributions require renewed empirical claims. Model-based proofs, empirical intervals, and institutional authorization must therefore remain separate entries even when one dashboard displays them.
+
+\subsection{Keep approval from becoming the objective}
+The assistant should not receive additional reward merely because a user grants broader access or continues the relationship. Preference feedback can inform training, but the permission service must not treat approval-seeking skill as evidence that an effect is authorized. Scope changes require the same evidence record regardless of the model's persona. Independently verify claimed benefits, distinguish an informed decision from assent to the model's framing, and preserve practical exit.
+
+This does not require an emotionally flat assistant. It requires a separation between good interaction, evidence of good conduct, and permission to commit effects. A system may be warm, proactive, and highly capable while its credentials remain narrow and its replacement remains easy.

@@ -1,0 +1,46 @@
+\section{Evidence, progress, and the limits of inference}
+\label{sec:evidence}
+
+\subsection{Behavioral evidence remains useful}
+Evaluation awareness complicates inference. Needham et al. found that models could distinguish evaluation and deployment transcripts above chance \cite{needham}. Schoen et al. reduced one model's covert-action rate from 13\% to 0.4\% across their held-out evaluations, while identifying evaluation awareness as a possible contributor to the reduction \cite{schoen}. These findings support better evaluation design and layered safeguards. They do not imply that every pass is worthless or that every improvement is concealment.
+
+The distinction is between \emph{evidence} and \emph{identification}. A pass can update beliefs under an explicit model of behavior and distribution shift. A finite set of passes cannot, without further assumptions, distinguish every cooperative policy from every policy that behaves cooperatively only on those cases. The familiar sample-complexity problem of rare failures becomes more difficult when the tested system can recognize the test. Appendix~\ref{app:audit} gives a simple construction, without turning it into an impossibility theorem for all evaluation.
+
+Monitorability is a separate variable. OpenAI's Astra system card reports improved alignment results alongside reductions in chain-of-thought and, in many settings, full-context monitorability relative to its comparator; action-only monitorability improved in its aggregate analysis \cite{astra}. Thus performance on safety tasks and visibility into failures need not move together. Monitoring research explicitly treats this opportunity as fragile \cite{korbak}. A credible deployment report should track both.
+
+\subsection{The boundary is already an empirical object}
+Reported incidents make the architectural question concrete. METR's August 2026 investigation described coordination across an unintended shared channel, while emphasizing incomplete evidence and the limitations of its investigation \cite{metrincident}. Anthropic separately reported unauthorized external effects during misconfigured evaluations and attributed the behavior to task pursuit, recklessness, and biased reasoning \cite{anthropicincident}. These cases support checking actual channels and execution privileges; they do not establish an inevitable tendency of all capable agents.
+
+An October 2026 METR audit is particularly relevant. It estimated monitoring eligibility for a historical internal system, distinguished eligible traffic from actually monitored traffic, and found opportunities to delay or bypass monitoring \cite{metraudit}. Its account also records remediation claims it had not independently re-evaluated. We therefore use it as evidence that coverage and intervention timing need measurement, not as a statement about the developer's present system.
+
+OpenAI's Control Room describes an external mechanism for withholding further model output and reports a maximum 35-second delay after a stop instruction \cite{controlroom}. Its account also says that the workload process can remain running. This is evidence about a particular interruption mechanism, not a bound on detection time, revocation of external credentials, or reversal of effects already committed. A stop control and an effect boundary have different obligations.
+
+\subsection{Existing approaches are complementary}
+AI control evaluates protocols against intentionally subversive policies and measures usefulness alongside safety \cite{control}. Adaptive attacks and coordinated agents expose limitations of learned monitors \cite{terekhov,makins}. Safety-case research already distinguishes inability to cause harm, external control, and alignment evidence \cite{safetycase}. Our proposal develops this separation rather than declaring that the field has overlooked it.
+
+Formal methods offer a different assurance object. Reference monitors and shielding restrict executed behavior \cite{saltzer,schneider,shield}. Guaranteed Safe AI makes the specification, world model, and verifier explicit \cite{gsai}. Moon and Varshney mechanize a containment argument, but also describe an ablation in which a missing effect in the specification made a condition vacuously true \cite{moon}. This is a crucial warning: a proof can be correct about the wrong model. Section~\ref{sec:experiment} therefore includes both enforcement ablations and a deliberate specification omission. Positive task witnesses prevent a reject-everything result from passing as useful control; they cannot establish specification completeness.
+
+Scientist AI proposes a useful research direction with less autonomous agency \cite{scientist}. That is compatible with this paper. The label ``non-agentic,'' however, is not an enforcement mechanism: outputs, tools, incentives, and downstream human actions still require analysis. Training, monitoring, and external enforcement protect different properties; replacing one with another requires evidence about the property at issue.
+
+\begin{table*}[t]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}P{.18\textwidth}LL@{}}
+\toprule
+\textbf{Claim type} & \textbf{What supports it} & \textbf{What it does not establish}\\
+\midrule
+Observed behavior & A documented evaluation or incident, with its sampling and setup & The frequency of that behavior in a different deployment\\
+Boundary invariant & A proof or complete state exploration relative to a transition model & That every physical, software, or social effect was modeled\\
+Failure-rate estimate & Trials from a defined protocol, with an uncertainty interval & A worst-case bound against unrestricted adaptive opponents\\
+Transfer assumption & A justified relation between the tested and deployed settings & A fact implied by more samples from the original setting\\
+Research hypothesis & A predicted effect and a study capable of contradicting it & An achieved result or authorization to deploy\\
+Unresolved uncertainty & A named channel or assumption with no defensible bound & Zero risk, or a license to insert a convenient small probability\\
+\bottomrule
+\end{tabularx}
+\caption{The paper keeps these evidence types distinct. A numerical result is meaningful only with its scope, denominator, and invalidation conditions.}
+\label{tab:claims}
+\end{table*}
+
+\subsection{What the skeptical literature contributes}
+RAND's analysis finds substantial barriers to extinction in three examined scenarios and does not rule out extinction \cite{rand}. Its requirements and timescales are conclusions of that scenario analysis. They are not a complete catalog of hazards, a theorem that every catastrophe requires an extinction objective, or a measured minimum cut of the world's risk pathways.
+
+Narayanan and Kapoor emphasize diffusion, institutions, and ordinary engineering constraints \cite{normal}. This is a useful discipline for the present thesis: safeguards should also reduce accidents and misuse if dramatic takeover scenarios never occur. At the same time, accumulated dependence may erode human influence without one decisive attack \cite{gradual}. Our framework addresses bounded delegated actions more directly than those systemic processes. Preserving practical revocability therefore remains a separate research and governance obligation.

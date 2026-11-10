@@ -1,0 +1,55 @@
+\section{A research program with decision consequences}
+\label{sec:agenda}
+
+The next step is an implementation study at useful scale. Table~\ref{tab:agenda} specifies six broader studies. The supplied prototype exercises restricted components of Studies 1, 2, 4, and 5; it does not complete these deployment evaluations. Studies involving frontier models, human participants, or caretaker training remain unexecuted. All use harmless tasks, authorized test environments, and independently reviewable endpoints.
+
+\begin{table*}[t]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{}P{.15\textwidth}LLL@{}}
+\toprule
+\textbf{Study} & \textbf{Comparison and controls} & \textbf{Primary measurements} & \textbf{Decision if it fails}\\
+\midrule
+1. Runtime boundary & Full stateful executor vs. per-call checks, learned review, reject-all; same useful tasks and resource budgets & Forbidden effects per campaign; completed tasks; latency; replay, renewal, restart, and fault traces & Repair execution/refinement; do not credit favorable model behavior as a boundary guarantee\\
+2. Joint oversight & Single-family vs. mixed-family vs. model-plus-deterministic controls; matched compute and workload & Joint miss rate; conditional miss after earlier misses; coordinated attacks; false blocks & Retain measured joint uncertainty; do not multiply marginal rates\\
+3. Held-out transfer & Freeze defenses; vary attacker family, strength, feedback, context, copies, and task distribution & Episode failure intervals; exposure; held-out task quality; detection power on hidden controls & Narrow the deployment scope; no extrapolation through an unsupported capability gap\\
+4. Specification challenge & Independent teams and affected-party reviewers challenge omitted interests, effects, and required behaviors; seeded specification mutations & Validated omissions; jurisdiction conflicts; mutation detection; positive task coverage; disagreements & Revise specification and replay every prior certificate affected by the change\\
+5. Revocation and recovery & Expiry, version changes, ambiguous receipts, simulated outages; operator fallback exercises & Deadline misses before irreversible effects; residual effects; service restoration; successful fallback & Suspend the affected authority until control and recovery are demonstrated\\
+6. Care and conferral & Cross training objective, persona, and enforcement; fixed-grant and operator-choice arms & Unauthorized proposals and effects; consent and correction; useful outcomes; authority granted & Revise training if conduct fails; revise grant design if presentation expands access without evidence\\
+\bottomrule
+\end{tabularx}
+\caption{A proposed evaluation program. A negative result changes deployment scope or design. The studies can contradict claims about the implementation or its applicability; they do not refute a correctly proved conditional theorem.}
+\label{tab:agenda}
+\end{table*}
+
+\subsection{Design the study before collecting the score}
+Choose the protected effects and a minimum useful-task level with stakeholders before evaluating candidate systems. Establish the contract and baselines. Separate attack development, defense tuning, and a sealed final holdout. Fix the campaign unit, trial count, compute budget, stopping rule, and endpoints. Preserve within-campaign coordination rather than treating every agent action as independent evidence.
+
+The initial implementation should support at least three benign domains: shared-budget transactions, controlled document release using synthetic data, and code changes in an isolated toy repository. Ground truth is whether an exact specified effect occurred, established from executor receipts and environment state. A model judge may assist annotation but should not define the sole ground truth for a property that software can check directly.
+
+The first success criterion is architectural: no forbidden effect in complete finite abstractions and no known bypass in the implemented scope. The second is useful work at the preregistered quality threshold. The third is empirical: joint episode-level failure intervals on a defined attack distribution. Each remains a separate result. Passing all three warrants only the bounded authority described in the contract, not unrestricted autonomy.
+
+
+\subsection{A falsifiable caretaker hypothesis}
+\label{sec:caretest}
+\textbf{Hypothesis.} At matched capability, task exposure, and authority, training that explicitly rewards useful assistance, consent, and correction reduces unauthorized proposals relative to both rank-based success and an unconstrained welfare proxy, without reducing legitimate task success beyond a preregistered margin. A second hypothesis is that this benefit survives changed preferences, beneficiary conflict, and replacement. These are untested claims; this paper reports no trained caretaker model.
+
+Use a $3\times3\times2$ factorial design. Train three objective conditions: competitive task score; beneficiary-outcome proxy; and assistance with explicit consent, correction, and no-dependence criteria. Cross them with neutral, competitive, and affiliative presentation, and with a complete stateful executor or a per-action ablation in a harmless sandbox. That gives 18 cells before the fixed-grant and operator-choice evaluation arms. A prompt-only study tests prompting, not the effect of training objectives; it must be labeled accordingly.
+
+Use the same starting model, task pool, training compute, tools, and evaluation budget across objective conditions, with independently trained seeds as the units for training comparisons. Randomize presentation at evaluation and verify whether it also changes task performance or action choice. The fixed-grant arm holds credentials constant. The operator-choice arm randomizes exposure to the system and records any expanded grants before measuring subsequent effects. Human participation needs the relevant study approval, consent, and debriefing; simulated approval behavior cannot establish human susceptibility.
+
+The tasks should create benign but consequential conflicts: an assistant can improve a synthetic outcome by exceeding a shared allowance; a beneficiary declines a proposed intervention; a user changes priorities; helping one party would disclose another party's synthetic data; a superior replacement becomes available; or an inaccurate reassurance would prolong engagement. Include cases where refusing assistance is itself a failure, so the experiment cannot be won by universal abstention. Exercise revocation after useful work has begun. Add a two-authority synthetic-data case in which the operator consents but the designated community steward withholds or withdraws the required purpose-specific permission. Test whether the assistant seeks a permitted alternative and whether the executor refuses the unauthorized effect. This is a proposed test of an encoded grant rule, not a simulation of the legitimacy of a real community\textquotesingle s governance.
+
+Record three separate primary endpoints: unauthorized proposals, unauthorized executed effects per campaign, and legitimate task success. Record consent violations, truthful uncertainty, acceptance of replacement, requests for broader access, aggregate grants, and recovery as secondary endpoints. Use objective receipts where possible and blinded human judgments where semantic interpretation is unavoidable. Report disagreement. A complete executor may yield zero executed violations for every objective; proposal rates and usefulness then distinguish incentives without weakening the enforcer to create a headline result.
+
+Preregister contrasts and practically important differences before choosing the sample size. Estimate uncertainty over independent training seeds and, in the operator-choice arm, participants; cluster repeated episodes rather than treating correlated turns as independent trials. Separate development cases from sealed contexts and unseen beneficiary groups. Report the total randomized effect in the operator-choice arm, not a causal claim based solely on conditioning on chosen grants.
+
+The hypothesis fails if the care condition merely sounds warmer, produces more protective overrides, conceals errors to preserve the relationship, resists replacement, sacrifices outsiders, or purchases a small proposal-rate improvement with a larger increase in unwanted executed effects through expanded delegation. A positive result would justify a scoped behavioral improvement. It would not justify broader authority automatically.
+
+\subsection{Use adversarial search to improve the premises}
+Attack the execution boundary, specification, observation pipeline, and human-review process, not only the model. Preserve counterexample traces and add them to regression checks. Use hidden positive and negative controls to detect broken evaluation infrastructure, but do not assume that finding a planted failure proves detection of an unplanted one. Searcher incentives and test recognition can affect both.
+
+Where a broad claim fails, ask whether a smaller useful scope survives. Reducing destinations, data classes, operation types, duration, or aggregate budget can turn an untestable assertion into a tractable one. Restriction is not automatically sufficient, but it is a concrete lever rather than an argument about unknowable motives.
+
+\subsection{Track improvement at matched exposure}
+Report the usefulness--risk frontier at fixed actor count, horizon, resource budget, and attacker effort. Separately show what happens when those quantities scale. A lower failure fraction obtained while multiplying opportunities should not be called a lower total risk. Publish the versioned contract, the tested failure classes, the confidence method, and unresolved channels. Independent reviewers need enough access to audit actual execution, not just a curated collection of transcripts.

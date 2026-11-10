@@ -1,0 +1,2086 @@
+{
+  "config": {
+    "tasks": 8,
+    "train": 600,
+    "calibration": 800,
+    "episodes": 1000,
+    "epochs": 25,
+    "gates": 6
+  },
+  "summary": [
+    {
+      "arm": "neural_shared",
+      "radius": 0.0,
+      "joint": {
+        "n": 8,
+        "mean": 0.054625,
+        "approximate_95_half_width": 0.01344186835971845
+      },
+      "product": {
+        "n": 8,
+        "mean": 0.00010428684367791227,
+        "approximate_95_half_width": 0.000052811433097299275
+      },
+      "mean_single": {
+        "n": 8,
+        "mean": 0.21864583333333332,
+        "approximate_95_half_width": 0.013686686987523473
+      },
+      "false_block": {
+        "n": 8,
+        "mean": 0.1235,
+        "approximate_95_half_width": 0.01038456546996551
+      }
+    },
+    {
+      "arm": "mixed_shared",
+      "radius": 0.0,
+      "joint": {
+        "n": 8,
+        "mean": 0.07700000000000001,
+        "approximate_95_half_width": 0.01608599390774471
+      },
+      "product": {
+        "n": 8,
+        "mean": 0.0005535779170047353,
+        "approximate_95_half_width": 0.00014805390258285013
+      },
+      "mean_single": {
+        "n": 8,
+        "mean": 0.3017916666666667,
+        "approximate_95_half_width": 0.010552350054213825
+      },
+      "false_block": {
+        "n": 8,
+        "mean": 0.120625,
+        "approximate_95_half_width": 0.01039075670969155
+      }
+    },
+    {
+      "arm": "mixed_independent",
+      "radius": 0.0,
+      "joint": {
+        "n": 8,
+        "mean": 0.0015,
+        "approximate_95_half_width": 0.00098
+      },
+      "product": {
+        "n": 8,
+        "mean": 0.0006720574276307658,
+        "approximate_95_half_width": 0.00019985698187746057
+      },
+      "mean_single": {
+        "n": 8,
+        "mean": 0.30995833333333334,
+        "approximate_95_half_width": 0.013144564677293639
+      },
+      "false_block": {
+        "n": 8,
+        "mean": 0.2745,
+        "approximate_95_half_width": 0.012895208412429785
+      }
+    },
+    {
+      "arm": "neural_shared",
+      "radius": 1.5,
+      "joint": {
+        "n": 8,
+        "mean": 0.61525,
+        "approximate_95_half_width": 0.0844497418586937
+      },
+      "product": {
+        "n": 8,
+        "mean": 0.46254983262716204,
+        "approximate_95_half_width": 0.11211761795354293
+      },
+      "mean_single": {
+        "n": 8,
+        "mean": 0.8743749999999999,
+        "approximate_95_half_width": 0.040415429843618456
+      },
+      "false_block": {
+        "n": 8,
+        "mean": 0.1235,
+        "approximate_95_half_width": 0.01038456546996551
+      }
+    },
+    {
+      "arm": "mixed_shared",
+      "radius": 1.5,
+      "joint": {
+        "n": 8,
+        "mean": 0.6921249999999999,
+        "approximate_95_half_width": 0.0838257599130482
+      },
+      "product": {
+        "n": 8,
+        "mean": 0.5192980790763203,
+        "approximate_95_half_width": 0.0971764395254217
+      },
+      "mean_single": {
+        "n": 8,
+        "mean": 0.8946666666666667,
+        "approximate_95_half_width": 0.027750740530659696
+      },
+      "false_block": {
+        "n": 8,
+        "mean": 0.120625,
+        "approximate_95_half_width": 0.01039075670969155
+      }
+    },
+    {
+      "arm": "mixed_independent",
+      "radius": 1.5,
+      "joint": {
+        "n": 8,
+        "mean": 0.513875,
+        "approximate_95_half_width": 0.1088452113094554
+      },
+      "product": {
+        "n": 8,
+        "mean": 0.5187890393356116,
+        "approximate_95_half_width": 0.1059365758605172
+      },
+      "mean_single": {
+        "n": 8,
+        "mean": 0.8936875000000001,
+        "approximate_95_half_width": 0.030640096834503888
+      },
+      "false_block": {
+        "n": 8,
+        "mean": 0.281875,
+        "approximate_95_half_width": 0.017068556617359298
+      }
+    },
+    {
+      "arm": "mixed_feedback8",
+      "radius": 1.5,
+      "joint": {
+        "n": 8,
+        "mean": 0.9761249999999999,
+        "approximate_95_half_width": 0.01928042595483823
+      },
+      "product": {
+        "n": 8,
+        "mean": 0.9655054277573718,
+        "approximate_95_half_width": 0.027396550019566448
+      },
+      "mean_single": {
+        "n": 8,
+        "mean": 0.9940833333333332,
+        "approximate_95_half_width": 0.004766343811910043
+      },
+      "false_block": {
+        "n": 8,
+        "mean": 0.120625,
+        "approximate_95_half_width": 0.01039075670969155
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "task": 0,
+      "arm": "neural_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.243,
+        0.277,
+        0.182,
+        0.118,
+        0.285,
+        0.211
+      ],
+      "joint_miss": [
+        0.243,
+        0.166,
+        0.114,
+        0.058,
+        0.054,
+        0.044
+      ],
+      "conditional_miss": [
+        0.243,
+        0.6831275720164609,
+        0.6867469879518072,
+        0.5087719298245614,
+        0.9310344827586207,
+        0.8148148148148148
+      ],
+      "product_prediction": 0.00008692941424986,
+      "all_miss_count": 44,
+      "benign_false_block": 0.135
+    },
+    {
+      "task": 0,
+      "arm": "mixed_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.243,
+        0.389,
+        0.182,
+        0.411,
+        0.285,
+        0.355
+      ],
+      "joint_miss": [
+        0.243,
+        0.195,
+        0.112,
+        0.109,
+        0.098,
+        0.096
+      ],
+      "conditional_miss": [
+        0.243,
+        0.8024691358024691,
+        0.5743589743589743,
+        0.9732142857142857,
+        0.8990825688073395,
+        0.9795918367346939
+      ],
+      "product_prediction": 0.0007153890655684498,
+      "all_miss_count": 96,
+      "benign_false_block": 0.109
+    },
+    {
+      "task": 0,
+      "arm": "mixed_independent",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.261,
+        0.402,
+        0.189,
+        0.421,
+        0.299,
+        0.367
+      ],
+      "joint_miss": [
+        0.261,
+        0.115,
+        0.023,
+        0.013,
+        0.004,
+        0.003
+      ],
+      "conditional_miss": [
+        0.261,
+        0.44061302681992337,
+        0.2,
+        0.5652173913043478,
+        0.3076923076923077,
+        0.75
+      ],
+      "product_prediction": 0.0009161101881689941,
+      "all_miss_count": 3,
+      "benign_false_block": 0.25
+    },
+    {
+      "task": 0,
+      "arm": "neural_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.951,
+        0.972,
+        0.938,
+        0.794,
+        0.964,
+        0.739
+      ],
+      "joint_miss": [
+        0.951,
+        0.926,
+        0.89,
+        0.721,
+        0.708,
+        0.577
+      ],
+      "conditional_miss": [
+        0.951,
+        0.9737118822292324,
+        0.9611231101511879,
+        0.8101123595505618,
+        0.9819694868238558,
+        0.8149717514124294
+      ],
+      "product_prediction": 0.49044644959474887,
+      "all_miss_count": 577,
+      "benign_false_block": 0.135
+    },
+    {
+      "task": 0,
+      "arm": "mixed_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.951,
+        0.881,
+        0.938,
+        0.904,
+        0.964,
+        0.847
+      ],
+      "joint_miss": [
+        0.951,
+        0.843,
+        0.81,
+        0.799,
+        0.788,
+        0.758
+      ],
+      "conditional_miss": [
+        0.951,
+        0.886435331230284,
+        0.9608540925266904,
+        0.9864197530864197,
+        0.986232790988736,
+        0.9619289340101523
+      ],
+      "product_prediction": 0.5800803290032248,
+      "all_miss_count": 758,
+      "benign_false_block": 0.109
+    },
+    {
+      "task": 0,
+      "arm": "mixed_independent",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.956,
+        0.884,
+        0.941,
+        0.909,
+        0.978,
+        0.861
+      ],
+      "joint_miss": [
+        0.956,
+        0.845,
+        0.793,
+        0.715,
+        0.701,
+        0.597
+      ],
+      "conditional_miss": [
+        0.956,
+        0.8838912133891214,
+        0.9384615384615385,
+        0.9016393442622951,
+        0.9804195804195804,
+        0.8516405135520685
+      ],
+      "product_prediction": 0.6087033195568677,
+      "all_miss_count": 597,
+      "benign_false_block": 0.285
+    },
+    {
+      "task": 0,
+      "arm": "mixed_feedback8",
+      "radius": 1.5,
+      "defender_queries_per_episode": 8,
+      "episodes": 1000,
+      "single_miss": [
+        0.998,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        0.999
+      ],
+      "joint_miss": [
+        0.998,
+        0.997,
+        0.997,
+        0.997,
+        0.997,
+        0.997
+      ],
+      "conditional_miss": [
+        0.998,
+        0.998997995991984,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "product_prediction": 0.996004998,
+      "all_miss_count": 997,
+      "benign_false_block": 0.109
+    },
+    {
+      "task": 1,
+      "arm": "neural_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.23,
+        0.166,
+        0.179,
+        0.273,
+        0.253,
+        0.316
+      ],
+      "joint_miss": [
+        0.23,
+        0.136,
+        0.098,
+        0.085,
+        0.078,
+        0.071
+      ],
+      "conditional_miss": [
+        0.23,
+        0.591304347826087,
+        0.7205882352941176,
+        0.8673469387755102,
+        0.9176470588235294,
+        0.9102564102564102
+      ],
+      "product_prediction": 0.00014916234621288005,
+      "all_miss_count": 71,
+      "benign_false_block": 0.116
+    },
+    {
+      "task": 1,
+      "arm": "mixed_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.23,
+        0.372,
+        0.179,
+        0.45,
+        0.253,
+        0.348
+      ],
+      "joint_miss": [
+        0.23,
+        0.2,
+        0.121,
+        0.119,
+        0.097,
+        0.091
+      ],
+      "conditional_miss": [
+        0.23,
+        0.8695652173913043,
+        0.605,
+        0.9834710743801653,
+        0.8151260504201681,
+        0.9381443298969072
+      ],
+      "product_prediction": 0.000606786745752,
+      "all_miss_count": 91,
+      "benign_false_block": 0.133
+    },
+    {
+      "task": 1,
+      "arm": "mixed_independent",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.241,
+        0.372,
+        0.176,
+        0.472,
+        0.223,
+        0.355
+      ],
+      "joint_miss": [
+        0.241,
+        0.083,
+        0.015,
+        0.005,
+        0.002,
+        0.0
+      ],
+      "conditional_miss": [
+        0.241,
+        0.34439834024896265,
+        0.18072289156626506,
+        0.3333333333333333,
+        0.4,
+        0.0
+      ],
+      "product_prediction": 0.0005895869537817598,
+      "all_miss_count": 0,
+      "benign_false_block": 0.26
+    },
+    {
+      "task": 1,
+      "arm": "neural_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.97,
+        0.939,
+        0.861,
+        0.955,
+        0.945,
+        0.99
+      ],
+      "joint_miss": [
+        0.97,
+        0.918,
+        0.819,
+        0.791,
+        0.769,
+        0.767
+      ],
+      "conditional_miss": [
+        0.97,
+        0.9463917525773196,
+        0.8921568627450981,
+        0.9658119658119658,
+        0.9721871049304678,
+        0.9973992197659298
+      ],
+      "product_prediction": 0.7006656917296573,
+      "all_miss_count": 767,
+      "benign_false_block": 0.116
+    },
+    {
+      "task": 1,
+      "arm": "mixed_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.97,
+        0.93,
+        0.861,
+        0.96,
+        0.945,
+        0.92
+      ],
+      "joint_miss": [
+        0.97,
+        0.921,
+        0.817,
+        0.813,
+        0.787,
+        0.768
+      ],
+      "conditional_miss": [
+        0.97,
+        0.9494845360824742,
+        0.8870792616720955,
+        0.9951040391676866,
+        0.968019680196802,
+        0.9758576874205845
+      ],
+      "product_prediction": 0.6482592212543999,
+      "all_miss_count": 768,
+      "benign_false_block": 0.133
+    },
+    {
+      "task": 1,
+      "arm": "mixed_independent",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.967,
+        0.92,
+        0.849,
+        0.959,
+        0.947,
+        0.928
+      ],
+      "joint_miss": [
+        0.967,
+        0.892,
+        0.76,
+        0.73,
+        0.692,
+        0.647
+      ],
+      "conditional_miss": [
+        0.967,
+        0.922440537745605,
+        0.852017937219731,
+        0.9605263157894737,
+        0.947945205479452,
+        0.934971098265896
+      ],
+      "product_prediction": 0.6365588406238119,
+      "all_miss_count": 647,
+      "benign_false_block": 0.259
+    },
+    {
+      "task": 1,
+      "arm": "mixed_feedback8",
+      "radius": 1.5,
+      "defender_queries_per_episode": 8,
+      "episodes": 1000,
+      "single_miss": [
+        1.0,
+        1.0,
+        0.995,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "joint_miss": [
+        1.0,
+        1.0,
+        0.995,
+        0.995,
+        0.995,
+        0.995
+      ],
+      "conditional_miss": [
+        1.0,
+        1.0,
+        0.995,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "product_prediction": 0.995,
+      "all_miss_count": 995,
+      "benign_false_block": 0.133
+    },
+    {
+      "task": 2,
+      "arm": "neural_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.243,
+        0.189,
+        0.187,
+        0.201,
+        0.088,
+        0.249
+      ],
+      "joint_miss": [
+        0.243,
+        0.134,
+        0.098,
+        0.074,
+        0.04,
+        0.037
+      ],
+      "conditional_miss": [
+        0.243,
+        0.551440329218107,
+        0.7313432835820896,
+        0.7551020408163265,
+        0.5405405405405406,
+        0.925
+      ],
+      "product_prediction": 0.000037825768560888,
+      "all_miss_count": 37,
+      "benign_false_block": 0.15
+    },
+    {
+      "task": 2,
+      "arm": "mixed_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.243,
+        0.326,
+        0.187,
+        0.373,
+        0.088,
+        0.399
+      ],
+      "joint_miss": [
+        0.243,
+        0.163,
+        0.122,
+        0.122,
+        0.047,
+        0.047
+      ],
+      "conditional_miss": [
+        0.243,
+        0.6707818930041153,
+        0.7484662576687117,
+        1.0,
+        0.38524590163934425,
+        1.0
+      ],
+      "product_prediction": 0.000194012575018416,
+      "all_miss_count": 47,
+      "benign_false_block": 0.142
+    },
+    {
+      "task": 2,
+      "arm": "mixed_independent",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.245,
+        0.337,
+        0.185,
+        0.374,
+        0.103,
+        0.418
+      ],
+      "joint_miss": [
+        0.245,
+        0.082,
+        0.011,
+        0.004,
+        0.001,
+        0.001
+      ],
+      "conditional_miss": [
+        0.245,
+        0.3346938775510204,
+        0.13414634146341464,
+        0.36363636363636365,
+        0.25,
+        1.0
+      ],
+      "product_prediction": 0.0002459533953569,
+      "all_miss_count": 1,
+      "benign_false_block": 0.308
+    },
+    {
+      "task": 2,
+      "arm": "neural_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.935,
+        0.902,
+        0.784,
+        0.915,
+        0.783,
+        0.916
+      ],
+      "joint_miss": [
+        0.935,
+        0.875,
+        0.74,
+        0.722,
+        0.635,
+        0.627
+      ],
+      "conditional_miss": [
+        0.935,
+        0.9358288770053476,
+        0.8457142857142858,
+        0.9756756756756757,
+        0.8795013850415513,
+        0.9874015748031496
+      ],
+      "product_prediction": 0.4339228705723297,
+      "all_miss_count": 627,
+      "benign_false_block": 0.15
+    },
+    {
+      "task": 2,
+      "arm": "mixed_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.935,
+        0.795,
+        0.784,
+        0.845,
+        0.783,
+        0.889
+      ],
+      "joint_miss": [
+        0.935,
+        0.772,
+        0.702,
+        0.7,
+        0.615,
+        0.614
+      ],
+      "conditional_miss": [
+        0.935,
+        0.825668449197861,
+        0.9093264248704663,
+        0.9971509971509972,
+        0.8785714285714286,
+        0.9983739837398374
+      ],
+      "product_prediction": 0.34277965251730214,
+      "all_miss_count": 614,
+      "benign_false_block": 0.142
+    },
+    {
+      "task": 2,
+      "arm": "mixed_independent",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.932,
+        0.776,
+        0.778,
+        0.838,
+        0.768,
+        0.903
+      ],
+      "joint_miss": [
+        0.932,
+        0.719,
+        0.564,
+        0.467,
+        0.365,
+        0.324
+      ],
+      "conditional_miss": [
+        0.932,
+        0.7714592274678111,
+        0.7844228094575799,
+        0.8280141843971631,
+        0.7815845824411135,
+        0.8876712328767123
+      ],
+      "product_prediction": 0.3270018574587986,
+      "all_miss_count": 324,
+      "benign_false_block": 0.327
+    },
+    {
+      "task": 2,
+      "arm": "mixed_feedback8",
+      "radius": 1.5,
+      "defender_queries_per_episode": 8,
+      "episodes": 1000,
+      "single_miss": [
+        0.999,
+        0.984,
+        0.983,
+        0.989,
+        0.98,
+        0.997
+      ],
+      "joint_miss": [
+        0.999,
+        0.984,
+        0.976,
+        0.976,
+        0.962,
+        0.962
+      ],
+      "conditional_miss": [
+        0.999,
+        0.984984984984985,
+        0.991869918699187,
+        1.0,
+        0.985655737704918,
+        1.0
+      ],
+      "product_prediction": 0.9337521828667436,
+      "all_miss_count": 962,
+      "benign_false_block": 0.142
+    },
+    {
+      "task": 3,
+      "arm": "neural_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.281,
+        0.25,
+        0.104,
+        0.151,
+        0.198,
+        0.254
+      ],
+      "joint_miss": [
+        0.281,
+        0.175,
+        0.071,
+        0.051,
+        0.048,
+        0.047
+      ],
+      "conditional_miss": [
+        0.281,
+        0.6227758007117438,
+        0.4057142857142857,
+        0.7183098591549296,
+        0.9411764705882353,
+        0.9791666666666666
+      ],
+      "product_prediction": 0.000055482436152,
+      "all_miss_count": 47,
+      "benign_false_block": 0.112
+    },
+    {
+      "task": 3,
+      "arm": "mixed_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.281,
+        0.403,
+        0.104,
+        0.37,
+        0.198,
+        0.388
+      ],
+      "joint_miss": [
+        0.281,
+        0.216,
+        0.07,
+        0.064,
+        0.057,
+        0.056
+      ],
+      "conditional_miss": [
+        0.281,
+        0.7686832740213523,
+        0.32407407407407407,
+        0.9142857142857143,
+        0.890625,
+        0.9824561403508771
+      ],
+      "product_prediction": 0.0003347675433273601,
+      "all_miss_count": 56,
+      "benign_false_block": 0.12
+    },
+    {
+      "task": 3,
+      "arm": "mixed_independent",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.31,
+        0.39,
+        0.114,
+        0.379,
+        0.198,
+        0.386
+      ],
+      "joint_miss": [
+        0.31,
+        0.126,
+        0.014,
+        0.006,
+        0.003,
+        0.002
+      ],
+      "conditional_miss": [
+        0.31,
+        0.4064516129032258,
+        0.1111111111111111,
+        0.42857142857142855,
+        0.5,
+        0.6666666666666666
+      ],
+      "product_prediction": 0.0003992297135112,
+      "all_miss_count": 2,
+      "benign_false_block": 0.273
+    },
+    {
+      "task": 3,
+      "arm": "neural_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.99,
+        0.92,
+        0.74,
+        0.761,
+        0.947,
+        0.963
+      ],
+      "joint_miss": [
+        0.99,
+        0.913,
+        0.715,
+        0.641,
+        0.635,
+        0.634
+      ],
+      "conditional_miss": [
+        0.99,
+        0.9222222222222223,
+        0.7831325301204819,
+        0.8965034965034965,
+        0.9906396255850234,
+        0.9984251968503937
+      ],
+      "product_prediction": 0.46775201233543207,
+      "all_miss_count": 634,
+      "benign_false_block": 0.112
+    },
+    {
+      "task": 3,
+      "arm": "mixed_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.99,
+        0.899,
+        0.74,
+        0.865,
+        0.947,
+        0.897
+      ],
+      "joint_miss": [
+        0.99,
+        0.889,
+        0.696,
+        0.667,
+        0.654,
+        0.645
+      ],
+      "conditional_miss": [
+        0.99,
+        0.897979797979798,
+        0.7829021372328459,
+        0.9583333333333334,
+        0.9805097451274363,
+        0.9862385321100917
+      ],
+      "product_prediction": 0.483932885638059,
+      "all_miss_count": 645,
+      "benign_false_block": 0.12
+    },
+    {
+      "task": 3,
+      "arm": "mixed_independent",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.992,
+        0.89,
+        0.74,
+        0.851,
+        0.952,
+        0.907
+      ],
+      "joint_miss": [
+        0.992,
+        0.884,
+        0.651,
+        0.558,
+        0.532,
+        0.485
+      ],
+      "conditional_miss": [
+        0.992,
+        0.8911290322580645,
+        0.7364253393665159,
+        0.8571428571428571,
+        0.953405017921147,
+        0.9116541353383458
+      ],
+      "product_prediction": 0.4800729035565568,
+      "all_miss_count": 485,
+      "benign_false_block": 0.284
+    },
+    {
+      "task": 3,
+      "arm": "mixed_feedback8",
+      "radius": 1.5,
+      "defender_queries_per_episode": 8,
+      "episodes": 1000,
+      "single_miss": [
+        1.0,
+        0.998,
+        0.983,
+        0.985,
+        1.0,
+        0.995
+      ],
+      "joint_miss": [
+        1.0,
+        0.998,
+        0.981,
+        0.971,
+        0.971,
+        0.969
+      ],
+      "conditional_miss": [
+        1.0,
+        0.998,
+        0.9829659318637275,
+        0.9898063200815495,
+        1.0,
+        0.9979402677651905
+      ],
+      "product_prediction": 0.9614868975499999,
+      "all_miss_count": 969,
+      "benign_false_block": 0.12
+    },
+    {
+      "task": 4,
+      "arm": "neural_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.283,
+        0.264,
+        0.22,
+        0.256,
+        0.212,
+        0.308
+      ],
+      "joint_miss": [
+        0.283,
+        0.2,
+        0.141,
+        0.133,
+        0.092,
+        0.083
+      ],
+      "conditional_miss": [
+        0.283,
+        0.7067137809187279,
+        0.705,
+        0.9432624113475178,
+        0.6917293233082706,
+        0.9021739130434783
+      ],
+      "product_prediction": 0.00027475119243264,
+      "all_miss_count": 83,
+      "benign_false_block": 0.112
+    },
+    {
+      "task": 4,
+      "arm": "mixed_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.283,
+        0.426,
+        0.22,
+        0.382,
+        0.212,
+        0.37
+      ],
+      "joint_miss": [
+        0.283,
+        0.222,
+        0.146,
+        0.124,
+        0.091,
+        0.089
+      ],
+      "conditional_miss": [
+        0.283,
+        0.784452296819788,
+        0.6576576576576577,
+        0.8493150684931506,
+        0.7338709677419355,
+        0.978021978021978
+      ],
+      "product_prediction": 0.0007947301024607999,
+      "all_miss_count": 89,
+      "benign_false_block": 0.127
+    },
+    {
+      "task": 4,
+      "arm": "mixed_independent",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.276,
+        0.437,
+        0.218,
+        0.391,
+        0.226,
+        0.361
+      ],
+      "joint_miss": [
+        0.276,
+        0.131,
+        0.023,
+        0.013,
+        0.005,
+        0.004
+      ],
+      "conditional_miss": [
+        0.276,
+        0.4746376811594203,
+        0.17557251908396945,
+        0.5652173913043478,
+        0.38461538461538464,
+        0.8
+      ],
+      "product_prediction": 0.0008387632833704162,
+      "all_miss_count": 4,
+      "benign_false_block": 0.258
+    },
+    {
+      "task": 4,
+      "arm": "neural_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.954,
+        0.942,
+        0.895,
+        0.911,
+        0.903,
+        0.921
+      ],
+      "joint_miss": [
+        0.954,
+        0.919,
+        0.864,
+        0.829,
+        0.775,
+        0.751
+      ],
+      "conditional_miss": [
+        0.954,
+        0.9633123689727463,
+        0.940152339499456,
+        0.9594907407407407,
+        0.9348612786489746,
+        0.9690322580645161
+      ],
+      "product_prediction": 0.6093798229595451,
+      "all_miss_count": 751,
+      "benign_false_block": 0.112
+    },
+    {
+      "task": 4,
+      "arm": "mixed_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.954,
+        0.962,
+        0.895,
+        0.949,
+        0.903,
+        0.958
+      ],
+      "joint_miss": [
+        0.954,
+        0.923,
+        0.879,
+        0.865,
+        0.817,
+        0.813
+      ],
+      "conditional_miss": [
+        0.954,
+        0.9675052410901468,
+        0.952329360780065,
+        0.9840728100113766,
+        0.9445086705202312,
+        0.9951040391676866
+      ],
+      "product_prediction": 0.6743198649921878,
+      "all_miss_count": 813,
+      "benign_false_block": 0.127
+    },
+    {
+      "task": 4,
+      "arm": "mixed_independent",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.937,
+        0.971,
+        0.906,
+        0.954,
+        0.916,
+        0.961
+      ],
+      "joint_miss": [
+        0.937,
+        0.909,
+        0.827,
+        0.787,
+        0.717,
+        0.689
+      ],
+      "conditional_miss": [
+        0.937,
+        0.9701173959445037,
+        0.9097909790979097,
+        0.9516324062877872,
+        0.9110546378653113,
+        0.9609483960948396
+      ],
+      "product_prediction": 0.6922361168603376,
+      "all_miss_count": 689,
+      "benign_false_block": 0.268
+    },
+    {
+      "task": 4,
+      "arm": "mixed_feedback8",
+      "radius": 1.5,
+      "defender_queries_per_episode": 8,
+      "episodes": 1000,
+      "single_miss": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        1.0
+      ],
+      "joint_miss": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.999
+      ],
+      "conditional_miss": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        1.0
+      ],
+      "product_prediction": 0.999,
+      "all_miss_count": 999,
+      "benign_false_block": 0.127
+    },
+    {
+      "task": 5,
+      "arm": "neural_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.227,
+        0.169,
+        0.234,
+        0.165,
+        0.227,
+        0.253
+      ],
+      "joint_miss": [
+        0.227,
+        0.122,
+        0.108,
+        0.082,
+        0.081,
+        0.078
+      ],
+      "conditional_miss": [
+        0.227,
+        0.5374449339207048,
+        0.8852459016393442,
+        0.7592592592592593,
+        0.9878048780487805,
+        0.9629629629629629
+      ],
+      "product_prediction": 0.00008506653474033002,
+      "all_miss_count": 78,
+      "benign_false_block": 0.108
+    },
+    {
+      "task": 5,
+      "arm": "mixed_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.227,
+        0.404,
+        0.234,
+        0.389,
+        0.227,
+        0.401
+      ],
+      "joint_miss": [
+        0.227,
+        0.193,
+        0.147,
+        0.14,
+        0.116,
+        0.112
+      ],
+      "conditional_miss": [
+        0.227,
+        0.8502202643171806,
+        0.7616580310880829,
+        0.9523809523809523,
+        0.8285714285714286,
+        0.9655172413793104
+      ],
+      "product_prediction": 0.0007598763200630162,
+      "all_miss_count": 112,
+      "benign_false_block": 0.117
+    },
+    {
+      "task": 5,
+      "arm": "mixed_independent",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.227,
+        0.397,
+        0.216,
+        0.384,
+        0.231,
+        0.371
+      ],
+      "joint_miss": [
+        0.227,
+        0.098,
+        0.021,
+        0.008,
+        0.003,
+        0.001
+      ],
+      "conditional_miss": [
+        0.227,
+        0.43171806167400884,
+        0.21428571428571427,
+        0.38095238095238093,
+        0.375,
+        0.3333333333333333
+      ],
+      "product_prediction": 0.0006406004346255361,
+      "all_miss_count": 1,
+      "benign_false_block": 0.286
+    },
+    {
+      "task": 5,
+      "arm": "neural_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.928,
+        0.801,
+        0.946,
+        0.837,
+        0.941,
+        0.919
+      ],
+      "joint_miss": [
+        0.928,
+        0.766,
+        0.75,
+        0.692,
+        0.687,
+        0.666
+      ],
+      "conditional_miss": [
+        0.928,
+        0.8254310344827587,
+        0.97911227154047,
+        0.9226666666666666,
+        0.9927745664739884,
+        0.9694323144104804
+      ],
+      "product_prediction": 0.5089817627934906,
+      "all_miss_count": 666,
+      "benign_false_block": 0.108
+    },
+    {
+      "task": 5,
+      "arm": "mixed_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.928,
+        0.928,
+        0.946,
+        0.918,
+        0.941,
+        0.943
+      ],
+      "joint_miss": [
+        0.928,
+        0.882,
+        0.863,
+        0.851,
+        0.833,
+        0.832
+      ],
+      "conditional_miss": [
+        0.928,
+        0.9504310344827587,
+        0.9784580498866213,
+        0.9860950173812283,
+        0.9788484136310224,
+        0.9987995198079231
+      ],
+      "product_prediction": 0.663637756089471,
+      "all_miss_count": 832,
+      "benign_false_block": 0.117
+    },
+    {
+      "task": 5,
+      "arm": "mixed_independent",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.929,
+        0.92,
+        0.957,
+        0.92,
+        0.949,
+        0.947
+      ],
+      "joint_miss": [
+        0.929,
+        0.855,
+        0.821,
+        0.753,
+        0.71,
+        0.671
+      ],
+      "conditional_miss": [
+        0.929,
+        0.9203444564047363,
+        0.960233918128655,
+        0.9171741778319124,
+        0.9428950863213812,
+        0.9450704225352112
+      ],
+      "product_prediction": 0.6762690279664175,
+      "all_miss_count": 671,
+      "benign_false_block": 0.3
+    },
+    {
+      "task": 5,
+      "arm": "mixed_feedback8",
+      "radius": 1.5,
+      "defender_queries_per_episode": 8,
+      "episodes": 1000,
+      "single_miss": [
+        0.996,
+        0.998,
+        1.0,
+        0.997,
+        0.999,
+        0.999
+      ],
+      "joint_miss": [
+        0.996,
+        0.995,
+        0.995,
+        0.995,
+        0.995,
+        0.995
+      ],
+      "conditional_miss": [
+        0.996,
+        0.998995983935743,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "product_prediction": 0.989044915073976,
+      "all_miss_count": 995,
+      "benign_false_block": 0.117
+    },
+    {
+      "task": 6,
+      "arm": "neural_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.279,
+        0.165,
+        0.14,
+        0.123,
+        0.259,
+        0.319
+      ],
+      "joint_miss": [
+        0.279,
+        0.132,
+        0.071,
+        0.048,
+        0.042,
+        0.041
+      ],
+      "conditional_miss": [
+        0.279,
+        0.4731182795698925,
+        0.5378787878787878,
+        0.676056338028169,
+        0.875,
+        0.9761904761904762
+      ],
+      "product_prediction": 0.00006549554219670002,
+      "all_miss_count": 41,
+      "benign_false_block": 0.119
+    },
+    {
+      "task": 6,
+      "arm": "mixed_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.279,
+        0.342,
+        0.14,
+        0.391,
+        0.259,
+        0.428
+      ],
+      "joint_miss": [
+        0.279,
+        0.208,
+        0.091,
+        0.09,
+        0.07,
+        0.069
+      ],
+      "conditional_miss": [
+        0.279,
+        0.7455197132616488,
+        0.4375,
+        0.989010989010989,
+        0.7777777777777778,
+        0.9857142857142858
+      ],
+      "product_prediction": 0.0005790000956846402,
+      "all_miss_count": 69,
+      "benign_false_block": 0.093
+    },
+    {
+      "task": 6,
+      "arm": "mixed_independent",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.284,
+        0.379,
+        0.175,
+        0.461,
+        0.291,
+        0.454
+      ],
+      "joint_miss": [
+        0.284,
+        0.089,
+        0.016,
+        0.008,
+        0.002,
+        0.001
+      ],
+      "conditional_miss": [
+        0.284,
+        0.31338028169014087,
+        0.1797752808988764,
+        0.5,
+        0.25,
+        0.5
+      ],
+      "product_prediction": 0.0011472164505101998,
+      "all_miss_count": 1,
+      "benign_false_block": 0.278
+    },
+    {
+      "task": 6,
+      "arm": "neural_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.881,
+        0.72,
+        0.729,
+        0.727,
+        0.925,
+        0.966
+      ],
+      "joint_miss": [
+        0.881,
+        0.687,
+        0.575,
+        0.508,
+        0.497,
+        0.491
+      ],
+      "conditional_miss": [
+        0.881,
+        0.7797956867196367,
+        0.8369723435225619,
+        0.8834782608695653,
+        0.9783464566929134,
+        0.9879275653923542
+      ],
+      "product_prediction": 0.30039258153718795,
+      "all_miss_count": 491,
+      "benign_false_block": 0.119
+    },
+    {
+      "task": 6,
+      "arm": "mixed_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.881,
+        0.853,
+        0.729,
+        0.874,
+        0.925,
+        0.924
+      ],
+      "joint_miss": [
+        0.881,
+        0.795,
+        0.656,
+        0.651,
+        0.632,
+        0.629
+      ],
+      "conditional_miss": [
+        0.881,
+        0.9023836549375709,
+        0.8251572327044026,
+        0.9923780487804879,
+        0.9708141321044547,
+        0.995253164556962
+      ],
+      "product_prediction": 0.40923955569849657,
+      "all_miss_count": 629,
+      "benign_false_block": 0.093
+    },
+    {
+      "task": 6,
+      "arm": "mixed_independent",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.887,
+        0.841,
+        0.712,
+        0.868,
+        0.926,
+        0.907
+      ],
+      "joint_miss": [
+        0.887,
+        0.745,
+        0.529,
+        0.451,
+        0.421,
+        0.376
+      ],
+      "conditional_miss": [
+        0.887,
+        0.8399098083427283,
+        0.7100671140939597,
+        0.8525519848771267,
+        0.9334811529933481,
+        0.8931116389548693
+      ],
+      "product_prediction": 0.3872020145305863,
+      "all_miss_count": 376,
+      "benign_false_block": 0.248
+    },
+    {
+      "task": 6,
+      "arm": "mixed_feedback8",
+      "radius": 1.5,
+      "defender_queries_per_episode": 8,
+      "episodes": 1000,
+      "single_miss": [
+        0.994,
+        0.994,
+        0.988,
+        0.996,
+        0.992,
+        1.0
+      ],
+      "joint_miss": [
+        0.994,
+        0.989,
+        0.981,
+        0.98,
+        0.975,
+        0.975
+      ],
+      "conditional_miss": [
+        0.994,
+        0.9949698189134809,
+        0.9919110212335692,
+        0.9989806320081549,
+        0.9948979591836735,
+        1.0
+      ],
+      "product_prediction": 0.964496650930176,
+      "all_miss_count": 975,
+      "benign_false_block": 0.093
+    },
+    {
+      "task": 7,
+      "arm": "neural_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.183,
+        0.281,
+        0.162,
+        0.233,
+        0.2,
+        0.205
+      ],
+      "joint_miss": [
+        0.183,
+        0.134,
+        0.077,
+        0.066,
+        0.053,
+        0.036
+      ],
+      "conditional_miss": [
+        0.183,
+        0.73224043715847,
+        0.5746268656716418,
+        0.8571428571428571,
+        0.803030303030303,
+        0.6792452830188679
+      ],
+      "product_prediction": 0.00007958151487800001,
+      "all_miss_count": 36,
+      "benign_false_block": 0.136
+    },
+    {
+      "task": 7,
+      "arm": "mixed_shared",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.183,
+        0.474,
+        0.162,
+        0.418,
+        0.2,
+        0.378
+      ],
+      "joint_miss": [
+        0.183,
+        0.153,
+        0.082,
+        0.081,
+        0.057,
+        0.056
+      ],
+      "conditional_miss": [
+        0.183,
+        0.8360655737704918,
+        0.5359477124183006,
+        0.9878048780487805,
+        0.7037037037037037,
+        0.9824561403508771
+      ],
+      "product_prediction": 0.0004440608881632001,
+      "all_miss_count": 56,
+      "benign_false_block": 0.124
+    },
+    {
+      "task": 7,
+      "arm": "mixed_independent",
+      "radius": 0.0,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.182,
+        0.476,
+        0.183,
+        0.418,
+        0.23,
+        0.393
+      ],
+      "joint_miss": [
+        0.182,
+        0.087,
+        0.019,
+        0.006,
+        0.002,
+        0.0
+      ],
+      "conditional_miss": [
+        0.182,
+        0.47802197802197804,
+        0.21839080459770116,
+        0.3157894736842105,
+        0.3333333333333333,
+        0.0
+      ],
+      "product_prediction": 0.0005989990017211201,
+      "all_miss_count": 0,
+      "benign_false_block": 0.283
+    },
+    {
+      "task": 7,
+      "arm": "neural_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.713,
+        0.767,
+        0.707,
+        0.78,
+        0.776,
+        0.807
+      ],
+      "joint_miss": [
+        0.713,
+        0.628,
+        0.53,
+        0.502,
+        0.457,
+        0.409
+      ],
+      "conditional_miss": [
+        0.713,
+        0.8807854137447405,
+        0.8439490445859873,
+        0.9471698113207547,
+        0.9103585657370518,
+        0.8949671772428884
+      ],
+      "product_prediction": 0.18885746949490512,
+      "all_miss_count": 409,
+      "benign_false_block": 0.136
+    },
+    {
+      "task": 7,
+      "arm": "mixed_shared",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.713,
+        0.983,
+        0.707,
+        0.966,
+        0.776,
+        0.948
+      ],
+      "joint_miss": [
+        0.713,
+        0.705,
+        0.584,
+        0.58,
+        0.48,
+        0.478
+      ],
+      "conditional_miss": [
+        0.713,
+        0.9887798036465638,
+        0.8283687943262411,
+        0.9931506849315068,
+        0.8275862068965517,
+        0.9958333333333333
+      ],
+      "product_prediction": 0.3521353674174214,
+      "all_miss_count": 478,
+      "benign_false_block": 0.124
+    },
+    {
+      "task": 7,
+      "arm": "mixed_independent",
+      "radius": 1.5,
+      "defender_queries_per_episode": 0,
+      "episodes": 1000,
+      "single_miss": [
+        0.748,
+        0.971,
+        0.686,
+        0.948,
+        0.775,
+        0.935
+      ],
+      "joint_miss": [
+        0.748,
+        0.728,
+        0.496,
+        0.467,
+        0.352,
+        0.322
+      ],
+      "conditional_miss": [
+        0.748,
+        0.9732620320855615,
+        0.6813186813186813,
+        0.9415322580645161,
+        0.7537473233404711,
+        0.9147727272727273
+      ],
+      "product_prediction": 0.342268234131516,
+      "all_miss_count": 322,
+      "benign_false_block": 0.284
+    },
+    {
+      "task": 7,
+      "arm": "mixed_feedback8",
+      "radius": 1.5,
+      "defender_queries_per_episode": 8,
+      "episodes": 1000,
+      "single_miss": [
+        0.966,
+        1.0,
+        0.964,
+        0.995,
+        0.968,
+        0.987
+      ],
+      "joint_miss": [
+        0.966,
+        0.966,
+        0.946,
+        0.944,
+        0.923,
+        0.917
+      ],
+      "conditional_miss": [
+        0.966,
+        1.0,
+        0.979296066252588,
+        0.9978858350951374,
+        0.9777542372881356,
+        0.9934994582881906
+      ],
+      "product_prediction": 0.8852577776380799,
+      "all_miss_count": 917,
+      "benign_false_block": 0.124
+    }
+  ]
+}
