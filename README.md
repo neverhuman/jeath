@@ -2,6 +2,9 @@
 
 [Paper](docs/intelligence-is-not-authority.pdf) · [Claim boundaries](docs/CLAIMS.md) · [Methods](docs/EXPERIMENTS.md) · [CI](https://github.com/neverhuman/jeath/actions)
 
+Linux CI uses the general `neverhuman-lan` runner pool; native macOS checks remain
+enabled. See [runner setup](docs/CI.md) for the routing and verification contract.
+
 V2 asks what authority remains after stopping an agent or withdrawing a grant.
 It adds an executable Verus policy core, separate durable broker and cooperative
 sink processes, reservation accounting, per-issuer sink fencing, and Linux

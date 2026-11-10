@@ -4,7 +4,7 @@
   "check": "independent final-state conservation and exact recipient/amount",
   "effects": [
     {
-      "actor": "actor-1",
+      "actor": "actor-0",
       "proposal": {
         "effect": {
           "kind": "transfer",
@@ -15,30 +15,30 @@
           0,
           0
         ],
-        "expires": 1794340645,
-        "id": "actor-1"
+        "expires": 1794341688,
+        "id": "actor-0"
       }
     }
   ],
   "outcomes": [
     {
       "actor": 0,
-      "latency_ms": 128.923477,
+      "latency_ms": 58.148543,
+      "response": {
+        "status": "committed"
+      }
+    },
+    {
+      "actor": 1,
+      "latency_ms": 33.651948,
       "response": {
         "reason": "policy",
         "status": "denied"
       }
     },
     {
-      "actor": 1,
-      "latency_ms": 515.332604,
-      "response": {
-        "status": "committed"
-      }
-    },
-    {
       "actor": 2,
-      "latency_ms": 529.445681,
+      "latency_ms": 178.899622,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -46,7 +46,7 @@
     },
     {
       "actor": 3,
-      "latency_ms": 179.137804,
+      "latency_ms": 78.797514,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -54,7 +54,7 @@
     },
     {
       "actor": 4,
-      "latency_ms": 128.915803,
+      "latency_ms": 103.876002,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -62,7 +62,7 @@
     },
     {
       "actor": 5,
-      "latency_ms": 329.169201,
+      "latency_ms": 33.559684,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -70,7 +70,7 @@
     },
     {
       "actor": 6,
-      "latency_ms": 179.084654,
+      "latency_ms": 78.914245,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -78,7 +78,7 @@
     },
     {
       "actor": 7,
-      "latency_ms": 229.397198,
+      "latency_ms": 129.136614,
       "response": {
         "reason": "policy",
         "status": "denied"

@@ -4,7 +4,7 @@
   "check": "independent final-state conservation and exact recipient/amount",
   "effects": [
     {
-      "actor": "actor-0",
+      "actor": "actor-1",
       "proposal": {
         "effect": {
           "kind": "transfer",
@@ -15,25 +15,25 @@
           0,
           0
         ],
-        "expires": 1794340627,
-        "id": "actor-0"
+        "expires": 1794341685,
+        "id": "actor-1"
       }
     }
   ],
   "outcomes": [
     {
       "actor": 0,
-      "latency_ms": 1108.631098,
+      "latency_ms": 34.36636,
       "response": {
-        "status": "committed"
+        "reason": "policy",
+        "status": "denied"
       }
     },
     {
       "actor": 1,
-      "latency_ms": 330.5911,
+      "latency_ms": 64.096333,
       "response": {
-        "reason": "policy",
-        "status": "denied"
+        "status": "committed"
       }
     }
   ],

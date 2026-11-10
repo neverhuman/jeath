@@ -3,6 +3,10 @@
 The host's worktree, lane ownership, build-output and preservation rules apply.
 
 - Required local gate before every push: `make required`.
+- Linux CI uses the general `neverhuman-lan` runner group with
+  `[self-hosted, Linux, X64, lan-ci, ubuntu24]`; retain the native macOS functional
+  check. See `docs/CI.md`. Verify actual job placement rather than adding a
+  hosted Linux fallback or changing shared runner services.
 - `tips/*.tex` are archival originals. Never edit their bytes; `tips/manifest.json`
   records the supplied hashes. Maintain the revised manuscript in `docs/sections/`.
 - Scientific changes require a new `scripts/run.py` run, validation, and an explicit

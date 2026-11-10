@@ -6,7 +6,7 @@ controls, native Linux confinement probes, negative controls, and the abstract
 single/pairwise omission search. It includes native AgentDojo/Progent scripted
 integration controls and a separate model feasibility report. No model campaign
 or learned-review result is present. Raw SQLite databases remain in the worktree’s
-`target/v2-release/`; committed JSON preserves invocations, responses
+`target/general-runners-publication/`; committed JSON preserves invocations, responses
 and independently read sink effects. Kernel, source, protocol, tool and checkpoint
 identifiers are recorded in the manifests.
 
