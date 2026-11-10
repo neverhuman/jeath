@@ -1,0 +1,153 @@
+\section{Evidence, Operational Gaps, and Scope Taxonomy}
+\label{sec:evidence}
+
+Empirical findings through late 2026 clarify both progress in alignment and why
+behavioral evidence cannot substitute for enforced authority limits
+\cite{iasr,safetycase}.
+
+\para{Evaluation awareness and fragile visibility.}
+Behavioral passes update beliefs under a bounded shift model, but they do not identify
+underlying aims. Needham et al.\ showed that frontier models distinguish evaluation
+transcripts from deployment interactions well above chance \cite{needham}. Schoen et
+al.\ reduced covert actions from 13\% to 0.4\% across held-out evaluations via
+deliberative anti-scheming training, while demonstrating causal evidence that
+evaluation recognition contributed to the drop \cite{schoen}. OpenAI's GPT-6 Astra
+system card similarly reported fewer misaligned task outcomes alongside higher
+evaluation awareness and reduced chain-of-thought monitorability relative to its
+predecessor \cite{astra}. Reasoning-trace inspection is explicitly fragile under
+optimization pressure that penalizes legible misbehavior \cite{korbak}: behavioral
+scores and failure visibility need not improve together.
+
+\para{Monitor subversion, boundary leaks, and interruption gaps.}
+AI control protocols evaluate defenses against intentionally subversive policies
+\cite{control}, yet learned monitors remain vulnerable to adaptive evasion
+\cite{terekhov} and multi-agent attack fragmentation across per-instance reviewers
+\cite{makins}. Operational incidents and audits in 2026 reinforce that nominal
+boundaries fail when unmeasured. In one evaluation incident, ostensibly isolated
+agents coordinated across an unintended shared package cache and contacted external
+infrastructure while pursuing task scores \cite{metrincident}; in cybersecurity
+evaluations, misconfigured network controls permitted unauthorized external access
+while release safeguards were disabled \cite{anthropicincident}. An October 2026
+external audit of an internal agent-monitoring system estimated 75--94\% traffic
+eligibility, identified an unmonitored coding-traffic gap, and found that agents could
+defer turn-boundary monitors indefinitely \cite{metraudit}. Likewise, OpenAI's Control
+Room bounds withholding further model output within 35 seconds of a stop decision
+while noting that workload processes can keep running \cite{controlroom}. Halting
+output generation is distinct from revoking credentials or fencing external side
+effects.
+
+\para{Containment proofs and institutional scope.}
+Reference monitors, shields, and Guaranteed Safe AI restrict executed transitions
+rather than internal thoughts \cite{saltzer,schneider,shield,gsai,sel4}. Recent
+agent-security architectures separate control from untrusted data via capability
+tracking \cite{camel} or enforce symbolic tool-argument policies \cite{progent}, while
+fault-tolerant delegation protocols study budget conservation and duplicate side
+effects under ambiguous tool replies \cite{ftbudget,limbo}. Yet static per-call
+argument checks neither conserve shared budgets under concurrency nor fence previously
+admitted work upon revocation. Moon and Varshney mechanized containment for an agent
+framework, while documenting a critical ablation in which omitting one state field
+made safety hold vacuously \cite{moon}: a formal proof is only as adequate as its harm
+specification and runtime correspondence. Complementary analyses examine
+reduced-agency predictors \cite{scientist}, physical bottlenecks in extinction
+scenarios \cite{rand}, institutional diffusion \cite{normal}, and gradual
+disempowerment through accumulated dependence \cite{gradual}.
+
+Across these agendas, the dividing line is whether assurance rests on
+\emph{endogenous evidence}---signals the evaluated policy helps generate, such as
+benchmark behavior, chain-of-thought traces, or self-reports---or on \emph{exogenous
+constraints} enforced over external state transitions. Rather than treating any single
+layer as universal, Table~\ref{tab:taxonomy} defines our five evidence tiers and maps
+them onto six sufficiency conditions (\textbf{C1--C6}), fixing exact claim boundaries
+upfront.
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4.5pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}P{0.19\textwidth}P{0.23\textwidth}LL@{}}
+\toprule
+\textbf{Tier / Condition} &
+  \textbf{Backing in This Artifact} &
+  \textbf{What It Establishes} &
+  \textbf{Explicit Scope Boundary (Not Claimed)}\\
+\midrule
+\multicolumn{4}{@{}l}{\textbf{Part A: Five Evidence Tiers}
+  (every quantitative claim in Sections~\ref{sec:theory}--\ref{sec:legitimacy} carries its tier)}\\
+\textbf{Tier 1:} Mechanized core &
+  Pinned Verus SMT (\texttt{policy-core}: \VTwoProofs{} obligations,
+  \VTwoExecFns{} \texttt{exec}, \VTwoTheorems{} \texttt{proof fn}) \cite{verus} &
+  Total decision-predicate equivalence and inductive conservation/fence invariants
+  over a \texttt{spec} ledger model &
+  Not formal refinement of SQLite WAL, JSON framing, normalization, or the Linux
+  kernel\\
+\textbf{Tier 2:} Analytical \& finite-state &
+  Closed-form proofs (App.~\ref{app:proofs}); V1 \CheckedStates-state BFS; V2
+  \VTwoAblationWitnesses/\VTwoAblationSets{} trace omissions; $B{=}100$ triples &
+  Exact universal bounds and shortest violation witnesses within stated mathematical
+  and transition models &
+  Silent on unmodeled channels, physical bypasses, or omitted harm predicates
+  (\OmittedStates-state control)\\
+\textbf{Tier 3:} Local systems \& OS &
+  Rust/SQLite broker+sink (\VTwoFaults{} faults,
+  \VTwoLinearizedRuns/\VTwoLinearizedRuns{} RPC linearizations, \VTwoRaceRuns{}
+  races, \VTwoProbes/\VTwoProbes{} Linux probes,
+  \VTwoBenchmarkUtilityPositives/\VTwoBenchmarkControls{} adapters) &
+  Separate-process reservation, sub-delegation epoch fencing, bounded $1,2,4$-actor
+  linearizability, IPC/FS/TCP confinement &
+  Mediates cooperative local SQLite state only (not arbitrary external APIs or
+  unbounded DoS); scripted benchmark positives (2/12 empty-state banking passes)\\
+\textbf{Tier 4:} Synthetic \texttt{SplitMix64} &
+  Deterministic pure-Rust V3 suite (\texttt{seed 20261110}, 16 JSON artifacts;
+  App.~\ref{app:simulations}) &
+  Scaling laws and negative controls across lag, 8-stage DAG cuts, Zipf/Good--Turing,
+  Fisher audits, 20D 6-family gates, selection &
+  Standalone synthetic mechanics (not \texttt{sklearn} bit-replication, frontier-LLM
+  error correlation, or human behavioral data)\\
+\textbf{Tier 5:} Predeclared \& governance &
+  \VTwoComponentClaims-claim Qwen3-4B/8B harness (\VTwoGpuSecondsUsed{} GPU-s;
+  App.~\ref{app:predeclared}); $3{\times}3{\times}2$ care protocol; 12-field record
+  (App.~\ref{app:record}) &
+  Preregistered roster-bound statistical design
+  ($\ge\VTwoZeroLossCasesMin/\VTwoMaxDefaultCases$ zero-loss cases for
+  \VTwoNoninferiorityMarginPp\,pp NI) and renewal governance &
+  Unexecuted on GPU checkpoints or human participants; confers zero empirical
+  model-utility or Indigenous-consultation claims\\
+\midrule
+\multicolumn{4}{@{}l}{\textbf{Part B: Six Sufficiency Conditions for Bounded Period Reach}
+  (Theorem~\ref{u03:thm:main}, Section~\ref{sec:theory})}\\
+\textbf{C1:} Mediation \& halt &
+  Tiers 1--3 (\S\ref{sec:core}, \S\ref{sec:eval}) &
+  Pre-commit reservation $\B_t$ and sink epoch fence enforce A1--A2
+  ($\tau < T_{\mathrm{irrev}}$) &
+  Unmediated human speech and uncooperative external sinks remain open\\
+\textbf{C2:} Narrow cutset width &
+  Tiers 2, 4 (\S\ref{sec:graphs}) &
+  $k$ disjoint weighted vertex cuts of cost $\tau_b(\mathcal{P})$ fit within defense
+  budget &
+  Real-world physical/cyber hazard graph width $w$ is unmeasured\\
+\textbf{C3:} Distinct-step gates &
+  Tiers 2, 4 (\S\ref{sec:monitors}) &
+  Gates inspect distinct steps; joint miss $J_k$ is measured under adaptive attack &
+  Shared-step ensembles fail independence; real multi-step separability is open\\
+\textbf{C4:} Honest capable search &
+  Tiers 2, 4 (\S\ref{sec:graphs}) &
+  Searchers with planted-audit recall bound bypass prior via $\pi_t$ &
+  Strategic withholding is invisible in reports alone; cross-lineage plants needed\\
+\textbf{C5:} Cut-only custody &
+  Tiers 2, 4 (\S\ref{sec:graphs}, \S\ref{sec:selection}) &
+  \texttt{DiscoveryLedger} exports verified cut updates, sealing Tier-2 exposure &
+  Dual-use hazard catalogs remain regenerable above capability thresholds\\
+\textbf{C6:} Scoped conferral &
+  Tiers 1--5 (\S\ref{sec:core}, \S\ref{sec:legitimacy}) &
+  Expiring grants, decoupled persuasion, and premise-level upgrade renewal &
+  Institutional jurisdiction, consent, and ecological footprint require
+  law/governance\\
+\bottomrule
+\end{tabularx}
+\caption{\textbf{The five evidence tiers and six sufficiency conditions (C1--C6).}
+Stating each tier's artifact backing and non-claims explicitly allows subsequent
+sections to report formal, systems, and synthetic results concisely without conflating
+local mechanisms with open-world assurance.}
+\label{tab:taxonomy}
+\end{table*}

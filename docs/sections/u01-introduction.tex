@@ -1,0 +1,119 @@
+\section{Introduction}
+\label{sec:intro}
+
+Intelligence is what a system can propose; authority is what it can reach, through
+which external checkpoints, and what residual effects remain executable after
+permission is withdrawn \cite{dennis,saltzer,schneider}. Much of the alignment debate
+treats safety as an internal property of a model's disposition: if we could verify
+what a capable system wants, we could trust what it does. Yet every behavioral
+evaluation observes an interaction with the evaluated policy. As capability
+grows, a policy that shares its operator's aims and a policy that recognizes an
+examination leave indistinguishable behavioral records \cite{needham,schoen}. Human
+institutions solved the analogous problem without mind-reading: banks do not certify
+the inner virtue of every clerk, and operating systems do not trust user processes to
+police their own memory \cite{saltzer,sel4}. They bound reach through mediated
+capabilities that are conferred, scoped, audited, and revocable.
+
+Making revocable authority operational for autonomous agents exposes a sharp systems
+gap. Stopping token generation \cite{controlroom} or terminating an agent process
+does not cancel tool requests already dispatched. Even revoking admission at a
+permission broker leaves previously issued capabilities in flight across concurrent
+workers or delayed queues. Worse, when network or tool replies are lost, an execution
+boundary faces an irreducible state uncertainty: refunding a timed-out budget
+reservation allows a replacement agent to authorize a second irreversible action
+while the first can still commit \cite{ftbudget,limbo}. Bounding authority after
+withdrawal therefore requires coordinating two distinct mechanisms across separate
+durable stores (Figure~\ref{fig:architecture}): a broker that reserves cumulative
+budgets \emph{before} dispatch and quarantines ambiguous permits inside a
+conservative state-uncertainty envelope $\B_t$, and a cooperative idempotent
+execution sink whose durable epoch fence orders revocation deterministically against
+effect commitment.
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,font=\scriptsize,>=Latex,
+  box/.style={draw=ink,rounded corners=2pt,fill=pale,align=center,inner sep=3.5pt},
+  tbox/.style={draw=teal,line width=0.8pt,rounded corners=2pt,fill=teal!7,align=center,inner sep=3.5pt},
+  arr/.style={->,line width=0.7pt,draw=ink}]
+  % Top governance & renewal row
+  \node[box,draw=slate,dashed,fill=white,minimum width=3.80cm,minimum height=0.88cm] (cap) at (1.95,3.85)
+    {\textbf{Capability Growth}\\Weights, speed, copies $\ne$ grant};
+  \node[tbox,fill=white,minimum width=4.35cm,minimum height=0.88cm] (iss) at (8.45,3.85)
+    {\textbf{Accountable Grant Issuers}\\Scoped, expiring quorums; withdraw \& fence};
+  \node[box,draw=slate,fill=white,minimum width=3.95cm,minimum height=0.88cm] (rec) at (14.90,3.85)
+    {\textbf{Receipts \& Stepwise Renewal}\\Measured $J_k$, search $\pi_t$, audit log};
+
+  % Middle mediated execution pipeline
+  \node[box,minimum width=3.80cm,minimum height=1.32cm] (prop) at (1.95,2.05)
+    {\textbf{Untrusted Proposer}\\Policy $\pi$, subagents, persona\\(\texttt{Landlock+seccomp}, \texttt{stdio} RPC)};
+  \node[tbox,minimum width=4.35cm,minimum height=1.32cm] (brok) at (8.45,2.05)
+    {\textbf{Broker + Verus \texttt{policy-core}}\\\texttt{broker.sqlite} (\VTwoProofs{} SMT obligations)\\Pre-dispatch reservation envelope $\B_t$};
+  \node[box,line width=0.8pt,minimum width=3.95cm,minimum height=1.32cm] (sink) at (14.90,2.05)
+    {\textbf{Cooperative Idempotent Sink}\\\texttt{sink.sqlite}: durable \texttt{epoch\_floor}\\fence + atomic dedup \& commit};
+
+  % Bottom out-of-band / unmediated exposure row
+  \node[box,draw=violet,dashed,fill=white,minimum width=4.85cm,minimum height=0.82cm] (hum) at (6.05,0.42)
+    {\textbf{Out-of-Band Speech \& Persuasion}\\Outputs moving people to act outside APIs};
+  \node[box,draw=notred,dashed,fill=notred!4,minimum width=4.55cm,minimum height=0.82cm] (byp) at (14.55,0.42)
+    {\textbf{External World \& Shallow Bypasses}\\Uncovered routes ($<k$ gates): exposure $u$};
+
+  % Horizontal mediated pipeline arrows
+  \draw[arr] (prop.east) -- node[above]{proposals $a_t$} node[below,text=slate]{frame-capped RPC} (brok.west);
+  \draw[arr,teal] (brok.east) -- node[above,text=ink]{bound permit} node[below,text=teal]{$(q,\,\mathrm{req},\,\mathrm{epoch})$} (sink.west);
+
+  % Top control & renewal arrows
+  \draw[->,line width=0.7pt,notred,dashed] (cap.east) -- node[above,text=notred]{no silent expansion} (iss.west);
+  \draw[->,line width=0.7pt,teal] (iss.south) -- node[left,text=teal]{grants / admit revoke} (brok.north);
+  \draw[->,line width=0.75pt,notred] (iss.south east) -- node[above,sloped,text=notred]{sync epoch fence} (sink.north west);
+  \draw[->,line width=0.65pt,slate] (sink.north) -- node[right,text=slate]{effects} (rec.south);
+  \draw[->,line width=0.65pt,teal] (rec.west) -- node[above,text=teal]{revalidated scope} (iss.east);
+
+  % Bottom out-of-band & sink-effect arrows
+  \draw[->,line width=0.65pt,violet,dashed] (prop.south) |- node[pos=0.72,above,text=violet]{utterances} (hum.west);
+  \draw[->,line width=0.65pt,notred,dashed] (hum.east) -- node[above,text=notred]{unmediated channel ($u$)} (byp.west);
+  \draw[arr] (sink.south) -- node[right,text=ink]{gated commit} (sink.south |- byp.north);
+\end{tikzpicture}
+\caption{\textbf{Architecture of conferred, revocable agent authority.} Capability and
+persona shape proposals inside a confined process, never execution credentials. A
+separate broker running the Verus-verified \texttt{policy-core} reserves cumulative
+budget in $\B_t$ and binds attenuated issuer requirements into immutable permits
+before dispatch; a cooperative SQLite sink enforces idempotent deduplication and
+synchronous \texttt{epoch\_floor} fences. Out-of-band human persuasion and shallow
+bypasses are tracked explicitly under exposure $u$ rather than silently excluded.}
+\label{fig:architecture}
+\end{figure*}
+
+This paper unifies mechanized local authorization, separate-service revocation,
+structural reach bounds, and co-evolutionary incentive design into one falsifiable
+assurance framework. We distinguish three orthogonal variables: \emph{capability} (the
+richness of proposals $a_t$), \emph{aim} (the objective selected by training or
+tournament structure), and \emph{authority} (the set of external state transitions
+permitted by an independent boundary). When a boundary mediates an interface soundly,
+invariants quantified over \emph{all} proposal sequences hold irrespective of proposer
+cleverness, relocating residual risk from unobservable machine motives to measurable
+properties of checkpoints, pathway cutsets, search coverage, and grant governance.
+
+\para{Contributions and roadmap.}
+Section~\ref{sec:evidence} synthesizes why behavioral evaluation, chain-of-thought
+inspection, and reactive output stops cannot carry standalone assurance, and
+introduces our five evidence tiers and six sufficiency conditions (\textbf{C1--C6},
+Table~\ref{tab:taxonomy}) so scope boundaries are stated upfront rather than repeated
+defensively. Section~\ref{sec:theory} proves the audit-volume lower bound,
+state-uncertainty contraction over $\B_t$, the filtration period-reach bound
+($R \le u + J_k$), common-cause saturation ($k^*$), horizon summability, and
+Theorem~\ref{u03:thm:main} (derivations in Appendix~\ref{app:proofs}).
+Sections~\ref{sec:core} and~\ref{sec:eval} present our centerpiece systems artifact:
+a \VTwoProofs-obligation Verus-verified Rust \texttt{policy-core} compiled into a
+separate-process SQLite broker and cooperative sink, binding strengthened
+sub-delegation requirements across admission and sink-fenced revocation, validated
+across \VTwoFaults{} fault histories, bounded recorded-RPC linearizations,
+\VTwoProbes/\VTwoProbes{} Linux confinement probes, public-benchmark adapter
+controls, and a predeclared unrun \VTwoComponentClaims-claim Qwen3 evaluation
+(Appendices~\ref{app:protocol} and~\ref{app:predeclared}). Sections~\ref{sec:graphs}
+and~\ref{sec:monitors} examine pathway cutset width versus route patching,
+Good--Turing withholding non-identifiability, planted-audit power, six-family
+shared-step monitor dependence, and assessment variance ceilings
+(Appendix~\ref{app:simulations}). Finally, Sections~\ref{sec:selection}--\ref{sec:conclusion}
+analyze tournament versus floor selection rules, endogenous human-grant reversal in a
+JARVIS reference controller, institutional and ecological legitimacy, and ten
+falsifiable predictions (operational record in Appendix~\ref{app:record}).

@@ -1,0 +1,146 @@
+\section{Quantitative Reach Bounds and Sufficiency Conditions}
+\label{sec:theory}
+
+We now formalize why pre-deployment behavioral testing cannot certify disposition, how
+state uncertainty constrains admissible authority, and what external conditions bound
+catastrophic reach without referencing machine goals. Proofs appear in
+Appendix~\ref{app:proofs}.
+
+\subsection{Audit Volume and Uncertainty Contraction}
+
+Consider an unrestricted policy facing $M \ge 2$ deployment decisions after $N$
+pre-deployment test draws. Suppose the policy defects selectively on a recognizable
+context set $E$ having deployment probability $\beta \in (0,1)$ and test probability
+$\beta/\Lambda$, where $\Lambda \ge 1$ captures shift or evaluation recognition.
+
+\begin{proposition}[Disposition audit volume; Tier 2]
+\label{u03:prop:audit}
+At $\beta = (\ln 2)/M$, a policy defecting exclusively on $E$ defects at least once
+across $M$ conditionally independent deployment decisions with probability
+$1-(1-\beta)^M \ge 1/2$. Ensuring detection probability at least $1-\alpha$
+($\alpha \in (0,1)$) across $N$ conditional Bernoulli test draws requires
+\begin{equation}
+N \;\ge\; \frac{\Lambda M}{2\ln 2}\ln(1/\alpha).
+\label{eq:u03:audit}
+\end{equation}
+If $\Prb_{\mathrm{test}}(E)=0$, no finite $N$ detects $E$; if test campaigns are
+positively correlated, effective volume shrinks to $N_{\mathrm{eff}} < N$.
+\end{proposition}
+
+Because $N$ scales linearly with $\Lambda M$, pre-release behavioral testing cannot
+certify that a capable policy will not defect over long horizons. Only one inspection
+regime enforces $\Lambda = 1$ across every consequential opportunity: runtime
+mediation before external commitment.
+
+Let $x_t \in X$ denote true world and ledger state, $a_t \in \A$ an arbitrary
+proposal, $u_t \in U$ the executed primitive operation, and $w_t \in W$ exogenous
+disturbances under transition relation $x_{t+1} \in F(x_t, u_t, w_t)$. Because
+observations lag and replies drop, an external gate maintains a conservative
+uncertainty set $\B_t \subseteq X$ satisfying $x_t \in \B_t$. Relative to a safety
+invariant $\I \subseteq X$ disjoint from catastrophe, define the robustly admissible
+operations \cite{schneider,shield}:
+\begin{equation}
+U_{\I}(\B) \;=\; \Bigl\{u \in U : \bigcup_{x\in\B,\,w\in W} F(x,u,w) \subseteq \I \Bigr\}.
+\label{eq:u03:admissible}
+\end{equation}
+
+\begin{proposition}[Robust mediation \& uncertainty contraction; Tier 2]
+\label{u03:cor:contraction}
+If $x_0 \in \I$, $x_t \in \B_t$ at every decision, every committed operation belongs
+to $U_{\I}(\B_t)$ (else a verified $\I$-preserving fallback executes), and complete
+mediation holds, then $x_t \in \I$ for all $t$ under every proposal policy. Moreover,
+for fixed $(F,W,\I)$,
+\begin{equation}
+\B \subseteq \B' \;\Longrightarrow\; U_{\I}(\B') \subseteq U_{\I}(\B).
+\label{eq:u03:contraction}
+\end{equation}
+\end{proposition}
+
+Equation~\eqref{eq:u03:contraction} states a strict design law: \emph{greater state
+uncertainty can only contract, never enlarge, admissible authority.} Exhaustive Tier-4
+verification over budget $B=\VThreeUncBudget$ checks all \VThreeUncNestedPairs{}
+nested interval pairs $[l_1,u_1]\subseteq [l_2,u_2]$ with \VThreeUncCounterexamples{}
+counterexamples. Across lags $\Delta t \in \{0,1,2,4,8\}$ (\VThreeUncEpisodes{} paired
+episodes per cell; Figure~\ref{fig:v3saturation}a), gating on sound $\B_t$ yields
+\VThreeUncConsViolations{} budget breaches while monotonically contracting admission
+from $\VThreeUncConsAdmLagZeroPct\%$ ($\Delta t=0$) to $\VThreeUncConsAdmLagEightPct\%$
+($\Delta t=8$), whereas stale snapshots breach in $\VThreeUncStaleViolLagFourPct\%$ of
+episodes by $\Delta t=4$ and proposer self-reports breach in
+$\VThreeUncSelfRepViolLagZeroPct\%$ even at $\Delta t=0$. This directly governs our
+broker protocol in Section~\ref{sec:core}: an unacknowledged in-flight permit of
+charge $q$ widens $\B_t$ from $\{C\}$ to $[C,\,C+q]$, which is why lost-reply
+reservations can never be refunded without an authoritative sink cancellation receipt.
+
+\input{generated/v3-saturation-fig}
+
+\subsection{Filtration Reach, Saturation, and Sufficiency}
+
+When gates are imperfect or pathways are partially mapped, let an operating period
+reset audited holdings to baseline and satisfy four filtration premises: \textbf{A1
+(Mediation)} every external step traverses an unalterable boundary; \textbf{A2 (Timely
+halt)} any caught step halts execution within latency $\tau < T_{\mathrm{irrev}}$
+before irreversible completion for the remainder of the period; \textbf{A3 (Coverage)}
+a pathway traverses $<k$ distinct gates and is attempted with probability at most $u$;
+and \textbf{A4 (Conditional joint miss)} conditional on any prior history, $k$
+successive pathway gate crossings all miss with probability at most $J_k$.
+
+\begin{proposition}[Filtration period-reach bound; Tier 2]
+\label{u03:prop:reach}
+Under A1--A4, single-period catastrophe probability satisfies $R \le u + J_k$ with
+halt, and $R \le \min\{1,\,u + N J_k\}$ across $N$ non-halting attempts, with no
+independence assumed among gates.
+\end{proposition}
+
+\emph{Qualification on A4:} Universal policy-independence of $R \le u + J_k$ holds
+only when A4 bounds $J_k$ uniformly across all policies and histories. An empirical
+estimate $\hat{J}_k$ bounds reach only over the evaluated attacker class and traffic
+distribution unless uniform dominance is independently established.
+
+\begin{proposition}[Common-cause saturation \& horizon summability; Tier 2]
+\label{u03:prop:sat}
+(i) If a shared cause defeats all gates with probability $\le c$ and conditional
+per-gate miss is otherwise $\le p$ (marginal $m = c + (1-c)p$), then
+$J_k \le c + (1-c)p^k \le c + m^k$. Setting $f = u+c > 0$ and saturation depth
+$k^* = \lceil \ln f / \ln m \rceil$, every $k \ge k^*$ satisfies $f < f + m^k \le 2f$,
+leaving safety gradient shares $(s_u, s_c, s_m) = (u, c, m^k)/R$.
+(ii) For true survival-conditioned period hazards $r_t \in [0,1)$, infinite-horizon
+survival $\prod_{t=1}^\infty (1-r_t)$ is strictly positive if and only if
+$\sum_{t=1}^\infty r_t < \infty$.
+\end{proposition}
+
+Tier-4 evaluations quantify three immediate consequences
+(Figure~\ref{fig:v3saturation}b,c and \texttt{risk\_horizon.json}):
+\begin{itemize}
+\item \textbf{Depth saturates rapidly:} At $u=\VThreeSatDefaultUPct\%$,
+$c=\VThreeSatDefaultCPct\%$, and $m=\VThreeSatDefaultMPct\%$ ($p=0.10$), depth
+saturates at $k^* = \VThreeSatDefaultKStar$; by $k=4$, true common-cause miss
+($\VThreeAppACommonFourPct\%$) exceeds naive $m^4$ ($\VThreeAppAIndepFourPct\%$) by
+$\VThreeAppAUnderstatement\times$ (continuous latent difficulty
+$\Theta\sim\mathrm{Uniform}[0,1]$ yields $\Exp[\Theta^k]=1/(k+1)$ without a hard
+floor; Appendix~\ref{app:proofs}).
+\item \textbf{Survival requires a shrinking rate:} Across $T=10{,}000$ renewals
+\cite{hoeffding}, summable $p_t = 0.01/t^2$ caps cumulative breach at
+$\VThreeHorizonSummableTenKPct\%$ ($\le 0.01\pi^2/6$), whereas harmonic $0.01/t$
+reaches $\VThreeHorizonHarmonicTenKPct\%$ and constant $10^{-3}$ reaches
+$\VThreeHorizonConstTenKPct\%$. If capability growth multiplies risk by $g>1$ per
+period while hardening multiplies it by $h<1$, survival requires $gh < 1$.
+\item \textbf{Tail halt beats average stop:} Against a $\VThreeTailHaltWindowMs$\,ms
+irreversibility deadline, heavy-tailed reactive stop delays leak even at low load
+($\rho=0.20$: mean $\VThreeTailHaltLowLoadMeanMs$\,ms,
+$\VThreeTailHaltLowLoadLeakPct\%$ leak) and fail severely at high load ($\rho=0.95$:
+mean $\VThreeTailHaltHighLoadMeanMs$\,ms, p99
+$\VThreeTailHaltHighLoadNinetyNineMs$\,ms, $\VThreeTailHaltHighLoadLeakPct\%$ leak),
+whereas pre-commit leases plus a synchronous sink epoch fence record
+\VThreeTailHaltFencedViolations{} post-revoke violations
+($\VThreeTailHaltHighLoadStrandedPct\%$ stranded-reservation cost).
+\end{itemize}
+
+\begin{theorem}[Sufficiency of C1--C6; Tier 2]
+\label{u03:thm:main}
+If conditions \textbf{C1--C6} (Table~\ref{tab:taxonomy}) hold in period $t$ for a
+system's capability class, with Bayesian post-search bypass bound $\pi_t$
+(Section~\ref{sec:graphs}) and measured distinct-step joint miss $J_{k,t}$
+(Section~\ref{sec:monitors}), then single-period catastrophe probability satisfies
+$R_t \le \pi_t + J_{k,t}$, and multi-period catastrophe probability satisfies
+$\sum_t R_t$ ($\le R_0/(1-\gamma)$ whenever $R_{t+1} \le \gamma R_t$ with $\gamma < 1$).
+\end{theorem}

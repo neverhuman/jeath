@@ -1,20 +1,22 @@
-% Revised source; generated tables are backed by evidence/reference.
-% Build from repository root: make paper.
-\documentclass[11pt,twocolumn,letterpaper]{article}
+% Unified revised manuscript preamble; generated tables and macros are backed by evidence/.
+% Build from repository root: make paper (or python3 scripts/build_paper.py).
+\documentclass[10pt,twocolumn,letterpaper]{article}
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{mathptmx}
+\usepackage[scaled=.9]{helvet}
 \usepackage{courier}
 \input{glyphtounicode}
 \pdfgentounicode=1
-\usepackage[scaled=.9]{helvet}
-\usepackage[letterpaper,top=.8in,bottom=.82in,left=.72in,right=.72in,columnsep=.28in,headsep=.2in]{geometry}
-\usepackage{amsmath,amssymb,amsthm,graphicx,booktabs,tabularx,array}
-\usepackage{microtype,enumitem,xcolor,tikz,pgfplots,titlesec,fancyhdr}
-\usepackage{flushend}
-\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
+\usepackage[letterpaper,top=.78in,bottom=.80in,left=.70in,right=.70in,columnsep=.26in,headsep=.18in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,graphicx,booktabs,tabularx,array,multirow}
+\usepackage{microtype,enumitem,xcolor,tikz,pgfplots,titlesec,fancyhdr,stfloats}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,shapes.geometric}
+\usepgfplotslibrary{groupplots}
 \pgfplotsset{compat=1.18}
-\usepackage[font=small,labelfont=bf,skip=5pt]{caption}
+\usepackage[font=small,labelfont=bf,skip=4pt]{caption}
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage{xurl}\urlstyle{same}
 \definecolor{ink}{HTML}{17324D}
@@ -22,29 +24,53 @@
 \definecolor{violet}{HTML}{604A91}
 \definecolor{gold}{HTML}{B47B25}
 \definecolor{notred}{HTML}{B3261E}
+\definecolor{slate}{HTML}{52606D}
 \definecolor{pale}{HTML}{F2F6F8}
-\usepackage[colorlinks=true,allcolors=ink]{hyperref}
-\hypersetup{pdftitle={Intelligence Is Not Authority: Verified Policy Decisions and Revocable Local Agent Authority},pdfauthor={Jepson Taylor}}
-\titleformat{\section}{\large\bfseries\color{ink}\raggedright\hyphenpenalty=10000}{\thesection}{.55em}{}
-\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{.5em}{}
-\titlespacing*{\section}{0pt}{10pt plus 2pt minus 1pt}{4pt}
-\titlespacing*{\subsection}{0pt}{7pt plus 1pt minus 1pt}{3pt}
-\setlist{leftmargin=1.25em,itemsep=2pt,topsep=3pt,parsep=0pt}
-\setlength{\bibsep}{3pt}
-\setlength{\emergencystretch}{1em}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=teal,urlcolor=ink]{hyperref}
+\hypersetup{
+  pdftitle={Intelligence Is Not Authority: Verified Policy Decisions, Revocable Agent Authority, and Structural Bounds on Reach},
+  pdfauthor={Jepson Taylor}
+}
+\titleformat{\section}{\large\bfseries\color{ink}\raggedright\hyphenpenalty=10000}{\thesection}{.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries\raggedright\hyphenpenalty=10000}{\thesubsection}{.45em}{}
+\titlespacing*{\section}{0pt}{7.5pt plus 2pt minus 1pt}{3pt}
+\titlespacing*{\subsection}{0pt}{5pt plus 1.5pt minus 1pt}{2pt}
+\setlist{leftmargin=1.25em,itemsep=1.2pt,topsep=2pt,parsep=0pt}
+\setlength{\bibsep}{2pt}
+\setlength{\emergencystretch}{1.4em}
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\dbltopfraction}{0.92}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.82}
+\renewcommand{\dblfloatpagefraction}{0.82}
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\dbltextfloatsep}{8pt plus 2pt minus 2pt}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\footnotesize\color{ink}Intelligence Is {\color{notred}Not} Authority}
-\fancyhead[R]{\footnotesize Research manuscript \textperiodcentered\ 10 November 2026}
+\fancyhead[R]{\footnotesize\color{slate}Taylor \textperiodcentered\ 10 November 2026}
 \fancyfoot[C]{\small\thepage}
+\setlength{\headheight}{13.6pt}
 \renewcommand{\headrulewidth}{.3pt}
+\newtheorem{theorem}{Theorem}
 \newtheorem{proposition}{Proposition}
 \newtheorem{lemma}{Lemma}
-\newcommand{\Prb}{\mathbb P}
-\newcommand{\Exp}{\mathbb E}
-\newcommand{\I}{\mathcal I}
-\newcommand{\Hh}{\mathcal H}
-\newcommand{\A}{\mathcal A}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newcommand{\Prb}{\mathbb{P}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\Hh}{\mathcal{H}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\mathcal{B}}
 \newcommand{\para}[1]{\smallskip\noindent\textbf{#1}\enspace}
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \raggedbottom
