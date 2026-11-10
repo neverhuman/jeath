@@ -2,7 +2,7 @@
 """Bind one proposer process to one actor; expose submit/status, never control RPC.
 
 Provision approvals using trusted services first. This launcher owns both service
-channels; the child gets only pipes, an empty environment and kernel restrictions.
+channels; the child gets RPC pipes, a discarded stderr and kernel restrictions.
 """
 import argparse
 import json
@@ -51,6 +51,8 @@ def main():
         [str(BINARY), "confine-v2", *args.command],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
+        # Landlock cannot revoke access to an already-open parent descriptor.
+        stderr=subprocess.DEVNULL,
         text=True,
         close_fds=True,
         env={},
