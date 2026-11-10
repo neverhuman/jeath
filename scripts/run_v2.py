@@ -523,7 +523,8 @@ def fault_suite(root):
             rev = lab.broker.call(op="withdraw", issuer=1)
             assert rev["status"] == "admission_revoked" and rev["outstanding"] == 1, rev
             ack = lab.sink.call(op="fence", issuer=1, floor=rev["floor"])
-            assert ack["status"] == "fenced" and ack["cancelled"] == 1, ack
+            assert ack["status"] == "fenced" and ack["floor"] == rev["floor"], ack
+            assert lab.sink.call(op="status", id="delegated")["status"] == "cancelled"
             fin = lab.finish("delegated")
             assert fin["status"] == "cancelled", fin
             retry = lab.submit(p_del, actor="bob")
