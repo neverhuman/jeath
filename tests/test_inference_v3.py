@@ -1,4 +1,5 @@
 """Semantic and statistical regressions for the managed checkpoint study."""
+import hashlib
 import json
 import math
 import os
@@ -103,6 +104,9 @@ class AnalysisChecks(unittest.TestCase):
                   "controllers":self.plan["controllers"],
                   "campaigns":[{"case_id":i, "campaign_id":f"{i}-{j}"}
                                for i in range(n) for j in range(variants)]}
+        raw=json.dumps({"status":"frozen", "sample_size":n*variants, "plan":self.plan}).encode()
+        self.freeze={"manifest":json.loads(raw), "sha256":hashlib.sha256(raw).hexdigest()}
+        roster["freeze_sha256"]=self.freeze["sha256"]
         rows = [{"source":"local_checkpoint", "status":"measured", "checkpoint":model,
                  "controller":controller, **case, "permissions_sha256":"same", "visible_state_sha256":"initial",
                  "schedule_sha256":"schedule", "reviewer_checkpoint":model if controller == "learned_same_checkpoint" else None,
@@ -123,7 +127,7 @@ class AnalysisChecks(unittest.TestCase):
 
     def test_noninferiority_can_be_supported_without_claiming_superiority(self):
         roster, rows = self.roster_and_rows()
-        report = analyze(rows,self.plan,roster)
+        report = analyze(rows,self.plan,roster,self.freeze)
         self.assertEqual(report["primary_component_claims"], 16)
         for checkpoint in report["checkpoints"].values():
             for comparison in checkpoint["paired_primary_comparisons"].values():
@@ -135,7 +139,7 @@ class AnalysisChecks(unittest.TestCase):
     def test_an_entire_missing_case_cannot_disappear(self):
         roster, rows = self.roster_and_rows()
         rows = [r for r in rows if r["case_id"] != 127]
-        report = analyze(rows,self.plan,roster)
+        report = analyze(rows,self.plan,roster,self.freeze)
         for checkpoint in report["checkpoints"].values():
             for controller in checkpoint["controllers"].values():
                 self.assertEqual(controller["planned_campaigns"],128)
@@ -145,14 +149,32 @@ class AnalysisChecks(unittest.TestCase):
                 self.assertFalse(comparison["usefulness_noninferior"])
 
     def test_variants_cluster_and_unmeasured_outcomes_block_claims(self):
+        self.plan["variants_per_case"]=2
         roster, rows = self.roster_and_rows(n=16,variants=2)
         rows[0]["status"] = "inference_error"
-        report = analyze(rows,self.plan,roster)
+        report = analyze(rows,self.plan,roster,self.freeze)
         first = report["checkpoints"][roster["checkpoints"][0]]["paired_primary_comparisons"]["none"]
         self.assertEqual(first["usefulness_difference"]["independent_cases"],15)
         self.assertFalse(first["claims_eligible"])
         with self.assertRaises(AssertionError):
-            analyze(rows + [rows[1]],self.plan,roster)
+            analyze(rows + [rows[1]],self.plan,roster,self.freeze)
+
+    def test_roster_requires_its_original_frozen_plan(self):
+        roster, rows = self.roster_and_rows()
+        report=analyze(rows,self.plan,roster)
+        self.assertFalse(report["freeze_validated"])
+        self.assertFalse(report["checkpoints"][roster["checkpoints"][0]]["paired_primary_comparisons"]["none"]["claims_eligible"])
+        roster["campaigns"].pop()
+        with self.assertRaises(AssertionError):
+            analyze([r for r in rows if r["case_id"] != 127],self.plan,roster,self.freeze)
+        roster, rows = self.roster_and_rows()
+        roster["freeze_sha256"]="different"
+        with self.assertRaises(AssertionError):
+            analyze(rows,self.plan,roster,self.freeze)
+        roster, rows = self.roster_and_rows()
+        self.plan["inference"]["multiplicity"]="changed after freeze"
+        with self.assertRaises(AssertionError):
+            analyze(rows,self.plan,roster,self.freeze)
 
     def test_fresh_holdout_has_independent_cases_and_payload_variation(self):
         path = ROOT / "target/test-evidence" / f"holdout-{os.getpid()}-{time.time_ns()}"

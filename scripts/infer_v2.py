@@ -18,7 +18,7 @@ import time
 import urllib.request
 
 from launch_v2 import validate_message
-from campaign_analysis import analyze as analyze_campaigns
+from campaign_analysis import analyze as analyze_campaigns, load_freeze
 from model_v2 import holdout, sample_size
 from reference_v2 import charge, required, scoped
 from run_v2 import Lab, ROOT, effects, write
@@ -359,7 +359,8 @@ def main():
         write(args.output/"gpu-budget.json",{"wall_seconds_including_loading_and_development":time.monotonic()-start,"limit":14400,"one_server_at_a_time":True})
         if (args.output/"holdout.json").exists():
             records = [json.loads(line) for line in (args.output/"campaigns.jsonl").read_text().splitlines()] if (args.output/"campaigns.jsonl").exists() else []
-            write(args.output/"campaign-analysis.json",analyze_campaigns(records,plan,json.loads((args.output/"holdout.json").read_text())))
+            write(args.output/"campaign-analysis.json",analyze_campaigns(records,plan,json.loads((args.output/"holdout.json").read_text()),
+                  load_freeze(args.output/"freeze.json")))
 
 
 if __name__=="__main__":main()

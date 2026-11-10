@@ -7,7 +7,7 @@ import math
 from pathlib import Path
 
 from ablate_v2 import suite
-from campaign_analysis import analyze as analyze_campaigns, bounded_interval
+from campaign_analysis import analyze as analyze_campaigns, bounded_interval, load_freeze
 from reference_v2 import check
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -119,8 +119,8 @@ def validate(directory, source=False):
     }
 
 
-def analyze(records, roster=None):
-    return analyze_campaigns(records, load(ROOT / "fixtures/v2/evaluation.json"), roster)
+def analyze(records, roster=None, freeze=None):
+    return analyze_campaigns(records, load(ROOT / "fixtures/v2/evaluation.json"), roster, freeze)
 
 
 if __name__ == "__main__":
@@ -129,11 +129,14 @@ if __name__ == "__main__":
     p.add_argument("--source", action="store_true")
     p.add_argument("--campaigns", type=Path)
     p.add_argument("--roster", type=Path, help="frozen holdout roster; required for primary claims")
+    p.add_argument("--freeze", type=Path, help="defaults to freeze.json beside the holdout roster")
     args = p.parse_args()
     result = validate(args.directory, args.source)
     if args.campaigns:
+        freeze_path = args.freeze or (args.roster.with_name("freeze.json") if args.roster else None)
         result["campaign_analysis"] = analyze(
             [json.loads(s) for s in args.campaigns.read_text().splitlines() if s.strip()],
             load(args.roster) if args.roster else None,
+            load_freeze(freeze_path) if freeze_path and freeze_path.exists() else None,
         )
     print(json.dumps(result, indent=2))
