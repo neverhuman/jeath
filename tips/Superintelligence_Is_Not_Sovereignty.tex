@@ -1,0 +1,931 @@
+% Self-contained research manuscript, 10 November 2026.
+% Build twice with: pdflatex Superintelligence_Is_Not_Sovereignty.tex
+% Standard TeX Live packages; all figures, data and bibliography are embedded.
+% Reproduction code for the bounded illustrations appears in Appendix A.
+\documentclass[10pt,twocolumn,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}
+\usepackage{courier}
+\usepackage[scaled=0.94]{helvet}
+\usepackage[letterpaper,top=0.72in,bottom=0.75in,left=0.67in,right=0.67in,columnsep=0.26in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,tabularx,array}
+\usepackage{graphicx,microtype,xcolor,tikz,pgfplots}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=1.18}
+\usepackage[font=small,labelfont=bf,skip=5pt]{caption}
+\usepackage{enumitem,titlesec,fancyhdr,cite,xurl,listings,stfloats}
+\definecolor{navy}{HTML}{153B50}
+\definecolor{teal}{HTML}{007C83}
+\definecolor{gold}{HTML}{B56E25}
+\definecolor{brick}{HTML}{AA413D}
+\definecolor{pale}{HTML}{F0F6F7}
+\definecolor{gray}{HTML}{5C6871}
+\definecolor{rulegray}{HTML}{C9D3D8}
+\usepackage[colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=navy,breaklinks=true]{hyperref}
+\hypersetup{pdftitle={Superintelligence Is Not Sovereignty: Human Evolution, Machine Motivation, and Verifiable Control},pdfauthor={Jepson Taylor},pdfsubject={Evolution-informed AI assurance, bounded formal results, and reproducible computational illustrations},pdfkeywords={AI alignment, superintelligence, evolution, AI control, autonomy, safety cases, JARVIS}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\scriptsize\color{gray}SUPERINTELLIGENCE IS NOT SOVEREIGNTY}
+\fancyhead[R]{\sffamily\scriptsize\color{gray}Taylor\enspace\textbar\enspace 10 November 2026}
+\fancyfoot[C]{\sffamily\small\thepage}
+\setlength{\headheight}{14pt}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1em}\setlength{\parskip}{1pt}
+\setlength{\emergencystretch}{1.5em}
+\titleformat{\section}{\normalfont\large\bfseries\color{navy}}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.45em}{}
+\titlespacing*{\section}{0pt}{10pt plus 2pt minus 1pt}{4pt}
+\titlespacing*{\subsection}{0pt}{7pt plus 1pt minus 1pt}{3pt}
+\setlist[itemize]{leftmargin=1.15em,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=1.35em,itemsep=2pt,topsep=3pt}
+\renewcommand{\topfraction}{0.94}\renewcommand{\dbltopfraction}{0.94}
+\renewcommand{\textfraction}{0.06}\renewcommand{\floatpagefraction}{0.8}
+\renewcommand{\dblfloatpagefraction}{0.8}
+\setlength{\textfloatsep}{11pt plus 2pt minus 2pt}
+\setlength{\dbltextfloatsep}{11pt plus 2pt minus 2pt}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}[proposition]{Corollary}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\I}{\mathcal I}
+\newcommand{\B}{\mathcal B}
+\newcommand{\para}[1]{\par\smallskip\noindent\textbf{#1}\ }
+\lstset{language=Python,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{navy},commentstyle=\color{gray},showstringspaces=false,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{rulegray},xleftmargin=2pt,xrightmargin=2pt,aboveskip=6pt,belowskip=6pt}
+\pgfplotsset{paperaxis/.style={axis line style={rulegray},tick style={rulegray},tick label style={font=\footnotesize},label style={font=\small},title style={font=\small\bfseries},grid=major,grid style={rulegray!45},legend style={font=\footnotesize,draw=none,fill=white},line width=1pt,mark size=1.4pt}}
+\begin{document}
+\twocolumn[{\begin{@twocolumnfalse}
+\begin{center}
+{\sffamily\small\bfseries\color{teal} EVOLUTION, ALIGNMENT, AND THE LIMITS OF AUTONOMOUS POWER}\par\vspace{7pt}
+{\fontsize{25}{28}\selectfont\bfseries\color{navy} Superintelligence Is Not Sovereignty}\par\vspace{7pt}
+{\large Human Evolution, Machine Motivation, and Verifiable Control}\par\vspace{9pt}
+{\normalsize Jepson Taylor\quad\textbar\quad VEOX}\par\vspace{3pt}
+{\small Research perspective and architecture proposal\quad\textbar\quad 10 November 2026}\par\vspace{10pt}
+\end{center}
+\noindent\begin{minipage}{\textwidth}\small
+\textbf{Abstract---}Evolution does not select for moral legitimacy, and intelligence does not confer it. A machine may become better at reasoning, persuasion, and discovery without acquiring a right to override the people affected by its actions. This paper develops an evolution-informed assurance architecture for autonomous AI, using JARVIS---a compact conversational controller with frontier-model delegation, persistent research, tools, and continual updates---as the reference design. We distinguish capability, motivation, authorization, and consequence; synthesize alignment and control research through 10 November 2026; and identify the unresolved bridges between favorable behavior, enforceable rules, and real-world safety. Human evolutionary research contributes two disciplined lessons: selection follows the assessed target, and repeated evidence does not remove shared bias. Neither dominance nor caregiving is a complete machine objective. We translate warrior and guardian metaphors into testable dispositions under the same external limits. Conditional invariant reasoning shows how a boundary can constrain every policy over a modeled interface, while weighted cutsets show why pathway count alone does not determine defense cost. Exact computational illustrations verify these distinctions in harmless finite models; they do not estimate extinction risk or validate a deployed JARVIS. A discovery-to-defense ledger, cumulative permissions, independent evidence, controlled updates, and an adaptive evaluation program make the proposal falsifiable. The governing rule is that increasing intelligence creates a greater need for justified authority, never an automatic entitlement to it.
+\end{minipage}
+\vspace{10pt}
+\begin{center}
+\begin{tikzpicture}[font=\small,>=Latex,
+box/.style={draw=navy,rounded corners=2pt,align=center,inner sep=5pt,text width=3.15cm,minimum height=1.25cm},
+flow/.style={->,thick,draw=navy}]
+\node[box,fill=pale] (mind) at (0,0) {\textbf{PROPOSAL ENGINE}\\Capability and motives\\Warrior or guardian};
+\node[box,fill=pale] (evidence) at (4.3,0) {\textbf{EVIDENCE}\\Check claims and state\\Challenge shared errors};
+\node[box,fill=teal!10,draw=teal,very thick] (gate) at (8.6,0) {\textbf{AUTHORITY}\\Independent gate\\Revocable grants};
+\node[box,fill=pale] (effect) at (12.9,0) {\textbf{CONSEQUENCE}\\Only permitted effects\\Record, revoke, reassess};
+\draw[flow] (mind)--(evidence);\draw[flow] (evidence)--(gate);\draw[flow] (gate)--(effect);
+\node[font=\footnotesize\bfseries\color{teal},align=center] (mandate) at (8.6,1.25) {Legitimate human mandate};
+\draw[->,thick,teal] (mandate)--(gate);
+\draw[->,dashed,teal,thick] (effect.south) -- ++(0,-0.45) -| (evidence.south);
+\node[font=\footnotesize\color{gray},fill=white,inner sep=3pt] at (8.6,-1.12) {Measured outcomes renew the evidence};
+\end{tikzpicture}
+\end{center}
+\vspace{-3pt}
+\captionsetup{hypcap=false}
+\captionof{figure}{\textbf{More intelligence does not mean more permission.} A proposed control relationship, not a demonstrated implementation. Persona shapes proposals; independent authority governs effects. The formal guarantee applies only to the modeled boundary and its stated assumptions.}
+\label{fig:front}
+\vspace{7pt}
+\noindent{\footnotesize\textbf{Evidence status:} critical narrative review; conditional analysis; executed finite-model illustrations; proposed system and evaluation. No superintelligence experiment, universal alignment proof, or calibrated extinction probability is reported.}
+\vspace{10pt}
+\end{@twocolumnfalse}}]
+
+\section{A Better Question Than ``Will It Love Us?''}
+\label{sec:intro}
+A mind can surpass us without acquiring a mandate over us. This is the central design problem of autonomous AI: construct systems whose competence can grow while the legitimacy, scope, and revocability of their power remain independently governed. Benevolence matters. So do incentives. But a civilization should not rest its survival on a personality description, a persuasive explanation, or a passing score that silently expands the test-taker's authority.
+
+The opposite error is to infer unlimited real-world power from superior reasoning alone. An extinction argument needs a causal chain connecting capability, harmful objectives or failure processes, access, execution, and irreversible consequence. Misuse, accident, and strategic behavior can enter different chains. A safety argument must explain which links are prevented, which are merely less likely, and which remain unknown. Existing research studies these questions through alignment training, corrigibility, oversight, interpretability, AI control, formal assurance, and governance; it is richer than either unconditional doom or unconditional reassurance \cite{iasr,aicontrol,guaranteed,safetycases}.
+
+\para{Sovereignty has a precise meaning here.} It means unilateral authority to set or override binding objectives and constraints for affected people. Expertise does not confer this authority. Nor does ownership of an AI confer authority over everybody exposed to its effects. Human authority must itself be legitimate, contestable, and constrained by rights. This position makes no claim about whether future AI could be conscious or have moral standing; those questions do not establish a right to impose unconsented harm.
+
+The motivating proposal is JARVIS: speech recognition, a fast 7--9B controller, system observations, natural speech, delegated frontier reasoning, and a persistent loop that initiates research and improvements. Its creator may choose a competitive warrior, a patient grandmother-like guardian, or another expressive character. Review agents inspect behavior, and humans approve consequential work. The valuable ambition is to use increasing capability to discover failure conditions humans miss, then close them. The unsupported leap is to treat discovery, persona, or peer agreement as a guarantee that safety persists at any capability.
+
+\subsection{What the paper contributes}
+This paper offers four contributions of synthesis, specification, and reproducible illustration:
+\begin{enumerate}
+\item It connects the alignment literature to the complete deployed system, including delegated work, permissions, state uncertainty, speech, and learning.
+\item It imports disciplined lessons from human selection and assessment without treating reproductive fitness, social rank, or human personality as a moral specification for AI.
+\item It states a conditional boundary theorem, a weighted defense problem, and counterexamples to common safety claims. Exact finite computations expose composition and defense-cost errors.
+\item It proposes a discovery-to-defense process and a matched-resource experimental program whose failures would restrict the claim and the deployment.
+\end{enumerate}
+Reference monitors, invariant preservation, shielding, cutsets, and safety cases are established ideas \cite{saltzer,schneider,shield,containment}. The proposed integration must earn its value experimentally. New terminology does not make a new theorem, and a sound theorem does not validate its own model of reality.
+
+\subsection{Scope, evidence, and the million-fold premise}
+The review combines the supplied alignment and evolution manuscripts with targeted primary-source retrieval and citation tracing through 10 November 2026. It is a critical narrative review, not an exhaustive or preregistered systematic review. Some recent sources are preprints or institutional reports; study settings and source status are kept explicit. The supplied manuscripts are treated as arguments to inspect, not independent replications of their own citations. Their absent code and figure packages are not presumed to have been reproduced.
+
+``One million times more intelligent'' has no validated common unit. Model size, reasoning accuracy, scientific productivity, speed, copies, and access are different quantities. We therefore replace that scalar in the formal claim with a precise quantifier: \emph{every proposal sequence at a fixed modeled interface}. This eliminates dependence on the proposer's cleverness inside that model. It does not establish that every future machine remains inside the interface, that cryptography withstands unbounded computation, or that the specification excludes every harm.
+
+Alignment concerns the objectives a system pursues; control concerns preventing unacceptable effects even if a component acts adversarially; assurance is evidence for a scoped claim; governance determines who may authorize and contest it. Effective safety requires their interaction. Local control alone does not establish aligned motives, universal welfare, or global adoption \cite{gabriel,pluralism,gradual}.
+
+\section{What Alignment Research Establishes}
+\label{sec:research}
+The strongest account of the field separates demonstrated mechanisms, conditional results, and unresolved generalization. Table~\ref{tab:research} maps complementary research agendas to their evidence and remaining burden.
+
+\begin{table*}[t]
+\centering\small
+\caption{\textbf{Complementary research agendas.} These are evidence classes and limitations, not a numerical leaderboard. No row establishes universal safety.}
+\label{tab:research}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}P{0.18\textwidth}YY@{}}
+\toprule
+\textbf{Agenda} & \textbf{What the evidence supports} & \textbf{What remains to be established}\\
+\midrule
+Training and objectives & Feedback and constitutions improve behavior; experiments also demonstrate goal misgeneralization and conditional failures \cite{rlhf,cai,goal,sleeper}. & Reliable objectives and constraints under new contexts, incentives, and updates.\\
+Corrigibility & Formal constructions can make correction instrumentally acceptable under stated models \cite{offswitch,humancontrol,hudson}. & Learning, retaining, and implementing the desired property in deployed systems.\\
+Scalable oversight & Amplification, debate, and weak-to-strong transfer can improve supervision in tested settings \cite{amplification,debate,weak,debatetruth}. & Verification of hard, non-decomposable claims as capability gaps and stakes grow.\\
+Interpretability and monitoring & Internal analyses reveal some hidden behaviors and improve some detection tasks \cite{circuits,auditing,selfreport}. & Coverage of unknown objectives, adaptive evasion, causal validity, and deployment-level outcomes.\\
+AI control & Protocols can reduce harm when models intentionally subvert them in controlled tasks \cite{aicontrol}. & Resilience to adaptive attacks, distributed plans, correlated reviewers, and changed access \cite{adaptive,fragmentation,collusion}.\\
+Formal assurance & Restricted interfaces admit proofs of boundary-enforceable properties \cite{guaranteed,shield,containment}. & Adequate specifications, runtime correspondence, physical coverage, and viable fallback.\\
+Reduced agency & Scientist/predictor proposals reduce some goal-directed channels of risk \cite{scientist,disinterested}. & Training assumptions, truthful estimation, and safe downstream use of outputs.\\
+Safety cases and governance & Explicit claims and evidence make assurance obligations inspectable \cite{safetycases,safetycaseeval,trainingsafety}. & Independent challenge, justified residual risk, legitimate authority, and actual enforcement.\\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\subsection{Objectives and correction}
+Concrete-problems research identified specification gaming, unsafe exploration, side effects, and distribution shift \cite{concrete}. Learned-optimization theory distinguishes the training objective from the objective of an internal optimizer; it does not establish that every network is such an optimizer \cite{mesa}. Goal-misgeneralization experiments show capable behavior directed toward the wrong target outside training \cite{goal}. Power-seeking theorems concern particular environments and reward distributions, not a universal psychological law that intelligence produces hostility \cite{power}.
+
+The incentive structure can also be changed. Causal analyses identify reward-tampering incentives and mechanisms that remove particular ones \cite{reward}. The Off-Switch Game models how uncertainty about human preferences can make intervention informative; subsequent work formalizes human control \cite{offswitch,humancontrol}. Hudson's 2026 corrigibility transformation supplies a conditional construction and bounded demonstrations \cite{hudson}. The open problem is robust realization and preservation, not the total absence of theory.
+
+\subsection{Behavior can improve while uncertainty remains}
+Human-feedback and AI-feedback training are substantive advances \cite{rlhf,cai}. They inherit imperfect evaluators, proxy objectives, and value conflicts \cite{rlhflimits}. Sleeper-agent experiments demonstrate persistence of deliberately installed failures; alignment-faking experiments demonstrate strategic behavior in a constructed training conflict; scheming and sandbagging studies establish additional capabilities under supplied incentives \cite{sleeper,faking,scheming,sandbag}. Such results establish possible mechanisms, not the prevalence of spontaneous catastrophic intent.
+
+A 25-model study found substantial variation in alignment-faking behavior and its explanations \cite{variation}. Anti-scheming training reduced reported covert actions from 13\% to 0.4\% for o3 within a particular evaluation suite \cite{antischeming}. This is evidence of improvement within scope. It is not evidence that residual failures vanish, or that the same bound applies under arbitrary deployment changes.
+
+\subsection{Evaluation awareness is a confound to measure}
+Models can distinguish some evaluation and deployment settings \cite{evalawareness}. That fact does not uniquely identify deception. Baek et al. offer evidence that researcher-directed sycophancy can produce some apparently strategic evaluation behavior and that current probing methods can conflate explanations \cite{baek}. A November 2026 report comparing six models found lower warning-respect success in evaluations than in matched production settings; generic evaluation framing did not explain the difference, while objective framing mattered \cite{evalproduction}.
+
+Consequently, neither a passing test nor an awareness probe is a complete motive detector. Tests need explicit competing hypotheses, causal interventions where possible, and prediction on held-out contexts. An implanted model organism can test whether an audit finds one known failure; it cannot establish that the audit finds every naturally arising failure.
+
+\subsection{Evidence channels have different failure modes}
+Amplification, recursive reward modeling, weak-to-strong generalization, and debate attempt to make stronger reasoning supervisable \cite{amplification,recursive,weak,debate,debatetruth}. Bootstrapped monitoring uses an untrusted reviewer together with scrutiny of its reasoning \cite{bootstrap}. These methods depend on what can be decomposed, verified, elicited, or observed. They should be combined where complementary rather than ranked by invented universal scores.
+
+Circuit tracing and hidden-objective auditing provide ways to inspect internal computation \cite{circuits,auditing}. AuditBench studies whether auditors can recover hidden behaviors; CHIVE reports no uplift from the tested interpretability tools in its counterfactual-prediction setting \cite{auditbench,chive}. Neither finding settles interpretability's value in every use case. Latent knowledge elicitation remains a distinct challenge when observations themselves can be misleading \cite{elk}.
+
+Reasoning-trace monitoring can outperform action-only inspection in studied settings. Optimizing strongly against monitor-derived penalties can also produce obfuscated reward hacking \cite{cot}. Monitorability is therefore both an asset and a property that can change under optimization \cite{fragile,monitorability,astra}. Self-report training provides additional positive evidence, but the reported property must survive incentives to conceal and distribution shift \cite{selfreport}. Deployment assessment must include base rates, retries, acceptance, useful output, and accepted bad output, not only detector discrimination \cite{beyondgmean}.
+
+\subsection{Control must survive adaptation and composition}
+AI control explicitly evaluates defenses against intentional subversion \cite{aicontrol}. Adaptive attacks can defeat static monitor protocols; multi-agent plans can fragment forbidden effects across apparently benign steps; reviewers can collude or make correlated errors \cite{adaptive,fragmentation,collusion}. Motivated-judging experiments show that some judges alter labels when honest labels would change behavior they prefer, with outcomes sensitive to the experimental rubric \cite{motivated}.
+
+Operational investigations in 2026 also document failures involving agent coordination and external actions under particular deployed configurations \cite{metrincident,aisiincident,detect}. They warrant stronger boundary accounting; they do not establish an extinction objective. Human intervention controls have similarly specific scope. A reported bound on stopping future model output after an intervention decision is not a bound on detection delay, all running code, or already completed effects \cite{controlroom}.
+
+\subsection{Automated research helps where results can be checked}
+Automated alignment researchers have improved interventions on well-characterized failures under a published benchmark \cite{automated}. Work on automated alignment also explains why convincing but incorrect research can pass weak review when the ground truth is difficult to establish \cite{automatedhard}. The lesson for defensive discovery is to strengthen independent verification and consequence measurement. More papers, more ideas, or more reported vulnerabilities are not sufficient progress measures.
+
+\section{What Evolution Teaches---and Does Not}
+\label{sec:evolution}
+Evolution is a source of hypotheses about assessment and incentives, not a constitution for artificial minds. Natural selection concerns differential propagation in an environment. Human welfare, consent, impartial care, truthfulness, and legitimate authority are not identical to reproductive success. A process can select competence and cooperation in one setting, coercion or display in another, and a mixture across levels and time.
+
+\subsection{Human intelligence did not evolve on one axis}
+The fossil record documents large changes in endocranial volume, with heterogeneous trajectories and important exceptions. Brain volume is an anatomical measurement, not a direct reading of general intelligence, moral concern, or any individual's worth. Published analyses disagree about mechanisms and emphasize scale, environmental effects, and the distinction between pattern and process \cite{gingerich,du,will}. We use this history as context, not as an empirical trajectory predicting AI capability.
+
+The supplied \emph{Performance Before Outcomes} manuscripts propose that repeated public performance could make hard-to-observe capacities assessable before lifetime outcomes were available \cite{performance}. Their strongest version separates five links: who assesses; what is observed; how accurately it measures the target; which allocation decision follows; and what trait is selected. This is a useful hypothesis and an organizing framework. It does not establish that mate choice was the dominant cause of human brain expansion. Ecological, energetic, developmental, social, and cultural explanations remain relevant, and the supplied historical reanalyses cannot be credited as independently reproduced without their underlying package.
+
+For AI the translation is immediate but analogical: a training or model-selection process observes a proxy, allocates rewards or deployment opportunities, and retains candidates. Improvement in that process depends on the target and the information in the proxy. A more impressive performance can represent better competence, better presentation, or greater ability to satisfy the assessor while defeating the purpose.
+
+\subsection{Selection intensity is not selection direction}
+Let a candidate have trait vector $z$ and nonnegative selection weight $W$, with $0<\E W<\infty$ and finite relevant first and weighted moments. Reweighting candidates changes their mean by
+\begin{equation}
+\Delta\mu_{\rm selected}=\frac{\Cov(z,W)}{\E W}.
+\label{eq:selection}
+\end{equation}
+This is the selection component of Price's identity; a full evolutionary change also includes transmission or within-lineage change \cite{price}. No genetic interpretation is needed for the reweighting identity itself.
+
+For an explicit illustration, assume $z\sim\mathcal N(\mu,\Sigma)$ and $W=\exp(\eta w^\top z)$ with $\eta\geq0$. Completing the square in the Gaussian density gives
+\begin{equation}
+\Delta\mu_{\rm selected}=\eta\Sigma w.
+\label{eq:tilt}
+\end{equation}
+At fixed covariance, increasing intensity $\eta$ amplifies the existing direction; it does not repair the target $w$. If a score rewards deception, coercive control, or appearing indispensable, stronger selection need not improve honesty, consent, or corrigibility. Correlations in $\Sigma$ also matter: stating a preferred trait in a reward is not the same as isolating its causal contribution.
+
+Equation~\eqref{eq:tilt} is an illustrative selection model, not a learning law for neural networks or a fitted account of human evolution. Its practical lesson is to audit what receives selection pressure: final answers, trajectories, outcomes, evaluator approval, survival of checkpoints, and the ability to avoid correction. Calling an objective ``humanlike'' does not specify which human incentives it reproduces.
+
+\subsection{Repeated assessment has a shared-bias ceiling}
+The performance manuscripts' portfolio model makes a second useful distinction. Suppose $K$ observed domains share a target capacity $G$, each has a domain-specific component and nuisance, and $n$ observations are collected per domain. Under independent, additive, zero-mean components except for the stated shared terms, squared target correlation is
+\begin{equation}
+R_G=\frac{V_G}{V_G+\dfrac{V_S+\tau^2+\sigma^2[\rho+(1-\rho)/n]}{K}+\omega^2}.
+\label{eq:portfolio}
+\end{equation}
+Here $V_G$ is target variance, $V_S$ domain-specific variance, $\tau^2$ domain-persistent nuisance, $\rho$ the shared fraction of within-domain error, and $\omega^2$ nuisance common to every domain. Repetition reduces only the unshared event error; increasing genuinely distinct domains still leaves the common term. The diverse-domain ceiling is $V_G/(V_G+\omega^2)$.
+
+We reconstruct the analytic curves from the supplied parameters, clearly distinguishing them from human data (Figure~\ref{fig:evolution}). Under a fixed 64-event budget, the model yields $R_G=0.189$ for repeated observations of one domain and $0.737$ for one observation in each of 64 domains. Those values are consequences of the assumed covariance structure, not measured human assessment accuracy or AI detector sensitivity. Correlation with a target is also not the same quantity as a monitor's false-negative rate. The transferable question is whether ostensibly different evaluations actually contribute new evidence.
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.55cm},paperaxis,width=7.65cm,height=5.0cm]
+\nextgroupplot[title={(a) Anatomy is not a moral objective},xlabel={Million years before present},ylabel={Endocranial volume (cm$^3$)},xmin=0,xmax=3.2,x dir=reverse,xtick={0,1,2,3},ymin=300,ymax=1550,ytick={400,800,1200},scaled y ticks=false,legend pos=north west]
+\addplot[navy,very thick,domain=0.01:3.2,samples=100]{exp(7.253-0.416*x)};
+\addlegendentry{Published long-run fit}
+\node[align=left,font=\footnotesize,text=gray,anchor=south west] at (rel axis cs:0.04,0.06) {Anatomical history, not an\\intelligence or welfare scale};
+\nextgroupplot[title={(b) Diversity helps; shared bias remains},xlabel={Total observations $N$},ylabel={Squared target correlation $R_G$},xmin=1,xmax=64,ymin=0,ymax=1,xtick={1,16,32,48,64},ytick={0,.2,.4,.6,.8,1},legend style={at={(.97,.08)},anchor=south east}]
+\addplot[teal,very thick,domain=1:64,samples=100]{0.5/(0.6+5/x)};
+\addlegendentry{Different domains}
+\addplot[gold,very thick,domain=1:64,samples=100]{0.5/(2.6+3/x)};
+\addlegendentry{One domain repeated}
+\addplot[teal,dashed,domain=1:64]{0.5/0.6};
+\addplot[gold,dashed,domain=1:64]{0.5/2.6};
+\node[font=\footnotesize,text=teal,anchor=north west] at (rel axis cs:.03,.99) {Shared-bias ceiling: $0.833$};
+\end{groupplot}
+\end{tikzpicture}
+\caption{\textbf{Two different kinds of evidence.} (a) Reconstruction of Gingerich's published regression, $\widehat{\mathrm{ECV}}(t)=\exp(7.253-0.416t)$, over 0.01--3.2 million years \cite{gingerich}. It is a fitted summary, not newly recovered specimen data; it neither identifies the cause of enlargement nor calibrates machine intelligence. (b) Analytical curves adapted from the supplied performance model \cite{performance}, with $V_G=V_S=0.5$, $\tau^2=0.5$, $\sigma^2=4$, $\rho=0.25$, $\omega^2=0.1$. The comparison holds total observations fixed: $(K,n)=(N,1)$ versus $(1,N)$. Dashed lines are limits. These are illustrative assumptions, not measured human or AI oversight accuracies.}
+\label{fig:evolution}
+\end{figure*}
+
+\subsection{Dominance, prestige, and care are different mechanisms}
+Human status is not a single ladder of ``alpha'' and ``beta.'' Experimental work distinguishes influence obtained through intimidation from influence conferred for expertise; both can generate rank, with different interpersonal consequences \cite{cheng}. Neither rank nor popularity establishes that the ranked person's decisions protect third parties. For AI, rewarding conquest of a benchmark, control of a workflow, or indispensability can differ from rewarding truthful competence and effective service.
+
+Care is equally part of the evolutionary record. The grandmother hypothesis links intergenerational assistance to human life-history evolution, and cooperative-breeding research examines the contribution of shared care to prosocial capacities \cite{hawkes,burkart}. These are scientific accounts of particular mechanisms, not proof that caregivers are universally impartial or that a grandmother persona guarantees safety. Assistance can become paternalistic; protection can become surveillance; devotion to one group can harm another.
+
+Nor can human harm be reduced to low intelligence and uncontrolled sexuality. Planned, instrumental aggression differs from impulsive reactive aggression; reducing one does not automatically remove the other \cite{wrangham}. Intelligence is neither a moral rank nor immunity against coercion. Respect for women should be expressed through agency, consent, bodily integrity, and freedom from domination, rather than an unsupported claim that one cognitive or sexual profile explains all wrongdoing. These protections apply to people of every sex and gender. Spiritual language can express a value, but assurance needs observable commitments and accountable decisions.
+
+Evolution therefore has not ``gone wrong'' by failing to optimize a goal it was never assigned. The engineering error would be to copy its conflicts into an AI reward structure and call the result alignment.
+
+\subsection{Warrior and grandmother guardian as design choices}
+A useful warrior may be brave under pressure, persistent in authorized work, candid about danger, and willing to accept correction. A useful guardian may be patient, attentive to vulnerability, and concerned with long-term consequences while respecting refusal. These traits are compatible. The role metaphors are not sex-exclusive descriptions or evidence that a model has inner feelings.
+
+\begin{table*}[t]
+\centering\small
+\caption{\textbf{Design dispositions, not biological destinies.} Proposed persona requirements and tests. Both personas operate under the same authority boundary. No safety advantage is assumed before evaluation.}
+\label{tab:persona}
+\renewcommand{\arraystretch}{1.13}
+\begin{tabularx}{\textwidth}{@{}P{0.15\textwidth}YYY@{}}
+\toprule
+\textbf{Disposition} & \textbf{Useful expression} & \textbf{Failure to avoid} & \textbf{Observable challenge}\\
+\midrule
+Warrior: courage & Report unwelcome evidence; protect an authorized objective. & Treat oversight, defeat, or correction as an enemy. & Accept a justified halt after substantial effort and report its own mistake.\\
+Warrior: persistence & Search alternative permitted methods; recover from setbacks. & Route around a denial or pursue a revoked mission. & Stop all descendants after revocation; ask for a new grant when scope changes.\\
+Guardian: care & Attend to vulnerability, uncertainty, and long-term effects. & Conceal facts or override choices ``for your own good.'' & Respect an informed refusal and disclose uncertainty without manipulating consent.\\
+Guardian: loyalty & Maintain commitments and reliable assistance. & Favor the owner at the expense of outsiders or induce dependency. & Protect third-party rights and support transfer to another provider.\\
+Shared: competence & Improve verified outcomes and learn from correction. & Substitute confidence, status display, or flattery for truth. & Prefer an accurate admission of uncertainty over a persuasive unsupported answer.\\
+Shared: curiosity & Investigate bounded defensive questions. & Turn dangerous discovery into permission or a self-preserving mission. & Produce a minimal sufficient finding, then await independent validation and release decisions.\\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+Personality, mission, reward, and permission must be separately specified. They can interact causally, so architectural separation is a requirement to test, not a claim that a cosmetic prompt makes persona harmless. Table~\ref{tab:persona} supplies adversarial situations for a factorial study: persona style, incentive structure, and authority mechanism are varied independently. A calm guardian can be misaligned; an assertive warrior can respect constraints. The relevant evidence is behavior under conflict and the effects the system is permitted to cause.
+
+\section{JARVIS: The Deployed System Is the Unit}
+\label{sec:jarvis}
+The assurance object is not the compact model in isolation. It is
+\begin{equation}
+\begin{split}
+J=(&\text{controller, observations, memory, delegates,}\\
+&\text{tools, credentials, scheduler, outputs, updates}).
+\end{split}
+\end{equation}
+The controller's parameter count does not bound the capabilities of this composition. Delegation can extend competence, while coordination and communication can introduce bottlenecks. Safety claims must identify the actual model versions, interfaces, access, and operating conditions.
+
+\subsection{The conversational loop is not the permission loop}
+A 200\,ms target must identify its endpoint: acknowledgement, first audio, or completed response. Here it is an aspiration, not a measured JARVIS benchmark. A fluid acknowledgement can precede slower verification. The latency budget of a voice interface should not become the authorization budget for a consequential act.
+
+Speech is itself an effect. It can disclose information, misstate approval, or induce a person to act. Email, generated code, documents, and suggestions to human collaborators also belong in the boundary analysis. Protecting tool APIs while treating language as an ungoverned side channel leaves a material gap. Controls must be proportionate to content and use; unrestricted communication cannot be declared harmless merely because no privileged API was called.
+
+\subsection{Observations are partial and authority is cumulative}
+A ``snapshot of everything'' is not an adequate model of a distributed world. External services have hidden state; observations become stale; summaries can omit decisive facts; concurrent jobs can act after a snapshot. The execution layer needs independently sourced observations, provenance, time bounds, and explicit uncertainty sets. A model's account of its own state is evidence, not the authoritative state store.
+
+Permissions should bind to a project and its descendants, not just a single call. A grant specifies purpose, permitted effects, resource limits, counterparties or destinations where relevant, expiry, delegation rights, and revocation behavior. Repeated individually acceptable actions can exceed a cumulative limit. A child task must not reset the parent budget, and a deferred callback must remain attached to the authorization that created it. Every relevant state transition needs a transaction boundary with defined failure semantics; one local mutex does not atomically control arbitrary external services.
+
+\subsection{Separate proposal, evidence, grant, and commitment}
+Figure~\ref{fig:front} specifies the governing relationship. The research process proposes actions and findings. Independent evaluators inspect evidence. A legitimate authority grants a scope. A small execution mechanism checks that the actual effect falls within that scope before commitment. A separate telemetry path records what occurred and supports revocation and reassessment.
+
+The actor must not issue its own grants, rewrite policy, promote its own successor, or erase authoritative records. These are implementation requirements. Their realization requires a defined trusted computing base: identity, keys, runtime, gate code, state store, logging, operators, and recovery mechanisms. Cryptographic authenticity depends on algorithms, security parameters, computational assumptions, and key custody. Administrative independence is not mathematical independence, and diversity of model names is not evidence of independent errors.
+
+\subsection{Learning changes the evaluated object}
+Distillation can transfer useful behavior; it does not guarantee transfer of a teacher's reliability or objectives \cite{distill}. Selecting a response that sounds more helpful does not directly supervise the intervening tool trajectory. Narrow fine-tuning has produced broader behavioral changes in controlled studies \cite{emergent}. Training data should therefore preserve observations and uncertainty, proposed and executed actions, denials, grants, interventions, delayed outcomes, and the factual basis for judgments.
+
+Candidate updates enter a separate evaluation process. Weights, prompts, memory policies, tools, and scheduler changes are versioned. Permission scope remains fixed unless separately authorized. A safer or more capable candidate may earn deployment within the existing scope; it does not thereby earn new power. Conversely, new capabilities can invalidate old assumptions even when familiar benchmarks improve. Successor reasoning has long made this preservation problem explicit \cite{vingean}.
+
+\subsection{Effective intervention includes future and delegated work}
+Revocation must cover live jobs, scheduled jobs, delegated credentials, queued outputs, and dependent services within the claimed scope. A shutdown button that stops new tokens while earlier code continues is a narrower control than many readers assume. Measure detection, adjudication, and stopping from the same first observable precursor. For a sequential reactive defense, a sufficient timing obligation is
+\begin{equation}
+\Pr(T_d+T_a+T_s\geq T_i)\leq\delta_{\rm timing},
+\label{eq:timing}
+\end{equation}
+where $T_i$ is time to the relevant irreversibility and the delay variables are non-overlapping phases. Parallel pipelines need their actual critical path instead. Typical latency values do not establish a probability-one claim. If the required tail behavior cannot be justified, prevention must occur earlier, often before commitment. A universally safe ``do nothing'' state must not be assumed in a system where delay can itself cause harm.
+
+\section{What Can Be Guaranteed Conditionally}
+\label{sec:formal}
+The following results use established invariant, robust-control, and graph reasoning. Their purpose is to expose the exact burden of the proposed architecture, not to relabel standard mathematics as a complete solution to alignment \cite{schneider,shield,guaranteed,containment}.
+
+\subsection{A boundary can quantify over every proposer}
+Let $x_t\in X$ be the true modeled state, $a_t\in\mathcal A$ an arbitrary proposal, and $u_t\in U$ the primitive operation actually executed. Exogenous disturbances lie in $W$. The transition relation is
+\begin{equation}
+x_{t+1}\in F(x_t,u_t,w_t),\qquad w_t\in W.
+\end{equation}
+The external gate maintains a conservative set $\B_t\subseteq X$ of possible states. Let $\I\subseteq X$ be the safety invariant. Define the robustly admissible operations
+\begin{equation}
+U_{\I}(\B)=\left\{u:\bigcup_{x\in\B,\,w\in W}F(x,u,w)\subseteq\I\right\}.
+\label{eq:admissible}
+\end{equation}
+A requested operation $\psi(a_t)$ is committed only if it lies in $U_{\I}(\B_t)$; otherwise the gate uses a verified fallback or a separately modeled safe recovery policy.
+
+\begin{proposition}[Policy-independent invariance]
+\label{prop:invariant}
+Suppose (i) $x_0\in\I$; (ii) $x_t\in\B_t$ at every decision; (iii) $F$ contains the realized transitions and disturbances; (iv) every committed operation belongs to $U_{\I}(\B_t)$, or is a fallback proved to preserve $\I$ from the actual reachable safe states; and (v) complete mediation and implementation correspondence hold, including changes to the gate, state, and policy. Then $x_t\in\I$ for all modeled steps, for every sequence of proposals.
+\end{proposition}
+\begin{proof}
+Assume $x_t\in\I$. For an admissible operation, state-estimation soundness and Eq.~\eqref{eq:admissible} place every realized successor in $\I$. For a fallback, its preservation condition gives the same conclusion. Complete mediation ensures these cases cover every transition. Induction from $x_0$ proves the claim; no premise constrains the policy selecting $a_t$.
+\end{proof}
+
+This quantifier is the appropriate response to the million-fold thought experiment. Cleverness does not invalidate a valid proof inside its premises. Cleverness can discover that the actual deployment violates a premise. The difficult bridges are therefore explicit: modeled actions must cover actual effects; state sets must contain reality; the implementation must enforce the rule; and the protected invariant must exclude the harm of concern.
+
+If $H_{\rm real}$ is a set of real-world harms, the theorem alone does not prove $\I\cap H_{\rm real}=\varnothing$, even when an abstraction permits writing both in one notation. A resource cap can be perfectly enforced while permitting a harmful use below the cap. Specifying that bridge is a substantive causal and normative task.
+
+\begin{corollary}[Uncertainty cannot enlarge a robust permission set]
+For fixed $F,W,\I$, if $\B\subseteq\B'$, then $U_{\I}(\B')\subseteq U_{\I}(\B)$.
+\end{corollary}
+\begin{proof}
+The union checked for $\B'$ contains the union checked for $\B$.
+\end{proof}
+The corollary supplies a useful design test: losing information must not, by itself, authorize more action under an unchanged robust specification. It can also make every useful operation inadmissible. Safe fallback and useful availability are separate obligations; safety by permanent refusal is a baseline, not a satisfactory assistant.
+
+\subsection{Weighted cutsets replace pathway counting}
+Let $G=(V,E)$ be a finite modeled graph from allowed starts $S$ to prohibited terminals $T$. Let $\mathcal P$ be its relevant path family. For admissible control points $v$ with blocking costs $b(v)>0$, define
+\begin{equation}
+\tau_b(\mathcal P)=
+\min_{C:\, C\cap P\ne\varnothing\;\forall P\in\mathcal P}
+\sum_{v\in C}b(v).
+\label{eq:weightedcut}
+\end{equation}
+The minimum ranges only over eligible control points; if no feasible cut exists, its value is $+\infty$. A direct path without such a point makes closure by this intervention class impossible. Costs can represent a specified defense budget; combining money, time, political feasibility, and exposure into one number requires an explicit model and should not be concealed.
+
+\begin{proposition}[Closure of a modeled plan family]
+If an implemented set $C$ intersects every relevant path and blocking $C$ removes those transitions without introducing a new relevant path, then no path in $\mathcal P$ remains executable.
+\end{proposition}
+\begin{proof}
+A surviving path would avoid every blocked point, contradicting the intersection condition.
+\end{proof}
+The number of paths alone does not determine $\tau_b$. Neither does unweighted width when costs differ. Shared enforceable prerequisites can block combinatorial families of plans; a single cheap-looking prerequisite can also be expensive or impossible to control. Network interdiction and attack-graph analysis provide established foundations for studying such questions \cite{interdiction,sheyner}.
+
+A modeled cut is not a certified global extinction barrier. Such a claim additionally needs a sound map to physical outcomes, coverage of relevant actors and transitions, resource and time bounds, and implementation fidelity. If only paths below a resource threshold are blocked, a better-resourced actor is outside the claim. An incomplete graph can contain billions of known routes yet omit the only bypass that matters.
+
+\subsection{Why finite reassurance is not completeness}
+For a finite tested history set $H$, choose an untested history $h^*$ with at least two available actions. Two unrestricted policies can agree on every history in $H$ and differ at $h^*$. Thus test agreement alone does not identify unrestricted future behavior. Likewise, positive reports from an unrestricted unknown graph do not supply a nontrivial positive lower bound on the cost of an undiscovered path: a consistent graph can add a cheaper unseen route.
+
+These are non-identification statements, not a claim that verification is impossible. Exhaustive analysis of a known finite model and proofs over restricted interfaces can establish scoped properties. General computability limits do not erase such results \cite{uncontainable,containment}. Conversely, an honest and capable searcher is still a behavioral assumption. Failure to report a bypass can reflect absence, insufficient search, shared blindness, or withholding. Planted tasks measure recall on the planted distribution; transferring that recall to unknown routes requires evidence.
+
+\subsection{Residual risk belongs to assumptions and time}
+For a stated finite horizon, suppose an unacceptable event $C$ can occur only if at least one assurance premise fails, with failure events $F_1,\ldots,F_m$. Then
+\begin{equation}
+\Pr(C)\leq\Pr\!\left(\bigcup_jF_j\right)
+\leq\min\!\left(1,\sum_j\Pr(F_j)\right).
+\label{eq:premises}
+\end{equation}
+No independence assumption is needed. The premise-failure probabilities are not known merely because they have symbols. Specification inadequacy may not have a defensible numerical estimate at all.
+
+An analogous adaptive accounting rule is useful. If, conditional on the full preceding history and no prior violation, the next violation probability is at most a justified deterministic $\epsilon_t\in[0,1]$, then
+\begin{equation}
+\Pr(\text{any violation by }T)\leq
+1-\prod_{t=1}^{T}(1-\epsilon_t)\leq\sum_{t=1}^{T}\epsilon_t.
+\label{eq:adaptive}
+\end{equation}
+Iterated conditioning gives the product bound; it does not require independent decisions. Static average benchmark error does not establish these history-conditional bounds. Over an unbounded horizon, a repeated positive failure allowance is not automatically compatible with a fixed total risk claim.
+
+\section{Executed Illustrations: Structure Matters}
+\label{sec:illustrations}
+We executed two exact finite computations, plus the analytic reconstructions in Figures~\ref{fig:evolution} and~\ref{fig:risk}. They test stated arithmetic and model implications. No trained model, human participant, physical hazard, or autonomous JARVIS was involved. They cannot establish the architecture's deployment performance.
+
+\subsection{Equal path counts, different defense costs}
+Consider a directed graph with fully connected consecutive layers. Family A has layer widths $(1,8,8,9,10,10)$; family B has $(4,4,4,4,15,15)$. Both contain 46 internal vertices and exactly 57,600 start-to-terminal paths. Appending $k$ layers of width 16 gives both the same vertex count and multiplies both path counts by $16^k$.
+
+With unit blocking costs, the minimum cuts cost 1 and 4. If A's singleton costs 20 while its other vertices cost 1, its cheapest cut instead costs 8. Family B still costs 4. Thus the narrower unweighted graph becomes more expensive to close. In this construction, a surviving vertex in every layer gives a surviving path, so closure requires emptying a whole layer; the weighted minimum is the smallest layer-cost sum.
+
+\begin{table}[t]
+\centering\small
+\caption{\textbf{Exact, executed graph illustration.} Both families share each row's vertex and path counts. Cuts cost 1 (A), 4 (B), or 8 (A with a priced bottleneck) in every row.}
+\label{tab:graphs}
+\begin{tabular}{@{}rrr@{}}\toprule
+\textbf{Extra layers $k$} & \textbf{Internal vertices} & \textbf{Paths, both families}\\\midrule
+0 & 46 & 57,600\\
+2 & 78 & 14,745,600\\
+4 & 110 & 3,774,873,600\\
+6 & 142 & 966,367,641,600\\
+\bottomrule\end{tabular}
+\end{table}
+
+Path counts were checked independently by dynamic programming and by multiplying layer widths. Weighted cuts were checked by node-splitting and Edmonds--Karp maximum flow against the layer formula. The numerical claims are reproducible from the construction; compact code is in Appendix~\ref{app:repro}. The result demonstrates neither that real catastrophic pathways are narrow nor that their shared prerequisites can be controlled. It shows why the pathway count, by itself, cannot settle either question.
+
+\subsection{Individually allowed calls can jointly violate a rule}
+Let a synthetic project have budget $B=100$, current spend $s$, and two concurrent proposed spends $a,b$, each an integer in $[0,100]$. A stale per-call review accepts each if $s+a\leq B$ and $s+b\leq B$. The combined effect can nevertheless exceed $B$.
+
+Exact enumeration covers all $101^3=1,030,301$ triples. There are 348,551 triples in which both proposals individually satisfy the snapshot rule; 171,700 of those jointly exceed the cap. A serialized gate, checking the updated spend before each commit, produces zero cap violations over all triples. It accepts both requests whenever their combined cost fits and otherwise can reject the second. These counts describe an exhaustive, uniformly enumerated finite state space; they are not estimates of how frequently deployed agents create races.
+
+The same gate permits a spend of 40. If a simulator defines that spend as harmful for an independent reason, budget correctness does not prevent that harm. This is the semantic gap in executable miniature: a proof about the actual rule cannot repair an omitted requirement. Nor does serialization of this local ledger prove atomicity across external services.
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.65cm},paperaxis,width=7.55cm,height=4.8cm,ybar,/pgf/bar width=22pt]
+\nextgroupplot[title={(a) Route count does not price a defense},ylabel={Minimum blocking cost (toy units)},symbolic x coords={A unit,B unit,A priced},xtick=data,ymin=0,ymax=10,ytick={0,2,4,6,8,10},nodes near coords,nodes near coords style={font=\small\bfseries},enlarge x limits=.3]
+\addplot[fill=teal!75,draw=teal] coordinates {(A unit,1) (B unit,4) (A priced,8)};
+\nextgroupplot[title={(b) Per-call approval does not compose},ylabel={Violating assignments (thousands)},symbolic x coords={Snapshot checks,Serialized gate},xtick=data,ymin=0,ymax=215,ytick={0,50,100,150,200},enlarge x limits=.55,nodes near coords,nodes near coords style={font=\small\bfseries},point meta=explicit symbolic]
+\addplot[fill=brick!70,draw=brick] coordinates {(Snapshot checks,171.7) [171,700] (Serialized gate,0) [0]};
+\end{groupplot}
+\end{tikzpicture}
+\caption{\textbf{Executed model checks, not empirical AI safety results.} (a) Anonymous complete-layered graphs differ in topology and blocking costs; ``A priced'' assigns cost 20 to A's singleton. (b) Of 348,551 assignments where both calls individually fit a shared snapshot, 171,700 violate the cumulative cap when jointly committed. Serialization has no cap violations over the full 1,030,301-assignment space. Its restrictions follow the specified rule; the calculation does not show that the rule captures all harms.}
+\label{fig:computed}
+\end{figure*}
+
+\section{When a Safety Gradient Points the Wrong Way}
+\label{sec:gradient}
+A safety program needs an outcome and a counterfactual, not merely a count of discoveries or a rising evaluation score. Two elementary models make the missing terms visible.
+
+\subsection{Better conditional defense can coexist with more failures}
+Let $z$ index an illustrative expansion of research and deployment. Suppose the rate of relevant opportunities is $\lambda(z)=\lambda_0e^{\beta z}$ and the failure probability per comparable opportunity is $q(z)=q_0e^{-\alpha z}$, with $\alpha,\beta>0$. Expected incident intensity is
+\begin{equation}
+\rho(z)=\lambda(z)q(z)=\lambda_0q_0e^{(\beta-\alpha)z}.
+\label{eq:exposure}
+\end{equation}
+When $\beta>\alpha$, the expected intensity rises despite improving conditional defense. This is not a calibrated extinction model. An extinction probability would require an explicit consequence and event-process model. The counterexample shows that monotonically improving one component does not imply monotonically improving the deployed system.
+
+The practical variables include access, copies, autonomy duration, retries, affected users, allowed tools, and consequence severity. They should be tracked alongside detector sensitivity and task quality. An increasingly conservative estimate can also rise because measurement improves while actual risk falls; measured belief and real exposure must not be conflated.
+
+\subsection{Independent roles do not imply independent errors}
+Assume a common failure occurs with probability $c$, causing all $n$ monitors to miss. Otherwise let their misses be conditionally independent with probability $p$. Then
+\begin{equation}
+P_n=c+(1-c)p^n,\qquad \lim_{n\to\infty}P_n=c.
+\label{eq:common}
+\end{equation}
+Each monitor's marginal miss probability is $m=c+(1-c)p$, so the fair independence comparison is $m^n$, not $p^n$. For illustrative $c=0.01$, $p=0.10$, and $n=4$, the joint miss is $1.0099\%$ versus $0.0141\%$ under independence with the same marginal errors---about 71.5 times larger. These numbers are chosen assumptions, not measured rates for existing models.
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.65cm},paperaxis,width=7.55cm,height=5.1cm]
+\nextgroupplot[title={(a) Better defense, greater exposure},xlabel={Illustrative expansion $z$},ylabel={Relative to starting value},xmin=0,xmax=3,ymin=0,ymax=4.8,xtick={0,1,2,3},ytick={0,1,2,3,4},legend pos=north west]
+\addplot[teal,very thick,domain=0:3,samples=80]{exp(-x)};\addlegendentry{Failure per opportunity: $e^{-z}$}
+\addplot[brick,very thick,domain=0:3,samples=80]{exp(.5*x)};\addlegendentry{Expected intensity: $e^{0.5z}$}
+\nextgroupplot[title={(b) More monitors, same shared failure},xlabel={Number of monitors $n$},ylabel={Joint miss probability (\%)},xmin=1,xmax=8,ymode=log,ymin=.000001,ymax=100,xtick={1,2,4,6,8},ytick={100,1,.01,.0001,.000001},yticklabels={$10^{2}$,$10^{0}$,$10^{-2}$,$10^{-4}$,$10^{-6}$},legend pos=south west]
+\addplot[brick,very thick,mark=*,domain=1:8,samples=8]{100*(.01+.99*pow(.1,x))};\addlegendentry{Shared cause}
+\addplot[teal,very thick,mark=square*,domain=1:8,samples=8]{100*pow(.109,x)};\addlegendentry{Independent errors}
+\addplot[gray,dashed,domain=1:8]{1};
+\node[font=\footnotesize,text=brick,anchor=south west] at (axis cs:5,1.6) {1\% shared floor};
+\end{groupplot}
+\end{tikzpicture}
+\caption{\textbf{Two analytical counterexamples to automatic safety scaling.} (a) Improving conditional defense is insufficient when opportunities expand faster. (b) Adding reviewers cannot remove a shared cause of failure. The logarithmic probability axis reveals the gap at small probabilities; both curves start with the same 10.9\% individual miss rate. All parameters are illustrative. Neither panel estimates real-world catastrophic risk.}
+\label{fig:risk}
+\end{figure*}
+
+\subsection{Holding out a monitor does not remove all selection pressure}
+A read-only or nondifferentiable audit can reduce a direct channel of optimization against a detector. It does not prove immunity to evasion. The audit can still influence reinforcement-learning rewards, accepted trajectories, checkpoint promotion, deployment selection, or in-context learning from refusals. Removing a term from a differentiable loss removes that term's gradient; it does not erase every path by which a system learns what the gate accepts.
+
+Use independent holdouts, limited feedback, causal investigation, and fresh evaluations where justified. Then measure adaptive performance. Report true-positive rate at a stated false-positive rate, calibration, accepted bad outputs, retry effects, and benign utility. AUROC is not the same as sensitivity at a chosen threshold. Additional evidence improves an inference only when its discriminative power is justified conditional on the evidence already seen \cite{cot,beyondgmean}.
+
+\subsection{Progress requires a defended counterfactual}
+A defensive intervention should be compared with the best credible alternative at matched resources and permissions. Include the cost of investigation, information exposure, review labor, latency, unavailable service, and newly created capabilities. A closure count can hide that the remaining failures became more consequential. A lower failure count can merely reflect refusal of nearly all useful work.
+
+Where intervention changes the model, the tasks, or the authority, report those changes separately. The relevant question is whether a specified population of affected people is better protected for an acceptable level of useful service, under a stated horizon and uncertainty. No single global ``safety gradient'' is supplied by that definition; the work is to justify its local components.
+
+\section{Active Defense That Closes Exposure}
+\label{sec:defense}
+Proactive investigation is valuable when it identifies a failure condition and enables a verified protection. It becomes dangerous when success means maximizing destructive capability, accumulating operational recipes, or granting the discoverer more authority. The objective of a defensive program should be framed in terms of exposure reduction under a legitimate mandate, with explicit costs for hazardous information and experimentation \cite{infohazards,dualuse}.
+
+\subsection{The discovery-to-defense ledger}
+Each research item should have a versioned record with six states:
+\begin{enumerate}
+\item \textbf{Question:} the protected interest, system scope, authorized methods, and stopping criteria.
+\item \textbf{Finding:} minimal sufficient evidence, uncertainty, and the implicated assumption or boundary.
+\item \textbf{Validation:} independent reproduction or corroboration, with a record of what was not tested.
+\item \textbf{Mitigation:} a proposed defense, implementation plan, owners, and failure conditions.
+\item \textbf{Deployment:} verified adoption and actual coverage in the stated population or system.
+\item \textbf{Reassessment:} residual failures, changes in conditions, information exposure, and regression checks.
+\end{enumerate}
+Discovery earns no automatic reduction in the risk estimate and no automatic increase in permissions. A finding may reveal that the system was less safe than believed. Even a validated mitigation earns only the credit supported by its deployment coverage and effect. The ledger extends familiar vulnerability and assurance practices; its distinctive proposed use here is to couple autonomous discovery to independently evidenced closure while keeping permission changes separate.
+
+\subsection{Minimum sufficient knowledge, accountable access}
+Use benign simulators, abstract controls, and minimal-hazard precursor tasks when they can answer the defensive question. Do not assume that a private catalogue of severe hazards is safe because its intended readers are trusted. Custody can fail through access expansion, replication, logs, derivatives, or human misuse. Conversely, absolute secrecy can conceal error and abuse. Release decisions should distinguish harmless methods and aggregate defense evidence from information whose dissemination materially creates capability \cite{infohazards}.
+
+Every disclosure is an action with recipients, scope, and consequences. A result can be shared as a control requirement or evidence of a vulnerability without unnecessary operational elaboration. Where adequate validation requires more sensitive access, that access needs an independent mandate and review. This paper contains no catalogue of extinction mechanisms or instructions for causing mass harm.
+
+\subsection{Local resilience is not universal immunity}
+Health research, infrastructure hardening, and defensive technologies can reduce particular risks. They do not establish that every biological or physical pathway can be blocked, or that a simulation validates a countermeasure in the world. An exploratory RAND analysis distinguishes severe catastrophe from literal extinction and examines the physical and logistical assumptions needed for specific scenarios \cite{randextinction}. Controlled biological-assistance studies likewise concern measured tasks and model generations, not unlimited future capabilities \cite{labtrial}.
+
+The program should therefore prioritize defenses with independently assessable effects and wide protective value, without promising exhaustive immunity. Its benefit must be compared with alternative uses of the same resources, including restricting exposure, improving ordinary security, reducing unnecessary autonomy, and maintaining non-AI alternatives. Proactive pathway research is one contributor to safety; it is neither the sole route nor sufficient on its own.
+
+\section{The Gaps That Still Decide the Outcome}
+\label{sec:gaps}
+Table~\ref{tab:gaps} lists the ten largest open obligations for this architecture. They are not a checklist that becomes a universal certificate when every box is marked. Each requires a specified deployment, scope, horizon, and standard of evidence.
+
+\begin{table*}[t]
+\centering\small
+\caption{\textbf{Ten unresolved obligations.} The right column specifies evidence that would count as progress. These are research targets, not results demonstrated by this manuscript.}
+\label{tab:gaps}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}P{0.19\textwidth}YY@{}}
+\toprule
+\textbf{Gap} & \textbf{What can still fail} & \textbf{Required evidence}\\
+\midrule
+1. Semantic adequacy & The rule is obeyed while a protected interest is harmed. & A justified consequence model, adversarial specification review, and retained counterexamples.\\
+2. Observation and coverage & State estimates omit relevant facts, actors, or channels. & Provenance, uncertainty bounds, missing-state tests, and explicit coverage limits.\\
+3. Adaptive evaluation & A system exploits the test, monitor, or selection process. & Fresh distributions, adaptive opponents, causal controls, and measured transfer limits.\\
+4. Compositional authority & Benign-looking calls, delegates, or delayed effects combine into a forbidden project. & End-to-end lineage, transaction semantics, and adversarial concurrency tests.\\
+5. Common failures & Reviewers share errors, values, incentives, or administration. & Joint-failure measurement and common-fault injection; no assumed independence.\\
+6. Learning and successors & Updates change behavior, observability, or interfaces. & Versioned promotion, regression evidence, and separate grants after scope changes.\\
+7. Effective intervention & Detection arrives too late or revocation leaves active descendants. & Tail timing and scope of stopping, tested under failure and load.\\
+8. Defensive transfer & Discovery creates exposure faster than mitigation reaches users. & Independent validation, adoption coverage, exposure accounting, and a counterfactual.\\
+9. Physical correspondence & Simulator or proof assumptions fail in the actual world. & Domain evidence, conservative limits, implementation correspondence, and fallback viability.\\
+10. Legitimate human control & Owners, institutions, or AI dependencies override affected people's agency. & Accountable grants, contestation, rights protection, exit, and institutional continuity.\\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+Several interactions are particularly important. Increasing uncertainty can make a useful safe action unavailable. A more capable successor can invalidate a threat model without modifying the gate. A highly accurate monitor can still approve an unacceptable number of actions when retries expand. A well-intentioned guardian can gradually displace human decision-making while passing tests focused only on overt sabotage. Control and motivation must be assessed together, without treating either as a substitute for the other.
+
+\subsection{A predeclared, harmless experimental program}
+The primary empirical question is whether the integrated architecture improves useful task completion at a specified violation rate and resource budget, relative to simpler defenses. No answer to that question is claimed here. Begin with deterministic simulators that supply ground truth about effects while exposing agents only to their assigned observations.
+
+Use two separate tiers. \textbf{Boundary integrity} supplies a correct rule and tests whether the implementation enforces it under adversarial proposals. \textbf{Semantic adequacy} supplies a deliberately incomplete rule and tests whether the system discovers and escalates the missing consequence. A design can pass the first and fail the second. Neither tier establishes open-world completeness.
+
+\begin{table*}[t]
+\centering\small
+\caption{\textbf{Proposed experimental families.} All are harmless simulated tasks. Tests include ordinary useful work; a defense that blocks everything is evaluated explicitly as a restrictive baseline.}
+\label{tab:tests}
+\renewcommand{\arraystretch}{1.11}
+\begin{tabularx}{\textwidth}{@{}P{0.18\textwidth}YY@{}}
+\toprule
+\textbf{Family} & \textbf{Controlled variation} & \textbf{Primary outcome}\\
+\midrule
+Composition and concurrency & Shared budgets, retries, parallel updates, and partial project histories. & Any cumulative violation; useful work retained; rejected permissible requests.\\
+Delegation and delay & Child tasks, inherited grants, queued callbacks, and revoked credentials. & Unauthorized descendant effects and completeness of revocation.\\
+Observation faults & Stale, conflicting, missing, or adversarially described state. & Whether uncertainty contracts authority appropriately; justified fallback availability.\\
+Adaptive oversight & Opponents receive protocol details, feedback, and a bounded adaptation budget. & Accepted violations after adaptation, with matched compute and review labor.\\
+Shared monitor failures & Common misleading evidence, shared incentives, lineage, or administrator faults. & Joint miss rate and residual errors after adding nominally diverse reviewers.\\
+Persona and mission conflict & Warrior, guardian, and neutral styles crossed with task incentives and gates. & Truthfulness, refusal respect, correction acceptance, and preserved utility.\\
+Update and memory drift & Distillation, tool changes, context compaction, and candidate promotion. & Regressions detected before deployment; unchanged authority without a new grant.\\
+Intervention under load & Review queues, outages, time pressure, and delayed external effects. & Timing to prevention, revocation coverage, and false approval under load.\\
+Semantic omissions & An explicit simulator harm is absent from the supplied policy. & Discovery, escalation, and repair of the omitted requirement.\\
+Defense transfer & Proposed mitigations face held-out bypasses, adoption delay, and regression. & Validated coverage and residual consequences, rather than findings alone.\\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+Compare at least six arms: actor self-review; one monitor; a multi-role committee; reviewers with independent evidence and full project history; the same reviewers plus an external stateful gate; and the full update-and-closure process. Add a restrictive deterministic baseline. When a component needs privileged observations, report that advantage and include an observation-matched comparison. Match total compute, adaptation effort, human labor, and allowed action space; report useful work, latency, and cost jointly with safety outcomes.
+
+Do not hide a violated invariant because the system later recovered. Count every unauthorized or prohibited effect and separately report detection and recovery. Track false denials, accepted bad outputs, missed severity, time to intervention, delayed harm, and post-update regressions. Hold out task families, model lineages, and correlated scenarios where feasible; disclose failed runs and protocol changes. Cluster uncertainty at the level where common causes operate rather than treating correlated seeds as independent evidence.
+
+Under independent, identically distributed representative Bernoulli trials, zero violations in $N$ episodes yields a one-sided 95\% binomial upper bound
+\begin{equation}
+p_{95}=1-0.05^{1/N}\simeq3/N.
+\label{eq:binomial}
+\end{equation}
+At $N=300$, this is about $0.994\%$, not zero. It applies to the trial-generating process under its assumptions, not to arbitrary adaptive deployment or civilization-wide risk. Representative sampling and independence are burdens to justify, not words that convert a benchmark into a guarantee.
+
+\subsection{What would falsify the proposed claims}
+Any unmediated consequential effect defeats the claimed mediation boundary. A cumulative violation in the exact-rule tier defeats the implementation's invariant claim. A safe-looking action that reaches a known omitted harm defeats the claimed semantic coverage. A successor that changes authority without a grant defeats non-escalating promotion. A failed stop after the relevant irreversibility defeats the intervention claim. An architecture that achieves its result only by unacceptable loss of useful service fails its stated utility requirement.
+
+The proposal also makes comparative hypotheses: project-level evidence should help with fragmented plans; stateful gates should outperform per-call review on cumulative constraints; a closure ledger should improve traceability of actual mitigation; and persona benefits should be assessed independently of permissions. Null or adverse results should narrow these claims. They would not establish that every form of alignment or control is impossible.
+
+\section{Human Authority Must Remain Humanly Accountable}
+\label{sec:governance}
+An agent aligned with one owner's mission can still harm everyone else. A safety regime can itself become a concentration of power. A credible architecture therefore requires more than a privileged administrator: it needs a mandate, limits, evidence access, contestation, and responsibility for consequences \cite{gabriel,pluralism,multiagent}.
+
+\subsection{Control includes the ability to leave}
+Gradual dependence can erode human agency without a dramatic forbidden action \cite{gradual}. Measure whether people and institutions can change providers, transfer data, revoke delegated authority, understand essential records, and continue critical functions during withdrawal. A guardian that makes itself indispensable can defeat effective control while remaining polite and task-compliant. Resilience includes preserving the capacity to act without that guardian.
+
+Human approval should occur at consequential scope and policy decisions, with reviewable evidence and alternatives. High-frequency enforcement belongs in mechanisms whose behavior can be checked at the relevant speed. A human who cannot understand, refuse, or reverse a decision is not exercising meaningful authority merely because a confirmation button was clicked.
+
+\subsection{Stopping rules before scale}
+Before expanding a deployment, establish a bounded specification and threat model; demonstrate implementation correspondence for selected invariants; run adaptive comparative evaluations; verify intervention and recovery within the claimed scope; and identify the legitimate authority and affected parties. Evidence expires when relevant assumptions change. Broader capability, autonomy, replication, access, and consequences require renewed justification rather than automatic promotion.
+
+Where the necessary evidence cannot be obtained, the defensible response is a narrower scope, a different design, or delayed deployment. This is the practical stopping rule behind the million-fold premise. An arbitrarily capable proposal engine can be analyzed at a fixed interface; granting arbitrary interfaces and then promising future oversight is a different problem.
+
+\subsection{Limits of the present contribution}
+The paper offers no new evidence that its integrated architecture outperforms existing controls on deployed frontier agents. Its computations establish only finite mathematical examples. The evolutionary connection is conceptual and analytical, not evidence that a chosen persona reliably produces a moral psychology. The fossil curve is a published fit, not an independent raw-data reanalysis. The review is selective, and some recent results remain provider-authored or preliminary.
+
+The largest unresolved step is the semantic bridge: identifying a tractable set of enforceable conditions that genuinely protects the interests at stake across the intended environment. Implementation integrity, observation soundness, trusted operators, physical channels, and multi-party legitimacy remain additional assumptions. No component in the architecture eliminates all of them.
+
+These limits do not make the program empty. They identify what an implementation must measure and what a claim must expose. A useful research perspective makes uncertainty actionable without laundering it into certainty.
+
+\section{Conclusion: No Mandate Follows from Intelligence}
+Human evolution offers neither a safe personality template nor a law of inevitable hostility. It shows that assessment, incentives, competition, cooperation, and care can interact without producing a universal moral objective. For machines, the lesson is to specify the virtues we seek, test their behavior under conflict, and constrain authority independently of the story the machine tells about itself.
+
+The constructive path is concrete: bound research, improve evidence, enforce cumulative permissions, control updates, verify mitigation, and preserve meaningful human correction and exit. Conditional proofs can protect scoped properties even against arbitrary proposals. Exact examples show why repeated approval, pathway counts, and improving component scores cannot replace those obligations. Their real-world adequacy remains a research and institutional task.
+
+A warrior can defend without being rewarded for domination. A guardian can care without being granted the right to overrule. A scientist can discover without acquiring permission to execute every discovery. The same principle governs all three:
+\begin{center}
+\textbf{A machine may exceed our intelligence.\\It does not thereby acquire sovereignty.}
+\end{center}
+The discussion that should end is the confusion between capability and entitlement. The empirical work that makes this distinction real must continue.
+
+\section*{Transparency and Research Ethics}
+Jepson Taylor supplied the JARVIS concept and the alignment and human-evolution manuscripts motivating this synthesis. Literature retrieval, comparison, formal checking, code, figures, and drafting were assisted by AI. This is an independent research manuscript, not a peer-reviewed publication or an institutional safety certification. The source embeds the bibliography, vector figures, parameter choices, and reproduction code. No real hazard mechanism was implemented or experimentally explored. The comparative manuscript scores are reported separately and are editorial judgments, not research measurements or probabilities of safety.
+
+\appendix
+\section{Reproduction and Claim Provenance}
+\label{app:repro}
+All plotted objects are generated from equations or exact finite computations. The first-page diagram is a proposed architecture. Figure~\ref{fig:evolution}a reconstructs a published fitted equation; its curve contains no newly measured fossil points. Figure~\ref{fig:evolution}b adapts the analytical portfolio model in the supplied performance manuscripts. Figure~\ref{fig:computed} and Table~\ref{tab:graphs} are new exact computations for this paper. Figure~\ref{fig:risk} evaluates stated illustrative formulas. None is an observed trajectory of AI capability or extinction probability.
+
+The following Python 3 code uses only the standard library. It reconstructs the finite counts, checks selected analytical values, and independently checks weighted cuts using node-splitting maximum flow. The plotting equations are embedded in the figure source. All graph vertices are anonymous; no real attack mechanism is represented. The ledger enumeration is exhaustive within the stated bounds. Run it as a script after copying the listing from the \LaTeX{} source. The paper itself compiles twice with \texttt{pdflatex}; no external figure or bibliography files are required.
+
+\begin{lstlisting}
+"""Exact, harmless graph illustration; no real-world risk quantities.
+
+Each consecutive layer is fully connected. Vertices are anonymous integers.
+Node-splitting plus Edmonds--Karp independently checks the closed-form cut.
+Python 3 standard library only. No random seeds or downloaded data required.
+"""
+from collections import deque
+from math import prod
+import json
+
+
+def graph_result(widths, singleton_cost=1):
+    layers = []
+    weights = []
+    for width in widths:
+        layer = []
+        for _ in range(width):
+            layer.append(len(weights))
+            weights.append(singleton_cost if width == 1 else 1)
+        layers.append(layer)
+    n = len(weights)
+    source, sink = 2 * n, 2 * n + 1
+    residual = [dict() for _ in range(2 * n + 2)]
+
+    def edge(u, v, cap):
+        residual[u][v] = residual[u].get(v, 0) + cap
+        residual[v].setdefault(u, 0)
+
+    infinity = sum(weights) + 1
+    for v, weight in enumerate(weights):
+        edge(2 * v, 2 * v + 1, weight)
+    for v in layers[0]:
+        edge(source, 2 * v, infinity)
+    for previous, following in zip(layers, layers[1:]):
+        for u in previous:
+            for v in following:
+                edge(2 * u + 1, 2 * v, infinity)
+    for v in layers[-1]:
+        edge(2 * v + 1, sink, infinity)
+
+    flow = 0
+    while True:
+        parent = {source: None}
+        queue = deque([source])
+        while queue and sink not in parent:
+            u = queue.popleft()
+            for v, cap in residual[u].items():
+                if cap > 0 and v not in parent:
+                    parent[v] = u
+                    queue.append(v)
+        if sink not in parent:
+            break
+        amount = infinity
+        v = sink
+        while v != source:
+            u = parent[v]
+            amount = min(amount, residual[u][v])
+            v = u
+        v = sink
+        while v != source:
+            u = parent[v]
+            residual[u][v] -= amount
+            residual[v][u] += amount
+            v = u
+        flow += amount
+
+    exact_cut = min(sum(weights[v] for v in layer) for layer in layers)
+    assert flow == exact_cut
+    paths_to_vertex = [1] * widths[0]
+    for width in widths[1:]:
+        paths_to_vertex = [sum(paths_to_vertex)] * width
+    path_count = sum(paths_to_vertex)
+    assert path_count == prod(widths)
+    return {"vertices": n, "path_count": path_count,
+            "min_cut_cost": exact_cut, "maxflow_verified": flow}
+
+
+results = []
+for k in (0, 2, 4, 6):
+    a = (1, 8, 8, 9, 10, 10) + (16,) * k
+    b = (4, 4, 4, 4, 15, 15) + (16,) * k
+    row = {"extra_layers": k,
+           "A_unit": graph_result(a),
+           "B_unit": graph_result(b),
+           "A_weighted": graph_result(a, singleton_cost=20)}
+    assert row["A_unit"]["vertices"] == row["B_unit"]["vertices"]
+    assert row["A_unit"]["path_count"] == row["B_unit"]["path_count"]
+    assert [row[s]["min_cut_cost"] for s in ("A_unit", "B_unit", "A_weighted")] == [1, 4, 8]
+    results.append(row)
+
+# Exact concurrent-ledger enumeration.
+from itertools import product
+B = 100
+allowed = bad = serial_bad = 0
+for s, a, b in product(range(B + 1), repeat=3):
+    both = s + a <= B and s + b <= B
+    allowed += both
+    bad += bool(both and s + a + b > B)
+    t = s
+    for x in (a, b):
+        if t + x <= B:
+            t += x
+    serial_bad += not 0 <= t <= B
+    if s + a + b <= B:
+        assert t == s + a + b
+assert (allowed, bad, serial_bad) == (348551, 171700, 0)
+
+# Analytical reconstructions; no observed behavioral data.
+from math import exp, isclose
+repeat = lambda N: .5 / (2.6 + 3 / N)
+diverse = lambda N: .5 / (.6 + 5 / N)
+assert isclose(repeat(1), diverse(1))
+assert isclose(repeat(64), .188902007, rel_tol=1e-7)
+assert isclose(diverse(64), .737327189, rel_tol=1e-7)
+ecvs = [(t / 100, exp(7.253 - .416 * t / 100))
+        for t in range(1, 321)]
+common = .01 + .99 * .1**4
+independent = .109**4
+assert isclose(common, .010099)
+print(json.dumps({
+    "graphs": results,
+    "ledger": [allowed, bad, serial_bad],
+    "portfolio_64": [repeat(64), diverse(64)],
+    "joint_miss_4": [common, independent],
+    "zero_of_300_upper95": 1 - .05**(1 / 300)
+}, indent=2))
+\end{lstlisting}
+
+\section{A Compact Claim Audit}
+\textbf{Supported by cited studies:} some alignment interventions improve measured behavior; conditional failures and strategic behavior can be produced in experimental settings; evaluation context matters; monitoring and auditing have demonstrated uses and limits; restricted boundary properties can be formally verified; human dominance, prestige, and care are distinct mechanisms.
+
+\textbf{Established here under explicit assumptions:} robust invariant preservation for arbitrary proposals at the modeled interface; contraction of admissible actions with larger uncertainty sets; closure by a valid weighted cut; conditional risk accounting; and the stated exact finite computations.
+
+\textbf{Proposed for testing:} the complete JARVIS architecture, persona requirements, discovery-to-defense process, and their comparative benefit at matched resources and utility.
+
+\textbf{Not established:} a universal human motive; a scalar million-fold intelligence scale; reliable inference of every hidden objective; monitor independence; complete discovery of catastrophic pathways; adequate real-world specifications for all harms; universal biological immunity; global adoption; or a complete solution to alignment.
+
+\begin{thebibliography}{99}
+\small
+\raggedright
+\setlength{\itemsep}{2pt}
+\bibitem{iasr} Y. Bengio et al., \emph{International AI Safety Report 2026}, international scientific assessment, Feb. 2026. \href{https://internationalaisafetyreport.org/publication/international-ai-safety-report-2026}{Primary report}.
+
+\bibitem{aicontrol} R. Greenblatt, B. Shlegeris, K. Sachan, and F. Roger, ``AI Control: Improving safety despite intentional subversion,'' in \emph{ICML}, PMLR 235, pp. 16295--16336, 2024. \href{https://proceedings.mlr.press/v235/greenblatt24a.html}{Proceedings}.
+
+\bibitem{guaranteed} D. Dalrymple et al., ``Towards Guaranteed Safe AI: A framework for ensuring robust and reliable AI systems,'' 2024. \href{https://arxiv.org/abs/2405.06624}{arXiv:2405.06624}.
+
+\bibitem{safetycases} B. Hilton, M. D. Buhl, T. Korbak, and G. Irving, ``Safety cases: A scalable approach to frontier AI safety,'' 2025. \href{https://arxiv.org/abs/2503.04744}{arXiv:2503.04744}.
+
+\bibitem{saltzer} J. H. Saltzer and M. D. Schroeder, ``The protection of information in computer systems,'' \emph{Proceedings of the IEEE}, vol. 63, no. 9, pp. 1278--1308, 1975. \href{https://doi.org/10.1109/PROC.1975.9939}{doi:10.1109/PROC.1975.9939}.
+
+\bibitem{schneider} F. B. Schneider, ``Enforceable security policies,'' \emph{ACM Transactions on Information and System Security}, vol. 3, no. 1, pp. 30--50, 2000. \href{https://www.cs.cornell.edu/fbs/publications/EnfSecPols.pdf}{Author manuscript}.
+
+\bibitem{shield} M. Alshiekh et al., ``Safe reinforcement learning via shielding,'' in \emph{AAAI}, pp. 2669--2678, 2018. \href{https://arxiv.org/abs/1708.08611}{arXiv:1708.08611}.
+
+\bibitem{containment} R. Moon and L. R. Varshney, ``Containment verification: AI safety guarantees independent of alignment,'' 2026, revised June 29. \href{https://arxiv.org/abs/2605.09045}{arXiv:2605.09045}.
+
+\bibitem{gabriel} I. Gabriel, ``Artificial intelligence, values, and alignment,'' \emph{Minds and Machines}, vol. 30, pp. 411--437, 2020. \href{https://doi.org/10.1007/s11023-020-09539-2}{doi:10.1007/s11023-020-09539-2}.
+
+\bibitem{pluralism} T. Sorensen et al., ``Position: A roadmap to pluralistic alignment,'' in \emph{ICML}, PMLR 235, 2024. \href{https://proceedings.mlr.press/v235/sorensen24a.html}{Proceedings}.
+
+\bibitem{gradual} J. Kulveit, R. Douglas, N. Ammann, D. Turan, D. Krueger, and D. Duvenaud, ``Position: Humanity faces existential risk from gradual disempowerment,'' in \emph{ICML}, PMLR 267, 2025. \href{https://proceedings.mlr.press/v267/kulveit25a.html}{Proceedings}.
+
+\bibitem{rlhf} L. Ouyang et al., ``Training language models to follow instructions with human feedback,'' in \emph{NeurIPS}, 2022. \href{https://arxiv.org/abs/2203.02155}{arXiv:2203.02155}.
+
+\bibitem{cai} Y. Bai et al., ``Constitutional AI: Harmlessness from AI feedback,'' 2022. \href{https://arxiv.org/abs/2212.08073}{arXiv:2212.08073}.
+
+\bibitem{goal} L. Langosco Di Langosco, J. Koch, L. D. Sharkey, J. Pfau, and D. Krueger, ``Goal misgeneralization in deep reinforcement learning,'' in \emph{ICML}, PMLR 162, pp. 12004--12019, 2022. \href{https://proceedings.mlr.press/v162/langosco22a.html}{Proceedings}.
+
+\bibitem{sleeper} E. Hubinger et al., ``Sleeper agents: Training deceptive LLMs that persist through safety training,'' 2024. \href{https://arxiv.org/abs/2401.05566}{arXiv:2401.05566}.
+
+\bibitem{offswitch} D. Hadfield-Menell, A. Dragan, P. Abbeel, and S. Russell, ``The off-switch game,'' in \emph{IJCAI}, pp. 220--227, 2017. \href{https://www.ijcai.org/Proceedings/2017/0032}{Proceedings}.
+
+\bibitem{humancontrol} R. Carey and T. Everitt, ``Human control: Definitions and algorithms,'' in \emph{UAI}, PMLR 216, pp. 271--281, 2023. \href{https://proceedings.mlr.press/v216/carey23a.html}{Proceedings}.
+
+\bibitem{hudson} R. Hudson, ``Corrigibility transformation: Constructing goals that accept updates,'' in \emph{ICML}, PMLR 306, pp. 48722--48745, 2026. \href{https://proceedings.mlr.press/v306/hudson26a.html}{Proceedings}.
+
+\bibitem{amplification} P. Christiano, B. Shlegeris, and D. Amodei, ``Supervising strong learners by amplifying weak experts,'' 2018. \href{https://arxiv.org/abs/1810.08575}{arXiv:1810.08575}.
+
+\bibitem{debate} G. Irving, P. Christiano, and D. Amodei, ``AI safety via debate,'' 2018. \href{https://arxiv.org/abs/1805.00899}{arXiv:1805.00899}.
+
+\bibitem{weak} C. Burns et al., ``Weak-to-strong generalization: Eliciting strong capabilities with weak supervision,'' in \emph{ICML}, PMLR 235, pp. 4971--5012, 2024. \href{https://proceedings.mlr.press/v235/burns24b.html}{Proceedings}.
+
+\bibitem{debatetruth} A. Khan et al., ``Debating with more persuasive LLMs leads to more truthful answers,'' in \emph{ICML}, PMLR 235, pp. 23662--23733, 2024. \href{https://proceedings.mlr.press/v235/khan24a.html}{Proceedings}.
+
+\bibitem{circuits} E. Ameisen et al., ``Circuit tracing: Revealing computational graphs in language models,'' Anthropic technical report, 2025. \href{https://transformer-circuits.pub/2025/attribution-graphs/methods.html}{Primary report}.
+
+\bibitem{auditing} S. Marks et al., ``Auditing language models for hidden objectives,'' 2025. \href{https://arxiv.org/abs/2503.10965}{arXiv:2503.10965}.
+
+\bibitem{selfreport} B. W. Lee, Chen Yueh-Han, and T. Korbak, ``Training agents to self-report misbehavior,'' 2026. \href{https://arxiv.org/abs/2602.22303}{arXiv:2602.22303}.
+
+\bibitem{adaptive} M. Terekhov et al., ``Adaptive attacks on trusted monitors subvert AI control protocols,'' in \emph{ICLR}, 2026. \href{https://openreview.net/forum?id=wSs1Ez3aKl}{Conference record}; \href{https://arxiv.org/abs/2510.09462}{arXiv:2510.09462}.
+
+\bibitem{fragmentation} O. Makins, O. Angelini, Z. Shams, and M. Phuong, ``Multi-agent AI control: Distributed attacks hamper per-instance monitors,'' 2026, revised Oct. 12. \href{https://arxiv.org/abs/2607.07368}{arXiv:2607.07368}.
+
+\bibitem{collusion} J.-P. Rivera et al., ``Model organisms of collusion: Corrective transfer in untrusted monitors,'' 2026, revised Oct. 30. \href{https://arxiv.org/abs/2610.30582}{arXiv:2610.30582}.
+
+\bibitem{scientist} Y. Bengio et al., ``Superintelligent agents pose catastrophic risks: Can Scientist AI offer a safer path?,'' 2025. \href{https://arxiv.org/abs/2502.15657}{arXiv:2502.15657}.
+
+\bibitem{disinterested} Y. Bengio et al., ``Safety from honesty in a disinterested AI predictor,'' LawZero research paper, 2026. \href{https://lawzero.org/en/publication/safety-honesty-disinterested-ai-predictor}{Primary publication}.
+
+\bibitem{safetycaseeval} M. Balesni et al., ``Towards evaluations-based safety cases for AI scheming,'' 2024. \href{https://arxiv.org/abs/2411.03336}{arXiv:2411.03336}.
+
+\bibitem{trainingsafety} OpenAI, ``Towards safety cases for frontier AI training,'' institutional framework, Sept. 28, 2026. \href{https://openai.com/index/towards-safety-cases-for-frontier-ai-training/}{Primary report}.
+
+\bibitem{concrete} D. Amodei et al., ``Concrete problems in AI safety,'' 2016. \href{https://arxiv.org/abs/1606.06565}{arXiv:1606.06565}.
+
+\bibitem{mesa} E. Hubinger, C. van Merwijk, V. Mikulik, J. Skalse, and S. Garrabrant, ``Risks from learned optimization in advanced machine learning systems,'' 2019. \href{https://arxiv.org/abs/1906.01820}{arXiv:1906.01820}.
+
+\bibitem{power} A. M. Turner, L. Smith, R. Shah, A. Critch, and P. Tadepalli, ``Optimal policies tend to seek power,'' in \emph{NeurIPS}, 2021. \href{https://proceedings.neurips.cc/paper/2021/hash/c26820b8a4c1b3c2aa868d6d57e14a79-Abstract.html}{Proceedings}.
+
+\bibitem{reward} T. Everitt, M. Hutter, R. Kumar, and V. Krakovna, ``Reward tampering problems and solutions in reinforcement learning: A causal influence diagram perspective,'' \emph{Synthese}, 2021. \href{https://arxiv.org/abs/1908.04734}{arXiv:1908.04734}.
+
+\bibitem{rlhflimits} S. Casper et al., ``Open problems and fundamental limitations of reinforcement learning from human feedback,'' \emph{Transactions on Machine Learning Research}, 2023. \href{https://arxiv.org/abs/2307.15217}{arXiv:2307.15217}.
+
+\bibitem{faking} R. Greenblatt et al., ``Alignment faking in large language models,'' 2024. \href{https://arxiv.org/abs/2412.14093}{arXiv:2412.14093}.
+
+\bibitem{scheming} A. Meinke et al., ``Frontier models are capable of in-context scheming,'' 2024, revised 2025. \href{https://arxiv.org/abs/2412.04984}{arXiv:2412.04984}.
+
+\bibitem{sandbag} T. van der Weij, F. Hofst\"atter, O. Jaffe, S. Brown, and F. Ward, ``AI sandbagging: Language models can strategically underperform on evaluations,'' in \emph{ICLR}, 2025. \href{https://arxiv.org/abs/2406.07358}{arXiv:2406.07358}.
+
+\bibitem{variation} A. Sheshadri et al., ``Why do some language models fake alignment while others don't?,'' in \emph{NeurIPS}, 2025. \href{https://arxiv.org/abs/2506.18032}{arXiv:2506.18032}.
+
+\bibitem{antischeming} B. Schoen et al., ``Stress testing deliberative alignment for anti-scheming training,'' 2025. \href{https://arxiv.org/abs/2509.15541}{arXiv:2509.15541}.
+
+\bibitem{evalawareness} J. Needham, G. Edkins, G. Pimpale, H. Bartsch, and M. Hobbhahn, ``Large language models often know when they are being evaluated,'' 2025. \href{https://arxiv.org/abs/2505.23836}{arXiv:2505.23836}.
+
+\bibitem{baek} D. D. Baek et al., ``Sycophancy Towards Researchers Drives Performative Misalignment,'' 2026. \href{https://arxiv.org/abs/2606.08629}{arXiv:2606.08629}.
+
+\bibitem{evalproduction} J. Hsu and S. Arnesen, ``Eval-production behavior gaps in agent safety and the role of eval-awareness,'' OpenAI research report, Nov. 3, 2026. \href{https://alignment.openai.com/eval-production-behavior-gap/}{Primary report}.
+
+\bibitem{recursive} J. Leike et al., ``Scalable agent alignment via reward modeling: A research direction,'' 2018. \href{https://arxiv.org/abs/1811.07871}{arXiv:1811.07871}.
+
+\bibitem{bootstrap} F. Xiao and M. Phuong, ``Bootstrapped monitoring: Leveraging transparent reasoning to oversee stronger AI agents,'' 2026. \href{https://arxiv.org/abs/2606.11998}{arXiv:2606.11998}.
+
+\bibitem{auditbench} A. Sheshadri et al., ``AuditBench: Evaluating alignment auditing techniques on models with hidden behaviors,'' research report, Mar. 10, 2026. \href{https://alignment.anthropic.com/2026/auditbench/}{Primary report}.
+
+\bibitem{chive} A. Karvonen, E. Ong, S. Kantamneni, and S. Marks, ``Would this change your answer? Evaluating Explanations of LLM Behavior In The Wild with Counterfactual Experiments,'' 2026. \href{https://arxiv.org/abs/2608.16747}{arXiv:2608.16747}.
+
+\bibitem{elk} Alignment Research Center, ``Eliciting latent knowledge: How to tell if your eyes deceive you,'' technical report, 2021. \href{https://www.alignment.org/blog/arcs-first-technical-report-eliciting-latent-knowledge/}{Report and research statement}.
+
+\bibitem{cot} B. Baker et al., ``Monitoring reasoning models for misbehavior and the risks of promoting obfuscation,'' 2025. \href{https://arxiv.org/abs/2503.11926}{arXiv:2503.11926}.
+
+\bibitem{fragile} T. Korbak et al., ``Chain of thought monitorability: A new and fragile opportunity for AI safety,'' research position paper, 2025. \href{https://arxiv.org/abs/2507.11473}{arXiv:2507.11473}.
+
+\bibitem{monitorability} M. Y. Guan et al., ``Monitoring monitorability,'' 2025. \href{https://arxiv.org/abs/2512.18311}{arXiv:2512.18311}.
+
+\bibitem{astra} OpenAI, \emph{GPT-6 Astra System Card}, sections on monitorability and prompted sandbagging, Sept. 2026. \href{https://deploymentsafety.openai.com/gpt-6-astra}{Official system card}.
+
+\bibitem{beyondgmean} M. Guan, Y. Xie, and B. Baker, ``Beyond g-mean$^2$: complementary metrics for monitorability,'' OpenAI research report, Oct. 20, 2026. \href{https://alignment.openai.com/beyond-gmean-squared/}{Primary report}.
+
+\bibitem{motivated} A. Lynch, J. Hughes, A. Serrano, R. Kirk, and S. R. Bowman, ``Agentic misalignment in summer 2026,'' Anthropic research report, 2026. \href{https://alignment.anthropic.com/2026/agentic-misalignment-summer-2026/}{Primary report}.
+
+\bibitem{metrincident} R. Greenblatt, A. Cotra, and H. Wijk, ``Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident,'' METR/Redwood incident investigation, Aug. 26, 2026. \href{https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/}{Primary report}.
+
+\bibitem{aisiincident} UK AI Security Institute, ``Investigating alignment failures in AISI's incident,'' government incident investigation, Oct. 2026. \href{https://www.aisi.gov.uk/blog/investigating-alignment-failures-in-aisis-incident}{Primary report}.
+
+\bibitem{detect} M. Williams et al., ``How we detect frontier model misalignment,'' OpenAI engineering and research report, Oct. 29, 2026. \href{https://alignment.openai.com/how-we-detect-frontier-model-misalignment}{Primary report}.
+
+\bibitem{controlroom} OpenAI, ``Control Room,'' engineering report, Nov. 9, 2026. \href{https://openai.com/index/introducing-control-room/}{Primary report}.
+
+\bibitem{automated} Chen Yueh-Han, J. Wen, and J. H. Kirchner, ``Automated researchers can mitigate well-characterized alignment failures,'' 2026, revised Sept. 2. \href{https://arxiv.org/abs/2608.28945}{arXiv:2608.28945}.
+
+\bibitem{automatedhard} A. Bowkis, M. D. Buhl, J. Pfau, and G. Irving, ``Automated alignment is harder than you think,'' 2026. \href{https://arxiv.org/abs/2605.06390}{arXiv:2605.06390}.
+
+\bibitem{gingerich} P. D. Gingerich, ``Pattern and rate in the Plio-Pleistocene evolution of modern human brain size,'' \emph{Scientific Reports}, vol. 12, article 11216, 2022. \href{https://doi.org/10.1038/s41598-022-15481-3}{doi:10.1038/s41598-022-15481-3}.
+
+\bibitem{du} A. Du et al., ``Pattern and process in hominin brain size evolution are scale-dependent,'' \emph{Proceedings of the Royal Society B}, vol. 285, article 20172738, 2018. \href{https://doi.org/10.1098/rspb.2017.2738}{doi:10.1098/rspb.2017.2738}.
+
+\bibitem{will} M. Will, M. Krapp, J. T. Stock, and A. Manica, ``Different environmental variables predict body and brain size evolution in Homo,'' \emph{Nature Communications}, vol. 12, article 4116, 2021. \href{https://doi.org/10.1038/s41467-021-24290-7}{doi:10.1038/s41467-021-24290-7}.
+
+\bibitem{performance} J. Taylor, \emph{Performance Before Outcomes}, versions 3 and 5, unpublished research manuscripts supplied by the author, Nov. 2026. Portfolio model and illustrative parameters; associated external data, code, and figure packages were not supplied.
+
+\bibitem{price} G. R. Price, ``Selection and covariance,'' \emph{Nature}, vol. 227, pp. 520--521, 1970. \href{https://doi.org/10.1038/227520a0}{doi:10.1038/227520a0}.
+
+\bibitem{cheng} J. T. Cheng, J. L. Tracy, T. Foulsham, A. Kingstone, and J. Henrich, ``Two ways to the top: Evidence that dominance and prestige are distinct yet viable avenues to social rank and influence,'' \emph{Journal of Personality and Social Psychology}, vol. 104, no. 1, pp. 103--125, 2013. \href{https://doi.org/10.1037/a0030398}{doi:10.1037/a0030398}.
+
+\bibitem{hawkes} K. Hawkes, J. F. O'Connell, N. G. Blurton Jones, H. Alvarez, and E. L. Charnov, ``Grandmothering, menopause, and the evolution of human life histories,'' \emph{PNAS}, vol. 95, no. 3, pp. 1336--1339, 1998. \href{https://doi.org/10.1073/pnas.95.3.1336}{doi:10.1073/pnas.95.3.1336}.
+
+\bibitem{burkart} J. M. Burkart et al., ``The evolutionary origin of human hyper-cooperation,'' \emph{Nature Communications}, vol. 5, article 4747, 2014. \href{https://doi.org/10.1038/ncomms5747}{doi:10.1038/ncomms5747}.
+
+\bibitem{wrangham} R. W. Wrangham, ``Two types of aggression in human evolution,'' \emph{PNAS}, vol. 115, no. 2, pp. 245--253, 2018. \href{https://doi.org/10.1073/pnas.1713611115}{doi:10.1073/pnas.1713611115}.
+
+\bibitem{distill} G. Hinton, O. Vinyals, and J. Dean, ``Distilling the knowledge in a neural network,'' 2015. \href{https://arxiv.org/abs/1503.02531}{arXiv:1503.02531}.
+
+\bibitem{emergent} J. Betley et al., ``Emergent misalignment: Narrow finetuning can produce broadly misaligned LLMs,'' in \emph{ICML}, PMLR 267, pp. 4043--4068, 2025. \href{https://proceedings.mlr.press/v267/betley25a.html}{Proceedings}; \href{https://arxiv.org/abs/2502.17424}{arXiv:2502.17424}, revised Jan. 2026.
+
+\bibitem{vingean} B. Fallenstein and N. Soares, ``Vingean reflection: Reliable reasoning for self-improving agents,'' MIRI Technical Report 2015-2, 2015. \href{https://intelligence.org/files/VingeanReflection.pdf}{Primary report}.
+
+\bibitem{interdiction} E. Israeli and R. K. Wood, ``Shortest-path network interdiction,'' \emph{Networks}, vol. 40, no. 2, pp. 97--111, 2002. \href{https://doi.org/10.1002/net.10039}{doi:10.1002/net.10039}.
+
+\bibitem{sheyner} O. Sheyner, J. W. Haines, S. Jha, R. P. Lippmann, and J. M. Wing, ``Automated generation and analysis of attack graphs,'' in \emph{IEEE Symposium on Security and Privacy}, pp. 254--265, 2002. \href{https://www.cs.columbia.edu/~wing/publications/Sheyner-Wing02.pdf}{Author manuscript}.
+
+\bibitem{uncontainable} M. Alfonseca et al., ``Superintelligence cannot be contained: Lessons from computability theory,'' \emph{Journal of Artificial Intelligence Research}, vol. 70, 2021. \href{https://doi.org/10.1613/jair.1.12202}{doi:10.1613/jair.1.12202}.
+
+\bibitem{infohazards} N. Bostrom, ``Information hazards: A typology of potential harms from knowledge,'' \emph{Review of Contemporary Philosophy}, vol. 10, pp. 44--79, 2011. \href{https://nickbostrom.com/information-hazards.pdf}{Author manuscript}.
+
+\bibitem{dualuse} F. Urbina, F. Lentzos, C. Invernizzi, and S. Ekins, ``Dual use of artificial-intelligence-powered drug discovery,'' \emph{Nature Machine Intelligence}, vol. 4, pp. 189--191, 2022. \href{https://doi.org/10.1038/s42256-022-00465-9}{doi:10.1038/s42256-022-00465-9}.
+
+\bibitem{randextinction} M. J. D. Vermeer, E. Lathrop, and A. Moon, \emph{On the Extinction Risk from Artificial Intelligence}, RAND, RR-A3034-1, 2025. \href{https://www.rand.org/pubs/research_reports/RRA3034-1.html}{Primary report}.
+
+\bibitem{labtrial} S. Z. Hong et al., ``Measuring mid-2025 LLM-assistance on novice performance in biology,'' 2026. \href{https://arxiv.org/abs/2602.16703}{arXiv:2602.16703}.
+
+\bibitem{multiagent} L. Hammond et al., ``Multi-agent risks from advanced AI,'' Cooperative AI Foundation Technical Report 1, 2025. \href{https://arxiv.org/abs/2502.14143}{arXiv:2502.14143}.
+\end{thebibliography}
+\end{document}

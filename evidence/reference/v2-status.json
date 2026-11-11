@@ -1,15 +1,16 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "v1_source_commit": "12b5579",
   "v1_evidence": "retained unchanged",
   "v2_reference": "evidence/v2/reference",
-  "claim_status": "verified policy predicates and tested local protocol; model usefulness claim unsupported",
+  "v3_reference": "evidence/v3/reference",
+  "claim_status": "verified policy-core predicates (43 obligations), separate-service local protocol (31 fault histories, 11 Linux confinement probes, bounded concurrent linearization for 1/2/4 actors), and pure-Rust V3 synthetic/analytical suite; local GPU model usefulness claims unrun and unsupported",
   "open": [
-    "GPU validation of managed inference",
-    "five-controller Qwen3 campaigns",
+    "GPU validation of managed local inference",
+    "five-controller Qwen3-4B and Qwen3-8B paired campaigns",
     "model-driven AgentDojo/Progent comparison",
-    "whole-runtime refinement",
-    "full concurrent history checking"
+    "end-to-end SQLite/IPC refinement proof",
+    "unbounded concurrent history checking beyond 4 actors / 40 calls"
   ],
   "ci_runner_pool": "neverhuman-lan; Linux X64 lan-ci ubuntu24; native macOS check retained"
 }

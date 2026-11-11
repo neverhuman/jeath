@@ -17,6 +17,8 @@ if [[ "$(uname -s)" == Linux ]]; then
     python3 scripts/analyze_v2.py "$run_path-v2" --source
 fi
 python3 scripts/analyze_v2.py evidence/v2/reference --source
+python3 scripts/run_v3.py "$run_path-v3" --quick
+python3 scripts/validate_v3.py "$run_path-v3" --source
+python3 scripts/validate_v3.py evidence/v3/reference --source
 python3 scripts/paper.py --check
 python3 scripts/build_paper.py
-

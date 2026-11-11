@@ -5,26 +5,26 @@
       "budget": 8,
       "op": "init"
     },
-    "invoked_ns": 25938770504846,
-    "responded_ns": 25938869171977,
+    "invoked_ns": 112944035643728,
+    "responded_ns": 112944552249232,
     "response": {
       "status": "initialized"
     },
     "role": "broker",
-    "unix_time": 1794338080
+    "unix_time": 1794425085
   },
   {
     "effects": [],
     "invocation": {
       "op": "init"
     },
-    "invoked_ns": 25938869184711,
-    "responded_ns": 25938881091492,
+    "invoked_ns": 112944552334132,
+    "responded_ns": 112944560034481,
     "response": {
       "status": "initialized"
     },
     "role": "sink",
-    "unix_time": 1794338080
+    "unix_time": 1794425085
   },
   {
     "effects": null,
@@ -43,18 +43,18 @@
             0,
             0
           ],
-          "expires": 1794341680,
+          "expires": 1794428685,
           "id": "one"
         }
       }
     },
-    "invoked_ns": 25938881704021,
-    "responded_ns": 25938891405558,
+    "invoked_ns": 112944561968358,
+    "responded_ns": 112944570021355,
     "response": {
       "status": "approved"
     },
     "role": "broker",
-    "unix_time": 1794338080
+    "unix_time": 1794425085
   },
   {
     "effects": null,
@@ -70,18 +70,67 @@
           0,
           0
         ],
-        "expires": 1794341680,
+        "expires": 1794428685,
         "id": "one"
       },
       "session_actor": "mallory"
     },
-    "invoked_ns": 25938891413904,
-    "responded_ns": 25938891538710,
+    "invoked_ns": 112944570091629,
+    "responded_ns": 112944570415503,
     "response": {
       "reason": "policy",
       "status": "denied"
     },
     "role": "broker",
-    "unix_time": 1794338080
+    "unix_time": 1794425085
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "audit"
+    },
+    "invoked_ns": 112944571185262,
+    "responded_ns": 112944571418825,
+    "response": {
+      "budget": 8,
+      "cancelled_charge": 0,
+      "charged": 0,
+      "committed_charge": 0,
+      "consistent": true,
+      "delegations_consistent": true,
+      "integrity": "ok",
+      "pending_charge": 0,
+      "records": 0,
+      "status": "ok",
+      "verus_exec_kernel_verified": true
+    },
+    "role": "broker",
+    "unix_time": 1794425085
+  },
+  {
+    "effects": [],
+    "invocation": {
+      "op": "audit"
+    },
+    "invoked_ns": 112944571436799,
+    "responded_ns": 112944571883376,
+    "response": {
+      "cancelled_permits": 0,
+      "committed_permits": 0,
+      "consistent": true,
+      "effects": 0,
+      "floors": [
+        0,
+        0
+      ],
+      "integrity": "ok",
+      "pending_permits": 0,
+      "pending_unfenced": true,
+      "revision": 0,
+      "status": "ok",
+      "verus_exec_kernel_verified": true
+    },
+    "role": "sink",
+    "unix_time": 1794425085
   }
 ]

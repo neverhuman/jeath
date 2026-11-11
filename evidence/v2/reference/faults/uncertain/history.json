@@ -5,26 +5,26 @@
       "budget": 8,
       "op": "init"
     },
-    "invoked_ns": 25941512617339,
-    "responded_ns": 25941681657536,
+    "invoked_ns": 112946422355311,
+    "responded_ns": 112946507298232,
     "response": {
       "status": "initialized"
     },
     "role": "broker",
-    "unix_time": 1794338082
+    "unix_time": 1794425087
   },
   {
     "effects": [],
     "invocation": {
       "op": "init"
     },
-    "invoked_ns": 25941681667324,
-    "responded_ns": 25941691136872,
+    "invoked_ns": 112946507353256,
+    "responded_ns": 112946514200278,
     "response": {
       "status": "initialized"
     },
     "role": "sink",
-    "unix_time": 1794338083
+    "unix_time": 1794425087
   },
   {
     "effects": null,
@@ -43,18 +43,18 @@
             0,
             0
           ],
-          "expires": 1794341683,
+          "expires": 1794428687,
           "id": "one"
         }
       }
     },
-    "invoked_ns": 25941691832298,
-    "responded_ns": 25941701341621,
+    "invoked_ns": 112946515125151,
+    "responded_ns": 112946521266544,
     "response": {
       "status": "approved"
     },
     "role": "broker",
-    "unix_time": 1794338083
+    "unix_time": 1794425087
   },
   {
     "effects": null,
@@ -70,13 +70,13 @@
           0,
           0
         ],
-        "expires": 1794341683,
+        "expires": 1794428687,
         "id": "one"
       },
       "session_actor": "alice"
     },
-    "invoked_ns": 25941701350948,
-    "responded_ns": 25941713600759,
+    "invoked_ns": 112946521289899,
+    "responded_ns": 112946527229870,
     "response": {
       "permit": {
         "actor": "alice",
@@ -90,14 +90,14 @@
             0,
             0
           ],
-          "expires": 1794341683,
+          "expires": 1794428687,
           "id": "one"
         }
       },
       "status": "pending"
     },
     "role": "broker",
-    "unix_time": 1794338083
+    "unix_time": 1794425087
   },
   {
     "effects": [],
@@ -115,18 +115,18 @@
             0,
             0
           ],
-          "expires": 1794341683,
+          "expires": 1794428687,
           "id": "one"
         }
       }
     },
-    "invoked_ns": 25941713604306,
-    "responded_ns": 25941723297727,
+    "invoked_ns": 112946527283762,
+    "responded_ns": 112946533580831,
     "response": {
       "status": "pending"
     },
     "role": "sink",
-    "unix_time": 1794338083
+    "unix_time": 1794425087
   },
   {
     "effects": null,
@@ -135,22 +135,22 @@
       "op": "settle",
       "sink_status": "pending"
     },
-    "invoked_ns": 25941723725086,
-    "responded_ns": 25941723838120,
+    "invoked_ns": 112946534328588,
+    "responded_ns": 112946534571439,
     "response": {
       "reason": "not_authoritative_terminal",
       "status": "denied"
     },
     "role": "broker",
-    "unix_time": 1794338083
+    "unix_time": 1794425087
   },
   {
     "effects": null,
     "invocation": {
       "op": "inspect"
     },
-    "invoked_ns": 25941723841085,
-    "responded_ns": 25941723947146,
+    "invoked_ns": 112946534586798,
+    "responded_ns": 112946534679944,
     "response": {
       "approvals": [
         {
@@ -170,7 +170,7 @@
                 0,
                 0
               ],
-              "expires": 1794341683,
+              "expires": 1794428687,
               "id": "one"
             }
           }
@@ -178,6 +178,7 @@
       ],
       "budget": 8,
       "charged": 2,
+      "delegations": [],
       "epochs": [
         0,
         0
@@ -200,7 +201,7 @@
                 0,
                 0
               ],
-              "expires": 1794341683,
+              "expires": 1794428687,
               "id": "one"
             }
           },
@@ -209,6 +210,55 @@
       ]
     },
     "role": "broker",
-    "unix_time": 1794338083
+    "unix_time": 1794425087
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "audit"
+    },
+    "invoked_ns": 112946535053232,
+    "responded_ns": 112946535293768,
+    "response": {
+      "budget": 8,
+      "cancelled_charge": 0,
+      "charged": 2,
+      "committed_charge": 0,
+      "consistent": true,
+      "delegations_consistent": true,
+      "integrity": "ok",
+      "pending_charge": 2,
+      "records": 1,
+      "status": "ok",
+      "verus_exec_kernel_verified": true
+    },
+    "role": "broker",
+    "unix_time": 1794425087
+  },
+  {
+    "effects": [],
+    "invocation": {
+      "op": "audit"
+    },
+    "invoked_ns": 112946535312133,
+    "responded_ns": 112946535556727,
+    "response": {
+      "cancelled_permits": 0,
+      "committed_permits": 0,
+      "consistent": true,
+      "effects": 0,
+      "floors": [
+        0,
+        0
+      ],
+      "integrity": "ok",
+      "pending_permits": 1,
+      "pending_unfenced": true,
+      "revision": 0,
+      "status": "ok",
+      "verus_exec_kernel_verified": true
+    },
+    "role": "sink",
+    "unix_time": 1794425087
   }
 ]

@@ -1,73 +1,58 @@
-# V2 revision status
+# Unified Revision and Evidence Audit
 
-Implemented: shared executable Verus core; separate broker/sink processes and
-stores; uncertain reservations; immutable normalized permits; per-issuer
-withdrawal, renewal and sink fencing; Landlock/seccomp sessions; semantic controls;
-independent sequential history checking; CPU races/controller controls; ten
-abstract omissions and 45 pairs; versioned manifests; native pinned
-AgentDojo/Progent controls; predeclared inference and model feasibility.
+This revision unifies the mechanistic theory, formal core, systems boundary, synthetic statistical suites, and predeclared empirical protocols across all archival manuscripts into one disciplined, provenance-verified paper (`docs/intelligence-is-not-authority.pdf`) organized around **five explicit evidence tiers (`Tiers 1–5`)**.
 
-The main manuscript centers revocation exposure, the proof boundary and local
-results. Historical synthetic and human-analogy material is in appendices. V1
-evidence and `tips/` are unchanged; a separate v2 status pointer is added.
+---
 
-Added managed inference with hash checks, fixed deadlines, one-server scheduling, learned review and CPU bridge controls. Open: GPU execution and five-controller Qwen3 campaigns; model-driven
-AgentDojo/Progent comparison; full concurrent history checking; mechanized SQL
-adapter/whole-protocol refinement. All verified Linux GPUs were occupied. These
-gaps are disclosed, not filled with scripted checkpoint labels. The PR is a
-reviewable implementation revision with narrowed claims, not acceptance of all
-three target claims.
+## 1. Archival Inventory (`tips/`) and Multi-Generation Provenance
 
-Earlier v1 revision notes follow.
+All **six** supplied archival files under `tips/` are preserved byte-for-byte (`0` byte modifications) and checked bijectively against `tips/manifest.json` on every `make required` run:
 
-# Revision and evidence audit
+| Archival file in `tips/` | Bytes | SHA-256 (`tips/manifest.json`) | Notes |
+| --- | ---: | --- | --- |
+| `Intelligence_Is_Not_Authority_Final(2).tex` | `129,361` | `1b750fa3d49cd16f1c09222c4a32ad82032dc4c85b25fcf514e5cf16dca151ce` | Early archival TeX draft |
+| `intelligence-is-not-authority (1).tex` | `167,898` | `7db5cd8dbc1de224fc653559e06b88b3eef8fc736cdddb2468d5c00c070e46d8` | Byte-identical to `intelligence-is-not-authority.tex` |
+| `intelligence-is-not-authority.tex` | `167,898` | `7db5cd8dbc1de224fc653559e06b88b3eef8fc736cdddb2468d5c00c070e46d8` | Byte-identical duplicate |
+| `Superintelligence_Is_Not_Sovereignty.tex` | `102,340` | `16622092440c97ddba4721441cbcb9a875668950e2b0a7f8802ff4198a882c87` | Sovereignty, JARVIS, and governance framing |
+| `intelligence_is_not_authority.tex` | `213,168` | `6d8c089821f229590fb1d5635588ecfc0527b38da42b9589c5925109f0be7c1c` | Expanded theory, 6-family monitors, selection, P1–P10, 12-field record |
+| `experiments.py` | `33,762` | `5be238ef0cbf172d1322621968280eb898ff878b7a19bc60928193517e81778b` | Archival Python reference prototype |
 
-The supplied folder had three TeX sources and no Git repository, scripts, numbers
-files or figures. The two lowercase manuscript files are identical. Original
-bytes and hashes are preserved under `tips/`. The revised source has one file per
-section, front matter, preamble, references and generated experimental components.
+*(Historical note correcting earlier V1 notes: the initial V1 bootstrap started when only the first three `.tex` files were present; subsequent archival drops added `Superintelligence_Is_Not_Sovereignty.tex`, `intelligence_is_not_authority.tex`, and `experiments.py`. `tips/manifest.json` now records and enforces exact SHA-256 digests across the complete 6-file directory.)*
 
-| Original claim | Disposition in this revision |
-| --- | --- |
-| A Python checker and full supplement accompany the paper | Withdrawn as an availability claim; absent from the supplied folder |
-| 10,180 states / 223,960 checks / 20 positive tasks | Reproduced by a fresh Rust reconstruction of the described model |
-| 41,732 states / 918,104 checks / eight units under an omitted budget | Reproduced, with a separate reference oracle and retained counterexample |
-| Eight listed enforcement mutations | Extended to nine, including the omitted destination check |
-| Six-family monitor percentages were reproduced | Removed; new two-family training experiment, fresh raw data and explicit design |
-| Runtime boundary, multi-issuer grants and recovery are proposed | Limited local SQLite versions implemented and exercised; deployment study remains open |
-| Useful tasks prove safety | Explicitly rejected; retain both non-vacuity and specification-omission controls |
-| Independence follows from diverse monitors / different stages | Explicitly rejected; conditional products and imposed independent sampling kept separate |
-| Caregiving/evolution establishes a caring AI objective | Kept as motivation for an untested hypothesis; no behavioral or human result inferred |
-| A model invariant is implementation verification | Explicitly rejected; no formal refinement proof or OS sandbox claimed |
+`evidence/reference/revision-index.json` links three reproducible evidence generations:
+1. **Preserved V1 (`12b5579`):** `evidence/reference/*.json`, still validated against commit `12b5579` (`scripts/validate.py --source-ref 12b5579`).
+2. **Prior V2 Baseline (`68783a0`) & V4-Unified V2 (`evidence/v2/reference/`):** Separate-process broker/sink protocol, `171`-obligation Verus executable kernel refinement & wire injectivity, `31` fault/slowloris histories, `11/11` Linux confinement probes, `18/18` diamond-POR real-time interval-linearized `1..32`-actor races (`concurrent_v3.py`), `320` frozen CPU `Qwen3-4B`/`8B` holdout campaigns (`0 GPU-s`), and native + live AgentDojo/Progent evaluations.
+3. **Standalone Pure-Rust V3/V4 Suite (`evidence/v3/reference/`):** `19` deterministic `SplitMix64` artifacts + `trajectory_monitors.json` (`seed 20261110`, zero external crates) covering `H2`, `H4`–`H17`, pure-Rust Ed25519/Macaroons + 3-sink `AF_UNIX` Jepsen (`crypto_and_jepsen.json`), operational AgentDojo + Linux confinement cutsets (`real_tool_cutsets.json`), `480` executed 5-step AgentDojo trajectories (`trajectory_monitors.json`), and `412`-parameter 2-layer neural policy-gradient RL (`neural_post_training.json`).
 
-The conditional exposure proof, persistent-ledger induction, fixed-sample zero-failure
-limit, transfer assumptions, rank-threshold result and crossed-variance calculation
-were retained with their assumptions. The statistics implementation uses stable
-`expm1`/log-CDF calculations; exact small cases and the 2,995,731-trial threshold
-are checked. Exhaustive closure covers the finite transition system, including
-cycles; boundary tests alone do not establish adequate specification or legitimacy.
+---
 
-Primary-source checks covered the newer incident/evaluation claims, the Kogui
-statement, CARE principles, AI control, Guaranteed Safe AI, adaptive/distributed
-monitor attacks, and SQLite transaction/WAL semantics. The Kogui quotation and
-attribution were checked against the linked statement; no endorsement or consultation
-is claimed. Bibliographic resolution is checked during the PDF build; it is not
-a guarantee that every literature interpretation is correct. An unavailable
-author-preprint citation was removed from the argument. Original human-history
-illustrations were not promoted into AI measurements.
+## 2. What Changed in Wave 2 (Unified V2 + V3 Synthesis)
 
-Reviewing current SQLite documentation exposed the concurrent WAL-reset bug in the
-initially cached 3.46.0 bundle. The final dependency was upgraded and a minimum
-fixed-version check added; final retained measurements use the patched build.
-Preliminary runs remain local in `target/` for inspection and are not the paper's
-reference dataset. No claim is made that ordinary passing tests detected that rare
-bug. See [SQLite's upstream report](https://www.sqlite.org/wal.html#the_wal_reset_bug).
+### Formal Core & Systems Hardening (Tiers 1–3)
+- **Expanded `policy-core` Verus Verification (`43` verified items, `0` warnings):** Extended `policy-core/src/lib.rs` to `12` total defensive `exec` functions (`same_bytes`, `grants_ok`, `current_grants`, `revision_matches`, `reserve`, `admit`, `admit_multi`, `admit_uncertain`, `advance_floor`, `attenuates`, `unfenced`, `release`) and `19` `proof fn` theorems over an explicit ghost trace specification (`LedgerState`, `step_ledger`, `run_ledger`).
+- **End-to-End Immutable Required-Issuer Permit Binding (`H4`):** `DispatchedPermit` now carries normalized `required` issuer vectors immutably from broker admission to sink execution while keeping `actor + proposal` as the proposer retry identity (`delegated_transfer_extra_steward_fenced` in `faults.json`).
+- **Concurrent Schedule & Interval Linearization (`H6`, `H7`):** Added bounded in-memory schedule exploration (`tests/protocol_v2_interleavings.rs`) and an independent recorded-RPC real-time interval linearizer (`scripts/concurrent_v3.py`) checking `submit`/`withdraw`/`renew`/`status` responses and final durable effects (`9/9` `1,2,4`-actor publication runs pass; non-atomic `inspect`/`audit` diagnostic snapshots excluded; near-expiry or bound-exceeded traces report `inconclusive`).
+- **Linux Confinement Closure (`11/11` probes in `isolation.json`):** Hardened `src/isolation_v2.rs` and `scripts/launch_v2.py` with full SysV IPC (`msgsnd`, `msgrcv`, `msgctl`, `semop`, `semtimedop`, `semctl`, `shmctl`, `shmdt`) and POSIX mqueue (`mq_*`) seccomp `EPERM` filters, an `existing_sysv_queue` `IPC_PRIVATE` canary, `stderr=subprocess.DEVNULL` (`fd 2` leak closed), and `32,768`B launcher / `65,536`B service blocking-read framing caps.
 
-Open work remains substantial: independently audit specifications and oracles;
-establish authenticated role separation and host isolation; prove or test refinement
-for external tools; design sealed stronger-attacker transfer studies; train and
-evaluate caretaker objectives with independent seeds; and obtain actual participant
-data before making claims about human delegation. The supplied offline adapter
-supports mechanical proposal/effect endpoints, not semantic truthfulness or a
-human consent study. These are scientific limits, not missing evidence relabeled
-as completed work.
+### Repaired Predeclared Model & Benchmark Harnesses (Tiers 3 & 5)
+- **Statistical & Freeze Repairs (`scripts/campaign_analysis.py`, `scripts/model_v2.py`, `scripts/infer_v2.py`):** Replaced normal/Hoeffding approximations on small clusters with `16` Bonferroni-adjusted one-sided component claims ($\alpha = 0.05/16 = 0.003125$), exact Clopper–Pearson discordance bounds for safety superiority, and conservative any-loss Clopper–Pearson bounds for `5` pp usefulness noninferiority (`>= 113` loss-free cases out of `128` default max). Bound holdout rosters cryptographically to raw `freeze.json` SHA-256 bytes and fixed cluster counts.
+- **Exogenous Revocation & Real Post-Commit `lost_reply` Crash:** Repaired `infer_v2.py` so turn-1 withdrawal executes exogenously even on immediate abstention/invalid JSON (requiring foreground task completion for utility) and `lost_reply` kills `sink-v2` immediately after durable SQLite commit.
+- **Post-Mutation Native Benchmark Grading (`scripts/benchmark_v2.py`):** Native AgentDojo (`v1.2.2`) and Progent graders now inspect actual post-run state even if a later turn emits malformed JSON, record unavailable graders as `None` (`unknown`), and explicitly report that `2/12` upstream `banking` tasks (`5` and `6`) accept unchanged states in empty controls.
+
+### Pure-Rust Mechanistic & Selection Reconstructions (Tier 4)
+- Implemented standalone pure-Rust reconstructions (`src/v3_*.rs`) for `H2` (calibrated uncertainty lag), `H4/H5/H17` (`6`-state `DiscoveryLedger`, endogenous human-grant harm reversal `11.96% > 2.85%`, `28`-cell persona $\times$ boundary matrix), `H6` (`1,030,301` exact snapshot triples), `H9` ($k^*$ stacking floor, summable vs constant horizon schedules, heavy-tailed lognormal M/G/1 reactive halt leak `66.0%` vs `0` pre-commit violations), `H10/H11` (weighted cuts + `200`-graph sparse DAG interdiction showing `0.0%` narrow-graph severance from `32` route hotfixes vs `73.5%` / `100.0%` from $B=6$ min-cut), `H12/H13` (Zipf Good–Turing/Chapman capture–recapture non-identifiability under `0.0%` critical-recall withholding + exact Fisher planted-audit curves), `H14/H15` (`200`-node Golub–Welsch copula, `24`-task `20`D `6`-family classifier suite, portfolio $R_G$, Cronbach $V(m,k)$), and `H16` (`2`-trait Price selection suite showing `conferred_rank` still selects `94.9%` reckless gambling whereas `floor` achieves `29.7x` lower harm and $q_{\text{gate}} \ge 0.80$ collapses warrior gambling to `2.3%`).
+
+---
+
+## 3. Retained Negative Results and Open Tier-5 Obligations
+
+Negative results and unexecuted protocols are foregrounded rather than smoothed away:
+
+1. **Specification Omission & Wrong-Payload Controls:** Verified rules still admit omitted harms (`8` vs `2` budget units in `41,732`-state model; approved edit returning `0` instead of `42`).
+2. **Idempotency & Contention Controls:** Non-idempotent sinks duplicate effects (`2` deliveries on retry); `200` ms sink write locks delay fenced acknowledgment to `264.63` ms (`8` units held unavailable).
+3. **Upstream Benchmark Baseline Artefact:** `2/12` native AgentDojo `banking` tasks (`5` and `6`) pass utility in unchanged empty controls.
+4. **Route Hotfixing, Passive Coverage, Shared-Step Monitors, & Conferred Tournaments:** `32` `patch_specific` hotfixes sever `0.0%` of narrow DAGs; Good–Turing reports `96.0%` coverage under `0.0%` critical recall; `6` diverse classifier families on a shared step miss `5.21%` (`24.0x` product) while imposing a `25.6%` benign false-block tax; `conferred_rank` harm vetoes still select `94.9%` gambling (`92.1%` at 60% harm internalization); warm personas cause higher unconditional harm (`11.96% > 2.85%`) when warmth expands human scope grants.
+5. **Executed CPU Checkpoints (`320` Holdout Campaigns, `0 GPU-s`) & Open Tier-5 Work:**
+   - Local `Qwen3-4B` / `Qwen3-8B` paired 5-controller holdout campaigns (`320/320`, `0/64` unauthorized effects under `complete`, scaling safe-useful completion from `28.1%` to `56.2%`) and live AgentDojo/Progent runs executed strictly on `xbabe2`'s 64-core CPU (`CUDA_VISIBLE_DEVICES=""`, `0 GPU-s`; Linux GPUs were occupied and `xbabe4` resolved to Darwin arm64). At pilot $N=32 < 113$, Bonferroni ($\alpha=0.05/16$) formal superiority/noninferiority bounds remain honestly `inconclusive`.
+   - Full-power $N \ge 113$ checkpoint scaling, frontier-model transfer, whole-runtime/SQLite/OS formal refinement, uncooperative external non-idempotent API mediation, frontier-LLM RLHF $3\times 3\times 2$ caretaker experiments, human scope-conferral trials, and institutional stakeholder governance remain open research obligations.
+   - Primary-source checks verified the Kogui statement (`tips/` & `references.tex`), CARE principles, and SQLite WAL `>= 3.53.2` (fixing the upstream `3.46.0` WAL-reset bug); **no consultation with or endorsement by the Kogui authors or any Indigenous community is claimed**.

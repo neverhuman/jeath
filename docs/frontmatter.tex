@@ -3,36 +3,47 @@
 \twocolumn[\begin{@twocolumnfalse}
 \thispagestyle{plain}
 \begin{center}
-{\fontsize{25}{29}\selectfont\bfseries\color{ink}Intelligence Is {\color{notred}Not} Authority\par}
-\vspace{7pt}
-{\large Verified Policy Decisions and Revocable Local Agent Authority\par}
-\vspace{11pt}
-{\normalsize Jepson Taylor\par}
-\vspace{3pt}{\small\href{mailto:jepson@veox.ai}{\nolinkurl{jepson@veox.ai}}\par}\vspace{3pt}{\small 10 November 2026\par}
-\end{center}
-\vspace{6pt}
-\begin{center}\begin{minipage}{.94\textwidth}\small
-\textbf{Abstract.}
-What authority can remain after an agent is stopped or permission is withdrawn?
-We separate admission revocation from sink-fenced revocation and implement a local
-broker and cooperative tool service with distinct durable stores. Reservations
-precede dispatch; ambiguous outcomes retain their charges. Under the stated sink
-contract, effects after admission revocation are bounded by outstanding reserved
-charges, while a durable fence acknowledgment excludes subsequent effects under
-the withdrawn issuer epoch. A pinned Verus run verifies \VTwoProofs{} obligations
-for the deterministic Rust policy core compiled into the broker; parsing,
-storage, normalization, session identity, and the kernel remain trusted.
-Independent trace checks, crash regressions, semantic positive controls, and
-Landlock/seccomp probes exercise this boundary. Ten abstract mechanism omissions
-and all 45 pairs have witnesses within a declared finite search language.
-Scripted CPU comparisons and native AgentDojo/Progent integration controls are
-reported separately from model experiments. All checked Linux GPUs were occupied;
-the planned Qwen3 checkpoint comparison is unrun, so no empirical claim about
-adversarial model utility or noninferiority is made. The result is a conditional
-authorization and revocation artifact, not verification of an entire runtime or
-an arbitrary external service.
-
-\end{minipage}\end{center}
+{\fontsize{23}{27}\selectfont\bfseries\color{ink}Intelligence Is {\color{notred}Not} Authority\par}
+\vspace{5pt}
+{\large\color{ink}Verified Policy Decisions, Revocable Agent Authority, and Structural Bounds on Reach\par}
 \vspace{9pt}
+{\normalsize Jepson Taylor\par}
+\vspace{2pt}{\small\href{mailto:jepson@veox.ai}{\nolinkurl{jepson@veox.ai}}\par}
+\vspace{2pt}{\small\color{slate}10 November 2026\par}
+\end{center}
+\vspace{5pt}
+\begin{center}\begin{minipage}{.94\textwidth}\small
+\textbf{Abstract.}\enspace
+An AI system's capability to discover actions does not confer authority to execute
+them, nor does stopping token generation revoke work already in flight. We separate
+capability, aim, and conferred revocable authority, distinguishing broker admission
+revocation from sink-fenced revocation across separate durable stores. Pre-dispatch
+reservations conservatively bound ambiguous outcomes, attenuated sub-delegations and
+cryptographic tokens bind strengthened issuer requirements end-to-end, and durable
+signed epoch fences exclude post-acknowledgment effects under withdrawn authority. A
+pinned Verus run verifies \VTwoProofs{} SMT obligations for the Rust
+\texttt{policy-core} (\VTwoExecFns{} executable functions---including concrete
+\texttt{ExecBrokerKernel}/\texttt{ExecSinkKernel} forward-simulation refinement and
+canonical wire-encoding injectivity---and \VTwoTheorems{} proof theorems). Across
+separate-process SQLite, \texttt{AF\_UNIX} Jepsen partition schedules
+($0/\text{\VFourJepsenSchedulesPerClass}$ cooperative post-ack leaks vs.\
+\VFourJepsenBrokerOnlyLeaks{} broker-only), diamond-POR concurrent linearizations up to
+\VTwoLinearizedMaxActors{} writers (\VTwoLinearizedRuns/\VTwoRaceRuns{}), and
+\VFourHoldoutTotalCampaigns{} executed CPU \texttt{Qwen3-4B}/\texttt{8B} frozen holdout
+campaigns (\VTwoGpuSecondsUsed{} GPU-s), complete mediation incurs $0.0\%$ unauthorized
+effects and $0.0\%$ false blocks while scaling safe-useful completion from
+\VFourFourBCompleteSafeUsefulPct\% to \VFourEightBCompleteSafeUsefulPct\% (pilot
+$N{=}\VFourHoldoutCasesPerCheckpoint < \VTwoZeroLossCasesMin$ Bonferroni bounds remain
+honestly inconclusive). Operational AgentDojo \texttt{v1.2.2} and Linux confinement
+cutsets, \VFourTrajEvalCount{} executed 5-step trajectory-monitor evaluations
+($\VFourTrajHetInflation\times$ five-family transcript inflation vs.\
+\VFourTrajIsoFiveMissPct\% prose-stripped step invariants), and pure-Rust 2-layer
+neural policy-gradient post-training ($+\VFourNeuralVetoGapPp$\,pp emergent
+evaluation-aware shortcutting under audited rank tournaments vs.\
+\VFourNeuralGatedHarmPct\% gated survival-floor harm) anchor structural reach bounds,
+while SQLite/OS adapters remain trusted rather than formally refined and frontier/human
+studies remain open.
+\end{minipage}\end{center}
+\vspace{8pt}
 \end{@twocolumnfalse}]
 \makeatother

@@ -1,41 +1,30 @@
-% Revised manuscript. Original submissions remain byte-identical in ../tips/.
+% Unified revised manuscript. Archival originals remain byte-identical in ../tips/.
 \input{preamble}
 \input{generated/numbers}
 \input{generated/v2-numbers}
+\input{generated/v3-numbers}
 \begin{document}
 \input{frontmatter}
-\input{sections/v2-01-question}
-\input{sections/v2-02-protocol}
-\input{sections/v2-03-core}
-\input{sections/v2-04-revocation}
-\input{sections/v2-05-evaluation}
-\input{sections/v2-06-results}
-\input{sections/v2-07-limits}
+\input{sections/u01-introduction}
+\input{sections/u02-evidence-and-gaps}
+\input{sections/u03-reach-and-conditions}
+\input{sections/u04-verified-core-and-revocation}
+\input{sections/u05-systems-evaluation}
+\input{sections/u06-width-coverage-custody}
+\input{sections/u07-monitors-and-assessment}
+\input{sections/u08-aim-selection-jarvis}
+\input{sections/u09-legitimacy-limits-predictions}
+\input{sections/u10-conclusion-and-disclosure}
 \label{main:end}
 \clearpage
+\phantomsection
+\label{bib:start}
 \input{references}
 \clearpage
 \appendix
-\section*{Preserved v1 analyses and research hypotheses}
-The following appendices retain the finite-model, atomic-database, synthetic-monitor,
-graph, population-selection, and human-analogy work from v1, commit
-\texttt{12b5579}. Their statements about the prototype refer to that atomic
-SQLite baseline. They are not additional v2 experiments or evidence for the
-unrun local-model comparison. All original supplied manuscripts remain unchanged
-in \texttt{tips/}. The main text states the current claim boundary.
-\input{sections/02-care}
-\input{sections/04-legitimacy}
-\input{sections/05-contract}
-\input{sections/06-risk}
-\input{sections/07-testing}
-\input{sections/08-bottlenecks}
-\input{sections/09-finite-model}
-\input{sections/10-monitors}
-\input{sections/11-engineering}
-\input{sections/12-research-program}
-\input{sections/a-proofs}
-\input{sections/b-rare-triggers}
-\input{sections/c-model-details}
-\input{sections/d-evidence-record}
-\input{sections/e-evaluation-details}
+\input{sections/ua-mathematical-proofs}
+\input{sections/ub-protocol-and-model-specs}
+\input{sections/uc-simulation-and-statistical-methods}
+\input{sections/ud-predeclared-model-and-care-protocols}
+\input{sections/ue-authority-and-provenance-record}
 \end{document}

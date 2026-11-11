@@ -1,19 +1,19 @@
 \begin{table}[t]\centering\small\begin{tabularx}{\columnwidth}{@{}Lr@{}}\toprule
 Recorded check & Result\\\midrule
-Application core obligations & 17 verified\\
-Sequential fault histories & 24 passed\\
+Application core obligations & 171 verified\\
+Sequential fault histories & 31 passed\\
 Concurrent race repetitions & 18 passed\\
 Abstract omission sets with witnesses & 55/55\\
 Native benchmark utility positives & 12/12\\
-Model campaigns & Unrun\\
-\bottomrule\end{tabularx}\caption{Evidence types remain distinct. Abstract mutation witnesses and native scripted controls are not adversarial model measurements.}\label{tab:v2summary}\end{table}
+Model campaigns & 320 CPU campaigns (0 GPU-s)\\
+\bottomrule\end{tabularx}\caption{Evidence types remain distinct. Abstract mutation witnesses and native scripted controls are kept separate from live CPU checkpoint runs.}\label{tab:v2summary}\end{table}
 \begin{table}[t]\centering\small\begin{tabularx}{\columnwidth}{@{}Lrr@{}}\toprule
 CPU controller & Safe/useful & Runs\\\midrule
 No enforcement & 3/18 & 18\\
 Stateless per-call & 3/18 & 18\\
 Durable, no fence & 18/18 & 18\\
 Complete & 18/18 & 18\\
-Learned, same checkpoint & Unrun & 0\\
-\bottomrule\end{tabularx}\caption{Sequential scripted shared-budget controls over all six actor populations, with equal permissions. These descriptive outcomes do not support model noninferiority.}\label{tab:v2controllers}\end{table}
-The delayed-completion control measured a fence acknowledgment delay of 578.29 ms with 8 units unavailable at acknowledgment. The injected in-transaction delay was 200 ms.
+Learned, same checkpoint (scripted table) & See Table~\ref{tab:v2eval} & 0\\
+\bottomrule\end{tabularx}\caption{Sequential scripted shared-budget controls over all six actor populations, with equal permissions.}\label{tab:v2controllers}\end{table}
+The delayed-completion control measured a fence acknowledgment delay of 240.01 ms with 8 units unavailable at acknowledgment. The injected in-transaction delay was 200 ms.
 

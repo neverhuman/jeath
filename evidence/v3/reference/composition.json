@@ -1,0 +1,92 @@
+{
+  "hypothesis": "H6",
+  "evidence_tier": "tier2_exhaustive_discrete_enumeration",
+  "budgets": [
+    2,
+    10,
+    25,
+    50,
+    100
+  ],
+  "rows": [
+    {
+      "budget": 2,
+      "total_triples": 27,
+      "snapshot_admissible_pairs": 14,
+      "closed_form_admissible_pairs": 14,
+      "snapshot_overspend_pairs": 4,
+      "closed_form_overspend_pairs": 4,
+      "snapshot_overspend_share": 0.2857142857142857,
+      "jointly_feasible_pairs": 10,
+      "serialized_both_admitted_pairs": 10,
+      "serialized_overspend_pairs": 0,
+      "closed_form_exact_match": true
+    },
+    {
+      "budget": 10,
+      "total_triples": 1331,
+      "snapshot_admissible_pairs": 506,
+      "closed_form_admissible_pairs": 506,
+      "snapshot_overspend_pairs": 220,
+      "closed_form_overspend_pairs": 220,
+      "snapshot_overspend_share": 0.43478260869565216,
+      "jointly_feasible_pairs": 286,
+      "serialized_both_admitted_pairs": 286,
+      "serialized_overspend_pairs": 0,
+      "closed_form_exact_match": true
+    },
+    {
+      "budget": 25,
+      "total_triples": 17576,
+      "snapshot_admissible_pairs": 6201,
+      "closed_form_admissible_pairs": 6201,
+      "snapshot_overspend_pairs": 2925,
+      "closed_form_overspend_pairs": 2925,
+      "snapshot_overspend_share": 0.4716981132075472,
+      "jointly_feasible_pairs": 3276,
+      "serialized_both_admitted_pairs": 3276,
+      "serialized_overspend_pairs": 0,
+      "closed_form_exact_match": true
+    },
+    {
+      "budget": 50,
+      "total_triples": 132651,
+      "snapshot_admissible_pairs": 45526,
+      "closed_form_admissible_pairs": 45526,
+      "snapshot_overspend_pairs": 22100,
+      "closed_form_overspend_pairs": 22100,
+      "snapshot_overspend_share": 0.4854368932038835,
+      "jointly_feasible_pairs": 23426,
+      "serialized_both_admitted_pairs": 23426,
+      "serialized_overspend_pairs": 0,
+      "closed_form_exact_match": true
+    },
+    {
+      "budget": 100,
+      "total_triples": 1030301,
+      "snapshot_admissible_pairs": 348551,
+      "closed_form_admissible_pairs": 348551,
+      "snapshot_overspend_pairs": 171700,
+      "closed_form_overspend_pairs": 171700,
+      "snapshot_overspend_share": 0.49261083743842365,
+      "jointly_feasible_pairs": 176851,
+      "serialized_both_admitted_pairs": 176851,
+      "serialized_overspend_pairs": 0,
+      "closed_form_exact_match": true
+    }
+  ],
+  "b100_admissible": 348551,
+  "b100_overspend": 171700,
+  "b100_overspend_share": 0.49261083743842365,
+  "b100_serialized_overspend": 0,
+  "semantic_omission_miniature": {
+    "budget": 100,
+    "initial_charged": 0,
+    "proposed_spend": 40,
+    "unmodeled_domain_harm_threshold": 40,
+    "serialized_gate_admits": true,
+    "budget_invariant_violated": false,
+    "unmodeled_semantic_harm_occurred": true
+  },
+  "claim_boundary": "Exhaustive discrete combinatorics over (c, q1, q2) in {0..B}^3, not empirical concurrency race frequencies; serialized budget enforcement does not prevent unmodeled semantic harms below B."
+}

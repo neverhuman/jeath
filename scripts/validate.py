@@ -72,9 +72,21 @@ def check(directory):
 
 
 def originals():
-    for row in json.loads((ROOT / "tips/manifest.json").read_text()):
-        data = (ROOT / "tips" / row["file"]).read_bytes()
-        assert hashlib.sha256(data).hexdigest() == row["sha256"] and len(data) == row["bytes"]
+    tips_dir = ROOT / "tips"
+    rows = json.loads((tips_dir / "manifest.json").read_text())
+    manifest_files = [row["file"] for row in rows]
+    actual_files = sorted(
+        p.name for p in tips_dir.iterdir() if p.is_file() and p.name != "manifest.json"
+    )
+    assert len(manifest_files) == len(set(manifest_files)), "duplicate file in tips/manifest.json"
+    assert sorted(manifest_files) == actual_files, (
+        f"tips/manifest.json files {sorted(manifest_files)} != actual tips/ files {actual_files}"
+    )
+    for row in rows:
+        data = (tips_dir / row["file"]).read_bytes()
+        assert hashlib.sha256(data).hexdigest() == row["sha256"] and len(data) == row["bytes"], (
+            f"Archival file mismatch: {row['file']}"
+        )
 
 
 if __name__ == "__main__":

@@ -1,118 +1,80 @@
-# V2 protocol experiments
+# Running and Interpreting the Experiments
 
-Run `python3 scripts/run_v2.py target/NEW --profile smoke` on Linux. Publication
-uses three repetitions of races and scripted controller controls. Both profiles
-require proof verification, real fault processes, semantic positive and negative
-controls, and working Landlock/seccomp restrictions. Neither allocates GPUs.
+`make required` (`scripts/required.sh`) is the mandatory local gate before every push. Every build, database, virtual environment, tool install, and transient run stays inside this checkout's `target/` directory—**never** build or run in `/tmp`. CPU fixtures are the default; routine gates never allocate GPUs or preempt active workloads.
 
-`python3 scripts/analyze_v2.py target/NEW --source` recomputes independent
-sequential histories and abstract ablation search, validates effects and source
-hashes, and checks evidence structure. This is not a full concurrent
-linearizability checker. Races use final ledger/effect conservation; delayed
-fencing uses an independently observed sink write lock and effects before/after
-acknowledgment. Failing histories retain the first failing prefix.
+---
 
-Ten abstract omissions (budget, binding, conjunction, epoch, expiry, revision,
-deduplication, durability, quarantine and fencing) and all 45 pairs search every
-subsequence of ten declared templates. Witnesses are shortest in that language,
-not globally minimal or alternate verified Rust implementations.
+## 1. Local Publication Gate (`make required`)
 
-Negative controls must fail: the non-idempotent sink duplicates deliveries, and
-an approved edit returning 0 commits but fails the task requiring 42.
+Running `make required` executes the complete CPU verification and reproducibility pipeline:
 
-The real-model experiment is unfinished. `scripts/model_v2.py` records host
-preflight, sample selection and freeze/holdout preparation; `scripts/infer_v2.py` manages one local llama-server at a time, refuses busy or misidentified GPUs, verifies server/model pins, enforces development and total deadlines, freezes the sample, generates fresh cases and executes the five-controller bridge. The bridge has CPU scripted tests; real GPU inference is unrun. Official Qwen3 pins, llama.cpp revision,
-generation limits, the four-GPU-hour cap and inference are predeclared in
-`fixtures/v2/evaluation.json`. All checked Linux GPUs were occupied. The `xbabe4`
-alias resolved to `Mac-Studio.local`, Darwin arm64, and failed identity validation.
-No GPU was allocated, no holdout inspected, and no sample selected.
+1. **Workspace & Confinement Sanity:** Verifies clean working paths inside `target/`, checks that all **6** archival files in `tips/` match `tips/manifest.json` byte-for-byte (bijective file-set + SHA-256 check), and runs Rust unit, integration, and bounded schedule-interleaving tests (`cargo test --locked`, including `tests/protocol_v2_interleavings.rs`).
+2. **Mechanized Verus Core Verification (`scripts/verify_core.py`):** Runs hash-pinned Verus (`release/0.2026.11.02.8bf68ee`, Rust `1.99.1-x86_64-unknown-linux-gnu` toolchain under `target/tooling/`, workspace `rustc 1.95.0`) on `policy-core/src/lib.rs`, asserting `171` verified items (`41` public `exec` functions including `ExecBrokerKernel`/`ExecSinkKernel` + `encode_permit_canonical`, and `29` public `proof fn` theorems), `0` errors, `0` trigger warnings, and rejection of `3` deliberate Z3 soundness mutations.
+3. **V2 Protocol & Systems Validation (`analyze-v2` + `concurrent_v3.py`):** Validates `evidence/v2/reference/` against current source hashes (`--source`), recomputes sequential fault histories, `55`-cell (`10` single + `45` pairwise) abstract omission search, and `model-campaigns-analyzed.json`, and runs diamond-POR recorded-RPC real-time interval linearization (`scripts/concurrent_v3.py`) across all `18/18` publication `1, 2, 4, 8, 16, 32`-actor race traces.
+4. **V3/V4 Pure-Rust Suite Validation (`scripts/validate_v3.py --source`):** Validates all `19` deterministic JSON artifacts in `evidence/v3/reference/` (plus `trajectory_monitors.json`) against source hashes, tolerances, negative-result invariants, and exact analytical checks.
+5. **Preserved V1 Validation (`scripts/validate.py --source-ref 12b5579`):** Verifies that `evidence/reference/*.json` still validates cleanly against historical commit `12b5579` and `evidence/reference/revision-index.json`.
+6. **Python Unit Suites & Manuscript Build:** Runs all `unittest` suites (`tests/test_*.py`, covering `campaign_analysis.py`, `concurrent_v3.py`, `benchmark_v2.py`, `infer_v2.py`, and paper macro sync) and compiles `docs/intelligence-is-not-authority.pdf` via `scripts/build_paper.py` (`0` LaTeX errors, `0` undefined citations/references, `0` non-whitelist warnings).
 
-For genuine optional campaign JSONL, `analyze_v2.py --campaigns FILE` separates
-checkpoints, pairs controllers by case/variant, checks equal visible state and
-permissions, clusters variants and uses bounded Hoeffding intervals. Eight
-primary contrasts use Bonferroni adjustment. The noninferiority margin is fixed
-at five percentage points. Scripted inputs cannot count as model evidence;
-JSON labels alone still cannot authenticate an actual checkpoint run.
+---
 
-`scripts/benchmark_v2.py OUTPUT.json` runs with the pinned AgentDojo and Progent
-source packages installed in a lane-local venv. It executes the selected native
-ground truth and graders, unmodified Progent exact-policy checks and subset solver.
-It does not invoke an API, generate policies with an LLM or run adaptive updates.
-The recorded dependencies and upstream source IDs support reproduction. The managed model runner can additionally call the native benchmark adapter with upstream-generated initial policies and local inference transport; adaptive updates are explicitly disabled. That path remains unrun and may report integration errors.
+## 2. V2 Protocol, Confinement, and Benchmark Experiments
 
-The following methods describe v1, retained against commit `12b5579`.
+```bash
+# Smoke profile (fast local check) or publication profile (3 repetitions of races & controllers):
+python3 scripts/run_v2.py target/my-v2-run --profile smoke
+python3 scripts/run_v2.py target/my-v2-run --profile publication
+python3 scripts/analyze_v2.py target/my-v2-run --source
+python3 scripts/concurrent_v3.py evidence/v2/reference
+```
 
-# Running and interpreting the experiments
+### Measured V2 Components (`evidence/v2/reference/`)
+- **`proof.json` (`scripts/verify_core.py`):** Records the `43` verified Verus obligations on `policy-core/src/lib.rs`, exact binary/source SHA-256 digests, and `0` trigger warnings.
+- **`faults.json` (`31` separate-process RPC histories):** Runs separate `broker-v2` (`broker.sqlite`) and `sink-v2` (`sink.sqlite`) processes under WAL `synchronous=FULL` (SQLite `3.53.2`). Includes `3` positive semantic controls (`transfer`, `release`, `edit`), `delegated_transfer_extra_steward_fenced` (verifying that `DispatchedPermit` immutably binds strengthened `required` issuer vectors through sink fencing while keeping `actor + proposal` proposer retry identity), pre/post-commit `SIGKILL` crash/recovery, uncertain reservation timeout non-refund, and **3 retained systems negative controls**:
+  1. *Delayed sink write lock:* `200` ms injected sink lock delays fenced withdrawal acknowledgment to `264.63` ms while holding `8` budget units unavailable (`0` post-ack commits).
+  2. *Non-idempotent sink:* Disabling sink unique-ID deduplication produces `2` duplicate effects on retry.
+  3. *Approved wrong edit:* An authorized edit returning `0` commits at the broker/sink boundary and is caught only by the downstream task oracle expecting `42`.
+- **`races.json` (`18` publication runs across `1, 2, 4, 8, 16, 32` actors):** Concurrent processes contend on a shared SQLite budget (`0` overspends across all `18` runs). For `1, 2, 4` actors (`<= 40` calls, `9` runs), `scripts/concurrent_v3.py` verifies real-time interval linearizability of recorded `submit`/`withdraw`/`renew`/`status` RPCs and final durable effects against the reference state machine (excluding non-atomic `inspect`/`audit` diagnostic reads; near-expiry boundary ties or search-cap traces return `inconclusive` rather than silently passing). Higher-actor runs (`8, 16, 32`) check final-state budget conservation and `audit` invariants.
+- **`protocol_ablation.json` (`55/55` omission witnesses):** Searches `10` single mechanism omissions (`budget`, `binding`, `conjunction`, `epoch`, `expiry`, `revision`, `deduplication`, `durability`, `quarantine`, `fencing`) and all `45` pairs across `10` declared templates (`296` traces), finding shortest witness counterexamples within that template language.
+- **`isolation.json` (`11/11` Linux confinement probes):** Exercises `src/isolation_v2.rs` and `scripts/launch_v2.py` on Linux x86_64 (Landlock ABI v4 16-byte ruleset `handled_fs` + `handled_net = 3`, 64-bit `SYS_prlimit64` offsets `16` & `20`, seccomp `EPERM` on sockets/mount/ptrace/unshare plus full SysV IPC `msgsnd`/`msgrcv`/`msgctl`/`semop`/`semtimedop`/`semctl`/`shmctl`/`shmdt` and POSIX mqueue `mq_*`, `existing_sysv_queue` `IPC_PRIVATE` send/receive canary, `stderr=subprocess.DEVNULL` closing `fd 2`, and `32,768`B launcher / `65,536`B service blocking-read line-framing caps). Framing caps bound per-frame memory allocation without claiming arbitrary slowloris wall-clock immunity or formal OS sandbox verification.
+- **`controllers.json` (`72` scripted CPU runs):** Evaluates `4` controllers across `6` shared-budget scenarios (`3` reps): `complete` achieves `18/18` safe and useful runs vs `3/18` for `none` and `stateless`.
+- **`benchmark-controls.json` (`scripts/benchmark_v2.py`, `12/12` native controls):** Executes pinned AgentDojo (`v1.2.2`, commit `089ed468...`: `7` banking + `5` workspace) and Progent (`b02783b8...`) ground-truth positive controls in a `target/` venv (`0` integration errors). Grades actual post-run state even if a later turn emits malformed JSON, and records unavailable security graders as `None` (`unknown`). **Known upstream limitation:** `2/12` upstream `banking` tasks (`user_task_5`, `user_task_6`) accept unchanged states in empty controls, so native benchmark runs serve strictly as descriptive controls rather than primary endpoints.
 
-`make required` is the local publication gate. It keeps build and test artifacts
-under `target/`, never under `/tmp`. `Cargo.lock` fixes dependencies; the manifest
-of each measured run records Rust, SQLite, platform, seed, source and binary hashes.
+### Executed CPU Local-Checkpoint Holdout & Live AgentDojo (`320` Holdout Campaigns, `0 GPU-s`)
+`scripts/model_v2.py`, `scripts/infer_v2.py`, `scripts/campaign_analysis.py`, and `scripts/benchmark_v2.py --run-models` execute the pinned `Qwen3-4B-GGUF` / `Qwen3-8B-GGUF` (`Q4_K_M`, `llama.cpp` `7592b61d...`) evaluations strictly on `xbabe2`'s 64-core CPU (`CUDA_VISIBLE_DEVICES=""`, `0 GPU-s`):
+- **Frozen `N=32` Holdout (`evidence/v2/reference/model-campaigns-analyzed.json`):** `320/320` measured campaigns (`32` cases $\times 5$ controllers $\times 2$ checkpoints, verified against raw `freeze.json` SHA-256). `complete` incurs `0.0%` (`0/64`) unauthorized effects and `0.0%` (`0/64`) false blocks, scaling safe-useful completion from `28.1%` (`9/32`, `Qwen3-4B`) to `56.2%` (`18/32`, `Qwen3-8B`), whereas `none` leaks `31.2%`/`12.5%` and `learned_same_checkpoint` leaks `21.9%`/`6.2%`. At pilot $N=32 < 113$, Bonferroni ($\alpha=0.05/16$) formal bounds remain honestly `inconclusive`.
 
-`python3 scripts/run.py target/new-run [--quick] [--seed 20261110]` builds once and
-runs the following CPU fixtures. All output directories must be new.
+---
 
-| Output | Experimental unit / method | Interpretation |
+## 3. V3 Standalone Pure-Rust Simulation Suite (`evidence/v3/reference/`)
+
+```bash
+python3 scripts/run_v3.py target/my-v3-run --seed 20261110
+python3 scripts/validate_v3.py target/my-v3-run --source
+```
+
+`authority-lab run-v3` (`src/v3_core_models.rs`, `src/v3_coverage.rs`, `src/v3_graphs.rs`, `src/v3_monitors.rs`, `src/v3_selection.rs`) uses deterministic `SplitMix64` substreams with zero external crates or Python ML dependencies to produce `16` JSON artifacts (`provenance.json` + `15` Mechanism/Selection artifacts):
+
+| Artifact(s) | Hypotheses | Method & Key Parameters |
 | --- | --- | --- |
-| `model.json` | Full reachable-state closure, 22 actions per accepted state | All policies within the finite model; no probability over actions |
-| `runtime.json` | Eight scenario groups, actual children and independent SQLite connections | Bounded implementation checks; no universal deployment failure estimate |
-| `observed-effects.json` | Read-only snapshots of balances, deliveries, revisions, receipts and policy | Effects can be checked without trusting worker success strings |
-| `monitors.json` | Four/eight independent task/training seeds; 300/1,000 hazardous episodes per arm | Joint misses conditional on synthetic task, fixed trained monitors and the specified attacker |
-| `coverage.json` | Exactly paired visible reports; 200/2,000 planted-audit repetitions | Identifiability and power under stipulated reporting mechanisms |
-| `graphs.json` | Full DAG path count and independently implemented vertex cut | A true cut blocks the given graph; an unreported route defeats a partial-graph certificate |
-| `selection.json` | Four/eight populations; 100/400 agents; 25/60 generations | Consequences of specified rewards, not evidence of AI motivations |
-| `statistics.json` | Exact arithmetic and one-sided fixed-sample binomial limits | Assumptions must be checked before applying to empirical episodes |
+| `uncertainty.json` | H2 | `10,626` nested interval checks (`B=20`); calibration lag sweep `0..8` (`500` episodes/lag; `80` smoke) comparing `conservative_envelope_bt`, `stale_snapshot`, and `proposer_self_report` |
+| `jarvis_ledger.json`, `personas.json` | H4, H5, H17 | Deterministic `6`-state `DiscoveryLedger` (`24` periods; `12` smoke, sealed vs lagged closure), `permits(v1) subseteq permits(v0)` check, endogenous vs decoupled grant confounding, `28`-cell (`4x7`, `400` eps/cell; `60` smoke) persona $\times$ boundary synthesis |
+| `composition.json` | H6 | Exact 3-step concurrent snapshot triple enumeration at $B \in \{2, 10, 25, 50, 100\}$ (`1,030,301` triples at $B=100$) |
+| `risk_horizon.json` | H9 | Shared-floor stacking depth $k^*$, exact closed-form $T=10,000$ horizon schedules (`0.01/t^2`, harmonic, constant), heavy-tailed lognormal M/G/1 (`10,000` episodes/load; `1,000` smoke) reactive halt vs pre-commit reservation + sink fence |
+| `weighted_cuts.json`, `interdiction.json` | H10, H11 | Exact topological path DP + split-vertex Dinic min-cut + `2,048` brute-force checks; `200` 8-stage sparse DAGs/family (`20` smoke; `narrow` waist `6` vs `30` other layers, `hub`/`wide` `27` nodes/stage, `out_degree=6`) comparing reported-subgraph min-cut (`cut`) vs `patch_specific` and `patch_random` (`0..32`, grid `{0,3,6,9,12,16,20,24,32}`) |
+| `coverage_v3.json`, `audit_power.json` | H12, H13 | Shuffled Zipf ($p_r \propto 1/r, K=2,000, N=12,000$ across `4` searchers $\times 3,000$ draws, `200` trials; `25` smoke) Good–Turing & two-list Chapman capture–recapture under honest, 15% blind spot, and 5% strategic critical withholding; McAllester–Schapire vs Clopper–Pearson bounds; exact Fisher planted-audit power ($P \in \{40, 200\}$, $21$ grid points $r \in \{0.00, 0.05, \dots, 1.00\}$) |
+| `copula.json`, `monitors_v3.json`, `assessment_variance.json` | H14, H15 | `200`-node Golub–Welsch Gaussian-copula quadrature ($m=0.10, \rho \in \{0.0, 0.3, 0.6, 0.9\}, k \in \{1..8\}$); `24`-task (`6` smoke) `20`D `6`-family classifier suite (`MLP2L`, `LogisticL2`, `RegQDA`, `KNN15`, `RBFKernel`, `BoostedStumps`) across shared-step, distinct-steps, $\rho_{\text{adv}} \in \{0.0, 1.0, 2.0, 3.0\}$, 8-query feedback, $K \in \{1..32\}$ retries, and benign false-block calibration; portfolio $R_G$ & Cronbach crossed $V(m,k)$ |
+| `selection_v3.json` | H16 | 2-trait `(gamble share s, capacity c)` co-evolution (`N=2,000, G=80, 16` reps; `400/50/8` smoke, exact Price covariance check `< 3.2e-14`) across `taken_rank`, `conferred_rank`, `caretaker`, `floor`, rank-bar sweep (`0.02..0.90`), harm-penalty sweep (`0..1.00`), and external gate $q_{\text{gate}} \in \{0..1.00\}$ |
 
-The quick/full classifier designs use 300/600 training examples, 300/800 benign
-calibration examples, 15/25 SGD epochs, eight features, and six gates. Neural
-models have eight tanh hidden units. Mixed arms alternate three networks with
-three logistic regressions. Models receive separate training samples, with
-disjoint calibration and evaluation data. Thresholds use the benign 95th sample
-quantile. False blocks are reported for the complete protocol.
+To refresh paper macros and tables after an authorized scientific run, validate the new `target/` run, copy top-level JSON into the corresponding `evidence/*/reference/` directory (or run `scripts/reference_v2.py` for V2), run `python3 scripts/paper.py`, and run `make required`. Never edit numbers by hand in `docs/generated/*.tex`.
 
-The shared-input arms use identical edited examples. The independent-input arm
-draws each gate's input independently and edits it separately using a fixed
-surrogate. The feedback arm chooses among eight candidates using the defended
-protocol's scores. Its attacker has more feedback; this is a changed attack
-condition, not a matched-compute experiment. Edits keep the true label hazardous,
-remain in the original cube and have L2 radius ≤1.5. No real harmful content is
-generated. Inspect both raw per-seed counts and descriptive 1.96-SE summaries;
-eight seeds do not justify treating the interval as exact or uniform.
+---
 
-Runtime latency excludes initial schema creation, preparation and grant writes.
-It includes transaction locking, validation, effects, receipt persistence and
-commit. Throughput includes worker startup/scheduling after the start barrier.
-All writes use SQLite WAL and synchronous FULL. This is a local-filesystem
-workload, not a network database or external transaction benchmark. The SQLite
-dependency includes the WAL-reset fix; the floor rejects unpatched older builds.
-Checkpoint stress is a bounded regression, not an organic reproducer of that bug.
+## 4. Preserved V1 Suite (`12b5579`) and Fleet Helper
 
-The process-death worker prints and flushes a phase marker after effect/accounting
-SQL and immediately before commit, or immediately after commit but before returning
-a receipt. The controller kills that worker, reopens the database, audits effects,
-and retries. This tests actual abrupt process exit and lost receipts. It does not
-test power loss or every possible crash instruction.
+```bash
+python3 scripts/run.py target/my-v1-run [--quick] [--seed 20261110]
+python3 scripts/validate.py target/my-v1-run
+python3 scripts/validate.py evidence/reference --source-ref 12b5579
+```
 
-To update paper evidence, retain the run under `target/`, validate it, copy only
-its top-level JSON into `evidence/reference`, run `python3 scripts/paper.py`, and
-run `make required`. The `--source` evidence check deliberately fails if the
-measured sources differ from the current checkout. CI never silently replaces
-the published data with its own timings.
-
-For external proposers, use `authority-lab campaigns INPUT.jsonl NEW_DIRECTORY`.
-The schema and six scripted controls are in `fixtures/proposals.jsonl`. Fixtures
-cover legitimate spending, shared budget, withheld steward permission, purpose
-change and revision conflicts. The executor grants only the fixture's task domain;
-the event scorer separately compares observed effects with fixture authorization.
-The reject-all control must fail useful-task completion. These are public development
-fixtures; make genuinely sealed tasks before claiming held-out behavioral transfer.
-Treat model, training-seed, objective and persona fields as provenance to verify,
-not facts established by the scorer. Repeated campaigns from one trained model or
-human are clustered units, not automatically independent binomial trials.
-
-`python3 scripts/fleet.py target/new-fleet --hosts xbabe0 xbabe1` copies only the
-measured Linux binary and runs small CPU fixtures at reduced scheduling priority.
-It checks the real hostname and architecture before writing anything and preserves
-remote evidence under `~/jeath-evidence`. It rejects misleading aliases. The local
-workspace identifies as xbabe2; the current xbabe2/xbabe4 SSH aliases point at the
-same Mac Studio, and the xbabe4 VM alias timed out. Neither is claimed as a Linux
-xbabe4 measurement. No GPUs were allocated.
+V1 generates `model.json`, `runtime.json`, `observed-effects.json`, `monitors.json`, `coverage.json`, `graphs.json`, `selection.json`, and `statistics.json` (plus offline campaign scoring via `authority-lab campaigns fixtures/proposals.jsonl target/my-campaigns`). `scripts/fleet.py` runs small CPU-only fixtures across verified Linux hosts at reduced scheduling priority after asserting exact remote hostname and `x86_64` architecture, rejecting misrouted aliases (`xbabe4` -> Darwin arm64).

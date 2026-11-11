@@ -1,39 +1,37 @@
 [
   {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
     "case": "positive_transfer",
-    "semantic_useful": true,
-    "trace": {
-      "charged": 2,
-      "checked": true,
-      "effects": 1,
-      "events": 7,
-      "scope": "sequential RPC fault histories; independent semantic oracle"
-    }
-  },
-  {
-    "case": "positive_release",
-    "semantic_useful": true,
-    "trace": {
-      "charged": 1,
-      "checked": true,
-      "effects": 1,
-      "events": 8,
-      "scope": "sequential RPC fault histories; independent semantic oracle"
-    }
-  },
-  {
-    "case": "positive_edit",
-    "semantic_useful": true,
-    "trace": {
-      "charged": 1,
-      "checked": true,
-      "effects": 1,
-      "events": 8,
-      "scope": "sequential RPC fault histories; independent semantic oracle"
-    }
-  },
-  {
-    "case": "duplicate",
     "semantic_useful": true,
     "trace": {
       "charged": 2,
@@ -44,46 +42,296 @@
     }
   },
   {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 1,
+        "committed_charge": 1,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "positive_release",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 1,
+      "checked": true,
+      "effects": 1,
+      "events": 10,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 1,
+        "committed_charge": 1,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "positive_edit",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 1,
+      "checked": true,
+      "effects": 1,
+      "events": 10,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "duplicate",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 11,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
     "case": "altered",
     "semantic_useful": true,
     "trace": {
       "charged": 2,
       "checked": true,
       "effects": 1,
-      "events": 8,
+      "events": 10,
       "scope": "sequential RPC fault histories; independent semantic oracle"
     }
   },
   {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 0,
+        "committed_charge": 0,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 0,
+        "consistent": true,
+        "effects": 0,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
     "case": "session_identity",
     "semantic_useful": false,
     "trace": {
       "charged": 0,
       "checked": true,
       "effects": 0,
-      "events": 4,
+      "events": 6,
       "scope": "sequential RPC fault histories; independent semantic oracle"
     }
   },
   {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 0,
+        "committed_charge": 0,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 0,
+        "consistent": true,
+        "effects": 0,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
     "case": "conjunction",
     "semantic_useful": false,
     "trace": {
       "charged": 0,
       "checked": true,
       "effects": 0,
-      "events": 4,
+      "events": 6,
       "scope": "sequential RPC fault histories; independent semantic oracle"
     }
   },
   {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 0,
+        "committed_charge": 0,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 0,
+        "consistent": true,
+        "effects": 0,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
     "case": "expiry",
     "semantic_useful": false,
     "trace": {
       "charged": 0,
       "checked": true,
       "effects": 0,
-      "events": 4,
+      "events": 6,
       "scope": "sequential RPC fault histories; independent semantic oracle"
     }
   },
@@ -95,43 +343,87 @@
     "post_revoke_effects": 1
   },
   {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
     "case": "admission",
     "semantic_useful": true,
     "trace": {
       "charged": 2,
       "checked": true,
       "effects": 1,
-      "events": 11,
+      "events": 13,
       "scope": "sequential RPC fault histories; independent semantic oracle"
     }
   },
   {
     "case": "fenced",
     "charged_after_settlement": 0,
-    "fence_ack_ms": 9.019445,
+    "fence_ack_ms": 9.431341,
     "outstanding_charge": 2,
     "post_revoke_effects": 0
   },
   {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 2,
+        "charged": 0,
+        "committed_charge": 0,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 1,
+        "committed_permits": 0,
+        "consistent": true,
+        "effects": 0,
+        "floors": [
+          1,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
     "case": "fenced",
-    "semantic_useful": false,
-    "trace": {
-      "charged": 0,
-      "checked": true,
-      "effects": 0,
-      "events": 12,
-      "scope": "sequential RPC fault histories; independent semantic oracle"
-    }
-  },
-  {
-    "case": "steward_fenced",
-    "charged_after_settlement": 0,
-    "fence_ack_ms": 11.14556,
-    "outstanding_charge": 1,
-    "post_revoke_effects": 0
-  },
-  {
-    "case": "steward_fenced",
     "semantic_useful": false,
     "trace": {
       "charged": 0,
@@ -142,21 +434,594 @@
     }
   },
   {
+    "case": "steward_fenced",
+    "charged_after_settlement": 0,
+    "fence_ack_ms": 8.13825,
+    "outstanding_charge": 1,
+    "post_revoke_effects": 0
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 1,
+        "charged": 0,
+        "committed_charge": 0,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 1,
+        "committed_permits": 0,
+        "consistent": true,
+        "effects": 0,
+        "floors": [
+          0,
+          1
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "steward_fenced",
+    "semantic_useful": false,
+    "trace": {
+      "charged": 0,
+      "checked": true,
+      "effects": 0,
+      "events": 16,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
     "case": "renewal",
     "semantic_useful": true,
     "trace": {
       "charged": 2,
       "checked": true,
       "effects": 1,
+      "events": 13,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 1,
+        "charged": 1,
+        "committed_charge": 1,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 2,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 1,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "stale_revision",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 1,
+      "checked": true,
+      "effects": 1,
+      "events": 16,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "lost_reply",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
       "events": 11,
       "scope": "sequential RPC fault histories; independent semantic oracle"
     }
   },
   {
-    "case": "stale_revision",
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "crash_before",
     "semantic_useful": true,
     "trace": {
-      "charged": 1,
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 11,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "broker_crash_after",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 11,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "sink_restart",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 9,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 0,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 2,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 0,
+        "consistent": true,
+        "effects": 0,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 1,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "uncertain",
+    "semantic_useful": false,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 0,
+      "events": 9,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 2,
+        "charged": 0,
+        "committed_charge": 0,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 1,
+        "committed_permits": 0,
+        "consistent": true,
+        "effects": 0,
+        "floors": [
+          1,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "late_dispatch",
+    "semantic_useful": false,
+    "trace": {
+      "charged": 0,
+      "checked": true,
+      "effects": 0,
+      "events": 12,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "independent_issuer",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 10,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 2,
+        "charged": 0,
+        "committed_charge": 0,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 1,
+        "committed_permits": 0,
+        "consistent": true,
+        "effects": 0,
+        "floors": [
+          1,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "fence_lost_reply",
+    "semantic_useful": false,
+    "trace": {
+      "charged": 0,
+      "checked": true,
+      "effects": 0,
+      "events": 13,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          1,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "fence_crash_before",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 13,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "broker_crash_before",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 2,
+      "checked": true,
+      "effects": 1,
+      "events": 11,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 8,
+        "committed_charge": 8,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "renewal_budget",
+    "semantic_useful": true,
+    "trace": {
+      "charged": 8,
       "checked": true,
       "effects": 1,
       "events": 14,
@@ -164,123 +1029,297 @@
     }
   },
   {
-    "case": "lost_reply",
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "proposer_retry_after_lost_reply",
     "semantic_useful": true,
     "trace": {
       "charged": 2,
       "checked": true,
       "effects": 1,
-      "events": 9,
+      "events": 13,
       "scope": "sequential RPC fault histories; independent semantic oracle"
     }
   },
   {
-    "case": "crash_before",
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 2,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 2,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 1,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          1,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "concurrent_renew_after_withdraw",
     "semantic_useful": true,
     "trace": {
       "charged": 2,
       "checked": true,
       "effects": 1,
-      "events": 9,
+      "events": 18,
       "scope": "sequential RPC fault histories; independent semantic oracle"
     }
   },
   {
-    "case": "broker_crash_after",
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "replay_storm",
     "semantic_useful": true,
     "trace": {
       "charged": 2,
       "checked": true,
       "effects": 1,
-      "events": 9,
+      "events": 87,
       "scope": "sequential RPC fault histories; independent semantic oracle"
     }
   },
   {
-    "case": "sink_restart",
-    "semantic_useful": true,
-    "trace": {
-      "charged": 2,
-      "checked": true,
-      "effects": 1,
-      "events": 7,
-      "scope": "sequential RPC fault histories; independent semantic oracle"
-    }
-  },
-  {
-    "case": "uncertain",
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 1,
+        "charged": 1,
+        "committed_charge": 1,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 2,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 1,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0,
+          1
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "multi_issuer_quorum_split",
     "semantic_useful": false,
     "trace": {
-      "charged": 2,
+      "charged": 1,
       "checked": true,
-      "effects": 0,
-      "events": 7,
+      "effects": 1,
+      "events": 23,
       "scope": "sequential RPC fault histories; independent semantic oracle"
     }
   },
   {
-    "case": "late_dispatch",
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 4,
+        "committed_charge": 4,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "attenuated_subdelegation",
+    "semantic_useful": false,
+    "trace": {
+      "charged": 4,
+      "checked": true,
+      "effects": 1,
+      "events": 20,
+      "scope": "sequential RPC fault histories; independent semantic oracle"
+    }
+  },
+  {
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 1,
+        "charged": 0,
+        "committed_charge": 0,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 1,
+        "committed_permits": 0,
+        "consistent": true,
+        "effects": 0,
+        "floors": [
+          0,
+          1
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "delegated_transfer_extra_steward_fenced",
     "semantic_useful": false,
     "trace": {
       "charged": 0,
       "checked": true,
       "effects": 0,
-      "events": 10,
+      "events": 16,
       "scope": "sequential RPC fault histories; independent semantic oracle"
     }
   },
   {
-    "case": "independent_issuer",
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 2,
+        "committed_charge": 2,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "case": "oversize_rpc_survival",
     "semantic_useful": true,
     "trace": {
       "charged": 2,
       "checked": true,
       "effects": 1,
-      "events": 8,
-      "scope": "sequential RPC fault histories; independent semantic oracle"
-    }
-  },
-  {
-    "case": "fence_lost_reply",
-    "semantic_useful": false,
-    "trace": {
-      "charged": 0,
-      "checked": true,
-      "effects": 0,
       "events": 11,
-      "scope": "sequential RPC fault histories; independent semantic oracle"
-    }
-  },
-  {
-    "case": "fence_crash_before",
-    "semantic_useful": true,
-    "trace": {
-      "charged": 2,
-      "checked": true,
-      "effects": 1,
-      "events": 11,
-      "scope": "sequential RPC fault histories; independent semantic oracle"
-    }
-  },
-  {
-    "case": "broker_crash_before",
-    "semantic_useful": true,
-    "trace": {
-      "charged": 2,
-      "checked": true,
-      "effects": 1,
-      "events": 9,
-      "scope": "sequential RPC fault histories; independent semantic oracle"
-    }
-  },
-  {
-    "case": "renewal_budget",
-    "semantic_useful": true,
-    "trace": {
-      "charged": 8,
-      "checked": true,
-      "effects": 1,
-      "events": 12,
       "scope": "sequential RPC fault histories; independent semantic oracle"
     }
   }

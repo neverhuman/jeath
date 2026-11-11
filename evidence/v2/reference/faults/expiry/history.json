@@ -5,26 +5,26 @@
       "budget": 8,
       "op": "init"
     },
-    "invoked_ns": 25939094711054,
-    "responded_ns": 25939228043831,
+    "invoked_ns": 112944700301571,
+    "responded_ns": 112944783767332,
     "response": {
       "status": "initialized"
     },
     "role": "broker",
-    "unix_time": 1794338080
+    "unix_time": 1794425086
   },
   {
     "effects": [],
     "invocation": {
       "op": "init"
     },
-    "invoked_ns": 25939228054241,
-    "responded_ns": 25939236854882,
+    "invoked_ns": 112944783812728,
+    "responded_ns": 112944789838192,
     "response": {
       "status": "initialized"
     },
     "role": "sink",
-    "unix_time": 1794338080
+    "unix_time": 1794425086
   },
   {
     "effects": null,
@@ -48,13 +48,13 @@
         }
       }
     },
-    "invoked_ns": 25939237255480,
-    "responded_ns": 25939245734442,
+    "invoked_ns": 112944790507841,
+    "responded_ns": 112944796412836,
     "response": {
       "status": "approved"
     },
     "role": "broker",
-    "unix_time": 1794338080
+    "unix_time": 1794425086
   },
   {
     "effects": null,
@@ -75,13 +75,62 @@
       },
       "session_actor": "alice"
     },
-    "invoked_ns": 25939245739652,
-    "responded_ns": 25939245819393,
+    "invoked_ns": 112944796424839,
+    "responded_ns": 112944796518757,
     "response": {
       "reason": "policy",
       "status": "denied"
     },
     "role": "broker",
-    "unix_time": 1794338080
+    "unix_time": 1794425086
+  },
+  {
+    "effects": null,
+    "invocation": {
+      "op": "audit"
+    },
+    "invoked_ns": 112944796756227,
+    "responded_ns": 112944796885052,
+    "response": {
+      "budget": 8,
+      "cancelled_charge": 0,
+      "charged": 0,
+      "committed_charge": 0,
+      "consistent": true,
+      "delegations_consistent": true,
+      "integrity": "ok",
+      "pending_charge": 0,
+      "records": 0,
+      "status": "ok",
+      "verus_exec_kernel_verified": true
+    },
+    "role": "broker",
+    "unix_time": 1794425086
+  },
+  {
+    "effects": [],
+    "invocation": {
+      "op": "audit"
+    },
+    "invoked_ns": 112944796897636,
+    "responded_ns": 112944797074972,
+    "response": {
+      "cancelled_permits": 0,
+      "committed_permits": 0,
+      "consistent": true,
+      "effects": 0,
+      "floors": [
+        0,
+        0
+      ],
+      "integrity": "ok",
+      "pending_permits": 0,
+      "pending_unfenced": true,
+      "revision": 0,
+      "status": "ok",
+      "verus_exec_kernel_verified": true
+    },
+    "role": "sink",
+    "unix_time": 1794425086
   }
 ]
