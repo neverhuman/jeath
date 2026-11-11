@@ -1236,7 +1236,44 @@ def generate():
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--check", action="store_true")
+    p.add_argument("--study", choices=["performance-before-outcomes", "minds-we-choose"])
     args = p.parse_args()
+    if args.study == "minds-we-choose":
+        from brain.minds_paper import generate as minds
+        from brain.validate_minds import check
+
+        reference = json.loads((ROOT / "evidence/brain/reference/minds-we-choose.json").read_text())
+        check(reference)
+        output = ROOT / "target" / args.study / "generated"
+        output.mkdir(parents=True, exist_ok=True)
+        for name, value in minds(reference).items():
+            data = value.encode() if isinstance(value, str) else value
+            destination = output / name
+            if args.check:
+                if not destination.exists() or destination.read_bytes() != data:
+                    raise SystemExit(f"stale or missing {destination}; rerun scripts/paper.py --study {args.study}")
+            else:
+                destination.write_bytes(data)
+        print("minds-we-choose tables and figures match reference evidence" if args.check else "generated minds-we-choose tables and figures")
+        raise SystemExit(0)
+    if args.study == "performance-before-outcomes":
+        from performance_paper import generate as performance
+        from validate_performance import check
+
+        reference = load_v1(args.study)
+        check(reference)
+        output = ROOT / "target" / args.study / "generated"
+        output.mkdir(parents=True, exist_ok=True)
+        for name, value in performance(reference).items():
+            data = value.encode() if isinstance(value, str) else value
+            destination = output / name
+            if args.check:
+                if not destination.exists() or destination.read_bytes() != data:
+                    raise SystemExit(f"stale or missing {destination}; rerun scripts/paper.py --study {args.study}")
+            else:
+                destination.write_bytes(data)
+        print("performance-before-outcomes tables and figures match reference evidence" if args.check else "generated performance-before-outcomes tables and figures")
+        raise SystemExit(0)
     OUT.mkdir(exist_ok=True)
     for name, content in generate().items():
         path = OUT / name

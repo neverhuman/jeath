@@ -1,0 +1,208 @@
+% Performance Before Outcomes -- version 9.0 (final): main text, Supplementary Information, references
+% Build: pdflatex main; bibtex main; pdflatex main; pdflatex main
+\documentclass[9pt,twocolumn,letterpaper]{extarticle}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}
+\linespread{1.04}
+\usepackage[scaled=0.90]{helvet}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage[letterpaper,left=0.62in,right=0.62in,top=0.80in,bottom=0.82in,columnsep=0.26in,headsep=0.22in,footskip=0.34in]{geometry}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,tabularx,array,multirow}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{ragged2e}
+\usepackage{stfloats}
+\usepackage{flushend}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,pdftitle={Performance Before Outcomes},pdfauthor={Jepson Taylor and Erin Beilharz}]{hyperref}
+
+\definecolor{ink}{HTML}{0B0B0B}
+\definecolor{ink2}{HTML}{52514E}
+\definecolor{accent}{HTML}{1C5CAB}
+\definecolor{rulegray}{HTML}{C9C8C2}
+\definecolor{band}{HTML}{F4F3EF}
+\color{ink}
+
+% ---- headings
+\titleformat{\section}{\sffamily\bfseries\fontsize{11}{13}\selectfont}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\sffamily\bfseries\fontsize{9.4}{11.5}\selectfont}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}[runin]{\sffamily\bfseries\fontsize{9}{11}\selectfont}{}{0em}{}[.]
+\titlespacing*{\section}{0pt}{11pt plus 2pt minus 2pt}{4.5pt}
+\titlespacing*{\subsection}{0pt}{8pt plus 2pt minus 1pt}{3pt}
+\titlespacing*{\subsubsection}{0pt}{5pt plus 1pt minus 1pt}{0.5em}
+\setlength{\parindent}{1.1em}\setlength{\parskip}{0pt plus 0.9pt}
+\raggedbottom % a column that cannot be filled ends short instead of opening a gap between paragraphs
+
+% ---- floats and captions
+\captionsetup{font={small},labelfont={bf,sf},labelsep=period,justification=justified,singlelinecheck=false,skip=5pt}
+\captionsetup[table]{position=top,skip=4pt}
+\renewcommand{\topfraction}{0.92}\renewcommand{\dbltopfraction}{0.92}\renewcommand{\bottomfraction}{0.6}
+\renewcommand{\textfraction}{0.06}\renewcommand{\floatpagefraction}{0.75}\renewcommand{\dblfloatpagefraction}{0.7}
+\setcounter{topnumber}{3}\setcounter{dbltopnumber}{3}\setcounter{totalnumber}{4}
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}\setlength{\dbltextfloatsep}{10pt plus 2pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\newcolumntype{L}{>{\RaggedRight\arraybackslash}X}
+\newcolumntype{P}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcommand{\tablenote}[1]{\par\vspace{2pt}{\scriptsize\RaggedRight #1\par}}
+\renewcommand{\arraystretch}{1.08}
+\setlength{\tabcolsep}{4pt}
+
+% ---- theorems
+\newtheoremstyle{pbo}{5pt plus 1pt}{5pt plus 1pt}{\itshape}{}{\sffamily\bfseries\small}{.}{0.5em}{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}
+\theoremstyle{pbo}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheoremstyle{pbor}{5pt}{5pt}{}{}{\sffamily\bfseries\small}{.}{0.5em}{}
+\theoremstyle{pbor}
+\newtheorem*{remark}{Remark}
+
+% ---- header and footer
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0.3pt}\renewcommand{\headrule}{\color{rulegray}\hrule height 0.3pt}
+\fancyhead[L]{\sffamily\scriptsize\color{ink2}PERFORMANCE BEFORE OUTCOMES}
+\fancyhead[R]{\sffamily\scriptsize\color{ink2}Taylor and Beilharz \textperiodcentered{} preprint, November 2026}
+\fancyfoot[C]{\sffamily\scriptsize\color{ink2}\thepage}
+
+% ---- shorthands
+\newcommand{\E}{\operatorname{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\SD}{\operatorname{SD}}
+\newcommand{\CV}{\operatorname{CV}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\ccm}{\,cm$^3$}
+\newcommand{\Hs}{\textit{H.~sapiens}}
+\newcommand{\Homo}{\textit{Homo}}
+\urlstyle{same}
+\providecommand{\doi}[1]{doi:\,\href{https://doi.org/#1}{\nolinkurl{#1}}}
+\setlist{leftmargin=1.3em,itemsep=1pt,topsep=3pt,parsep=0pt}
+\frenchspacing
+\emergencystretch=1.2em
+
+\makeatletter\newcommand{\tabinput}[1]{\@@input #1 }\makeatother
+\input{generated/numbers}
+
+\begin{document}
+\onecolumn
+\thispagestyle{empty}
+\begingroup
+\noindent{\sffamily\scriptsize\color{accent}\textbf{RESEARCH ARTICLE \;\textperiodcentered\; PREPRINT \;\textperiodcentered\; NOVEMBER 10, 2026}}\par
+\vspace{5pt}
+\noindent{\sffamily\bfseries\fontsize{25}{28}\selectfont Performance {\color{accent}Before Outcomes}\par}
+\vspace{4pt}
+\noindent{\sffamily\itshape\fontsize{13.5}{16}\selectfont\color{ink} It takes a village to read a mind\par}
+\vspace{2pt}
+\noindent{\sffamily\fontsize{10.6}{13.2}\selectfont\color{ink2} How being judged at everything, by people who knew us for years, could build a mind for anything, and what happens when the jury goes home\par}
+\vspace{4pt}
+\noindent{\sffamily\fontsize{10}{12}\selectfont Jepson Taylor and Erin Beilharz\par}
+\vspace{2pt}
+\noindent{\color{rulegray}\rule{\textwidth}{0.5pt}}\par
+\vspace{2pt}
+\noindent{\sffamily\bfseries\small Abstract.}\;
+Hominin brains tripled in volume over three million years, at about $10^{-4}$ standard deviations per generation. The
+puzzle is why a costly organ kept growing for a hundred thousand generations. One candidate starts from timing: a
+partner's worth is not known until midlife, yet partners are chosen young, on performance. We take selection
+through mating apart into five links and measure them in six open data sets. In \SdRows{} four-minute meetings two
+observers agree moderately about a stranger's looks (\JurOneAtt) and hardly at all about intelligence (\JurOneInt); it
+would take \JurKInt{} such observers to read intelligence dependably, and people act on what they can read. Yet in 45
+countries both sexes say they want kindness and intelligence above looks and money. A village can read what no suitor
+can, and in a standard sample of \CcSccsN{} societies a village did: a daughter chooses her husband alone in \CcAloneW\%
+of those coded, so the mechanism needs a jury with years of evidence, not romance or consent. Nineteen propositions show that comparing people on
+$K$ domains multiplies selection on general ability $K$-fold; that a test shows what a person can do, not what the person
+will do; and that safe contests can replace dangerous ones only for the first. Men are selected at the door, in the United States and
+in 70 countries, and women after it. The door is closing: Americans want as many children as in 1972, and \VgMarrShare\% of
+the fall in children per young adult is accounted for by fewer people marrying. No ancestral parameter is estimated;
+\NPred{} predictions could each count against the mechanism.\par
+\vspace{3pt}
+\noindent\colorbox{band}{\parbox{\dimexpr\textwidth-2\fboxsep}{\small{\sffamily\bfseries Significance.}\;
+Why did human brains keep growing when brains are expensive? ``Intelligence is attractive'' is too coarse to test, and in
+a four-minute meeting it is nearly false. Minds are read by communities over years, not by suitors in an evening; the
+judges were mostly parents and elders; and being judged at everything is what favors a general mind. Two consequences
+reach beyond evolution. A society that lets its juries disperse should expect people to pair later and less, and the
+United States shows that pattern. And anyone who selects artificial minds by test scores faces the same law: many
+independent judges, many kinds of task, and conduct observed when it is not a test.}}\par
+\vspace{3pt}
+\noindent{\sffamily\bfseries\small Keywords.}\; {\small human brain evolution; mate choice; sexual selection; general intelligence; marriage; fertility decline; culture; AI evaluation.}\par
+\vspace{3pt}
+\noindent\hfil\includegraphics[width=0.93\textwidth]{figures/fig1_main.pdf}\par
+\vspace{0pt}
+\captionof{figure}{\textbf{The argument in six pictures.} \textbf{(A)}~Endocranial volume of fossil
+hominins~\cite{du2018,will2021}, a stasis--step model fitted to \FosN{} other crania~\cite{gingerich2022}, late small-brained
+\Homo~\cite{berger2015,kubo2013}, the recent mean~\cite{beals1984}, and earliest secure fire~\cite{berna2012,zohar2022}. \textbf{(B)}~Agreement between two panels of observers about the same person after
+four-minute meetings (points; \SdN{} people~\cite{fisman2006}) and the Spearman--Brown law (lines). \textbf{(C)}~Selection on
+general ability relative to one specialty (Corollary~\ref{cor:generalist}, Proposition~\ref{prop:division}).
+\textbf{(D)}~Validity of 40 observations for what a person can do and will do (Proposition~\ref{prop:staging}).
+\textbf{(E)}~Selection on income at three episodes of reproduction, United States, with 95\% intervals ($n=\GssN$).
+\textbf{(F)}~Adults aged 25--39 who have never married, United States ($n=\VgBirthN$; Table~\ref{tab:births}).}
+\label{fig:main}
+\vspace{2pt}
+\noindent{\sffamily\scriptsize\color{ink2} Not peer reviewed. Concept and direction: J.~Taylor. Review questions that shaped this version: the authors. Literature synthesis, mathematics, code, data analysis and drafting were AI-assisted (see the disclosure).\par}
+\endgroup
+\twocolumn
+
+\input{sections/m_main}
+\input{sections/m_ack}
+
+\clearpage
+\twocolumn[{\noindent{\sffamily\scriptsize\color{accent}\textbf{SUPPLEMENTARY INFORMATION}}\par\vspace{4pt}
+\noindent{\sffamily\bfseries\fontsize{17}{20}\selectfont Performance {\color{accent}Before Outcomes}\par}\vspace{3pt}
+\noindent{\sffamily\fontsize{10.5}{13}\selectfont\color{ink2} It takes a village to read a mind: how being judged at everything, by people who knew us for years, could build a mind for anything, and what happens when the jury goes home\par}\vspace{4pt}
+\noindent{\color{rulegray}\rule{\textwidth}{0.5pt}}\par\vspace{4pt}
+\noindent{\small Contents: S1~scope and claim levels; S2~the fossil record; S3~ten claims about ancestral selection, checked; S4~evidence base;
+S5~theory; S6~numerical experiments; S7~mate selection today, with a speed-dating experiment; S8~ten questions raised in review, answered; S9~nine drivers; S10~is the
+mechanism still operating; S11~how strong must selection be; S12~other hominins; S13~predictions and a first study; S14~limitations; S15~objections;
+S16~the oldest games; S17~additional tables; S18~proofs; S19~reproducibility and data.\par}\vspace{10pt}}]
+\setcounter{section}{0}\renewcommand{\thesection}{S\arabic{section}}\renewcommand{\theHsection}{S\arabic{section}}
+\setcounter{figure}{0}\renewcommand{\thefigure}{S\arabic{figure}}\renewcommand{\theHfigure}{S\arabic{figure}}
+\setcounter{table}{0}\renewcommand{\thetable}{S\arabic{table}}\renewcommand{\theHtable}{S\arabic{table}}
+\setcounter{equation}{0}\renewcommand{\theequation}{S\arabic{equation}}\renewcommand{\theHequation}{S\arabic{equation}}
+\input{sections/si_scope}
+\input{sections/s3_explananda}
+\input{sections/s_claims}
+\input{sections/s_indicators}
+\input{sections/s4_evidence}
+\input{sections/s6_theory}
+\input{sections/s7_experiments}
+\input{sections/s_today}
+\input{sections/s_notes}
+\input{sections/si_drivers}
+\input{sections/s_engine}
+\input{sections/s8_strength}
+\input{sections/s_predictions}
+\input{sections/s_limits}
+\input{sections/s5_redteam}
+\input{sections/si_games}
+\input{sections/si_tables}
+\input{sections/si_proofs}
+\input{sections/si_repro}
+
+{\footnotesize\setlength{\bibsep}{0.5pt plus 0.4pt}
+\bibliographystyle{unsrtnat}
+\bibliography{refs}}
+
+\newcommand{\authorphoto}[2]{\IfFileExists{#1}{\includegraphics[width=0.92in,height=1.17in,keepaspectratio]{#1}}%
+{\colorbox{band}{\parbox[c][1.17in][c]{0.92in}{\centering\sffamily\bfseries\LARGE\color{ink2}#2}}}}
+\newcommand{\authorbio}[3]{\par\vspace{9pt}\noindent\begin{minipage}[t]{0.98in}\vspace{0pt}#1\end{minipage}\hfill
+\begin{minipage}[t]{\dimexpr\columnwidth-1.10in}\vspace{0pt}\small\RaggedRight{\sffamily\bfseries #2}\; #3\end{minipage}\par}
+\section*{About the authors}
+\authorbio{\authorphoto{figures/author_taylor.jpg}{JT}}{Jepson Taylor}{is chief executive and chief technology officer of
+VEOX Inc., which builds AI systems that generate algorithms and optimizers on demand. He was chief AI strategist at
+DataRobot and at Dataiku, co-founded Zeff.ai, a deep-learning company acquired by DataRobot in 2020, and earlier led data
+science at HireVue, where his work contributed to fourteen patents. He began in semiconductor manufacturing at Intel and
+Micron and in quantitative finance. He teaches an executive course on AI at New York University and is the author of
+\emph{The Last Commit}.}
+\authorbio{\authorphoto{figures/author_beilharz.png}{EB}}{Erin Beilharz}{is a principal consultant at Lufthansa Systems
+and an advisor to Navon, which develops modular green data centres for the Global South. She works on AI, clean
+technology and digital infrastructure, and speaks on data sovereignty, energy pragmatism and the ethical dilemmas of an
+automated world.}
+\par\vspace{6pt}\noindent{\sffamily\scriptsize\color{ink2} Biographical details are taken from the authors' public speaker
+pages (November 2026) and are to be confirmed by the authors.\par}
+\end{document}

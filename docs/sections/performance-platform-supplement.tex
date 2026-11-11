@@ -1,0 +1,159 @@
+\subsection{Historical platforms, height cues, open microdata, and benchmark audits}\label{sec:platformmethods}
+
+\emph{POV eligibility, commitment, and childbearing-intention audits.} We scanned all \PboPovRows{} source rows in the
+historical POV dating extract and verified that each account key was present and unique. The main life-course analysis uses
+recorded ages 18--79 (\PboPovEligible{} profiles seeking the other recorded gender: exact labels \texttt{Female} seeking
+\texttt{Man}, and \texttt{Male} seeking \texttt{Woman}). ``Yes'' and ``All my kids are over 18'' count as parenthood,
+``No'' defines the childless comparison group, and other entries have unknown parenthood (Fig.~\ref{fig:pbo-pov}). The three
+substantive childbearing-intention answers are ``Want children,'' ``Does not want children,'' and ``Undecided/Open'';
+``Prefer Not To Say'' and blanks count as nonresponse. Table~\ref{tab:pbo-pov-responses} reports all response shares and
+denominators at ages 25--29 and 45--49, and Table~\ref{tab:pbo-pov-sensitivity} verifies the childbearing-intention
+crossover across exact-age standardization, single-status filtering, all seeking categories, and answered-only cohorts. Five
+national sub-cohorts (United States, United Kingdom, Canada, Brazil, Australia) have sufficient sample depth in every age-by-sex
+cell ($\ge\PboMinCell$) for independent country-level replication (Table~\ref{tab:pbo-pov-geo}).
+
+\emph{POV stature parsing and rounding-cliff audit.} Self-reported stature in POV is recorded in imperial feet/inches with
+metric equivalents (e.g.\ \texttt{6' 0" (183cm)}). Across all \PboPovEligible{} opposite-sex-seeking adult profiles, we
+partitioned records into four mutually exclusive categories: missing/blank, sentinel entries (\texttt{< 5' 0"} or
+\texttt{999cm}), implausible outliers outside $5'0''$--$7'0''$ ($60$--$84$~inches), and explicit plausible heights. Among
+men, \PboHeightMenN{} profiles carry explicit heights between $5'0''$ and $7'0''$. Within-sex height percentiles assign each
+inch bin its midpoint cumulative rank, and Gaussian expected bin shares integrate a normal distribution matched to the
+empirical male mean and standard deviation. This audit isolates the sharp heaping at $5'11''$ (\PboHeightFiveElevenN) and
+$6'0''$ (\PboHeightSixZeroN, $\PboHeightSixZeroRatio\times$ Gaussian expectation) followed by the $-\PboHeightCliffDrop$
+drop at $6'1''$ (\PboHeightSixOneN; Table~\ref{tab:pbo-height}).
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{performance-parenthood.pdf}
+\caption{\textbf{Reported parenthood and stated desire for children across all POV parenthood strata.} Historical POV
+extract, recorded ages 18--79 and \PboPovEligible{} profiles seeking the other recorded gender. \textbf{(A)}~Share
+reporting any children among profiles with known parenthood (``All my kids are over 18'' counts as parenthood).
+\textbf{(B, C)}~Share choosing ``Want children'' among profiles without and with children, respectively, with nonanswers
+retained in the denominator. Points mark age-band midpoints; shading highlights ages 25--29 and 45--49; cells below
+\PboMinCell{} profiles are omitted.}
+\label{fig:pbo-pov}
+\end{figure*}
+
+\begin{table*}[t]
+\caption{Reported childbearing intentions among POV profiles without children. The main cohort uses profiles seeking the
+other recorded gender. Each percentage uses all profiles in its row.}
+\label{tab:pbo-pov-responses}
+\small
+\centering
+\begin{tabularx}{\textwidth}{@{}lLrrrrr@{}}
+\toprule
+\tabinput{performance-pov-responses.tex}
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\caption{Sensitivity of the childbearing-intention reversal. Each row gives the share selecting ``Want children.''
+W $-$ M is the women-minus-men difference in percentage points. In age-standardized rows, both groups receive the same
+exact-age weights from the pooled profiles eligible for that row.}
+\label{tab:pbo-pov-sensitivity}
+\small
+\centering
+\begin{tabularx}{\textwidth}{@{}Lrrrrrr@{}}
+\toprule
+\tabinput{performance-pov-sensitivity.tex}
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\emph{HON eligibility, image-inventory reconciliation, and cross-national coverage.} We scanned \PboHonRows{} canonical
+profiles in the HON rating archive. Of these, \PboHonEligible{} satisfy recorded age 18--79, recorded \texttt{Female} or
+\texttt{Male}, unconflicted metadata and vote labels, and at least 20 valid votes with $0\le\text{likes}\le\text{votes}$.
+Sensitivities vary the vote floor to $\ge 1$ and $\ge 100$ votes, compare equal-profile means against vote-pooled rates, and
+restrict to recorded United States accounts (Table~\ref{tab:pbo-hon-sensitivity}). Figure~\ref{fig:pbo-ratings} compares all
+eligible profiles against the \PboHonImages{} eligible profiles linked to at least one file in the \PboHonFiles-image
+inventory: saved-image coverage is higher for men (\PboImageShareM) than women (\PboImageShareW) and selects profiles with
+lower female like rates, demonstrating why full-archive denominators are essential. Across recorded geography,
+\PboHonCountriesHundred{} countries and territories contain at least 100 eligible profiles per sex,
+\PboHonCountriesFiveHundred{} contain at least 500 per sex (used for the participation-ratio vs.\ like-gap test,
+$r=\PboHonPartLikeCorr$), and \PboHonCountriesStrictAge{} satisfy $\ge 100$ profiles in every one of the four sex-by-age
+cells (\texttt{Female}/\texttt{Male} $\times$ ages 18--29 / 40--59), in \PboHonFemaleSteeperCountries{} of which women's
+within-gender beauty rank drops more steeply with age than men's (median drop \PboHonAgeDropMedW{} vs.\ \PboHonAgeDropMedM{}
+points).
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{performance-ratings.pdf}
+\caption{\textbf{HON profile like rates and recorded voting activity by age and image-inventory status.}
+\textbf{(A)}~Mean of each profile's positive-vote share with equal weight per profile. \textbf{(B)}~Median recorded votes
+per profile on a logarithmic scale. Solid lines show all \PboHonEligible{} eligible profiles; dashed lines show the
+\PboHonImages{} profiles with at least one inventoried image file. Cells below \PboMinCell{} profiles are omitted.}
+\label{fig:pbo-ratings}
+\end{figure*}
+
+\begin{table*}[t]
+\caption{Sensitivity of HON like rates to the vote threshold, recorded country, image-inventory status, and weighting.
+``Mean'' gives each profile equal weight; ``Pooled'' divides summed likes by summed votes.}
+\label{tab:pbo-hon-sensitivity}
+\small
+\centering
+\begin{tabularx}{\textwidth}{@{}L l r r r r r r@{}}
+\toprule
+\tabinput{performance-hon-sensitivity.tex}
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\emph{Open microdata, meta-analytic synthesis, and multimodal benchmark audits.} Four checksum-verified open deposits
+complement the platform and Columbia speed-dating (\PboSpeedN{} peer-ranked decisions across \PboSpeedSessions{} sessions)
+reanalyses. First, in Whyte et al.~\cite{whyte2021} ($N=\PboWhyteN$ Australians aged 18--64: \PboWhyteMenN{} men,
+\PboWhyteWomenN{} women), stated partner importance on 0--100 scales was evaluated both raw and person-mean-centered across
+nine traits, and self-rated sexual attractiveness was converted to midpoint percentiles within sex to test linear and
+quadratic stature gradients as well as standardized multivariate regressions controlling for age, health, income, and
+education (with heterosexual-only sensitivity confirming curvilinearity). Second, in Lidborg, Cross, and
+Boothroyd~\cite{lidborg2022}, effect sizes were oriented so positive $r$ denotes higher mating or reproductive success,
+converted via Fisher's $z$, and synthesized by DerSimonian--Laird random-effects models alongside medians and
+sample-size-weighted means across mating (\PboLidborgHeightMatK{} height effects, $N=\PboLidborgHeightMatN$; 121 bodily
+strength effects, $N=38{,}330$) and reproduction (\PboLidborgHeightRepK{} height effects, $N=\PboLidborgHeightRepN$; 14
+bodily strength effects, $N=1{,}355$). Third, in Kowal et al.~\cite{kowal2025}, exact reproduction of the 117,293-row
+deposit traced successive quality filters to \PboKowalBudgetN{} respondents whose six mate-budget allocations summed to 30,
+yielding $62{,}185$ adults across \PboKowalCountryN{} countries with $\ge 100$ men and $\ge 100$ women (and
+\PboKowalStdCountryN{} countries meeting $\ge 25$ per sex in every age band for exact-age-standardized sensitivity),
+alongside \PboKowalBridgeN{} countries overlapping directly with HON ($\ge 100$/sex). Fourth, Table~\ref{tab:pbo-ai-bench}
+audits the 20-wave HON facial-rating benchmark ($10{,}000$ profiles, $20{,}000$ images, strict profile-grouped train/test
+split), tracking held-out Spearman $\rho$ from raw UV textures (H1: $\rho=\PboBenchBaselineR$) through nuisance removal,
+domain face encoders, canonical $106$-landmark multi-backbone pure-face scoring with zero metadata
+($\rho=\PboFacePureSpearman$, $\rho^2=\PboFacePureRankVar$), cross-modal tabular conditioning, and multi-photo aggregation to
+the constrained grand ensemble (H20: $\rho=\PboBenchFinalR$, $\rho^2=0.438$), leaving \PboBenchUnexplainedPct{} of
+human-jury rank variance unexplained.
+
+\emph{Canonical $106$-landmark Delaunay super-resolution and $12$-zone Shapley facial attribution.} To audit what anatomical
+and surface features drive single-context facial consensus without ever storing or displaying an identifiable person, we
+evaluated \PboFaceTotalN{} primary $1200\times 1200$ aligned HON portraits stratified across sex, five adult age bands
+(`18--24`, `25--34`, `35--44`, `45--54`, `55+`), within-gender rating deciles, and \PboFaceWorldRegionsN{} world regions,
+using the unified within-gender empirical cumulative distribution of all \PboHonImages{} eligible image-inventoried profiles.
+Each source portrait was mapped via `AuraFace` $106$-landmark detection~\cite{deng2019arcface} onto a symmetric canonical
+$106$-vertex, \PboFaceTrisN-triangle Delaunay mesh ($224\times 224$ analytical space and $384\times 384$ studio portrait
+frame) by exact piecewise-affine triangle warping, recording per-triangle log-Jacobian area strain $\log|\det J_t|$. Cohort
+portraits were averaged in linear sRGB ($\gamma=2.2$) with every displayed composite aggregating $N\ge 75$ aligned individuals
+(exceeding our $N\ge 50$ privacy floor). On the $10{,}000$-profile ($20{,}000$-image) benchmark with strict profile-grouped
+train/test splits and Empirical-Bayes Beta-Binomial vote shrinkage, concatenating `DINOv3-ViT-B/16`~\cite{oquab2024dinov2},
+`ConvNeXt V2`~\cite{woo2023convnextv2}, `AuraFace` `Glint360K-R100`~\cite{deng2019arcface}, and $106$-landmark morphometric
+features with zero profile metadata yields held-out $\rho=\PboFacePureSpearman$ (percentile MAE \PboFacePurePctMae). Across
+the \PboFaceTotalN{} live-warped portraits, we fitted a multi-backbone beauty head (`DINOv3-ViT-S/16` + `SFace` +
+`genderage` + local CIE-Lab/sharpness/symmetry + \PboFaceTrisN-triangle strain) strictly on training profiles (held-out
+$\rho=\PboFaceLiveSpearmanW$ in women, $\rho=\PboFaceLiveSpearmanM$ in men) and decomposed predictions across $12$ canonical
+anatomical zones via a joint interventional Shapley coalition combiner~\cite{lundberg2017shap} centered on the neutral
+42nd--58th percentile training cohort (combining zero-receptive-field local Lab/contrast/wrinkle/asymmetry/averageness
+descriptors with localized `DINOv3` spatial tokens, projected onto $384\times 384$ portraits via a $12\times 12$ dual-basis
+operator and verified against three-backbone counterfactual zone inpainting and $600$-draw bootstrap 95\% confidence
+intervals; Figs.~\ref{fig:pbo-face-drivers}--\ref{fig:pbo-face-world} and Table~\ref{tab:pbo-face-drivers}).
+
+\begin{table*}[t]
+\caption{Audited progression of the 20-wave HON facial-rating benchmark across $10{,}000$ profiles ($20{,}000$ images;
+profile-grouped held-out test metrics). Even after removing background artifacts, adding multi-photo aggregation, and
+stacking vision backbones with metadata, single-channel static imagery leaves \PboBenchUnexplainedPct{} of human-jury
+consensus variance unexplained.}\label{tab:pbo-ai-bench}
+\footnotesize
+\centering
+\begin{tabularx}{\textwidth}{@{}lLrrr@{}}
+\toprule
+\tabinput{performance-benchmark-table.tex}
+\bottomrule
+\end{tabularx}
+\end{table*}

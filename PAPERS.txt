@@ -1,0 +1,54 @@
+THIS REPOSITORY CONTAINS TWO DISTINCT SCIENTIFIC DOMAINS
+
+1. HUMAN BRAIN AND BEHAVIOR
+   a) Primary synthesis & environmental context: The Minds We Choose
+      Scope: human partner assessment, behavior, cultural transmission, and the
+      conditional links to cognitive evolution.
+      Manuscript: docs/sections/brain/minds-*.tex
+      Analysis code: scripts/brain/
+      Evidence: evidence/brain/
+      Build: make paper-brain (alias: make minds-we-choose)
+      Outputs: target/minds-we-choose/
+      Guides: docs/papers/brain/README.txt, docs/brain-environment-reproduction.txt
+
+   b) Two-column IEEE Transactions monograph: Performance Before Outcomes
+      Scope: paleoclimate stasis plateau (LR04), multimodal facial attribution
+      (HoloFace-L1 & 12-zone canonical warps), stature cliffs, and global survey
+      and platform mate-assessment syntheses under docs/PAPER_MISSION.md.
+      Manuscript: docs/sections/performance-*.tex
+      Analysis code: scripts/performance_*.py, scripts/validate_performance.py
+      Evidence: evidence/reference/performance-*.{json,npz}, evidence/paleoclimate/
+      Build: make performance-before-outcomes
+      Outputs: target/performance-before-outcomes/
+
+2. SAFE AI SYSTEMS
+   Current title: Intelligence Is Not Authority
+   Scope: revocable authority, policy enforcement, mechanized Verus refinement,
+   cryptographic sink fencing, and controlled local/benchmark model effects.
+   Manuscript entrypoint: docs/intelligence-is-not-authority.tex
+   Manuscript sections: docs/sections/u*.tex
+   Core code: src/, policy-core/, examples/, fixtures/ and the SAFE AI
+   experiment pipeline in scripts/.
+   Evidence: evidence/reference/ (SAFE AI v1), evidence/v2/, and evidence/v3/.
+   Build: make paper-safe-ai (alias: make paper)
+   Output: docs/intelligence-is-not-authority.pdf
+   Guide: docs/papers/safe-ai/README.txt
+
+BOUNDARY
+   These are separate scientific arguments, populations, result sets, and builds.
+   Do not combine their metrics, evidence references, conclusions, or PDFs into
+   an averaged paper. An explicitly cited analogy or cross-reference may help
+   either domain, but it supplies no empirical validation for the other domain.
+   Human surveys/profiles are not SAFE AI experiments. SQLite effect tests are
+   not human evidence, sandbox verification, or external exactly-once results.
+
+ARCHIVAL PRESERVATION
+   Supplied TeX/ZIP/PDF files under tips/ and project/brain/tips/ are archival
+   originals; their bytes are immutable and verified by tips/manifest.json.
+   Maintain revised text in docs/sections/.
+
+AGENT OWNERSHIP
+   Work in a separate permitted worktree. State which paper and files you own in
+   the coordination log. Never interpret a change to one paper as authorization
+   to rewrite the other. Read the other paper only where a specific connection
+   could strengthen the argument; label that connection explicitly.

@@ -43,7 +43,7 @@ jobs:
           sudo systemctl stop apt-daily.timer apt-daily-upgrade.timer || true
           sudo systemd-run --quiet --wait --property=After=apt-daily.service --property=After=apt-daily-upgrade.service /bin/true || true
           sudo apt-get update -qq
-          sudo DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=300 install --no-install-recommends -y rustup build-essential pkg-config python3 unzip
+          sudo DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=300 install --no-install-recommends -y rustup build-essential pkg-config python3 python3-numpy python3-scipy python3-matplotlib python3-openpyxl python3-pandas python3-pil unzip
       - name: Install Rust components
         run: |
           rustup toolchain install 1.95.0 --profile minimal --component rustfmt --component clippy
@@ -130,24 +130,34 @@ jobs:
           path: ci-source
       - name: Record selected runner
         run: printf 'runner=%s os=%s arch=%s\n' "$RUNNER_NAME" "$RUNNER_OS" "$RUNNER_ARCH"
-      - name: Install TeX in disposable Ubuntu guest
+      - name: Install TeX and scientific Python in disposable Ubuntu guest
         run: |
           sudo systemctl stop apt-daily.timer apt-daily-upgrade.timer || true
           sudo systemd-run --quiet --wait --property=After=apt-daily.service --property=After=apt-daily-upgrade.service /bin/true || true
           sudo apt-get update -qq
-          sudo DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=300 install --no-install-recommends -y python3 texlive-latex-extra texlive-fonts-recommended texlive-science texlive-pictures latexmk poppler-utils
-      - name: Check source preservation, generated numbers and PDF
+          sudo DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Lock::Timeout=300 install --no-install-recommends -y python3 python3-numpy python3-scipy python3-matplotlib python3-openpyxl python3-pandas python3-pil texlive-latex-recommended texlive-latex-extra texlive-publishers texlive-fonts-recommended texlive-science texlive-pictures latexmk poppler-utils
+      - name: Check source preservation, generated numbers and PDFs across studies
         run: |
           python3 scripts/validate.py evidence/reference --source-ref 12b5579
           python3 scripts/analyze_v2.py evidence/v2/reference --source
           python3 scripts/validate_v3.py evidence/v3/reference --source
           python3 scripts/paper.py --check
           python3 scripts/build_paper.py
+          python3 scripts/validate.py evidence/reference --study performance-before-outcomes --source
+          python3 scripts/paper.py --study performance-before-outcomes
+          python3 scripts/paper.py --study performance-before-outcomes --check
+          python3 scripts/build_paper.py --study performance-before-outcomes
+          python3 scripts/validate.py evidence/brain/reference --study minds-we-choose --source
+          python3 scripts/paper.py --study minds-we-choose
+          python3 scripts/paper.py --study minds-we-choose --check
+          python3 scripts/build_paper.py --study minds-we-choose
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: manuscript
           path: |
             ci-source/docs/intelligence-is-not-authority.pdf
             ci-source/target/paper-build/*.log
+            ci-source/target/performance-before-outcomes/performance-before-outcomes.pdf
+            ci-source/target/minds-we-choose/*.pdf
           if-no-files-found: error
           retention-days: 30

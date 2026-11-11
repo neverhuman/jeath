@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "time_unit": "Ma before present",
+  "published_stasis": {
+    "older_ma": 1.5,
+    "younger_ma": 0.7,
+    "citation": "gingerich2022",
+    "status": "published phase description, scale and model dependent"
+  },
+  "climate_source": {
+    "file": "LR04stack.txt",
+    "url": "https://lorraine-lisiecki.com/LR04stack.txt",
+    "documentation_url": "https://lorraine-lisiecki.com/stack.html",
+    "sha256": "7d1a6ca7ffc033e45e20fb76a7f39c8d99df87baa1094260f9dbdc09f0bb8945",
+    "version": "Author-hosted LR04 stack, updated August 1, 2005: removed age rounding at 3.0-1.5 Ma; added 0.64 cib. correction",
+    "retrieved_utc": "2026-11-11",
+    "citation": "lisiecki2005",
+    "records_averaged": 57,
+    "age_model": "Published LR04 graphic correlation and orbitally tuned age model with sedimentation-rate constraints; no retuning or resampling",
+    "signal": "Benthic oxygen isotope stack: global ice volume and deep-ocean temperature, not direct air temperature",
+    "documented_range_ka": [
+      0,
+      5320
+    ]
+  },
+  "events": [
+    {
+      "id": "mpt",
+      "label": "Middle Pleistocene Transition",
+      "kind": "interval",
+      "older_ma": 1.25,
+      "younger_ma": 0.7,
+      "lane": "climate",
+      "geography": "Global glacial-cycle context",
+      "evidence_status": "paleoclimate transition synthesis",
+      "date_meaning": "approximate conventional transition boundaries, not a confidence interval",
+      "reported_uncertainty": null,
+      "citations": [
+        "clark2006"
+      ],
+      "primary_dois": [
+        "10.1016/j.quascirev.2006.07.008"
+      ],
+      "interpretation_limit": "Longer and stronger glacial cycles developed across a transition; these boundaries do not date a single catastrophe."
+    },
+    {
+      "id": "mis34",
+      "label": "MIS 34 cooling",
+      "kind": "interval",
+      "older_ma": 1.154,
+      "younger_ma": 1.123,
+      "lane": "climate",
+      "geography": "North Atlantic and southwest European proxy records",
+      "evidence_status": "marine and terrestrial proxy evidence",
+      "date_meaning": "climate interval on the study age model, not a confidence interval",
+      "reported_uncertainty": null,
+      "citations": [
+        "margari2023"
+      ],
+      "primary_dois": [
+        "10.1126/science.adf4445"
+      ],
+      "interpretation_limit": "European hominin depopulation is a demographic inference from proxy, habitat-model and occupation evidence; not a measured global extinction or ancestral bottleneck."
+    },
+    {
+      "id": "mis34_terminal",
+      "label": "MIS 34 terminal stadial",
+      "kind": "interval",
+      "older_ma": 1.127,
+      "younger_ma": 1.123,
+      "lane": "climate",
+      "geography": "North Atlantic and southwest Europe",
+      "evidence_status": "extreme terminal cooling in proxy records",
+      "date_meaning": "stadial duration on the study age model, not dating error",
+      "reported_uncertainty": null,
+      "citations": [
+        "margari2023"
+      ],
+      "primary_dois": [
+        "10.1126/science.adf4445"
+      ],
+      "interpretation_limit": "Nested within MIS34; the regional demographic inference remains distinct from the environmental observation."
+    },
+    {
+      "id": "bottleneck",
+      "label": "Ancestral bottleneck (disputed)",
+      "kind": "interval",
+      "older_ma": 0.93,
+      "younger_ma": 0.813,
+      "lane": "demography",
+      "geography": "Proposed ancestral population of modern humans",
+      "evidence_status": "disputed demographic inference",
+      "date_meaning": "model-inferred demographic duration, not a confidence interval",
+      "reported_uncertainty": null,
+      "effective_population_size": 1280,
+      "effective_size_meaning": "genetic-model effective population size, not a census of surviving humans",
+      "citations": [
+        "hu2023",
+        "deng2025",
+        "cousins2025",
+        "zhou2026",
+        "muttoni2024"
+      ],
+      "primary_dois": [
+        "10.1126/science.abq7487",
+        "10.1093/genetics/iyae192",
+        "10.1093/molbev/msaf041",
+        "10.1093/molbev/msag157",
+        "10.1073/pnas.2318903121"
+      ],
+      "interpretation_limit": "FitCoal inference is contested by statistical-artifact and insufficient-fit critiques. The 2026 methodological defense does not establish consensus. Muttoni and Kent's 2024 MIS22 migration/timing interpretation is distinct from MIS34 cooling near 1.1 Ma."
+    },
+    {
+      "id": "impact",
+      "label": "Australasian impact",
+      "kind": "point",
+      "age_ma": 0.789,
+      "lane": "impact",
+      "geography": "Australasian tektite field; proposed Bolaven source in Laos",
+      "evidence_status": "established impact evidence; source-location interpretation contested",
+      "date_meaning": "rounded event age; reported analytical age errors below are separate from event duration",
+      "reported_uncertainty": [
+        {
+          "age_ka": 788.9,
+          "plus_minus_ka": 2.4,
+          "convention": "2 sigma, explicitly stated in SI Table S1 and tektite-dating discussion",
+          "meaning": "Sieh et al. tektite date"
+        },
+        {
+          "age_ka": 788.1,
+          "plus_minus_ka": 2.8,
+          "convention": "quoted plus/minus value for prior published mean; confidence convention not restated in the comparison paragraph",
+          "meaning": "earlier mean before recalibration"
+        },
+        {
+          "age_ka": 789.2,
+          "plus_minus_ka": 2.8,
+          "convention": "quoted plus/minus value after common standard-age and decay-constant recalibration; no conversion to a confidence interval",
+          "meaning": "recalibrated prior mean"
+        },
+        {
+          "age_ka": 789.0,
+          "plus_minus_ka": 1.8,
+          "convention": "quoted plus/minus value for inverse-variance combined mean; not event duration; comparison paragraph does not separately restate sigma convention",
+          "meaning": "combined age"
+        }
+      ],
+      "citations": [
+        "sieh2023",
+        "mizera2022"
+      ],
+      "primary_dois": [
+        "10.1073/pnas.2310351120",
+        "10.1111/maps.13912"
+      ],
+      "interpretation_limit": "Tektite evidence establishes an impact. Bolaven source arguments and biological consequences require separate assessment; no verified evidence here establishes a cause of cranial-volume stasis.",
+      "dating_source_audit": {
+        "url": "https://pmc-oa-opendata.s3.amazonaws.com/PMC10723122.1/pnas.2310351120.sapp.pdf",
+        "sha256": "d857c1ae6ab949118fae155bae5f7a414cc68f3db4864a92d8334a1869d585dd",
+        "page_note": "SI Table S1 p2 labels plateau ages plus/minus 2 sigma. SI tektite-dating discussion explicitly calls 788.9+/-2.4 ka 2 sigma. The article main text calls the prior date a five-tektite mean; the SI says nine. We retain the date without asserting a reconciled prior specimen count."
+      }
+    }
+  ]
+}

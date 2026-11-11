@@ -63,7 +63,8 @@ def expected_source_paths():
 
 def originals():
     tips_dir = ROOT / "tips"
-    rows = json.loads((tips_dir / "manifest.json").read_text())
+    all_rows = json.loads((tips_dir / "manifest.json").read_text())
+    rows = [row for row in all_rows if row.get("study") is None]
     manifest_files = [row["file"] for row in rows]
     actual_files = sorted(p.name for p in tips_dir.iterdir() if p.is_file() and p.name != "manifest.json")
     assert len(manifest_files) == len(set(manifest_files)), "duplicate file in tips/manifest.json"

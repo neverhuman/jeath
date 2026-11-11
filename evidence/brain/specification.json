@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "frozen_at_utc": "2026-11-11T13:11:41.807353+00:00",
+  "status": "exploratory, before expanded estimates",
+  "already_visible": "All supplied drafts, platform reference and COMMS planning probes; H1-H20 summaries. No confirmatory preregistration.",
+  "hon": {
+    "eligibility": "canonical, age18-79, Female/Male, unconflicted labels/metadata, valid votes, primary>=20",
+    "normalization": "exact versioned country aliases; preserve unresolved labels",
+    "principal": "equal-country weights, fixed >=100/gender in each18-29,30-44,45-64",
+    "spline": "natural cubic, boundaries18,64, knots25,35,45,55; exact-age count weighted least squares",
+    "reference": "country/gender midrank among eligible ages18-79, fixed across age",
+    "contrast": "fitted25-29 minus45-49; women-minus-men difference",
+    "uncertainty": "2000 paired country bootstrap; between-country dispersion separately",
+    "sensitivities": "votes1/20/100; global-sex and pooled ranks; US/excludingUS; equal-profile/vote-pooled; image coverage; reported/inventoried photo counts separate"
+  },
+  "pov": {
+    "eligibility": "age18-79, Female/Male, opposite-recorded-gender seeking",
+    "geography": "pinned Natural Earth10m, country/territory ADMIN units; exact country and unambiguous subdivision aliases; [latitude,longitude]; conflicts unresolved",
+    "contrast": "25-29 vs45-49, >=100 per country/gender/band; childless subset separately; equal-country",
+    "outcomes": [
+      "parenthood incl adult children",
+      "all wantchildren responses",
+      "all intent responses plus relationship/active/marry union",
+      "for categories separately"
+    ],
+    "attributes": "ambition and education vs parenthood/wantchildren/serious intent; crude and common-stratum standardization by age,country,maritalstatus,parenthood except when outcome; all contrasts retained",
+    "height": "explicit uncensored cm only, plausible120-230; censored under152 separate",
+    "relationshipage_id": "retain categories; do not assert wording until source verified"
+  },
+  "surveys": {
+    "Kowal": "adult heterosexual man/woman complete0-30 six budget allocations sum30; >=100/gender country; age-standardized bands18-29,30-44,45+ >=20/gender/cell",
+    "Whyte": "7060 rows, all9 items; source labels; bands18-29,30-39,40-49,50-65; paired trust contrasts; centered and hetero_dummy1 sensitivities",
+    "Walter": "document coding or quarantine gender results",
+    "Eastwick": "complete35-attribute Table5 transcription; original scales, no invented intervals"
+  },
+  "multiplicity": "Exploratory descriptive families; display all specified comparisons; intervals pointwise, no significance-filtered promotion."
+}

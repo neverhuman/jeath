@@ -1,0 +1,890 @@
+% Final critical synthesis and exploratory reanalysis; see README for reproducible build.
+\documentclass[10pt,twocolumn,letterpaper]{article}
+\usepackage[margin=0.68in,top=0.62in,bottom=0.68in,columnsep=0.27in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo,courier}
+\ifdefined\pdfmapfile
+  \pdfmapfile{+pazo.map}
+  \pdfmapfile{+cm.map}
+  \pdfmapfile{+cmextra.map}
+  \pdfmapfile{+symbols.map}
+  \pdfmapfile{+upl.map}
+  \pdfmapfile{+uhv.map}
+  \pdfmapfile{+ucr.map}
+  \pdfmapfile{+ps2pk35.map}
+\fi
+\usepackage[scaled=.92]{helvet}
+\usepackage{microtype,amsmath,amssymb,graphicx,booktabs,tabularx,array,multirow}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{enumitem,caption,fancyhdr,titlesec,etoolbox,balance}
+\usepackage{needspace}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{xurl}
+\usepackage{hyperref}
+\definecolor{ink}{HTML}{19323B}
+\definecolor{teal}{HTML}{15616D}
+\definecolor{gold}{HTML}{A57430}
+\definecolor{pale}{HTML}{EDF3F3}
+\definecolor{muted}{HTML}{52636B}
+\hypersetup{colorlinks=true,linkcolor=teal,citecolor=teal,urlcolor=teal,pdftitle={The Minds We Choose: Mate Choice, Trust, and the Evolution of Human Intelligence},pdfauthor={Jepson Taylor and Erin Beilharz},pdfsubject={Critical integrative review, exploratory reanalysis, and testable framework}}
+\urlstyle{same}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{1.4em}
+\setlength{\textfloatsep}{12pt plus 2pt minus 2pt}
+\setlength{\floatsep}{10pt}
+\setlength{\intextsep}{10pt}
+\renewcommand{\topfraction}{.93}
+\renewcommand{\dbltopfraction}{.93}
+\renewcommand{\textfraction}{.06}
+\renewcommand{\floatpagefraction}{.8}
+\renewcommand{\dblfloatpagefraction}{.8}
+\captionsetup{font=small,labelfont={bf,color=teal},labelsep=period,justification=raggedright,singlelinecheck=false}
+\titleformat{\section}{\sffamily\large\bfseries\color{ink}\raggedright\hyphenpenalty10000}{\thesection}{.55em}{}
+\titleformat{\subsection}{\sffamily\normalsize\bfseries\color{teal}\raggedright\hyphenpenalty10000}{\thesubsection}{.5em}{}
+\titlespacing*{\section}{0pt}{11pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsection}{0pt}{8pt plus 1pt}{3pt}
+\pretocmd{\section}{\Needspace{4\baselineskip}}{}{}
+\pretocmd{\subsection}{\Needspace{4\baselineskip}}{}{}
+\setlist[itemize]{leftmargin=1.1em,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=1.3em,itemsep=2pt,topsep=3pt}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{\nolinkurl{#1}}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\SD}{\operatorname{SD}}
+\newcommand{\CV}{\operatorname{CV}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\scriptsize\color{muted}THE MINDS WE CHOOSE}
+\fancyhead[R]{\sffamily\scriptsize\color{muted}REVIEW + EXPLORATORY REANALYSIS \; / \; 2026}
+\fancyfoot[L]{\sffamily\scriptsize\color{muted}Performance before outcomes: ability, commitment, and fit}
+\fancyfoot[R]{\sffamily\small\color{teal}\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\headheight}{13pt}
+\raggedbottom
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\begin{document}
+\onecolumn
+\thispagestyle{empty}
+{\sffamily\small\bfseries\color{teal}PERFORMANCE BEFORE OUTCOMES \; / \; EVIDENCE AND THEORY\par}
+\vspace{5pt}
+{\fontsize{29}{32}\selectfont\bfseries\color{ink}The Minds We Choose\par}
+\vspace{4pt}
+{\fontsize{14.5}{17.5}\selectfont\color{ink}Mate choice, trust, and the evolution of human intelligence\par}
+\vspace{6pt}
+{\sffamily Jepson Taylor \; and \; Erin Beilharz\hfill\small November 10, 2026\par}
+\vspace{8pt}
+\noindent\begin{minipage}{\textwidth}\small
+\textbf{Abstract.} People choose partners before they can observe a shared lifetime. We examine how early judgments of competence, commitment, compatibility, and safety could connect mate choice to cultural and cognitive evolution. An exploratory reanalysis of an open international survey retains 67,743 heterosexual adults with valid six-trait preference budgets. Kindness receives the largest pooled allocation in both reported gender groups. In 53 country samples meeting a common size threshold, men allocate more to physical attractiveness in all 53 and women more to financial prospects in 51; shared contextual variation accompanies these differences. These are stated priorities, not causal selection coefficients. A separate 7,060-record Australian deposit places trust above intelligence and attractiveness on average in both sex groups. Behavioral research separates wanting a quality, recognizing it, choosing a person, and sustaining a relationship. Our synthesis distinguishes three consequences of public performance: revealing information, producing useful social benefits, and changing access to opportunities. Who controls those opportunities matters: mutual assessment does not imply universal consent or equal agency. Storytelling, skilled work, regulated competition, and ordinary care illustrate this framework; genetic-lineage claims and simple hunter--farmer accounts of neurodivergence require substantial qualification. We derive a measurement decomposition separating additional observers from additional contexts and propose prospective tests of forecast accuracy and joint contribution. Cultural transmission can respond within lifetimes; genetic and anatomical change require further evidence. Neither fossils nor modern preferences identify mate choice's historical contribution to brain enlargement. The practical implication for human relationships and AI evaluation is to validate dependable contribution beyond a persuasive performance.
+\end{minipage}
+\vspace{5pt}
+\noindent\begin{minipage}[c]{.54\textwidth}
+\includegraphics[width=\linewidth]{assets/assessment_illustration.png}
+\end{minipage}\hfill
+\begin{minipage}[c]{.43\textwidth}
+{\sffamily\bfseries\color{teal}A future relationship, judged in the present.\par}
+\vspace{4pt}\small
+Competence shows what someone can contribute. Follow-through shows whether that contribution arrives. Compatibility determines what two people can create together.
+\end{minipage}
+\vspace{3pt}
+\noindent\begin{minipage}{\textwidth}
+\captionsetup{hypcap=false}
+\includegraphics[width=\textwidth]{assets/opening_story.pdf}
+\vspace{-6pt}
+\captionof{figure}{\textbf{Three evidence levels; one question about early assessment.} (A) New descriptive reanalysis of the 30-point budget in Kowal et al.; men $n=23{,}059$, women $n=44{,}684$ \citep{kowal2025}. (B) Published associations of 1--10 ratings with requesting further contact: Fisman et al., Table III, columns 1--2; 5,367 decisions \citep{fisman2006}. Whiskers in A are conditional normal intervals for means; those in B approximate 95\% intervals reconstructed from published rounded standard errors. Neither is a national or ancestral parameter. (C) All 94 Du et al. specimens; age and volume ranges follow the source \citep{du2018}. The panels do not estimate links between these datasets. The illustration is AI-generated and conceptual.}
+\label{fig:opening}
+\end{minipage}
+\twocolumn
+
+\section{Choosing a future}
+A successful hunt reveals something about a hunter, but not whether the hunter will share. A generous act reveals something about cooperation, but an audience can change the incentive to give. A capable, trustworthy person may still want a different life from a potential partner. Human mate assessment therefore concerns more than identifying the strongest or most intelligent candidate. It concerns forecasting a relationship.
+
+The central proposal is that \emph{early behavior can make future contribution sufficiently predictable to influence consequential choices}. A hunt, a repaired tool, a story, or an act of care already has a short-term outcome. ``Before outcomes'' means before sustained provisioning, dependable partnership, or lifetime mastery is fully known. Natural selection never needed to wait for death. The proposed advantage is information available when commitments are made.
+
+Three distinctions make the account useful. \emph{Ability and delivery} separate what a person can produce from what reaches a partner. \emph{Accuracy and attraction} separate a correct forecast from a favorable impression. \emph{Choice and inheritance} separate social consequences within a lifetime from changes across generations. These distinctions connect the mating question to a broader problem: how humans select people, cultural models, and increasingly artificial systems whose consequential behavior is only partly observed.
+
+Our organizing claim is that an assessment setting has three possible effects. It can \emph{reveal} a candidate's qualities, \emph{produce} benefits through the activity itself, and \emph{allocate} access to relationships, allies, or learning opportunities. A hunter feeds people while displaying skill; a storyteller can build common understanding while becoming known; a cooperative task can create compatibility while revealing it. These effects need not be alternatives. Confusing them, however, makes every useful social activity appear to confirm a mating-signal theory. The task is to estimate each route separately.
+
+Sexual-selection, prestige, social-selection, and life-history theories provide the foundation \citep{miller,henrich,west,deblock}. Our contribution is an integrated assessment framework, a transparent descriptive reanalysis of a large contemporary survey, and tests of the framework's missing causal links. We do not claim priority for the idea that competence or cooperation is attractive, or treat a mathematical identity as a newly discovered evolutionary mechanism.
+
+\subsection{Scope and evidence}
+This is a critical integrative review with an exploratory secondary analysis, not an exhaustive systematic review or a demonstration of historical causation. Targeted searches through November 10, 2026 emphasized primary studies, large or preregistered projects, quantitative syntheses, and counterevidence. The principal analysis uses a public dataset collected in 2021 and released with a 2025 data descriptor \citep{kowal2025}; a supplementary analysis uses an Australian attraction survey deposit \citep{whyte2021}. Neither collected new participant observations. Appendix~\ref{app:methods} gives filtering, uncertainty, and reproducibility details.
+
+Most cited mating research concerns heterosexual women and men. Terminology follows each source: the new survey asks respondents' \emph{gender}, while other studies use sex classifications. These samples do not represent every orientation, identity, community, or individual. Reproductive output is an evolutionary variable, not a measure of human worth.
+
+\section{Shared priorities, different emphases}
+\subsection{A large, open comparison}
+Kowal et al. assembled 117,293 responses across 175 countries \citep{kowal2025}. We retained 67,743 adults reporting heterosexual orientation and a gender of man or woman, with complete, valid allocations of 30 points across six long-term partner qualities. The design forces trade-offs: a point given to one quality must be taken from another. It measures \emph{stated importance within that menu}; it neither covers every desirable trait nor observes partner choice.
+
+Kindness receives the highest pooled mean in both groups: 6.52 points for men and 6.75 for women. Health receives 6.07 and 5.92. Men allocate more to physical attractiveness (6.21 versus 5.32); women allocate more to financial prospects (5.02 versus 3.95). The remaining allocations concern an appropriate age and whether religion matters. A higher allocation to age does not mean preferring younger partners, and a higher allocation to religion does not by itself mean preferring stronger religious belief. These are distinct questions.
+
+The result is a conjunction: substantial shared priorities accompany average differences in trade-offs. Kindness leading this six-option task does not show that it dominates every actual decision, that it is independent of other qualities, or that its evolutionary function has been identified. The task does not measure intelligence, courage, authenticity, or caregiving skill separately. Those questions require the complementary evidence below.
+
+\subsection{Culture does more than change a male--female gap}
+We applied the same inclusion rule to every country of residence: at least 100 eligible men and 100 eligible women. This yields 53 country samples and 62,185 respondents. Men allocate more to attractiveness in all 53 samples; women allocate more to financial prospects in 51. These are counts of \emph{point-estimate directions}, not 53 significant replications. The median women-minus-men differences are $-0.95$ and $+1.00$ budget points, respectively (Fig.~\ref{fig:culture}A).
+
+Shared contextual variation is also visible. Country-sample means for men and women correlate at $.94$ for the importance of religion and $.94$ for kindness. The former spans approximately 1.2--6.0 points across the two gender groups and all eligible countries. For illustration, religion receives about 6.0 points from each gender in the Algerian sample, versus 1.5 from men and 1.2 from women in the Japanese sample. Religion is the highest-rated option in both Algerian groups; kindness leads in both Japanese groups. These examples describe respondents, not national populations. Recruitment, translation, age, religious composition, and survey mode can all contribute; Algeria used paper questionnaires.
+
+Kindness leads the six options in 32 of the 53 men's samples and 43 of the women's samples. Equal weighting of the 53 countries also leaves kindness highest in both groups. A common-age-distribution sensitivity analysis is feasible in 32 countries; the attractiveness and financial-prospect differences retain their respective directions in all 32. These checks strengthen the descriptive pattern without converting it into a causal cultural explanation.
+
+\begin{figure*}[t]
+\centering\includegraphics[width=\textwidth]{assets/culture_patterns.pdf}
+\caption{\textbf{Sex differences and shared contextual variation coexist.} Exploratory reanalysis of Kowal et al. \citep{kowal2025}. (A) Every country with at least 100 eligible respondents in each gender group, for every budget item. Dots are country mean differences; deterministic vertical offsets separate overlapping marks and have no substantive meaning. Black ticks are medians across countries. (B) Importance of religion in the same 53 samples; the dashed line marks equal means. Labels illustrate the range, not a planned country contrast. The correlation is between country-sample means, not between individual partners. Country-specific means, sample sizes, conditional intervals, and age-standardized contrasts are supplied in the source package. Convenience sampling, composition, and mode differences prevent national or causal interpretation.}
+\label{fig:culture}
+\end{figure*}
+
+The most useful cultural question is thus not whether a population prefers ``warriors'' or ``scientists.'' It is which capacities are useful, which contributions are expected to arrive, which relationships are feasible, and which cues people trust under local conditions. Nationality, ancestry, institutions, and religious practice are different variables. The present data estimate no racial preference coefficients and do not identify inherited differences between communities.
+
+\section{Desire, decisions, and durable relationships}
+\subsection{Shared priorities and average differences}
+The clearest starting point is overlap. Warmth, dependability, intelligence, health, and attraction matter to both sexes. Average differences also recur: women report greater emphasis on earning prospects, and men on youth and attractiveness, in large cross-national studies \citep{walter2020}. Budget-allocation experiments suggest that kindness and intelligence can function as priorities for both sexes, with different average trade-offs over attractiveness and resources \citep{li2002}. These are measured task responses, not a universal ordering independent of opportunity, relationship goals, and culture.
+
+\begin{table*}[t]
+\caption{A concise account of partner criteria. ``Women'' and ``men'' describe average patterns in the cited populations, not rules for individuals. The same trait can serve several functions.}
+\label{tab:criteria}
+\small\begin{tabularx}{\textwidth}{L{.16\textwidth}Y Y Y}
+\toprule
+Criterion & What it may help a chooser assess & Evidence concerning women and men & Main boundary\\
+\midrule
+Warmth, honesty, dependability & Willingness to cooperate and provide care; predictable conduct & Both sexes report valuing such qualities; perceived support and commitment also matter within relationships \citep{li2002,joel2020}. & A favorable impression is not independently verified reliability.\\
+Competence and learning & Ability to solve practical problems, acquire resources, and adapt & Intelligence is widely valued; observed and perceived intelligence do not have identical associations with attraction \citep{walter2020,driebe2021}. & Measured ability, credentials, and confidence are different variables.\\
+Attraction and sexual compatibility & Desire, pleasure, and interest in intimacy & Both sexes' romantic evaluations covary with attractiveness; average stated sex differences need not match evaluation differences \citep{eastwick2014}. & Attraction is not commitment, consent, fertility, or a health diagnosis.\\
+Resources, effort, and prospects & Capacity to sustain a household and absorb uncertainty & Women report stronger resource preferences on average; men also value partners' work and character in field studies \citep{walter2020,marlowe,pillsworth}. & Present income can reflect inherited advantage and previous family decisions.\\
+Care, restraint, and safety & Whether a partner will help rather than impose avoidable harm & Responsiveness can support desire; context affects sexual willingness \citep{birnbaum,conley2014}. & Safe strength and reckless dominance are not equivalent; neither is exclusively a male criterion.\\
+Compatibility and reciprocity & Shared intentions, coordination, and relationship-specific value & Mutual agreement and pair-specific attraction matter; unique attraction is difficult to predict from trait lists \citep{joel2017,jonason2026}. & A broadly desirable person may still be the wrong partner for a particular chooser.\\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\subsection{What a brief encounter makes visible}
+Published speed-dating estimates provide an instructive behavioral contrast. In Fisman et al.'s models, a one-point increase in a chooser's attractiveness rating accompanies an 11.9-percentage-point higher probability of requesting contact among women and a 14.0-point increase among men. The corresponding associations for perceived intelligence are 4.5 and 2.3 points; for ambition, 1.3 points in each group (Fig.~\ref{fig:opening}B) \citep{fisman2006}. The models adjust jointly for these three ratings, include chooser fixed effects, weight decisions inversely by the number of partners encountered, and cluster uncertainty by target.
+
+These coefficients describe one university dating market and immediate decisions, not universal preference weights. The ratings are contemporaneous perceptions, not randomized traits or independent ability measurements. In particular, this study's institutional SAT variable refers to the median score at a participant's undergraduate institution, not that participant's intelligence. It cannot validate individual cognitive assessment by itself.
+
+The contrast with a long-term budget task motivates an \emph{observation-window hypothesis}: a quality can be important in a desired relationship yet exert little detectable influence in an encounter that supplies poor information about it. This remains a hypothesis. Different samples, trait menus, incentives, and outcomes also explain differences between studies; their coefficients cannot be put on one common importance scale.
+
+\subsection{Stated ideals, attraction, and actual choices}
+Figure~\ref{fig:sex} shows a useful empirical distinction. In a large international study, reported mean importance differed between heterosexual men and women for attractiveness and earning potential, while separate associations between perceived attributes and romantic evaluations were very similar. These quantities answer different questions. A stated ideal is a report of importance; an evaluation slope describes covariation, not a causal trade-off or an observed mating decision \citep{matching2025}.
+
+A meta-analysis of 97 studies similarly found attractiveness associated with romantic evaluation at about $r=.40$ and earning prospects at about $r=.10$, with small, nonsignificant sex differences in those associations \citep{eastwick2014}. This does not mean sex differences never affect choices. It means that one cannot infer the behavioral importance of a trait directly from a difference in questionnaire means.
+
+\begin{figure*}[t]
+\centering\includegraphics[width=\textwidth]{assets/sex_preferences.pdf}
+\caption{\textbf{A difference in stated priorities is not the same as a difference in evaluation associations.} Teal circles: heterosexual men; purple squares: heterosexual women. Values reproduce Table 5 of Eastwick et al. \citep{matching2025}; sample sizes are 2,933--2,935 men and 5,408--5,410 women across these composites. Panel A uses mean ratings; panel B uses separate standardized mixed-model slopes, not correlations or mutually adjusted preference weights. The source table gives no coefficient intervals, so none are reconstructed. Rounded differences are not tests of equivalence.}
+\label{fig:sex}
+\end{figure*}
+
+Preferences are not worthless. Prospective research has linked stated ideals to later partners' characteristics \citep{gerlach2019}. The informative question is how much a person's \emph{distinctive} ideals predict beyond qualities many people desire, given whom they can meet and who reciprocates. Brief encounters, established relationships, and prospective partner formation sample different processes. A null result in one setting cannot establish that intelligence, status, or kindness is never attractive.
+
+Actual choice is reciprocal and constrained. Speed-dating research found that changing who physically approached whom altered the usual sex difference in selectivity \citep{finkel2009}. Many relationships also develop from friendship rather than a rapid screening encounter \citep{stinson}. Algorithms predicting general desirability can still fail to predict which particular pair experiences attraction \citep{joel2017}. Institutions, network position, availability, and rejection risk therefore belong inside the explanation.
+
+Acquaintance can change which qualities organize pairing. Among 167 couples, longer acquaintance before dating was associated with weaker matching on independently rated physical attractiveness \citep{hunt2015}. This is consistent with information becoming more person-specific over time. Retrospective acquaintance reports and selection into established couples prevent a causal conclusion that waiting improves mate choice, and the study supplies no optimal courtship duration.
+
+\subsection{Desire, sexuality, and commitment}
+Sexual desire has its own determinants. A large meta-analysis found a higher average sex drive among men, with considerable overlap and a smaller estimate after accounting for biased responding \citep{sexdrive}. That finding is not an estimate of selectivity, a universal preference for casual sex, or a prediction about any individual. Experimental work shows that the identity and perceived qualities of a proposer can change willingness to accept casual sex \citep{conley,conley2014}. Responsiveness and expected pleasure matter alongside physical attraction \citep{birnbaum}.
+
+Desire may support partnership formation without determining whether people want children. The number of sexual partners is likewise not interchangeable with years in a union, number of births, or surviving descendants. In a longitudinal Pimbwe study, the relationships between reproduction, number of spouses, and marital duration differed by sex and depended on how mating success was defined \citep{borgerhoffmulder2019}. A credible account separates these outcomes instead of fitting them to one male or female strategy.
+
+\section{What can be assessed early?}
+\subsection{Performance reveals a mixture}
+A hunter's behavior may reveal attention, spatial knowledge, persistence, physical condition, cooperation, and learning. It also reflects training, equipment, access to productive places, and luck. Cross-cultural work shows substantial variation in hunting skill and a typical peak well after initial adulthood \citep{koster}. That delay makes earlier evidence potentially valuable, but it does not establish that observers can isolate inherited intelligence from it.
+
+The same logic applies to caregiving, craft, food processing, navigation, and practical problem solving. Tsimane research describes acquisition of many basic skills before first reproduction, followed by much later proficiency and recognized expertise. Much of that evidence comes from retrospective self-reports and peer nominations, not prospective tests of juvenile ability \citep{schniter2015}. It supports a gap between initial competence and lifetime mastery; it does not yet establish the accuracy of early mate assessment.
+
+Short behavioral samples can contain information about measured intelligence \citep{borkenau2004}. Yet being detectable is not the same as being attractive: video and live-interaction studies found that measured intelligence could be recognized without predicting immediate attraction in those samples \citep{driebe2021}. Early assessment must therefore be tested twice---against an independent criterion and against a consequential decision.
+
+Persistence also needs definition. ``Grit'' overlaps strongly with conscientiousness, and its components do not have identical predictive value \citep{grit}. Adaptive determination combines sustained effort with learning, calibration, and willingness to stop a failing strategy. Mere refusal to quit is not a general indicator of sound judgment.
+
+\begin{table*}[t]
+\caption{Early indicators and the independent outcomes needed to validate them. These are candidate assessment channels; they are not measured ancestral selection coefficients.}
+\label{tab:indicators}
+\small\begin{tabularx}{\textwidth}{L{.17\textwidth}Y Y Y}
+\toprule
+Capacity or disposition & Potentially observable behavior & Better validation criterion & Main alternative explanation\\
+\midrule
+Learning and practical judgment & Improvement on unfamiliar tasks; tracking decisions; error correction & Performance on new tasks, at matched opportunity and training & Practice, coaching, social advantage, task familiarity\\
+Persistence and effort & Sustained work, completion, recovery after setbacks & Follow-through across tasks and ordinary obligations & Available time, incentives, conscientiousness, health\\
+Health and physical capacity & Endurance, carrying, recovery, skilled movement & Independently measured condition and future functional performance & Age, temporary illness, nutrition, selection into activity\\
+Cooperation and investment & Sharing, care, help when inconvenient, keeping agreements & Later partner-directed assistance outside the original audience & Strategic display, kin obligation, reciprocity debt\\
+Social coordination & Mediation, teaching, planning, coalition maintenance & Group outcomes and partner experiences assessed independently & Popularity, authority, resources, observer halo\\
+Restraint and calibration & Proportionate risk, acknowledgment of error, repair after conflict & Avoidable losses, reliable forecasts, conduct under disagreement & Impression management or compliance without understanding\\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\subsection{Agreement is not accuracy}
+Repeated observations can reduce idiosyncratic error. They can also reproduce the same halo, privilege, or shared story. Two panels agreeing that someone is intelligent establish consensus in that setting; accuracy requires an independent criterion such as reliable cognitive measurement or later performance. Agreement that rises as raters are averaged does not, by itself, show that an audience reads an underlying capacity correctly.
+
+Breadth helps when it adds information about the intended target. In an equal-loading model, task-specific noise averages down while common factors remain. Those common factors can include ability, health, training, opportunity, and presentation. Increasing the number of domains therefore cannot identify intelligence by assumption or establish a proportional increase in genetic response. Nor does occupational specialization necessarily remove selection for cognition: specialists still learn, coordinate, solve new problems, and choose partners outside their work.
+
+Recognized tests can reveal both capacity and disposition when incentives make behavior informative. Ordinary conduct can likewise reveal both. The defensible distinction is between evidence gathered under different incentives and its ability to predict behavior elsewhere, not a categorical claim that a staged test conveys no character information. Diverse tasks and audiences help only to the extent that their errors and incentives differ.
+
+\subsection{More observers and more contexts solve different problems}
+Consider a balanced design in which observer $j$ evaluates person $i$ in context $k$. A simple measurement model is
+\begin{equation}
+Y_{ijk}=\theta_i+h_i+b_{ij}+c_{ik}+\epsilon_{ijk}.
+\label{eq:contexts}
+\end{equation}
+Here $\theta_i$ is the independently defined target, $h_i$ a shared persistent halo, $b_{ij}$ an observer--target distortion, $c_{ik}$ a context--target disturbance, and $\epsilon_{ijk}$ residual error. Assume centered, mutually independent components and independent draws across observers and contexts. For $m$ observers and $k$ contexts, squared criterion validity is
+\begin{equation}
+R^2_{m,k}=\frac{\sigma_\theta^2}{\sigma_\theta^2+\sigma_h^2+\sigma_b^2/m+\sigma_c^2/k+\sigma_\epsilon^2/(mk)}.
+\label{eq:twoway}
+\end{equation}
+This familiar variance decomposition yields a useful design distinction. More people watching the same lucky performance cannot remove context error; one observer seeing many situations cannot remove that observer's persistent distortion; neither removes a common halo. With correlated errors, unequal loadings, missing contexts, or changing traits, these simple divisors require modification.
+
+The formula supplies no empirical validity percentage, optimal courtship length, or endorsement of arranged marriage. A context effect may be genuine person--environment fit rather than error: its status depends on the forecast target. To predict a particular relationship, one should model relevant contexts and interactions rather than average them away. The proposed study therefore compares added observers with added contexts at matched observation cost and validates predictions against subsequent conduct.
+
+\subsection{Women contribute information and capabilities}
+Reducing women's assessed value to body shape obscures the behavioral evidence. Hadza and Shuar studies document preferences for qualities including work, character, and competence, with ecological differences in what is emphasized \citep{marlowe,pillsworth}. Women's own knowledge and influence can also matter directly to family outcomes, independently of being selected by men.
+
+Among Tsimane, maternal ethnobotanical knowledge was associated with child-health indicators \citep{mcdade2007}. A separate study associated maternal political influence with better child growth and lower illness odds after measured covariate adjustment (Fig.~\ref{fig:maternal}) \citep{alami2020}. These are associations in particular populations, not demonstrations that female social cognition caused brain expansion. Nor do they show that mothers alone determine child welfare. They establish why women's competence, social relationships, and agency belong in the explanatory frame.
+
+\begin{figure*}[t]
+\centering\includegraphics[width=\textwidth]{assets/maternal_status.pdf}
+\caption{\textbf{Women's social standing can relate to outcomes beyond attracting a mate.} Reported estimates from Alami et al. \citep{alami2020}, concerning maternal political influence and child health in one Tsimane community. (A) Standardized growth associations and reported 95\% confidence intervals. (B) The reported odds ratio for common illness, on a logarithmic axis; 1 is the null. The study included 142 children of 47 mothers, with measurement counts varying across outcomes. These adjusted observational estimates do not establish causality, survival effects, or universal sex differences.}
+\label{fig:maternal}
+\end{figure*}
+
+\section{From ability to dependable contribution}
+\subsection{Capacity, willingness, compatibility, and risk}
+An able partner may generate resources, insight, protection, pleasure, or care. A chooser also needs to anticipate whether those benefits will be delivered to them and whether the relationship imposes costs. We organize these concerns into four functions: \emph{capacity to contribute}, \emph{willingness to invest}, \emph{compatibility of goals and interaction}, and \emph{risk of harm or instability}. These are analytic categories, not a newly established four-factor psychology.
+
+A minimal decision representation makes the distinction explicit:
+\begin{equation}
+U_{ij}=\E\!\left[p_{ij}B_j+C_{ij}-H_{ij}\mid\mathcal I_i\right].
+\label{eq:value}
+\end{equation}
+Here $B_j$ represents potential benefits from person $j$; $p_{ij}$ the fraction or probability expected to reach chooser $i$; $C_{ij}$ relationship-specific compatibility; $H_{ij}$ expected harms and costs; and $\mathcal I_i$ the available evidence. This is a hypothesis-generating utility model, not a fitted law, an evolutionary fitness equation, or a claim that people calculate consciously. Benefits need not be material or reproductive.
+
+Holding other terms fixed, reliable investment raises the value of capacity in this representation. But expected contribution is not generally the product of two average impressions:
+\begin{equation}
+\E[pB\mid\mathcal I]=\E[p\mid\mathcal I]\E[B\mid\mathcal I]+\Cov(p,B\mid\mathcal I).
+\label{eq:joint}
+\end{equation}
+A chooser needs evidence about \emph{joint} ability and delivery. Success in an unrelated arena may say little about how effort will be allocated to this relationship. Conversely, dependable investment may make moderate capability more valuable than impressive but unavailable capability. This conditional complementarity is testable; it does not imply a historical joint evolutionary ``take-off'' or that competence has no direct survival benefit without mates.
+
+Institutions can change the same calculation. If a share $e$ of an output is reliably delivered regardless of personal willingness, the delivered fraction becomes $e+(1-e)p$. With $B,p,e$ fixed and costs held constant, the marginal value of capacity is $e+(1-e)p$, and that of willingness is $(1-e)B$. Enforcement can therefore alter what a chooser needs to verify. This local comparative static does not show that complete enforcement eliminates generosity, removes all selection on commitment, or came first in human history.
+
+Avoidance can also operate differently from attraction. Across six studies, relationship-dealbreaker research examined undesirable conduct, lifestyle, and conflicting relationship goals; negative information could outweigh favorable information in reported evaluations \citep{dealbreakers2015}. This supports measuring rejection thresholds separately from desired qualities. It does not establish a universal loss-aversion coefficient or prove the studies' evolutionary interpretation. A useful prospective test would ask whether verified reliability mainly increases attraction, prevents rejection, or both.
+
+\subsection{Why authenticity and trust matter}
+Authenticity, honesty, and trust are related but distinct. Authenticity concerns perceived congruence between expression and a person's underlying motives or identity. Honesty concerns the truthfulness of information. Trust concerns an expectation or willingness to rely on another person. Someone can sincerely disclose an incompatible intention; another can seem authentic while misleading an observer.
+
+Research connects perceived authenticity to relationship processes, but that evidence does not establish authenticity as an ancestral, primary selector \citep{wickham,wickham2020}. Within the proposed framework, authenticity is valuable when it helps a chooser predict what another person will actually do. Honest disclosure can improve a decision even when it reduces attraction. Consistency can improve predictability without showing benevolence. Mere confidence that one understands a partner is therefore a poor validation criterion.
+
+Trust also concerns directed commitment: a person who is generous in public may be unreliable in private. Repeated behavior across incentives and audiences can help distinguish a general reputation from partner-specific investment. The testable prediction is that independently verified follow-through should improve forecasts beyond liking, familiarity, and self-reported trust. If authenticity ratings only track a favorable halo, their information value is much smaller than their psychological appeal.
+
+\subsection{What the available numbers can say}
+Appendix Figure~\ref{fig:alltraits} displays all 35 attributes from a published table rather than selecting only those favorable to the argument. Ratings of loyalty, support, honesty, attraction, and sexual qualities all relate to romantic evaluations. Their coefficients are separate descriptive associations, not independent causal contributions. Shared method, halo, reverse causality, and correlated traits prevent their conversion into a percentage recipe for partner choice \citep{matching2025}.
+
+A broader analysis of 43 longitudinal couples datasets found that relationship-specific reports, including perceived commitment and appreciation, were useful predictors of current relationship quality; changes were much harder to predict \citep{joel2020}. This supports distinguishing a partner's general qualities from the relationship they create together. It does not prove that relationship beliefs cause satisfaction or that the largest association identifies the original evolutionary driver.
+
+
+
+\subsection{The deeper target: a dependable joint future}
+First, \emph{contribution may be a joint judgment of ability and delivery}. This predicts an interaction between demonstrated competence and reliable investment, not simply a preference for either alone. Second, \emph{learning trajectories may add information beyond current performance}. At matched starting skill and opportunity, improvement and correction of mistakes may forecast later competence better than a polished display. Third, \emph{coordination may matter beyond individual rank}: two capable people with incompatible priorities may perform worse as partners than a less impressive but better coordinated pair.
+
+The proposed integration concerns the relationship between these functions, rather than an unobserved universal adaptation. Evidence for each must distinguish actual forecasting accuracy from attractiveness, and dyadic fit from a generally favorable impression. Different relationship goals can rationally change the weight on each function.
+
+\subsection{Trust in an independent open dataset}
+\label{sec:whyte}
+The public analysis file accompanying Whyte et al. permits a complementary check that directly includes trust, intelligence, and emotional connection \citep{whyte2021}. We analyzed its 7,060 records: 4,375 coded men and 2,685 coded women, aged 18--64, retaining all represented orientations. This deposited sample is smaller than the article's headline 7,325; we do not reconstruct or silently add the 265 unavailable records. Unlike the international budget, these are separate 0--100 importance ratings concerning sexual attraction, so absolute values and differences must not be compared across the two instruments.
+
+Trust averages 68.94 among men and 78.09 among women; intelligence averages 55.83 and 69.72. Within respondents, trust exceeds intelligence by 13.12 points for men (conditional 95\% CI 12.21--14.03) and 8.37 for women (7.36--9.37). Trust also exceeds attractiveness on average in both groups. Openness, rather than trust, has the highest men's pooled mean; trust has the highest women's mean. Figure~\ref{fig:whyte} displays every trait and every prespecified age band, including those that do not reinforce a simple sex-difference narrative.
+
+The trust--intelligence and trust--attractiveness contrast directions persist in the 4,401 respondents coded heterosexual. Centering each person's responses around their nine-item mean leaves within-person differences unchanged and provides a response-style sensitivity for the age profiles. These are exploratory descriptive findings, not an independent replication of all original analyses. They strengthen the case for including relational expectations in an account of attraction; they do not establish that trust was an ancestral primary selector, that authentic-looking people are trustworthy, or that the rankings determine actual behavior. Cross-sectional age groups do not measure how individuals change as they age.
+
+\begin{figure*}[t]
+\centering\includegraphics[width=\textwidth]{assets/whyte_age_profiles.pdf}
+\caption{\textbf{Attraction includes expectations about a relationship.} New descriptive analysis of the deposited Whyte et al. file \citep{whyte2021}, all 7,060 records and all nine items. Points show mean stated importance by source-coded sex and fixed age band; whiskers are pointwise mean $\pm1.96\,\mathrm{SE}$, conditional on independent sampled respondents. Lines connect cross-sectional group means, not individual trajectories or fitted developmental curves. All axes use 0--100. The final band was defined as 50--65; the deposited file ends at age 64. Sample sizes and centered and heterosexual-only sensitivities are included in the archive.}
+\label{fig:whyte}
+\end{figure*}
+
+\section{Who assesses, and under what rules?}
+\label{sec:agency}
+\subsection{Agency is a condition, not an ancestral assumption}
+Sexual selection includes competition over access as well as preferences. It therefore does not imply that every reproductive event followed consent. Sexual violence, imposed marriage, kin pressure, constrained alternatives, and freely chosen partnerships are different processes; a single word such as ``choice'' cannot stand for them all. Comparative ethnography establishes substantial parental influence in recent foraging societies \citep{apostolou2007,walker2011}. Historical evidence also records coercive arrangements \citep{apostolou2012}. Neither supplies a reliable prevalence of rape across prehistory.
+
+The appropriate correction is to represent decision authority explicitly. A preference may exist but have little effect when a person cannot refuse, leave, or access alternatives. Conversely, coercion in some relationships does not establish the absence of female agency everywhere. Men's preferences also operate under constraints. The proposed information mechanism predicts consequences only where informed decisions can change an outcome; direct coercion is a competing route to reproductive inequality, not evidence of successful assessment.
+
+\subsection{Partners, relatives, peers, and learners}
+Mate choice is often distributed across several decision-makers. Comparative work documents extensive kin involvement in marriage among recent hunter-gatherer societies, while also recording courtship systems and uncertainty about ancestral arrangements \citep{walker2011}. A prevalence of arranged marriage across societies is not the proportion of all marriages freely chosen or controlled, nor proof that every ancient suitor faced the same family test.
+
+Relatives can observe work, generosity, and conflict over long periods. They can also favor alliance, descent, property, or obedience over the prospective couple's preferences. Partners, kin, and coalitions need not agree about which qualities are desirable. Marriage arrangements therefore may change \emph{who controls the consequences of information}, not necessarily improve its accuracy or favor cognition.
+
+Prestige introduces another audience: learners seeking competent models. Deference can help people identify whom to learn from, but prestige can be copied and become detached from the relevant expertise \citep{henrich,duval}. Reputation can increase the reach of direct observations while spreading shared errors. A person's social standing is consequently not an independent measurement of cognitive capacity.
+
+\subsection{Hunting, storytelling, and standing}
+A meta-analysis across 33 nonindustrial populations found a positive average association between men's status and reproductive success, with a pooled correlation near $.19$ \citep{status}. Status combined different bases---including wealth, influence, hunting, and formidability---and reproductive measures. It cannot identify a single cognitive pathway. A review also associated better hunting with reproductive advantages in several societies, without resolving provisioning, signaling, and correlated condition \citep{hunters}.
+
+Among 324 Agta participants, nominated skilled storytellers had an estimated 0.53 additional living offspring (95\% CI 0.10--0.96) after adjustment for age, age squared, sex, and camp; skilled storytellers were also preferred campmates \citep{story}. The finding concerns both sexes and living offspring, not a demonstrated increase in conceptions caused by women's preferences. Reputation, cooperation, provisioning, and social opportunity remain alternative or complementary pathways.
+
+\subsection{Firelight changes the setting for social cognition}
+Wiessner's study of Ju/'hoansi conversation distinguishes daytime practical exchanges from the prevalence of storytelling around evening fires \citep{wiessner2014}. It supports a plausible additional role for fire: extending the setting in which people exchange narratives, discuss social worlds, and make one another knowable. It does not date the origin of language, estimate a fire-induced increase in intelligence, or separate social effects from food processing and other benefits in ancient populations.
+
+Storytelling is especially revealing for the framework because the performance can \emph{change the group}. A successful story may coordinate expectations, sustain norms, or make strangers understandable. Its social return need not be evidence of an otherwise hidden intelligence trait. A discriminating experiment would separately measure accurate impressions of the teller, learning by the audience, and subsequent cooperation. If cooperation improves while judgments of the teller do not become more accurate, the productive cultural route is supported without the assessment route.
+
+\subsection{Warriors, restraint, and regulated contests}
+Strength, courage, judgment, and coordination can be useful in conflict. Their payoffs depend on the risks and rewards of the local setting. Nyangatom and Waorani research illustrates that raiding can have different reproductive associations across populations \citep{glowacki,beckerman}. These results do not justify a universal narrative in which women chose warrior chiefs and thereby produced intelligence.
+
+Restrained competition also predates humans. Animal contest theory explains how assessment and escalation costs can favor displays or limited fighting \citep{maynardsmith}. The useful human hypothesis concerns rules, repeated observation, coalitions, and several kinds of competence---not the claim that nonlethal fighting itself required a uniquely human intelligence.
+
+Cooperative defense may make allies valuable, but it does not establish an ancestral practice of killing every subordinate male or a transition away from it. Human status has several dimensions, and ``alpha'' and ``beta'' are poor fixed categories. Lower reproductive inequality can reduce an opportunity for selection while a change in what is rewarded changes its direction. Neither quantity alone predicts a larger brain.
+
+The Maasai Olympics provide a contemporary example of deliberate institutional change. A proposal from Maasai elders in 2008 led to the first event in 2012, drawing competitors from Amboseli and Tsavo. Running, throwing, and the traditional vertical jump offer recognition through sport as an alternative to ceremonial lion killing \citep{chester2026,biglife2026}. This is not evidence that outsiders invented jumping to replace all raiding, or that jump height determines a right to marry or reproduce. Program descriptions identify courtship and prestige as aims; they do not estimate a causal fertility effect. The testable lesson is that communities can redirect valued competitive abilities toward different activities. Whether this preserves useful information while reducing harm requires outcome data.
+
+\subsection{Why genetic lineages do not count everyone's parents}
+The claim that only half of all men in human history reproduced cannot be established from the commonly cited comparisons of mitochondrial and Y-chromosomal diversity. Such analyses estimate sex-specific \emph{effective} population sizes under demographic and genetic assumptions, not a census of all historical parents \citep{lippold2014,karmin2015}. Migration, reproductive variance, population structure, and lineage extinction can change the relationship between those quantities. A model of patrilineal kin-group competition can produce a strong Y-lineage bottleneck without an equivalent fall in the male census \citep{zeng2018}.
+
+Nor do more surviving maternal lineages mean that an individual has ``twice as much female DNA.'' Ordinary autosomal inheritance supplies one chromosome set from each parent. Autosomal contributions, mitochondrial lineages, Y lineages, effective population size, genealogical ancestors, and the fraction ever becoming a parent are different estimands. Sex-biased reproduction is a serious research topic; a universal historical percentage requires evidence these lineage comparisons do not provide. This distinction also prevents reproductive skew from being mistaken for evidence of consent, preference for warriors, or selection on intelligence.
+
+\subsection{Fertility cues and the limits of appearance}
+Youth, body composition, physical attraction, health, and fecundity are not interchangeable. External hip width does not measure the internal birth canal, and breast size does not establish milk production or completed fertility. Hormonal associations in particular samples do not validate a universal visual fertility test \citep{jasienska,huseynov}. A systematic review found a limited and heterogeneous direct evidence base for claims connecting women's morphology to reproductive outcomes \citep{lidborg2025}.
+
+Facial symmetry is also an imperfect health indicator. In a large longitudinal sample, facial asymmetry was not associated with childhood health \citep{pound}. Preferences could reflect developmental disturbance, perceptual processing, or other mechanisms without finely ranking healthy adults' reproductive prospects. Conversely, weak evidence for one health-cue explanation does not mean appearance has no effect on attraction. A trait can be attractive without reliably measuring the biological property attributed to it.
+
+\subsection{A hidden compatibility mechanism needs convergent evidence}
+MHC-linked odor preference is an important candidate mechanism because it could influence attraction without conscious knowledge of genetic compatibility. But MHC diversity within an individual and MHC dissimilarity between partners are different hypotheses. A 2016 meta-analysis spanning humans and nonhuman primates supported a modest preference for diversity while finding no consistent dissimilarity preference \citep{winternitz2017}. A later human synthesis separated genomic pairing, sexual relationship satisfaction, and odor preference; the confidence intervals for its main mean estimates all included zero (Fig.~\ref{fig:mhc}) \citep{havlicek2020}. This constrains a universal genetic-compatibility story without proving every context-specific effect absent.
+
+The broader lesson is methodological. A compelling sensory mechanism, one positive experiment, and an unconscious process do not establish a dominant selector. Independently measured biological targets, observed decisions, population structure, publication bias, and relationship outcomes must converge. The same standard applies to proposed hidden drivers such as authenticity, risk calibration, and partner-specific investment.
+
+\begin{figure}[t]
+\centering\includegraphics[width=\columnwidth]{assets/mhc_evidence.pdf}
+\caption{\textbf{A proposed hidden selector remains uncertain.} Published random-effects meta-means and 95\% CIs from Havl\'i\v{c}ek et al. \citep{havlicek2020}, Results 3a--d; $k$ counts effect sizes, not independent studies. Negative Fisher $z$ favors MHC dissimilarity. The combined estimate overlaps the component datasets and is not another replication. Odor and combined rows follow the source's exclusions of hormonal-contraceptive-user effects. This replot is not a new meta-analysis.}
+\label{fig:mhc}
+\end{figure}
+
+\section{Cognitive diversity and ecological fit}
+\label{sec:neuro}
+\subsection{What the ADHD evidence actually measures}
+An attractive hypothesis is that exploration, vigilance, or rapid attention shifts sometimes improve foraging. That hypothesis should be tested at the level of a specified trait, task, and environment. It is not equivalent to saying that ADHD was an ancestral hunting adaptation, or that neurodivergent people generally possess superior smell, hearing, or forest-survival skills. ``Neurodivergence'' covers heterogeneous conditions and experiences, not one sensory phenotype. Contemporary genetic research also describes a polygenic architecture for ADHD, rather than a single hunter gene \citep{demontis2023}.
+
+The frequently cited Ariaal study compared body composition and dopamine-receptor variants in 65 nomadic and 87 settled adult pastoralist men. Associations of DRD4 7R with BMI differed by residence \citep{eisenberg2008}. It did not measure hunting efficiency, diagnose ADHD, or establish a 20\% productivity advantage. In 2025, a preregistered study of 259 Rendille children found no association of that allele with three nutritional indicators \citep{kunkle2025}. Different ages and subsistence settings prevent a clean adult replication comparison; the later result nevertheless weakens a general claim about nutritional advantage.
+
+A separate virtual-foraging experiment analyzed 457 adults. Participants screening positive on an ADHD symptom questionnaire left resource patches sooner and obtained higher reward rates: 1.590 versus 1.361 points per second \citep{barack2024}. The higher reward was opposite to the preregistered directional prediction, and screening status was not a clinical diagnosis. This is evidence about task performance in a specified environment, not measured ancestral fitness, body-mass efficiency, or a general advantage across life domains.
+
+\subsection{From a single winner to useful differences}
+The stronger inference is a research program on conditional value. Persistence can help when a difficult task is worth finishing; rapid switching can help when returns have deteriorated. A group may benefit from people who explore different options, but that benefit must be measured against coordination costs and individual outcomes. The existence of individual differences alone does not demonstrate balancing selection, group selection, or a historical division of cognitive labor.
+
+For mate assessment, this suggests a less obvious possibility: people may value a partner's \emph{complementary contribution under their shared conditions}, not simply the highest score on a universal ladder. This need not imply that opposites usually attract. Similar goals can support coordination while distinct skills supply different resources. A prospective test should measure both similarity in goals and complementarity in independently assessed capabilities, then ask which combination forecasts joint outcomes beyond each partner's average ability. A trait can help on one task and impose real difficulties on another; a favorable task result does not erase those difficulties.
+
+\section{How assessment could affect culture and brains}
+\subsection{Two transmission routes}
+The shortest supported bridge is cultural. Observing competence can influence whom people imitate, consult, or teach. Useful skills can then spread without the performer having more children. Experimental work on group size and cultural accumulation illustrates how access to other people's solutions can change retention and performance within learning sequences \citep{kempe2014}. It does not imply that larger groups invariably have more complex culture or that their members have larger brains.
+
+\begin{figure*}[t]
+\centering\includegraphics[width=\textwidth]{assets/transmission_paths.pdf}
+\caption{\textbf{Cultural and genetic transmission must be separated.} This is a conceptual organization of the argument, not a fitted causal model or quantitative figure. The upper route can operate within lifetimes. The lower route requires reproductive consequences and inherited covariance; an anatomical response has further conditions. Feedback from training, institutions, and cultural practices can also change later performances and judgments.}
+\label{fig:transmission}
+\end{figure*}
+
+Assessment can also \emph{create} skills: being chosen for apprenticeship, given practice opportunities, or recruited into a capable group changes later performance. This generates a feedback problem. People may become competent because they were judged promising, rather than being judged promising solely because of pre-existing competence. The same reputation can shape mating opportunities and training, creating correlations without identifying inherited causes.
+
+Cumulative culture can make cognition more useful by creating new tools, tasks, conventions, and coordination demands. It can also distribute knowledge across people and external records. The cultural-brain hypothesis models feedback among social learning, knowledge, and cognitive investment \citep{cultural}; it is a theoretical account, not a historical estimate of the effect of mate choice. Specialization may reduce the need for everyone to master every skill while increasing the need to learn, coordinate, and judge expertise. Neither a universal generalist advantage nor inevitable cognitive decline follows.
+
+\subsection{Reproduction is not one decision}
+A useful descriptive decomposition separates becoming a parent from family size among parents. Let $c\geq0$ be completed offspring count and let $z$ be a mean-zero trait in the same defined population. Then
+\begin{equation}
+\frac{\Cov(z,c)}{\E[c]}=
+\E[z\mid c>0]+\frac{\Cov(z,c\mid c>0)}{\E[c\mid c>0]}.
+\label{eq:episodes}
+\end{equation}
+The identity follows by conditioning on parenthood; it is a special case of partitioning selection across episodes \citep{arnold1984}. Neither term is automatically causal or genetic. The first measures a \emph{parenthood component}, not pure access to mates: childlessness also reflects intentions, contraception, infertility, timing, health, and circumstances. The second combines processes affecting family size among parents. Conditioning on parenthood can itself introduce selection bias when estimating causal effects.
+
+Historical Finnish data illustrate why survival, mating, and fertility must be distinguished \citep{courtiol2012}. Partnership duration and partner characteristics also matter in human reproductive histories \citep{borgerhoffmulder2019}. No available synthesis establishes that men's evolution acted primarily through partner access while women's acted primarily through child survival in every ancestral population. Mortality, mating systems, and available support varied; both sexes can influence multiple episodes.
+
+\subsection{What would make the response genetic?}
+For one parental class, let $A$ be an additive inherited component of a specified trait and $W$ its expected contribution to the next generation. Under unbiased transmission, its selection differential is $S_A=\Cov(A,W)/\E[W]$ \citep{price,lande1980}. If contributions depend only on available evidence $Y$, the law of total covariance and Cauchy--Schwarz give
+\begin{equation}
+|S_A|\leq\SD\!\left(\E[A\mid Y]\right)\,\CV(W).
+\label{eq:bound}
+\end{equation}
+This is standard covariance and selection-index reasoning, not a new theorem \citep{hazel}. It separates predictable inherited variation from variation in contribution. The actual response also depends on whether contributions align positively, negatively, or not at all with the inherited component. Equal contributions give no directional response through this channel.
+
+Predicting current performance better need not predict its inherited component better. Training, nutrition, inherited wealth, and social opportunity can improve a score's phenotypic prediction while changing what it reveals about $A$. Applying a breeder's equation directly to observational associations can therefore misidentify genetic response \citep{morrissey2010}. Assortative mating can alter covariance and variance, but without an appropriate reproductive association it does not by itself raise mean capacity \citep{horwitz}.
+
+In a two-parent model, male and female contributions must derive from compatible counts of common offspring. Arbitrary independent fitness weights for the two members of a fixed pair do not ensure this. More generally, genetics, cultural inheritance, and developmental exposure are distinct pathways even when families transmit all three.
+
+\subsection{A brain requires support as well as demand}
+Cognition can be useful without increased volume being the favored developmental response. Brain size, neuronal organization, connectivity, developmental timing, and metabolic efficiency are different traits. A modern within-population brain-volume--intelligence correlation cannot convert fossil cubic centimeters into ancient intelligence scores \citep{pietschnig}.
+
+The human brain is costly, especially during childhood: glucose demand peaks at a large fraction of resting metabolism \citep{kuzawa}. Humans also differ energetically from other apes \citep{pontzer}. Processing and cooking can change energetic returns; cooperative care and provisioning help sustain long development \citep{carmody2011,kaplan,burkart}. Evidence for fire and cooking supplies dated constraints, not the date of an information-driven selection event \citep{berna,zohar}.
+
+Developmental models also show that enlargement can arise through structured developmental responses rather than direct selection on adult volume \citep{evodevo}. An adequate account therefore needs useful capacities, information at relevant decisions, reproductive consequences, inherited variation, developmental coupling, and the resources to support the resulting phenotype. Mate assessment is a possible contributor to that system, not its complete cause.
+
+\section{What the brain record does and does not establish}
+\subsection{Magnitude is not a measured acceleration mechanism}
+Human evolution includes substantial brain enlargement, but ``fastest'' needs a lineage, trait, interval, and comparator. Fossil analyses differ by scale and phenotype. Du et al. distinguish clade-level from lineage-level patterns; P\"uschel et al. find predominantly within-species increases in relative brain size and acceleration in later lineages; Gingerich describes phases of change and relative stasis in a differently aggregated series \citep{du2018,puschel,gingerich}. Cranial-shape analyses can support still other process models \citep{hubbe}.
+
+A long-run rate can be small per generation despite a large endpoint difference. Using Gingerich's reported log-volume slope of $0.416$ per million years, a log-scale within-population SD of $0.10$, and an assumed 25-year generation gives $1.04\times10^{-4}$ SD per generation \citep{gingerich}. This calculated average is not a measured selection coefficient, proof of positive selection in every generation, or evidence that any proposed weak mechanism was historically sufficient. Reversals, stabilizing processes, lineage mixture, and sampling can all matter.
+
+\begin{figure*}[t]
+\centering\includegraphics[width=\textwidth]{assets/fossil_record.pdf}
+\caption{\textbf{Brain enlargement was substantial and heterogeneous.} (A) All 94 rows in Du et al.'s Table S1 \citep{du2018}: points are arithmetic means of alternative volume estimates; vertical marks span those estimates, not confidence intervals. Horizontal marks show uniform age supports or normal mean $\pm1.96$ SD as supplied. (B) All 166 numeric age--volume records in Will et al., Supplementary Data 2 \citep{will2021}, preserving source taxonomy and point dates. No unreported age uncertainty is invented. The compilations overlap and are not pooled. Points do not establish ancestry, independent lineages, intelligence scores, or causes of change.}
+\label{fig:fossils}
+\end{figure*}
+
+Figure~\ref{fig:fossils} preserves two compilations separately. Their specimens and taxa are not independent experimental units; original dates and classifications may be revised. Later \textit{Homo} data include substantial overlap in volumes between Neanderthals and Pleistocene \textit{H. sapiens}. The figure does not estimate a universal trajectory, select evolutionary breakpoints, or associate changes with an invented chronology of mate choice.
+
+\subsection{Other hominins constrain simple stories}
+Neanderthals had large brains, distinctive shape histories, complex behavior, and social connections. Bruniquel structures demonstrate organized activity, and ancient DNA from one Neanderthal community provides evidence about kinship and mobility \citep{jaubert,skov}. Neither reconstructs mate preferences or makes one community representative of all Neanderthals. Endocast shape changed within our lineage without simply following volume \citep{neubauer}.
+
+Denisovan evidence is expanding, including molecular identification of the Harbin individual \citep{fu}. It does not yet support a complete account of Denisovan cognition, mating, or brain-size evolution. \textit{H. floresiensis} lived on the Indonesian island of Flores: revised Liang Bua dates place its skeletal remains at approximately 100,000--60,000 years ago and associated stone artifacts at approximately 190,000--50,000 years ago \citep{floresiensis}. It did not live alongside \textit{Australopithecus}; similarity in brain volume is not temporal or geographic coexistence. Chronological overlap with \textit{H. sapiens} elsewhere does not establish contact on Flores. These cases make enlargement contingent, not a necessary stage on a single ladder of intelligence.
+
+An explanation of human cultural success must therefore address learning networks, demography, ecology, and contingency as well as individual capacities. Neanderthal extinction cannot be inferred from brain volume; demographic models identify routes to population loss without assuming cognitive inferiority \citep{vaesen}. The hypothesis developed here gains credibility by accommodating these constraints, not by treating them as proof of its mechanism.
+
+\subsection{What ancient games can establish}
+Formal games provide clear settings for comparison, rules, and public skill. Their surviving archaeological record is much younger than the major increase in hominin brain size. Ancient boards therefore illustrate a human institution; they cannot date the origin of play, competition, or early assessment.
+
+\begin{table}[t]
+\caption{Early surviving evidence of games. These are dated examples, not an exhaustive list or proof of the first invention.}
+\label{tab:games}
+\footnotesize\begin{tabularx}{\columnwidth}{L{.31\columnwidth}Y}
+\toprule
+Game or activity & Surviving evidence and interpretive limit\\
+\midrule
+Senet and mehen & Early dynastic Egyptian evidence, broadly late fourth to third millennia BCE; dating varies by object and game \citep{crist}.\\
+Twenty squares / Royal Game of Ur & Boards from Ur around 2600 BCE; surviving written rules are much later \citep{ur}.\\
+Fifty-eight holes & Late third to early second millennium BCE examples; geographic origin remains debated \citep{holes}.\\
+Wrestling & Rich scenes at Beni Hasan around 2000 BCE; depiction dates do not date the origin of wrestling \citep{beni}.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Perishable games, informal play, and observed work leave little direct record. Their absence in early archaeology is not evidence of absence. Equally, modern ethnography cannot establish exactly when a particular performance acquired a mating role. Any historical acceleration claim must respect those dating limits.
+
+\section{The same concerns in contemporary societies}
+\subsection{Assessment persists; its consequences change}
+People still assess competence, appearance, reliability, ambition, care, and compatibility. Schooling, credentials, workplaces, sport, art, conversation, and digital platforms create new observation settings. They also create new opportunities for unequal exposure, curated presentation, imitation, and mismeasurement. No evidence warrants the claim that contemporary partner assessment is uniformly more accurate than ancestral observation.
+
+Income and fertility associations vary with cohort, sex, and measurement. Swedish register data show a persistently positive association with men's accumulated income and a transition from negative to positive associations for women across cohorts \citep{kolk2023}. Nordic education--fertility patterns also changed \citep{jalovaara2019}. These findings contradict a universal claim that resources favor men's parenthood and disfavor women's. They do not, by themselves, identify the effect of any particular policy or preference.
+
+Today's child survival is much higher in many settings, but caregiving, maternal health, family support, and social coordination have not become irrelevant. Relatives' effects on child survival vary across populations \citep{sear2008}; institutions may complement, substitute for, or redistribute family care. Reduced mortality does not establish that selection through welfare or care is ``idle.''
+
+\subsection{Opportunity changes the meaning of a preference}
+A preference is expressed through an available choice set and another person's response. Housing costs, care obligations, security, discrimination, and platforms can change who meets whom and what relationships are feasible. Online sorting therefore cannot be read directly as an evolved group preference \citep{lewis,bruch}. The cross-country patterns in Section 2 describe preferences under existing conditions; they do not identify which condition produced them.
+
+Social-role explanations are a substantive alternative to a fixed ancestral-preference account: economic dependence and the division of labor can alter the value of a partner's resources or care \citep{eagly1999}. Cross-cultural associations alone cannot resolve these origin theories. The relevant tests examine how preferences and decisions change with opportunities, institutions, and independently measured constraints, rather than treating contemporary sex differences as uniquely diagnostic of one history.
+
+A useful relative coefficient always names an outcome and contrast. The effect of providing verified information in a randomized choice task differs from the effect of changing a person's underlying ability. Observational coefficients depend on correlated traits, range restriction, and measurement error. Separate evaluation slopes should not be normalized into a percentage recipe for attraction or historical selection.
+
+\subsection{Community can supply information and practical support}
+\label{sec:community}
+The idea that community loss suppresses family formation contains at least two distinguishable mechanisms. Repeated shared activity may improve information about potential partners. Relatives and friends may also supply childcare, housing, introductions, and help during difficulty. The first changes what people know; the second changes which commitments they can sustain. Communities can additionally transmit norms and exert pressure, so more social connection does not automatically mean more autonomy or better decisions.
+
+US meeting patterns shifted toward online introductions while introductions through friends and family declined \citep{rosenfeld2019}. That establishes a change in meeting channels, not universal disappearance of face-to-face observation or a causal decline in relationship quality. Online introductions can lead to extensive offline acquaintance. The study itself discusses evidence that meeting mode did not determine subsequent breakup or quality. A curated profile may offer weak evidence of follow-through; it may also help someone meet a compatible partner unavailable in their immediate network.
+
+Evidence also opposes a one-directional internet--fertility story. A German study using variation in broadband availability reported higher fertility among highly educated women aged 25--45, consistent with greater work--family flexibility \citep{billari2019}. This is not an estimate of dating-app effects. Panel research associates parenthood transitions with information and social influences from network members who have children \citep{lois2014}. Neither result isolates the proposed pathway from lost authentic observation to falling births.
+
+The productive hypothesis is therefore that \emph{opportunities to know one another and resources to sustain a shared life are distinct complements}. A community can make a reliable partner visible while leaving housing or childcare unaffordable. Material support can make parenthood feasible while leaving partner search difficult. A study that measures only social-media use or only birth rates cannot separate these channels.
+
+\subsection{Specialization changes comparison without proving decline}
+Occupational specialization can make one achievement highly visible and other capacities hard to observe. It can also reward learning, complex cooperation, and reliable exchanges among experts. Neither a universal preference for generalists nor a causal contribution of hyper-specialization to falling birth rates follows from this change. A hunter--scientist contrast is especially misleading: both activities can require persistence, knowledge, health, social coordination, and access to resources, while their returns differ across institutions.
+
+The sharper prediction concerns \emph{transfer}: when future demands are uncertain, evidence of learning across unfamiliar tasks may predict partnership contributions better than one credential, conditional on starting competence and opportunity. When a joint task is stable and divisible, specialized complementary skills may be more useful. These are competing predictions for specified settings, not rankings of communities or claims that modern people are biologically less capable. Fertility additionally depends on intentions, timing, partnership stability, work arrangements, care, and opportunity; a single specialization index cannot stand in for those processes.
+
+\subsection{Have brains or cognitive evolution reversed?}
+Some contemporary studies associate education-linked genetic scores with lower fertility, while other populations show positive associations between measured cognitive ability and reproduction \citep{kong,kolk}. These concern different traits, samples, and mechanisms. A 2026 ancient-DNA analysis of 15,836 West Eurasians reports substantial shifts over approximately ten millennia in combinations of alleles that predict several traits in modern samples, including cognitive performance \citep{akbari}. Changes described on a modern standard-deviation scale are not measurements of ancient IQ, do not apply automatically to all humans, and do not identify the ancient phenotype under selection. Ongoing selection does not imply uniform direction or that current attraction predicts it.
+
+Claims of Holocene brain-size reduction remain sensitive to the samples and time intervals considered; the proposed timing and causes are debated \citep{desilva2021,villmoare,desilva2023}. Conversely, one recent cohort study found larger intracranial volumes in more recent birth cohorts \citep{decarli}. Neither result alone establishes genetic change in cognitive ability. Test-score rises and reversals within families also demonstrate major environmental contributions \citep{bratsberg}.
+
+The supported conclusion is that the conditions for assessment persist while its biological consequences are unresolved and context-dependent. Cultural learning, education, nutrition, health, and technology can change realized capabilities far faster than one can infer inherited change from these associations. Smaller average volume, where observed, is not a sufficient diagnosis of declining intelligence.
+
+Nor does placing a declining-volume series beside a rising polygenic-score series establish ``more intelligence with less brain.'' The observations concern different populations, measurements, scales, and ascertainment. A biological efficiency claim would require linked measures of function, neural structure, energetic cost, and development, together with a defensible comparison. LLM compression or distillation offers an analogy for posing that question; it supplies no evidence that human evolution followed the same mechanism. The broader possibility that organization and cultural scaffolding improve performance without greater volume remains plausible and testable.
+
+\section{What AI evaluation can learn}
+The connection to AI is a problem of measurement and incentives, not a claim that machines possess human mating motives. Humans judge a prospective partner from incomplete behavior; developers and users judge a system from incomplete evaluations. In both settings, the observable performance, the evaluator's judgment, and the later outcome can diverge. The evolutionary account suggests questions for evaluation design; it does not answer them empirically for AI.
+
+\subsection{A good impression can reward the wrong target}
+Human preference is a useful signal, but it can favor apparent agreement over accuracy. Sharma et al. found sycophantic behavior across several assistants and evidence that human and model preference judgments sometimes rewarded it \citep{sharma2024}. Gao et al. measured proxy-reward overoptimization in a controlled setup using a larger reward model as the reference: improving the proxy could eventually reduce reference-model performance \citep{gao2023}. The latter reference is itself a model, not ultimate human welfare. These results illustrate why being liked, scoring well, and producing beneficial outcomes need separate measurements.
+
+An assessment framework should therefore distinguish \emph{capability under specified conditions}, \emph{behavior under deployment incentives}, and \emph{fitness for a particular use}. Agreement among several evaluators is valuable only insofar as it improves criterion validity; shared training data, prompts, or reward models can create correlated errors. Multiple votes cannot substitute for an independent outcome measure.
+
+\begin{table*}[t]
+\caption{Transfer to AI evaluation: proposed design lessons, not demonstrated AI results of this paper.}
+\label{tab:ai}
+\small\begin{tabularx}{\textwidth}{L{.20\textwidth}Y Y}
+\toprule
+Assessment problem & Human research test & Corresponding AI evaluation test\\
+\midrule
+Capacity and delivery differ & Measure demonstrated competence and later partner-directed follow-through separately & Separate task success under supported evaluation from behavior under changed tools, incentives, and oversight\\
+Consensus can share error & Compare observer agreement with independent future outcomes & Compare judge agreement with externally checked task outcomes; vary judge training sources and task families\\
+Evaluation changes behavior & Compare performances across audiences and incentives & Use held-out environments and controlled incentive changes; measure generalization instead of inferring motives\\
+Fit is relational & Predict dyadic coordination beyond each person's average desirability & Evaluate a system with actual users, workflows, constraints, and failure costs; average benchmark rank is insufficient\\
+Information changes access & Distinguish observed skill from later training opportunities & Separate model ability from scaffolding, tools, feedback, and selection effects introduced by the evaluation process\\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\subsection{Measure what transfers beyond the test}
+A recognized assessment can still carry useful information; it does not follow that only hidden tests reveal reliable behavior. The empirical task is to measure how performance transfers across conditions, with held-out targets and task families. Similarly, a record without failures supports a risk estimate only under explicit assumptions about sampling, dependence, and changing behavior. An iid failure bound cannot certify a system across arbitrary new environments.
+
+The most actionable contribution is a joint evaluation design: report capability, condition-dependent reliability, and suitability for a specified relationship or workflow as separate outcomes. Then test whether combining them predicts later performance better than a single desirability score. This is a research proposal shared by human assessment and AI evaluation. It is not a new AI safety guarantee, an empirical AI benchmark, or evidence of machine consciousness.
+
+\section{A research program that could prove the account wrong}
+\subsection{Validate the information before testing preference}
+The first experiment should ask whether evidence improves prediction of independently measured future behavior. Record baseline ability, opportunity, training, effort, and health. Randomize observers to matched amounts of informative performance, repetition of one task, diverse tasks, or favorable social endorsement. Use held-out tasks and later follow-through as criteria; observer agreement and confidence are insufficient.
+
+This separates useful information from familiarity and publicity. A target can become more attractive because they were seen more often or endorsed by others, without observers learning anything accurate. Diverse information should beat repetition only when its task structure and nuisance correlations make that possible. Failure to improve prediction would weaken the proposed information mechanism even if attraction rose.
+
+\subsection{Test decisions and relationship-specific contribution}
+A second stage should measure voluntary consequential choices, such as accepting further contact, rather than only ratings. Separate general desirability, chooser selectivity, and pair-specific attraction. Model both participants and targets as sampled units, and use held-out targets to test prediction \citep{judd}. Cognitive tasks themselves require reliability checks when used to rank individuals \citep{hedge}.
+
+A factorial design can vary evidence of competence and verified willingness to invest, holding exposure, compatibility information, and apparent risk fixed. The primary test is whether their joint effect differs from the sum of their separate effects. A further longitudinal test asks whether observed correction of mistakes predicts later cooperation beyond initial skill and impression. Sample sizes should follow a declared estimand, pilot uncertainty, and the crossed structure of the design; no generic simulated power curve is supplied as though it settled feasibility.
+
+\subsection{Separate observation, contribution, and opportunity}
+A prospective community study can test the proposed distinction without manipulating reproductive choices. Among consenting adults, randomize invitations to repeated shared activities, informational introductions, or an exposure-matched comparison. Independently measure prior acquaintance, later forecast calibration, voluntary contact, dyadic cooperation, and perceived safety. A separate intervention addressing practical constraints can test support rather than information. The primary endpoints should be declared before outcomes are examined; wanted relationship formation and, with suitable long follow-up, intended parenthood are different outcomes.
+
+The decisive comparison is whether repeated shared activity improves \emph{out-of-sample predictions} beyond merely increasing contact or liking, and whether practical support changes outcomes without changing those predictions. More friendship, more accurate judgments, and more births need not move together. Attrition, interference within social networks, unequal access, and selective participation require explicit design and analysis. A positive result would establish a contemporary mechanism in that setting, not reconstruct ancestral institutions.
+
+For the proposed capacity--commitment interaction, evidence must also add something beyond what the chooser already knows. Measure forecasts before and after the new observation; compare changes in error against held-out outcomes, not changes in confidence alone. This prevents a familiar reputation being counted again as information supplied by a performance. Learning opportunities given to the candidate after the observation should be recorded, because assessment can improve the very capacity it is later said to predict.
+
+\begin{table*}[t]
+\caption{Discriminating predictions and outcomes that would weaken the proposed account. These are research commitments, not reported findings.}
+\label{tab:tests}
+\small\begin{tabularx}{\textwidth}{L{.20\textwidth}Y Y}
+\toprule
+Proposed mechanism & Informative test & Weakening or limiting result\\
+\midrule
+Early behavior forecasts later contribution & Predict independent held-out skill or follow-through at matched exposure and opportunity & Greater confidence or attraction without better prediction\\
+Breadth adds information & Compare diverse tasks with equally long repeated observation & No advantage after shared training, health, and reputation are measured\\
+Ability and reliable investment interact & Randomize their evidence separately while holding compatibility and risk information fixed & A precise null or opposite interaction in the specified setting\\
+Authenticity supports accurate reliance & Predict later verified conduct beyond warmth, liking, and familiarity & Authenticity ratings track halo but do not improve forecasts\\
+Different assessors use different evidence & Compare partners', relatives', and peers' consequential decisions within communities & Differences disappear when opportunity and information are matched\\
+Assessment shapes cultural transmission & Measure model choice, retained information, and transfer to new tasks & Popularity changes without improved retention or transfer\\
+Assessment affects reproduction & Longitudinal models separating partnering, intentions, timing, births, and offspring survival & Attraction and status change but reproductive contribution does not\\
+Inherited or neural response follows & Family/genetic evidence and independent developmental links & Covariance is environmental, reverses after relevant adjustment, or lacks anatomical coupling\\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\subsection{Historical attribution remains a separate challenge}
+Field studies should measure capacities independently of reputation and follow several outcomes over time. The effect of information must be distinguished from the effect of changing opportunity. Cultural transmission requires evidence of who learns from whom and what is retained. Genetic response requires inherited covariance; anatomy requires a developmentally plausible connection to the phenotype under study.
+
+No modern experiment can recover an ancestral selection coefficient by itself. Historical support would require independent chronology, comparisons that discriminate rival ecological and developmental accounts, and sensitivity to fossil sampling and dating. A model supplied with energetic improvements at chosen dates does not predict those dates. Compatibility with a stepped fossil trajectory is weaker evidence than a successful prediction made without fitting the steps.
+
+\section{Conclusion}
+Human mate assessment is a problem of choosing a shared future with incomplete evidence. Competence, health, persistence, resources, attraction, and pleasure can matter to both sexes. Their value also depends on whom the benefits reach, how a pair coordinates, and whether the relationship is safe and feasible. The strongest defensible target is therefore dependable contribution in a particular relationship, not a universal ranking of warriors, scientists, or bodies.
+
+Two open-data analyses sharpen this picture. Shared priorities coexist with recurring average sex differences in an international preference budget. An independent Australian file shows substantial stated importance of trust alongside intelligence and appearance. Neither survey identifies a timeless recipe for attraction. Together with behavioral studies, they motivate tests that separate ideals, recognition, voluntary decisions, reciprocity, and sustained relationships. The new theoretical emphasis is on what an assessment setting does: reveal qualities, produce social benefits, and allocate opportunities. Additional observers and additional contexts address different sources of error; neither guarantees truth or consent.
+
+The clearest evolutionary synthesis joins useful cognitive capacities with cultural learning, cooperation, energy, care, and development. Mate assessment could amplify some returns to those capacities when observations changed reproductive outcomes and covaried with inherited variation. Its share of hominin brain enlargement remains unidentified. Storytelling, firelit interaction, hunting, and regulated competition make particular links plausible; none demonstrates the entire historical chain. Large-brained Neanderthals and small-brained late-surviving hominins require a branching, contingent explanation.
+
+The underlying assessment problem remains active today. Digital introductions, specialization, contraception, and institutions change both observation and the consequences of choosing. Community may matter through information and through practical support; these mechanisms deserve separate tests rather than a single explanation of fertility decline. Reported brain-volume reductions and changes in modern-trait polygenic scores do not establish either cognitive decline or neural efficiency gains. Cultural capability can change without a corresponding change in brain size.
+
+For AI research, the useful transfer is equally concrete: evaluate capability, behavior under changed incentives, and suitability for a particular use separately. A compelling performance is an invitation to investigate what will follow. Its scientific value lies in the future behavior it predicts.
+
+\section*{Data, code, and disclosure}
+The source archive includes the complete manuscript, vector figures, plotting and analysis code, aggregate survey results, original fossil workbooks, transcribed published estimates, provenance records, checksums, and the comparative draft review. Survey figures can be rebuilt from included aggregates; a separate download-and-analysis command retrieves the exact public participant files and checks their SHA-256 hashes before reproducing those aggregates. No synthetic human observations or fitted ancestral coefficients appear in the figures.
+
+This manuscript was prepared with ChatGPT assistance in literature retrieval, critical synthesis, secondary analysis, code, visualization, and drafting. The illustration was generated with an image model and is not evidence. No new human data were collected, and no independent peer review is claimed. The human authors retain responsibility for scientific claims, authorship, disclosures, and the requirements of a selected journal.
+
+\appendix
+\section{Methods for the exploratory reanalysis}\label{app:methods}
+\textbf{Data and task.} We used the public \path{Final_dataset.csv} from Kowal et al.'s OSF repository \citep{kowal2025,kowaldata}. The file contains 117,293 rows and 288 variables; the repository identifies version 1, dated March 10, 2025. Its SHA-256 begins \texttt{00f3292fa94280ad}; the complete value is recorded in the source package. The repository README specifies semicolon-delimited fields and decimal points. We read the file with a Latin-1-compatible decoder, which preserves the analysis's numeric fields and country labels, and verified counts and pooled means using an independent standard-library CSV parser. The codebook, repository metadata, and filtering plan are included. The analysis is exploratory and was not preregistered.
+
+The task allocates exactly 30 points across health, kindness, physical attractiveness, religion, financial prospects, and appropriate age for a long-term romantic partner. We used the six \texttt{preference\_imp\_*} fields, not the separate ideal-level ratings. Budgets are compositional: increasing one item necessarily reduces the total available to others. Their means are not independent marginal causal effects.
+
+\textbf{Eligibility and missingness.} Filters were applied sequentially as shown in Table~\ref{tab:flow}. Gender codes 0 and 1 follow the codebook's man/woman response categories; orientation code 1 identifies heterosexual responses. We required finite item values between 0 and 30, with total 30 within $10^{-6}$; there was no imputation. All 74 invalid totals at the final step came from Algeria, consistent with the data descriptor's warning about paper questionnaires. The retained pooled sample contains 23,059 men and 44,684 women; 128 have missing country. Nonresponse and these eligibility choices may affect the estimates. Results cannot be generalized to excluded identities or orientations from this analysis.
+
+\begin{table}[t]
+\caption{Sequential inclusion flow for the survey reanalysis. Each row is a subset of the preceding row.}\label{tab:flow}
+\small\begin{tabularx}{\columnwidth}{Yr}
+\toprule
+Criterion & Remaining respondents\\
+\midrule
+Public source file & 117,293\\
+Age observed, 18--90 years & 107,539\\
+Reported gender man or woman & 105,963\\
+Heterosexual response code & 86,744\\
+All six budget items observed & 67,817\\
+Every item within 0--30 & 67,817\\
+Budget totals exactly 30 & 67,743\\
+Country of residence observed & 67,615\\
+Country has $\ge100$ per gender & 62,185\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Estimates and uncertainty.} Pooled means weight respondents equally. Country results use every country with at least 100 eligible respondents in each gender, yielding 53 samples. Conditional intervals use mean $\pm1.96s/\sqrt n$; difference intervals combine the two group variances. These are pointwise descriptive intervals conditional on independent sampled respondents, not design-based national intervals. Unknown recruitment clustering, nonprobability sampling, translation, and mode effects are not captured. No multiplicity-adjusted significance claims or hypothesis-test declarations are made from the sign counts. Cross-country correlations are unweighted Pearson correlations of the two gender-specific sample means.
+
+\textbf{Sensitivity.} We also average country-specific means with equal country weights. For age standardization, we retain countries with at least 20 respondents of each gender in each of three age bands (18--29, 30--44, 45--90). In each of the resulting 32 countries, both gender groups are weighted to that country's pooled age distribution. This does not adjust all demographic or recruitment differences. Thresholds and filters were specified in an analysis note before viewing outcome summaries, but the note is not a registration and the broader project was informed by prior drafts and literature. All six outcomes and all eligible countries are released to make selective reporting inspectable.
+
+\section{Figure provenance and minimal mathematics}
+
+\textbf{Australian attraction file.} The Whyte et al. repository \citep{whyte2021} supplies \path{australian_sex_sruvey_sexiness.dta}, downloaded as file identifier \texttt{f84pw}; SHA-256 begins \texttt{a7c621f9aa6e6871}. The deposited file has 7,060 unique IDs, all aged 18--64, all with source sex code 0 or 1 and nine finite ratings within 0--100. No row was removed and no value was imputed. The paper's 7,325 headline sample is not the size of this file. The reason for the 265-row difference was not established; our results describe the deposit. Source labels and Stata code identify 1 as men and 0 as women. The primary analysis includes all represented orientations; the sensitivity uses \texttt{hetero\_dummy=1} (2,906 men; 1,495 women). A zero code should not be interpreted as one homogeneous sexual-orientation category.
+
+The four age bands were specified before calculating new outcome summaries: 18--29, 30--39, 40--49, and 50--65. Men's counts are 914, 1,004, 1,190, and 1,267; women's are 1,172, 673, 515, and 325. Means weight people equally. Intervals are descriptive mean $\pm1.96s/\sqrt n$, without population representativeness or multiplicity claims. Paired contrasts use the variance of each person's rating difference, not independent-group errors. The centered sensitivity subtracts the person's mean of all nine items; it does not turn the ratings into a fixed-budget experiment. The deposited intelligence label refers to deciding on sexual intimacy, whereas other item labels describe sexual attractiveness; exact wording equivalence should not be presumed. Self-selection, item interpretation, cohort differences, and age-dependent participation limit interpretation. The original participant file is downloaded by hash-checked code rather than redistributed because an explicit dataset reuse license was not established.
+
+\textbf{MHC evidence.} We retrieved the 63-row effect-size file and accompanying R code from \doi{10.6084/m9.figshare.8869505}, under its posted CC BY 4.0 license, and the supplementary methods from \doi{10.6084/m9.figshare.c.4870323}. Figure~\ref{fig:mhc} reproduces the main-text random-effects summaries and intervals, not new fitted results. Counts refer to effects and can exceed the number of studies. The published article reports a slightly different sexual-satisfaction intercept in its trim-and-fill table; this figure consistently uses Results 3b and Figure 2 ($-0.078$, CI $-0.180$ to $0.023$). The combined model's publication-bias sensitivity is not stable across assumptions, and overlap among outcomes precludes treating rows as independent replications. These details are retained in the source audit.
+
+\textbf{Early fossils.} Du et al.'s Table S1 supplies 94 rows with alternative volume estimates and either uniform or normal age models \citep{du2018}. Plotting uses their arithmetic mean volume, the minimum--maximum estimate range, and the age summary specified in the caption. The source's taxonomic labels are retained. \textbf{Later fossils.} Will et al.'s Supplementary Data 2 contains 166 rows with numeric age and volume, comprising 61 Middle Pleistocene \textit{Homo}, 25 Neanderthals, and 80 Pleistocene \textit{H. sapiens} \citep{will2021}. These are source categories, not clean independent lineages. No date ranges are invented for that table and no cross-source specimens are treated as additional independent evidence.
+
+\textbf{Modern data.} The additional preference plots reproduce Table 5 of Eastwick et al. \citep{matching2025}. Attractiveness combines attractive, nice body, and sexy; earning potential combines ambitious, financially secure, and good job. Their means cannot be compared with raw individual-trait means as if they were identical scales of latent importance. Maternal-health estimates reproduce the reported primary associations in Alami et al. \citep{alami2020}; they do not claim a new reanalysis. Fisman coefficients reproduce Table III, columns 1--2, and approximate intervals use the reported rounded standard errors; they are not a new fit of those dating data. The survey budget analysis is described separately in Appendix~\ref{app:methods}.
+
+\textbf{Parenthood identity.} With $p=\Pr(c>0)>0$ and $\bar c_+=\E[c\mid c>0]$, $\E[c]=p\bar c_+$ and $\E[zc]=p\E[zc\mid c>0]$. Dividing and expanding the conditional product proves Eq.~\eqref{eq:episodes} when $\E[z]=0$. The same identity holds for a consistently weighted empirical distribution; it does not determine a survey variance estimator or remove confounding. ``Completed'' requires a defensible age and follow-up definition; late births, survivor sampling, top coding, and missingness can matter.
+
+\textbf{Inherited information bound.} If $W$ is a function of $Y$, then $\Cov(A,W)=\Cov(\E[A\mid Y],W)$. Apply Cauchy--Schwarz and divide by $\E[W]>0$ to obtain Eq.~\eqref{eq:bound}. More informative evidence can raise the maximal attainable covariance while leaving the actual allocation unchanged or misaligned. The bound alone establishes neither the sign of selection nor historical sufficiency. The two-parent offspring response averages compatible parental contributions under the stated transmission assumption.
+
+
+\textbf{Why consensus cannot certify accuracy.} For independent, zero-mean components, let a rating be $Y_r=T+H+\epsilon_r$, where $T$ is the target, $H$ a shared halo, and $\epsilon_r$ rater-specific error. With $k$ ratings per panel, correlation between two disjoint panel means is
+\begin{equation}
+\frac{V_T+V_H}{V_T+V_H+V_\epsilon/k},
+\end{equation}
+while squared correlation of one panel mean with $T$ is $V_T/(V_T+V_H+V_\epsilon/k)$. Agreement can tend to one while criterion validity remains low. This is a standard measurement counterexample, not an estimated model of any ancestral audience.
+
+\textbf{Why a recognized test can still be informative.} Let $P\in\{0,1\}$ denote a future reliability type with both types present. If a test outcome $Y$ has $\Pr(Y=1\mid P=1)\ne\Pr(Y=1\mid P=0)$, Bayes' rule makes it informative about $P$, even if everyone knows they are being tested. Recognizability alone does not force equality of the two likelihoods. Whether that information transfers to later behavior is empirical.
+
+\textbf{Two-way observation.} Under Eq.~\eqref{eq:contexts}'s independence assumptions, averaging $mk$ observations leaves $h_i$ unchanged, averages each observer component over $m$, each context component over $k$, and residuals over $mk$. Their variance sum is the denominator of Eq.~\eqref{eq:twoway} minus $\sigma_\theta^2$. Since $\Cov(\theta_i,\bar Y_i)=\sigma_\theta^2$, dividing its square by $\Var(\theta_i)\Var(\bar Y_i)$ proves the expression. Normality is unnecessary for this identity; independence and common finite variances are consequential assumptions. No empirical nuisance variances were estimated.
+
+\twocolumn[{
+\section{Complete published attribute profile}
+The full 35-row profile below prevents a selective display of only the attributes supporting the narrative. It is a reproduction of published summaries, separate from the six-trait survey reanalysis. Neither panel estimates the unique contribution of each trait.
+\begin{center}\includegraphics[width=.93\textwidth]{assets/all_preferences.pdf}\end{center}
+\captionsetup{hypcap=false}
+\captionof{figure}{\textbf{The complete published attribute profile.} All 35 rows from Eastwick et al., Table 5 \citep{matching2025}, retained in source order. (A) Mean stated importance. (B) Separate standardized associations between perceived partner attributes and romantic evaluation. The study enrolled 10,358 participants; item counts range from 10,338 to 10,351. Teal marks nonnegative coefficients and gold negative ones; color has no significance-test meaning. The table does not provide uncertainty intervals. These slopes are not mutually adjusted, causal, or a ranking of inherited selection strengths. Both partnered and single participants contribute to this descriptive table.}
+\label{fig:alltraits}
+\vspace{12pt}
+}]
+\begingroup
+\small
+\setlength{\bibsep}{.5pt plus .2pt}
+\begin{thebibliography}{999}
+\bibitem{kowal2025} M. Kowal, P. Sorokowski, B. Gjoneska, et al. Cross-cultural data on romantic love and mate preferences from 117,293 participants across 175 countries. \emph{Scientific Data} 12, 1103, 2025. \doi{10.1038/s41597-025-05365-2}.
+\bibitem{fisman2006} R. Fisman, S. S. Iyengar, E. Kamenica, and I. Simonson. Gender differences in mate selection: Evidence from a speed dating experiment. \emph{Quarterly Journal of Economics} 121, 673--697, 2006. \doi{10.1162/qjec.2006.121.2.673}.
+\bibitem{du2018} A. Du, A. M. Zipkin, K. G. Hatala, et al. Pattern and process in hominin brain size evolution are scale-dependent. \emph{Proceedings of the Royal Society B} 285, 20172738, 2018. \doi{10.1098/rspb.2017.2738}.
+
+\bibitem{miller} G. Miller. Sexual selection for indicators of intelligence. In \emph{The Nature of Intelligence}, Novartis Foundation Symposium 233, 260--275, 2000. \doi{10.1002/0470870850.ch16}.
+
+\bibitem{henrich} J. Henrich and F. J. Gil-White. The evolution of prestige: Freely conferred deference as a mechanism for enhancing the benefits of cultural transmission. \emph{Evolution and Human Behavior} 22, 165--196, 2001. \doi{10.1016/S1090-5138(00)00071-4}.
+
+\bibitem{west} M. J. West-Eberhard. Sexual selection, social competition, and speciation. \emph{Quarterly Review of Biology} 58, 155--183, 1983. \doi{10.1086/413215}.
+
+\bibitem{deblock} A. De Block and S. Dewitte. Mating games: Cultural evolution and sexual selection. \emph{Biology and Philosophy} 22, 475--491, 2007. \doi{10.1007/s10539-006-9041-y}.
+
+\bibitem{walter2020} K. V. Walter, D. Conroy-Beam, D. M. Buss, et al. Sex Differences in Mate Preferences Across 45 Countries: A Large-Scale Replication. \emph{Psychological Science} 31, 408--423, 2020. \doi{10.1177/0956797620904154}.
+
+\bibitem{li2002} N. P. Li, J. M. Bailey, D. T. Kenrick, et al. The necessities and luxuries of mate preferences: Testing the tradeoffs. \emph{Journal of Personality and Social Psychology} 82, 947--955, 2002. \doi{10.1037/0022-3514.82.6.947}.
+
+\bibitem{joel2020} S. Joel, P. W. Eastwick, C. J. Allison, et al. Machine learning uncovers the most robust self-report predictors of relationship quality across 43 longitudinal couples studies. \emph{PNAS} 117, 19061--19071, 2020. \doi{10.1073/pnas.1917036117}.
+
+\bibitem{driebe2021} J.~C. {Driebe}, M.~J. {Sidari}, M.~{Dufner}, J.~M. {von der Heiden}, P.~C. {Bürkner}, L.~{Penke}, B.~P. {Zietsch}, and R.~C. {Arslan}. {Intelligence can be detected but is not found attractive in videos and live interactions}. \emph{Evol. Hum. Behav.}, 42 (6): 507--516, 2021. \doi{10.1016/j.evolhumbehav.2021.05.002}.
+
+\bibitem{eastwick2014} P. W. Eastwick, L. B. Luchies, E. J. Finkel, et al. The predictive validity of ideal partner preferences: A review and meta-analysis. \emph{Psychological Bulletin} 140, 623--665, 2014. \doi{10.1037/a0032432}.
+
+\bibitem{marlowe} F. W. Marlowe. Mate preferences among Hadza hunter-gatherers. \emph{Human Nature} 15, 365--376, 2004. \doi{10.1007/s12110-004-1014-8}.
+
+\bibitem{pillsworth} E. G. Pillsworth. Mate preferences among the Shuar of Ecuador: trait rankings and peer evaluations. \emph{Evolution and Human Behavior} 29, 256--267, 2008. \doi{10.1016/j.evolhumbehav.2008.01.005}.
+
+\bibitem{birnbaum} G. E. Birnbaum, H. T. Reis, M. Mizrahi, et al. Intimately connected: The importance of partner responsiveness for experiencing sexual desire. \emph{Journal of Personality and Social Psychology} 111, 530--546, 2016. \doi{10.1037/pspi0000069}.
+
+\bibitem{conley2014} T. D. Conley, J. D. Rubin, J. L. Matsick, et al. Proposer gender, pleasure, and danger in casual sex offers among bisexual women and men. \emph{Journal of Experimental Social Psychology} 55, 80--88, 2014. \doi{10.1016/j.jesp.2014.06.002}.
+
+\bibitem{joel2017} S. Joel, P. W. Eastwick, E. J. Finkel. Is Romantic Desire Predictable? Machine Learning Applied to Initial Romantic Attraction. \emph{Psychological Science} 28, 1478--1489, 2017. \doi{10.1177/0956797617714580}.
+
+\bibitem{jonason2026} P. K. Jonason and E. March. Moving beyond attraction, compassion, and competence: Evidence for compatibility as a distinct component of mate preferences. \emph{Frontiers in Psychology} 17, 1725609, 2026. \doi{10.3389/fpsyg.2026.1725609}.
+
+\bibitem{matching2025} P. W. Eastwick, J. Sparks, E. J. Finkel, et al. A worldwide test of the predictive validity of ideal partner preference matching. \emph{Journal of Personality and Social Psychology} 128, 123--146, 2025. \doi{10.1037/pspp0000524}.
+
+\bibitem{gerlach2019} T.~M. {Gerlach}, R.~C. {Arslan}, T.~{Schultze}, S.~K. {Reinhard}, and L.~{Penke}. {Predictive validity and adjustment of ideal partner preferences across the transition into romantic relationships.} \emph{J. Pers. Soc. Psychol.}, 116 (2): 313--330, 2019. \doi{10.1037/pspp0000170}.
+
+\bibitem{finkel2009} E.~J. {Finkel} and P.~W. {Eastwick}. {Arbitrary social norms influence sex differences in romantic selectivity}. \emph{Psychol. Sci.}, 20 (10): 1290--1295, 2009. \doi{10.1111/j.1467-9280.2009.02439.x}.
+
+\bibitem{stinson} D. A. Stinson, J. J. Cameron, L. B. Hoplock. The Friends-to-Lovers Pathway to Romance: Prevalent, Preferred, and Overlooked by Science. \emph{Social Psychological and Personality Science} 13, 562--571, 2022. \doi{10.1177/19485506211026992}.
+
+\bibitem{sexdrive} J. Frankenbach, M. Weber, D. D. Loschelder, M. Kilger, and M. Friese. Sex drive: Theoretical conceptualization and meta-analytic review of gender differences. \emph{Psychological Bulletin} 148, 621--661, 2022. \doi{10.1037/bul0000366}.
+
+\bibitem{conley} T. D. Conley. Perceived proposer personality characteristics and gender differences in acceptance of casual sex offers. \emph{Journal of Personality and Social Psychology} 100, 309--329, 2011. \doi{10.1037/a0022152}.
+
+\bibitem{borgerhoffmulder2019} M.~{Borgerhoff Mulder} and C.~T. {Ross}. {Unpacking mating success and testing Bateman's principles in a human population}. \emph{Proc. R. Soc. B}, 286 (1908): 20191516, 2019. \doi{10.1098/rspb.2019.1516}.
+
+\bibitem{koster} J. Koster, R. McElreath, K. Hill, et al. The life history of human foraging: Cross-cultural and individual variation. \emph{Science Advances} 6, eaax9070, 2020. \doi{10.1126/sciadv.aax9070}.
+
+\bibitem{schniter2015} E.~{Schniter}, M.~{Gurven}, H.~S. {Kaplan}, N.~T. {Wilcox}, and P.~L. {Hooper}. {Skill ontogeny among Tsimane forager-horticulturalists}. \emph{Am. J. Phys. Anthropol.}, 158 (1): 3--18, 2015. \doi{10.1002/ajpa.22757}.
+
+\bibitem{borkenau2004} P.~{Borkenau}, N.~{Mauer}, R.~{Riemann}, F.~M. {Spinath}, and A.~{Angleitner}. {Thin slices of behavior as cues of personality and intelligence}. \emph{J. Pers. Soc. Psychol.}, 86 (4): 599--614, 2004. \doi{10.1037/0022-3514.86.4.599}.
+
+\bibitem{grit} M. Cred\'e, M. C. Tynan, and P. D. Harms. Much ado about grit: A meta-analytic synthesis of the grit literature. \emph{Journal of Personality and Social Psychology} 113, 492--511, 2017. \doi{10.1037/pspp0000102}.
+
+\bibitem{mcdade2007} T.~W. {McDade}, V.~{Reyes-García}, P.~{Blackinton}, S.~{Tanner}, T.~{Huanca}, and W.~R. {Leonard}. {Ethnobotanical knowledge is associated with indices of child health in the Bolivian Amazon}. \emph{Proc. Natl. Acad. Sci. USA}, 104 (15): 6134--6139, 2007. \doi{10.1073/pnas.0609123104}.
+
+\bibitem{alami2020} S.~{Alami}, C.~{von Rueden}, E.~{Seabright}, T.~S. {Kraft}, A.~D. {Blackwell}, J.~{Stieglitz}, H.~{Kaplan}, and M.~{Gurven}. {Mother's social status is associated with child health in a horticulturalist population}. \emph{Proc. R. Soc. B}, 287 (1922): 20192783, 2020. \doi{10.1098/rspb.2019.2783}.
+
+\bibitem{wickham} R. E. Wickham. Perceived authenticity in romantic partners. \emph{Journal of Experimental Social Psychology} 49, 878--887, 2013. \doi{10.1016/j.jesp.2013.04.001}.
+
+\bibitem{wickham2020} R. E. Wickham and M. H. Bond. Accuracy and bias in perceptions of relationship authenticity. \emph{Journal of Social and Personal Relationships} 37, 47--57, 2020. \doi{10.1177/0265407519851567}.
+
+\bibitem{walker2011} R.~S. {Walker}, K.~R. {Hill}, M.~V. {Flinn}, and R.~M. {Ellsworth}. {Evolutionary history of hunter-gatherer marriage practices}. \emph{PLoS ONE}, 6 (4): e19066, 2011. \doi{10.1371/journal.pone.0019066}.
+
+\bibitem{duval} E. H. DuVal, C. L. Fitzpatrick, E. A. Hobson, and M. R. Servedio. Inferred Attractiveness: A generalized mechanism for sexual selection that can maintain variation in traits and preferences over time. \emph{PLoS Biology} 21, e3002269, 2023. \doi{10.1371/journal.pbio.3002269}.
+
+\bibitem{status} C. R. von Rueden and A. V. Jaeggi. Men's status and reproductive success in 33 nonindustrial societies: Effects of subsistence, marriage system, and reproductive strategy. \emph{PNAS} 113, 10824--10829, 2016. \doi{10.1073/pnas.1606800113}.
+
+\bibitem{hunters} E. A. Smith. Why do good hunters have higher reproductive success? \emph{Human Nature} 15, 343--364, 2004. \doi{10.1007/s12110-004-1013-9}.
+
+\bibitem{story} D. Smith, P. Schlaepfer, K. Major, et al. Cooperation and the evolution of hunter-gatherer storytelling. \emph{Nature Communications} 8, 1853, 2017. \doi{10.1038/s41467-017-02036-8}.
+
+\bibitem{glowacki} L. Glowacki and R. Wrangham. Warfare and reproductive success in a tribal population. \emph{PNAS} 112, 348--353, 2015. \doi{10.1073/pnas.1412287112}.
+
+\bibitem{beckerman} S. Beckerman, P. I. Erickson, J. Yost, et al. Life histories, blood revenge, and reproductive success among the Waorani of Ecuador. \emph{PNAS} 106, 8134--8139, 2009. \doi{10.1073/pnas.0901431106}.
+
+\bibitem{maynardsmith} J. Maynard Smith and G. R. Price. The logic of animal conflict. \emph{Nature} 246, 15--18, 1973. \doi{10.1038/246015a0}.
+
+\bibitem{jasienska} G. Jasie\'nska, A. Ziomkiewicz, P. T. Ellison, S. F. Lipson, and I. Thune. Large breasts and narrow waists indicate high reproductive potential in women. \emph{Proceedings of the Royal Society B} 271, 1213--1217, 2004. \doi{10.1098/rspb.2004.2712}.
+
+\bibitem{huseynov} A. Huseynov, C. P. E. Zollikofer, W. Coudyzer, et al. Developmental evidence for obstetric adaptation of the human female pelvis. \emph{PNAS} 113, 5227--5232, 2016. \doi{10.1073/pnas.1517085113}.
+
+\bibitem{lidborg2025} L. H. Lidborg and L. G. Boothroyd. A systematic review of the association between women's morphological traits and fertility. \emph{Evolutionary Human Sciences} 7, e42, 2025. \doi{10.1017/ehs.2025.10026}.
+
+\bibitem{pound} N. Pound, D. W. Lawson, A. M. Toma, S. Richmond, A. I. Zhurov, and I. S. Penton-Voak. Facial fluctuating asymmetry is not associated with childhood ill-health in a large British cohort study. \emph{Proceedings of the Royal Society B} 281, 20141639, 2014. \doi{10.1098/rspb.2014.1639}.
+
+\bibitem{kempe2014} M.~Kempe and A.~Mesoudi. An experimental demonstration of the effect of group size on cultural accumulation. \emph{Evolution and Human Behavior}, 35(4):285--290, 2014. \doi{10.1016/j.evolhumbehav.2014.02.009}.
+
+\bibitem{cultural} M. Muthukrishna, M. Doebeli, M. Chudek, and J. Henrich. The Cultural Brain Hypothesis: How culture drives brain expansion, sociality, and life history. \emph{PLoS Computational Biology} 14, e1006504, 2018. \doi{10.1371/journal.pcbi.1006504}.
+
+\bibitem{arnold1984} S.~J. {Arnold} and M.~J. {Wade}. {On the measurement of natural and sexual selection: Theory}. \emph{Evolution}, 38 (4): 709--719, 1984. \doi{10.1111/j.1558-5646.1984.tb00344.x}.
+
+\bibitem{courtiol2012} A.~{Courtiol}, J.~E. {Pettay}, M.~{Jokela}, A.~{Rotkirch}, and V.~{Lummaa}. {Natural and sexual selection in a monogamous historical human population}. \emph{Proc. Natl. Acad. Sci. USA}, 109 (21): 8044--8049, 2012. \doi{10.1073/pnas.1118174109}.
+
+\bibitem{price} G. R. Price. Selection and covariance. \emph{Nature} 227, 520--521, 1970. \doi{10.1038/227520a0}.
+
+\bibitem{lande1980} R. Lande. Sexual dimorphism, sexual selection, and adaptation in polygenic characters. \emph{Evolution} 34, 292--305, 1980. \doi{10.1111/j.1558-5646.1980.tb04817.x}.
+
+\bibitem{hazel} L. N. Hazel. The genetic basis for constructing selection indexes. \emph{Genetics} 28, 476--490, 1943. \doi{10.1093/genetics/28.6.476}.
+
+\bibitem{morrissey2010} M.~B. {Morrissey}, L.~E.~B. {Kruuk}, and A.~J. {Wilson}. {The danger of applying the breeder's equation in observational studies of natural populations}. \emph{J. Evol. Biol.}, 23 (11): 2277--2288, 2010. \doi{10.1111/j.1420-9101.2010.02084.x}.
+
+\bibitem{horwitz} T. B. Horwitz, J. V. Balbona, K. N. Paulich, et al. Evidence of correlations between human partners based on systematic reviews and meta-analyses of 22 traits and UK Biobank analysis of 133 traits. \emph{Nature Human Behaviour} 7, 1568--1583, 2023. \doi{10.1038/s41562-023-01672-z}.
+
+\bibitem{pietschnig} J. Pietschnig, L. Penke, J. M. Wicherts, M. Zeiler, and M. Voracek. Meta-analysis of associations between human brain volume and intelligence differences: How strong are they and what do they mean? \emph{Neuroscience and Biobehavioral Reviews} 57, 411--432, 2015. \doi{10.1016/j.neubiorev.2015.09.017}.
+
+\bibitem{kuzawa} C. W. Kuzawa, H. T. Chugani, L. I. Grossman, et al. Metabolic costs and evolutionary implications of human brain development. \emph{PNAS} 111, 13010--13015, 2014. \doi{10.1073/pnas.1323099111}.
+
+\bibitem{pontzer} H. Pontzer, M. H. Brown, D. A. Raichlen, et al. Metabolic acceleration and the evolution of human brain size and life history. \emph{Nature} 533, 390--392, 2016. \doi{10.1038/nature17654}.
+
+\bibitem{carmody2011} R.~N. {Carmody}, G.~S. {Weintraub}, and R.~W. {Wrangham}. {Energetic consequences of thermal and nonthermal food processing}. \emph{Proc. Natl. Acad. Sci. USA}, 108 (48): 19199--19203, 2011. \doi{10.1073/pnas.1112128108}.
+
+\bibitem{kaplan} H. Kaplan, K. Hill, J. Lancaster, and A. M. Hurtado. A theory of human life history evolution: Diet, intelligence, and longevity. \emph{Evolutionary Anthropology} 9, 156--185, 2000. \doi{10.1002/1520-6505(2000)9:4<156::AID-EVAN5>3.0.CO;2-7}.
+
+\bibitem{burkart} J. M. Burkart, O. Allon, F. Amici, et al. The evolutionary origin of human hyper-cooperation. \emph{Nature Communications} 5, 4747, 2014. \doi{10.1038/ncomms5747}.
+
+\bibitem{berna} F. Berna, P. Goldberg, L. K. Horwitz, et al. Microstratigraphic evidence of in situ fire in the Acheulean strata of Wonderwerk Cave, Northern Cape province, South Africa. \emph{PNAS} 109, E1215--E1220, 2012. \doi{10.1073/pnas.1117620109}.
+
+\bibitem{zohar} I. Zohar, N. Alperson-Afil, N. Goren-Inbar, et al. Evidence for the cooking of fish 780,000 years ago at Gesher Benot Ya'aqov, Israel. \emph{Nature Ecology and Evolution} 6, 2016--2028, 2022. \doi{10.1038/s41559-022-01910-z}.
+
+\bibitem{evodevo} M. Gonz\'alez-Forero. Evolutionary--developmental (evo-devo) dynamics of hominin brain size. \emph{Nature Human Behaviour} 8, 1321--1333, 2024. \doi{10.1038/s41562-024-01887-8}.
+
+\bibitem{puschel} T. A. P\"uschel, S. L. Nicholson, J. Baker, R. A. Barton, and C. Venditti. Hominin brain size increase has emerged from within-species encephalization. \emph{PNAS} 121, e2409542121, 2024. \doi{10.1073/pnas.2409542121}.
+
+\bibitem{gingerich} P. D. Gingerich. Pattern and rate in the Plio-Pleistocene evolution of modern human brain size. \emph{Scientific Reports} 12, 11216, 2022. \doi{10.1038/s41598-022-15481-3}.
+
+\bibitem{hubbe} M. Hubbe and K. Harvati. Evolutionary drivers of encephalization and facial reduction in the genus \emph{Homo}. \emph{Nature Communications} 17, 5625, 2026. \doi{10.1038/s41467-026-74739-w}.
+
+\bibitem{will2021} M.~{Will}, M.~{Krapp}, J.~T. {Stock}, and A.~{Manica}. {Different environmental variables predict body and brain size evolution in Homo}. \emph{Nat. Commun.}, 12 (1): 4116, 2021. \doi{10.1038/s41467-021-24290-7}.
+
+\bibitem{jaubert} J. Jaubert, S. Verheyden, D. Genty, et al. Early Neanderthal constructions deep in Bruniquel Cave in southwestern France. \emph{Nature} 534, 111--114, 2016. \doi{10.1038/nature18291}.
+
+\bibitem{skov} L. Skov et al. Genetic insights into the social organization of Neanderthals. \emph{Nature} 610, 519--525, 2022. \doi{10.1038/s41586-022-05283-y}.
+
+\bibitem{neubauer} S. Neubauer, J.-J. Hublin, and P. Gunz. The evolution of modern human brain shape. \emph{Science Advances} 4, eaao5961, 2018. \doi{10.1126/sciadv.aao5961}.
+
+\bibitem{fu} Q. Fu, F. Bai, H. Rao, et al. The proteome of the late Middle Pleistocene Harbin individual. \emph{Science} 389, 704--707, 2025. \doi{10.1126/science.adu9677}.
+
+\bibitem{floresiensis} T. Sutikna, M. W. Tocheri, M. J. Morwood, et al. Revised stratigraphy and chronology for Homo floresiensis at Liang Bua in Indonesia. \emph{Nature} 532, 366--369, 2016. \doi{10.1038/nature17179}.
+
+\bibitem{vaesen} K. Vaesen, F. Scherjon, L. Hemerik, and A. Verpoorte. Inbreeding, Allee effects and stochasticity might be sufficient to account for Neanderthal extinction. \emph{PLoS ONE} 14, e0225117, 2019. \doi{10.1371/journal.pone.0225117}.
+
+\bibitem{crist} W. Crist. Debunking the diffusion of Senet. \emph{Board Game Studies Journal} 15(1), 2021. \doi{10.2478/bgs-2021-0002}.
+
+\bibitem{ur} British Museum. The Royal Game of Ur, 2600--2400 BCE. Institutional collection record, Google Arts \& Culture. \href{https://artsandculture.google.com/asset/the-royal-game-of-ur/MwE2MMZNSKiTwQ}{Collection record}. Accessed November 9, 2026. See also I. L. Finkel, On the rules for the Royal Game of Ur, in \emph{Ancient Board Games in Perspective}, British Museum Press, 16--32, 2007.
+
+\bibitem{holes} W. Crist and R. Abdullayev. Herding with the hounds: The game of fifty-eight holes in the Ab\c{s}eron Peninsula. \emph{European Journal of Archaeology} 28, 61--80, 2025; first published online May 31, 2024. \doi{10.1017/eaa.2024.24}.
+
+\bibitem{beni} Foundation of the Hellenic World. Wrestling scenes from Beni Hasan in Egypt, 2000 BC. \emph{Ancient Olympic Games}, gallery record, citing M. B. Poliakoff, \emph{Combat Sports in the Ancient World}, Yale University Press, 1987, p. 31, fig. 15. \href{https://www.fhw.gr/olympics/ancient/en/gallery/101p1.html}{Gallery record}. Accessed November 9, 2026.
+
+\bibitem{kolk2023} M.~{Kolk}. {The relationship between life-course accumulated income and childbearing of Swedish men and women born 1940--70}. \emph{Population Studies}, 77 (2): 197--215, 2023. \doi{10.1080/00324728.2022.2134578}.
+
+\bibitem{jalovaara2019} M.~{Jalovaara}, G.~{Neyer}, G.~{Andersson}, J.~{Dahlberg}, L.~{Dommermuth}, P.~{Fallesen}, and T.~{Lappegård}. {Education, gender, and cohort fertility in the nordic countries}. \emph{European Journal of Population}, 35 (3): 563--586, 2019. \doi{10.1007/s10680-018-9492-2}.
+
+\bibitem{sear2008} R.~{Sear} and R.~{Mace}. {Who keeps children alive? A review of the effects of kin on child survival}. \emph{Evol. Hum. Behav.}, 29 (1): 1--18, 2008. \doi{10.1016/j.evolhumbehav.2007.10.001}.
+
+\bibitem{lewis} K. Lewis. The limits of racial prejudice. \emph{Proceedings of the National Academy of Sciences} 110, 18814--18819, 2013. \doi{10.1073/pnas.1308501110}.
+
+\bibitem{bruch} E. E. Bruch, M. E. J. Newman. Aspirational pursuit of mates in online dating markets. \emph{Science Advances} 4, eaap9815, 2018. \doi{10.1126/sciadv.aap9815}.
+
+\bibitem{kong} A. Kong, M. L. Frigge, G. Thorleifsson, et al. Selection against variants in the genome associated with educational attainment. \emph{PNAS} 114, E727--E732, 2017. \doi{10.1073/pnas.1612113114}.
+
+\bibitem{kolk} M. Kolk, K. Barclay. Cognitive ability and fertility among Swedish men born 1951--1967: evidence from military conscription registers. \emph{Proceedings of the Royal Society B: Biological Sciences} 286, 20190359, 2019. \doi{10.1098/rspb.2019.0359}.
+
+\bibitem{akbari} A. Akbari, A. Perry, A. R. Barton, et al. Ancient DNA reveals pervasive directional selection across West Eurasia. \emph{Nature} 654, 419--428, 2026. \doi{10.1038/s41586-026-10358-1}.
+
+\bibitem{desilva2021} J. M. DeSilva, J. F. A. Traniello, A. G. Claxton, and L. D. Fannin. When and why did human brains decrease in size? A new change-point analysis and insights from brain evolution in ants. \emph{Frontiers in Ecology and Evolution} 9, 742639, 2021. \doi{10.3389/fevo.2021.742639}.
+
+\bibitem{villmoare} B. Villmoare and M. Grabowski. Did the transition to complex societies in the Holocene drive a reduction in brain size? A reassessment of the DeSilva et al. (2021) hypothesis. \emph{Frontiers in Ecology and Evolution} 10, 963568, 2022. \doi{10.3389/fevo.2022.963568}.
+
+\newpage
+\bibitem{desilva2023} J. DeSilva, L. Fannin, I. Cheney, et al. Human brains have shrunk: The questions are when and why. \emph{Frontiers in Ecology and Evolution} 11, 1191274, 2023. \doi{10.3389/fevo.2023.1191274}.
+
+\bibitem{decarli} C. DeCarli, P. Maillard, M. P. Pase, et al. Trends in intracranial and cerebral volumes of Framingham Heart Study participants born 1930 to 1970. \emph{JAMA Neurology} 81, 471--480, 2024. \doi{10.1001/jamaneurol.2024.0469}.
+
+\bibitem{bratsberg} B. Bratsberg and O. Rogeberg. Flynn effect and its reversal are both environmentally caused. \emph{PNAS} 115, 6674--6678, 2018. \doi{10.1073/pnas.1718793115}.
+
+\bibitem{sharma2024} M. Sharma, M. Tong, T. Korbak, et al. Towards understanding sycophancy in language models. \emph{ICLR}, 2024. \href{https://proceedings.iclr.cc/paper_files/paper/2024/hash/0105f7972202c1d4fb817da9f21a9663-Abstract-Conference.html}{Conference paper}.
+\bibitem{gao2023} L. Gao, J. Schulman, and J. Hilton. Scaling laws for reward model overoptimization. \emph{Proceedings of Machine Learning Research} 202, 10835--10866, 2023. \url{https://proceedings.mlr.press/v202/gao23h.html}.
+\bibitem{judd} C. M. Judd, J. Westfall, and D. A. Kenny. Treating stimuli as a random factor in social psychology: A new and comprehensive solution to a pervasive but largely ignored problem. \emph{Journal of Personality and Social Psychology} 103, 54--69, 2012. \doi{10.1037/a0028347}.
+
+\bibitem{hedge} C. Hedge, G. Powell, and P. Sumner. The reliability paradox: Why robust cognitive tasks do not produce reliable individual differences. \emph{Behavior Research Methods} 50, 1166--1186, 2018. \doi{10.3758/s13428-017-0935-1}.
+
+\bibitem{kowaldata} M. Kowal et al. Large-scale cross-cultural dataset. Open Science Framework, 2024; participant file version 1, 2025. \doi{10.17605/OSF.IO/K54FX}.
+\bibitem{whyte2021} S. Whyte, R. C. Brooks, H. F. Chan, and B. Torgler. Sex differences in sexual attraction for aesthetics, resources and personality across age. \emph{PLOS ONE} 16, e0250151, 2021. \doi{10.1371/journal.pone.0250151}. Data and code: \doi{10.17605/OSF.IO/DSJ9W}.
+\bibitem{winternitz2017} J. Winternitz, J. L. Abbate, E. Huchard, J. Havl\'i\v{c}ek, and L. Z. Garamszegi. Patterns of MHC-dependent mate selection in humans and nonhuman primates: a meta-analysis. \emph{Molecular Ecology} 26, 668--688, 2017; online 2016. \doi{10.1111/mec.13920}.
+\bibitem{havlicek2020} J. Havl\'i\v{c}ek, J. Winternitz, and S. C. Roberts. Major histocompatibility complex-associated odour preferences and human mate choice: near and far horizons. \emph{Philosophical Transactions of the Royal Society B} 375, 20190260, 2020. \doi{10.1098/rstb.2019.0260}. Data: \doi{10.6084/m9.figshare.8869505}.
+\bibitem{apostolou2007} M. Apostolou. Sexual selection under parental choice: the role of parents in the evolution of human mating. \emph{Evolution and Human Behavior} 28, 403--409, 2007. \doi{10.1016/j.evolhumbehav.2007.05.007}.
+\bibitem{apostolou2012} M. Apostolou. Sexual selection under parental choice: Evidence from sixteen historical societies. \emph{Evolutionary Psychology} 10, 504--518, 2012. \doi{10.1177/147470491201000308}.
+\bibitem{wiessner2014} P. Wiessner. Embers of society: Firelight talk among the Ju/'hoansi Bushmen. \emph{PNAS} 111, 14027--14035, 2014. \doi{10.1073/pnas.1404212111}.
+\bibitem{chester2026} Chester Zoo. Maasai Olympics: A Way Forward. Conservation program account. \url{https://www.chesterzoo.org/conservation-science-education/global-conservation-programmes/africa/maasai-olympics}. Accessed November 10, 2026.
+\bibitem{biglife2026} Big Life Foundation. About the Maasai Olympics. Program description. \url{https://biglife.org/maasai-olympics/about}. Accessed November 10, 2026.
+\bibitem{lippold2014} S. Lippold, H. Xu, A. Ko, et al. Human paternal and maternal demographic histories: insights from high-resolution Y chromosome and mtDNA sequences. \emph{Investigative Genetics} 5, 13, 2014. \doi{10.1186/2041-2223-5-13}.
+\bibitem{karmin2015} M. Karmin, L. Saag, M. Vicente, et al. A recent bottleneck of Y chromosome diversity coincides with a global change in culture. \emph{Genome Research} 25, 459--466, 2015. \doi{10.1101/gr.186684.114}.
+\bibitem{zeng2018} T. C. Zeng, A. J. Aw, and M. W. Feldman. Cultural hitchhiking and competition between patrilineal kin groups explain the post-Neolithic Y-chromosome bottleneck. \emph{Nature Communications} 9, 2077, 2018. \doi{10.1038/s41467-018-04375-6}.
+\bibitem{eisenberg2008} D. T. A. Eisenberg, B. Campbell, P. B. Gray, and M. D. Sorenson. Dopamine receptor genetic polymorphisms and body composition in undernourished pastoralists: An exploration of nutrition indices among nomadic and recently settled Ariaal men of northern Kenya. \emph{BMC Evolutionary Biology} 8, 173, 2008. \doi{10.1186/1471-2148-8-173}.
+\bibitem{kunkle2025} A. E. Kunkle, R. L. Tennyson, K. Wander, B. Shell-Duncan, and D. T. A. Eisenberg. The attention-deficit/hyperactivity disorder-associated DRD4 7R allele predicts household economic status but not nutritional status in Northern Kenyan Rendille children. \emph{American Journal of Human Biology} 37, e70027, 2025. \doi{10.1002/ajhb.70027}.
+\bibitem{barack2024} D. L. Barack, V. U. Ludwig, F. Parodi, et al. Attention deficits linked with proclivity to explore while foraging. \emph{Proceedings of the Royal Society B} 291, 20222584, 2024. \doi{10.1098/rspb.2022.2584}.
+\bibitem{demontis2023} D. Demontis, G. B. Walters, G. Athanasiadis, et al. Genome-wide analyses of ADHD identify 27 risk loci, refine the genetic architecture and implicate several cognitive domains. \emph{Nature Genetics} 55, 198--208, 2023. \doi{10.1038/s41588-022-01285-8}.
+\bibitem{rosenfeld2019} M. J. Rosenfeld, R. J. Thomas, and S. Hausen. Disintermediating your friends: How online dating in the United States displaces other ways of meeting. \emph{PNAS} 116, 17753--17758, 2019. \doi{10.1073/pnas.1908630116}.
+\bibitem{billari2019} F. C. Billari, O. Giuntella, and L. Stella. Does broadband Internet affect fertility? \emph{Population Studies} 73, 297--316, 2019. \doi{10.1080/00324728.2019.1584327}.
+\bibitem{lois2014} D. Lois and O. Arr\'anz Becker. Is fertility contagious? Using panel data to disentangle mechanisms of social network influences on fertility decisions. \emph{Advances in Life Course Research} 21, 123--134, 2014. \doi{10.1016/j.alcr.2013.10.001}.
+\bibitem{hunt2015} L. L. Hunt, P. W. Eastwick, and E. J. Finkel. Leveling the playing field: Longer acquaintance predicts reduced assortative mating on attractiveness. \emph{Psychological Science} 26, 1046--1053, 2015. \doi{10.1177/0956797615579273}.
+\bibitem{dealbreakers2015} P. K. Jonason, J. R. Garcia, G. D. Webster, N. P. Li, and H. E. Fisher. Relationship dealbreakers: Traits people avoid in potential mates. \emph{Personality and Social Psychology Bulletin} 41, 1697--1711, 2015. \doi{10.1177/0146167215609064}.
+\bibitem{eagly1999} A. H. Eagly and W. Wood. The origins of sex differences in human behavior: Evolved dispositions versus social roles. \emph{American Psychologist} 54, 408--423, 1999. \doi{10.1037/0003-066X.54.6.408}.
+\end{thebibliography}
+\endgroup
+\section*{About the authors}
+\noindent\begin{minipage}{\columnwidth}
+\begin{minipage}[t]{.28\columnwidth}\vspace{0pt}
+\includegraphics[width=\linewidth]{assets/jepson_taylor.jpg}
+\end{minipage}\hfill
+\begin{minipage}[t]{.68\columnwidth}\vspace{0pt}\small
+\textbf{Jepson Taylor} is an AI entrepreneur working on machine learning and generative algorithms. He co-founded Zeff.ai, acquired by DataRobot in 2020, and held AI leadership roles at DataRobot and Dataiku. His experience includes semiconductors, quantitative finance, and people analytics; his current work on VEOX focuses on automating AI research.\par
+\vspace{3pt}{\footnotesize Biography and portrait: \href{https://www.jepsontaylor.com/bio}{JepsonTaylor.com}.}
+\end{minipage}
+\end{minipage}
+\par\vspace{12pt}
+\noindent\begin{minipage}{\columnwidth}
+\begin{minipage}[t]{.28\columnwidth}\vspace{0pt}
+\includegraphics[width=\linewidth]{assets/erin_beilharz.png}
+\end{minipage}\hfill
+\begin{minipage}[t]{.68\columnwidth}\vspace{0pt}\small
+\textbf{Erin Beilharz} works across AI, clean technology, and digital infrastructure. Her 2025 INSPIRE summit profile identifies her as a Principal Consultant at Lufthansa Systems and an adviser to Navon World, a developer of modular green data centres. Her work addresses human-centered technology, energy, data sovereignty, and the social consequences of automation.\par
+\vspace{3pt}{\footnotesize Biography: \href{https://www.inspire-summit.com/en/speakers/erin-beilharz}{INSPIRE energy summit, 2025}. Portrait supplied by the author team. Profiles accessed November 10, 2026.}
+\end{minipage}
+\end{minipage}
+\end{document}

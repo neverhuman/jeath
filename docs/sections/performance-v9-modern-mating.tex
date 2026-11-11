@@ -1,0 +1,353 @@
+\section{Mate selection today: stated, chosen, reproduced}\label{sec:today}
+
+\noindent The studies in this section measure different steps in mate selection. Profile answers record stated
+intentions, profile votes record ratings received, speed dates record decisions about meeting again, and the General
+Social Survey records reported numbers of children. These sources cover different people and settings.
+
+\input{performance-platform-supplement.tex}
+
+\subsection{What people say they want}
+
+Across 37 cultures, across 45 countries three decades later, and across \PboWhyteN{} Australian adults aged 18--64, women and men rank trust, kindness, intelligence and
+health near the top---with trust first at every age in both women (\PboWhyteTrustW/100) and men (\PboWhyteTrustM/100)---while women give more weight to financial prospects and men to youth and attractiveness~\cite{buss1989,walter2020,whyte2021}.
+When people must build a partner from a limited budget, physical attractiveness behaves as a necessity for men, status and
+resources as necessities for women, and kindness and intelligence as necessities for both~\cite{li2002}; the ordering holds in
+Eastern and Western samples~\cite{thomas2020}. Factor analyses of what people want in a partner return three dimensions:
+warmth and trustworthiness, vitality and attractiveness, and status and resources~\cite{fletcher1999}; compatibility has
+recently been proposed as a fourth, valued most in long-term contexts~\cite{jonason2026}.
+
+\subsection{Whom people choose}
+
+Stated preferences are a weak guide to choices. In speed dating, what people said they wanted did not predict whom they
+picked~\cite{todd2007}. A meta-analysis of 97 studies of live and ongoing relationships found that physical attractiveness
+predicted romantic evaluations at $r\approx0.40$ and earning prospects at $r\approx0.10$ in \emph{both} sexes, with sex
+differences that were small and not significant~\cite{eastwick2014}. Machine-learning models given more than a hundred
+self-reported traits and preferences predicted who was generally desired and who was generally desiring, but nothing about
+which particular pairs clicked~\cite{joel2017}. In a registered report with 10,358 participants in 43 countries, the match
+between a person's stated ideals and a partner's traits predicted how that partner was evaluated, but modestly
+($\beta=0.19$ for the pattern across 35 traits, 0.11 beside a normative pattern, 0.04 on average for single traits); both
+sexes understated how much attractiveness mattered to them, and women overstated, and men understated, how much earning
+potential did~\cite{eastwick2025}. Across 11,196 couples, partners' personalities and traits added nothing to the
+prediction of relationship quality beyond each person's own view of the relationship~\cite{joel2020}. The evidence is not
+all one way: in a preregistered prospective study, preferences recorded while single did predict the characteristics of later
+partners~\cite{gerlach2019}.
+
+Several regularities do hold in behavior. Women in speed dating weighted intelligence more and men attractiveness more, and
+men did not value a woman's intelligence or ambition once it exceeded their own~\cite{fisman2006}. In a field experiment that
+sent invitations from constructed profiles on a large dating site, both sexes preferred attractive profiles; highly
+educated women preferred highly educated men, and highly educated men preferred less educated women to the same degree,
+so the two groups most likely to stay single were unattractive men with little education and unattractive women with
+much~\cite{egebark2021}. Users of dating sites pursue partners more desirable than themselves~\cite{bruch2018}, yet stated
+preferences alone, without search frictions, reproduce the sorting seen in marriages~\cite{hitsch2010}. Women's greater
+selectivity is real but conditional: it grows with the number of candidates~\cite{fisman2006} and disappears when women are the
+ones who approach~\cite{finkel2009}.
+
+Spouses resemble each other. Partner correlations are positive across 22 traits~\cite{horwitz2023}, strongest for
+education, attitudes and substance use; assortment on education and height leaves a detectable imprint on the
+genome~\cite{yengo2018,robinson2017}. Educational homogamy in the United States rose from 1960 to 2003~\cite{schwartz2005}. In the
+survey analyzed below the correlation between spouses' years of schooling was \GssHomOld{} in 1972--1989 and \GssHomNew{} in
+2008--2024. As women's schooling has overtaken men's in most countries, the old pattern of women marrying
+up in education has ended~\cite{esteve2016}.
+
+\subsection{Said and done: \SdRows{} four-minute meetings}\label{sec:speed}
+
+\emph{Data.} The Columbia speed-dating experiment~\cite{fisman2006} recruited \SdN{} graduate and professional students
+(\SdW{} women, \SdM{} men; mean age \SdAge) to \SdSessions{} sessions in 2002--2004. Each pair talked for four minutes.
+Each person then rated the other from 1 to 10 on attractiveness, sincerity, intelligence, fun, ambition and shared
+interests, said whether they wished to meet again, and guessed how likely the other was to say yes. Before the event each
+had divided 100 points among the six attributes. The public file has one row per person per meeting. We verified it by
+checksum against four independent mirrors and reproduce the sample sizes of the original report. Variables describing race
+and religion were not read.
+
+\emph{Agreement.} Ratings were centered on each rater's mean, which removes leniency and differences among sessions.
+Agreement between two observers of the same person, the one-way intraclass correlation, is \JurOneAtt{} for looks,
+\JurOneFun{} for fun, \JurOneInt{} for intelligence, \JurOneAmb{} for ambition and \JurOneSin{} for sincerity
+(Table~\ref{tab:speed}). Correlating the means of two disjoint random panels of $k$ raters reproduces the Spearman--Brown
+curve from $k=1$ to 8 with a largest gap of \JurGapMax{} (Fig.~\ref{fig:main}B). The law is a statistical necessity when
+errors are independent, so it should hold in any population. Independence is the condition that matters. Let $r_1$ be one
+observer's squared correlation with the truth. If part of the error is common to all observers, so that their errors
+correlate $c$, the error of a panel mean has variance $(1-r_1)[c+(1-c)/k]$, and the accuracy of the pooled verdict tends to
+\begin{equation}
+r_\infty=\frac{r_1}{r_1+c\,(1-r_1)}\label{eq:ceiling}
+\end{equation}
+however many observers are added: \JurCeil{} for a trait read as poorly as intelligence is here, at $c=0.3$. Shared error
+also raises agreement, so consensus then overstates accuracy. In the experiment every rater met the person separately,
+which is why the law fits; people who pass on one another's reports add voices and not observers. What a camp supplies is
+many independent witnesses of many occasions. The single-observer agreements, unlike the law, need not travel, and here
+they are lowered for intelligence by the narrow range of a sample selected for academic ability. Agreement does not differ by the
+sex of the person rated for looks (\JurAttMen{} for men, \JurAttWomen{} for women) and is somewhat higher for men's fun
+than for women's (\JurFunMen{} against \JurFunWomen).
+
+\emph{Said and did.} Table~\ref{tab:speed} gives the points allocated before the event and the change in the probability
+of a yes per standard deviation of each rating, from a linear probability model with a fixed effect for each chooser. The
+model was fitted with the chooser's own ratings and again with the mean rating the partner received from everyone else,
+which removes the chooser's halo. Either way looks come first for both sexes, then fun; intelligence earns one to four
+points; sincerity and ambition earn none. In the sessions that asked, the day after, what had mattered in their decisions
+($n=\SdAftN$), women put looks at \SdAftAttW\% and men at \SdAftAttM\%, well above what either had said beforehand, so the
+gap between saying and doing is partly visible to the people themselves.
+
+\emph{Legibility and weight.} Across the five attributes of a person, the effect of the panel's rating on a yes
+correlates \SdLegPear{} with the agreement between two observers (rank correlation \SdLegSpear). Five points cannot
+separate two readings: that people act on what they can read, or that what is easy to read happens to be what matters for
+a first meeting. Prediction P27 separates them by lengthening the encounter and adding observers.
+
+\emph{Access and misreading.} Women said yes to \SdYesW\% of partners and men to \SdYesM\%; \SdMatch\% of meetings ended
+in a mutual yes. The share of partners who said yes to a person has a coefficient of variation of \SdPopCVM{} among men
+and \SdPopCVW{} among women. Rescaling the 1--10 guess to 0--1, each sex expected a yes from \SdExpW\% of partners; women
+received \SdActW\% and men \SdActM\%. The scale is arbitrary, but the sexes gave the same answer and met different
+outcomes: men's expectation exceeded their outcome by \SdGapM{} points (\SdGapMCI), women's by \SdGapW{} (\SdGapWCI), a
+difference of \SdGapDiff{} (\SdGapDiffCI). Men's overestimate of women's interest is what error-management theory predicts~\cite{haselton2000}. A speed-meeting
+study designed to test it found the same in men and an underestimate in women~\cite{perilloux2012}, which these data do
+not show. Within a person the guess correlates \SdAccM{} (men) and \SdAccW{} (women) with what the
+partner decided.
+
+\emph{Checks.} Self-ratings made before the event correlate \SdSelfAtt{} with the panel's verdict for looks, \SdSelfFun{}
+for fun, \SdSelfAmb{} for ambition, \SdSelfInt{} for intelligence and \SdSelfSin{} for sincerity. The panel's rating of
+intelligence correlates \SdSat{} (\SdSatCI; $n=\SdSatN$) with the median entrance-test score of the person's undergraduate
+college, and its rating of looks \SdSatAtt. A speed date is a staged test in the sense of
+Proposition~\ref{prop:staging}: everyone knows they are being assessed. The attribute closest to delivery, sincerity, is
+the one that observers agree on least, that self-report tracks least, and that earns nothing.
+
+\subsection{Desire, trust, and how relationships begin}\label{sec:desire}
+
+Three further bodies of work bear on what is assessed. \emph{Desire.} Across 211 studies men report a stronger sex drive
+than women ($g=0.69$; 0.54 after adjustment for biased responding), a difference between overlapping
+distributions~\cite{frankenbach2022}. Willingness to accept a casual offer depends less on the sex of the person asked than on
+who is asking: perceived sexual skill of the proposer predicted acceptance in both sexes, and the large sex difference of the
+classic studies disappeared for some proposers~\cite{conley2011}. Within relationships, a partner's responsiveness raises
+desire, more strongly in women, by making the other feel valued~\cite{birnbaum2016}. \emph{Trust.} What best predicts the
+quality of a relationship is each person's perception of the other's commitment and appreciation; the partner's traits add
+nothing further~\cite{joel2020}. Such perceptions are partly accurate and partly projection: in 107 couples, judgments of a
+partner's willingness to increase intimacy tracked the partner's own report, while judgments of the partner's aversion to
+deception did not and mainly reflected assumed similarity~\cite{wickham2020}. \emph{Beginnings.} In seven samples
+($n=1{,}897$) about two-thirds of romantic relationships began as friendships, a route that research on initial attraction
+between strangers largely overlooks~\cite{stinson2022}. Together these findings say that people assess two things, what a
+partner can do and whether the partner will do it for them, and that the second is learned from conduct over time and not
+from a first impression (Proposition~\ref{prop:delivery}).
+
+The same two questions organize person perception in general. Perceivers judge others on warmth, read as intent, and on
+competence, read as the ability to act on it~\cite{fiske2007}; moral character counts for more than warmth in the
+impressions they form~\cite{goodwin2014}. The two are inferred by different rules. Models of impression formation assume a
+negativity bias for morality and a positivity bias for competence, and experiments bear this out, the first most strongly
+for extreme behavior and the second for moderate behavior~\cite{wojciszke1993,skowronski1987}. The logic is that of a
+restrictive schema~\cite{reeder1979}: one skilled act is evidence of ability, since the unskilled cannot produce it, and
+one dishonest act is evidence of character, since the honest do not. Occupational
+psychology draws the same line between maximum and typical performance, which correlate about 0.4 in a meta-analysis, with
+ability more strongly related to the first~\cite{beus2012,sackett1988}. Proposition~\ref{prop:staging} derives these rules
+from what a recognized test can and cannot show. It also accounts for three features of courtship that preference lists
+leave unexplained: that it takes time, which models treat as information bought by waiting~\cite{wachtmeister1999,seymour2009};
+that women tend to underestimate men's commitment~\cite{haselton2000}; and that rivals disparage one another to prospective
+partners~\cite{buss1990}, which supplies what a candidate would withhold.
+
+\subsection{Context changes the weights, not the links}
+
+What is weighted varies with circumstance. On tight budgets, Eastern and Western participants allocated differently for
+almost every trait (average $d=0.42$) while still putting the same traits first~\cite{thomas2020}. Compatibility is weighted
+more in long-term than in short-term contexts~\cite{jonason2026}. The sign of women's access component has reversed in
+countries where earning and childbearing have been made compatible (Section~\ref{sec:gss}). A survey of 117,293 people in 175
+countries is now public and allows such moderators to be tested directly~\cite{kowal2025}. Two limits apply. The decomposition
+predicts that weights follow measurable conditions, such as insecurity, the burden of care and the availability of partners,
+and not ancestry: sorting by group on a dating site reflects opportunity and expectation as well as preference, and users
+who receive and answer a message across a racial boundary go on to start more such exchanges themselves~\cite{lewis2013}. And
+this paper's own analyses compare no racial, ethnic or national groups, and nothing reviewed here supports ranking any.
+
+Table~\ref{tab:culture} places the comparative evidence against the links. Its rows are published comparisons of
+institutions and conditions, and each maps to a parameter of the models: who assesses, the share of occasions that are
+unstaged, the enforced share of a candidate's product, the share of one sex left unpaired, the number of domains on which
+everyone is compared, and the weight a partner's capacity carries. Three cautions apply to them. They are associations
+across societies or communities, with the usual confounding. Stated preferences are the outcome in several, and stated
+preferences are weak guides to choices (Section~\ref{sec:speed}). And where two large studies disagree, as on whether sex
+differences in stated preferences shrink with gender equality~\cite{zentner2012,walter2020}, we report both. What the
+table adds is a way to say what a cultural difference would have to change for selection to change: a society that moves
+partner choice from kin to strangers, for example, alters the validity of delivery and leaves the validity of capacity
+alone, and that is a testable statement (prediction P28).
+
+\subsection{Who reproduces: an access--number decomposition}\label{sec:gss}
+
+\emph{Data and method.} The General Social Survey has interviewed probability samples of United States adults since
+1972~\cite{gss2024}. We use all \GssN{} respondents aged 45 to 79 born 1900--1979 with a known number of children, and four traits:
+years of schooling, a ten-word vocabulary test, the prestige score of the respondent's occupation, and (for ages 45--64) the
+logarithm of personal income. Each trait is standardized, and fitness made relative, within sex and decade of birth, so that
+secular trends in schooling and family size do not enter. Eq.~\eqref{eq:split} then divides the selection differential into
+access and number. Survey weights are applied; intervals are percentile bootstraps (\GssBoot{} resamples of respondents within
+cells). The code reads the public file and reproduces every number here (Section~\ref{app:repro}).
+
+\emph{The number component is negative for every trait in both sexes} (Table~\ref{tab:gss}, Fig.~\ref{fig:today}B). Among people who
+become parents, those with more schooling, larger vocabularies, more prestigious occupations and higher incomes have fewer
+children. Timing accounts for much of it. Each year's delay in the first birth goes with \GssTimSlopeW\% fewer children for
+mothers and \GssTimSlopeM\% for fathers, schooling correlates \GssAfbRW{} (women) and \GssAfbRM{} (men) with age at first birth,
+and the path through timing accounts for \GssTimShareW\% of the schooling--number relation in women and \GssTimShareM\% in men.
+
+\emph{The access component has opposite signs in the two sexes.} For income it is $\GssIncMAcc$ (\GssIncMAccCI) in men and
+$\GssIncWAcc$ (\GssIncWAccCI) in women; the difference, \GssIncDiffAcc{} (\GssIncDiffAccCI), is the largest contrast in the
+table. Of men in the lowest third of income for their cohort, \GssChlMIncLo\% were childless, against \GssChlMIncHi\% in the
+highest third; for women the figures run the other way, \GssChlWIncLo\% and \GssChlWIncHi\%. Occupational
+prestige shows the same asymmetry at smaller size. For men's income the two components nearly cancel, leaving a total
+differential indistinguishable from zero ($\GssIncMTot$; \GssIncMTotCI). A single correlation between status and fertility
+would report ``no selection'' where there are two opposed episodes.
+
+\emph{Three episodes, and the shape of the floor.} Access can be divided once more, into pairing (the mean trait of those who
+ever married) and conversion (the further difference between parents and the ever-married); the three terms still sum to the
+total (Table~\ref{tab:gssthree}). For men every trait is positive at pairing: income \GssIncMPair{} (\GssIncMPairCI), occupational
+prestige \GssPreMPair, schooling \GssSchMPair{} and vocabulary \GssVocMPair. Conversion adds nothing for men's income
+(\GssIncMConv) and is negative for schooling and vocabulary. For women no trait has a detectable effect at pairing, and
+conversion is negative for all four. By fifths of income, men's childlessness is \GssQfMOne, \GssQfMTwo, \GssQfMThree{} percent in
+the three lowest and \GssQfMFive{} in the highest, and the share never married falls from \GssNmMOne\% to \GssNmMFive\%
+(Fig.~\ref{fig:today}A). The fall is concentrated at the bottom: the lowest-to-middle difference exceeds the middle-to-highest by
+\GssFloorM{} percentage points (\GssFloorMCI). Marriage is an imperfect marker of pairing in recent cohorts, in which many
+couples cohabit, so the pairing term is conservative for them.
+
+\emph{The pattern is stable.} It appears in every birth cohort from 1900--1919 to 1960--1979, without weights, in the stricter
+age window 50--74, and in surveys before and after 1990 (Tables~\ref{tab:gsscohort} and~\ref{tab:gssrobust}).
+
+\emph{It is not new, and it is not peculiar to the United States.} British men with low incomes are more often childless
+while women's income is negatively related to family size~\cite{nettle2008}; in European and United States samples the sex
+difference in the status--fertility relation is driven by childlessness~\cite{fieder2007,barthold2012,hopcroft2006,weeden2006}; men
+with higher incomes in the United States are more likely to marry, less likely to divorce and less likely to be
+childless, and the reverse holds for women~\cite{hopcroft2021}. In Swedish registers the gradient of fertility on lifetime income is
+strongly positive for men, and for women it has moved from negative to positive across cohorts born 1940--1970~\cite{kolk2023};
+in the Nordic countries generally the negative gradient of women's education has vanished while the least educated men
+remain the most often childless~\cite{jalovaara2019}. Swedish men with the lowest intelligence-test scores are the least likely
+to have a first child~\cite{kolk2019}. What the present analysis adds is the exact split, for four traits and both sexes in one
+sample, and its stability over eighty years of birth cohorts. The contrast across countries matters for interpretation: the
+sign of the access term for women tracks institutions, since it has reversed where earning and childbearing have been made compatible. The
+positive sign for men is found everywhere it has been looked for.
+
+\emph{How much of the variance is the floor?} The opportunity for selection is $I=\GssIM$ in men and \GssIW{} in women, a small
+sex difference of the size reported from other United States data~\cite{jokela2010}. Childlessness accounts for \GssShareM\% of it in
+men and \GssShareW\% in women (Eq.~\ref{eq:oppsplit}), and the share has risen from \GssShareMOld\% and \GssShareWOld\% in cohorts
+born 1920--1939 to \GssShareMNew\% and \GssShareWNew\% in those born 1960--1979 (Fig.~\ref{fig:today}E). As family sizes converge
+on two, whether one becomes a parent at all carries a growing part of what variance remains.
+
+\emph{The pairing gate.} Selection at pairing can act only on reproduction that passes through pairing, and the share that
+does has fallen (Table~\ref{tab:gssgate}; Fig.~\ref{fig:verify}C). Among men born 1920--1939, \GssGateMOld\% (\GssGateMOldCI)
+of those who never married were fathers, and never-married men accounted for \GssOutMOld\% of the children reported by men.
+Among men born 1960--1979 the figures are \GssGateMNew\% (\GssGateMNewCI) and \GssOutMNew\%. For women they rose from
+\GssGateWOld\% (\GssGateWOldCI) and \GssOutWOld\% to \GssGateWNew\% (\GssGateWNewCI) and \GssOutWNew\%. At the same time
+the gate became more selective. The share of men never marrying rose from \GssNevMOld\% to \GssNevMNew\%, and the pairing
+component of the differential on men's income rose from \GssPairMOld{} (\GssPairMOldCI) to \GssPairMNew{} (\GssPairMNewCI),
+a change of \GssPairMChange{} (\GssPairMChangeCI). For women the pairing component moved from \GssPairWOld{}
+(\GssPairWOldCI) to \GssPairWNew{} (\GssPairWNewCI), a change of \GssPairWChange{} (\GssPairWChangeCI): in the most recent
+cohort women with higher incomes are slightly more likely to have married, where the pooled estimate of
+Table~\ref{tab:gssthree} shows no effect. Event-history data likewise find that women's earnings became more important for
+marriage formation between the early and late baby-boom cohorts~\cite{sweeney2002}. Two cautions apply. The survey records
+marriage, not partnership, and most births outside marriage now occur to cohabiting couples, with a strong gradient by
+education~\cite{lundberg2016}; and men may report children born outside marriage less completely than women do. The
+cohort comparison was not planned in advance and should be read as description.
+
+\emph{Standing and sexual partners.} Among respondents aged 45--79 the rank correlation between income and the lifetime
+number of sexual partners of the other sex is \GssPartIncM{} (\GssPartIncMCI) in men and \GssPartIncW{} (\GssPartIncWCI)
+in women; for vocabulary it is \GssPartVocM{} and \GssPartVocW, for schooling \GssPartSchM{} and \GssPartSchW, and for
+occupational standing \GssPartPreM{} and \GssPartPreW{} (medians of \GssPartMedM{} partners for men and \GssPartMedW{} for
+women). In this population a man's standing predicts whether he has a partner and whether he marries, not how many
+partners he has; the small positive association in women is what later marriage would produce. Reported partner counts
+are known to be biased, differently in the two sexes~\cite{mitchell2019}.
+
+\emph{Marital history.} Table~\ref{tab:gsshist} and Fig.~\ref{fig:today}F give family size by marital history, relative
+to the mean of the respondent's sex and decade of birth. Against people in a first marriage, remarried men have \GssRemM{} (\GssRemMCI) and
+remarried women \GssRemW{} (\GssRemWCI), a sex difference of \GssRemDiff{} (\GssRemDiffCI). Men who divorced and did not
+remarry have \GssDivM{} (\GssDivMCI), and \GssDivChlM\% of them are childless against \GssIntChlM\% of men in a first
+marriage; for women the figures are \GssDivW{} (\GssDivWCI), \GssDivChlW\% and \GssIntChlW\%. The question about divorce
+was put only to the currently married and widowed, and history is not randomly assigned: childless marriages end more
+often. The asymmetry agrees with earlier findings that serial marriage raises men's reproductive success and not
+women's~\cite{jokela2010}.
+
+\emph{Who marries up.} Among currently married respondents the wife had more schooling than the husband in
+\GssHypMoreOld\% of marriages of people born 1920--1939 and less in \GssHypLessOld\%; for those born 1960--1979 the figures
+are \GssHypMoreNew\% and \GssHypLessNew\%, and for those born from 1980, \GssHypMoreYoung\% and \GssHypLessYoung\%
+(a difference of \GssHypDiffYoung{} points; \GssHypDiffYoungCI; Table~\ref{tab:gsshyp}). The correlation between spouses'
+schooling stayed near \GssHypR. In the oldest cohort, born 1900--1919, wives were also the more schooled spouse more often
+than not, so husbands' advantage in schooling belongs to the middle of the century and is not a constant that recently
+ended. The reversal follows the reversal of the sex gap in schooling and is seen
+worldwide~\cite{esteve2016}.
+
+\emph{Genetic evidence points the same way.} Polygenic scores for educational attainment are negatively associated with
+number of children in Iceland, the United States and the United Kingdom, largely through later
+childbearing~\cite{kong2017,beauchamp2016,hughjones2022,barban2016}; the association reverses once age at first birth is
+controlled~\cite{hughjones2022}. On the access side, people who carry rare variants that damage genes under strong selective
+constraint are more often childless, more so men than women, apparently because they are less likely to find a partner; the
+authors estimate that this accounts for about a fifth of the purifying selection against such variants, while explaining less
+than one percent of childlessness~\cite{gardner2022}.
+
+\emph{Limits.} These are phenotypic differentials. They predict genetic change only to the extent that the covariance
+between trait and fitness is genetic, which observational data cannot show~\cite{morrissey2010}. Income at ages 45--64 is partly
+a consequence of family formation, with opposite effects on mothers' and fathers' earnings~\cite{kleven2019}; schooling is
+mostly complete before childbearing and vocabulary is comparatively stable, which is why all four are shown. Respondents
+are survivors to at least 45, number of children is top-coded at eight, and everything is self-reported. The estimates
+describe one country. They carry no implication for the worth of any person or group and are no basis for policy.
+
+\subsection{Sexual behavior: partners are not offspring}
+
+Sexual selection theory expects reproductive success to rise with the number of mates, more steeply in
+males~\cite{jones2009}. In this population it does not rise at all. Among adults aged 45--79, mean family size is highest
+for those reporting exactly one lifetime partner of the other sex (\GssBatMOne{} children for men, \GssBatWOne{} for women) and
+falls with each further category, to \GssBatMTwenty{} and \GssBatWTwenty{} for twenty or more (Fig.~\ref{fig:today}C). The slope of
+relative fitness on relative partner number is \GssBatMGrad{} (\GssBatMGradCI) in men and \GssBatWGrad{} (\GssBatWGradCI) in women.
+Reported counts are imperfect: men report more partners than women (medians \GssBatMMed{} and \GssBatWMed{} here), a gap that
+estimation and social norms largely explain~\cite{mitchell2019}. The sign of the relation does not depend on such errors. With
+effective contraception, status still predicts men's mating opportunities but not their fertility~\cite{perusse1993}, and what
+predicts children is the time spent in a stable union: in a natural-fertility population, years married, not number of
+partners, carried the relation between mating and reproductive success~\cite{borgerhoffmulder2019}.
+
+Access, by contrast, has been tightening. At ages 22--34 the share reporting no sexual partner in the past year rose from
+\GssPlMOld\% to \GssPlMNew\% among men and from \GssPlWOld\% to \GssPlWNew\% among women between 1989--2002 and 2016--2024
+(Fig.~\ref{fig:today}D). Among men it is graded by income: \GssPlMLo\% in the lowest third against \GssPlMHi\% in the highest in the
+latest period, and \GssPlMNone\% among men with no earnings. An analysis of the same survey for 2000--2018 found the rise
+concentrated among unmarried men and associated with low income and with part-time or no employment~\cite{ueda2020}.
+
+\subsection{Eight claims about present-day mate choice, checked}
+
+Table~\ref{tab:audittoday} continues the audit of Table~\ref{tab:audit} for claims about the present.
+
+\begin{table*}[t]
+\caption{Eight common claims about present-day mate choice and selection, checked.}\label{tab:audittoday}
+\scriptsize
+\begin{tabularx}{\textwidth}{@{}P{0.028\textwidth}P{0.20\textwidth}P{0.10\textwidth}L@{}}
+\toprule
+ & Claim & Verdict & Evidence\\
+\midrule
+N11 & What people say they want is what they choose. & Weak guide &
+Stated preferences did not predict speed-dating choices~\cite{todd2007}; attractiveness and earning prospects predict
+evaluations about equally in both sexes whatever people state~\cite{eastwick2014}; pair-specific attraction is not predictable
+from traits and preferences~\cite{joel2017}. Against this, preferences recorded while single predicted later partners'
+characteristics in one prospective study~\cite{gerlach2019}.\\
+\addlinespace
+N12 & Women choose on status; men choose on looks. & Half right &
+The difference in stated priorities holds across cultures~\cite{buss1989,walter2020,li2002}. In live evaluation both sexes
+respond mainly to attractiveness~\cite{eastwick2014,egebark2021}. Where the sexes differ is in outcomes: income raises men's chances
+of marriage and fatherhood and lowers women's chances of motherhood (Table~\ref{tab:gss})~\cite{nettle2008,hopcroft2021}, and
+education preferences in a field experiment had opposite signs~\cite{egebark2021}.\\
+\addlinespace
+N13 & Intelligence is attractive. & Perceived, not measured &
+Measured intelligence can be detected from videos and in live interaction but does not raise attractiveness; perceived
+intelligence and funniness do~\cite{driebe2021}. Humor ability tracks intelligence and predicts mating
+success~\cite{greengross2011}. Men did not value women's intelligence above their own~\cite{fisman2006}. General capacity reaches
+choice through performance and standing more than through direct attraction.\\
+\addlinespace
+N14 & Women are the choosy sex. & Conditional &
+Women are more selective in most settings, more so with more candidates~\cite{fisman2006}; the difference vanished when women
+approached and men sat~\cite{finkel2009}. Human mating does not follow one universal pattern of sex roles~\cite{brown2009}, both
+sexes choose~\cite{stewartwilliams2013}, and in most small-scale societies kin choose too~\cite{walker2011}.\\
+\addlinespace
+N15 & Women's preferences shift toward masculine men when fertile. & Not supported &
+A meta-analysis of 58 reports was largely nonsupportive, with effects confined to published studies using imprecise
+definitions of the fertile phase~\cite{wood2014}; a large longitudinal study with hormone assays found no relation between
+hormonal status and preference for facial masculinity~\cite{jones2018}.\\
+\addlinespace
+N16 & Masculine faces, deep voices and tall stature mark the men who reproduce most. & Mostly not &
+Across 96 studies, bodily strength and muscularity were the only consistent predictors of both mating ($r=+0.122$) and reproduction ($r=+\PboLidborgBodyRepR$); voice
+pitch, testosterone and male height ($r=+\PboLidborgHeightMatR$ for mating across \PboLidborgHeightMatK{} effects, $r=+\PboLidborgHeightRepR$ for reproduction across \PboLidborgHeightRepK{} effects) predicted mating only, with male stature showing a lower-tail floor, $6'0''$ self-report staging and stabilizing fertility~\cite{lidborg2022,stulp2012,whyte2021}, while facial masculinity and MHC dissimilarity~\cite{havlicek2020,winternitz2017} predicted neither.\\
+\addlinespace
+N17 & For men, more partners mean more offspring. & Not now &
+Family size peaks at one lifetime partner in both sexes and declines thereafter (Fig.~\ref{fig:today}C). Status predicts men's
+mating opportunities but not fertility under contraception~\cite{perusse1993}. Men with three or more successive spouses had 19\%
+more children than men with one, with no such effect in women~\cite{jokela2010}: unions, not partners, are what count.\\
+\addlinespace
+N18 & Selection on humans has stopped; or, intelligence is being bred out. & Neither &
+Selection continues on many traits~\cite{byars2010,sanjak2018,gardner2022,akbari2026}. On education-linked variants it is negative
+and slow, about 0.01 standard units per decade in Iceland~\cite{kong2017}, too slow to account for more than a small part of
+observed change~\cite{beauchamp2016}. Test-score trends in both directions arise within families and are
+environmental~\cite{bratsberg2018}; brain volumes rose across twentieth-century birth cohorts~\cite{decarli2024}.\\
+\bottomrule
+\end{tabularx}
+\end{table*}

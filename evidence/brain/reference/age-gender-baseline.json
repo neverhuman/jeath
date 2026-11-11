@@ -1,0 +1,685 @@
+{
+  "architecture": "x86_64",
+  "cohort_fingerprints": {
+    "test": "15001c67512640d2a95bbbe418d23ae472cc0c802c025dd115bea072ad1bd7fa",
+    "train": "b9435c35451c4b32e56df55022125acd445e316e1cc731000b982f5767d0ee4a",
+    "validation": "f70aa0c6fdeee93b2a377b11969171d70761e4899e63aebce1b3c9ea36c1e36b"
+  },
+  "eligibility": {
+    "age_bins": "Same18-24,25-34,35-44,45-54,55+ as frozen H-wave metrics; benchmark observedages18-99 differ from main adultHON18-79",
+    "ages": [
+      18,
+      99
+    ],
+    "duplicate_groups": 10000,
+    "duplicate_groups_disjoint_across_splits": true,
+    "finite_in_range_beauty_scores": true,
+    "label_status": "Inherited frozen H-wave manifest, not freshly joined canonical label status; manifest numeric fields verified only",
+    "minimum_votes": 20,
+    "numeric_age_gender_missing_n": 0,
+    "profiles": 10000
+  },
+  "fitted_parameters": {
+    "Female": {
+      "basis_means_train_only": [
+        0.15678419608670818,
+        0.012109165579226575,
+        0.005851936632966396,
+        0.0018725268198861987,
+        0.00046837616767738137
+      ],
+      "basis_scales_train_only": [
+        0.11372674175633464,
+        0.03449997642242414,
+        0.023729082014769882,
+        0.012549670763662642,
+        0.005085271341333934
+      ],
+      "coefficients": [
+        5.489830037082816,
+        -0.02509803970316038,
+        -1.3701116793875092,
+        1.700539140969605,
+        -0.4492134803530848,
+        0.03476129210472778
+      ],
+      "test_age_extrapolation_n": 0,
+      "train_age_range": [
+        18.0,
+        99.0
+      ],
+      "train_n": 3236,
+      "train_target_mean": 5.489830037082817
+    },
+    "Male": {
+      "basis_means_train_only": [
+        0.18885800004095818,
+        0.015645901641411247,
+        0.0073911997459963985,
+        0.002160595395775367,
+        0.00045104317206805055
+      ],
+      "basis_scales_train_only": [
+        0.1131467382371801,
+        0.032814546684951436,
+        0.021707193261010515,
+        0.010584653568883008,
+        0.0039574101068693725
+      ],
+      "coefficients": [
+        6.004741813602015,
+        0.5068577091067978,
+        -3.9079894638809134,
+        3.671871783451864,
+        -0.06992833822310687,
+        -0.2434090388563766
+      ],
+      "test_age_extrapolation_n": 0,
+      "train_age_range": [
+        18.0,
+        97.0
+      ],
+      "train_n": 4764,
+      "train_target_mean": 6.004741813602015
+    }
+  },
+  "limitations": [
+    "All H-wave benchmark selection and old duplicate-audit coverage limits remain.",
+    "Matching supplied samples and targetvariance supports commonbenchmark metadata; full1000 frozen prediction vectors were not independently paired.",
+    "Age/gender baseline predicts rating variation associated with recorded context; differences from visual models do not identify causal appearance effects.",
+    "Algorithms and tuning differ across benchmark waves; this is a diagnostic comparison, not a controlled input ablation.",
+    "No images, embeddings, pickle files, tensors or model caches loaded; no remote file writes."
+  ],
+  "manifest_stat_unchanged": true,
+  "matching_frozen_wave_metrics": {
+    "H1": {
+      "full_prediction_pairing_available": false,
+      "implied_test_target_variance": 0.3511436479000001,
+      "sampled_metadata_matches": true,
+      "sampled_rows_checked": 200,
+      "saved_profile_test": {
+        "beauty_mae": 0.4830762201309204,
+        "beauty_rmse": 0.6082186375093139,
+        "n": 1000,
+        "r2": -0.05350022199187321,
+        "spearman_r": 0.2344295891068515
+      },
+      "target_variance_match": true,
+      "test_n_match": true
+    },
+    "H10": {
+      "full_prediction_pairing_available": false,
+      "implied_test_target_variance": 0.35114364789999997,
+      "sampled_metadata_matches": true,
+      "sampled_rows_checked": 200,
+      "saved_profile_test": {
+        "beauty_mae": 0.3446541779899597,
+        "beauty_rmse": 0.4662920057476864,
+        "n": 1000,
+        "r2": 0.3807997498330926,
+        "spearman_r": 0.6334030338991953
+      },
+      "target_variance_match": true,
+      "test_n_match": true
+    },
+    "H20": {
+      "full_prediction_pairing_available": false,
+      "implied_test_target_variance": 0.3511436478999999,
+      "sampled_metadata_matches": true,
+      "sampled_rows_checked": 200,
+      "saved_profile_test": {
+        "beauty_mae": 0.33620513790130613,
+        "beauty_rmse": 0.4540643821647112,
+        "n": 1000,
+        "r2": 0.4128486607015711,
+        "spearman_r": 0.6621234372556748
+      },
+      "target_variance_match": true,
+      "test_n_match": true
+    },
+    "H7": {
+      "full_prediction_pairing_available": false,
+      "implied_test_target_variance": 0.35114364789999997,
+      "sampled_metadata_matches": true,
+      "sampled_rows_checked": 200,
+      "saved_profile_test": {
+        "beauty_mae": 0.368331090145111,
+        "beauty_rmse": 0.48820752140873247,
+        "n": 1000,
+        "r2": 0.32122769303821996,
+        "spearman_r": 0.5728044059882103
+      },
+      "target_variance_match": true,
+      "test_n_match": true
+    },
+    "H8": {
+      "full_prediction_pairing_available": false,
+      "implied_test_target_variance": 0.3511436478999999,
+      "sampled_metadata_matches": true,
+      "sampled_rows_checked": 200,
+      "saved_profile_test": {
+        "beauty_mae": 0.3664009150886536,
+        "beauty_rmse": 0.48755366443671005,
+        "n": 1000,
+        "r2": 0.3230446367824952,
+        "spearman_r": 0.5803669777084981
+      },
+      "target_variance_match": true,
+      "test_n_match": true
+    }
+  },
+  "models": {
+    "age_gender_spline": {
+      "test_by_age_band": {
+        "18-24": {
+          "beauty_mae": 0.49889445468251203,
+          "beauty_rmse": 0.6284984869606187,
+          "bias": -0.04436588537271538,
+          "n": 197,
+          "pearson_r": 0.28288021369712,
+          "prediction_range": [
+            5.6180683201412664,
+            6.094929876276071
+          ],
+          "r2": 0.07362348914419958,
+          "spearman_r": 0.3162129963014742,
+          "target_mean": 5.84507614213198,
+          "target_variance": 0.42640367440542143
+        },
+        "25-34": {
+          "beauty_mae": 0.4149768003140659,
+          "beauty_rmse": 0.5169211454815877,
+          "bias": -0.028161073700379645,
+          "n": 479,
+          "pearson_r": 0.43574341714267745,
+          "prediction_range": [
+            5.415286601266807,
+            6.153165067968234
+          ],
+          "r2": 0.18566527432150182,
+          "spearman_r": 0.41954703772228874,
+          "target_mean": 5.967244258872652,
+          "target_variance": 0.328129775410672
+        },
+        "35-44": {
+          "beauty_mae": 0.3794271390537658,
+          "beauty_rmse": 0.4689204322180761,
+          "bias": 0.005901790943089905,
+          "n": 212,
+          "pearson_r": 0.43307542377926567,
+          "prediction_range": [
+            5.228862872816834,
+            6.0167504769703575
+          ],
+          "r2": 0.17215966946179306,
+          "spearman_r": 0.4473570095657156,
+          "target_mean": 5.693018867924529,
+          "target_variance": 0.26561447134211463
+        },
+        "45-54": {
+          "beauty_mae": 0.3686490430366287,
+          "beauty_rmse": 0.5006072509090534,
+          "bias": -0.022618342513742024,
+          "n": 79,
+          "pearson_r": 0.38434350585454274,
+          "prediction_range": [
+            5.118788333449346,
+            5.705646401817884
+          ],
+          "r2": 0.14203127380947955,
+          "spearman_r": 0.294570243507957,
+          "target_mean": 5.5236708860759505,
+          "target_variance": 0.2920941195321262
+        },
+        "55+": {
+          "beauty_mae": 0.304866065347318,
+          "beauty_rmse": 0.4027861925767968,
+          "bias": 0.01161582766224173,
+          "n": 33,
+          "pearson_r": 0.5210511938451028,
+          "prediction_range": [
+            5.0667971723275205,
+            6.2639423433425865
+          ],
+          "r2": 0.2431724769286837,
+          "spearman_r": 0.39478215254429555,
+          "target_mean": 5.524545454545454,
+          "target_variance": 0.21436418732782367
+        }
+      },
+      "test_by_gender": {
+        "Female": {
+          "beauty_mae": 0.4447904170773231,
+          "beauty_rmse": 0.5533195808669786,
+          "bias": -0.06737403087518326,
+          "n": 383,
+          "pearson_r": 0.2651806159752554,
+          "prediction_range": [
+            5.0667971723275205,
+            5.649774008565538
+          ],
+          "r2": 0.05594375117995487,
+          "spearman_r": 0.27078156536771136,
+          "target_mean": 5.557284595300262,
+          "target_variance": 0.32430542031099807
+        },
+        "Male": {
+          "beauty_mae": 0.39922815756569074,
+          "beauty_rmse": 0.5097380417077707,
+          "bias": 0.005547282072109924,
+          "n": 617,
+          "pearson_r": 0.32361998303982903,
+          "prediction_range": [
+            5.651931289175509,
+            6.2639423433425865
+          ],
+          "r2": 0.10399747969316175,
+          "spearman_r": 0.34115312677778376,
+          "target_mean": 6.008022690437601,
+          "target_variance": 0.2899912280102656
+        }
+      },
+      "test_metrics": {
+        "beauty_mae": 0.41667850295864595,
+        "beauty_rmse": 0.5268559019702188,
+        "bias": -0.022381580786703367,
+        "n": 1000,
+        "pearson_r": 0.4616622423055875,
+        "prediction_range": [
+          5.0667971723275205,
+          6.2639423433425865
+        ],
+        "r2": 0.20950544570322882,
+        "spearman_r": 0.48195050319244126,
+        "target_mean": 5.83539,
+        "target_variance": 0.35114364789999997
+      },
+      "train_metrics": {
+        "beauty_mae": 0.42196581469768657,
+        "beauty_rmse": 0.5324380222489792,
+        "bias": -8.881173574337709e-15,
+        "n": 8000,
+        "pearson_r": 0.4909586002221942,
+        "prediction_range": [
+          5.0667971723275205,
+          6.2639423433425865
+        ],
+        "r2": 0.2410403471321364,
+        "spearman_r": 0.5002569847192426,
+        "target_mean": 5.79646,
+        "target_variance": 0.3735247934
+      },
+      "validation_metrics": {
+        "beauty_mae": 0.4325723582353101,
+        "beauty_rmse": 0.5424219008209269,
+        "bias": 0.02917947957566539,
+        "n": 1000,
+        "pearson_r": 0.45773020720907664,
+        "prediction_range": [
+          5.0669517063553835,
+          6.153165067968234
+        ],
+        "r2": 0.2063422652578537,
+        "spearman_r": 0.45291390707075035,
+        "target_mean": 5.76983,
+        "target_variance": 0.3707158711
+      }
+    },
+    "gender_only": {
+      "test_by_age_band": {
+        "18-24": {
+          "beauty_mae": 0.5283186271544817,
+          "beauty_rmse": 0.6475978098521736,
+          "bias": -0.14875864136887498,
+          "n": 197,
+          "pearson_r": 0.28167812184385715,
+          "prediction_range": [
+            5.489830037082817,
+            6.004741813602015
+          ],
+          "r2": 0.016465034195306205,
+          "spearman_r": 0.3263894520286581,
+          "target_mean": 5.84507614213198,
+          "target_variance": 0.42640367440542143
+        },
+        "25-34": {
+          "beauty_mae": 0.4460528403981214,
+          "beauty_rmse": 0.5316051285119168,
+          "bias": -0.12912316627371692,
+          "n": 479,
+          "pearson_r": 0.4356404521176273,
+          "prediction_range": [
+            5.489830037082817,
+            6.004741813602015
+          ],
+          "r2": 0.1387431624988088,
+          "spearman_r": 0.4590148318000319,
+          "target_mean": 5.967244258872652,
+          "target_variance": 0.328129775410672
+        },
+        "35-44": {
+          "beauty_mae": 0.37123086921237824,
+          "beauty_rmse": 0.49190101529143077,
+          "bias": 0.13441841885719702,
+          "n": 212,
+          "pearson_r": 0.4027793287401305,
+          "prediction_range": [
+            5.489830037082817,
+            6.004741813602015
+          ],
+          "r2": 0.08903077598853992,
+          "spearman_r": 0.41026501231450685,
+          "target_mean": 5.693018867924529,
+          "target_variance": 0.26561447134211463
+        },
+        "45-54": {
+          "beauty_mae": 0.41532802730197793,
+          "beauty_rmse": 0.583561743215256,
+          "bias": 0.3050884216270994,
+          "n": 79,
+          "pearson_r": 0.3949998414401808,
+          "prediction_range": [
+            5.489830037082817,
+            6.004741813602015
+          ],
+          "r2": -0.16587183846737252,
+          "spearman_r": 0.47113935966704895,
+          "target_mean": 5.5236708860759505,
+          "target_variance": 0.2920941195321262
+        },
+        "55+": {
+          "beauty_mae": 0.4151341689351031,
+          "beauty_rmse": 0.5133732985062638,
+          "bias": 0.3241624873840765,
+          "n": 33,
+          "pearson_r": 0.5106274847429344,
+          "prediction_range": [
+            5.489830037082817,
+            6.004741813602015
+          ],
+          "r2": -0.22945976613227548,
+          "spearman_r": 0.5645192518491875,
+          "target_mean": 5.524545454545454,
+          "target_variance": 0.21436418732782367
+        }
+      },
+      "test_by_gender": {
+        "Female": {
+          "beauty_mae": 0.45812372719438965,
+          "beauty_rmse": 0.573459272952586,
+          "bias": -0.0674545582174439,
+          "n": 383,
+          "pearson_r": null,
+          "prediction_range": [
+            5.489830037082817,
+            5.489830037082817
+          ],
+          "r2": -0.0140303465170184,
+          "spearman_r": null,
+          "target_mean": 5.557284595300262,
+          "target_variance": 0.32430542031099807
+        },
+        "Male": {
+          "beauty_mae": 0.43352994909144354,
+          "beauty_rmse": 0.5385183303872543,
+          "bias": -0.003280876835586092,
+          "n": 617,
+          "pearson_r": null,
+          "prediction_range": [
+            6.004741813602015,
+            6.004741813602015
+          ],
+          "r2": -3.7118891092147166e-05,
+          "spearman_r": null,
+          "target_mean": 6.008022690437601,
+          "target_variance": 0.2899912280102656
+        }
+      },
+      "test_metrics": {
+        "beauty_mae": 0.44294936610487184,
+        "beauty_rmse": 0.5521620234290303,
+        "bias": -0.02785939680483763,
+        "n": 1000,
+        "pearson_r": 0.3697633184328197,
+        "prediction_range": [
+          5.489830037082817,
+          6.004741813602015
+        ],
+        "r2": 0.1317430859405242,
+        "spearman_r": 0.3839774245647233,
+        "target_mean": 5.83539,
+        "target_variance": 0.35114364789999997
+      },
+      "train_metrics": {
+        "beauty_mae": 0.44707984458337097,
+        "beauty_rmse": 0.5564704382255097,
+        "bias": -3.802513859341161e-16,
+        "n": 8000,
+        "pearson_r": 0.41349784779485826,
+        "prediction_range": [
+          5.489830037082817,
+          6.004741813602015
+        ],
+        "r2": 0.1709804701309804,
+        "spearman_r": 0.4228277211029168,
+        "target_mean": 5.79646,
+        "target_variance": 0.3735247934
+      },
+      "validation_metrics": {
+        "beauty_mae": 0.45728678604677236,
+        "beauty_rmse": 0.5623573514632787,
+        "bias": 0.025857632335220832,
+        "n": 1000,
+        "pearson_r": 0.38672066279883355,
+        "prediction_range": [
+          5.489830037082817,
+          6.004741813602015
+        ],
+        "r2": 0.14693215101252877,
+        "spearman_r": 0.39057351078748953,
+        "target_mean": 5.76983,
+        "target_variance": 0.3707158711
+      }
+    },
+    "train_mean": {
+      "test_by_age_band": {
+        "18-24": {
+          "beauty_mae": 0.5268703553299493,
+          "beauty_rmse": 0.6548031793456857,
+          "bias": -0.04861614213198001,
+          "n": 197,
+          "pearson_r": null,
+          "prediction_range": [
+            5.79646,
+            5.79646
+          ],
+          "r2": -0.00554293834144981,
+          "spearman_r": null,
+          "target_mean": 5.84507614213198,
+          "target_variance": 0.42640367440542143
+        },
+        "25-34": {
+          "beauty_mae": 0.5036793736951983,
+          "beauty_rmse": 0.5977432881173597,
+          "bias": -0.17078425887265164,
+          "n": 479,
+          "pearson_r": null,
+          "prediction_range": [
+            5.79646,
+            5.79646
+          ],
+          "r2": -0.0888894128616533,
+          "spearman_r": null,
+          "target_mean": 5.967244258872652,
+          "target_variance": 0.328129775410672
+        },
+        "35-44": {
+          "beauty_mae": 0.40775169811320755,
+          "beauty_rmse": 0.5256562937387602,
+          "bias": 0.10344113207547138,
+          "n": 212,
+          "pearson_r": null,
+          "prediction_range": [
+            5.79646,
+            5.79646
+          ],
+          "r2": -0.040284204964395,
+          "spearman_r": null,
+          "target_mean": 5.693018867924529,
+          "target_variance": 0.26561447134211463
+        },
+        "45-54": {
+          "beauty_mae": 0.45899063291139225,
+          "beauty_rmse": 0.6053990586444571,
+          "bias": 0.27278911392405036,
+          "n": 79,
+          "pearson_r": null,
+          "prediction_range": [
+            5.79646,
+            5.79646
+          ],
+          "r2": -0.25476000952933964,
+          "spearman_r": null,
+          "target_mean": 5.5236708860759505,
+          "target_variance": 0.2920941195321262
+        },
+        "55+": {
+          "beauty_mae": 0.4477848484848484,
+          "beauty_rmse": 0.5369373402526366,
+          "bias": 0.27191454545454524,
+          "n": 33,
+          "pearson_r": null,
+          "prediction_range": [
+            5.79646,
+            5.79646
+          ],
+          "r2": -0.3449154495040745,
+          "spearman_r": null,
+          "target_mean": 5.524545454545454,
+          "target_variance": 0.21436418732782367
+        }
+      },
+      "test_by_gender": {
+        "Female": {
+          "beauty_mae": 0.4670809921671017,
+          "beauty_rmse": 0.617665196141309,
+          "bias": 0.23917540469973858,
+          "n": 383,
+          "pearson_r": null,
+          "prediction_range": [
+            5.79646,
+            5.79646
+          ],
+          "r2": -0.17639197691616126,
+          "spearman_r": null,
+          "target_mean": 5.557284595300262,
+          "target_variance": 0.32430542031099807
+        },
+        "Male": {
+          "beauty_mae": 0.49213027552674243,
+          "beauty_rmse": 0.5785758377217821,
+          "bias": -0.21156269043760156,
+          "n": 617,
+          "pearson_r": null,
+          "prediction_range": [
+            5.79646,
+            5.79646
+          ],
+          "r2": -0.1543452617249923,
+          "spearman_r": null,
+          "target_mean": 6.008022690437601,
+          "target_variance": 0.2899912280102656
+        }
+      },
+      "test_metrics": {
+        "beauty_mae": 0.48253640000000003,
+        "beauty_rmse": 0.5938511537414068,
+        "bias": -0.0389300000000003,
+        "n": 1000,
+        "pearson_r": null,
+        "prediction_range": [
+          5.79646,
+          5.79646
+        ],
+        "r2": -0.004316025390360023,
+        "spearman_r": null,
+        "target_mean": 5.83539,
+        "target_variance": 0.35114364789999997
+      },
+      "train_metrics": {
+        "beauty_mae": 0.48950663000000005,
+        "beauty_rmse": 0.611166747622938,
+        "bias": -2.873257187729905e-16,
+        "n": 8000,
+        "pearson_r": null,
+        "prediction_range": [
+          5.79646,
+          5.79646
+        ],
+        "r2": 0.0,
+        "spearman_r": null,
+        "target_mean": 5.79646,
+        "target_variance": 0.3735247934
+      },
+      "validation_metrics": {
+        "beauty_mae": 0.49249532,
+        "beauty_rmse": 0.6094464931394715,
+        "bias": 0.02662999999999973,
+        "n": 1000,
+        "pearson_r": null,
+        "prediction_range": [
+          5.79646,
+          5.79646
+        ],
+        "r2": -0.0019129391409540286,
+        "spearman_r": null,
+        "target_mean": 5.76983,
+        "target_variance": 0.3707158711
+      }
+    }
+  },
+  "protocol": {
+    "boundary_knots": [
+      18,
+      100
+    ],
+    "interior_knots": [
+      25,
+      35,
+      45,
+      55
+    ],
+    "missingness": "No imputation needed: all frozen manifest ages, genders and beauty scores valid",
+    "model": "separate natural cubic age OLS in each recorded-gender group, equivalent to full age-basis by gender interaction",
+    "outcome": "received supplied beauty score0-10, not an independent criterion of attractiveness or contribution",
+    "r2": "1-SSE/SST relative to test-target mean, not squared Spearman",
+    "status": "exploratory supplement; specified after inspecting H-wave progression",
+    "test": "1000fixed test profiles; one prediction per profile; no repeated-image weighting",
+    "training": "8000 fixed train profiles, equal profile weights, original beauty_score target; fit means/scales and coefficients on train only",
+    "uncertainty": "Point metrics only; full matching frozen H-wave prediction vectors absent, so no paired CI or significance claim",
+    "validation": "1000fixed validation profiles diagnostic only, no tuning or model selection"
+  },
+  "remote_script_sha256": "fb23d606caf048799bf8b5d099b70e051f2d40add768797f4b1b830d73184164",
+  "snapshot_utc": "2026-11-11T14:03:37Z",
+  "source_host": "xbabe3",
+  "source_sha256": {
+    "/tmp/hon_exp_scratch_v2/manifest.json": "6c5733bb6eb3dad0caf1476243c5b42744fba474840f5a8b29cea54003974205",
+    "experiment/H1/metrics.json": "31b445a762d0fa6053490c737c389e6f4248c490afe3a51f9eaf3320e3026221",
+    "experiment/H1/sample_predictions.csv": "ef8033dcdf3733435f8dae43534624bbc45ff655a7609039a21dd09cbe5a1f06",
+    "experiment/H10/metrics.json": "70ea2d0b2a638cd65acb86fe5a711109264a4d75fb5c26c3be02c2cb430db841",
+    "experiment/H10/sample_predictions.csv": "cae86d73232198f08764dff6f0af2f1bfa9198edb7e772e4a80ab3900a8dc6c0",
+    "experiment/H20/metrics.json": "4d07dc7addd242d53b8d4cd99b0fd437d7f2bf036bcf863aaf206f4832ef475a",
+    "experiment/H20/sample_predictions.csv": "9fb9e74660a2c3e208b76988ef72ac5bad691c970190ecaca169b7860697e5cf",
+    "experiment/H7/metrics.json": "a49a112d6e445feef4d08c1fff80806480f02270d65743413b35d688f4ee3c43",
+    "experiment/H7/sample_predictions.csv": "af839b182756ce1bb204ec2bb106851d63ca06841cd0a38288048eda1ecab6dd",
+    "experiment/H8/metrics.json": "46803ac93fc8ceef366b8ab13025c04fc68cd6408624b54c764cd83e03fce665",
+    "experiment/H8/sample_predictions.csv": "3605c445dc660091797818fde3b9fb3bfe07a2813f04ac13efab8e1d479eae43",
+    "experiment/lib/dataset.py": "2d76701cd320303f08269c3dd7767dd56c7405033823fb0a8fe7ecf89cba5f01",
+    "experiment/lib/waves.py": "5d47ad57250c81fb684581cf680394291df068786a553669f5fb8aa9e60e3d2a"
+  },
+  "split_counts": {
+    "test": 1000,
+    "train": 8000,
+    "validation": 1000
+  }
+}
