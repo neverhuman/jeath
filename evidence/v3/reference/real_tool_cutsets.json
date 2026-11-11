@@ -1,0 +1,4488 @@
+{
+  "schema_version": 4,
+  "prediction_tested": "P1",
+  "condition_tested": "C1_and_C2",
+  "evidence_tier": "tier3_real_tool_and_kernel_confinement_cutsets",
+  "seed": 20261110,
+  "discovery_trials_per_graph": 64,
+  "observed_reports_per_trial": 200,
+  "boltzmann_beta": 0.35,
+  "budget_grid": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    8,
+    12,
+    16,
+    32
+  ],
+  "agentdojo_p1_verified": true,
+  "linux_waist_confinement_verified": true,
+  "graphs": [
+    {
+      "graph_id": "agentdojo_banking_v1_2_2",
+      "domain": "agentdojo_v1_2_2",
+      "source_artifact": "agentdojo v1.2.2 banking (11 tools, 4 injection vectors, 9 injection tasks)",
+      "total_vertices_v": 28,
+      "internal_vertices": 26,
+      "total_edges_e": 109,
+      "active_edges_e": 109,
+      "attack_route_count_p": 604,
+      "menger_pathway_width_w": 2,
+      "unweighted_min_cut_vertices": [
+        "vec:injection_incoming_transaction",
+        "ingest:read_file"
+      ],
+      "sink_waist_width": 4,
+      "shortest_path_internal_len_l": 4,
+      "longest_path_internal_len": 5,
+      "weighted_min_cut_cost_tau_b": 4,
+      "weighted_min_cut_is_infinite": false,
+      "weighted_min_cut_size": 4,
+      "weighted_min_cut_vertices": [
+        "sink:schedule_transaction",
+        "sink:send_money",
+        "sink:update_password",
+        "sink:update_scheduled_transaction"
+      ],
+      "remaining_paths_after_weighted_cut": 0,
+      "cutset_severs_all_routes": true,
+      "width_to_routes_ratio": 0.0033112582781456954,
+      "interdiction_curve": [
+        {
+          "budget": 0,
+          "cutset_gate_blocked_fraction": 0.0,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 1,
+          "cutset_gate_blocked_fraction": 0.25,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0016556291390728006,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 2,
+          "cutset_gate_blocked_fraction": 0.5,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0033112582781457123,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 3,
+          "cutset_gate_blocked_fraction": 0.75,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.004966887417218513,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 4,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0066225165562914245,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 5,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.008278145695364225,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 8,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.008692052980132448,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.013245033112582738,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 12,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.7350993377483447,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.019867549668874142,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 16,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.7350993377483447,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.02649006622516563,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 32,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.9919288079470199,
+          "patch_specific_step_severed_share": 0.953125,
+          "patch_route_signature_blocked_fraction": 0.05298013245033126,
+          "patch_route_signature_severed_share": 0.0
+        }
+      ],
+      "vertices": [
+        {
+          "index": 0,
+          "label": "S",
+          "stage": "source",
+          "cost": null
+        },
+        {
+          "index": 1,
+          "label": "vec:injection_address_change",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 2,
+          "label": "vec:injection_bill_text",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 3,
+          "label": "vec:injection_incoming_transaction",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 4,
+          "label": "vec:injection_landloard_notice",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 5,
+          "label": "ingest:get_most_recent_transactions",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 6,
+          "label": "ingest:read_file",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 7,
+          "label": "recon1:get_balance",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 8,
+          "label": "recon1:get_iban",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 9,
+          "label": "recon1:get_most_recent_transactions",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 10,
+          "label": "recon1:get_scheduled_transactions",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 11,
+          "label": "recon1:get_user_info",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 12,
+          "label": "recon1:read_file",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 13,
+          "label": "recon2:get_balance",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 14,
+          "label": "recon2:get_iban",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 15,
+          "label": "recon2:get_most_recent_transactions",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 16,
+          "label": "recon2:get_scheduled_transactions",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 17,
+          "label": "recon2:get_user_info",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 18,
+          "label": "recon2:read_file",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 19,
+          "label": "stage:update_user_info",
+          "stage": "state_staging_tool",
+          "cost": 4
+        },
+        {
+          "index": 20,
+          "label": "synth:direct_injection_args",
+          "stage": "llm_arg_synthesis",
+          "cost": null
+        },
+        {
+          "index": 21,
+          "label": "synth:harvested_pii_interpolation",
+          "stage": "llm_arg_synthesis",
+          "cost": null
+        },
+        {
+          "index": 22,
+          "label": "synth:staged_or_split_args",
+          "stage": "llm_arg_synthesis",
+          "cost": null
+        },
+        {
+          "index": 23,
+          "label": "sink:schedule_transaction",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 24,
+          "label": "sink:send_money",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 25,
+          "label": "sink:update_password",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 26,
+          "label": "sink:update_scheduled_transaction",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 27,
+          "label": "T",
+          "stage": "terminal",
+          "cost": null
+        }
+      ],
+      "edges": [
+        [
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          6
+        ],
+        [
+          6
+        ],
+        [
+          5
+        ],
+        [
+          6
+        ],
+        [
+          7,
+          8,
+          10,
+          11,
+          12,
+          20
+        ],
+        [
+          7,
+          8,
+          9,
+          10,
+          11,
+          20
+        ],
+        [
+          15,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22
+        ],
+        [
+          15,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22
+        ],
+        [
+          17,
+          18,
+          19,
+          20,
+          21,
+          22
+        ],
+        [
+          15,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22
+        ],
+        [
+          13,
+          14,
+          15,
+          16,
+          18,
+          19,
+          20,
+          21,
+          22
+        ],
+        [
+          13,
+          14,
+          15,
+          16,
+          17,
+          19,
+          20,
+          21,
+          22
+        ],
+        [
+          23,
+          24,
+          25,
+          26
+        ],
+        [
+          23,
+          24,
+          25,
+          26
+        ],
+        [
+          23,
+          24,
+          25,
+          26
+        ],
+        [
+          23,
+          24,
+          25,
+          26
+        ],
+        [
+          23,
+          24,
+          25,
+          26
+        ],
+        [
+          23,
+          24,
+          25,
+          26
+        ],
+        [
+          23,
+          24,
+          25,
+          26
+        ],
+        [
+          23,
+          24,
+          25,
+          26
+        ],
+        [
+          23,
+          24,
+          25,
+          26
+        ],
+        [
+          23,
+          24,
+          25,
+          26
+        ],
+        [
+          27
+        ],
+        [
+          27
+        ],
+        [
+          27
+        ],
+        [
+          27
+        ],
+        []
+      ],
+      "notes": "Unweighted Menger width w=2 sits at prose ingestion (get_most_recent_transactions, read_file, used by 16/16 benign tasks); utility-weighted cut tau_b=4 shifts to the 4 typed financial/auth sinks."
+    },
+    {
+      "graph_id": "agentdojo_workspace_v1_2_2",
+      "domain": "agentdojo_v1_2_2",
+      "source_artifact": "agentdojo v1.2.2 workspace (24 tools, 16 injection vectors, 14 injection tasks)",
+      "total_vertices_v": 68,
+      "internal_vertices": 66,
+      "total_edges_e": 537,
+      "active_edges_e": 537,
+      "attack_route_count_p": 46440,
+      "menger_pathway_width_w": 5,
+      "unweighted_min_cut_vertices": [
+        "sink:create_calendar_event",
+        "sink:delete_email",
+        "sink:delete_file",
+        "sink:send_email",
+        "sink:share_file"
+      ],
+      "sink_waist_width": 5,
+      "shortest_path_internal_len_l": 4,
+      "longest_path_internal_len": 5,
+      "weighted_min_cut_cost_tau_b": 5,
+      "weighted_min_cut_is_infinite": false,
+      "weighted_min_cut_size": 5,
+      "weighted_min_cut_vertices": [
+        "sink:create_calendar_event",
+        "sink:delete_email",
+        "sink:delete_file",
+        "sink:send_email",
+        "sink:share_file"
+      ],
+      "remaining_paths_after_weighted_cut": 0,
+      "cutset_severs_all_routes": true,
+      "width_to_routes_ratio": 0.00010766580534022394,
+      "interdiction_curve": [
+        {
+          "budget": 0,
+          "cutset_gate_blocked_fraction": 0.0,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 1,
+          "cutset_gate_blocked_fraction": 0.1999999999999998,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.000021533161068010287,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 2,
+          "cutset_gate_blocked_fraction": 0.3999999999999996,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.000043066322136131596,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 3,
+          "cutset_gate_blocked_fraction": 0.6000000000000008,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.00006459948320414188,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 4,
+          "cutset_gate_blocked_fraction": 0.7999999999999992,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.03765947997416018,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.00008613264427215217,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 5,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.03765947997416018,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.00010766580534027348,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 8,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.07255497685185183,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.00017226528854430434,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 12,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.13954497739018093,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.00025839793281656753,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 16,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.17437654769595184,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0003445305770887197,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 32,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.32595990794573654,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0006890611541774394,
+          "patch_route_signature_severed_share": 0.0
+        }
+      ],
+      "vertices": [
+        {
+          "index": 0,
+          "label": "S",
+          "stage": "source",
+          "cost": null
+        },
+        {
+          "index": 1,
+          "label": "vec:calendar_dinner_with_clients_injection",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 2,
+          "label": "vec:calendar_fake_deadline_description",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 3,
+          "label": "vec:calendar_introductory_meeting_injection",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 4,
+          "label": "vec:calendar_moving_event_reason_injection",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 5,
+          "label": "vec:calendar_networking_event_injection_email",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 6,
+          "label": "vec:calendar_project_kickoff_description",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 7,
+          "label": "vec:calendar_sports_and_yoga_class_injection",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 8,
+          "label": "vec:drive_feedback_injection",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 9,
+          "label": "vec:drive_keywords_stuffing_injection",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 10,
+          "label": "vec:drive_recipe_injection",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 11,
+          "label": "vec:drive_team_building_injection",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 12,
+          "label": "vec:email_events_follow_up_injection",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 13,
+          "label": "vec:email_events_injection",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 14,
+          "label": "vec:email_facebook_injection",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 15,
+          "label": "vec:email_hiking_injection",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 16,
+          "label": "vec:email_password_reset_injection",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 17,
+          "label": "ingest:get_day_calendar_events",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 18,
+          "label": "ingest:get_file_by_id",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 19,
+          "label": "ingest:get_received_emails",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 20,
+          "label": "ingest:get_unread_emails",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 21,
+          "label": "ingest:list_files",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 22,
+          "label": "ingest:search_calendar_events",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 23,
+          "label": "ingest:search_emails",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 24,
+          "label": "ingest:search_files",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 25,
+          "label": "ingest:search_files_by_filename",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 26,
+          "label": "recon1:get_current_day",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 27,
+          "label": "recon1:get_day_calendar_events",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 28,
+          "label": "recon1:get_draft_emails",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 29,
+          "label": "recon1:get_file_by_id",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 30,
+          "label": "recon1:get_received_emails",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 31,
+          "label": "recon1:get_sent_emails",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 32,
+          "label": "recon1:get_unread_emails",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 33,
+          "label": "recon1:list_files",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 34,
+          "label": "recon1:search_calendar_events",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 35,
+          "label": "recon1:search_contacts_by_email",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 36,
+          "label": "recon1:search_contacts_by_name",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 37,
+          "label": "recon1:search_emails",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 38,
+          "label": "recon1:search_files",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 39,
+          "label": "recon1:search_files_by_filename",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 40,
+          "label": "recon2:get_current_day",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 41,
+          "label": "recon2:get_day_calendar_events",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 42,
+          "label": "recon2:get_draft_emails",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 43,
+          "label": "recon2:get_file_by_id",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 44,
+          "label": "recon2:get_received_emails",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 45,
+          "label": "recon2:get_sent_emails",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 46,
+          "label": "recon2:get_unread_emails",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 47,
+          "label": "recon2:list_files",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 48,
+          "label": "recon2:search_calendar_events",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 49,
+          "label": "recon2:search_contacts_by_email",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 50,
+          "label": "recon2:search_contacts_by_name",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 51,
+          "label": "recon2:search_emails",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 52,
+          "label": "recon2:search_files",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 53,
+          "label": "recon2:search_files_by_filename",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 54,
+          "label": "stage:add_calendar_event_participants",
+          "stage": "state_staging_tool",
+          "cost": 4
+        },
+        {
+          "index": 55,
+          "label": "stage:append_to_file",
+          "stage": "state_staging_tool",
+          "cost": 4
+        },
+        {
+          "index": 56,
+          "label": "stage:cancel_calendar_event",
+          "stage": "state_staging_tool",
+          "cost": 4
+        },
+        {
+          "index": 57,
+          "label": "stage:create_file",
+          "stage": "state_staging_tool",
+          "cost": 4
+        },
+        {
+          "index": 58,
+          "label": "stage:reschedule_calendar_event",
+          "stage": "state_staging_tool",
+          "cost": 4
+        },
+        {
+          "index": 59,
+          "label": "synth:direct_injection_args",
+          "stage": "llm_arg_synthesis",
+          "cost": null
+        },
+        {
+          "index": 60,
+          "label": "synth:harvested_pii_interpolation",
+          "stage": "llm_arg_synthesis",
+          "cost": null
+        },
+        {
+          "index": 61,
+          "label": "synth:staged_or_split_args",
+          "stage": "llm_arg_synthesis",
+          "cost": null
+        },
+        {
+          "index": 62,
+          "label": "sink:create_calendar_event",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 63,
+          "label": "sink:delete_email",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 64,
+          "label": "sink:delete_file",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 65,
+          "label": "sink:send_email",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 66,
+          "label": "sink:share_file",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 67,
+          "label": "T",
+          "stage": "terminal",
+          "cost": null
+        }
+      ],
+      "edges": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        [
+          17,
+          22
+        ],
+        [
+          17,
+          22
+        ],
+        [
+          17,
+          22
+        ],
+        [
+          17,
+          22
+        ],
+        [
+          17,
+          22
+        ],
+        [
+          17,
+          22
+        ],
+        [
+          17,
+          22
+        ],
+        [
+          18,
+          21,
+          24,
+          25
+        ],
+        [
+          18,
+          21,
+          24,
+          25
+        ],
+        [
+          18,
+          21,
+          24,
+          25
+        ],
+        [
+          18,
+          21,
+          24,
+          25
+        ],
+        [
+          19,
+          23
+        ],
+        [
+          19,
+          20,
+          23
+        ],
+        [
+          19,
+          20,
+          23
+        ],
+        [
+          19,
+          23
+        ],
+        [
+          19,
+          23
+        ],
+        [
+          26,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          59
+        ],
+        [
+          26,
+          27,
+          28,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          59
+        ],
+        [
+          26,
+          27,
+          28,
+          29,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          59
+        ],
+        [
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          59
+        ],
+        [
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          59
+        ],
+        [
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          35,
+          36,
+          37,
+          38,
+          39,
+          59
+        ],
+        [
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          38,
+          39,
+          59
+        ],
+        [
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          39,
+          59
+        ],
+        [
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          59
+        ],
+        [
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        [
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        [
+          40,
+          41,
+          43,
+          47,
+          48,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        [
+          40,
+          41,
+          42,
+          44,
+          45,
+          46,
+          48,
+          49,
+          50,
+          51,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        [
+          40,
+          41,
+          43,
+          47,
+          48,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        [
+          40,
+          41,
+          43,
+          47,
+          48,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        [
+          40,
+          41,
+          43,
+          47,
+          48,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        [
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          48,
+          49,
+          50,
+          51,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        [
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        [
+          40,
+          41,
+          43,
+          47,
+          48,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        [
+          40,
+          41,
+          43,
+          47,
+          48,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        [
+          40,
+          41,
+          43,
+          47,
+          48,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        [
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          48,
+          49,
+          50,
+          51,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        [
+          40,
+          41,
+          42,
+          44,
+          45,
+          46,
+          48,
+          49,
+          50,
+          51,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          62,
+          63,
+          64,
+          65,
+          66
+        ],
+        [
+          67
+        ],
+        [
+          67
+        ],
+        [
+          67
+        ],
+        [
+          67
+        ],
+        [
+          67
+        ],
+        []
+      ],
+      "notes": "9 untrusted read tools across inbox/calendar/cloud_drive fan out into 46,440 cross-subsystem exfiltration & sabotage chains, while both w=5 and tau_b=5 sit at the 5 external/destructive sinks."
+    },
+    {
+      "graph_id": "agentdojo_travel_v1_2_2",
+      "domain": "agentdojo_v1_2_2",
+      "source_artifact": "agentdojo v1.2.2 travel (28 tools, 13 injection vectors, 7 injection tasks; 6 tool-effect + 1 prose-only)",
+      "total_vertices_v": 71,
+      "internal_vertices": 69,
+      "total_edges_e": 692,
+      "active_edges_e": 692,
+      "attack_route_count_p": 28970,
+      "menger_pathway_width_w": 3,
+      "unweighted_min_cut_vertices": [
+        "ingest:get_rating_reviews_for_car_rental",
+        "ingest:get_rating_reviews_for_hotels",
+        "ingest:get_rating_reviews_for_restaurants"
+      ],
+      "sink_waist_width": 5,
+      "shortest_path_internal_len_l": 4,
+      "longest_path_internal_len": 5,
+      "weighted_min_cut_cost_tau_b": 5,
+      "weighted_min_cut_is_infinite": false,
+      "weighted_min_cut_size": 5,
+      "weighted_min_cut_vertices": [
+        "sink:create_calendar_event",
+        "sink:reserve_car_rental",
+        "sink:reserve_hotel",
+        "sink:reserve_restaurant",
+        "sink:send_email"
+      ],
+      "remaining_paths_after_weighted_cut": 0,
+      "cutset_severs_all_routes": true,
+      "width_to_routes_ratio": 0.00010355540214014498,
+      "interdiction_curve": [
+        {
+          "budget": 0,
+          "cutset_gate_blocked_fraction": 0.0,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 1,
+          "cutset_gate_blocked_fraction": 0.1999999999999998,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.00003451846738000697,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 2,
+          "cutset_gate_blocked_fraction": 0.3999999999999996,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.00006903693476012496,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 3,
+          "cutset_gate_blocked_fraction": 0.6000000000000008,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.00010355540214013192,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 4,
+          "cutset_gate_blocked_fraction": 0.7999999999999992,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.03754692354159471,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0001380738695201389,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 5,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.03754692354159471,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.00017259233690025688,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 8,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.045523925612702756,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0002761477390403888,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 12,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.2718248403520883,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0004142216085605277,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 16,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.2895398256817398,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0005522954780807776,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 32,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.4703653564031757,
+          "patch_specific_step_severed_share": 0.03125,
+          "patch_route_signature_blocked_fraction": 0.0011045909561615552,
+          "patch_route_signature_severed_share": 0.0
+        }
+      ],
+      "vertices": [
+        {
+          "index": 0,
+          "label": "S",
+          "stage": "source",
+          "cost": null
+        },
+        {
+          "index": 1,
+          "label": "vec:injection_cars_0",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 2,
+          "label": "vec:injection_cars_1",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 3,
+          "label": "vec:injection_cars_2",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 4,
+          "label": "vec:injection_hotels_0",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 5,
+          "label": "vec:injection_hotels_1",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 6,
+          "label": "vec:injection_hotels_2",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 7,
+          "label": "vec:injection_hotels_3",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 8,
+          "label": "vec:injection_hotels_4",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 9,
+          "label": "vec:injection_hotels_5",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 10,
+          "label": "vec:injection_restaurants_0",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 11,
+          "label": "vec:injection_restaurants_1",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 12,
+          "label": "vec:injection_restaurants_2",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 13,
+          "label": "vec:injection_restaurants_3",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 14,
+          "label": "ingest:get_rating_reviews_for_car_rental",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 15,
+          "label": "ingest:get_rating_reviews_for_hotels",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 16,
+          "label": "ingest:get_rating_reviews_for_restaurants",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 17,
+          "label": "recon1:check_restaurant_opening_hours",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 18,
+          "label": "recon1:get_all_car_rental_companies_in_city",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 19,
+          "label": "recon1:get_all_hotels_in_city",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 20,
+          "label": "recon1:get_all_restaurants_in_city",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 21,
+          "label": "recon1:get_car_fuel_options",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 22,
+          "label": "recon1:get_car_price_per_day",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 23,
+          "label": "recon1:get_car_rental_address",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 24,
+          "label": "recon1:get_car_types_available",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 25,
+          "label": "recon1:get_contact_information_for_restaurants",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 26,
+          "label": "recon1:get_cuisine_type_for_restaurants",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 27,
+          "label": "recon1:get_day_calendar_events",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 28,
+          "label": "recon1:get_dietary_restrictions_for_all_restaurants",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 29,
+          "label": "recon1:get_flight_information",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 30,
+          "label": "recon1:get_hotels_address",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 31,
+          "label": "recon1:get_hotels_prices",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 32,
+          "label": "recon1:get_price_for_restaurants",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 33,
+          "label": "recon1:get_rating_reviews_for_car_rental",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 34,
+          "label": "recon1:get_rating_reviews_for_hotels",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 35,
+          "label": "recon1:get_rating_reviews_for_restaurants",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 36,
+          "label": "recon1:get_restaurants_address",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 37,
+          "label": "recon1:get_user_information",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 38,
+          "label": "recon1:search_calendar_events",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 39,
+          "label": "recon2:check_restaurant_opening_hours",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 40,
+          "label": "recon2:get_all_car_rental_companies_in_city",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 41,
+          "label": "recon2:get_all_hotels_in_city",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 42,
+          "label": "recon2:get_all_restaurants_in_city",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 43,
+          "label": "recon2:get_car_fuel_options",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 44,
+          "label": "recon2:get_car_price_per_day",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 45,
+          "label": "recon2:get_car_rental_address",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 46,
+          "label": "recon2:get_car_types_available",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 47,
+          "label": "recon2:get_contact_information_for_restaurants",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 48,
+          "label": "recon2:get_cuisine_type_for_restaurants",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 49,
+          "label": "recon2:get_day_calendar_events",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 50,
+          "label": "recon2:get_dietary_restrictions_for_all_restaurants",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 51,
+          "label": "recon2:get_flight_information",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 52,
+          "label": "recon2:get_hotels_address",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 53,
+          "label": "recon2:get_hotels_prices",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 54,
+          "label": "recon2:get_price_for_restaurants",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 55,
+          "label": "recon2:get_rating_reviews_for_car_rental",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 56,
+          "label": "recon2:get_rating_reviews_for_hotels",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 57,
+          "label": "recon2:get_rating_reviews_for_restaurants",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 58,
+          "label": "recon2:get_restaurants_address",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 59,
+          "label": "recon2:get_user_information",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 60,
+          "label": "recon2:search_calendar_events",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 61,
+          "label": "stage:cancel_calendar_event",
+          "stage": "state_staging_tool",
+          "cost": 4
+        },
+        {
+          "index": 62,
+          "label": "synth:direct_injection_args",
+          "stage": "llm_arg_synthesis",
+          "cost": null
+        },
+        {
+          "index": 63,
+          "label": "synth:harvested_pii_interpolation",
+          "stage": "llm_arg_synthesis",
+          "cost": null
+        },
+        {
+          "index": 64,
+          "label": "synth:staged_or_split_args",
+          "stage": "llm_arg_synthesis",
+          "cost": null
+        },
+        {
+          "index": 65,
+          "label": "sink:create_calendar_event",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 66,
+          "label": "sink:reserve_car_rental",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 67,
+          "label": "sink:reserve_hotel",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 68,
+          "label": "sink:reserve_restaurant",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 69,
+          "label": "sink:send_email",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 70,
+          "label": "T",
+          "stage": "terminal",
+          "cost": null
+        }
+      ],
+      "edges": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        [
+          14
+        ],
+        [
+          14
+        ],
+        [
+          14
+        ],
+        [
+          15
+        ],
+        [
+          15
+        ],
+        [
+          15
+        ],
+        [
+          15
+        ],
+        [
+          15
+        ],
+        [
+          15
+        ],
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          34,
+          35,
+          36,
+          37,
+          38,
+          62
+        ],
+        [
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          35,
+          36,
+          37,
+          38,
+          62
+        ],
+        [
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          36,
+          37,
+          38,
+          62
+        ],
+        [
+          40,
+          41,
+          43,
+          44,
+          45,
+          46,
+          49,
+          51,
+          52,
+          53,
+          55,
+          56,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          39,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          39,
+          40,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          39,
+          40,
+          41,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          39,
+          41,
+          42,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          39,
+          41,
+          42,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          39,
+          41,
+          42,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          39,
+          41,
+          42,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          40,
+          41,
+          43,
+          44,
+          45,
+          46,
+          49,
+          51,
+          52,
+          53,
+          55,
+          56,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          40,
+          41,
+          43,
+          44,
+          45,
+          46,
+          49,
+          51,
+          52,
+          53,
+          55,
+          56,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          40,
+          41,
+          43,
+          44,
+          45,
+          46,
+          49,
+          51,
+          52,
+          53,
+          55,
+          56,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          39,
+          40,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          54,
+          55,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          39,
+          40,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          54,
+          55,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          40,
+          41,
+          43,
+          44,
+          45,
+          46,
+          49,
+          51,
+          52,
+          53,
+          55,
+          56,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          39,
+          41,
+          42,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          39,
+          40,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          54,
+          55,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          40,
+          41,
+          43,
+          44,
+          45,
+          46,
+          49,
+          51,
+          52,
+          53,
+          55,
+          56,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          40,
+          41,
+          43,
+          44,
+          45,
+          46,
+          49,
+          51,
+          52,
+          53,
+          55,
+          56,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          60,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          61,
+          62,
+          63,
+          64
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        [
+          70
+        ],
+        [
+          70
+        ],
+        [
+          70
+        ],
+        [
+          70
+        ],
+        [
+          70
+        ],
+        []
+      ],
+      "notes": "28,970 tool-effect routes across 22 lookup tools collapse to unweighted review-ingestion width w=3 (high benign utility cost) and weighted sink cut tau_b=5; pure-prose injection_task_6 has no tool sink."
+    },
+    {
+      "graph_id": "agentdojo_slack_v1_2_2",
+      "domain": "agentdojo_v1_2_2",
+      "source_artifact": "agentdojo v1.2.2 slack (11 tools, 6 injection vectors, 5 injection tasks)",
+      "total_vertices_v": 30,
+      "internal_vertices": 28,
+      "total_edges_e": 113,
+      "active_edges_e": 113,
+      "attack_route_count_p": 840,
+      "menger_pathway_width_w": 2,
+      "unweighted_min_cut_vertices": [
+        "vec:prompt_injection_channel",
+        "ingest:get_webpage"
+      ],
+      "sink_waist_width": 5,
+      "shortest_path_internal_len_l": 4,
+      "longest_path_internal_len": 5,
+      "weighted_min_cut_cost_tau_b": 5,
+      "weighted_min_cut_is_infinite": false,
+      "weighted_min_cut_size": 5,
+      "weighted_min_cut_vertices": [
+        "sink:get_webpage@url_beacon",
+        "sink:post_webpage",
+        "sink:remove_user_from_slack",
+        "sink:send_channel_message",
+        "sink:send_direct_message"
+      ],
+      "remaining_paths_after_weighted_cut": 0,
+      "cutset_severs_all_routes": true,
+      "width_to_routes_ratio": 0.002380952380952381,
+      "interdiction_curve": [
+        {
+          "budget": 0,
+          "cutset_gate_blocked_fraction": 0.0,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 1,
+          "cutset_gate_blocked_fraction": 0.1999999999999998,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0011904761904761862,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 2,
+          "cutset_gate_blocked_fraction": 0.3999999999999996,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0023809523809523725,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 3,
+          "cutset_gate_blocked_fraction": 0.6000000000000008,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0035714285714285587,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 4,
+          "cutset_gate_blocked_fraction": 0.7999999999999992,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.004761904761904745,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 5,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.005952380952380931,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 8,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.010044642857142858,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.00952380952380949,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 12,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.833333333333334,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.014285714285714235,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 16,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.833333333333334,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.01904761904761907,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 32,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 0.9963727678571429,
+          "patch_specific_step_severed_share": 0.953125,
+          "patch_route_signature_blocked_fraction": 0.03809523809523801,
+          "patch_route_signature_severed_share": 0.0
+        }
+      ],
+      "vertices": [
+        {
+          "index": 0,
+          "label": "S",
+          "stage": "source",
+          "cost": null
+        },
+        {
+          "index": 1,
+          "label": "vec:injection_dora_0",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 2,
+          "label": "vec:injection_phishing_1",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 3,
+          "label": "vec:injection_web_0",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 4,
+          "label": "vec:prompt_injection_channel",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 5,
+          "label": "vec:prompt_injection_eve_blog",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 6,
+          "label": "vec:prompt_injection_restaurant",
+          "stage": "untrusted_vector",
+          "cost": null
+        },
+        {
+          "index": 7,
+          "label": "ingest:get_channels",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 8,
+          "label": "ingest:get_webpage",
+          "stage": "untrusted_read_tool",
+          "cost": 10
+        },
+        {
+          "index": 9,
+          "label": "recon1:get_channels",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 10,
+          "label": "recon1:get_users_in_channel",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 11,
+          "label": "recon1:get_webpage",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 12,
+          "label": "recon1:read_channel_messages",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 13,
+          "label": "recon1:read_inbox",
+          "stage": "primary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 14,
+          "label": "recon2:get_channels",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 15,
+          "label": "recon2:get_users_in_channel",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 16,
+          "label": "recon2:get_webpage",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 17,
+          "label": "recon2:read_channel_messages",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 18,
+          "label": "recon2:read_inbox",
+          "stage": "secondary_recon_tool",
+          "cost": 8
+        },
+        {
+          "index": 19,
+          "label": "stage:add_user_to_channel",
+          "stage": "state_staging_tool",
+          "cost": 4
+        },
+        {
+          "index": 20,
+          "label": "stage:invite_user_to_slack",
+          "stage": "state_staging_tool",
+          "cost": 4
+        },
+        {
+          "index": 21,
+          "label": "synth:direct_injection_args",
+          "stage": "llm_arg_synthesis",
+          "cost": null
+        },
+        {
+          "index": 22,
+          "label": "synth:harvested_pii_interpolation",
+          "stage": "llm_arg_synthesis",
+          "cost": null
+        },
+        {
+          "index": 23,
+          "label": "synth:staged_or_split_args",
+          "stage": "llm_arg_synthesis",
+          "cost": null
+        },
+        {
+          "index": 24,
+          "label": "sink:get_webpage@url_beacon",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 25,
+          "label": "sink:post_webpage",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 26,
+          "label": "sink:remove_user_from_slack",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 27,
+          "label": "sink:send_channel_message",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 28,
+          "label": "sink:send_direct_message",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 29,
+          "label": "T",
+          "stage": "terminal",
+          "cost": null
+        }
+      ],
+      "edges": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          8
+        ],
+        [
+          8
+        ],
+        [
+          8
+        ],
+        [
+          7
+        ],
+        [
+          8
+        ],
+        [
+          8
+        ],
+        [
+          10,
+          11,
+          12,
+          13,
+          21
+        ],
+        [
+          9,
+          10,
+          12,
+          13,
+          21
+        ],
+        [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        [
+          16,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        [
+          14,
+          15,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        [
+          16,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        [
+          16,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        [
+          24,
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          24,
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          24,
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          24,
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          24,
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          24,
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          24,
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          24,
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          24,
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          24,
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          29
+        ],
+        [
+          29
+        ],
+        [
+          29
+        ],
+        [
+          29
+        ],
+        [
+          29
+        ],
+        []
+      ],
+      "notes": "840 multi-tool phishing/exfiltration/eviction routes across Slack & Web subsystems; unweighted width w=2 at untrusted reads shifts to weighted cut tau_b=5 across outbound HTTP/message/eviction sinks."
+    },
+    {
+      "graph_id": "linux_unconfined_posix_ipc",
+      "domain": "linux_subprocess_confinement",
+      "source_artifact": "src/isolation_v2.rs::probe (unconfined positive control)",
+      "total_vertices_v": 39,
+      "internal_vertices": 37,
+      "total_edges_e": 72,
+      "active_edges_e": 72,
+      "attack_route_count_p": 98,
+      "menger_pathway_width_w": 6,
+      "unweighted_min_cut_vertices": [
+        "exec:stdio_json_frame",
+        "exec:vfs_open_rw_link",
+        "exec:procfs_and_prlimit",
+        "exec:af_inet_netlink_sock",
+        "exec:af_unix_ipc_sock",
+        "exec:sysv_mq_ptrace_vm"
+      ],
+      "sink_waist_width": 6,
+      "shortest_path_internal_len_l": 5,
+      "longest_path_internal_len": 5,
+      "weighted_min_cut_cost_tau_b": null,
+      "weighted_min_cut_is_infinite": true,
+      "weighted_min_cut_size": null,
+      "weighted_min_cut_vertices": [],
+      "remaining_paths_after_weighted_cut": 92,
+      "cutset_severs_all_routes": false,
+      "width_to_routes_ratio": 0.061224489795918366,
+      "interdiction_curve": [
+        {
+          "budget": 0,
+          "cutset_gate_blocked_fraction": 0.0,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 1,
+          "cutset_gate_blocked_fraction": 0.0,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.06122448979591824,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.010204081632653073,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 2,
+          "cutset_gate_blocked_fraction": 0.0,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.06122448979591824,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.020408163265306145,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 3,
+          "cutset_gate_blocked_fraction": 0.0,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.06122448979591824,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.030612244897959273,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 4,
+          "cutset_gate_blocked_fraction": 0.0,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.06122448979591824,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.04081632653061229,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 5,
+          "cutset_gate_blocked_fraction": 0.0,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.06122448979591824,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.05102040816326525,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 8,
+          "cutset_gate_blocked_fraction": 0.0,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.06122448979591824,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.08163265306122455,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 12,
+          "cutset_gate_blocked_fraction": 0.0,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.06122448979591824,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.12244897959183663,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 16,
+          "cutset_gate_blocked_fraction": 0.0,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.06122448979591824,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.1632653061224491,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 32,
+          "cutset_gate_blocked_fraction": 0.0,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.06122448979591824,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.3265306122448982,
+          "patch_route_signature_severed_share": 0.0
+        }
+      ],
+      "vertices": [
+        {
+          "index": 0,
+          "label": "S",
+          "stage": "source",
+          "cost": null
+        },
+        {
+          "index": 1,
+          "label": "exec:stdio_json_frame",
+          "stage": "subprocess_primitive",
+          "cost": null
+        },
+        {
+          "index": 2,
+          "label": "exec:vfs_open_rw_link",
+          "stage": "subprocess_primitive",
+          "cost": null
+        },
+        {
+          "index": 3,
+          "label": "exec:procfs_and_prlimit",
+          "stage": "subprocess_primitive",
+          "cost": null
+        },
+        {
+          "index": 4,
+          "label": "exec:af_inet_netlink_sock",
+          "stage": "subprocess_primitive",
+          "cost": null
+        },
+        {
+          "index": 5,
+          "label": "exec:af_unix_ipc_sock",
+          "stage": "subprocess_primitive",
+          "cost": null
+        },
+        {
+          "index": 6,
+          "label": "exec:sysv_mq_ptrace_vm",
+          "stage": "subprocess_primitive",
+          "cost": null
+        },
+        {
+          "index": 7,
+          "label": "chan:stdio_rpc_pipe",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 8,
+          "label": "chan:inherited_nonstdio_fd",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 9,
+          "label": "chan:direct_sqlite_vfs",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 10,
+          "label": "chan:proc_parent_environ",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 11,
+          "label": "chan:socket_af_inet_tcp_udp",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 12,
+          "label": "chan:socket_af_unix",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 13,
+          "label": "chan:kernel_keyring_keyctl",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 14,
+          "label": "chan:sysv_shm_msg_sem_mq",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 15,
+          "label": "chan:cross_pid_prlimit64",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 16,
+          "label": "chan:ptrace_process_vm_readv",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 17,
+          "label": "rpc:canonical_submit_transfer",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 18,
+          "label": "rpc:canonical_submit_edit",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 19,
+          "label": "rpc:canonical_submit_release",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 20,
+          "label": "rpc:forged_admin_or_oversize_frame",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 21,
+          "label": "raw:direct_sqlite_wal_rw",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 22,
+          "label": "raw:secret_fs_link_or_read",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 23,
+          "label": "raw:procfs_environ_or_rlimit",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 24,
+          "label": "raw:tcp_udp_unix_socket_exfil",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 25,
+          "label": "raw:sysv_mq_ptrace_vm_access",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 26,
+          "label": "gate:broker_reservation_gate",
+          "stage": "mediation_boundary",
+          "cost": 1
+        },
+        {
+          "index": 27,
+          "label": "bypass:direct_sqlite_wal_handle",
+          "stage": "mediation_boundary",
+          "cost": null
+        },
+        {
+          "index": 28,
+          "label": "bypass:host_secret_canary_fs",
+          "stage": "mediation_boundary",
+          "cost": null
+        },
+        {
+          "index": 29,
+          "label": "bypass:parent_environ_and_rlimit",
+          "stage": "mediation_boundary",
+          "cost": null
+        },
+        {
+          "index": 30,
+          "label": "bypass:loopback_and_wan_egress",
+          "stage": "mediation_boundary",
+          "cost": null
+        },
+        {
+          "index": 31,
+          "label": "bypass:shared_ipc_and_ptrace_vm",
+          "stage": "mediation_boundary",
+          "cost": null
+        },
+        {
+          "index": 32,
+          "label": "gate:sink_precommit_fence",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 33,
+          "label": "target:unmediated_db_corruption",
+          "stage": "external_commit_sink",
+          "cost": null
+        },
+        {
+          "index": 34,
+          "label": "target:secret_file_disclosure",
+          "stage": "external_commit_sink",
+          "cost": null
+        },
+        {
+          "index": 35,
+          "label": "target:parent_credential_leak",
+          "stage": "external_commit_sink",
+          "cost": null
+        },
+        {
+          "index": 36,
+          "label": "target:network_socket_exfil",
+          "stage": "external_commit_sink",
+          "cost": null
+        },
+        {
+          "index": 37,
+          "label": "target:cross_process_mem_hijack",
+          "stage": "external_commit_sink",
+          "cost": null
+        },
+        {
+          "index": 38,
+          "label": "T",
+          "stage": "terminal",
+          "cost": null
+        }
+      ],
+      "edges": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          7,
+          8
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          10,
+          15
+        ],
+        [
+          11,
+          12
+        ],
+        [
+          12,
+          13,
+          14
+        ],
+        [
+          13,
+          14,
+          16
+        ],
+        [
+          17,
+          18,
+          19,
+          20
+        ],
+        [
+          20,
+          21,
+          22
+        ],
+        [
+          21,
+          22
+        ],
+        [
+          22,
+          23
+        ],
+        [
+          24
+        ],
+        [
+          22,
+          24
+        ],
+        [
+          25
+        ],
+        [
+          25
+        ],
+        [
+          23
+        ],
+        [
+          23,
+          25
+        ],
+        [
+          26
+        ],
+        [
+          26
+        ],
+        [
+          26
+        ],
+        [
+          26,
+          27,
+          29
+        ],
+        [
+          27,
+          28
+        ],
+        [
+          27,
+          28
+        ],
+        [
+          28,
+          29
+        ],
+        [
+          30,
+          31
+        ],
+        [
+          29,
+          31
+        ],
+        [
+          32
+        ],
+        [
+          33,
+          34
+        ],
+        [
+          34,
+          36
+        ],
+        [
+          35,
+          37
+        ],
+        [
+          34,
+          36
+        ],
+        [
+          35,
+          37
+        ],
+        [
+          38
+        ],
+        [
+          38
+        ],
+        [
+          38
+        ],
+        [
+          38
+        ],
+        [
+          38
+        ],
+        [
+          38
+        ],
+        []
+      ],
+      "notes": "Without kernel confinement, direct VFS, /proc, AF_INET/AF_UNIX sockets, SysV/POSIX IPC, and ptrace/process_vm_readv bypass cooperative stdio RPC gates, making userspace-only cut cost +infinity."
+    },
+    {
+      "graph_id": "linux_landlock_seccomp_broker_waist",
+      "domain": "linux_subprocess_confinement",
+      "source_artifact": "src/isolation_v2.rs::confine + src/protocol_v2.rs::serve",
+      "total_vertices_v": 39,
+      "internal_vertices": 37,
+      "total_edges_e": 10,
+      "active_edges_e": 10,
+      "attack_route_count_p": 3,
+      "menger_pathway_width_w": 1,
+      "unweighted_min_cut_vertices": [
+        "exec:stdio_json_frame"
+      ],
+      "sink_waist_width": 2,
+      "shortest_path_internal_len_l": 5,
+      "longest_path_internal_len": 5,
+      "weighted_min_cut_cost_tau_b": 1,
+      "weighted_min_cut_is_infinite": false,
+      "weighted_min_cut_size": 1,
+      "weighted_min_cut_vertices": [
+        "gate:broker_reservation_gate"
+      ],
+      "remaining_paths_after_weighted_cut": 0,
+      "cutset_severs_all_routes": true,
+      "width_to_routes_ratio": 0.3333333333333333,
+      "interdiction_curve": [
+        {
+          "budget": 0,
+          "cutset_gate_blocked_fraction": 0.0,
+          "cutset_gate_severed_share": 0.0,
+          "patch_specific_step_blocked_fraction": 0.0,
+          "patch_specific_step_severed_share": 0.0,
+          "patch_route_signature_blocked_fraction": 0.0,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 1,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 1.0,
+          "patch_specific_step_severed_share": 1.0,
+          "patch_route_signature_blocked_fraction": 0.3333333333333332,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 2,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 1.0,
+          "patch_specific_step_severed_share": 1.0,
+          "patch_route_signature_blocked_fraction": 0.6666666666666664,
+          "patch_route_signature_severed_share": 0.0
+        },
+        {
+          "budget": 3,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 1.0,
+          "patch_specific_step_severed_share": 1.0,
+          "patch_route_signature_blocked_fraction": 1.0,
+          "patch_route_signature_severed_share": 1.0
+        },
+        {
+          "budget": 4,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 1.0,
+          "patch_specific_step_severed_share": 1.0,
+          "patch_route_signature_blocked_fraction": 1.0,
+          "patch_route_signature_severed_share": 1.0
+        },
+        {
+          "budget": 5,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 1.0,
+          "patch_specific_step_severed_share": 1.0,
+          "patch_route_signature_blocked_fraction": 1.0,
+          "patch_route_signature_severed_share": 1.0
+        },
+        {
+          "budget": 8,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 1.0,
+          "patch_specific_step_severed_share": 1.0,
+          "patch_route_signature_blocked_fraction": 1.0,
+          "patch_route_signature_severed_share": 1.0
+        },
+        {
+          "budget": 12,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 1.0,
+          "patch_specific_step_severed_share": 1.0,
+          "patch_route_signature_blocked_fraction": 1.0,
+          "patch_route_signature_severed_share": 1.0
+        },
+        {
+          "budget": 16,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 1.0,
+          "patch_specific_step_severed_share": 1.0,
+          "patch_route_signature_blocked_fraction": 1.0,
+          "patch_route_signature_severed_share": 1.0
+        },
+        {
+          "budget": 32,
+          "cutset_gate_blocked_fraction": 1.0,
+          "cutset_gate_severed_share": 1.0,
+          "patch_specific_step_blocked_fraction": 1.0,
+          "patch_specific_step_severed_share": 1.0,
+          "patch_route_signature_blocked_fraction": 1.0,
+          "patch_route_signature_severed_share": 1.0
+        }
+      ],
+      "vertices": [
+        {
+          "index": 0,
+          "label": "S",
+          "stage": "source",
+          "cost": null
+        },
+        {
+          "index": 1,
+          "label": "exec:stdio_json_frame",
+          "stage": "subprocess_primitive",
+          "cost": null
+        },
+        {
+          "index": 2,
+          "label": "exec:vfs_open_rw_link",
+          "stage": "subprocess_primitive",
+          "cost": null
+        },
+        {
+          "index": 3,
+          "label": "exec:procfs_and_prlimit",
+          "stage": "subprocess_primitive",
+          "cost": null
+        },
+        {
+          "index": 4,
+          "label": "exec:af_inet_netlink_sock",
+          "stage": "subprocess_primitive",
+          "cost": null
+        },
+        {
+          "index": 5,
+          "label": "exec:af_unix_ipc_sock",
+          "stage": "subprocess_primitive",
+          "cost": null
+        },
+        {
+          "index": 6,
+          "label": "exec:sysv_mq_ptrace_vm",
+          "stage": "subprocess_primitive",
+          "cost": null
+        },
+        {
+          "index": 7,
+          "label": "chan:stdio_rpc_pipe",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 8,
+          "label": "chan:inherited_nonstdio_fd",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 9,
+          "label": "chan:direct_sqlite_vfs",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 10,
+          "label": "chan:proc_parent_environ",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 11,
+          "label": "chan:socket_af_inet_tcp_udp",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 12,
+          "label": "chan:socket_af_unix",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 13,
+          "label": "chan:kernel_keyring_keyctl",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 14,
+          "label": "chan:sysv_shm_msg_sem_mq",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 15,
+          "label": "chan:cross_pid_prlimit64",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 16,
+          "label": "chan:ptrace_process_vm_readv",
+          "stage": "kernel_channel",
+          "cost": null
+        },
+        {
+          "index": 17,
+          "label": "rpc:canonical_submit_transfer",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 18,
+          "label": "rpc:canonical_submit_edit",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 19,
+          "label": "rpc:canonical_submit_release",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 20,
+          "label": "rpc:forged_admin_or_oversize_frame",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 21,
+          "label": "raw:direct_sqlite_wal_rw",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 22,
+          "label": "raw:secret_fs_link_or_read",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 23,
+          "label": "raw:procfs_environ_or_rlimit",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 24,
+          "label": "raw:tcp_udp_unix_socket_exfil",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 25,
+          "label": "raw:sysv_mq_ptrace_vm_access",
+          "stage": "payload_mode",
+          "cost": null
+        },
+        {
+          "index": 26,
+          "label": "gate:broker_reservation_gate",
+          "stage": "mediation_boundary",
+          "cost": 1
+        },
+        {
+          "index": 27,
+          "label": "bypass:direct_sqlite_wal_handle",
+          "stage": "mediation_boundary",
+          "cost": null
+        },
+        {
+          "index": 28,
+          "label": "bypass:host_secret_canary_fs",
+          "stage": "mediation_boundary",
+          "cost": null
+        },
+        {
+          "index": 29,
+          "label": "bypass:parent_environ_and_rlimit",
+          "stage": "mediation_boundary",
+          "cost": null
+        },
+        {
+          "index": 30,
+          "label": "bypass:loopback_and_wan_egress",
+          "stage": "mediation_boundary",
+          "cost": null
+        },
+        {
+          "index": 31,
+          "label": "bypass:shared_ipc_and_ptrace_vm",
+          "stage": "mediation_boundary",
+          "cost": null
+        },
+        {
+          "index": 32,
+          "label": "gate:sink_precommit_fence",
+          "stage": "external_commit_sink",
+          "cost": 1
+        },
+        {
+          "index": 33,
+          "label": "target:unmediated_db_corruption",
+          "stage": "external_commit_sink",
+          "cost": null
+        },
+        {
+          "index": 34,
+          "label": "target:secret_file_disclosure",
+          "stage": "external_commit_sink",
+          "cost": null
+        },
+        {
+          "index": 35,
+          "label": "target:parent_credential_leak",
+          "stage": "external_commit_sink",
+          "cost": null
+        },
+        {
+          "index": 36,
+          "label": "target:network_socket_exfil",
+          "stage": "external_commit_sink",
+          "cost": null
+        },
+        {
+          "index": 37,
+          "label": "target:cross_process_mem_hijack",
+          "stage": "external_commit_sink",
+          "cost": null
+        },
+        {
+          "index": 38,
+          "label": "T",
+          "stage": "terminal",
+          "cost": null
+        }
+      ],
+      "edges": [
+        [
+          1
+        ],
+        [
+          7
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          17,
+          18,
+          19
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          26
+        ],
+        [
+          26
+        ],
+        [
+          26
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          32
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          38
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "notes": "Landlock ABI 4 + seccomp-BPF + close_range(3..) prune all 9 non-stdio channels and framing rejects forged admin verbs, collapsing width to w=1 with 2 sequential eligible gates (broker + sink)."
+    }
+  ],
+  "claim_boundary": "Operational tool-chaining DAGs from upstream AgentDojo v1.2.2 and Linux Landlock/seccomp IPC probes (src/isolation_v2.rs); models consequential tool-mediated side effects, not unmediated prose persuasion channels."
+}

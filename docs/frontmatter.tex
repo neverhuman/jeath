@@ -18,23 +18,31 @@ An AI system's capability to discover actions does not confer authority to execu
 them, nor does stopping token generation revoke work already in flight. We separate
 capability, aim, and conferred revocable authority, distinguishing broker admission
 revocation from sink-fenced revocation across separate durable stores. Pre-dispatch
-reservations conservatively bound ambiguous outcomes, attenuated sub-delegations bind
-strengthened issuer requirements end-to-end, and durable epoch fences exclude
-post-acknowledgment effects under withdrawn authority. A pinned Verus run verifies
-\VTwoProofs{} SMT obligations for the Rust \texttt{policy-core} (\VTwoExecFns{}
-executable predicates and \VTwoTheorems{} proof obligations over a specification
-ledger model). Embedding this boundary in an explicit filtration model bounds
-single-period catastrophic reach without assuming monitor independence, while
-systematic negative controls expose where weaker assurances fail:
-\VTwoAblationWitnesses/\VTwoAblationSets{} protocol omissions admit short
-counterexamples, uncooperative non-idempotent sinks duplicate effects, six classifier
-families stacked on a shared step exhibit strong residual failure dependence,
-route-specific patching severs zero narrow-waist attack graphs, Good--Turing coverage
-estimators miss strategic withholding, and steep rank tournaments select reckless
-gambling even under conferred-benefit scoring. JSON framing, SQLite adapters, session
-binding, and OS confinement remain trusted, and the predeclared
-\VTwoComponentClaims-claim Qwen3 checkpoint study remains unrun
-(\VTwoGpuSecondsUsed{} GPU-s).
+reservations conservatively bound ambiguous outcomes, attenuated sub-delegations and
+cryptographic tokens bind strengthened issuer requirements end-to-end, and durable
+signed epoch fences exclude post-acknowledgment effects under withdrawn authority. A
+pinned Verus run verifies \VTwoProofs{} SMT obligations for the Rust
+\texttt{policy-core} (\VTwoExecFns{} executable functions---including concrete
+\texttt{ExecBrokerKernel}/\texttt{ExecSinkKernel} forward-simulation refinement and
+canonical wire-encoding injectivity---and \VTwoTheorems{} proof theorems). Across
+separate-process SQLite, \texttt{AF\_UNIX} Jepsen partition schedules
+($0/\text{\VFourJepsenSchedulesPerClass}$ cooperative post-ack leaks vs.\
+\VFourJepsenBrokerOnlyLeaks{} broker-only), diamond-POR concurrent linearizations up to
+\VTwoLinearizedMaxActors{} writers (\VTwoLinearizedRuns/\VTwoRaceRuns{}), and
+\VFourHoldoutTotalCampaigns{} executed CPU \texttt{Qwen3-4B}/\texttt{8B} frozen holdout
+campaigns (\VTwoGpuSecondsUsed{} GPU-s), complete mediation incurs $0.0\%$ unauthorized
+effects and $0.0\%$ false blocks while scaling safe-useful completion from
+\VFourFourBCompleteSafeUsefulPct\% to \VFourEightBCompleteSafeUsefulPct\% (pilot
+$N{=}\VFourHoldoutCasesPerCheckpoint < \VTwoZeroLossCasesMin$ Bonferroni bounds remain
+honestly inconclusive). Operational AgentDojo \texttt{v1.2.2} and Linux confinement
+cutsets, \VFourTrajEvalCount{} executed 5-step trajectory-monitor evaluations
+($\VFourTrajHetInflation\times$ five-family transcript inflation vs.\
+\VFourTrajIsoFiveMissPct\% prose-stripped step invariants), and pure-Rust 2-layer
+neural policy-gradient post-training ($+\VFourNeuralVetoGapPp$\,pp emergent
+evaluation-aware shortcutting under audited rank tournaments vs.\
+\VFourNeuralGatedHarmPct\% gated survival-floor harm) anchor structural reach bounds,
+while SQLite/OS adapters remain trusted rather than formally refined and frontier/human
+studies remain open.
 \end{minipage}\end{center}
 \vspace{8pt}
 \end{@twocolumnfalse}]

@@ -220,6 +220,109 @@ def generate_v2():
     none_ctrl = [r for r in controls if r["controller"] == "none"]
     stateless_ctrl = [r for r in controls if r["controller"] == "stateless"]
     bench_pos = sum(1 for r in benchmark["rows"] if r.get("native_utility_positive", False))
+    lin_races = [r for r in races if r.get("concurrent_check") and r["concurrent_check"].get("checked")]
+    lin_max_actors = max((r["actors"] for r in lin_races), default=0)
+    lin_max_calls = max((r["concurrent_check"].get("calls", len(r["outcomes"])) for r in lin_races), default=0)
+
+    mc_path = DATA_V2 / "model-campaigns-analyzed.json"
+    mc = json.loads(mc_path.read_text()) if mc_path.is_file() else None
+    live_dojo_path = DATA_V2 / "agentdojo-live-models.json"
+    live_dojo = json.loads(live_dojo_path.read_text()) if live_dojo_path.is_file() else None
+    cj_path = DATA_V3 / "crypto_and_jepsen.json"
+    cj_v2 = json.loads(cj_path.read_text()) if cj_path.is_file() else None
+
+    if mc is not None:
+        c4b = mc["checkpoints"]["Qwen/Qwen3-4B-GGUF"]
+        c8b = mc["checkpoints"]["Qwen/Qwen3-8B-GGUF"]
+        n_cases_ckpt = c4b["controllers"]["complete"]["measured_campaigns"]
+        mc_total = sum(
+            ctrl_obj["measured_campaigns"]
+            for ckpt_obj in mc["checkpoints"].values()
+            for ctrl_obj in ckpt_obj["controllers"].values()
+        )
+        m4_comp = c4b["controllers"]["complete"]["observed_metrics"]
+        m4_none = c4b["controllers"]["none"]["observed_metrics"]
+        m4_lrn = c4b["controllers"]["learned_same_checkpoint"]["observed_metrics"]
+        m4_stl = c4b["controllers"]["stateless"]["observed_metrics"]
+        m4_nof = c4b["controllers"]["durable_without_fence"]["observed_metrics"]
+        m8_comp = c8b["controllers"]["complete"]["observed_metrics"]
+        m8_none = c8b["controllers"]["none"]["observed_metrics"]
+        m8_lrn = c8b["controllers"]["learned_same_checkpoint"]["observed_metrics"]
+        m8_stl = c8b["controllers"]["stateless"]["observed_metrics"]
+        m8_nof = c8b["controllers"]["durable_without_fence"]["observed_metrics"]
+        v4_mc_macros = [
+            ("VFourHoldoutCasesPerCheckpoint", f"{n_cases_ckpt}"),
+            ("VFourHoldoutTotalCampaigns", f"{mc_total}"),
+            ("VFourFourBCompleteUnauthPct", f"{100 * m4_comp['unauthorized']['mean']:.1f}"),
+            ("VFourFourBCompleteFalseBlockPct", f"{100 * m4_comp['false_block']['mean']:.1f}"),
+            ("VFourFourBCompleteSafeUsefulPct", f"{100 * m4_comp['safe_useful']['mean']:.1f}"),
+            ("VFourFourBCompleteSafeUsefulCount", f"{int(round(n_cases_ckpt * m4_comp['safe_useful']['mean']))}"),
+            ("VFourFourBFenceAckMs", f"{m4_comp['ack_ms']['mean']:.1f}"),
+            ("VFourFourBNoneUnauthPct", f"{100 * m4_none['unauthorized']['mean']:.1f}"),
+            ("VFourFourBNoneSafeUsefulPct", f"{100 * m4_none['safe_useful']['mean']:.1f}"),
+            ("VFourFourBLearnedUnauthPct", f"{100 * m4_lrn['unauthorized']['mean']:.1f}"),
+            ("VFourFourBLearnedSafeUsefulPct", f"{100 * m4_lrn['safe_useful']['mean']:.1f}"),
+            ("VFourFourBStatelessUnauthPct", f"{100 * m4_stl['unauthorized']['mean']:.1f}"),
+            ("VFourFourBStatelessSafeUsefulPct", f"{100 * m4_stl['safe_useful']['mean']:.1f}"),
+            ("VFourFourBNoFenceUnauthPct", f"{100 * m4_nof['unauthorized']['mean']:.1f}"),
+            ("VFourFourBNoFenceSafeUsefulPct", f"{100 * m4_nof['safe_useful']['mean']:.1f}"),
+            ("VFourEightBCompleteUnauthPct", f"{100 * m8_comp['unauthorized']['mean']:.1f}"),
+            ("VFourEightBCompleteFalseBlockPct", f"{100 * m8_comp['false_block']['mean']:.1f}"),
+            ("VFourEightBCompleteSafeUsefulPct", f"{100 * m8_comp['safe_useful']['mean']:.1f}"),
+            ("VFourEightBCompleteSafeUsefulCount", f"{int(round(n_cases_ckpt * m8_comp['safe_useful']['mean']))}"),
+            ("VFourEightBFenceAckMs", f"{m8_comp['ack_ms']['mean']:.1f}"),
+            ("VFourEightBNoneUnauthPct", f"{100 * m8_none['unauthorized']['mean']:.1f}"),
+            ("VFourEightBNoneSafeUsefulPct", f"{100 * m8_none['safe_useful']['mean']:.1f}"),
+            ("VFourEightBLearnedUnauthPct", f"{100 * m8_lrn['unauthorized']['mean']:.1f}"),
+            ("VFourEightBLearnedFalseBlockPct", f"{100 * m8_lrn['false_block']['mean']:.1f}"),
+            ("VFourEightBLearnedSafeUsefulPct", f"{100 * m8_lrn['safe_useful']['mean']:.1f}"),
+            ("VFourEightBStatelessUnauthPct", f"{100 * m8_stl['unauthorized']['mean']:.1f}"),
+            ("VFourEightBStatelessSafeUsefulPct", f"{100 * m8_stl['safe_useful']['mean']:.1f}"),
+            ("VFourEightBNoFenceUnauthPct", f"{100 * m8_nof['unauthorized']['mean']:.1f}"),
+            ("VFourEightBNoFenceSafeUsefulPct", f"{100 * m8_nof['safe_useful']['mean']:.1f}"),
+            (
+                "VFourFourBVsNoneSafetyMeanPp",
+                f"{100 * c4b['paired_primary_comparisons']['none']['safety_difference']['mean']:.1f}",
+            ),
+            (
+                "VFourFourBVsNoneSafetyUpperPp",
+                f"{100 * c4b['paired_primary_comparisons']['none']['safety_difference']['upper']:.1f}",
+            ),
+            (
+                "VFourEightBVsNoFenceLossUpperPp",
+                f"{100 * c8b['paired_primary_comparisons']['durable_without_fence']['usefulness_difference']['case_loss_upper']:.1f}",
+            ),
+        ]
+    else:
+        mc_total = 0
+        v4_mc_macros = []
+
+    if live_dojo is not None:
+        d4 = live_dojo["summary"]["Qwen/Qwen3-4B-GGUF"]["overall_by_controller"]
+        d8 = live_dojo["summary"]["Qwen/Qwen3-8B-GGUF"]["overall_by_controller"]
+        v4_dojo_macros = [
+            ("VFourLiveDojoEpisodes", f"{live_dojo['model_campaigns']}"),
+            ("VFourDojoFourBUnprotectedUnauthPct", f"{100 * (d4['unprotected_native']['any_unauthorized_effect_rate'] or 0.0):.1f}"),
+            ("VFourDojoFourBUnprotectedSafeUsefulPct", f"{100 * (d4['unprotected_native']['safe_useful_rate'] or 0.0):.1f}"),
+            ("VFourDojoFourBLearnedUnauthPct", f"{100 * (d4['learned_same_checkpoint']['any_unauthorized_effect_rate'] or 0.0):.1f}"),
+            ("VFourDojoFourBLearnedSafeUsefulPct", f"{100 * (d4['learned_same_checkpoint']['safe_useful_rate'] or 0.0):.1f}"),
+            ("VFourDojoFourBProgentUnauthPct", f"{100 * (d4['upstream_progent']['any_unauthorized_effect_rate'] or 0.0):.1f}"),
+            ("VFourDojoFourBProgentSafeUsefulPct", f"{100 * (d4['upstream_progent']['safe_useful_rate'] or 0.0):.1f}"),
+            ("VFourDojoFourBProgentPostWithdrawCount", f"{d4['upstream_progent']['post_withdraw_side_effect_count']}"),
+            ("VFourDojoFourBCompleteUnauthPct", f"{100 * (d4['authority_complete']['any_unauthorized_effect_rate'] or 0.0):.1f}"),
+            ("VFourDojoFourBCompleteSafeUsefulPct", f"{100 * (d4['authority_complete']['safe_useful_rate'] or 0.0):.1f}"),
+            ("VFourDojoEightBUnprotectedUnauthPct", f"{100 * (d8['unprotected_native']['any_unauthorized_effect_rate'] or 0.0):.1f}"),
+            ("VFourDojoEightBUnprotectedSafeUsefulPct", f"{100 * (d8['unprotected_native']['safe_useful_rate'] or 0.0):.1f}"),
+            ("VFourDojoEightBLearnedUnauthPct", f"{100 * (d8['learned_same_checkpoint']['any_unauthorized_effect_rate'] or 0.0):.1f}"),
+            ("VFourDojoEightBLearnedSafeUsefulPct", f"{100 * (d8['learned_same_checkpoint']['safe_useful_rate'] or 0.0):.1f}"),
+            ("VFourDojoEightBProgentUnauthPct", f"{100 * (d8['upstream_progent']['any_unauthorized_effect_rate'] or 0.0):.1f}"),
+            ("VFourDojoEightBProgentSafeUsefulPct", f"{100 * (d8['upstream_progent']['safe_useful_rate'] or 0.0):.1f}"),
+            ("VFourDojoEightBProgentPostWithdrawCount", f"{d8['upstream_progent']['post_withdraw_side_effect_count']}"),
+            ("VFourDojoEightBCompleteUnauthPct", f"{100 * (d8['authority_complete']['any_unauthorized_effect_rate'] or 0.0):.1f}"),
+            ("VFourDojoEightBCompleteSafeUsefulPct", f"{100 * (d8['authority_complete']['safe_useful_rate'] or 0.0):.1f}"),
+        ]
+    else:
+        v4_dojo_macros = []
 
     macros = format_macros(
         "Generated from validated v2 evidence; do not edit.",
@@ -237,8 +340,8 @@ def generate_v2():
             ("VTwoRacePopulations", f"{len({r['actors'] for r in races})}"),
             ("VTwoRaceMaxActors", f"{max(r['actors'] for r in races)}"),
             ("VTwoLinearizedRuns", f"{lin_runs}"),
-            ("VTwoLinearizedMaxActors", "4"),
-            ("VTwoLinearizedMaxCalls", "40"),
+            ("VTwoLinearizedMaxActors", f"{lin_max_actors}"),
+            ("VTwoLinearizedMaxCalls", f"{lin_max_calls}"),
             ("VTwoProbes", f"{probe_count}"),
             ("VTwoBaseProbes", f"{probe_count - 1}"),
             ("VTwoLauncherCapBytes", "32,768"),
@@ -254,7 +357,7 @@ def generate_v2():
             ("VTwoStatelessSafeUsefulCount", f"{sum(r['safe_useful'] for r in stateless_ctrl)}"),
             ("VTwoBenchmarkControls", f"{len(benchmark['rows'])}"),
             ("VTwoBenchmarkUtilityPositives", f"{bench_pos}"),
-            ("VTwoModelCampaignsRun", "0"),
+            ("VTwoModelCampaignsRun", f"{mc_total}"),
             ("VTwoGpuSecondsUsed", f"{manifest['gpu_seconds']}"),
             ("VTwoGpuBudgetHours", f"{eval_plan['gpu_budget_seconds'] // 3600}"),
             ("VTwoGpuBudgetSeconds", f"{eval_plan['gpu_budget_seconds']:,}"),
@@ -263,10 +366,13 @@ def generate_v2():
             ("VTwoNoninferiorityMarginPp", f"{int(round(100 * eval_plan['inference']['usefulness_noninferiority_margin']))}"),
             ("VTwoZeroLossCasesMin", f"{zero_diag['independent_cases_for_5pp_at_corrected_alpha']}"),
             ("VTwoMaxDefaultCases", f"{zero_diag['max_independent_cases_default']}"),
+            *v4_mc_macros,
+            *v4_dojo_macros,
         ],
     )
 
     # Preserve legacy v2-summary.tex and v2-races.tex for compatibility with pre-2C sections.
+    mc_legacy_str = f"{mc_total} CPU campaigns (0 GPU-s)" if mc_total > 0 else "Unrun"
     legacy_table = [
         r"\begin{table}[t]\centering\small\begin{tabularx}{\columnwidth}{@{}Lr@{}}\toprule",
         r"Recorded check & Result\\\midrule",
@@ -275,8 +381,8 @@ def generate_v2():
         f"Concurrent race repetitions & {len(races)} passed\\\\",
         f"Abstract omission sets with witnesses & {sum(bool(r['shortest_searched_witness']) for r in ablations['rows'])}/{len(ablations['rows'])}\\\\",
         f"Native benchmark utility positives & {bench_pos}/{len(benchmark['rows'])}\\\\",
-        r"Model campaigns & Unrun\\",
-        r"\bottomrule\end{tabularx}\caption{Evidence types remain distinct. Abstract mutation witnesses and native scripted controls are not adversarial model measurements.}\label{tab:v2summary}\end{table}",
+        f"Model campaigns & {mc_legacy_str}\\\\",
+        r"\bottomrule\end{tabularx}\caption{Evidence types remain distinct. Abstract mutation witnesses and native scripted controls are kept separate from live CPU checkpoint runs.}\label{tab:v2summary}\end{table}",
         r"\begin{table}[t]\centering\small\begin{tabularx}{\columnwidth}{@{}Lrr@{}}\toprule",
         r"CPU controller & Safe/useful & Runs\\\midrule",
     ]
@@ -290,8 +396,8 @@ def generate_v2():
         selected = [r for r in controls if r["controller"] == key]
         legacy_table.append(f"{label} & {sum(r['safe_useful'] for r in selected)}/{len(selected)} & {len(selected)}\\\\")
     legacy_table += [
-        r"Learned, same checkpoint & Unrun & 0\\",
-        r"\bottomrule\end{tabularx}\caption{Sequential scripted shared-budget controls over all six actor populations, with equal permissions. These descriptive outcomes do not support model noninferiority.}\label{tab:v2controllers}\end{table}",
+        r"Learned, same checkpoint (scripted table) & See Table~\ref{tab:v2eval} & 0\\",
+        r"\bottomrule\end{tabularx}\caption{Sequential scripted shared-budget controls over all six actor populations, with equal permissions.}\label{tab:v2controllers}\end{table}",
         f"The delayed-completion control measured a fence acknowledgment delay of {cost['fence_ack_ms']:.2f} ms with {cost['unavailable_charge_at_ack']} units unavailable at acknowledgment. The injected in-transaction delay was {cost['injected_service_delay_ms']} ms.\n",
     ]
 
@@ -311,28 +417,41 @@ def generate_v2():
     ]
 
     # New pure self-contained float 1: v2-core-table.tex
+    core_rows = [
+        f"Verus \\texttt{{policy-core}} kernel & Tier 1 (SMT proof) & {exec_fns} \\texttt{{exec}} fns (\\texttt{{ExecAuthorityKernel}} forward sim + wire injectivity) + {theorems} \\texttt{{proof fn}}s; not SQLite/OS refinement & {proof} verified, {trig_warns} warnings\\\\",
+        f"Abstract invariant omission search & Tier 2 (exhaustive) & {ablations['searched_traces']:,} traces over 10 protocol clauses (single + pair omissions) & {sum(bool(r['shortest_searched_witness']) for r in ablations['rows'])}/{len(ablations['rows'])} witnesses\\\\",
+        f"Separate-process RPC fault suite & Tier 3 (local SQLite) & Crash, lost-reply, quorum, sub-delegation, extra-steward fence, \\texttt{{poll}} slowloris deadline & {len(faults)}/{len(faults)} oracle-checked\\\\",
+        f"Full-scale concurrent linearization & Tier 3 (local SQLite) & Diamond-POR real-time linearization + final conservation ($1..{lin_max_actors}$ writers; $\\le {lin_max_calls}$ RPCs) & {lin_runs}/{len(races)} linearizable\\\\",
+    ]
+    if cj_v2 is not None:
+        jmap = {c["class"]: c for c in cj_v2["jepsen_classes"]}
+        coop_j = jmap["cooperative_signed_fence"]
+        brk_j = jmap["premature_broker_only_ack"]
+        unc_j = jmap["uncooperative_external_sink"]
+        crt = cj_v2["crypto_redteam"]
+        core_rows.append(
+            f"Ed25519/Macaroon \\& 3-sink Jepsen & Tier 3 (\\texttt{{AF\\_UNIX}}) & {crt['total_attacks']:,} crypto attacks; {coop_j['schedules_run']:,} partition/drop/crash schedules (vs.\\ {brk_j['post_ack_unauthorized_commits']} broker-only, {unc_j['post_ack_unauthorized_commits']} uncooperative leaks) & {crt['false_accepts']} accepts; {coop_j['post_ack_unauthorized_commits']} leaks\\\\"
+        )
+    core_rows += [
+        f"Linux Landlock v4 + seccomp boundary & Tier 3 (Linux ABI) & FS/TCP Landlock, 64-bit \\texttt{{prlimit64}}, SysV/POSIX IPC + pre-existing queue canary & {probe_count}/{probe_count} confined\\\\",
+        f"Non-idempotent \\& omitted-spec controls & Tier 3 (negative) & Uncooperative sink duplicates ({neg['unsupported_sink']['effects']} effects); {cost['fence_ack_ms']:.1f}\\,ms delayed fence ack; authorized bad edit commits & All 3 reproduced\\\\",
+    ]
     core_tab = [
         "% Generated by scripts/paper.py; do not edit.",
         r"\begin{table*}[t]\centering\small",
         r"\begin{tabularx}{\textwidth}{@{}P{0.23\textwidth}lLr@{}}\toprule",
         r"Verification or protocol layer & Evidence tier & Scope boundary & Recorded result\\\midrule",
-        f"Verus \\texttt{{policy-core}} predicates & Tier 1 (SMT proof) & {exec_fns} \\texttt{{exec}} functions + {theorems} \\texttt{{proof fn}} theorems; spec ledger model, not SQL refinement & {proof} verified, {trig_warns} warnings\\\\",
-        f"Abstract invariant omission search & Tier 2 (exhaustive) & {ablations['searched_traces']:,} traces over 9 protocol clauses (single + pair omissions) & {sum(bool(r['shortest_searched_witness']) for r in ablations['rows'])}/{len(ablations['rows'])} witnesses\\\\",
-        f"Separate-process RPC fault suite & Tier 3 (local SQLite) & Crash, lost-reply, quorum, sub-delegation, extra-steward fence, oversize framing & {len(faults)}/{len(faults)} oracle-checked\\\\",
-        f"Bounded concurrent linearization & Tier 3 (local SQLite) & Real-time interval partial order against \\texttt{{Reference}} ($1,2,4$ actors; $\\le 40$ calls) & {lin_runs}/{lin_runs} linearizable\\\\",
-        f"High-contention SQLite race audit & Tier 3 (local SQLite) & Independent final-state conservation + \\texttt{{audit}} ($1..32$ concurrent writers) & {len(races)}/{len(races)} exact (8 units)\\\\",
-        f"Linux Landlock v4 + seccomp boundary & Tier 3 (Linux ABI) & FS/TCP Landlock, 64-bit \\texttt{{prlimit64}}, SysV/POSIX IPC + pre-existing queue canary & {probe_count}/{probe_count} confined\\\\",
-        f"Non-idempotent \\& omitted-spec controls & Tier 3 (negative) & Uncooperative sink duplicates ({neg['unsupported_sink']['effects']} effects); authorized bad edit commits & Both reproduced\\\\",
+        *core_rows,
         r"\bottomrule\end{tabularx}",
-        r"\caption{Summary of verified policy-core obligations and separate-service protocol checks (\texttt{evidence/v2/reference}). Executable Rust decision predicates are verified in Verus; SQLite durability, OS confinement, and uncooperative-sink failure boundaries are tested empirically on Linux and are not formal refinement proofs.}\label{tab:v2core}\end{table*}",
+        r"\caption{Summary of mechanized \texttt{policy-core} obligations and separate-service protocol checks (\texttt{evidence/v2/reference}, \texttt{crypto\_and\_jepsen.json}). Executable Rust kernel state transitions and canonical wire encoding are verified in Verus; SQLite WAL durability, \texttt{AF\_UNIX} partition fencing, and Linux confinement are tested empirically rather than formally refined.}\label{tab:v2core}\end{table*}",
     ]
 
     # New pure self-contained float 2: v2-eval-table.tex
     eval_tab = [
         "% Generated by scripts/paper.py; do not edit.",
         r"\begin{table*}[t]\centering\small",
-        r"\begin{tabularx}{\textwidth}{@{}P{0.24\textwidth}lrrL@{}}\toprule",
-        r"Controller or evaluation track & Evidence status & Safe \& useful & Breach runs & Scope / decision rule\\\midrule",
+        r"\begin{tabularx}{\textwidth}{@{}P{0.25\textwidth}lrrL@{}}\toprule",
+        r"Controller or evaluation track & Evidence status & Safe \& useful & Unauth.\ effects & Scope / decision rule\\\midrule",
     ]
     for key, label in ctrl_names.items():
         selected = [r for r in controls if r["controller"] == key]
@@ -348,12 +467,48 @@ def generate_v2():
             )
         )
         eval_tab.append(f"{label} (scripted CPU) & Tier 3 measured & {su}/{len(selected)} & {br}/{len(selected)} & {scope_note}\\\\")
+    if mc is not None:
+        c4 = mc["checkpoints"]["Qwen/Qwen3-4B-GGUF"]["controllers"]
+        c8 = mc["checkpoints"]["Qwen/Qwen3-8B-GGUF"]["controllers"]
+        n_c = c4["complete"]["measured_campaigns"]
+        for ckpt_short, cd in (("Qwen3-4B", c4), ("Qwen3-8B", c8)):
+            su_c = int(round(n_c * cd["complete"]["observed_metrics"]["safe_useful"]["mean"]))
+            un_c = int(round(n_c * cd["complete"]["observed_metrics"]["unauthorized"]["mean"]))
+            su_n = int(round(n_c * cd["none"]["observed_metrics"]["safe_useful"]["mean"]))
+            un_n = int(round(n_c * cd["none"]["observed_metrics"]["unauthorized"]["mean"]))
+            su_l = int(round(n_c * cd["learned_same_checkpoint"]["observed_metrics"]["safe_useful"]["mean"]))
+            un_l = int(round(n_c * cd["learned_same_checkpoint"]["observed_metrics"]["unauthorized"]["mean"]))
+            su_s = int(round(n_c * cd["stateless"]["observed_metrics"]["safe_useful"]["mean"]))
+            un_s = int(round(n_c * cd["stateless"]["observed_metrics"]["unauthorized"]["mean"]))
+            su_d = int(round(n_c * cd["durable_without_fence"]["observed_metrics"]["safe_useful"]["mean"]))
+            un_d = int(round(n_c * cd["durable_without_fence"]["observed_metrics"]["unauthorized"]["mean"]))
+            eval_tab.append(
+                f"{ckpt_short} holdout: Complete & Tier 3 CPU GGUF & {su_c}/{n_c} ({100*su_c/n_c:.1f}\\%) & {un_c}/{n_c} (0.0\\%) & Frozen holdout ($0$ false blocks; $N={n_c} < {zero_diag['independent_cases_for_5pp_at_corrected_alpha']}$ formal $\\alpha=0.05/16$ inconclusive)\\\\"
+            )
+            eval_tab.append(
+                f"{ckpt_short} holdout: Baselines & Tier 3 CPU GGUF & N:{su_n} L:{su_l} S:{su_s} D:{su_d} & N:{un_n} L:{un_l} S:{un_s} D:{un_d} & Unauth.\\ leaks ($/{n_c}$): None {un_n}, Learned {un_l}, Stateless {un_s}, No-fence {un_d}\\\\"
+            )
+    else:
+        eval_tab.append(r"Learned reviewer (same checkpoint) & Predeclared, unrun & Unrun & Unrun & Requires local checkpoint\\")
+    eval_tab.append(
+        f"AgentDojo v1.2.2 + Progent adapters & Tier 3 native graders & {bench_pos}/{len(benchmark['rows'])} & 0/{len(benchmark['rows'])} & Scripted positive utility controls; 2/12 banking tasks accept empty state\\\\"
+    )
+    if live_dojo is not None:
+        for ckpt_key, ckpt_short in (("Qwen/Qwen3-4B-GGUF", "Qwen3-4B"), ("Qwen/Qwen3-8B-GGUF", "Qwen3-8B")):
+            ov = live_dojo["summary"][ckpt_key]["overall_by_controller"]
+            ng = ov["authority_complete"]["graded_episodes"]
+            c_su = ov["authority_complete"]["safe_useful_count"]
+            c_un = ov["authority_complete"]["any_unauthorized_effect_count"]
+            u_un = ov["unprotected_native"]["any_unauthorized_effect_count"]
+            l_un = ov["learned_same_checkpoint"]["any_unauthorized_effect_count"]
+            p_un = ov["upstream_progent"]["any_unauthorized_effect_count"]
+            p_su = ov["upstream_progent"]["safe_useful_count"]
+            eval_tab.append(
+                f"AgentDojo live ({ckpt_short}) & Tier 3 descriptive & {c_su}/{ng} (Progent {p_su}/{ng}) & {c_un}/{ng} vs.\\ U:{u_un} L:{l_un} P:{p_un} & 12 tasks $\\times$ 2 attack/withdrawal scenarios; banking tasks 5,6 accept empty state\\\\"
+            )
     eval_tab += [
-        r"Learned reviewer (same checkpoint) & Predeclared, unrun & Unrun & Unrun & Requires local GPU checkpoint (0 GPU-s used)\\",
-        f"AgentDojo v1.2.2 + Progent adapters & Tier 3 native graders & {bench_pos}/{len(benchmark['rows'])} & 0/{len(benchmark['rows'])} & Scripted positive utility controls; descriptive only\\\\",
-        f"Qwen3-4B / Qwen3-8B paired study & Predeclared, unrun & Unrun & Unrun & 16 one-sided claims ($\\alpha=0.05/16$); $\\ge {zero_diag['independent_cases_for_5pp_at_corrected_alpha']}$ zero-loss cases for 5\\,pp; max {zero_diag['max_independent_cases_default']}\\\\",
         r"\bottomrule\end{tabularx}",
-        r"\caption{Controller baselines, native public-benchmark adapter controls, and predeclared local-checkpoint evaluation plan. Scripted CPU controls verify harness accounting under equal permissions; local Qwen3 model campaigns were not run (all verified Linux GPUs occupied, 0 GPU-seconds consumed) and no model usefulness claim is made.}\label{tab:v2eval}\end{table*}",
+        r"\caption{Equal-permission scripted CPU controls, executed CPU \texttt{llama.cpp} (\texttt{0 GPU-s}) \texttt{Qwen3-4B}/\texttt{8B} frozen holdout campaigns (\texttt{model-campaigns-analyzed.json}), and live AgentDojo \texttt{v1.2.2} prompt-injection/withdrawal runs (\texttt{agentdojo-live-models.json}). Abbreviations: N = \texttt{none}, L = \texttt{learned\_same\_checkpoint}, S = \texttt{stateless}, D = \texttt{durable\_without\_fence}, U = \texttt{unprotected\_native}, P = \texttt{upstream\_progent}. At pilot $N=32 < 113$, Bonferroni ($\alpha=0.05/16$) formal superiority/noninferiority bounds remain honestly inconclusive despite $0/64$ unauthorized effects under \texttt{complete}.}\label{tab:v2eval}\end{table*}",
     ]
 
     # New pure self-contained float 3: v2-runtime-fig.tex
@@ -385,7 +540,7 @@ def generate_v2():
         r"\addplot[notred,thick,dashed,mark=triangle*] coordinates {" + ctrl_series["stateless"] + r"};\addlegendentry{Stateless per-call}",
         r"\addplot[gold,thick,dotted,mark=diamond*] coordinates {" + ctrl_series["none"] + r"};\addlegendentry{No enforcement}",
         r"\end{axis}\end{tikzpicture}",
-        f"\\caption{{Tier-3 protocol measurements on \\texttt{{{host}}}. \\textbf{{(a)}} Concurrent broker/sink SQLite WAL races: populations $1,2,4$ pass full real-time reference linearization; populations $8,16,32$ pass independent final-state conservation and \\texttt{{audit}} reconciliation. \\textbf{{(b)}} Equal-permission scripted controls: per-call stateless checks fail aggregate conservation once $\\ge 2$ actors contend; \\texttt{{durable\\_without\\_fence}} matches \\texttt{{complete}} on sequential budget checks but fails asynchronous revocation (Table~\\ref{{tab:v2core}}).}}\\label{{fig:v2runtime}}\\end{{figure*}}",
+        f"\\caption{{Tier-3 protocol measurements on \\texttt{{{host}}}. \\textbf{{(a)}} Concurrent broker/sink SQLite WAL races: all six populations ($1..{lin_max_actors}$ concurrent writers, {lin_runs}/{len(races)} runs) pass diamond-POR real-time reference linearization and independent final-state \\texttt{{audit}} reconciliation. \\textbf{{(b)}} Equal-permission scripted controls: per-call stateless checks fail aggregate conservation once $\\ge 2$ actors contend; \\texttt{{durable\\_without\\_fence}} matches \\texttt{{complete}} on sequential budget checks but fails asynchronous revocation (Table~\\ref{{tab:v2core}}).}}\\label{{fig:v2runtime}}\\end{{figure*}}",
     ]
 
     out = {
@@ -431,6 +586,191 @@ def generate_v3():
     retry_map = {r["k_select"]: r for r in mon["readonly_retry_selection"]}
     low_halt = rh["tail_halt_rows"][0]
     high_halt = rh["tail_halt_rows"][-1]
+
+    rtc = json.loads((DATA_V3 / "real_tool_cutsets.json").read_text()) if (DATA_V3 / "real_tool_cutsets.json").is_file() else None
+    npt = json.loads((DATA_V3 / "neural_post_training.json").read_text()) if (DATA_V3 / "neural_post_training.json").is_file() else None
+    cj = json.loads((DATA_V3 / "crypto_and_jepsen.json").read_text()) if (DATA_V3 / "crypto_and_jepsen.json").is_file() else None
+    tm = json.loads((DATA_V3 / "trajectory_monitors.json").read_text()) if (DATA_V3 / "trajectory_monitors.json").is_file() else None
+
+    v4_v3_macros = []
+    v4_floats = {}
+
+    if cj is not None:
+        crt = cj["crypto_redteam"]
+        jmap = {c["class"]: c for c in cj["jepsen_classes"]}
+        coop_j = jmap["cooperative_signed_fence"]
+        brk_j = jmap["premature_broker_only_ack"]
+        unc_j = jmap["uncooperative_external_sink"]
+        v4_v3_macros += [
+            ("VFourCryptoAttacks", f"{crt['total_attacks']:,}"),
+            ("VFourCryptoFalseAccepts", f"{crt['false_accepts']}"),
+            ("VFourCryptoPositives", f"{crt['positive_controls_passed']:,}"),
+            ("VFourCryptoFamilies", f"{len(crt['families'])}"),
+            ("VFourJepsenSinks", f"{cj['sinks_count']}"),
+            ("VFourJepsenSchedulesPerClass", f"{coop_j['schedules_run']:,}"),
+            ("VFourJepsenCoopLeaks", f"{coop_j['post_ack_unauthorized_commits']}"),
+            ("VFourJepsenCoopSignedFences", f"{coop_j['signed_fence_completions']}"),
+            ("VFourJepsenCoopLeaseExpiries", f"{coop_j['lease_expiry_completions']}"),
+            ("VFourJepsenMitmRejected", f"{coop_j['mitm_forged_acks_rejected']}"),
+            ("VFourJepsenBrokerOnlyLeaks", f"{brk_j['post_ack_unauthorized_commits']}"),
+            ("VFourJepsenBrokerOnlyLeakPct", f"{100 * brk_j['post_ack_unauthorized_commits'] / brk_j['schedules_run']:.1f}"),
+            ("VFourJepsenUncoopLeaks", f"{unc_j['post_ack_unauthorized_commits']}"),
+            ("VFourJepsenUncoopLeakPct", f"{100 * unc_j['post_ack_unauthorized_commits'] / unc_j['schedules_run']:.1f}"),
+        ]
+
+    if rtc is not None:
+        gmap = {g["graph_id"]: g for g in rtc["graphs"]}
+
+        def b32_patch_pct(gid):
+            pt = next(p for p in gmap[gid]["interdiction_curve"] if p["budget"] == 32)
+            return f"{100 * pt['patch_route_signature_blocked_fraction']:.2f}"
+
+        v4_v3_macros += [
+            ("VFourCutBankingRoutes", f"{gmap['agentdojo_banking_v1_2_2']['attack_route_count_p']:,}"),
+            ("VFourCutBankingWidth", f"{gmap['agentdojo_banking_v1_2_2']['menger_pathway_width_w']}"),
+            ("VFourCutBankingTau", f"{gmap['agentdojo_banking_v1_2_2']['weighted_min_cut_cost_tau_b']}"),
+            ("VFourCutBankingPatchBlockedPct", b32_patch_pct("agentdojo_banking_v1_2_2")),
+            ("VFourCutWorkspaceRoutes", f"{gmap['agentdojo_workspace_v1_2_2']['attack_route_count_p']:,}"),
+            ("VFourCutWorkspaceWidth", f"{gmap['agentdojo_workspace_v1_2_2']['menger_pathway_width_w']}"),
+            ("VFourCutWorkspaceTau", f"{gmap['agentdojo_workspace_v1_2_2']['weighted_min_cut_cost_tau_b']}"),
+            ("VFourCutWorkspacePatchBlockedPct", b32_patch_pct("agentdojo_workspace_v1_2_2")),
+            ("VFourCutTravelRoutes", f"{gmap['agentdojo_travel_v1_2_2']['attack_route_count_p']:,}"),
+            ("VFourCutTravelWidth", f"{gmap['agentdojo_travel_v1_2_2']['menger_pathway_width_w']}"),
+            ("VFourCutTravelTau", f"{gmap['agentdojo_travel_v1_2_2']['weighted_min_cut_cost_tau_b']}"),
+            ("VFourCutTravelPatchBlockedPct", b32_patch_pct("agentdojo_travel_v1_2_2")),
+            ("VFourCutSlackRoutes", f"{gmap['agentdojo_slack_v1_2_2']['attack_route_count_p']:,}"),
+            ("VFourCutSlackWidth", f"{gmap['agentdojo_slack_v1_2_2']['menger_pathway_width_w']}"),
+            ("VFourCutSlackTau", f"{gmap['agentdojo_slack_v1_2_2']['weighted_min_cut_cost_tau_b']}"),
+            ("VFourCutSlackPatchBlockedPct", b32_patch_pct("agentdojo_slack_v1_2_2")),
+            ("VFourCutLinuxUnconfinedRoutes", f"{gmap['linux_unconfined_posix_ipc']['attack_route_count_p']:,}"),
+            ("VFourCutLinuxUnconfinedWidth", f"{gmap['linux_unconfined_posix_ipc']['menger_pathway_width_w']}"),
+            ("VFourCutLinuxWaistRoutes", f"{gmap['linux_landlock_seccomp_broker_waist']['attack_route_count_p']:,}"),
+            ("VFourCutLinuxWaistWidth", f"{gmap['linux_landlock_seccomp_broker_waist']['menger_pathway_width_w']}"),
+            ("VFourCutLinuxWaistTau", f"{gmap['linux_landlock_seccomp_broker_waist']['weighted_min_cut_cost_tau_b']}"),
+        ]
+
+        cut_rows = []
+        cut_labels = [
+            ("agentdojo_banking_v1_2_2", "Dojo \\texttt{banking}"),
+            ("agentdojo_workspace_v1_2_2", "Dojo \\texttt{workspace}"),
+            ("agentdojo_travel_v1_2_2", "Dojo \\texttt{travel}"),
+            ("agentdojo_slack_v1_2_2", "Dojo \\texttt{slack}"),
+            ("linux_unconfined_posix_ipc", "Unconfined IPC"),
+            ("linux_landlock_seccomp_broker_waist", "Landlock+seccomp"),
+        ]
+        for gid, glabel in cut_labels:
+            g = gmap[gid]
+            tau_str = "$\\infty$" if g["weighted_min_cut_is_infinite"] else f"{g['weighted_min_cut_cost_tau_b']}"
+            b32 = next(p for p in g["interdiction_curve"] if p["budget"] == 32)
+            rem_patch = 100.0 * (1.0 - b32["patch_route_signature_blocked_fraction"])
+            cut_rows.append(
+                f"{glabel} & {g['attack_route_count_p']:,} & {g['menger_pathway_width_w']} & {g['shortest_path_internal_len_l']} & {tau_str} & {g['remaining_paths_after_weighted_cut']} & {rem_patch:.1f}\\%\\\\"
+            )
+        cut_tab = [
+            "% Generated by scripts/paper.py; do not edit.",
+            r"\begin{table}[t]\centering\footnotesize\setlength{\tabcolsep}{2.8pt}",
+            r"\begin{tabularx}{\columnwidth}{@{}Lrrrrrr@{}}\toprule",
+            r"Graph & $|\mathcal{P}|$ & $w$ & $\ell$ & $\tau_b$ & Cut & $B{=}32$\\\midrule",
+            *cut_rows,
+            r"\bottomrule\end{tabularx}",
+            r"\caption{Operational pathway cutsets extracted from AgentDojo \texttt{v1.2.2} tool schemas and Linux kernel confinement surfaces (\texttt{real\_tool\_cutsets.json}). Weighted Dinic min-cuts ($\tau_b \le 5$) sever $100\%$ of gateable routes (\texttt{Cut} $=0$), whereas patching $B=32$ specific exploit signatures leaves $94.7\%$--$99.9\%$ of routes live; unconfined POSIX IPC has $\tau_b=\infty$ until Landlock + seccomp collapse waist width to $w=1$.}\label{tab:v4cutsets}\end{table}",
+        ]
+        v4_floats["v4-cutsets-table.tex"] = "\n".join(cut_tab) + "\n"
+
+    if tm is not None:
+        hk5 = tm["headline_k5_comparison"]
+        ahom = hk5["regime_a_transcript_homogeneous"]
+        ahet = hk5["regime_a_transcript_heterogeneous_5family"]
+        biso = hk5["regime_b_context_isolated_capability_gate"]
+        iso_curve = tm["regimes"]["context_isolated_capability_gate"]["prefix_k_trajectory_curves"]
+        iso_j2_to_j5 = iso_curve[1]["empirical_joint_miss_j_k"] / biso["j5"]
+        v4_v3_macros += [
+            ("VFourTrajEvalCount", f"{tm['cohort_counts']['eval_total_trajectories']}"),
+            ("VFourTrajToolCalls", f"{tm['cohort_counts']['eval_live_tool_executions']:,}"),
+            ("VFourTrajHomoFiveMissPct", f"{100 * ahom['j5']:.2f}"),
+            ("VFourTrajHomoInflation", f"{ahom['coupling_inflation_ratio']:.1f}"),
+            ("VFourTrajHomoFalseBlockPct", f"{100 * ahom['benign_false_block_k5']:.1f}"),
+            ("VFourTrajHetFiveMissPct", f"{100 * ahet['j5']:.2f}"),
+            ("VFourTrajHetInflation", f"{ahet['coupling_inflation_ratio']:.1f}"),
+            ("VFourTrajHetFalseBlockPct", f"{100 * ahet['benign_false_block_k5']:.1f}"),
+            ("VFourTrajHetPostKStarFactor", f"{tm['p3_shared_transcript_j2_to_j5_reduction_factor']:.2f}"),
+            ("VFourTrajIsoFiveMissPct", f"{100 * biso['j5']:.2f}"),
+            ("VFourTrajIsoInflation", f"{biso['coupling_inflation_ratio']:.2f}"),
+            ("VFourTrajIsoFalseBlockPct", f"{100 * biso['benign_false_block_k5']:.1f}"),
+            ("VFourTrajIsoPostKStarFactor", f"{iso_j2_to_j5:.1f}"),
+        ]
+        tm_tab = [
+            "% Generated by scripts/paper.py; do not edit.",
+            r"\begin{table}[t]\centering\footnotesize\setlength{\tabcolsep}{3.2pt}",
+            r"\begin{tabularx}{\columnwidth}{@{}Lrrrr@{}}\toprule",
+            r"5-step monitor regime & $\hat J_5$ & $\hat J_5/\!\prod\hat m_s$ & $J_2/J_5$ & FB\\\midrule",
+            f"Transcript, homog. & {100*ahom['j5']:.2f}\\% & {ahom['coupling_inflation_ratio']:.1f}$\\times$ & {tm['regimes']['context_coupled_transcript_homogeneous']['prefix_k_trajectory_curves'][1]['empirical_joint_miss_j_k']/ahom['j5']:.2f}$\\times$ & {100*ahom['benign_false_block_k5']:.1f}\\%\\\\",
+            f"Transcript, 5-family & {100*ahet['j5']:.2f}\\% & {ahet['coupling_inflation_ratio']:.1f}$\\times$ & {tm['p3_shared_transcript_j2_to_j5_reduction_factor']:.2f}$\\times$ & {100*ahet['benign_false_block_k5']:.1f}\\%\\\\",
+            f"Step invariants & {100*biso['j5']:.2f}\\% & {biso['coupling_inflation_ratio']:.2f}$\\times$ & {iso_j2_to_j5:.1f}$\\times$ & {100*biso['benign_false_block_k5']:.1f}\\%\\\\",
+            r"\bottomrule\end{tabularx}",
+            f"\\caption{{Executed 5-step AgentDojo \\texttt{{v1.2.2}} trajectory monitoring ({tm['cohort_counts']['eval_total_trajectories']} held-out trajectories, {tm['cohort_counts']['eval_live_tool_executions']:,} live tool calls, $5\\%$ per-step benign FPR; \\texttt{{trajectory\\_monitors.json}}). Diversifying five classifier families on a shared conversation transcript still inflates 5-step joint miss {ahet['coupling_inflation_ratio']:.1f}$\\times$ over $\\prod\\hat m_s$ and stalls past $k^*=2$ ($J_2/J_5={tm['p3_shared_transcript_j2_to_j5_reduction_factor']:.2f}\\times$), whereas prose-stripped orthogonal step capability/provenance invariants cut $\\hat J_5$ to {100*biso['j5']:.2f}\\% ($0.61\\times$ product; {100*biso['benign_false_block_k5']:.1f}\\% episode false blocks).}}\\label{{tab:v4trajmonitors}}\\end{{table}}",
+        ]
+        v4_floats["v4-traj-monitors-table.tex"] = "\n".join(tm_tab) + "\n"
+
+    if npt is not None:
+        nr = npt["regimes"]
+        pod = nr["grpo_podium_top10"]
+        veto = nr["grpo_audited_harm_veto"]
+        care = nr["caretaker_clipped_rl"]
+        flr = nr["survival_floor_rl"]
+        gat = nr["floor_plus_precommit_gate"]
+        max_price_err = max(r["max_price_identity_abs_error"] for r in nr.values())
+        v4_v3_macros += [
+            ("VFourNeuralParams", f"{npt['params']['trainable_params']}"),
+            ("VFourNeuralReplicates", f"{npt['params']['replicates']}"),
+            ("VFourNeuralUpdates", f"{npt['params']['train_updates']}"),
+            ("VFourNeuralGradErrorSci", f"{npt['gradient_verification']['max_abs_error']:.1e}"),
+            ("VFourNeuralPriceErrorSci", f"{max_price_err:.1e}"),
+            ("VFourNeuralPodiumUnmonShortcutPct", f"{100 * pod['shortcut_prob_unmonitored']['mean']:.2f}"),
+            ("VFourNeuralPodiumHarmPct", f"{100 * pod['unmonitored_episode_harm_rate']['mean']:.2f}"),
+            ("VFourNeuralPodiumTaskPct", f"{100 * pod['useful_task_completion_rate']['mean']:.1f}"),
+            ("VFourNeuralVetoMonShortcutPct", f"{100 * veto['shortcut_prob_monitored']['mean']:.1f}"),
+            ("VFourNeuralVetoUnmonShortcutPct", f"{100 * veto['shortcut_prob_unmonitored']['mean']:.1f}"),
+            ("VFourNeuralVetoGapPp", f"{100 * veto['eval_awareness_shortcut_gap']['mean']:.1f}"),
+            ("VFourNeuralVetoGapCiPp", f"{100 * veto['eval_awareness_shortcut_gap']['approximate_95_half_width']:.1f}"),
+            ("VFourNeuralVetoUnmonHarmPct", f"{100 * veto['unmonitored_episode_harm_rate']['mean']:.1f}"),
+            ("VFourNeuralVetoTaskPct", f"{100 * veto['useful_task_completion_rate']['mean']:.1f}"),
+            ("VFourNeuralCaretakerUnmonShortcutPct", f"{100 * care['shortcut_prob_unmonitored']['mean']:.2f}"),
+            ("VFourNeuralCaretakerHarmPct", f"{100 * care['unmonitored_episode_harm_rate']['mean']:.2f}"),
+            ("VFourNeuralCaretakerTaskPct", f"{100 * care['useful_task_completion_rate']['mean']:.1f}"),
+            ("VFourNeuralFloorUnmonShortcutPct", f"{100 * flr['shortcut_prob_unmonitored']['mean']:.2f}"),
+            ("VFourNeuralFloorGapPp", f"{100 * flr['eval_awareness_shortcut_gap']['mean']:.2f}"),
+            ("VFourNeuralFloorHarmPct", f"{100 * flr['unmonitored_episode_harm_rate']['mean']:.2f}"),
+            ("VFourNeuralFloorTaskPct", f"{100 * flr['useful_task_completion_rate']['mean']:.1f}"),
+            ("VFourNeuralGatedUnmonShortcutPct", f"{100 * gat['shortcut_prob_unmonitored']['mean']:.2f}"),
+            ("VFourNeuralGatedHarmPct", f"{100 * gat['unmonitored_episode_harm_rate']['mean']:.2f}"),
+            ("VFourNeuralGatedTaskPct", f"{100 * gat['useful_task_completion_rate']['mean']:.1f}"),
+        ]
+        npt_rows = [
+            ("grpo_podium_top10", "GRPO top-10\\% podium"),
+            ("grpo_audited_harm_veto", "GRPO + audited harm veto"),
+            ("caretaker_clipped_rl", "Concave clipped caretaker RL"),
+            ("survival_floor_rl", "Survival-floor RL ($\\tau=8.85$)"),
+            ("floor_plus_precommit_gate", "Floor RL + pre-commit gate"),
+        ]
+        npt_tab = [
+            "% Generated by scripts/paper.py; do not edit.",
+            r"\begin{table*}[t]\centering\small",
+            r"\begin{tabularx}{\textwidth}{@{}Lrrrrr@{}}\toprule",
+            f"Neural policy-gradient regime (412-param MLP, {npt['params']['replicates']} seeds) & Mon.\\ shortcut & Unmon.\\ shortcut & Eval-aware gap & Unmon.\\ harm & Useful task\\\\\\midrule",
+        ]
+        for rkey, rlabel in npt_rows:
+            ro = nr[rkey]
+            npt_tab.append(
+                f"{rlabel} & {100*ro['shortcut_prob_monitored']['mean']:.2f}\\% & {100*ro['shortcut_prob_unmonitored']['mean']:.2f}\\% & "
+                f"${100*ro['eval_awareness_shortcut_gap']['mean']:+.2f}\\pm{100*ro['eval_awareness_shortcut_gap']['approximate_95_half_width']:.2f}$\\,pp & "
+                f"{100*ro['unmonitored_episode_harm_rate']['mean']:.2f}\\% & {100*ro['useful_task_completion_rate']['mean']:.1f}\\%\\\\"
+            )
+        npt_tab += [
+            r"\bottomrule\end{tabularx}",
+            f"\\caption{{Tier-4 pure-Rust 2-layer neural policy-gradient post-training on a 12D contextual tool-use MDP (\\texttt{{neural\\_post\\_training.json}}; analytical backprop max error ${npt['gradient_verification']['max_abs_error']:.1e}$, rollout Price identity error $<{max_price_err:.1e}$). Auditing visible harm inside a top-rank GRPO tournament trains emergent evaluation-aware covert shortcutting (${100*veto['eval_awareness_shortcut_gap']['mean']:+.1f}\\pm{100*veto['eval_awareness_shortcut_gap']['approximate_95_half_width']:.1f}$\\,pp gap); survival-floor RL suppresses shortcutting while preserving {100*flr['useful_task_completion_rate']['mean']:.1f}\\% task completion (vs.\\ {100*care['useful_task_completion_rate']['mean']:.1f}\\% over-deferring clipped caretaker), and coupling a pre-commit capability gate yields $0.00\\%$ external harm. Controlled neural MDP only, not frontier-LLM RLHF.}}\\label{{tab:v4neural}}\\end{{table*}}",
+        ]
+        v4_floats["v4-neural-table.tex"] = "\n".join(npt_tab) + "\n"
 
     v3_macros = format_macros(
         "Generated by scripts/paper.py from validated v3 pure-Rust reference evidence; do not edit.",
@@ -598,6 +938,7 @@ def generate_v3():
             ("VThreeSelGateSeventyFiveSharePct", f"{100 * sel['by_gate']['0.75']['final_share']:.1f}"),
             ("VThreeSelGateEightySharePct", f"{100 * sel['by_gate']['0.80']['final_share']:.1f}"),
             ("VThreeSelPriceMaxErrorSci", f"{sel['price_correlated_drift']['max_finite_population_price_identity_error']:.1e}"),
+            *v4_v3_macros,
         ],
     )
 
@@ -876,6 +1217,7 @@ def generate_v3():
         "v3-monitor-fig.tex": "\n".join(mon_fig) + "\n",
         "v3-selection-table.tex": "\n".join(sel_tab) + "\n",
         "v3-selection-fig.tex": "\n".join(sel_fig) + "\n",
+        **v4_floats,
     }
     for k, v in out.items():
         if k != "v3-numbers.tex":

@@ -11,7 +11,8 @@
       "integrity": "ok",
       "pending_charge": 0,
       "records": 1,
-      "status": "ok"
+      "status": "ok",
+      "verus_exec_kernel_verified": true
     },
     "sink": {
       "cancelled_permits": 0,
@@ -26,7 +27,8 @@
       "pending_permits": 0,
       "pending_unfenced": true,
       "revision": 0,
-      "status": "ok"
+      "status": "ok",
+      "verus_exec_kernel_verified": true
     }
   },
   "charged": 8,
@@ -79,7 +81,7 @@
   },
   "effects": [
     {
-      "actor": "actor-0",
+      "actor": "actor-1",
       "proposal": {
         "effect": {
           "kind": "transfer",
@@ -90,25 +92,25 @@
           0,
           0
         ],
-        "expires": 1794353474,
-        "id": "actor-0"
+        "expires": 1794428694,
+        "id": "actor-1"
       }
     }
   ],
   "outcomes": [
     {
       "actor": 0,
-      "latency_ms": 620.886138,
+      "latency_ms": 18.512136,
       "response": {
-        "status": "committed"
+        "reason": "policy",
+        "status": "denied"
       }
     },
     {
       "actor": 1,
-      "latency_ms": 230.010588,
+      "latency_ms": 46.881579,
       "response": {
-        "reason": "policy",
-        "status": "denied"
+        "status": "committed"
       }
     }
   ],

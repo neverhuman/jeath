@@ -11,7 +11,7 @@
 //! synthetic mechanism simulations. They are not OS sandbox proofs, external exactly-once
 //! guarantees, frontier-LLM benchmarks, or human-participant measurements.
 
-use crate::rng::Rng;
+use crate::{rng::Rng, v3_monitors::norm_cdf};
 use serde::Serialize;
 
 // ============================================================================
@@ -438,6 +438,10 @@ pub struct TailHaltLoadRow {
     pub p95_reactive_halt_ms: f64,
     pub p99_reactive_halt_ms: f64,
     pub reactive_mean_under_deadline: bool,
+    /// Closed-form lower bound `Pr(T_a(rho) >= T_irrev) = 1 - Phi((ln(T_irrev) - mu_a) / sigma_a)`
+    /// (since `T_d > 0` and `T_s > 0`, `Pr(T_d + T_a + T_s >= T_irrev)` strictly exceeds this tail,
+    /// and even at base `rho = 0` before queueing amplification `1/(1-rho) >= 1` it stays `> 0`).
+    pub analytical_reactive_exceedance_lower_bound: f64,
     pub reactive_post_revoke_leaks: usize,
     pub reactive_post_revoke_leak_rate: f64,
     pub precommit_fenced_post_revoke_violations: usize,
@@ -608,6 +612,9 @@ pub fn risk_horizon_suite(seed: u64, quick: bool) -> RiskHorizonSuite {
         let mean_ms = total_delays.iter().sum::<f64>() / episodes as f64;
         let p95_ms = total_delays[((0.95 * episodes as f64) as usize).min(episodes - 1)];
         let p99_ms = total_delays[((0.99 * episodes as f64) as usize).min(episodes - 1)];
+        let mu_a = (8.0 / (1.0 - rho)).ln() - 0.28;
+        let sigma_a = 0.75_f64;
+        let analytical_lower_bound = 1.0 - norm_cdf((t_irreversible_ms.ln() - mu_a) / sigma_a);
 
         tail_halt_rows.push(TailHaltLoadRow {
             rho_load: rho,
@@ -617,6 +624,7 @@ pub fn risk_horizon_suite(seed: u64, quick: bool) -> RiskHorizonSuite {
             p95_reactive_halt_ms: p95_ms,
             p99_reactive_halt_ms: p99_ms,
             reactive_mean_under_deadline: mean_ms < t_irreversible_ms,
+            analytical_reactive_exceedance_lower_bound: analytical_lower_bound,
             reactive_post_revoke_leaks: reactive_leaks,
             reactive_post_revoke_leak_rate: reactive_leaks as f64 / episodes as f64,
             precommit_fenced_post_revoke_violations: precommit_violations,
@@ -1395,12 +1403,23 @@ mod tests {
         );
 
         assert!(res.tail_halt_rows[0].reactive_mean_under_deadline);
+        assert!(res.tail_halt_rows[0].analytical_reactive_exceedance_lower_bound > 0.0);
         assert!(res.tail_halt_rows[0].reactive_post_revoke_leaks > 0);
+        assert!(
+            res.tail_halt_rows
+                .windows(2)
+                .all(|w| w[1].analytical_reactive_exceedance_lower_bound
+                    > w[0].analytical_reactive_exceedance_lower_bound)
+        );
         assert!(
             res.tail_halt_rows
                 .iter()
                 .all(|r| r.precommit_fenced_post_revoke_violations == 0)
         );
+        for extra_seed in 1..=16_u64 {
+            let q = risk_horizon_suite(20261110 + extra_seed * 7919, true);
+            assert!(q.tail_halt_rows[0].analytical_reactive_exceedance_lower_bound > 0.0);
+        }
     }
 
     #[test]

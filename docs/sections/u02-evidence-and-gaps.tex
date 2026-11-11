@@ -77,9 +77,9 @@ upfront.
 \textbf{Tier 1:} Mechanized core &
   Pinned Verus SMT (\texttt{policy-core}: \VTwoProofs{} obligations,
   \VTwoExecFns{} \texttt{exec}, \VTwoTheorems{} \texttt{proof fn}) \cite{verus} &
-  Total decision-predicate equivalence and inductive conservation/fence invariants
-  over a \texttt{spec} ledger model &
-  Not formal refinement of SQLite WAL, JSON framing, normalization, or the Linux
+  Predicate equivalence, concrete \texttt{ExecBroker\allowbreak Kernel}/\allowbreak\texttt{ExecSink\allowbreak Kernel}
+  forward-simulation refinement, and canonical wire-encoding injectivity &
+  Not formal refinement of SQLite WAL, outer JSON RPC framing, or the Linux
   kernel\\
 \textbf{Tier 2:} Analytical \& finite-state &
   Closed-form proofs (App.~\ref{app:proofs}); V1 \CheckedStates-state BFS; V2
@@ -88,48 +88,51 @@ upfront.
   and transition models &
   Silent on unmodeled channels, physical bypasses, or omitted harm predicates
   (\OmittedStates-state control)\\
-\textbf{Tier 3:} Local systems \& OS &
-  Rust/SQLite broker+sink (\VTwoFaults{} faults,
-  \VTwoLinearizedRuns/\VTwoLinearizedRuns{} RPC linearizations, \VTwoRaceRuns{}
-  races, \VTwoProbes/\VTwoProbes{} Linux probes,
-  \VTwoBenchmarkUtilityPositives/\VTwoBenchmarkControls{} adapters) &
-  Separate-process reservation, sub-delegation epoch fencing, bounded $1,2,4$-actor
-  linearizability, IPC/FS/TCP confinement &
-  Mediates cooperative local SQLite state only (not arbitrary external APIs or
-  unbounded DoS); scripted benchmark positives (2/12 empty-state banking passes)\\
+\textbf{Tier 3:} Local systems, OS \& CPU LLMs &
+  SQLite broker+sink (\VTwoFaults{} faults,
+  \VTwoLinearizedRuns/\VTwoRaceRuns{} $1..\VTwoLinearizedMaxActors$-actor RPC
+  linearizations, Ed25519/\texttt{AF\_UNIX} Jepsen, \VTwoProbes/\VTwoProbes{} probes,
+  \VFourHoldoutTotalCampaigns{} CPU \texttt{Qwen3} runs, AgentDojo/Linux cutsets \&
+  \VFourTrajEvalCount{} 5-step trajectories) &
+  Separate-process reservation, signed sink fencing, concurrent linearizability, IPC
+  confinement, operational tool cutsets, and empirical CPU checkpoint mediation &
+  Local SQLite/socket scope (not uncooperative external APIs); pilot
+  $N{=}\VFourHoldoutCasesPerCheckpoint < \VTwoZeroLossCasesMin$ leaves Bonferroni
+  claims inconclusive; 2/12 banking tasks accept empty state\\
 \textbf{Tier 4:} Synthetic \texttt{SplitMix64} &
-  Deterministic pure-Rust V3 suite (\texttt{seed 20261110}, 16 JSON artifacts;
-  App.~\ref{app:simulations}) &
+  Deterministic pure-Rust V3/V4 suite (\texttt{seed 20261110}, 19 JSON artifacts
+  including 412-param neural RL; App.~\ref{app:simulations}) &
   Scaling laws and negative controls across lag, 8-stage DAG cuts, Zipf/Good--Turing,
-  Fisher audits, 20D 6-family gates, selection &
+  Fisher audits, 20D 6-family gates, Price \& neural RL selection &
   Standalone synthetic mechanics (not \texttt{sklearn} bit-replication, frontier-LLM
-  error correlation, or human behavioral data)\\
-\textbf{Tier 5:} Predeclared \& governance &
-  \VTwoComponentClaims-claim Qwen3-4B/8B harness (\VTwoGpuSecondsUsed{} GPU-s;
-  App.~\ref{app:predeclared}); $3{\times}3{\times}2$ care protocol; 12-field record
-  (App.~\ref{app:record}) &
-  Preregistered roster-bound statistical design
-  ($\ge\VTwoZeroLossCasesMin/\VTwoMaxDefaultCases$ zero-loss cases for
-  \VTwoNoninferiorityMarginPp\,pp NI) and renewal governance &
-  Unexecuted on GPU checkpoints or human participants; confers zero empirical
-  model-utility or Indigenous-consultation claims\\
+  RLHF, or human behavioral data)\\
+\textbf{Tier 5:} Full-power \& governance &
+  Full-scale $N{\ge}\VTwoZeroLossCasesMin$ Qwen3/frontier power target
+  (\VTwoGpuSecondsUsed{} GPU-s; App.~\ref{app:predeclared}); $3{\times}3{\times}2$
+  human/care study; 12-field record (App.~\ref{app:record}) &
+  Preregistered roster-bound design for \VTwoNoninferiorityMarginPp\,pp NI at
+  $\alpha{=}0.05/\VTwoComponentClaims$, human conferral protocol, and renewal governance &
+  Full $N{\ge}\VTwoZeroLossCasesMin$ checkpoint power, frontier transfer, and human
+  trials remain open; zero Indigenous consultation claimed\\
 \midrule
 \multicolumn{4}{@{}l}{\textbf{Part B: Six Sufficiency Conditions for Bounded Period Reach}
   (Theorem~\ref{u03:thm:main}, Section~\ref{sec:theory})}\\
 \textbf{C1:} Mediation \& halt &
   Tiers 1--3 (\S\ref{sec:core}, \S\ref{sec:eval}) &
-  Pre-commit reservation $\B_t$ and sink epoch fence enforce A1--A2
+  Pre-commit reservation $\B_t$ and signed sink epoch fence enforce A1--A2
   ($\tau < T_{\mathrm{irrev}}$) &
   Unmediated human speech and uncooperative external sinks remain open\\
 \textbf{C2:} Narrow cutset width &
-  Tiers 2, 4 (\S\ref{sec:graphs}) &
-  $k$ disjoint weighted vertex cuts of cost $\tau_b(\mathcal{P})$ fit within defense
-  budget &
-  Real-world physical/cyber hazard graph width $w$ is unmeasured\\
+  Tiers 2--4 (\S\ref{sec:graphs}) &
+  Weighted vertex cuts $\tau_b(\mathcal{P})$ sever AgentDojo \texttt{v1.2.2} and
+  confined Linux IPC DAGs &
+  Open-world physical/cyber hazard graph width $w$ remains unmeasured\\
 \textbf{C3:} Distinct-step gates &
-  Tiers 2, 4 (\S\ref{sec:monitors}) &
-  Gates inspect distinct steps; joint miss $J_k$ is measured under adaptive attack &
-  Shared-step ensembles fail independence; real multi-step separability is open\\
+  Tiers 2--4 (\S\ref{sec:monitors}) &
+  Prose-stripped step invariants cut 5-step AgentDojo miss to
+  \VFourTrajIsoFiveMissPct\% vs.\ transcript coupling &
+  Compounds benign false blocks (\VFourTrajIsoFalseBlockPct\%); open-ended task
+  separability remains open\\
 \textbf{C4:} Honest capable search &
   Tiers 2, 4 (\S\ref{sec:graphs}) &
   Searchers with planted-audit recall bound bypass prior via $\pi_t$ &

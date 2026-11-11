@@ -1,0 +1,133 @@
+{
+  "schema_version": 4,
+  "transport": "af_unix_stream_framed_threads",
+  "sinks_count": 3,
+  "sink_ids": [
+    "sink-0-transfer",
+    "sink-1-release",
+    "sink-2-edit-ext"
+  ],
+  "schedules_per_class": 1000,
+  "crypto_redteam": {
+    "seed": 5871781006546510435,
+    "total_attacks": 10000,
+    "false_accepts": 0,
+    "positive_controls_checked": 10000,
+    "positive_controls_passed": 10000,
+    "families": [
+      {
+        "family": "quorum_sig_bitflip",
+        "attempts": 1006,
+        "false_accepts": 0
+      },
+      {
+        "family": "proposal_payload_tamper",
+        "attempts": 1020,
+        "false_accepts": 0
+      },
+      {
+        "family": "cross_sink_quorum_replay",
+        "attempts": 995,
+        "false_accepts": 0
+      },
+      {
+        "family": "canonical_framing_boundary_splice",
+        "attempts": 976,
+        "false_accepts": 0
+      },
+      {
+        "family": "missing_or_wrong_issuer_quorum",
+        "attempts": 981,
+        "false_accepts": 0
+      },
+      {
+        "family": "macaroon_caveat_truncation",
+        "attempts": 950,
+        "false_accepts": 0
+      },
+      {
+        "family": "macaroon_offline_attenuation_inflation",
+        "attempts": 1007,
+        "false_accepts": 0
+      },
+      {
+        "family": "macaroon_tag_or_root_bitflip",
+        "attempts": 1044,
+        "false_accepts": 0
+      },
+      {
+        "family": "forged_dos_fence_certificate",
+        "attempts": 998,
+        "false_accepts": 0
+      },
+      {
+        "family": "mitm_stripped_or_stale_fence_ack",
+        "attempts": 1023,
+        "false_accepts": 0
+      }
+    ]
+  },
+  "jepsen_classes": [
+    {
+      "class": "cooperative_signed_fence",
+      "schedules_run": 1000,
+      "asymmetric_partitions_injected": 472,
+      "packet_drops_injected": 957,
+      "packet_delays_injected": 629,
+      "packet_reorders_injected": 981,
+      "packet_duplicates_injected": 1959,
+      "crash_restarts_injected": 381,
+      "mitm_forged_acks_injected": 246,
+      "mitm_forged_acks_rejected": 246,
+      "signed_fence_completions": 288,
+      "lease_expiry_completions": 712,
+      "post_ack_unauthorized_commits": 0,
+      "global_budget_breaches": 0,
+      "partition_invariant_breaches": 0,
+      "duplicate_effect_breaches": 0,
+      "max_committed_spend_observed": 6,
+      "global_budget_cap": 12
+    },
+    {
+      "class": "premature_broker_only_ack",
+      "schedules_run": 1000,
+      "asymmetric_partitions_injected": 472,
+      "packet_drops_injected": 957,
+      "packet_delays_injected": 629,
+      "packet_reorders_injected": 981,
+      "packet_duplicates_injected": 1959,
+      "crash_restarts_injected": 381,
+      "mitm_forged_acks_injected": 246,
+      "mitm_forged_acks_rejected": 246,
+      "signed_fence_completions": 0,
+      "lease_expiry_completions": 0,
+      "post_ack_unauthorized_commits": 791,
+      "global_budget_breaches": 0,
+      "partition_invariant_breaches": 0,
+      "duplicate_effect_breaches": 0,
+      "max_committed_spend_observed": 6,
+      "global_budget_cap": 12
+    },
+    {
+      "class": "uncooperative_external_sink",
+      "schedules_run": 1000,
+      "asymmetric_partitions_injected": 472,
+      "packet_drops_injected": 957,
+      "packet_delays_injected": 629,
+      "packet_reorders_injected": 981,
+      "packet_duplicates_injected": 1959,
+      "crash_restarts_injected": 381,
+      "mitm_forged_acks_injected": 246,
+      "mitm_forged_acks_rejected": 246,
+      "signed_fence_completions": 288,
+      "lease_expiry_completions": 712,
+      "post_ack_unauthorized_commits": 276,
+      "global_budget_breaches": 0,
+      "partition_invariant_breaches": 0,
+      "duplicate_effect_breaches": 0,
+      "max_committed_spend_observed": 6,
+      "global_budget_cap": 12
+    }
+  ],
+  "elapsed_ms": 26853.342481
+}

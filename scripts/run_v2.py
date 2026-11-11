@@ -598,12 +598,9 @@ def race_suite(root, repeats):
             observed = effects(lab.sink.database)
             concurrent_history = list(lab.history)
             write(lab.directory / "history.json", concurrent_history)
-            if workers in (1, 2, 4):
-                concurrent_report = check_concurrent(concurrent_history, observed)
-                assert concurrent_report["checked"] is True, concurrent_report
-                write(lab.directory / "concurrent-check.json", concurrent_report)
-            else:
-                concurrent_report = None
+            concurrent_report = check_concurrent(concurrent_history, observed)
+            assert concurrent_report["checked"] is True, concurrent_report
+            write(lab.directory / "concurrent-check.json", concurrent_report)
             state = lab.broker.call(op="inspect")
             audits = lab.audit()
             assert len(observed) == 1 and sum(charge(x["proposal"]) for x in observed) == state["charged"] == 8
@@ -977,7 +974,7 @@ def main():
                 )
                 for f in ROOT.glob(pattern)
             },
-            "model_results": "not_run; local-checkpoint campaigns run separately via scripts/infer_v2.py",
+            "model_results": "recorded in model-campaigns-analyzed.json and agentdojo-live-models.json when present; otherwise run via scripts/infer_v2.py and scripts/benchmark_v2.py",
             "recorded_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         }
     )

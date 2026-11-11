@@ -1,5 +1,7 @@
 pub mod campaigns;
 pub mod coverage;
+pub mod crypto_authority;
+pub mod distributed_sinks;
 pub mod graph;
 pub mod isolation_v2;
 pub mod model;
@@ -15,3 +17,5 @@ pub mod v3_coverage;
 pub mod v3_graphs;
 pub mod v3_monitors;
 pub mod v3_selection;
+pub mod v4_neural_rl;
+pub mod v4_real_graphs;

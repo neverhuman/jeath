@@ -1,8 +1,9 @@
 use authority_lab::{
-    campaigns, coverage, graph, model, monitors,
+    campaigns, coverage, distributed_sinks, graph, model, monitors,
     runtime::{Executor, Phase, Request},
     runtime_experiments::{self, write_json},
     selection, stats, v3_core_models, v3_coverage, v3_graphs, v3_monitors, v3_selection,
+    v4_neural_rl, v4_real_graphs,
 };
 use std::{fs, path::Path, time::Instant};
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
@@ -253,6 +254,18 @@ fn run() -> Result<()> {
             write_json(
                 &output.join("selection_v3.json"),
                 &v3_selection::selection_v3_suite(seed, quick),
+            )?;
+            write_json(
+                &output.join("real_tool_cutsets.json"),
+                &v4_real_graphs::real_tool_cutsets_suite(seed, quick),
+            )?;
+            write_json(
+                &output.join("neural_post_training.json"),
+                &v4_neural_rl::neural_post_training_suite(seed, quick),
+            )?;
+            write_json(
+                &output.join("crypto_and_jepsen.json"),
+                &distributed_sinks::crypto_and_jepsen_suite(seed, quick),
             )?;
             write_json(
                 &output.join("complete.json"),

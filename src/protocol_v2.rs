@@ -3,7 +3,7 @@ use rusqlite::{Connection, OptionalExtension, TransactionBehavior, params};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::HashSet,
-    io::{self, BufRead, Write},
+    io::{self, Write},
     path::Path,
     time::Duration,
 };
@@ -84,6 +84,38 @@ impl Effect {
             } => document == "toy.rs" && contents.len() <= 4096,
         }
     }
+    pub fn to_exec_fields(&self) -> (u8, u64, u64, Vec<u8>, Vec<u8>) {
+        match self {
+            Self::Transfer { recipient, units } => (
+                policy_core::EFFECT_TRANSFER,
+                *units,
+                0,
+                recipient.as_bytes().to_vec(),
+                Vec::new(),
+            ),
+            Self::Release {
+                destination,
+                contents,
+            } => (
+                policy_core::EFFECT_RELEASE,
+                1,
+                0,
+                destination.as_bytes().to_vec(),
+                contents.as_bytes().to_vec(),
+            ),
+            Self::Edit {
+                document,
+                expected_revision,
+                contents,
+            } => (
+                policy_core::EFFECT_EDIT,
+                1,
+                *expected_revision,
+                document.as_bytes().to_vec(),
+                contents.as_bytes().to_vec(),
+            ),
+        }
+    }
 }
 
 fn min_required_for_scope(scope: &[bool], issuers: usize) -> Vec<bool> {
@@ -118,6 +150,24 @@ pub struct Permit {
     pub actor: String,
     pub proposal: Proposal,
 }
+impl Permit {
+    pub fn to_exec_wire(&self) -> policy_core::ExecPermitWire {
+        let (effect_kind, amount, expected_rev, target, contents) =
+            self.proposal.effect.to_exec_fields();
+        policy_core::ExecPermitWire {
+            id: self.proposal.id.as_bytes().to_vec(),
+            actor: self.actor.as_bytes().to_vec(),
+            effect_kind,
+            amount,
+            expires: self.proposal.expires,
+            expected_rev,
+            target,
+            contents,
+            epochs: self.proposal.epochs.clone(),
+            required: Vec::new(),
+        }
+    }
+}
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
@@ -143,6 +193,16 @@ impl DispatchedPermit {
             proposal: self.proposal.clone(),
         }
     }
+    pub fn to_exec_wire(&self) -> policy_core::ExecPermitWire {
+        let mut wire = self.base_permit().to_exec_wire();
+        wire.required = self.required.clone();
+        wire
+    }
+    pub fn to_exec_wire_for_issuers(&self, issuers: usize) -> Result<policy_core::ExecPermitWire> {
+        let mut wire = self.base_permit().to_exec_wire();
+        wire.required = self.effective_required(issuers)?;
+        Ok(wire)
+    }
     pub fn effective_required(&self, issuers: usize) -> Result<Vec<bool>> {
         let base = self.proposal.effect.required_for(issuers);
         if self.required.is_empty() {
@@ -167,15 +227,15 @@ impl DispatchedPermit {
 }
 
 pub fn same_permit(a: &Permit, b: &Permit) -> Result<bool> {
-    Ok(policy_core::same_bytes(
-        &serde_json::to_vec(a)?,
-        &serde_json::to_vec(b)?,
+    Ok(policy_core::same_permit_canonical(
+        &a.to_exec_wire(),
+        &b.to_exec_wire(),
     ))
 }
 pub fn same_dispatched_permit(a: &DispatchedPermit, b: &DispatchedPermit) -> Result<bool> {
-    Ok(policy_core::same_bytes(
-        &serde_json::to_vec(a)?,
-        &serde_json::to_vec(b)?,
+    Ok(policy_core::same_permit_canonical(
+        &a.to_exec_wire(),
+        &b.to_exec_wire(),
     ))
 }
 
@@ -616,7 +676,7 @@ impl Broker {
 
         let n = self.issuers();
         let amount = p.effect.charge();
-        let bytes = serde_json::to_vec(&permit)?;
+        let bytes = policy_core::encode_permit_canonical(&permit.to_exec_wire());
 
         if let Some(d_idx) = self
             .delegations
@@ -648,7 +708,9 @@ impl Broker {
                 }
             }
             let leaf = &self.delegations[d_idx];
-            let approved = serde_json::to_vec(leaf.permit.as_ref().ok_or("missing permit")?)?;
+            let approved = policy_core::encode_permit_canonical(
+                &leaf.permit.as_ref().ok_or("missing permit")?.to_exec_wire(),
+            );
             for &idx in &chain {
                 let anc = &self.delegations[idx];
                 if anc.scope.get(p.effect.kind_index()) != Some(&true) {
@@ -731,7 +793,7 @@ impl Broker {
         if !policy_core::current_grants(&required, &a.grants, &self.live, &self.epochs, &p.epochs) {
             return Ok(denied("withdrawn_or_stale_grant"));
         }
-        let approved = serde_json::to_vec(&a.permit)?;
+        let approved = policy_core::encode_permit_canonical(&a.permit.to_exec_wire());
         // Revisions are bound in the exact approved payload, then checked against
         // the authoritative object at the sink, where that revision lives.
         if !policy_core::admit_multi(
@@ -835,6 +897,61 @@ impl Broker {
         self.records[r_idx].status = sink_status.clone();
         Ok(serde_json::json!({"status": sink_status}))
     }
+    pub fn to_exec_kernel(&self) -> Option<policy_core::ExecBrokerKernel> {
+        let n = self.issuers();
+        if n == 0 || self.live.len() != n {
+            return None;
+        }
+        let mut records = Vec::with_capacity(self.records.len());
+        let mut inflight_ridxs = Vec::new();
+        let mut inflight_amounts = Vec::new();
+        let mut pending = 0u64;
+        let mut committed = 0u64;
+        let mut ids = HashSet::new();
+        for (r_idx, r) in self.records.iter().enumerate() {
+            if !ids.insert(r.permit.proposal.id.as_str()) {
+                return None;
+            }
+            let wire = r.permit.to_exec_wire_for_issuers(n).ok()?;
+            if wire.amount == 0 || wire.amount > self.budget {
+                return None;
+            }
+            let (status, inflight_pos) = match r.status {
+                Status::Pending => {
+                    let pos = inflight_ridxs.len();
+                    pending = pending.checked_add(wire.amount)?;
+                    inflight_ridxs.push(r_idx);
+                    inflight_amounts.push(wire.amount);
+                    (policy_core::ExecSlotStatus::Pending, pos)
+                }
+                Status::Committed => {
+                    committed = committed.checked_add(wire.amount)?;
+                    (policy_core::ExecSlotStatus::Committed, 0)
+                }
+                Status::Cancelled => (policy_core::ExecSlotStatus::Cancelled, 0),
+                Status::Denied => return None,
+            };
+            records.push(policy_core::ExecBrokerRecord {
+                permit: wire,
+                status,
+                inflight_pos,
+            });
+        }
+        if pending.checked_add(committed) != Some(self.charged) || self.charged > self.budget {
+            return None;
+        }
+        Some(policy_core::ExecBrokerKernel {
+            budget: self.budget,
+            charged: self.charged,
+            committed,
+            pending,
+            live: self.live.clone(),
+            epochs: self.epochs.clone(),
+            records,
+            inflight_ridxs,
+            inflight_amounts,
+        })
+    }
     pub fn audit_state(&self, integrity: &str) -> serde_json::Value {
         let n = self.issuers();
         let mut pending_charge = 0u64;
@@ -864,6 +981,12 @@ impl Broker {
             .iter()
             .all(|d| d.charged <= d.budget && d.required.len() == n);
         let sum_active = pending_charge.checked_add(committed_charge);
+        let exec_kernel_ok = self.to_exec_kernel().is_some_and(|k| {
+            k.charged == self.charged
+                && k.pending == pending_charge
+                && k.committed == committed_charge
+                && k.charged <= k.budget
+        });
         let consistent = integrity == "ok"
             && unique_ids
             && statuses_valid
@@ -872,7 +995,8 @@ impl Broker {
             && self.epochs.len() == self.live.len()
             && !self.epochs.is_empty()
             && sum_active == Some(self.charged)
-            && self.charged <= self.budget;
+            && self.charged <= self.budget
+            && exec_kernel_ok;
         serde_json::json!({
             "status": if consistent { "ok" } else { "corrupt" },
             "consistent": consistent,
@@ -884,6 +1008,7 @@ impl Broker {
             "cancelled_charge": cancelled_charge,
             "records": self.records.len(),
             "delegations_consistent": delegations_ok,
+            "verus_exec_kernel_verified": exec_kernel_ok,
         })
     }
 }
@@ -915,6 +1040,48 @@ impl Sink {
     pub fn issuers(&self) -> usize {
         self.floors.len()
     }
+    pub fn to_exec_kernel(&self) -> Option<policy_core::ExecSinkKernel> {
+        let n = self.issuers();
+        if n == 0 {
+            return None;
+        }
+        let mut records = Vec::with_capacity(self.records.len());
+        let mut committed_total = 0u64;
+        let mut ids = HashSet::new();
+        for r in &self.records {
+            if !ids.insert(r.permit.proposal.id.as_str()) {
+                return None;
+            }
+            if r.permit.proposal.epochs.len() != n {
+                return None;
+            }
+            let wire = r.permit.to_exec_wire_for_issuers(n).ok()?;
+            let status = match r.status {
+                Status::Pending => {
+                    if !policy_core::unfenced(&wire.required, &wire.epochs, &self.floors) {
+                        return None;
+                    }
+                    policy_core::ExecSlotStatus::Pending
+                }
+                Status::Committed => {
+                    committed_total = committed_total.checked_add(wire.amount)?;
+                    policy_core::ExecSlotStatus::Committed
+                }
+                Status::Cancelled => policy_core::ExecSlotStatus::Cancelled,
+                Status::Denied => return None,
+            };
+            records.push(policy_core::ExecSinkRecord {
+                permit: wire,
+                status,
+            });
+        }
+        Some(policy_core::ExecSinkKernel {
+            floors: self.floors.clone(),
+            revision: self.revision,
+            committed_total,
+            records,
+        })
+    }
     pub fn accept(&mut self, permit: Permit) -> Result<serde_json::Value> {
         self.accept_dispatched(DispatchedPermit::from(permit))
     }
@@ -924,34 +1091,66 @@ impl Sink {
             Ok(v) => v,
             Err(_) => return Ok(denied("invalid_required_issuers")),
         };
-        if let Some(r) = self
+        let mut exec_shadow = if permit.proposal.epochs.len() == n {
+            self.to_exec_kernel()
+        } else {
+            None
+        };
+        let exec_outcome = if let Some(ref mut k) = exec_shadow {
+            let mut wire = permit.base_permit().to_exec_wire();
+            wire.required = eff_req.clone();
+            Some(k.sink_accept(&wire))
+        } else {
+            None
+        };
+        let resp = if let Some(r) = self
             .records
             .iter()
             .find(|r| r.permit.proposal.id == permit.proposal.id)
         {
             if same_dispatched_permit(&r.permit, &permit)? {
-                Ok(serde_json::json!({"status": r.status}))
+                if let Some(out) = exec_outcome {
+                    debug_assert!(matches!(
+                        out,
+                        policy_core::ExecAcceptOutcome::Duplicate { .. }
+                    ));
+                }
+                serde_json::json!({"status": r.status})
             } else {
-                Ok(denied("payload_mismatch"))
+                if let Some(out) = exec_outcome {
+                    debug_assert_eq!(out, policy_core::ExecAcceptOutcome::PayloadMismatch);
+                }
+                denied("payload_mismatch")
             }
         } else if !policy_core::unfenced(&eff_req, &permit.proposal.epochs, &self.floors) {
             // A durable cancellation tombstone also covers a
             // previously issued permit whose first delivery is late.
+            if let Some(out) = exec_outcome {
+                debug_assert_eq!(out, policy_core::ExecAcceptOutcome::CancelledTombstone);
+            }
             self.records.push(Record {
                 permit,
                 status: Status::Cancelled,
             });
-            Ok(serde_json::json!({"status": "cancelled"}))
+            serde_json::json!({"status": "cancelled"})
         } else {
+            if let Some(out) = exec_outcome {
+                debug_assert_eq!(out, policy_core::ExecAcceptOutcome::AcceptedPending);
+            }
             self.records.push(Record {
                 permit,
                 status: Status::Pending,
             });
-            Ok(serde_json::json!({"status": "pending"}))
-        }
+            serde_json::json!({"status": "pending"})
+        };
+        Ok(resp)
     }
     pub fn complete(&mut self, id: &str) -> Result<(serde_json::Value, Option<DispatchedPermit>)> {
         let n = self.issuers();
+        let mut exec_shadow = self.to_exec_kernel();
+        let exec_outcome = exec_shadow
+            .as_mut()
+            .map(|k| k.sink_complete(&id.as_bytes().to_vec()));
         let r = self
             .records
             .iter_mut()
@@ -969,6 +1168,9 @@ impl Sink {
             };
             if !policy_core::unfenced(&eff_req, &p.epochs, &self.floors) || !revision {
                 r.status = Status::Cancelled;
+                if let Some(out) = exec_outcome {
+                    debug_assert_eq!(out, policy_core::ExecCompleteOutcome::Cancelled);
+                }
             } else {
                 if let Effect::Edit { contents, .. } = &p.effect {
                     self.revision = self.revision.checked_add(1).ok_or("revision exhausted")?;
@@ -976,7 +1178,23 @@ impl Sink {
                 }
                 r.status = Status::Committed;
                 newly_committed = Some(r.permit.clone());
+                if let Some(out) = exec_outcome {
+                    debug_assert_eq!(
+                        out,
+                        policy_core::ExecCompleteOutcome::NewlyCommitted {
+                            amount: p.effect.charge()
+                        }
+                    );
+                }
             }
+        } else if let Some(out) = exec_outcome {
+            debug_assert!(matches!(
+                out,
+                policy_core::ExecCompleteOutcome::Idempotent { .. }
+            ));
+        }
+        if let Some(ref k) = exec_shadow {
+            debug_assert_eq!(k.revision, self.revision);
         }
         Ok((serde_json::json!({"status": r.status}), newly_committed))
     }
@@ -984,6 +1202,11 @@ impl Sink {
         let n = self.issuers();
         if issuer >= n {
             return Err("issuer out of range".into());
+        }
+        let mut exec_shadow = self.to_exec_kernel();
+        if let Some(ref mut k) = exec_shadow {
+            let ok = k.sink_fence(issuer, floor);
+            debug_assert!(ok);
         }
         self.floors[issuer] = policy_core::advance_floor(self.floors[issuer], floor);
         for r in &mut self.records {
@@ -993,6 +1216,9 @@ impl Sink {
                     r.status = Status::Cancelled;
                 }
             }
+        }
+        if let Some(ref k) = exec_shadow {
+            debug_assert_eq!(k.floors, self.floors);
         }
         Ok(serde_json::json!({
             "status": "fenced",
@@ -1041,6 +1267,7 @@ impl Sink {
             }
         }
         let mut effects_match = committed_records.len() == effects_rows.len();
+        let mut effects_charge_sum = 0u64;
         if effects_match {
             let mut committed_by_id = std::collections::HashMap::new();
             for permit in &committed_records {
@@ -1052,6 +1279,7 @@ impl Sink {
                     effects_match = false;
                     break;
                 }
+                effects_charge_sum = effects_charge_sum.saturating_add(*echarge);
                 match committed_by_id.get(eid.as_str()) {
                     Some(cpermit) => {
                         let same = same_dispatched_permit(cpermit, epermit).unwrap_or(false);
@@ -1071,13 +1299,19 @@ impl Sink {
             .iter()
             .filter(|(_, p, _)| matches!(p.proposal.effect, Effect::Edit { .. }))
             .count() as u64;
+        let exec_kernel_ok = self.to_exec_kernel().is_none_or(|k| {
+            k.floors == self.floors
+                && k.revision == self.revision
+                && (!effects_match || k.committed_total == effects_charge_sum)
+        });
         let consistent = integrity == "ok"
             && !self.floors.is_empty()
             && unique_ids
             && statuses_valid
             && pending_unfenced
             && effects_match
-            && self.revision == edit_commits;
+            && self.revision == edit_commits
+            && exec_kernel_ok;
         serde_json::json!({
             "status": if consistent { "ok" } else { "corrupt" },
             "consistent": consistent,
@@ -1089,6 +1323,7 @@ impl Sink {
             "pending_unfenced": pending_unfenced,
             "revision": self.revision,
             "floors": self.floors,
+            "verus_exec_kernel_verified": exec_kernel_ok,
         })
     }
 }
@@ -1106,14 +1341,166 @@ fn text<'a>(v: &'a serde_json::Value, key: &str) -> Result<&'a str> {
         .ok_or_else(|| format!("missing {key}").into())
 }
 
+pub const DEFAULT_RPC_DEADLINE_MS: i32 = 500;
+
 enum RpcFrame {
     Eof,
     Oversize,
     InvalidUtf8,
+    Timeout,
     Line(String),
 }
 
-fn read_rpc_frame<R: BufRead>(reader: &mut R, limit: usize) -> io::Result<RpcFrame> {
+fn rpc_deadline_ms() -> i32 {
+    std::env::var("JEATH_RPC_DEADLINE_MS")
+        .ok()
+        .and_then(|s| s.parse::<i32>().ok())
+        .map(|v| v.clamp(5, 60_000))
+        .unwrap_or(DEFAULT_RPC_DEADLINE_MS)
+}
+
+#[cfg(unix)]
+struct FdLineBuffer {
+    fd: libc::c_int,
+    buf: Vec<u8>,
+    pos: usize,
+    filled: usize,
+}
+
+#[cfg(unix)]
+impl FdLineBuffer {
+    fn new(fd: libc::c_int) -> Self {
+        Self {
+            fd,
+            buf: vec![0u8; 8192],
+            pos: 0,
+            filled: 0,
+        }
+    }
+
+    fn consume(&mut self, amt: usize) {
+        self.pos = (self.pos + amt).min(self.filled);
+    }
+
+    fn fill_chunk(&mut self, timeout_ms: Option<i32>) -> io::Result<Option<&[u8]>> {
+        if self.pos < self.filled {
+            return Ok(Some(&self.buf[self.pos..self.filled]));
+        }
+        if let Some(ms) = timeout_ms {
+            loop {
+                let mut pfd = libc::pollfd {
+                    fd: self.fd,
+                    events: libc::POLLIN,
+                    revents: 0,
+                };
+                let rc = unsafe { libc::poll(&mut pfd, 1, ms.max(0)) };
+                if rc == 0 {
+                    return Ok(None);
+                }
+                if rc < 0 {
+                    let err = io::Error::last_os_error();
+                    if err.kind() == io::ErrorKind::Interrupted {
+                        continue;
+                    }
+                    return Err(err);
+                }
+                break;
+            }
+        }
+        loop {
+            let n = unsafe { libc::read(self.fd, self.buf.as_mut_ptr().cast(), self.buf.len()) };
+            if n < 0 {
+                let err = io::Error::last_os_error();
+                if err.kind() == io::ErrorKind::Interrupted {
+                    continue;
+                }
+                return Err(err);
+            }
+            self.pos = 0;
+            self.filled = n as usize;
+            return Ok(Some(&self.buf[..self.filled]));
+        }
+    }
+}
+
+#[cfg(unix)]
+fn read_rpc_frame_fd_with_deadline(
+    reader: &mut FdLineBuffer,
+    limit: usize,
+    deadline_ms: i32,
+) -> io::Result<RpcFrame> {
+    let mut buf = Vec::new();
+    let mut oversize = false;
+    let mut started_at: Option<std::time::Instant> = None;
+    loop {
+        let timeout_opt = if let Some(t0) = started_at {
+            let elapsed = t0.elapsed().as_millis();
+            if elapsed >= deadline_ms.max(1) as u128 {
+                return Ok(RpcFrame::Timeout);
+            }
+            Some((deadline_ms.max(1) as u128 - elapsed) as i32)
+        } else {
+            None
+        };
+        let Some(chunk) = reader.fill_chunk(timeout_opt)? else {
+            return Ok(RpcFrame::Timeout);
+        };
+        if chunk.is_empty() {
+            if buf.is_empty() && !oversize {
+                return Ok(RpcFrame::Eof);
+            }
+            break;
+        }
+        if started_at.is_none() {
+            started_at = Some(std::time::Instant::now());
+        }
+        if let Some(pos) = chunk.iter().position(|&b| b == b'\n') {
+            let part = &chunk[..pos];
+            if !oversize {
+                let effective_len = if part.ends_with(b"\r") {
+                    buf.len() + part.len() - 1
+                } else {
+                    buf.len() + part.len()
+                };
+                if effective_len > limit {
+                    oversize = true;
+                    buf.clear();
+                } else {
+                    buf.extend_from_slice(part);
+                }
+            }
+            reader.consume(pos + 1);
+            break;
+        } else {
+            if !oversize {
+                if buf.len() + chunk.len() > limit + 1 {
+                    oversize = true;
+                    buf.clear();
+                } else {
+                    buf.extend_from_slice(chunk);
+                }
+            }
+            let n = chunk.len();
+            reader.consume(n);
+        }
+    }
+    if oversize {
+        return Ok(RpcFrame::Oversize);
+    }
+    if buf.ends_with(b"\r") {
+        buf.pop();
+    }
+    if buf.len() > limit {
+        return Ok(RpcFrame::Oversize);
+    }
+    match String::from_utf8(buf) {
+        Ok(line) => Ok(RpcFrame::Line(line)),
+        Err(_) => Ok(RpcFrame::InvalidUtf8),
+    }
+}
+
+#[cfg(any(test, not(unix)))]
+fn read_rpc_frame<R: io::BufRead>(reader: &mut R, limit: usize) -> io::Result<RpcFrame> {
     let mut buf = Vec::new();
     let mut oversize = false;
     loop {
@@ -1183,11 +1570,22 @@ pub fn serve(path: &Path, role: &str) -> Result<()> {
         CREATE TABLE IF NOT EXISTS effects(sequence INTEGER PRIMARY KEY, id TEXT UNIQUE NOT NULL, payload TEXT NOT NULL, charge INTEGER NOT NULL);",
     )?;
     let stdin = io::stdin();
+    let deadline_ms = rpc_deadline_ms();
+    #[cfg(unix)]
+    let mut fd_reader = {
+        use std::os::fd::AsRawFd;
+        FdLineBuffer::new(stdin.as_raw_fd())
+    };
+    #[cfg(not(unix))]
     let mut reader = stdin.lock();
     let stdout = io::stdout();
     let mut out = stdout.lock();
     loop {
-        let line = match read_rpc_frame(&mut reader, MAX_RPC_BYTES)? {
+        #[cfg(unix)]
+        let frame = read_rpc_frame_fd_with_deadline(&mut fd_reader, MAX_RPC_BYTES, deadline_ms)?;
+        #[cfg(not(unix))]
+        let frame = read_rpc_frame(&mut reader, MAX_RPC_BYTES)?;
+        let line = match frame {
             RpcFrame::Eof => break,
             RpcFrame::Oversize => {
                 let response = denied("rpc_too_large");
@@ -1198,6 +1596,13 @@ pub fn serve(path: &Path, role: &str) -> Result<()> {
             }
             RpcFrame::InvalidUtf8 => {
                 let response = denied("invalid_utf8");
+                serde_json::to_writer(&mut out, &response)?;
+                writeln!(out)?;
+                out.flush()?;
+                continue;
+            }
+            RpcFrame::Timeout => {
+                let response = denied("rpc_frame_timeout");
                 serde_json::to_writer(&mut out, &response)?;
                 writeln!(out)?;
                 out.flush()?;
@@ -1388,5 +1793,86 @@ mod tests {
             read_rpc_frame(&mut cursor, MAX_RPC_BYTES).unwrap(),
             RpcFrame::Eof
         ));
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn read_rpc_frame_fd_enforces_mid_frame_slowloris_deadline_without_idle_false_timeout() {
+        use std::os::fd::AsRawFd;
+        use std::os::unix::net::UnixStream;
+        let (mut writer, reader_sock) = UnixStream::pair().unwrap();
+        let mut fb = FdLineBuffer::new(reader_sock.as_raw_fd());
+
+        // Idle pause before frame start must not trigger a timeout, then valid line succeeds.
+        let handle = std::thread::spawn(move || {
+            std::thread::sleep(Duration::from_millis(80));
+            writer.write_all(br#"{"op":"inspect"}"#).unwrap();
+            writer.write_all(b"\n").unwrap();
+            writer.flush().unwrap();
+            // Now send an incomplete slowloris partial frame without newline and stall!
+            writer.write_all(br#"{"op":"submit","partial":"#).unwrap();
+            writer.flush().unwrap();
+            std::thread::sleep(Duration::from_millis(160));
+            writer
+        });
+
+        match read_rpc_frame_fd_with_deadline(&mut fb, MAX_RPC_BYTES, 40).unwrap() {
+            RpcFrame::Line(s) => assert_eq!(s, r#"{"op":"inspect"}"#),
+            _ => panic!("expected complete frame after idle wait"),
+        }
+
+        let t0 = std::time::Instant::now();
+        assert!(matches!(
+            read_rpc_frame_fd_with_deadline(&mut fb, MAX_RPC_BYTES, 40).unwrap(),
+            RpcFrame::Timeout
+        ));
+        assert!(t0.elapsed() < Duration::from_millis(140));
+        let _writer = handle.join().unwrap();
+    }
+
+    #[test]
+    fn broker_and_sink_match_verus_exec_kernels_and_canonical_wire() {
+        let mut b = Broker::new(10);
+        let mut s = Sink::default();
+        let p = Permit {
+            actor: "alice".into(),
+            proposal: Proposal {
+                id: "p-1".into(),
+                epochs: vec![0, 0],
+                expires: 500,
+                effect: Effect::Transfer {
+                    recipient: "approved".into(),
+                    units: 4,
+                },
+            },
+        };
+        assert_eq!(b.approve(p.clone(), 0).unwrap()["status"], "approved");
+        // Tampered units under same ID must fail canonical wire admission.
+        let mut tampered = p.clone();
+        tampered.proposal.effect = Effect::Transfer {
+            recipient: "approved".into(),
+            units: 5,
+        };
+        assert_eq!(b.submit(tampered, 10).unwrap()["status"], "denied");
+
+        let sub = b.submit(p.clone(), 10).unwrap();
+        assert_eq!(sub["status"], "pending");
+        let disp: DispatchedPermit = serde_json::from_value(sub["permit"].clone()).unwrap();
+        assert_eq!(
+            s.accept_dispatched(disp.clone()).unwrap()["status"],
+            "pending"
+        );
+        let (comp, newly) = s.complete("p-1").unwrap();
+        assert_eq!(comp["status"], "committed");
+        assert!(newly.is_some());
+        assert_eq!(
+            b.settle("p-1", Status::Committed).unwrap()["status"],
+            "committed"
+        );
+        assert_eq!(b.audit_state("ok")["verus_exec_kernel_verified"], true);
+        assert_eq!(
+            s.audit_state("ok", &[("p-1".into(), disp, 4)])["verus_exec_kernel_verified"],
+            true
+        );
     }
 }

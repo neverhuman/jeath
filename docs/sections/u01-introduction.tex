@@ -103,17 +103,23 @@ state-uncertainty contraction over $\B_t$, the filtration period-reach bound
 ($R \le u + J_k$), common-cause saturation ($k^*$), horizon summability, and
 Theorem~\ref{u03:thm:main} (derivations in Appendix~\ref{app:proofs}).
 Sections~\ref{sec:core} and~\ref{sec:eval} present our centerpiece systems artifact:
-a \VTwoProofs-obligation Verus-verified Rust \texttt{policy-core} compiled into a
-separate-process SQLite broker and cooperative sink, binding strengthened
-sub-delegation requirements across admission and sink-fenced revocation, validated
-across \VTwoFaults{} fault histories, bounded recorded-RPC linearizations,
-\VTwoProbes/\VTwoProbes{} Linux confinement probes, public-benchmark adapter
-controls, and a predeclared unrun \VTwoComponentClaims-claim Qwen3 evaluation
-(Appendices~\ref{app:protocol} and~\ref{app:predeclared}). Sections~\ref{sec:graphs}
-and~\ref{sec:monitors} examine pathway cutset width versus route patching,
-Good--Turing withholding non-identifiability, planted-audit power, six-family
-shared-step monitor dependence, and assessment variance ceilings
-(Appendix~\ref{app:simulations}). Finally, Sections~\ref{sec:selection}--\ref{sec:conclusion}
-analyze tournament versus floor selection rules, endogenous human-grant reversal in a
-JARVIS reference controller, institutional and ecological legitimacy, and ten
-falsifiable predictions (operational record in Appendix~\ref{app:record}).
+a \VTwoProofs-obligation Verus-verified Rust \texttt{policy-core} (proving concrete
+\texttt{ExecBrokerKernel}/\texttt{ExecSinkKernel} forward-simulation refinement and
+canonical wire injectivity) compiled into a separate-process SQLite broker and
+cooperative sink with pure-Rust Ed25519 quorum/fence signatures and HMAC-SHA256
+Macaroon caveats, validated across \VTwoFaults{} fault histories, \VFourJepsenSinks-sink
+\texttt{AF\_UNIX} Jepsen partition schedules, full \VTwoLinearizedRuns/\VTwoRaceRuns{}
+recorded-RPC linearizations up to \VTwoLinearizedMaxActors{} writers,
+\VTwoProbes/\VTwoProbes{} Linux confinement probes, and \VFourHoldoutTotalCampaigns{}
+executed CPU \texttt{Qwen3-4B}/\texttt{8B} holdout campaigns plus live AgentDojo
+\texttt{v1.2.2} runs (\VTwoGpuSecondsUsed{} GPU-s; Appendices~\ref{app:protocol}
+and~\ref{app:predeclared}). Sections~\ref{sec:graphs}
+and~\ref{sec:monitors} examine synthetic and operational pathway cutsets (AgentDojo
+\texttt{v1.2.2} tool suites and Linux IPC confinement), Good--Turing withholding
+non-identifiability, planted-audit power, \VFourTrajEvalCount{} executed 5-step
+trajectory-monitor evaluations alongside six-family synthetic gates, and assessment
+variance ceilings (Appendix~\ref{app:simulations}). Finally,
+Sections~\ref{sec:selection}--\ref{sec:conclusion} analyze evolutionary and 2-layer
+neural policy-gradient selection geometry, endogenous human-grant reversal in a JARVIS
+reference controller, institutional and ecological legitimacy, and ten falsifiable
+predictions (operational record in Appendix~\ref{app:record}).
