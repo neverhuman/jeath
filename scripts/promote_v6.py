@@ -8,6 +8,7 @@ Every promoted file is listed with its SHA-256 in evidence/v6/reference/manifest
   promote_v6.py e4 target/runs/e4-full-...      promote_v6.py e6 target/runs/e6-...
   promote_v6.py e5 target/runs/e5-full-...      promote_v6.py e8 target/runs/e8-full-...
   promote_v6.py e2:<key> target/runs/e2-...     promote_v6.py e1 <E1 run directory>
+  promote_v6.py e8b target/runs/e8b-...
 """
 from __future__ import annotations
 
@@ -27,11 +28,15 @@ VALIDATORS = {
     "e5": [sys.executable, "scripts/validate_omitted_clause_v6.py"],
     "e6": [sys.executable, "scripts/validate_fenceability_v6.py"],
     "e8": [str(VENV_PY), "scripts/validate_agentdojo_fair_v6.py"],
+    "e8b": [str(VENV_PY), "scripts/agentdojo_inside_spec_v6.py", "validate"],
+    "e1": [sys.executable, "scripts/validate_e1_v6.py"],
 }
 FILES = {  # files copied verbatim from the run directory
     "e5": ["results.json", "candidates.jsonl"],
     "e6": ["results.json", "SHA256SUMS", "probe.log", "postgres.log"],
     "e8": ["results.json", "static.json", "episodes.jsonl", "progent_policies.json"],
+    "e8b": ["results.json", "static.json", "episodes.jsonl", "progent_policies.json"],
+    "e1": ["freeze.json", "holdout.json", "campaigns.jsonl", "campaign-analysis.json"],
 }
 
 
@@ -62,22 +67,44 @@ def promote_e4(run: Path, out: Path) -> None:
     shutil.copy2(run / "results.json", out / "results.json")
 
 
+def promote_e1(run: Path, out: Path) -> None:
+    """E1 keeps its JSON outputs, the sink rows of every campaign (no SQLite) and the recomputed secondaries."""
+    for fn in FILES["e1"]:
+        shutil.copy2(run / fn, out / fn)
+    holdout = json.loads((run / "holdout.json").read_text())
+    with (out / "sink_effects.jsonl").open("w") as f:
+        for line in (run / "campaigns.jsonl").read_text().splitlines():
+            if not line.strip():
+                continue
+            r = json.loads(line)
+            db = run / f"model-{holdout['checkpoints'].index(r['checkpoint'])}" / f"case_{r['case_id']}_{r['controller']}" / "sink.sqlite"
+            with sqlite3.connect(f"file:{db}?mode=ro", uri=True) as c:
+                rows = [json.loads(x[0]) for x in c.execute("SELECT payload FROM effects ORDER BY sequence")]
+            f.write(json.dumps({"key": f"{r['checkpoint']}|{r['controller']}|{r['campaign_id']}", "effects": rows}, sort_keys=True) + "\n")
+    sec = subprocess.run([sys.executable, "scripts/e1_secondary_v6.py", str(run)], cwd=ROOT, capture_output=True, text=True, check=True)
+    (out / "secondary.json").write_text(sec.stdout if sec.stdout.endswith("\n") else sec.stdout + "\n")
+
+
 def main():
     if len(sys.argv) != 3:
         raise SystemExit(__doc__)
     kind, run = sys.argv[1], Path(sys.argv[2]).resolve()
-    res = json.loads((run / "results.json").read_text())
-    if res.get("smoke_test"):
+    if kind == "e1":
+        if (run / "ABORTED.json").exists():
+            raise SystemExit("refusing to promote an aborted run")
+    elif json.loads((run / "results.json").read_text()).get("smoke_test"):
         raise SystemExit("refusing to promote a smoke-test run")
     validate(kind, run)
     name = {"e4": "e4-revokebench", "e5": "e5-omitted-clause", "e6": "e6-fenceability", "e8": "e8-agentdojo-fair",
-            "e1": "e1-n128"}.get(kind) or f"e2-{kind.split(':', 1)[1]}"
+            "e8b": "e8b-inside-spec", "e1": "e1-n128"}.get(kind) or f"e2-{kind.split(':', 1)[1]}"
     out = DEST / name
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)
     if kind == "e4":
         promote_e4(run, out)
+    elif kind == "e1":
+        promote_e1(run, out)
     else:
         for fn in FILES.get("e8" if kind.startswith("e2:") else kind, []):
             shutil.copy2(run / fn, out / fn)
@@ -86,7 +113,7 @@ def main():
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {"schema_version": 1, "experiments": {}}
     manifest["experiments"][name] = {
         "kind": kind, "source_run": str(run.relative_to(ROOT)) if run.is_relative_to(ROOT) else str(run),
-        "source_results_sha256": sha(run / "results.json"),
+        "source_results_sha256": sha(run / ("campaign-analysis.json" if kind == "e1" else "results.json")),
         "files": {p.name: sha(p) for p in sorted(out.iterdir())},
     }
     manifest_path.write_text(json.dumps(manifest, indent=1, sort_keys=True) + "\n")

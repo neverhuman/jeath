@@ -34,6 +34,10 @@ def command(kind: str, path: Path):
         return [sys.executable, "scripts/validate_fenceability_v6.py", str(path)]
     if kind == "e8":
         return [str(VENV_PY), "scripts/validate_agentdojo_fair_v6.py", str(path)] if VENV_PY.exists() else None
+    if kind == "e8b":
+        return [str(VENV_PY), "scripts/agentdojo_inside_spec_v6.py", "validate", str(path)] if VENV_PY.exists() else None
+    if kind == "e1":
+        return [sys.executable, "scripts/validate_e1_v6.py", str(path)]
     if kind.startswith("e2:"):
         return ([str(VENV_PY), "scripts/capability_axis_v6.py", "validate", kind.split(":", 1)[1], str(path)]
                 if VENV_PY.exists() else None)
