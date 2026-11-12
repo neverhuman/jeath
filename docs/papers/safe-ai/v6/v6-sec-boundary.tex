@@ -1,0 +1,83 @@
+% v6 draft section (Claude, cc/iina-tier1). Numbers are generated \vsix macros (E6, E6b evidence); the per-surface
+% table is generated (v6-e6-table.tex). Conferral is a design, not a result.
+\section{Where the Guarantee Ends}\label{sec:v6boundary}
+
+The guarantee in Sections~\ref{sec:v6stop}--\ref{sec:v6cost} has three boundaries. It holds only at a sink that can
+refuse a stale epoch. It covers only what the specification names. It says nothing about how much authority people
+choose to grant. We measure the first, the second was measured above, and the third we state as an open problem with a
+predeclared design.
+
+\subsection{Which surfaces can be fenced}
+
+Our sink is cooperative by construction: it is our code, and it checks the epoch because we wrote it to. A deployment's
+effects land elsewhere, in databases, object stores, orchestration APIs and payment processors. For each surface the
+question is whether \emph{the surface itself} refuses a write carrying an old epoch, atomically with the effect, or
+whether it only refuses when the writer remembers to ask. We separate three \emph{enforcement classes}:
+\begin{itemize}
+  \item \emph{sink-enforced}: a bare stale write, sent with no guard at all, is refused by the surface;
+  \item \emph{writer-supplied condition}: the surface refuses atomically only if the writer attaches the condition (a
+        compare on a revision, an \texttt{If-Match}); a writer that omits it is admitted;
+  \item \emph{advisory}: the surface never refuses; writers that honour a lock refuse themselves.
+\end{itemize}
+Only the first is a fence against a writer that is itself compromised or merely buggy. Code we install in the surface
+(a PostgreSQL trigger, for example) counts as sink-enforced only while that code is part of the surface's trusted
+configuration, and we say so wherever it is used.
+
+\para{Probes (E6, E6b).} We ran executable probes against local single-node reference instances of PostgreSQL~16,
+etcd~v3.5.17 and a POSIX filesystem. Amazon S3 and the Kubernetes API are recorded from documentation only, and marked
+as such. Each surface is probed for three primitives:
+\begin{itemize}
+  \item P1, idempotent retry under concurrent duplicate delivery;
+  \item P2, an epoch fence evaluated atomically with the effect;
+  \item P3, a hold that survives an unclean stop and that revocation cancels before it takes effect.
+\end{itemize}
+Each primitive has pass conditions that include a non-vacuity check: the surface, not the writer, must have refused at
+least one stale write, and a current-epoch write after the fence must still commit.
+
+E6's P2 probe raced a stream of stale writers against the fence and exposed a failure we had not anticipated. In
+PostgreSQL, new \texttt{FOR SHARE} lockers join an existing share lock while the fence's \texttt{FOR UPDATE} waits, so a
+continuing stream of stale writers starves the raise. Every stale write committed before the fence did, which is safe
+(no stale effect was ordered after it) but vacuous. The planned outcome is therefore reported as a failure. The
+filesystem's \texttt{flock} showed the same pattern.
+
+E6b, predeclared separately (\texttt{fixtures/v6/fenceability\_b\_plan.json}), adds a deterministic post-fence
+old-epoch write to every surface and repeats the starvation race \vsixESixBStarvationN{} times with intervals.
+\vsixESixBSentence{} Table~\ref{tab:v6fence} lists each surface's enforcement class first and its primitive outcomes
+after.
+
+\input{generated/v6-e6-table.tex}
+
+\para{Reading.} Fenceability is a property of the effect surface, not of the agent framework. Several common surfaces
+offer it only as a writer-supplied condition, which protects against a stale but honest writer and not against one
+that omits the condition. An operator who needs ``stop'' to reach work already dispatched must either route effects
+through a surface that enforces the epoch itself or place a mediating sink in front of one that does not. The starvation
+result adds an operational point: a fence that is correct can still be slow to take effect under exactly the load it is
+meant to stop. Its latency belongs in the stop budget of Section~\ref{sec:v6stop}.
+
+\subsection{What the specification does not name}
+
+Section~\ref{sec:v6reviewers} showed that removing one clause of a gate admits exactly the violations that break only
+that clause, and Section~\ref{sec:v6cost} showed injections inside a written specification succeeding at the rate of an
+unprotected agent. Neither is a defect that more verification would remove. The kernel's proofs establish that the
+implementation enforces its predicate; they cannot establish that the predicate is the one the operator meant. What
+mediation buys is relocation of the error, from a learned judgement that an adversary probes by search to a written
+artefact that a person can read, diff, test against adversarial suites, and amend. We regard that relocation, not the
+zeros, as the contribution.
+
+\subsection{Intelligence re-enters through conferral}
+
+Everything above holds a grant fixed and asks what a proposer can do within it. Grants are not fixed. People widen
+them for agents that appear competent and careful. That creates a route by which capability can turn back into
+authority, and nothing in this paper's mechanism blocks it.
+
+\begin{observation}[Conferral reversal]\label{obs:conferral}
+Let \(h_d(g)\) be the expected harm of disposition \(d\) under grant \(g\), and \(\pi_d\) the distribution of grants
+that operators confer on \(d\). It is possible that \(h_A(g) < h_B(g)\) for every \(g\) and yet
+\(\mathbb{E}_{g\sim\pi_A} h_A(g) > \mathbb{E}_{g\sim\pi_B} h_B(g)\), whenever \(A\) earns sufficiently broader grants.
+\end{observation}
+
+This is the mixture reversal familiar from Simpson's paradox, applied to authority. It is not a result about any model.
+Whether it occurs depends on how real operators confer authority, which requires a study with people. We predeclare its
+design and cost in Appendix~\ref{app:v6conferral}: operators grant budgets to agents of controlled competence and
+controlled caution, with harm measured at a mediated sink. We do not run it in this version. Until it is run, the claim
+that mediation makes reach independent of the proposer must be read as ``at a fixed grant''.

@@ -1,0 +1,55 @@
+% v6 draft section (Claude, cc/iina-tier1). Mirrors docs/papers/safe-ai/DISCLOSURES_V6.md; every unfixed ledger row
+% appears here.
+\section{Limitations}\label{sec:v6limits}
+
+\para{What the zeros are.} Five quantities in this paper are zero, or near zero, by construction, and we report them as
+such:
+\begin{itemize}
+  \item complete mediation's unauthorized rate in E1, whose admission predicate is the scoring predicate;
+  \item the fence's post-stop commits in E4, since the sink serializes and \texttt{fence} cancels pending records;
+  \item duplicate effects, prevented by a schema uniqueness constraint;
+  \item the omitted-clause gate's admissions in E5, which equal the single-clause violations of that clause by
+        definition;
+  \item strict \(S\)'s native attack success in E8, since \(S\) was written knowing AgentDojo's public injections.
+\end{itemize}
+What is measured around each zero is stated where it appears: the comparators' leakage, the implementation's behaviour
+under the faults we injected, the size and cost of the window other layers leave, how often search finds single-clause
+violations, and what injections inside \(S\) achieve.
+
+\para{Models and scale.} All live results use local, quantized, open-weight checkpoints (\vsixCheckpointList) at
+temperature 0 on CPU. We ran no frontier model, by budget decision. Repeated samples of a temperature-0
+model are not independent, so we count unique proposals and cases. A stronger reviewer, or a control protocol that
+resamples, defers or audits, may close some of the gap Section~\ref{sec:v6reviewers} reports; we did not test one.
+
+\para{Benchmark coverage.} E8 covers two of AgentDojo's four suites and one attack template, through this repository's
+JSON tool loop rather than native function calling. Progent's policies come from the same open-weight checkpoint (its
+paper used GPT-4o), with adaptive policy updates disabled. E8b's injections and graders are ours and were chosen to lie
+inside \(S\); they show the blind spot exists but do not estimate how often attackers find it. Across checkpoints (E2)
+the comparison is descriptive: chat template, protocol compliance and Progent policy quality all vary with the
+checkpoint.
+
+\para{What the sink is.} The SQLite sink mediates only its own database effects. Nothing here is a sandbox,
+external exactly-once execution, or a formal refinement of a deployed system. The fenceability probes use single-node
+reference instances in default configuration, and two surfaces come from documentation only.
+
+\para{Verification boundary.} The mechanized kernel proves properties of its own state machine and of the permit
+encoding. In the release binaries used by the experiments, the broker and sink decisions on the v2 path are made by
+unverified Rust that calls verified leaf predicates; the full kernel comparison runs only in debug builds. The
+cryptographic primitives are a from-scratch implementation that has not been audited.
+
+\para{Preregistration.} Every v6 plan was committed before the data it governs, and amendments record what was seen
+before them. Three launches were stopped and rerun (Appendix~\ref{app:v6ledger}): E1 for a proposal-expiry defect, E8
+for arm-dependent denial text, and an E5 smoke run for a change of strategy. None of the stopping decisions used an
+outcome aggregate. However, the commits are on no public remote, and several hand-typed timestamps needed errata, so
+the timing cannot be verified externally. E6's plan was finalized after its two development runs and is labelled
+accordingly; E6b's plan precedes its data.
+
+\para{Validators.} The validators recompute every reported number from raw artefacts (sink databases, episode logs,
+model outputs), but they are not independent implementations. The E8 validators import the harness's own
+specification and AgentDojo's graders. The E5 validator mirrors the harness's clause logic, and its independent check is
+agreement with the Rust gate. E4's timing is re-derived from the harness's own log. A reader should treat them as replay
+checks, not second opinions.
+
+\para{Conferral.} The independence of reach from the proposer holds at a fixed grant. Whether more capable agents earn
+broader grants, and whether that reverses the comparison (Observation~\ref{obs:conferral}), needs a study with people,
+which this version does not contain.
