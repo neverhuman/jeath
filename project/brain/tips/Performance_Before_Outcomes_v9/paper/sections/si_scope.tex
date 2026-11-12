@@ -1,0 +1,27 @@
+\section{Scope, claim levels and verification}\label{sec:scope}
+
+\noindent Every statement in the paper belongs to one of the levels in Table~\ref{tab:levels}, and tables and figures name the
+level of what they report. The main text states results; this Supplementary Information gives the audit of the fossil rate
+(Section~\ref{sec:explananda}), the evidence base (Sections~\ref{sec:audit},~\ref{sec:evidence} and~\ref{sec:today}), the theory
+with proofs (Sections~\ref{sec:theory} and~\ref{app:proofs}), the numerical experiments (Section~\ref{sec:experiments}), the
+evidence for each driver (Section~\ref{sec:hidden}), the predictions and a first study design (Section~\ref{sec:predictions}),
+the limitations (Section~\ref{sec:limits}), a register of objections (Section~\ref{sec:redteam}) and what is needed to rebuild
+every number (Section~\ref{app:repro}).
+
+\begin{table}[t]
+\caption{Claim levels used throughout.}\label{tab:levels}
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}P{0.27\columnwidth}L@{}}
+\toprule
+Level & Meaning and permissible inference\\
+\midrule
+External evidence & A cited observation or result, restricted to its population and design.\\
+Reanalysis & A computation on published open data, reproducible from the package.\\
+Exact result & A consequence of stated assumptions; not a measurement of history.\\
+Numerical check & An executed simulation verifying an implementation or probing sensitivity.\\
+Plausibility bound & An order-of-magnitude comparison combining published summaries with stated assumptions.\\
+Testable hypothesis & A relationship new observations could support or reject.\\
+Historical conjecture & An unverified claim about ancestral timing, magnitude, or anatomy.\\
+\bottomrule
+\end{tabularx}
+\end{table}

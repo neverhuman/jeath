@@ -1,0 +1,12 @@
+\paragraph{Proposition~\ref{prop:twoway} (two-way observer and context validity).}
+By mutual orthogonality of $T_i$, $H_i$, $\{C_{ic}\}_{c=1}^k$, $\{O_{ij}\}_{j=1}^m$, and $\{\varepsilon_{ijc}\}_{j,c}$,
+averaging Eq.~\eqref{eq:twowaymodel} over $m$ observers and $k$ contexts yields
+$\bar X_{i,m,k}=T_i+H_i+\bar C_i+\bar O_i+\bar\varepsilon_i$, with $\Var(\bar C_i)=\sigma_C^2/k$,
+$\Var(\bar O_i)=\sigma_O^2/m$, and $\Var(\bar\varepsilon_i)=\sigma_\varepsilon^2/(mk)$. Since $\Cov(T_i,\bar X_{i,m,k})=\sigma_T^2$
+and $\Var(\bar X_{i,m,k})=\sigma_T^2+\sigma_H^2+\sigma_C^2/k+\sigma_O^2/m+\sigma_\varepsilon^2/(mk)$,
+\begin{multline*}
+R^2_{m,k}=\frac{\Cov(T_i,\bar X_{i,m,k})^2}{\Var(T_i)\Var(\bar X_{i,m,k})}\\
+=\frac{\sigma_T^2}{\sigma_T^2+\sigma_H^2+\sigma_C^2/k+\sigma_O^2/m+\sigma_\varepsilon^2/(mk)}.
+\end{multline*}
+Setting $k=1$ and taking $m\to\infty$ gives $R^2_{\infty,1}=\sigma_T^2/(\sigma_T^2+\sigma_H^2+\sigma_C^2)$; taking both
+$m\to\infty$ and $k\to\infty$ gives $R^2_{\infty,\infty}=\sigma_T^2/(\sigma_T^2+\sigma_H^2)$. \qed

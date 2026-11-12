@@ -1,0 +1,43 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}
+\usepackage[scaled=.92]{helvet}
+\usepackage[letterpaper,left=.85in,right=.85in,top=.78in,bottom=.80in,headsep=.20in,footskip=.30in]{geometry}
+\usepackage{microtype,graphicx,amsmath,amssymb,amsthm,booktabs,tabularx,longtable,array}
+\usepackage[table]{xcolor}
+\usepackage{caption,enumitem,fancyhdr,titlesec,ragged2e,pdfpages}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hyphens]{url}
+\definecolor{accent}{HTML}{245B82}
+\definecolor{muted}{HTML}{555B62}
+\definecolor{pale}{HTML}{F0F3F5}
+\usepackage[colorlinks=true,allcolors=accent,pdftitle={The Minds We Choose},pdfauthor={Jepson Taylor and Erin Beilharz}]{hyperref}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\scriptsize\color{muted}THE MINDS WE CHOOSE}
+\fancyhead[R]{\sffamily\scriptsize\color{muted}Exploratory synthesis \textperiodcentered{} November 2026}
+\fancyfoot[C]{\sffamily\small\thepage}
+\renewcommand{\headrulewidth}{.25pt}
+\titleformat{\section}{\sffamily\large\bfseries}{\thesection}{.6em}{}
+\titleformat{\subsection}{\sffamily\normalsize\bfseries}{\thesubsection}{.5em}{}
+\titlespacing*{\section}{0pt}{14pt plus 3pt minus 2pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt plus 2pt minus 2pt}{4pt}
+\captionsetup{font=small,labelfont={sf,bf},labelsep=period,justification=justified,singlelinecheck=false}
+\setlength{\parskip}{3pt plus 1pt}\setlength{\parindent}{1em}
+\setlength{\textfloatsep}{13pt plus 3pt minus 2pt}
+\renewcommand{\topfraction}{.90}\renewcommand{\bottomfraction}{.85}\renewcommand{\textfraction}{.08}
+\setcounter{totalnumber}{3}
+\setlist{leftmargin=1.6em,itemsep=2pt,topsep=4pt}
+\newcolumntype{L}{>{\RaggedRight\arraybackslash}X}
+\newcommand{\E}{\operatorname{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newtheorem{proposition}{Proposition}
+\newcommand{\mwcfigure}[4]{\begin{figure}[tbp]\centering\includegraphics[width=\textwidth]{#1}\caption{#3}\label{#2}\end{figure}}
+\newcommand{\mwctable}[3]{\begin{table}[tbp]\caption{#2}\label{#1}\centering\small\input{#3}\end{table}}
+\providecommand{\doi}[1]{\href{https://doi.org/#1}{doi:\,\nolinkurl{#1}}}
+\urlstyle{same}\frenchspacing\raggedbottom
+\emergencystretch=1.5em
+\input{minds-numbers.tex}
+\input{minds-environment-numbers.tex}

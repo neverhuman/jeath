@@ -1,0 +1,335 @@
+#############################################
+#                                           #
+#     R Code for Du et al. Proc B paper     #
+#                                           #
+#############################################
+
+# Author: Andrew Du
+# Date: 4-11-17
+
+
+### 1) Variance partitioning analyses
+
+# read in dataset. NB: This requires you to save the Excel file as a csv file first.
+d <- read.csv("ProcB SI ECV dataset FINAL.csv", header=TRUE) 
+# log10 transform data
+d[, grep("ecv", names(d))] <- log10(d[, grep("ecv", names(d))]) 
+
+# Change data from wide to long form
+library(reshape2) 
+
+## for lumper's taxonomy
+data.lump <- melt(d, id.vars=c("ID", "lump.taxon"), measure.vars=colnames(d)[grep("ecv", colnames(d))])
+# change column name from "value" to "ecv"
+colnames(data.lump)[colnames(data.lump)=="value"] <- "ecv"
+
+# same as above but for splitter's taxonomy
+data.split <- melt(d, id.vars=c("ID", "split.taxon"), measure.vars=colnames(d)[grep("ecv", colnames(d))])
+colnames(data.split)[colnames(data.split)=="value"] <- "ecv" 
+
+
+## Variance partitioning for the entire hominin clade. Use a random effect ANOVA. Response: brain size. Fixed effect: intercept. Random effect: specimen ID nested within species. 
+
+library(nlme)
+library(ape)
+
+# ANOVA model for lumper's
+hom.lme.lump <- lme(ecv ~ 1, random= ~1|lump.taxon/ID, data=data.lump, na.action=na.omit)
+# extract variance components
+varcomp(hom.lme.lump)
+
+# Same as above but for splitter's
+hom.lme.split <- lme(ecv ~ 1, random= ~1|split.taxon/ID, data=data.split, na.action=na.omit)
+varcomp(hom.lme.split)
+
+
+# for main analyses, use the within-specimen variance component from the splitter's taxonomy because it is larger and thus more conservative
+hom.var <- varcomp(hom.lme.split)[3]
+
+
+
+### 2) Main clade-level evolutionary mode analyses
+
+## Functions for running the following analyses
+
+# The following function is for using inputted dates and bin edges to create a paleoTS object. This function isn't used by itself and is nested within the main function below.
+
+  # ARGUMENTS #
+  # date: age of each ECV specimen
+  # bin.edge: bin edges for binning specimens
+  # trait: ECV measurements for each specimen
+  # w.in.var: inter-observer error from the random effects ANOVA analysis
+  
+
+bin.obj.paleoTS <- function(date, bin.edge, trait, w.in.var){
+  
+  require(paleoTS)
+  
+  bin.assign <- findInterval(date, bin.edge) # Assign specimens to bins based on their age. If on bin boundary, gets pushed to later time bin (can change this if need be)
+  
+  # Establish arguments for input into paleoTS
+  model.time <- rev(diff(bin.edge) / 2 + bin.edge[1:length(bin.edge) - 1])
+  model.time <- sort(sort(model.time)[unique(bin.assign)], decreasing=TRUE) # tt argument for paleoTS. Makes sure only those bins that have specimens in them are included in the analysis
+  model.mean <- model.n <- model.var <- vector(length = length(unique(bin.assign))) # mm, nn, vv arguments for paleoTS
+  
+  for(p in seq_along(unique(bin.assign))){
+    
+    model.mean[p] <- mean(trait[bin.assign == sort(unique(bin.assign), decreasing=TRUE)[p]])
+    model.n[p] <- length(trait[bin.assign == sort(unique(bin.assign), decreasing=TRUE)[p]])
+    model.var[p] <- var(trait[bin.assign == sort(unique(bin.assign), decreasing=TRUE)[p]])
+  }
+  
+  model.var[is.na(model.var)] <- 0 # change NAs from measuring variance on one specimen to zeros
+  
+  model.var <- model.var / model.n + w.in.var # divide variance by sample size and add within-specimen, inter-observer error
+  
+  obj.paleoTS <- as.paleoTS(mm = model.mean, vv = model.var, tt = model.time, nn = model.n, oldest="first")
+  
+  return(obj.paleoTS)
+}
+
+
+# The following function is for fitting evolutionary modes to data while incorporating ECV inter-observer error and dating error. It returns a list of AICc and AICc weight estimates for each evolutionary model. 
+
+  # ARGUMENTS #
+  # trait: ECV measurements for each specimen
+  # w.in.var: inter-observer error from the random effects ANOVA analysis
+  # age.df: data.frame with age estimates for each specimen, the distribution of age error for each specimen, and the proper variables needed for resampling dates. This is just the main dataset.
+  # bin.edge: bin edges used for binning specimens
+  # n.modes: number of evolutionary modes to fit to data. Six modes include random walk, gradualism, stasis, punctuated equilibrium with two stasis segments, stasis-random walk, and stasis-gradualism. Seven modes includes all of the six modes plus punctuated equilibrium with three stasis segments. Though this extra mode was tested (and received virtually no support), we did not present those results in the paper. 
+  # minb: minimum number of bins within an evolutionary segment (i.e., random walk, gradualism, stasis). This argument is passed to paleoTS functions
+  # numrep: number of iterations for resampling age estimates. If this is set to one, this function creates a paleoTS object using age midpoints. This is used for plotting purposes
+
+ecv.pTS = function(trait, w.in.var, age.df, bin.edge, n.modes=c(6, 7), minb=NULL, numrep){
+  
+  require(paleoTS)
+  
+  if(numrep == 1){ # uses date midpoints with no Monte Carlo simulations. For plotting purposes.
+    
+    mid.date <- ifelse(age.df$date.dist == "uniform", (age.df$min.date + age.df$max.date) / 2, age.df$mean.date)
+    
+    x <- bin.obj.paleoTS(mid.date, bin.edge, trait, w.in.var)
+    
+    return(x)
+    
+  } else{
+    
+    
+    if(n.modes == 6) AIC.res <- list(AICc = array(dim=c(numrep, 6), dimnames=list(1:numrep, c("URW", "GRW", "Stasis", "PE-2", "Stasis-URW", "Stasis-GRW"))), AICc.w = array(dim=c(numrep, 6), dimnames=list(1:numrep, c("URW", "GRW", "Stasis", "PE-2", "Stasis-URW", "Stasis-GRW"))))
+    
+    if(n.modes == 7) AIC.res <- list(AICc = array(dim=c(numrep, 7), dimnames=list(1:numrep, c("URW", "GRW", "Stasis", "PE-2", "PE-3", "Stasis-URW", "Stasis-GRW"))), AICc.w = array(dim=c(numrep, 7), dimnames=list(1:numrep, c("URW", "GRW", "Stasis", "PE-2", "PE-3", "Stasis-URW", "Stasis-GRW"))))
+    
+    for(i in seq_len(numrep)){ # resamples dates according to whether date errors are distributed uniformly or normally
+      
+      MC.age <- numeric(length=nrow(age.df))
+      
+      for(t in seq_len(nrow(age.df))){
+        
+        if(age.df$date.dist[t]=="uniform") MC.age[t] <- runif(1, min=age.df$min.date[t], max=age.df$max.date[t]) else(MC.age[t] <- rnorm(1, mean=age.df$mean.date[t], sd=age.df$sd.date[t]))
+        
+      }
+      
+      x <- bin.obj.paleoTS(MC.age, bin.edge, trait, w.in.var)      
+      
+      # Fit statistical models
+      fit.URW <- opt.joint.URW(x)
+      fit.GRW <- opt.joint.GRW(x)
+      fit.Stasis <- opt.joint.Stasis(x)
+      fit.PE.2 <- fitGpunc(x, ng=2, method="Joint", minb=minb, silent=TRUE)
+      if(n.modes == 7) fit.PE.3 <- fitGpunc(x, ng=3, method="Joint", minb=minb, silent=TRUE)
+      fit.S.URW <- fitModeShift(x, minb=minb, order="Stasis-RW", rw.model="URW", method="Joint", silent=TRUE)
+      fit.S.GRW <- fitModeShift(x, minb=minb, order="Stasis-RW", rw.model="GRW", method="Joint", silent=TRUE)
+      
+      # Compare models
+      if(n.modes == 6) fit.res <- compareModels(fit.URW, fit.GRW, fit.Stasis, fit.PE.2, fit.S.URW, fit.S.GRW, silent=TRUE)
+      if(n.modes == 7) fit.res <- compareModels(fit.URW, fit.GRW, fit.Stasis, fit.PE.2, fit.PE.3, fit.S.URW, fit.S.GRW, silent=TRUE)
+      
+      AIC.res$AICc[i, ] <- fit.res$modelFits$AICc
+      AIC.res$AICc.w[i, ] <- fit.res$modelFits$Akaike.wt
+      
+      print(i)
+    }
+    return(AIC.res)
+  }
+}
+
+
+## calculate median ECV for each specimen across replicate measurements from multiple researchers
+ecv.med <- apply(d[, grep("ecv", names(d))], 1, function(x) median(x, na.rm=TRUE))
+
+# create 200ka bins
+bin.200 <- seq(0, 3.5, 0.2)
+
+# run analysis
+res.6 <- ecv.pTS(trait=ecv.med, w.in.var=hom.var, age.df=d, bin.edge=bin.200, n.modes=6, minb=6, numrep=1000)
+
+
+
+### 3) Calculating R2 and gradualism model parameters while resampling age estimates
+
+# number of iterations for resampling age estimates
+n.iter <- 1000
+
+# Create list where results are saved
+grw.res <- list(par=array(dim=c(n.iter, 3), dimnames = list(seq_len(n.iter), c("anc", "mstep", "vstep"))), r2=numeric(n.iter))
+
+# R2 = 1 - residual sum of squares/ total sum of squares 
+
+# Calculate total sum of squares
+ecv.mean <- mean(ecv.med)
+ss.tot <- sum((ecv.med - ecv.mean) ^ 2)
+
+for(i in seq_len(n.iter)){
+  
+  # resample dates
+  MC.age <- numeric(length=nrow(d))
+  
+  for(t in seq_len(nrow(d))){
+    
+    if(d$date.dist[t]=="uniform") MC.age[t] <- runif(1, min=d$min.date[t], max=d$max.date[t]) else(MC.age[t] <- rnorm(1, mean=d$mean.date[t], sd=d$sd.date[t]))
+    
+  }
+  
+  # create paleoTS object using resampled ages
+  x <- bin.obj.paleoTS(MC.age, bin.200, ecv.med, hom.var)      
+  
+  # fit gradualism model
+  fit.GRW <- opt.joint.GRW(x)
+  
+  # save model parameters
+  grw.res$par[i, ] <- fit.GRW$parameters
+  
+  
+  # The following lines of code for "obs" and "fit" need to be done because of the way paleoTS fits the model to a trait where age goes from high (i.e., 3.3 Ma) to low (i.e., 0.5 Ma). Thus, I need to reorder observed and fitted ECV values before calculating the R2. 
+  
+  obs <- cbind(MC.age, ecv.med)
+  obs <- obs[order(obs[, 1]), ]
+  
+  fit <- cbind(MC.age, grw.res$par[i, "anc"] +  grw.res$par[i, "mstep"] * MC.age)
+  fit <- fit[order(fit[, 1], decreasing=TRUE), ]
+  
+  # calculate residual sum of squares
+  ss.res <- sum((obs[, 2] - fit[, 2]) ^ 2)
+  
+  # Calculate R2 from residual and total sum of squares
+  grw.res$r2[i] <- 1 - ss.res / ss.tot
+  
+  print(i)
+}
+
+
+
+### 4) Lower taxonomic-level additive partitioning analyses. This code partitions clade-level change into anagenesis, first appearances, and last appearances components. 
+
+# Function for partitioning clade-level change into anagenetic, extinction (last appearances in our case), and origination (first appearances in our case) components following Rego et al. 2012 in Paleobiology.
+
+  # ARGUMENTS #
+  # bin.edge: bin edges used for binning specimens
+  # trait: ECV measurements for each specimen
+  # age: age estimates for each specimen
+  # lineage: either the less speciose and more speciose lineage is used here. This is from the main dataset. 
+
+add.part <- function(bin.edge, trait, age, lineage){
+  
+  bin <- (bin.edge[-length(bin.edge)] + diff(bin.edge) / 2)[findInterval(age, bin.edge)] # use midpoint to label bins
+  time <- sort(unique(bin), decreasing=TRUE)
+  
+  clade.mean <- rev(tapply(trait, bin, mean))
+  clade.diff <- diff(clade.mean)
+  
+  # Find out which species are present in which bin (to denote survivors between bins)
+  anag.pres <- tapply(trait, data.frame(lineage, bin), function(x) any(x > 0))
+  
+  anag.pres.diff <- t(apply(anag.pres, 1, function(x) rev(diff(x)))) # zeros represent lineages that range through two given bins
+  
+  colnames(anag.pres.diff) <- paste(as.numeric(rev(colnames(anag.pres)))[-ncol(anag.pres)], as.numeric(rev(colnames(anag.pres)))[-ncol(anag.pres)] - diff(bin.edge)[1], sep="-")
+  
+  any.anag <- colSums(!is.na(anag.pres.diff)) # find if there are any time bins with no anagenetic change across bins
+  
+  diff.res <- array(NA, dim=c(4, length(any.anag)), dimnames=list(c("anag", "orig", "extinct", "orig/extinct"), colnames(anag.pres.diff)))
+  
+  for(i in seq_along(any.anag)){
+    
+    if(any.anag[i] > 0){
+      
+      x <- anag.pres.diff[, i]
+      anag.lineage <- names(x)[which(!is.na(x))] # find out which lineages range through the bins of interest
+      
+      anc <- mean(trait[lineage %in% anag.lineage & bin == time[i]], na.rm=TRUE)
+      
+      desc <- mean(trait[lineage %in% anag.lineage & bin == time[i + 1]], na.rm=TRUE)
+      
+      diff.res["anag", i] <- desc - anc
+      diff.res["extinct", i] <- anc - clade.mean[i]
+      diff.res["orig", i] <- clade.mean[i + 1] - desc
+      
+    } else diff.res["orig/extinct", i] <- clade.diff[i]
+  }
+  return(diff.res)
+}
+
+
+# Select bin size
+bin.edge <- seq(0.05, 3.7, 0.3) # this seems to be the optimal bin size and location for getting the smallest bin size and eliminating any gaps within a lineage. 
+
+# create vector of age midpoints for each specimen
+mid.date <- ifelse(d$date.dist=="uniform", (d$min.date + d$max.date) / 2, d$mean.date)
+
+# Using age midpoints and median ECV
+lump.res <- add.part(bin.edge, ecv.med, mid.date, d$lump.part) # less speciose
+split.res <- add.part(bin.edge, ecv.med, mid.date, d$split.part) # more speciose
+
+# Resampling individual ECV measurements to get error bars
+n.iter <- 1000 # number of iterations for resampling
+
+lump.ECV <- split.ECV <- array(dim=c(n.iter, nrow(lump.res), ncol(lump.res)), dimnames=list(seq_len(n.iter), rownames(lump.res), colnames(lump.res)))
+
+for(i in seq_len(n.iter)){
+  
+  ecv.samp <- apply(d[, grep("ecv", names(d))], 1, function(x) if(sum(!is.na(x)) > 1) sample(x[!is.na(x)], 1) else x[!is.na(x)])
+  
+  lump.ECV[i, , ] <- add.part(bin.edge = bin.edge, trait = ecv.samp, age = mid.date, lineage = d$lump.part) 
+  
+  split.ECV[i, , ] <- add.part(bin.edge = bin.edge, trait = ecv.samp, age = mid.date, lineage = d$split.part)
+  
+  print(i)
+}
+
+# Resampling dates to get error bars
+n.iter <- 1000 # number of iterations for resampling
+
+lump.date <- split.date <- list() # need to use lists because number of bins will vary for each iteration as specimens get shuffled into different bins
+
+for(i in seq_len(n.iter)){
+  
+  MC.age <- numeric(nrow(d))
+  
+  for(t in seq_len(nrow(d))){
+    
+    if(d$date.dist[t]=="uniform") MC.age[t] <- runif(1, min=d$min.date[t], max=d$max.date[t]) else(MC.age[t] <- rnorm(1, mean=d$mean.date[t], sd=d$sd.date[t]))
+    
+  }
+  
+  lump.date[[i]] <- add.part(bin.edge = bin.edge, trait = ecv.med, age = MC.age, lineage = d$lump.part)  
+  
+  split.date[[i]] <- add.part(bin.edge = bin.edge, trait = ecv.med, age = MC.age, lineage = d$split.part)
+  
+  print(i)
+}
+
+# combine lists with different sized vectors into a coherent array based on common column names, where the first row 
+library(plyr)
+
+lump.date1 <- do.call(rbind.fill.matrix, lump.date)
+split.date1 <- do.call(rbind.fill.matrix, split.date)
+
+# subset resulting array into respective anagenesis, origination, and extinction components
+lump.anag <- lump.date1[seq(1, nrow(lump.date1), 4), ]
+lump.orig <- lump.date1[seq(2, nrow(lump.date1), 4), ]
+lump.extinct <- lump.date1[seq(3, nrow(lump.date1), 4), ]
+lump.orig.extinct <- lump.date1[seq(4, nrow(lump.date1), 4), ]
+
+split.anag <- split.date1[seq(1, nrow(split.date1), 4), ]
+split.orig <- split.date1[seq(2, nrow(split.date1), 4), ]
+split.extinct <- split.date1[seq(3, nrow(split.date1), 4), ]
+split.orig.extinct <- split.date1[seq(4, nrow(split.date1), 4), ]

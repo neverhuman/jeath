@@ -1,0 +1,33 @@
+\section{Reproducibility and data}\label{app:repro}
+
+\noindent The accompanying package contains the \LaTeX{} source, the bibliography, all scripts, machine-readable results,
+and figures. \texttt{code/run\_all.sh} executes, in order, the experiments (\texttt{exp\_core.py}, \texttt{exp\_rates.py},
+\texttt{exp\_power.py}, \texttt{exp\_contest.py}, \texttt{exp\_polymath.py}, \texttt{exp\_verify.py}, \texttt{exp\_speed.py},
+\texttt{exp\_gss.py}, \texttt{exp\_village.py}, \texttt{exp\_cultures.py}, \texttt{exp\_world.py}, \texttt{exp\_notes.py}), the audit
+(\texttt{audit.py}), the figures (\texttt{make\_figures.py}) and the manuscript inputs (\texttt{make\_tex.py}); total runtime
+on one CPU core is about twenty minutes, most of it the evolutionary simulations and the bootstraps. Each script writes JSON
+outputs to \texttt{results/} with its seed, sizes, parameters, and verification statistics. Figures are generated only from
+those files and from the datasets. Every analysis-derived number in the text and every generated table is written
+by \texttt{make\_tex.py} into \texttt{paper/generated/}, so the manuscript cannot drift from the results. The bibliography
+is produced by \texttt{build\_bib.py} from Crossref records; the verification log is \texttt{results/ref\_verification.json}.
+Of \RefCited{} references cited, \RefResolved{} have a DOI that was resolved against Crossref; abstracts could be retrieved
+for most of them and specific claims were checked against those abstracts. Where no abstract was available the citation is
+limited to what the title states. The manuscript compiles with \texttt{pdflatex}, \texttt{bibtex}, and two further
+\texttt{pdflatex} passes.
+
+\emph{Third-party data.} The fossil reanalysis uses three open datasets, redistributed in \texttt{data/} with attribution
+and unmodified: Supplementary Dataset~1 of Gingerich~\cite{gingerich2022} (233 specimens; CC~BY~4.0); Supplementary File~2 of
+Will et al.~\cite{will2021} (166 \Homo{} specimens with taxon, age and site coordinates; CC~BY~4.0); and the dataset of Du et
+al.~\cite{du2018} (94 specimens; Dryad \texttt{doi:10.5061/dryad.c30g9}; CC0). Regional assignment of Middle Pleistocene
+specimens uses site coordinates and is coded in \texttt{load\_fossils.py}. The present-day analysis uses the public
+cumulative file of the General Social Survey, 1972--2024~\cite{gss2024}, as packaged for R by Healy~\cite{healygssr}. The file
+is not redistributed: \texttt{code/fetch\_gss.py} downloads it and extracts the variables used, and \texttt{rda\_reader.py}
+reads it without R. The speed-dating analysis uses the public file of the Columbia experiment~\cite{fisman2006}; it too is
+not redistributed, and \texttt{code/fetch\_speed.py} copies it from a public mirror and checks its SHA-256 digest. Both
+analyses use respondent-level public data with no identifiers, report only aggregates by sex and cohort, and make no
+comparison among racial, ethnic or national groups. Three further sources are fetched by scripts and not redistributed:
+the D-PLACE release of the ethnographic codes (\texttt{fetch\_dplace.py}, pinned to a commit), and the 175-country and
+45-country survey files (\texttt{fetch\_open.py}, checked by SHA-256 digest; the first is licensed CC~BY~4.0). In those
+analyses countries and societies are units of replication; none is named or ranked, and variables describing religion or
+ethnicity are not read. No new data were collected from human
+participants; all simulation data are synthetic.

@@ -1,0 +1,252 @@
+\documentclass[10pt,letterpaper]{extarticle}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}
+\linespread{1.05}
+\usepackage[scaled=0.90]{helvet}
+\usepackage[letterpaper,margin=0.8in,top=0.8in,bottom=0.85in]{geometry}
+\usepackage{microtype,booktabs,tabularx,array,enumitem,titlesec,fancyhdr,ragged2e,longtable,amsmath}
+\usepackage[table]{xcolor}
+\usepackage{pdflscape}
+\usepackage[colorlinks=true,linkcolor=accent,urlcolor=accent,pdftitle={Review and Scorecard, version 9: Performance Before Outcomes},pdfauthor={Prepared for Jepson Taylor}]{hyperref}
+\definecolor{ink}{HTML}{0B0B0B}\definecolor{ink2}{HTML}{52514E}\definecolor{accent}{HTML}{1C5CAB}
+\definecolor{rulegray}{HTML}{C9C8C2}\definecolor{band}{HTML}{F4F3EF}\definecolor{best}{HTML}{E3EEFB}
+\color{ink}
+\titleformat{\section}{\sffamily\bfseries\fontsize{12}{14}\selectfont}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\sffamily\bfseries\fontsize{10}{12}\selectfont}{\thesubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{12pt plus 2pt}{5pt}\titlespacing*{\subsection}{0pt}{9pt plus 2pt}{3pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0.3pt}\renewcommand{\headrule}{\color{rulegray}\hrule height 0.3pt}
+\fancyhead[L]{\sffamily\scriptsize\color{ink2}PERFORMANCE BEFORE OUTCOMES \textperiodcentered{} REVIEW AND SCORECARD, VERSION 9}
+\fancyhead[R]{\sffamily\scriptsize\color{ink2}November 10, 2026}\fancyfoot[C]{\sffamily\scriptsize\color{ink2}\thepage}
+\newcolumntype{L}{>{\RaggedRight\arraybackslash}X}\newcolumntype{P}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}p{0.042\textwidth}}
+\setlist{leftmargin=1.3em,itemsep=2pt,topsep=3pt,parsep=0pt}
+
+\newcommand{\lab}[1]{\textbf{#1}}
+\frenchspacing
+\input{rubric_v9_totals}
+\makeatletter\newcommand{\tabinput}[1]{\@@input #1 }\makeatother
+\newcolumntype{S}{>{\raggedleft\arraybackslash}p{0.031\linewidth}}
+\begin{document}
+{\sffamily\scriptsize\color{accent}\textbf{REVIEW AND SCORECARD \;\textperiodcentered\; VERSION 9 \;\textperiodcentered\; NOVEMBER 10, 2026}}\par\vspace{4pt}
+{\sffamily\bfseries\fontsize{20}{23}\selectfont Thirteen drafts, ten review questions, and the final paper\par}\vspace{3pt}
+{\sffamily\fontsize{11}{14}\selectfont\color{ink2} A rubric of \NCrit{} criteria, a review of every draft, an answer to every note, and what is still missing\par}
+\vspace{4pt}{\color{rulegray}\hrule height 0.5pt}\vspace{6pt}
+
+\section*{Result}
+
+\begin{tabularx}{\textwidth}{@{}P{0.035\textwidth}P{0.21\textwidth}rrLr@{}}
+\toprule
+ & Draft & Words & Refs. & One-line assessment & Score\\
+\midrule
+V3 & v3 FINAL (PDF, 19 pp) & 17{,}400 & 116 & Dense theory, no data, nothing about living people. & \TotVthree\\
+CF & Consolidated Final (PDF, 18 pp) & 15{,}400 & 87 & The most careful about inference; silent on women, men and culture. & \TotCF\\
+FT & Final (\texttt{.tex}) & 11{,}400 & 63 & A readable essay with no models, no data and thin sourcing. & \TotFT\\
+PB & Publication (\texttt{.tex}) & 10{,}500 & 84 & Cautious review; plots of published values; an AI illustration beside data. & \TotPB\\
+V4 & v4 & 29{,}200 & 259 & First formal theory with proofs and a fossil reanalysis. & \TotVfour\\
+V5 & v5 & 39{,}900 & 319 & Adds the national survey: selection split into access and number. & \TotVfive\\
+V6 & v6 & 43{,}200 & 329 & Tighter article, full audit, three episodes of selection. & \TotVsix\\
+V7 & v7 & 48{,}200 & 354 & Tests against delivery, enforcement, the pairing gate. No data on choices. & \TotVseven\\
+S2 & Final Synthesis (2) & 9{,}900 & 90 & Careful, well-written review; no analysis of its own. & \TotStwo\\
+F2 & FINAL (2) & 13{,}100 & 87 & The timing problem and the jury law, measured; the best read to that date. & \TotFtwo\\
+VF & v8\_FINAL (17 pp) & 17{,}800 & 118 & F2 plus coded ethnography and a five-step first page. Readable, overclaims in places, unverifiable as received. & \TotVF\\
+V8 & v8 (50 pp) & 54{,}500 & 379 & Theory, audit and survey depth with the jury law added. Assumed too little about who chose. & \TotVeight\\
+\rowcolor{best} V9 & v9, the final paper (62 pp) & 68{,}600 & 435 & Both lineages joined, every review note answered with data or a proof, eight stated conclusions, six open data sets. & \TotVnine\\
+\bottomrule
+\end{tabularx}
+
+\textbf{How to read these numbers.} I wrote V4 to V9; VF and F2 were drafted with Claude in other sessions, and S2, PB, CF and
+V3 with ChatGPT. A score I give my own work is an upper bound. The rubric is new and follows this request: it adds ten
+points for the hard questions in the review notes and eight for the strength and importance of the conclusions, so scores
+are lower than on earlier rubrics and should not be compared with them. V8 and VF are within noise of each other and are
+strong in different ways: VF is the better read and saw first that the chooser was a jury; V8 has the proofs, the audit and
+the verified references. V9 is their union. VF, F2, S2, PB and FT arrived without figure files, except that VF's PDF was
+supplied and its figures were inspected.
+
+\textbf{The last 15 points} cannot be earned by drafting (Section~6).
+
+\begin{landscape}
+\section{The rubric and the scores}
+{\scriptsize\setlength{\tabcolsep}{3.4pt}
+\begin{longtable}{@{}P{0.130\linewidth}P{0.290\linewidth}rSSSSSSSSSSSSS@{}}
+\toprule
+Criterion & Full marks require & Max & V3 & CF & FT & PB & V4 & V5 & V6 & V7 & F2 & S2 & V8 & VF & V9\\
+\midrule
+\endhead
+\tabinput{rubric_v9_body.tex}
+\bottomrule
+\end{longtable}}
+\end{landscape}
+
+\section{Feedback on every draft}
+
+\subsection*{The early drafts}
+\lab{V3 (\TotVthree).} A selection-index treatment with many formal statements and no measurement. It establishes the
+identity the later drafts rest on and nothing about people. \emph{To improve:} everything the later drafts did.
+
+\lab{CF, Consolidated Final (\TotCF).} The strictest about what may be inferred, with two counterexamples worth keeping
+(better prediction of a phenotype can mean weaker selection on its heritable part; a product of correlations does not fix
+the sign of a missing link). It says almost nothing about what women and men select for, who decides, or what any of it
+means now, which is 34 points of this rubric. \emph{Kept:} its cautions, as objections.
+
+\lab{FT, Final (\TotFT).} The founding narrative told well: hunting, contests, play and games as early evidence. No model,
+no data, 63 references, several claims stated as fact. \emph{Kept:} the narrative, and its instinct that play and games
+matter, which returns in V9 as the result on safe contests.
+
+\lab{PB, Publication (\TotPB).} A cautious integrative review with plots of published values on the first page. The
+AI-generated illustration beside data would not survive review. \emph{Kept:} the first-page figure as a requirement, and the
+division of partner value into capacity and willingness.
+
+\subsection*{The long lineage, V4 to V8}
+\lab{V4 (\TotVfour).} Ten propositions with proofs, a reanalysis of 233 crania, verified references. Nothing on living
+people. \lab{V5 (\TotVfive).} Adds 34{,}092 survey respondents and splits selection into access and number: the first result
+about women and men that a reader can check. \lab{V6 (\TotVsix).} A tighter article, an independent audit, and three episodes of
+selection. \lab{V7 (\TotVseven).} What a test can show, enforcement, and the pairing gate by cohort; two results taken from the
+companion paper on AI oversight. Common weaknesses of all four: no data on what people choose, one paragraph on culture,
+the word ``choice'' used as if the bride chose, and a first page that told half the story.
+
+\lab{V8 (\TotVeight).} Adds the jury law measured on 8{,}378 speed dates, men's misreading of interest, a seven-step table of
+the sexes, a culture table of nine published comparisons, and a section for builders of AI. \emph{Weaknesses the review
+notes exposed:} it never said who the chooser was or what coercion does to the argument; it called two small-brained
+species ``beside'' large-brained ones; it left the ``half of men'' claim, the shrinking brain, storytelling and the
+present-day stakes unaddressed; and its conclusions were a list of findings, not a statement of what follows.
+
+\subsection*{The short lineage, S2, F2 and VF}
+\lab{S2, Final Synthesis (2) (\TotStwo).} Excellent discipline and prose, and four corrections that V8 adopted. No analysis of
+its own. \lab{F2, FINAL (2) (\TotFtwo).} The timing problem as the opening and the jury law as a measurement: the best new
+idea of any draft before V8. Overreaches in four places listed in the previous scorecard; no supplement; no culture.
+
+\lab{VF, v8\_FINAL (\TotVF).} The strongest draft I did not write. \emph{Title:} ``It takes a village to read a mind, and
+that is how we got ours'' is the most quotable line in the project; its second half asserts a cause the paper does not
+establish. \emph{New knowledge:} coded ethnography from three samples (who chooses a spouse, payments, the age gap,
+polygyny, grounds for divorce), a variance decomposition of speed-dating decisions, eight results. I recomputed its
+headline ethnographic numbers independently and they agree (8\% of daughters and 31\% of sons choose alone; forager men
+marry 6.7 years later). \emph{Mate selection:} the best account of who decides, under the heading ``A jury decides, and
+more firmly for daughters'', and of divorce as continued assessment. \emph{What it does not do:} it reports consent codes
+but not rape, capture or wife-beating, and has no account of what coercion does to the mechanism; it has no cross-national
+data on stated ideals or pairing; ``selection was never the bottleneck, so brain size tracked a moving optimum'' and
+``exactly as the Spearman--Brown law predicts'' still overreach; its survey $N$ differs from the audited one by twelve
+respondents; and neither code nor figure sources were supplied, so nothing in it can be rebuilt. \emph{Read and layout:} the
+best first page of any draft before V9, five numbered steps each with a one-line gloss. \emph{Kept in V9:} the tagline's first
+half, the jury finding (re-derived from the raw codes, with coercion added), the age gap and its relation to polygyny, and
+divorce as exit.
+
+\subsection*{V9, the final paper (\TotVnine, self-assessed)}
+\emph{What it adds to V8.} Three new data sets (the coded ethnographic record; 14{,}399 people in 45 countries; 117{,}293
+in 175), a second extract of the national survey, two propositions and two corollaries with proofs and simulation checks,
+four audit checks, three figures and a sixth panel on the first page, six predictions, seven objections, 56 further
+verified references, eight stated conclusions, and a section of the supplement that answers each review note in turn.
+
+\emph{Where it is still weak.} Each data result still rests on one sample of its kind. The ethnographic codes are outsiders'
+judgments of recent societies. The cross-national files are convenience samples of self-report. The fall in births is
+located, not explained. The main text has grown to fifteen pages and the supplement to forty-five; a journal version would
+cut both by half. Nothing estimates an ancestral quantity, and the paper says so on the first page.
+
+\section{Answers to the review notes}
+
+{\small
+\begin{longtable}{@{}P{0.20\textwidth}P{0.42\textwidth}P{0.31\textwidth}@{}}
+\toprule
+Note & What the evidence says & Verdict, and what changed in V9\\
+\midrule
+\endhead
+\lab{1. The opening assumes consent. Was rape common?} & In 186 coded societies a daughter chooses her husband alone in 8\%; parents choose in 45\%, and in 33 societies she cannot easily object. Her consent is necessary in a third of 57 societies. Rape is reported in 50 of 95 societies and rated common in 13 of 31; women were taken captive in war in 37\% of 158; wife-beating is present in 80\% of 70. Divorce is open equally to both in 77\% of 93. No source measures the share of conceptions that followed coercion. & \emph{Right about the word; the mechanism survives.} It needs a jury with years of evidence, and the record names parents and elders. New equation: coercion scales the pathway by one minus its share and selects the body instead. New main-text section 2.9, Fig.~7, Table~S29, objections O45--O46, prediction P30.\\
+\lab{2. Only half of men reproduced; twice as much female DNA.} & The source is real: mitochondrial lineages coalesce about twice as deep as Y lineages (Wilder et al.\ 2004). It measures a ratio of effective numbers. New result: for either sex, effective number over census number equals $(1-q)/(1+\alpha)$, where $q$ is the childless share and $\alpha$ the inequality among parents. A twofold ratio fits 80\% and 40\%, and equally fits the same share of each sex with unequal fathers, or clan-level competition with no difference at all (Zeng et al.\ 2018). In the United States the ratio is 1.01, rising to 1.14 in the latest cohort. & \emph{Half right.} Men's reproduction was the more unequal; the headcount cannot be read from the ratio; and every child gets half its other chromosomes from each parent, so ``twice as much female DNA'' is false as stated. I could not verify the attribution to Scott Galloway; the paper cites the earlier popular source. Proposition~18, Fig.~7D.\\
+\lab{3. Was \textit{Homo floresiensis} beside australopiths, or isolated?} & Isolated. Flores, reached only by sea; remains about 100,000--60,000 years old; ancestors there by 0.7 million years ago. The last australopiths lived in Africa a million years earlier. Its brain is of australopith size, which is why it sits low on the plot. & \emph{The note is right; V8's wording (``beside'') invited the error.} Text corrected in two places, and isolation is now part of the explanation.\\
+\lab{4. ADHD as an advantage for hunters; a 20\% figure.} & Verified: a \textit{DRD4} variant goes with better nourishment in nomadic Ariaal men and worse in settled ones (65 and 87 men); it shows past positive selection and is commoner in far-migrating populations; adults who screen positive leave depleted patches sooner and earn more in a foraging task. Against: alleles associated with the diagnosis have declined since the Paleolithic, long before farming. & \emph{Plausible for exploration traits; not shown for the clinical condition. The 20\% figure is not in the source and could not be traced.} New corollary: a mixed profile is neutral under broad comparison and a deficit under a narrow test. Prediction P33.\\
+\lab{5. Brains shrank; cognitive alleles rose about one SD; more with less.} & Both hold with caveats: over 5\% less brain mass in 50,000 years, largely with body size, with the last 3,000 years disputed; and a one-SD rise over 10,000 years in West Eurasia in alleles that predict cognitive measures today (verified in the abstract). & \emph{Compatible, and what the tissue-cost proposition predicts.} The comparison with distilled models is kept as an analogy and added to the AI section.\\
+\lab{6. Neurodivergence selected for the forest; sharper senses.} & Foragers name odors far better than neighboring farmers who speak a closely related language, which points to practice. No study found of heritable sensory acuity favored in foragers and relaxed in farmers. & \emph{Not supported as stated.} One sentence, and a caution against projecting diagnoses onto the past (O50).\\
+\lab{7. Storytellers have more children; networks; fire; the book \emph{Outbound}.} & Skilled Agta storytellers have more surviving children; better-connected Agta and BaYaka mothers have more living offspring; firelit talk is stories (Wiessner 2014); people without electricity fall asleep 3.3 hours after sunset. I could not identify a book titled \emph{Outbound} on this subject. & \emph{Supported.} Fire enters the model twice beyond diet: more occasions and observers, and speech as a domain everyone is compared on. New paragraph in 2.3; prediction P31.\\
+\lab{8. Maasai: lion hunting and raiding replaced by jumping; jump height decides standing and marriage.} & The tournament is real (conceived 2008, first held 2012; six events, the high jump modeled on the warriors' dance) and was created to replace the lion hunt as the mark of manhood. Marriage by custom follows the ceremony that ends warriorhood. No source makes jump height a condition of marriage. & \emph{Supported as substitution; the marriage claim is not.} Standing is what the jump confers.\\
+\lab{9. Safe, repeatable mating rituals.} & Games with winners are recorded in 460 of 486 societies. Sereer wrestlers have more children, though women say they do not value wrestling. & \emph{Supported, and now derived:} enough repetitions of a safe trial match one dangerous one for capacity, and never for nerve. Corollary~9, Eq.~4, prediction P32.\\
+\lab{10. Specialization, online personas, loss of community, falling births.} & In the United States the ideal number of children is unchanged since 1972 (2.5). Children per adult aged 25--39 fell from 1.70 to 1.26, and 94\% of the fall is accounted for by more people never marrying. Monthly evenings with neighbors fell from 60\% to 35\% of young adults. Against: seeing friends goes with being single; an hour of social media a day is unrelated to being single in 70 countries; couples who met online married sooner in one panel. & \emph{Supported as accounting and trend; the mechanism is conjecture.} New section 2.11, Fig.~9, Proposition~19, predictions P34--P35. On generalists: division of labor removes the premium on general ability; nothing here shows they survive better.\\
+\lab{The conclusions are not strong or important enough.} & & \emph{Accepted.} Section 3.1 now states eight conclusions with the status of each, and the first page carries the present-day one.\\
+\bottomrule
+\end{longtable}}
+
+\section{The fifty suggested sources}
+
+I went through the list. Two were downloaded and analyzed, and are in the paper with a figure and a table: the
+175-country survey (Kowal et al.\ 2025; CC~BY~4.0) and the 45-country survey (Walter et al.\ 2020). They add the finding
+that both sexes everywhere say they want kindness and intelligence above looks and money; that women want resources more
+than men in all 70 countries with enough data while the size varies forty-fold; and a replication of the door outside the
+United States. Two papers from the list were added as evidence (Hunt et al.\ 2015 on length of acquaintance; Stinson et
+al.\ 2022 on romance that begins as friendship). The Columbia file and the General Social Survey were already in use.
+
+Not used, and why. The eight public-domain Dryad deposits would have been useful (the face-rating study in five countries
+is a second test of agreement among observers), but Dryad refused file downloads from this workspace; attach the files and
+I will add them. \emph{How Couples Meet and Stay Together}, the Northwestern speed-dating data and the European panels need a
+signed agreement, which is yours to give. The National Survey of Family Growth is public and is the right next data set
+for the births result. The online-dating summaries I tried were not openly readable.
+
+\section{Mistakes and things that did not make sense}
+
+{\small
+\begin{longtable}{@{}P{0.07\textwidth}P{0.45\textwidth}P{0.42\textwidth}@{}}
+\toprule
+Draft & Problem & What V9 does\\
+\midrule
+\endhead
+V8 & Wrote of mate choice as if a woman chose freely. & States who decided, from the coded record, and what coercion does.\\
+V8 & ``Small-brained species persisted beside large-brained ones.'' & ``While large-brained ones lived elsewhere''; Flores named as an island.\\
+V8 & Conclusions were a list of findings. & Eight conclusions, each marked measured, derived or conjectured.\\
+V8 & Prediction P28 (strangers take longer to commit) stated without the contrary finding. & Rosenfeld 2017 is cited against it in the text and the prediction is restated as P34.\\
+V8, VF & The popular ``half of men'' claim unaddressed. & Proposition~18 and survey estimates.\\
+VF & ``That is how we got ours'' in the subtitle. & ``Could build''.\\
+VF & ``Selection was never the bottleneck, so brain size tracked a moving optimum.'' & Not adopted; a slow net rate is also what weak or reversing selection leaves.\\
+VF & Reports consent codes without the coercion codes in the same sample. & Reports both.\\
+VF & Survey $N$ of 34{,}104 against 34{,}092 under the stated rule; code not supplied. & V9 ships the code.\\
+Data & The ethnographic release codes most foraging societies as having games of strategy alone. & Reported as presence of games only, with the reason given.\\
+Notes & ``Twice as much female DNA.'' & False for the autosomes; explained.\\
+Notes & ``Jump height determines marriage eligibility.'' & No source found; stated as prestige.\\
+Notes & ``Up to 20\% more body mass efficiency.'' & Not in the source; stated as untraced.\\
+V9 (draft) & I first cited Crow 1958 for the effective-number formula; it is Kimura and Crow 1963. I also first wrote that two demographic studies show falling marriage ``accounting for'' falling births, which their abstracts do not say. & Both corrected before the build.\\
+\bottomrule
+\end{longtable}}
+
+\section{Title, subtitle, authors}
+
+The title stays, in two colors. The tagline is the first half of VF's subtitle, which is the best line anyone has written
+for this project: \emph{It takes a village to read a mind.} The subtitle follows: \emph{How being judged at everything, by
+people who knew us for years, could build a mind for anything, and what happens when the jury goes home.} The last clause
+is new and carries the present-day conclusion. ``Could'' stays.
+
+Erin Beilharz is second author. Author biographies with photographs follow the references, as in a journal. Her
+photograph is the one attached to the request, which I have taken to be hers. I do not fetch photographs of people from
+the web, so Jepson Taylor's portrait is a placeholder: save the file as \texttt{figures/author\_taylor.jpg} and rebuild, or
+attach it and I will. The biographies paraphrase the two public speaker pages and should be checked by the authors. The
+paper says only that each author's contribution is to be confirmed, because I do not know who wrote the review notes.
+
+\section{What a leading journal would still ask for}
+
+\begin{enumerate}
+\item \lab{A specialist as author or reviewer.} No human expert in evolutionary anthropology or demography has read it.
+Journal policies on AI-assisted manuscripts must be checked.
+\item \lab{Second samples.} Register data from another country for the episodes; a speed-dating sample that is not graduate
+students; fertility histories with partnership dates for the births result.
+\item \lab{One direct test.} P27 (longer meetings, more observers) or P34 (shared acquaintances and time to union) can each
+be preregistered.
+\item \lab{Full-text verification} of every source, and a specialist's reading of the ethnographic codes.
+\item \lab{A shorter paper.} The article should be cut from fifteen pages to eight for a general journal. Three results
+would lead: the jury law, who decided, and where the births went.
+\end{enumerate}
+
+\section{Checks run on the final paper}
+
+All 435 references cited are in the bibliography, and the 410 that have a DOI resolve against Crossref. Every number that
+comes from an analysis is written into the text by script from the results files. The audit passes: exact enumeration for
+the effective-number result (difference $10^{-16}$); the three parts of the births decomposition sum to the change; two
+ethnographic variables recounted from the raw file by a second reader (difference zero); the count of countries in which
+women want resources more than men recomputed with a different reader (difference zero). Seventeen of the nineteen results
+files carried over from V8 are identical, and the other two only gained entries. The first survey extract is unchanged
+byte for byte. VF's headline ethnographic numbers were reproduced independently. The single-file source compiles on its
+own to the same 62 pages. The first page, every new figure and the pages with new tables were inspected as images.
+
+\textbf{Rebuild from scratch.} The package was unpacked into an empty folder with every result, figure and generated
+input deleted; all five public data sources were fetched again and verified (the survey, the speed-dating file, the
+ethnographic codes at the pinned commit, and the two cross-national files by digest); and the whole pipeline was rerun
+(nineteen minutes). All 23 results files and every generated number and table came out identical, and the rebuilt PDF
+matches the released one word for word, bibliography included. Wording edits made to two source files after the rerun began
+were compiled in both copies before the comparison.
+\end{document}

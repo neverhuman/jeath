@@ -1,0 +1,164 @@
+\section{What needs explaining: rate, pattern, parallels}\label{sec:explananda}
+
+\subsection{The per-generation rate}
+
+\noindent ``Rapid'' needs a denominator. Three quantities are often run together: net change per year in the fossil record,
+inherited response per generation, and the part of that response attributable to a proposed mechanism. A large endpoint
+difference establishes neither of the last two. Gingerich's consensus series regresses log endocranial volume (ECV) on time
+with slope 0.416 per million years over about 3.19~million years, uses a within-population standard deviation of 0.10 for
+$\ln$~ECV, and assumes a 25-year generation~\cite{gingerich2022}. The implied total change is \RateTotalSD{} within-population
+standard deviations over about \RateGens{} generations, or $\RateBase$ haldanes (standard deviations per generation).
+Table~\ref{tab:rates} varies the generation time and the fraction of the interval in which change occurred. Even if all change
+were packed into a tenth of the time, the required rate stays near $10^{-3}$ haldanes. For comparison, the median absolute
+linear selection gradient in natural populations is 0.16~\cite{kingsolver2001}. Du and colleagues likewise found that
+within-lineage brain size evolved far more slowly than traits change in living populations~\cite{du2018}.
+
+\textit{Reanalysis.} We refitted the series from the published specimen data (Supplementary Dataset~1
+of~\cite{gingerich2022}; $n=\FosN$). Ordinary least squares of $\ln$~ECV on age gives a slope of $\FosSlopeSpec\pm\FosSlopeSpecSE$
+per Myr at the specimen level and $\FosSlopeBin\pm\FosSlopeBinSE$ across the \FosBins{} occupied 100-kyr bins, bracketing the
+published value. The pooled within-bin standard deviation is \FosSDw, a little above the 0.10 used in the original. Across
+these choices the long-run rate is $(\FosRateLo$--$\FosRateHi)\times10^{-4}$ haldanes. The rate audit does not depend on one
+summary.
+
+\begin{table}[t]
+\caption{Required long-run rate (haldanes) for the hominin ECV increase.}\label{tab:rates}
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}Xcccc@{}}
+\toprule
+ & \multicolumn{4}{c}{Fraction of interval with directional change}\\
+\cmidrule(l){2-5}
+Generation (yr) & 1.0 & 0.5 & 0.25 & 0.1\\
+\midrule
+\tabinput{generated/tab_rates.tex}
+\bottomrule
+\end{tabularx}
+\tablenote{Inputs: slope 0.416 $\ln$~ECV per Myr and $s=0.10$~\cite{gingerich2022}. Using $s=0.08$ raises each entry by 25\%.
+Claim level: plausibility bound.}
+\end{table}
+
+\subsection{Is selection needed at all?}
+
+If the rate is so small, could drift alone have produced it? Lande's benchmark gives the variance of neutral change in the
+mean after $t$ generations as $h^2t/N_e$ in phenotypic variance units~\cite{lande1976}. Table~\ref{tab:drift} reports the
+standardized departure $z$ of the observed \RateTotalSD{} standard deviations from that expectation. With $h^2=0.5$, drift is
+rejected for long-term $N_e\ge5{,}000$ but not for $N_e\approx1{,}000$. A mutational-input benchmark, which ignores all
+constraint, is more permissive still: with mutational variance $10^{-3}V_E$ per generation~\cite{lynch1990} the departure is
+only $z=\MutZLo$--$\MutZHi$.
+
+\begin{table}[t]
+\caption{Departure ($z$) of the observed change from Lande's neutral benchmark.}\label{tab:drift}
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}Xccccc@{}}
+\toprule
+ & \multicolumn{5}{c}{Long-term effective size $N_e$}\\
+\cmidrule(l){2-6}
+$h^2$ & 1,000 & 2,000 & 5,000 & 10,000 & 20,000\\
+\midrule
+\tabinput{generated/tab_drift.tex}
+\bottomrule
+\end{tabularx}
+\tablenote{$z=\RateTotalSD/\sqrt{h^2t/N_e}$ with $t=\RateGens$ generations. Values $z<2$ mean drift cannot be excluded by
+magnitude alone.}
+\end{table}
+
+Magnitude alone therefore cannot exclude drift under every defensible parameter set. Three considerations nonetheless weigh
+against neutrality. First, cost: an organ that claims a large share of a child's energy budget~\cite{kuzawa2014} sits under
+strong stabilizing selection, so a sustained shift in its mean implies a shift in the balance of costs and benefits, not
+neutral wandering. Second, parallelism: several regional series rose together (Section~\ref{sec:parallel}), and drift has no
+preferred direction. Third, the long-run increase arises mainly within species~\cite{puschel2024,du2018}.
+
+\subsection{The pattern is stepwise, not a constant trend}
+
+At 100-kyr resolution, Gingerich identifies four phases alternating between stasis and directional change, with boundaries
+near 2.0, 1.5, and 0.7~Ma~\cite{gingerich2022}. Hubbe and Harvati fitted six evolutionary models to neurocranial and facial
+landmark data for eight time-ordered groups in the \Hs{} and Neanderthal lineages; for the neurocranium, unbiased random walk
+and stasis were best supported, and gradual directional selection played a limited role~\cite{hubbe2026}. This is a serious
+challenge to any account that assumes a constant directional push. It is also typical of fossil series: directional change
+is the best-supported model in only about 5\% of fossil sequences~\cite{hunt2007}, and stabilizing selection around a moving
+optimum produces random-walk and stasis signatures at long timescales~\cite{estes2007}. Such fits describe the pattern at
+the sampled resolution, not the process. A complete account needs a mechanism in which net selection keeps its sign while
+realized change is gated by constraints.
+
+\textit{Reanalysis.} The specimen data support the stepwise description but not its dates (Fig.~\ref{fig:fossils}A). A
+constant trend is rejected against every piecewise alternative ($\Delta$AICc $=\FosAICLin$ and $\Delta$BIC $=\FosBICLin$ relative
+to the best model under each criterion). A four-phase model with zero slope in phases~I and~III and free breakpoints lies
+within $\Delta$AICc $=\FosAICStep$ of an unconstrained three-breakpoint model and is preferred to it by BIC. Its breakpoints,
+\FosBpA, \FosBpB{} and \FosBpC~Ma, are close to the published ones, with levels of \FosLevI{} and \FosLevIII\ccm{} in the two
+stasis phases (Table~\ref{tab:phases}). Two cautions follow. The unconstrained model puts small positive slopes in the
+``stasis'' phases (\FosFreeSlA{} and \FosFreeSlC{} per Myr, against \FosFreeSlB{} and \FosFreeSlD{} in the directional phases),
+and with \FosStIN{} and \FosStIIIN{} specimens those phases cannot exclude slow change (slopes $\FosStI\pm\FosStISE$ and
+$\FosStIII\pm\FosStIIISE$). And the steps are poorly dated: bootstrap 95\% intervals for the three breakpoints are \FosCIA,
+\FosCIB{} and \FosCIC~Ma. Stasis and steps is the better description; any test that relies on the exact timing of a step
+is weak.
+
+\begin{table}[t]
+\caption{Phases of hominin brain-size change. Published phases are from the binned consensus series~\cite{gingerich2022}; fitted
+values are from the stasis--step model applied here to the same \FosN{} specimens.}\label{tab:phases}
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}lllL@{}}
+\toprule
+Phase & Published (Ma) & Fitted (Ma) & Fitted level or rate\\
+\midrule
+I, stasis & 3.2--2.0 & 3.2--\FosBpA & \FosLevI\ccm\\
+II, increase & 2.0--1.5 & \FosBpA--\FosBpB & \FosSlII{} per Myr; $\FosRateII\times10^{-4}$ haldanes\\
+III, stasis & 1.5--0.7 & \FosBpB--\FosBpC & \FosLevIII\ccm\\
+IV, increase & 0.7--0.01 & \FosBpC--0.01 & \FosSlIV{} per Myr; $\FosRateIV\times10^{-4}$ haldanes; ends at \FosLevEnd\ccm\\
+\bottomrule
+\end{tabularx}
+\tablenote{Bootstrap 95\% intervals for the breakpoints (\FosBoot{} resamples): \FosCIA, \FosCIB, \FosCIC~Ma. Claim level:
+reanalysis.}
+\end{table}
+
+The budget-limited mechanism developed in Section~\ref{sec:theory} predicts that directional phases begin after relaxations
+of the energetic budget or of the information ceiling, with short lags. The record offers only weak tests. The onset of
+phase~IV lies close to the earliest well-dated evidence for cooking, fish cooked at Gesher Benot Ya'aqov about 780,000 years
+ago~\cite{zohar2022}, and follows fire at Wonderwerk Cave about one million years ago~\cite{berna2012}. Phase~II has no
+comparably dated energetic marker. First appearances are lower bounds, the breakpoints carry intervals several hundred
+thousand years wide, and dates should not be moved to fit episodes; the alignment is hypothesis-generating only.
+Environmental variables also predict body and brain size in \Homo~\cite{will2021}, an alternative that any test must
+include.
+
+\subsection{Parallel series, and exceptions}\label{sec:parallel}
+
+Large brains did not arise once. In the compilation of Will and colleagues~\cite{will2021}, log volume rises with time in three regional series over the
+last 0.9~Myr (Fig.~\ref{fig:fossils}B): by \SerAfr{} per Myr (95\% bootstrap interval \SerAfrCI; $n=\SerAfrN$) from African Middle
+Pleistocene \Homo{} to Pleistocene \Hs, by \SerEur{} (\SerEurCI; $n=\SerEurN$) from western Eurasian Middle Pleistocene \Homo{} to
+Neanderthals, and by \SerAsia{} (\SerAsiaCI; $n=\SerAsiaN$) among East and Southeast Asian archaic \Homo, a series that includes
+late-surviving \textit{H.~erectus}. These are regional series, not clean lineages, and gene flow connected
+them~\cite{green2010,prufer2014}; but three rises are harder to attribute to chance than one. Neanderthals averaged
+\NeaMean\ccm{} (SD~\NeaSD; $n=\NeaN$) and Pleistocene \Hs{} \SapMean\ccm{} (SD~\SapSD; $n=\SapN$): a difference of \WelchPct\%
+(Welch $p=\WelchP$) that is half a within-group standard deviation and depends on which specimens a compilation includes.
+Outside this compilation, the Harbin cranium, now attributed to Denisovans, has a volume near 1,420\ccm~\cite{ni2021,fu2025},
+and one of the Xuchang crania is estimated near 1,800\ccm~\cite{li2017}.
+
+Nor was enlargement universal. \textit{H.~naledi}, with the stature and body mass of a small modern human, had an endocranial
+volume of 465--560\ccm{} and lived between 335 and 236 thousand years ago~\cite{berger2015,dirks2017}. \textit{H.~floresiensis}
+had 426\ccm{} and is known from deposits 100 to 60 thousand years old~\cite{brown2004,kubo2013,sutikna2016}. A demand-side account must
+leave room for lineages in which demand, if present, did not become tissue.
+
+\subsection{The last 300,000 years}
+
+Within Pleistocene \Hs{} there is no trend: means are \SapOld\ccm{} before 100~ka ($n=\SapOldN$), \SapMid\ccm{} for
+100--30~ka ($n=\SapMidN$) and \SapLate\ccm{} for 30--10~ka ($n=\SapLateN$), in line with a reanalysis that found stability over
+the last 300,000 years~\cite{villmoare2022}. Recent populations average about 1,349\ccm~\cite{beals1984}, \RecentDrop\% below the
+terminal Pleistocene mean. That a reduction occurred is widely accepted; its timing is not. Proposals range from a gradual
+Holocene decline that tracks a fall of about 10\% in body mass~\cite{ruff1997} to an abrupt drop about 3,000 years
+ago~\cite{desilva2021,desilva2023}, which a reassessment of the same data did not find~\cite{villmoare2022}.
+Section~\ref{sec:present} returns to what this means for the mechanism.
+
+\subsection{The restated explananda}
+
+A satisfactory demand-side account should address:
+\begin{description}[leftmargin=2.1em,labelwidth=1.6em,labelsep=0.5em,itemsep=0.5pt,font=\sffamily\bfseries\footnotesize]
+\item[Q1] \emph{Persistence}: why the net direction of change was sustained across some $10^{5}$ generations, through whatever
+reversals occurred within them, instead of settling at an ecological optimum.
+\item[Q2] \emph{Cost-paying}: why benefits kept pace as the organ grew more expensive.
+\item[Q3] \emph{Parallelism with exceptions}: why several late lineages enlarged together while others stayed small.
+\item[Q4] \emph{Pattern}: why stasis alternated with steps.
+\item[Q5] \emph{Target}: why selection favored domain-general capacity rather than many separate specialized skills.
+\item[Q6] \emph{Both-sex expression}: cognitive capacities differ little between the sexes. This is not diagnostic of mutual
+choice, because shared autosomal inheritance transmits selection on either sex to both~\cite{lande1980}.
+\item[Q7] \emph{Display surplus}: why humans invest heavily in costly, public, skill-revealing behavior with no immediate
+subsistence return.
+\item[Q8] \emph{Variance}: why substantial heritable variation in cognition persists.
+\end{description}

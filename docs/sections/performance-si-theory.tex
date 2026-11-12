@@ -1,0 +1,36 @@
+\subsubsection{Two-way juries across observers and contexts}\label{sec:twoway}
+The Spearman--Brown law of Eq.~\eqref{eq:sb} pools independent observers within a single setting, while
+Eq.~\eqref{eq:ceiling} introduces shared rater error. Modern platforms and speed-dating sessions expose a distinct bottleneck:
+different observers may judge the \emph{same} narrow context (one curated photograph, or one four-minute first impression),
+so context-specific state and person-by-context interaction never average out however many raters vote.
+
+\begin{proposition}[Two-way observer and context validity]\label{prop:twoway}
+Let candidate $i$'s true long-run trait be $T_i\sim(0,\sigma_T^2)$, and let observer $j\in\{1,\dots,m\}$ in context
+$c\in\{1,\dots,k\}$ record
+\begin{equation}
+X_{ijc}=T_i+H_i+C_{ic}+O_{ij}+\varepsilon_{ijc},\label{eq:twowaymodel}
+\end{equation}
+where $H_i\sim(0,\sigma_H^2)$ is a target-level impression halo uncorrelated with $T_i$, $C_{ic}\sim(0,\sigma_C^2)$ is
+person-by-context variation across situations or occasions, $O_{ij}\sim(0,\sigma_O^2)$ is observer-specific idiosyncrasy,
+and $\varepsilon_{ijc}\sim(0,\sigma_\varepsilon^2)$ is occasion-by-rater residual noise, all mutually orthogonal. For the
+two-way jury mean $\bar X_{i,m,k}=(mk)^{-1}\sum_{j=1}^{m}\sum_{c=1}^{k}X_{ijc}$, criterion validity for $T_i$ is
+\begin{multline}
+R^2_{m,k}=\Corr(T_i,\bar X_{i,m,k})^2\\
+=\frac{\sigma_T^2}{\sigma_T^2+\sigma_H^2+\sigma_C^2/k+\sigma_O^2/m+\sigma_\varepsilon^2/(mk)}.\label{eq:twoway}
+\end{multline}
+In a single context ($k=1$, such as one profile photograph or one brief staged encounter), adding arbitrarily many
+independent raters ($m\to\infty$) cannot exceed the single-context ceiling
+\begin{equation}
+R^2_{\infty,1}=\frac{\sigma_T^2}{\sigma_T^2+\sigma_H^2+\sigma_C^2}<1,\label{eq:twowayceil}
+\end{equation}
+whereas sampling across both independent witnesses and diverse contexts ($m,k\to\infty$) removes both $\sigma_O^2/m$ and
+$\sigma_C^2/k$, reaching $R^2_{\infty,\infty}=\sigma_T^2/(\sigma_T^2+\sigma_H^2)$.
+\end{proposition}
+
+With illustrative variance shares $(\sigma_T^2,\sigma_H^2,\sigma_C^2,\sigma_O^2,\sigma_\varepsilon^2)=(0.30,0.10,0.25,0.15,0.20)$,
+a single rater in one context achieves $R^2_{1,1}=0.300$ (25,000-target Monte Carlo check: $0.303$), sixty-four raters of
+that same single context stall at $R^2_{64,1}=0.458$ (Monte Carlo: $0.458$; exact limit $R^2_{\infty,1}=\PboTwoWaySingleAsym$),
+and a small camp of eight observers across eight contexts reaches $R^2_{8,8}=\PboTwoWayEightEight$ (Monte Carlo: $0.649$;
+Fig.~\ref{fig:jury}B). This separates two design failures of modern stranger markets: online rating archives multiply $m$
+into the thousands while holding $k$ near one curated presentation, whereas solitary swiping or dating holds $m=1$ while
+sampling few contexts before exit. A residential band supplies both $m$ and $k$ simultaneously.

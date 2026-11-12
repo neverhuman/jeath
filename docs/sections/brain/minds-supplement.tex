@@ -1,0 +1,212 @@
+\clearpage
+\setcounter{section}{0}\renewcommand{\thesection}{S\arabic{section}}\renewcommand{\theHsection}{S\arabic{section}}
+\setcounter{figure}{0}\renewcommand{\thefigure}{S\arabic{figure}}\renewcommand{\theHfigure}{S\arabic{figure}}
+\setcounter{table}{0}\renewcommand{\thetable}{S\arabic{table}}\renewcommand{\theHtable}{S\arabic{table}}
+\setcounter{equation}{0}\renewcommand{\theequation}{S\arabic{equation}}\renewcommand{\theHequation}{S\arabic{equation}}
+\noindent{\sffamily\small\color{accent}COMPREHENSIVE SUPPLEMENT}\par
+\vspace{5pt}
+\noindent{\sffamily\LARGE\bfseries The Minds We Choose}\par
+\noindent Human partner assessment, behavior, and the conditions for evolutionary change\par
+\noindent Jepson Taylor and Erin Beilharz\par
+\vspace{5pt}
+\noindent This supplement belongs to the human brain and behavior paper. The separate SAFE AI paper, \emph{Intelligence Is Not Authority}, retains its own manuscript, code, evidence and build. The analogy to evaluation does not pool their empirical results. The repository index \texttt{PAPERS.txt} identifies both projects.
+
+\section{Scope, specifications, and provenance}
+
+The expanded study is an exploratory secondary analysis. The supplied v9 package, newer \emph{Minds We Choose} draft, existing pooled platform results and H-series progression were visible before implementation. The six overview roles and the principal age contrasts were fixed before the new country-balanced results. The evidence package records this prior visibility and the analysis specification; it is not a prospective registration.
+
+Each result has a source-specific grain. HON's canonical profiles differ from source rows, saved files and images used in modeling. POV records are account-unique in the supplied export. Columbia rows are directed meetings, with people nested in sessions and reciprocal pairs requiring their own matching. Survey rows are respondents. Ethnographic rows are coded societies with shared histories; fossil rows are specimens. No analysis treats these units as exchangeable observations from one population.
+
+Source hashes, versions, snapshot times, collection-period knowledge, variable definitions, missingness, eligibility and permissible interpretations are recorded in the source register and reference. Unknown collection dates remain unknown; export modification times are not substituted for collection periods. The frozen platform extracts are scanned at their source with bounded memory and without modifying source data or shared image caches. Only aggregate outputs leave the platform host. Identifiers, raw coordinates and images do not appear in this supplement or its CSVs.
+
+\input{minds-provenance.tex}
+
+The archival manifest pins supplied manuscripts, ZIPs and PDFs. Missing assets referenced by the newer TeX are not reconstructed as if their original numerical content had been verified. Every promoted analytical figure is regenerated from the new reference. The older v9 results are identified as archived calculations where respondent-level inputs or design information are not available for a new estimate. All generated numerical text and figures use the human-study reference, separate from SAFE AI experimental evidence.
+
+\section{Source accounting and definitions}
+
+The following flows are source-specific. A requirement added for one measurement does not redefine another measurement's denominator. Exclusions from sequential source flows are obtained by subtraction between successive rows, while additional outcome-specific missingness is recorded in the corresponding cells.
+
+\input{minds-flow.tex}
+
+HON eligibility requires valid parsed likes and votes, positive vote totals, likes between zero and votes, unconflicted metadata and labels, ages 18--79 and recorded Female or Male. Primary results require 20 votes, with thresholds 1 and 100 retained. A supplied beauty score must additionally be finite and within 0--10. Votes describe accumulated recorded exposure, not independently randomized judgments with known voter identities.
+
+POV uses exact recorded gender and seeking labels for the principal opposite-gender-seeking cohort. Parenthood combines ``Yes'' and ``All my kids are over 18''; ``No'' defines the childless comparison; other responses remain unknown. Wanting children, not wanting children, undecided/open and nonresponse remain distinct. The commitment indicator is the union of the exact English labels for looking for a relationship, actively seeking one, or seeking someone to marry. The separate \texttt{for} indicator uses the exact ``Long Term'' label. Other language variants remain visible as separate responses in the counts; they are not silently translated into these indicators. Country comparisons consequently retain this source-label limitation.
+
+\section{HON country references, fitting, and uncertainty}
+
+The principal tie-adjusted percentile for score $s$ in a country-by-gender reference of size $N$ is
+\begin{equation}
+q(s)=\frac{\#\{s_i<s\}+\tfrac12\#\{s_i=s\}}{N}.
+\end{equation}
+The reference covers all eligible adult ages and is fixed across age. Ties share their midrank. The source-wide within-gender reference and pooled-gender reference provide sensitivities. Their numerical percentiles are different variables and are labelled accordingly.
+
+The common-support country set requires at least 100 eligible profiles of each gender in each of 18--29, 30--44 and 45--64. The spline uses natural boundary conditions at 18 and 64 with interior knots 25, 35, 45 and 55. Exact-age aggregate means are fit using their profile counts, preserving the least-squares solution for those grouped outcomes. Predictions at each exact age in 25--29 and 45--49 are averaged equally within the band before the age contrast is formed. Country contrasts then receive equal weights.
+
+Uncertainty in equal-country summaries uses 2,000 country bootstrap replicates with the recorded seed. The included countries are the resampling units. These intervals are conditional on the observed platform profiles and support rule, and do not account for unknown audience selection or national sampling. Between-country quantiles are displayed separately. Country point estimates and sign counts describe heterogeneity, not a collection of multiplicity-corrected significance tests. Unsupported cells remain gaps; the full CSV retains all eligible observed age cells.
+
+\input{minds-hon-contrasts.tex}
+\input{minds-hon-sensitivities.tex}
+\input{minds-profile-weighted.tex}
+
+\section{Exposure, images, portfolios, and text coverage}
+
+The coverage table distinguishes eligible metadata profiles from inventoried-image profiles. Inventoried files, successfully decoded files, files processed by the image audit, and files used in a predictive model are different counts. A zero in an older decoded export does not prove failure to decode in a later audit. The completed processing summary is therefore reported alongside the status of merged exports and global duplicate artifacts, rather than replacing one with the other.
+
+Equal-profile like rates average each profile's likes divided by votes. Vote-pooled rates divide total likes by total votes. Country-balanced summaries average country-specific quantities. Averaging country medians does not produce the median of a pooled profile distribution; the figure labels this quantity explicitly. Voting quantiles and concentration characterize exposure, without identifying why profiles received attention.
+
+Reported photo count and inventoried file count are retained separately. Portfolio associations are cross-sectional, with the recorded adjustment set reported beside each estimate. Models do not imply that adding a photo causes an outcome. Text-field coverage is evaluated jointly with usable labels: a populated schema field alone cannot support a predictive analysis.
+
+\input{minds-hon-coverage-notes.tex}
+\input{minds-coverage.tex}
+
+\section{POV geographic provenance and sensitivity}
+
+Geographic reconstruction uses exact country aliases, unambiguous administrative-name aliases and valid coordinate pairs. The dictionary is versioned. Ambiguous names such as Georgia are not automatically interpreted as a U.S. state when they occur in a regional field. A HON country field and a POV regional field have different meanings and use separate alias logic. Coordinate order and valid longitude/latitude ranges are checked explicitly. No coordinates are exported.
+
+Natural Earth supplies boundaries with documented de facto conventions. We pin the selected country, administrative and map-unit sources by SHA-256. Map units preserve supported overseas territories rather than silently merging them into the administering country. UK home-nation labels are reconciled to the stated country unit. This is a geographic convention for analysis, not a declaration about nationality or sovereignty. The boundary version, territory crosswalk, conflict policy and unresolved labels accompany the reference.
+
+Mutually exclusive statuses are agreement, coordinates only, regional label only, conflict, and unresolved. Conflicts remain unresolved for the principal country analysis. Mapping coverage is examined by age, gender and outcomes because geographic recoverability may select a different profile population. Principal all-profile and childless comparisons each hold their supported country set fixed. Coordinate-supported sensitivities use their own explicitly listed country sets; estimates from different sets cannot be attributed entirely to the assignment method.
+
+\input{minds-geography.tex}
+\input{minds-geography-detail.tex}
+\input{minds-pov-balanced.tex}
+\input{minds-pov-country.tex}
+\input{minds-pov-response-counts.tex}
+\input{minds-pov-sensitivities.tex}
+
+\section{POV attributes and declared estimands}
+
+Attribute analyses describe opposite-gender-seeking profiles aged 25--49. The outcome determines the denominator and adjustment set. For reported parenthood, existing parenthood is the outcome and is not an adjustment covariate. For desire for children and relationship intention, standardization can account for existing parenthood along with age, country and marital status. The released model specifications and common-support counts govern which standardized comparison is possible.
+
+Ambition, education, religion and body descriptions are self-reported categories. Neither their order nor their association is a measured causal effect of ability. The prior-relationship field is categorical and open-ended categories remain so. Explicit centimetre heights are parsed with malformed and implausible values reported. Profession coverage and common categories are reported without an undocumented occupational ranking. Null adjusted estimates and changes of direction remain visible.
+
+\input{minds-pov-attributes.tex}
+\input{minds-pov-adjusted.tex}
+
+\section{International surveys: complete item profiles}
+
+Kowal's deposit and codebook are retrieved through hash-verified routes. The newer draft's exact cohort flow is reproduced separately from the broader v9 cohorts. Complete six-trait budgets have fixed total 30; raw budget means therefore retain their compositional interpretation. All eligible countries and all six contrasts appear below. Country-balanced summaries and respondent-weighted summaries answer different questions. Age standardization requires sufficient representation of each gender within each required age band and does not repair mode, translation or recruitment differences.
+
+\input{minds-kowal-atlas.tex}
+\input{minds-kowal-additional.tex}
+
+Whyte's deposited records differ from the article headline sample by a source-flow discrepancy, not an analysis exclusion invented to obtain the headline count. The source code and variable labels are checked for gender and orientation coding. The deposit contains no observed 65-year-old records in the reproduced adult summaries, so the retained 18--64 and 50--64 labels describe actual support. All nine items remain, including openness and emotional connection. Paired differences use the same respondent's item scores; centered analyses subtract the respondent's nine-item mean and estimate relative emphasis.
+
+\input{minds-whyte-paired.tex}
+\input{minds-whyte-complete.tex}
+
+Walter's mapping is not inferred from observed partner-age preferences. The primary article's final sample composition matches the source code counts exactly: code 0 has 7,909 records, equal to the published number of women, leaving 6,490 men. We retain raw-code summaries and provide a conditional count-reconciled women/men reanalysis. This evidential inference differs from recovering the original literal numerical key, which remains unavailable. The primary PDF is hash-pinned and its final recruitment description takes precedence over earlier preregistration counts. All 45 country samples and reversals are retained.
+
+\input{minds-walter.tex}
+
+Eastwick's full Table 5 is transcribed from the primary source, retaining all 35 attributes, original ideal means and SDs, and published standardized romantic-evaluation associations \citep{matching2025}. It is a reproduction of a published summary, not a new respondent-level model. Ideal ratings and evaluation slopes have different units. Composite attractiveness and earning-potential comparisons are labelled as composites. The published lack of their corresponding evaluation gender differences is retained alongside stated differences.
+
+\input{minds-eastwick.tex}
+\input{minds-eastwick-gender.tex}
+
+\section{Columbia behavioral analysis and agreement}
+
+The input checksum pins the 8,378-row Columbia file. Participant, session, directed-decision and reciprocal-pair accounting accompanies the reference. A leave-one-chooser-out appearance panel requires at least three other session raters. Midpoint ranks within each chooser's opportunity set define the five rank bands. Ties are not split. Models require valid binary decisions, complete ratings for their specification and at least two decisions per chooser. Own-rating and panel-rating models use separate pooled-across-gender SD scales.
+
+Session bootstrap draws are shared across gender contrasts. Leave-one-session-out fits and a common-complete-case sensitivity are reported alongside all six adjusted coefficients. Raw top-minus-bottom uncertainty remains visible. Rater-centered agreement and correlations between disjoint panels are reproduced from v9 as agreement; they supply no independent intelligence or long-term contribution criterion. Chooser selectivity, general target desirability and pair-specific attraction are different quantities.
+
+\input{minds-speed-complete.tex}
+\input{minds-speed-robustness.tex}
+
+\section{U.S. GSS case study and fossil constraints}
+
+The GSS analysis remains a named U.S. case study. The archived extract uses the original weights, age and cohort restrictions and trait-specific missingness. Its respondent bootstrap is retained with its original limits. The new income sensitivity reads the hash-pinned cumulative source and exactly reproduces the baseline before restricting to released positive design variables. The rescaled cluster bootstrap draws $m_h-1$ PSUs with replacement per supported stratum and multiplies original weights by $m_h/(m_h-1)$ times their multiplicity. Full-source PSU support is determined before restricting the age, gender and income domain. Survey-year-by-stratum nesting assumes independent survey years; singleton strata are excluded and their coverage loss reported. Child count is top-coded at eight or more; treating eight as exact remains a limitation. We preserve all archived traits, opposed components and cohort differences.
+
+\input{minds-gss-complete.tex}
+\input{minds-gss-design.tex}
+\input{minds-gss-cohorts.tex}
+
+The fossil series is descriptive evidence about sampled endocranial volumes. The archived fits include their alternative models and dating assumptions. Reusing a fitted trajectory does not estimate the cause of enlargement. Fossil volume, living cognitive performance and inherited cognitive variation remain distinct variables. Developmental and energetic evidence constrains which historical mechanisms are feasible \citep{du2018,will2021,gingerich2022,kuzawa2014}.
+
+\input{minds-fossils.tex}
+
+\section{Formal derivations and rival models}
+
+\subsection{Observer and context averaging}
+Let the independent centered components of a balanced observation be $\theta_i,h_i,b_{ij},c_{ik},\epsilon_{ijk}$ with variances $\sigma_\theta^2,\sigma_h^2,\sigma_b^2,\sigma_c^2,\sigma_\epsilon^2$. Averaging across $m$ observers and $k$ contexts gives
+\begin{equation}
+\bar Y_i=\theta_i+h_i+\frac1m\sum_jb_{ij}+\frac1k\sum_kc_{ik}+\frac1{mk}\sum_{j,k}\epsilon_{ijk}.
+\end{equation}
+Independence makes the variance the sum of the five component variances, with the last three scaled by $1/m$, $1/k$ and $1/(mk)$. Since $\Cov(\theta_i,\bar Y_i)=\sigma_\theta^2$, squared correlation is the target variance divided by that total variance. This proves the observer/context identity without requiring Gaussian components. Finite variances, common loadings and the independence assumptions remain essential.
+
+\subsection{Shared error and agreement}
+Suppose two independently drawn panels share $\theta_i+h_i$ but have independent remaining errors with variance $v$. Their agreement is
+\begin{equation}
+\Corr(\bar Y_{i1},\bar Y_{i2})=\frac{\sigma_\theta^2+\sigma_h^2}{\sigma_\theta^2+\sigma_h^2+v},
+\end{equation}
+whereas squared criterion correlation is $\sigma_\theta^2/(\sigma_\theta^2+\sigma_h^2+v)$. They differ even when panels have identical precision. Agreement can approach one while criterion validity remains below one. If observer errors of variance $\sigma_b^2$ have common pairwise correlation $\rho$, the variance of their mean is $\sigma_b^2[\rho+(1-\rho)/m]$, which has a nonzero limit for $\rho>0$. Repeated presentation and shared reputation are plausible sources of common error, not estimates from the present datasets.
+
+\subsection{Information versus useful context}
+The measurement identity assumes a stable target independent of the nuisance components. If the desired outcome is relationship-specific, write $\theta_{i,r}$ or an explicit interaction with a relevant context. Averaging a genuine context dependence away can worsen that forecast. A comparison at fixed observation cost must state how cost depends on observers and contexts. The identity alone supplies neither an optimal allocation nor an optimal courtship duration.
+
+\subsection{Capacity, delivery, and institutions}
+For any integrable capacity $B$ and delivery share $p$ with finite conditional covariance,
+$\E[pB\mid\mathcal I]=\E[p\mid\mathcal I]\E[B\mid\mathcal I]+\Cov(p,B\mid\mathcal I)$ by the definition of covariance. Under the illustrative deterministic delivered benefit $[e+(1-e)p]B$, differentiating gives marginal capacity $e+(1-e)p$ and marginal willingness $(1-e)B$. These derivatives hold other terms fixed. They do not establish equilibrium behavior, institutional welfare, or the elimination of other motives.
+
+\subsection{Breadth and a common component}
+If $X_\ell=ag+s_\ell$ with independent specialist components of common variance, averaging $K$ domains preserves $ag$ and reduces specialist variance to $\sigma_s^2/K$. If specialists instead have pairwise correlation $\rho_s$, their contribution becomes $\sigma_s^2[\rho_s+(1-\rho_s)/K]$. Selecting the maximum performance or using unequal weights produces another score. The old breadth result is conditional on the actual scoring and covariance structure; ``more culture'' alone does not identify those conditions.
+
+\subsection{Parenthood decomposition}
+Write $p=\Pr(c>0)$, $\mu_P=\E[z\mid c>0]$, $\mu=\E[z]$, and $\bar c_P=\E[c\mid c>0]$. Because $c=0$ among nonparents, $\E[c]=p\bar c_P$ and
+\begin{align}
+\frac{\Cov(z,c)}{\E[c]}&=\frac{p\E[zc\mid c>0]}{p\bar c_P}-\mu\\
+&=(\mu_P-\mu)+\frac{\Cov(z,c\mid c>0)}{\bar c_P}.
+\end{align}
+This proof extends to consistent weighted expectations. It is undefined when mean child count is zero. Combining cells with different trait scales or weights changes the estimand; components must be combined using the same declared rule. The decomposition identifies an accounting relation rather than a causal episode effect or inherited response.
+
+\section{Ethnography, contribution, and subsidiary claims}
+
+The reveal/produce/allocate framework assigns each example a measurable outcome and a rival. Maternal ethnobotanical knowledge and political influence concern knowledge or household/social processes and child health, without establishing that mate selection mediated the association \citep{mcdade2007,alami2020}. Storytelling studies concern cooperative content and social preference in particular communities \citep{story}. Hunting success includes practice, ecological opportunity and luck \citep{koster}. Neither prestige nor resources alone measures an inherited cognitive trait.
+
+Cross-cultural authority codes are descriptive records with variable denominators, substantial missingness and nonindependent societies. Their categories distinguish consent from consultation, autonomous choice from family approval, and formal divorce rights from the practical ability to leave. They are not evidence that coercion is absent or that community judgment is uniformly accurate.
+
+\input{minds-ethnography.tex}
+
+MHC-associated odor preferences require convergent evidence across odor tasks, actual pairing and reproductive outcomes. The cited synthesis reports mixed or null aggregate evidence under relevant analyses, so a hidden compatibility channel is not assumed \citep{havlicek2020}. Candidate-variant associations in ADHD-related work do not establish a hunter--farmer taxonomy or a general explanation of cognitive diversity; a Rendille study's nutritional null remains relevant contrary evidence \citep{kunkle2025}. These literatures motivate specific tests rather than contributing numerical estimates to the main pathway.
+
+Genetic-lineage ratios describe the histories of particular inherited markers, affected by demography and lineage loss. They cannot count all people who had children, recover the share who were voluntarily chosen, or identify a cognitive preference. Archaeological games and regulated contests can establish the presence of activities at particular sites and times; they do not identify the cognitive selection coefficient attached to participation. Subsidiary hominin and recent brain-size debates constrain universal trajectories without assigning a causal role to assessment.
+
+\input{minds-environment-supplement.tex}
+\input{minds-prospective-supplement.tex}
+
+\section{Prediction experiment cutoff and unresolved audit limits}
+
+The H1--H40 table freezes completed metric files at the recorded source snapshot. Worse and unchanged results remain. Pixel-only, landmark-assisted, demographic/context and ensemble tracks are distinct inputs. A model that uses age or gender is not pixel-only. Profile-level and image-level metrics use different weighting and denominators. The selected benchmark is not the full HON population and its geographic coverage does not establish international model validity.
+
+Spearman correlation measures rank association. The separately reported score-regression $R^2$ measures performance against its specified target and can be negative. Neither $1-r_s^2$ nor a percentile rank error identifies the amount of human variation ``unexplained by appearance.'' Paired model differences require matching frozen predictions for the same held-out profiles and target. Metric-file differences are recomputed directly; stored paired intervals whose comparison vector cannot be matched are not promoted as verified uncertainty.
+
+The audit checks source code for account grouping, repeated-image weighting, train-only transformations and validation selection. Code inspection is not a rerun of training. The available duplicate union includes bridges through nonsampled accounts within the old processed set and selected images, but cannot establish separation over newly completed files without final global components. The absence of matching full prediction vectors also limits recalculation of subgroup errors and paired uncertainty. No new GPU training was allocated.
+
+\input{minds-experiment-audit.tex}
+\input{minds-experiments.tex}
+\input{minds-model-baseline.tex}
+\noindent Subgroup point metrics below retain their source-specific support. Missing entries are suppressed or undefined; constant predictions have no defined rank correlation. Full paired subgroup uncertainty cannot be reconstructed without matching prediction vectors.
+\input{minds-model-subgroups.tex}
+
+\section{Reproduction, claim changes, and remaining tests}
+
+Build the human paper with \texttt{make paper-brain}; build SAFE AI with \texttt{make paper-safe-ai}. Run human evidence through \path{scripts/run.py} with the \texttt{minds-we-choose} study switch and an output under this checkout's \path{target/minds-we-choose/}. Validate with \path{scripts/validate.py}; regenerate figures and numerical text with \path{scripts/paper.py}, using the same study switch. The reference lives in \path{evidence/brain/reference/}. The repository's existing required gate remains separate from the named human-paper build. Exact commands and input preparation are in \path{docs/papers/brain/README.txt}.
+
+The implementation reproduces the existing platform baseline before expansion, checks the international cohort flows, verifies documented label mappings, tests geographic conflicts and boundaries, and checks equal-country weighting. A second, constrained B-spline implementation independently recalculates every principal HON age contrast. A repeated final run checks fixed input hashes and numerical results. A changing source snapshot is identified rather than treated as a deterministic rerun. Plot generation is deterministic for the same reference and source files. Complete aggregate CSVs accompany the PDFs.
+
+The change register maps the supplied drafts' claims to the revised estimands, results and limitations. It documents the removal of duplicate speed-dating treatment, the replacement of the opening graphic, source-specific sample reconciliation, separation of rank association from regression variance, quarantine of undocumented labels, and the explicit cultural/genetic/anatomical chain. Remaining tests are prospective criterion validation, dyadic follow-up, authority and opportunity measurement, and historical attribution.
+
+\section*{Author information and disclosure}
+\noindent\textbf{Jepson Taylor.} Author named in the supplied manuscripts; concept and direction as stated there. No portrait, affiliation, additional credential or biographical claim is inferred.\par
+\noindent\textbf{Erin Beilharz.} Coauthor named in the supplied manuscripts. No portrait or unverified biographical detail is required for this supplement.\par
+\noindent Literature synthesis, code, analysis, mathematical exposition and drafting were AI-assisted. This is an exploratory secondary-analysis package, with no new participant recruitment or claim of new ethics approval. Source-specific restrictions and unresolved audits remain explicit.
+
+\clearpage
+\section{HON country atlas}
+The following vector pages display observed exact-age means in every principal supported country or territory. They use the same adult country-and-gender percentile reference at all ages. Small unsupported cells are gaps in the underlying export. The standalone file \texttt{minds-hon-atlas.pdf} supports full-size inspection; country contrasts, coverage and all released age cells accompany it as aggregate tables.
+\includepdf[pages=-,pagecommand={\thispagestyle{fancy}},width=.95\textwidth]{minds-hon-atlas.pdf}
+\clearpage
+\section{POV country age atlas}
+Observed age-band patterns in the six principal supported countries retain gaps where cells have fewer than 100 profiles. Country support is not held fixed through every age in this descriptive atlas; principal age contrasts above use their prespecified fixed sets. Parenthood percentages use known parenthood reports, while intention percentages retain nonresponse. All response categories and denominators accompany the figures as a table and long-form aggregate CSV.
+\includepdf[pages=-,pagecommand={\thispagestyle{fancy}},width=.95\textwidth]{minds-pov-atlas.pdf}

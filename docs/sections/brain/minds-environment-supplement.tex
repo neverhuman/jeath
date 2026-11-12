@@ -1,0 +1,57 @@
+\section{Fossil trajectories and environmental chronology}\label{sec:minds-environment-audit}
+
+This extension aligns public observations and published hypotheses; it does not estimate a causal effect or fit a breakpoint at an environmental-event date. The versioned \texttt{fossil\_environment} reference block generates the main figure, comparisons, chronology, source register and public plotting tables. It contains \MwcFossilN{} Gingerich consensus specimens, \MwcDuN{} Du specimens and \MwcWillN{} Will specimens. The compilations overlap and cannot be pooled as independent fossils. Their differing taxonomic, geographic and temporal coverage also precludes treating agreement as three independent replications \citep{gingerich2022,du2018,will2021}.
+
+\subsection{Source-by-source chronology and evidence status}
+
+Dates in the table are in Ma before present, with older endpoints first. Climate-interval endpoints describe durations on published chronologies, not confidence limits on an event age. The Middle Pleistocene Transition boundaries are conventional descriptions of a broad change in glacial cycles. Margari's MIS 34 interval and terminal stadial retain the study's chronology and regional scope \citep{clark2006,margari2023}. The separate dashed demographic row remains disputed in both color and grayscale.
+
+\input{minds-environment-chronology.tex}
+
+\subsection{Fossil reconstruction, bin accounting and dating information}
+
+The consensus workbook is read without altering its bytes. Its 233 numeric specimen rows supply consensus geological ages and endocranial volumes, not 233 new independent lineage histories. All eligible observations enter exactly one bin using the archived operation \texttt{floor(age / 0.1)} on binary floating-point Ma values. This preserves the original calculation, including floating-point behavior at nominal decimal boundaries. Bin centers are $(k+0.5)0.1$ Ma and means are $\exp(\overline{\log V})$. Every occupied bin's count and geometric mean match the supplied \texttt{e13\_fossils.json} to numerical tolerance. Empty bins are explicit zero counts and null means, producing visible gaps rather than interpolation across missing support. The CSV's bin index is authoritative when a displayed rounded endpoint looks ambiguous.
+
+The consensus workbook does not provide specimen dating errors. No horizontal error bars are invented. Du's supplied minimum and maximum dates, mean date, standard deviation and distribution label are retained where present. The plotted bounds are reported source bounds, not a common 95\% confidence interval; for a missing mean date, the archived loader uses the midpoint of available bounds. Du cranial volumes average the available listed estimates, following the archived loader. Will's central ages, dating methods and free-text age-source notes are retained verbatim in the public specimen CSV, including reported ranges or uncertainties within those notes. Those heterogeneous notes are not converted into invented uniform error bars. The separately supplied Will body-size workbook is not substituted for its cranial-volume data.
+
+\mwcfigure{minds-fossil-comparisons.pdf}{fig:minds-fossil-comparisons}{\textbf{Full-range fossil comparisons.} Separate Gingerich, Du and Will compilations with individual observations and 100-kyr geometric means; the gray band locates Gingerich's published interval of relative stasis. Du horizontal segments retain supplied numeric date bounds where available; they are not universally confidence intervals. Gray points in other panels have no invented dating errors. Shared specimens and different coverage prevent pooling these panels.}{fossil-comparisons}
+
+\input{minds-environment-bins.tex}
+
+\subsection{Alternative models retain their original specifications}
+
+The model table is the existing archived analysis, with its original result and code hashes in the source register. It is not a new environmental model. The response is log cranial volume on forward time (negative age), with OLS residual assumptions. The archived free continuous piecewise models search one, two or three breakpoints on a 0.05-Myr grid; the stasis-step model fixes slopes in phases I and III to zero. The published-phase model fixes boundaries at 2.0, 1.5 and 0.7 Ma. Parameter counts and penalties remain those in \texttt{exp\_rates.e13}; the seed and bootstrap count are recorded in the reference. The retained coarse breakpoint bootstrap does not propagate specimen dating uncertainty, geographic dependence or lineage sampling.
+
+AICc favors the free three-breakpoint model, whose boundaries differ from the published phase description; BIC favors the model with fixed published boundaries, penalizing the extra free parameters more strongly. These criteria compare the stipulated models on this sample. They neither establish literal stasis within every lineage nor select a causal explanation. Du's distinction between whole-clade and within-lineage processes further limits interpretation of an aggregate trajectory \citep{du2018}. No catastrophe dates are used as fitted breakpoints, and no significance is calculated from visual overlap.
+
+\input{minds-environment-models.tex}
+
+\subsection{Climate record and chronological limitations}
+
+LR04 averages \MwcClimateRecords{} benthic oxygen-isotope records and combines global ice-volume and deep-ocean-temperature information; it is not a direct air-temperature series \citep{lisiecki2005}. The raw author-hosted file is preserved with its SHA-256 digest, retrieval URL and documented August 1, 2005 update. The complete \MwcClimateN{} timestamps span 0--5,320 ka. The figure retains the published age model and sampling resolution, without smoothing, interpolation, retuning or a new climate-trend fit. The source's standard-error column remains in the public table, but is not an uncertainty estimate for the age axis. Alignment across fossil and proxy chronologies is descriptive; a common printed axis cannot remove their different dating assumptions.
+
+Will and colleagues' environmental analysis found a strong temperature association with body size, whereas brain-size associations explained less variation and concerned different environmental variables, including productivity and long-term rainfall variation \citep{will2021}. This distinction constrains any inference that cooling automatically selected for larger brains. Resource availability, development, behavioral flexibility and changing lineage composition could generate different observations even during the same environmental interval.
+
+\subsection{Bottleneck inference, criticism and response}
+
+Hu and colleagues used FitCoal and present-day genomic frequency spectra to infer a severe ancestral bottleneck over approximately \MwcBottleneckOlder--\MwcBottleneckYounger{} Ma \citep{hu2023}. The reported effective size near \MwcEffectiveSize{} describes genetic drift under a model. It is not a head count, a count of all reproductive ancestors, or proof that only that many humans survived. Population structure, migration, model specification, mutation and generation-time assumptions complicate translation to historical demography. The plotted endpoints are an inferred episode's duration, not a confidence interval for its timing or size.
+
+Deng, Nielsen and Song argue that FitCoal can produce a severe bottleneck artifact when a different demographic history generated the frequency spectrum. They emphasize finite-data identifiability and checking goodness of fit beyond the spectrum \citep{deng2025}. Cousins and Durvasula argue that the proposed bottleneck fits the data worse than an alternative panmictic history without that episode and therefore provides insufficient evidence \citep{cousins2025}. Neither criticism should disappear because a later paper defends the original method.
+
+Zhou and colleagues' July 2026 response defends computational precision and model recovery, challenges comparisons with the alternative method \texttt{mushi}, and discusses fossil and climate consistency \citep{zhou2026}. These arguments are part of an active methodological dispute; consistency with a fossil gap or a climate interval does not by itself validate the genomic model or establish consensus. The main interpretation remains accurate if the bottleneck is rejected.
+
+The supplied PMC reference described as a 2026 defense instead corresponds to Muttoni and Kent's March 2024 timing-and-migration paper \citep{muttoni2024}. They relate ancestral bottleneck timing and migration from Africa to the Early Pleistocene ice-age transition, particularly MIS 22 near 0.9 Ma. This argument is separate from Margari's MIS 34 cooling near 1.1 Ma and its inferred European depopulation \citep{margari2023}. Two different climate episodes and demographic interpretations must not become one catastrophe. Neither independently identifies a mechanism of cranial-volume evolution.
+
+\subsection{Impact dating, source location and biological attribution}
+
+The main diamond uses approximately \MwcImpactAge{} Ma. The more precise published comparisons below retain the distinctions among a tektite date, a prior mean, recalibration to common standards and an inverse-variance combined mean \citep{sieh2023}. They are analytical age estimates, not an impact's duration. The supplementary dating discussion and Table S1 explicitly give 788.9 $\pm$ 2.4 ka at $2\sigma$. The later comparison paragraph quotes the other plus/minus values without separately restating their sigma convention; these are retained without conversion to a nominal 95\% interval. The main article describes the earlier mean as five tektites whereas the SI says nine; the register records that discrepancy without asserting a reconciled specimen count.
+
+\input{minds-environment-impact-dates.tex}
+
+Sieh and colleagues interpret proximal ejecta as support for a Bolaven impact source in southern Laos \citep{sieh2023}. Mizera's earlier critique questions the proposed location through geochemical and geological arguments \citep{mizera2022}. Evidence of tektites establishes an impact even if the source-location hypothesis changes. A source location also does not establish hominin mortality, a global bottleneck or a cause of anatomical stasis. No such biological attribution is verified here. All plotted disruptions occur after the published phase began; their timing cannot explain its full extent.
+
+\subsection{Source hashes and public outputs}
+
+Full hashes, original URLs, version notes, specimen rows, all bin counts, the complete climate series and curated event metadata accompany the generated vector figures. The raw climate file is included in the reproducibility bundle, without writing into the archived fossil directories. The source table below abbreviates hashes only for typesetting; \texttt{minds-environment-sources.csv} retains all 64 hexadecimal characters.
+
+\input{minds-environment-sources.tex}

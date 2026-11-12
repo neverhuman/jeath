@@ -1,0 +1,222 @@
+\subsection{Digital platforms at scale: attention concentration, portfolio ceilings, and divergent horizons}\label{sec:attraction}
+
+\noindent When partner search moves from long-acquaintance juries to digital platforms, millions of staged profiles leave
+an empirical trace of what single-context evaluation amplifies and what life-course intentions it separates. Across two
+historical platform exports totaling \PboCombinedRecords{} canonical profile records---\PboHonEligible{} eligible profiles
+in the HON facial-rating archive (from \PboHonRows{} canonical accounts and \PboHonFiles{} inventoried images) and
+\PboPovEligible{} opposite-sex-seeking adult profiles in the POV dating archive (from \PboPovRows{} unique accounts)---we
+measure three phenomena predicted by the two-way jury and episode models (Section~\ref{sec:platformmethods}).
+
+\subsubsection{Beauty age gradients, \PboHonAttentionRatio$\times$ voter skew, and the portfolio rank ceiling}
+In the HON archive, within-gender beauty percentiles diverge sharply across recorded adult age while retaining wide
+within-age dispersion (Fig.~\ref{fig:pbo-hon-arch}A). At ages 25--29, the mean within-gender beauty percentile is
+\PboBeautyYoungW{} for women's profiles and \PboBeautyYoungM{} for men's; by ages 45--49 it falls to \PboBeautyOlderW{} for
+women and \PboBeautyOlderM{} for men. Over the same span, the share of profiles reaching the top tenth of their own
+gender's rating distribution drops sixteen-fold among women (\PboBeautyTopYoungW{} to \PboBeautyTopOlderW) and four-fold
+among men (\PboBeautyTopYoungM{} to \PboBeautyTopOlderM; Fig.~\ref{fig:pbo-hon-arch}B). Because the supplied 0--10 beauty
+score tracks the profile's positive-vote share almost deterministically ($r=\PboBeautyRW$ in women, $r=\PboBeautyRM$ in
+men), these ranks summarize where profiles stood in voter consensus rather than biological fecundity directly; cross-sectional
+platform entry, image curation (\PboImageShareW{} of eligible women and \PboImageShareM{} of men have saved image files),
+and unrecorded voter demographics enter the gradient (Fig.~\ref{fig:pbo-ratings}; Table~\ref{tab:pbo-hon-sensitivity}).
+
+Attention on the platform is even more unequal than consensus rank (Fig.~\ref{fig:pbo-hon-arch}C). Eligible women's
+profiles receive a median of \PboHonVotesMedW{} votes against \PboHonVotesMedM{} for men---an \PboHonAttentionRatio-fold
+asymmetry in evaluative volume. Positive evaluations concentrate sharply in both sexes, and more steeply among men: the
+Gini coefficient of received likes is \PboHonLikesGiniW{} among women (vote Gini \PboHonVotesGiniW) and \PboHonLikesGiniM{}
+among men (vote Gini \PboHonVotesGiniM), with the top tenth of male profiles capturing \PboHonTopDecileLikesM{} of all
+positive votes cast on men (against \PboHonTopDecileLikesW{} among women). Adding more photographs to a profile tests
+whether expanding a single-mode visual portfolio raises consensus standing (Fig.~\ref{fig:pbo-hon-arch}D). Moving from one
+inventoried photograph to five or more increases median voter traffic by roughly half in both women ($1.51\times$) and men
+($1.50\times$), yet mean within-gender beauty percentile stays flat or drifts slightly downward ($33.6$ to $28.8$ in women;
+$48.9$ to $47.7$ in men). Consistent with Proposition~\ref{prop:twoway}, extra samples from the same staged photographic
+channel buy exposure ($m$), not higher underlying standing ($T_i$).
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{performance-fig-hon-architecture.pdf}
+\caption{\textbf{Rating consensus, attention inequality, and portfolio ceilings across \PboHonEligible{} HON profiles.}
+Eligible adult profiles aged 18--79 with unconflicted metadata and at least 20 recorded votes. \textbf{(A)}~Mean
+within-gender beauty percentile by exact age, with interquartile ranges shaded and the 50th-percentile reference dashed.
+\textbf{(B)}~Share of profiles at or above the 90th percentile of their gender's full adult distribution (dashed line:
+10\%). \textbf{(C)}~Lorenz concentration curves for received votes (solid) and positive likes (dashed), showing an
+\PboHonAttentionRatio-fold female-to-male median vote ratio and steeper top-end concentration among men (top decile receives
+\PboHonTopDecileLikesM{} of male likes). \textbf{(D)}~Mean within-gender beauty percentile (solid, left axis) and median
+votes relative to single-photo profiles (dashed, right axis) by inventoried photo count: extra photos expand voter attention
+by $\sim\!50\%$ without raising consensus rank. Age cells below \PboMinCell{} profiles are omitted.}
+\label{fig:pbo-hon-arch}
+\end{figure*}
+
+\subsubsection{Canonical facial attribution, super-resolved composites, aging trajectories, and seven-region invariance}\label{sec:faceattr}
+What anatomical cues do stranger crowds actually read when a profile photograph is evaluated at a glance, and how much of
+voter consensus resides in the face itself rather than framing, metadata, or unmeasured context? To answer both questions
+without ever exposing an identifiable individual, we registered \PboFaceTotalN{} stratified primary portraits ($1200\times
+1200$ source imagery across sex, five adult age bands, rating deciles, and \PboFaceWorldRegionsN{} world regions) onto a
+canonical $106$-landmark, \PboFaceTrisN-triangle piecewise-affine Delaunay atlas~\cite{deng2019arcface} in linear sRGB at
+$384\times 384$ studio resolution, enforcing a strict privacy floor ($N\ge 75$ aligned individuals per composite). Combining
+three pretrained visual backbones (`DINOv3` spatial tokens~\cite{oquab2024dinov2}, `ConvNeXt V2`~\cite{woo2023convnextv2},
+and `AuraFace` `Glint360K-R100`/`SFace`~\cite{deng2019arcface}) with \PboFaceTrisN-triangle Jacobian morphometrics and a
+joint $12$-zone interventional Shapley coalition decomposition~\cite{lundberg2017shap} fitted strictly on training profiles
+(centered on the neutral 42nd--58th percentile cohort; Section~\ref{sec:platformmethods}), we project consensus beauty into
+within-gender percentile drivers ($+\Delta$~pct) and rejectors ($-\Delta$~pct).
+
+First, on the strict profile-grouped $10{,}000$-profile ($20{,}000$-image) benchmark using zero metadata (no age, sex,
+geography, or background framing), pure aligned facial morphology and surface appearance achieve held-out Spearman
+$\rho=\PboFacePureSpearman$ ($\rho^2=\PboFacePureRankVar$, within-gender percentile MAE \PboFacePurePctMae;
+Fig.~\ref{fig:pbo-face-drivers}D and Table~\ref{tab:pbo-ai-bench}). Adding profile metadata and multi-photo aggregation
+raises single-channel consensus prediction to $\rho=\PboBenchFinalR$ ($43.8\%$), leaving \PboBenchUnexplainedPct{} of
+human-jury rank variance unexplained even at maximum visual resolution---a direct empirical confirmation of
+Proposition~\ref{prop:twoway}'s single-context ceiling. Across natural-age held-out evaluation cohorts (\PboFaceEvalNatW{}
+women, \PboFaceEvalNatM{} men; live multi-backbone spatial head held-out $\rho=\PboFaceLiveSpearmanW$ in women and
+$\rho=\PboFaceLiveSpearmanM$ in men), positive beauty drivers in the top 15\% ($\ge 85\text{th}$ percentile) and negative
+rejectors in the bottom 15\% ($\le 15\text{th}$ percentile) localize sharply rather than uniformly across the face
+(Fig.~\ref{fig:pbo-face-drivers}A--C; Table~\ref{tab:pbo-face-drivers}). In women, the largest top-minus-bottom leverage sits
+in \PboFaceTopZoneNameW{} (top-15\% driver $\PboFaceTopZoneDrvW$ percentile points, bottom-15\% rejector
+$\PboFaceTopZoneRejW$, net spread $\PboFaceTopZoneSpreadW$~points), closely followed by eyebrow arch, vermilion lip fullness,
+infraorbital tear-trough smoothness, malar cheekbone contour, and jawline definition. In men, leverage is led by
+\PboFaceTopZoneNameM{} (driver $\PboFaceTopZoneDrvM$, rejector $\PboFaceTopZoneRejM$, spread $\PboFaceTopZoneSpreadM$~points),
+alongside mandibular/chin contour, periorbital aperture, brow structure, and low bilateral asymmetry plus canonical
+\PboFaceTrisN-triangle geometric averageness~\cite{langlois1990,rhodes2006,little2011}. Notably, in both sexes bottom-15\%
+rejector penalties exceed top-15\% driver gains by roughly twofold across every zone, mirroring the lower-tail floor and
+koinophilic averageness ceiling seen for stature (Section~\ref{sec:resheight}; Corollary~\ref{cor:floor}).
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{performance-fig-face-drivers.pdf}
+\caption{\textbf{Super-resolved canonical facial composites, $12$-zone Shapley beauty drivers and rejectors, and the single-context visual ceiling.}
+Piecewise-affine $106$-landmark, \PboFaceTrisN-triangle Delaunay registration across natural-age held-out evaluation cohorts
+(\PboFaceEvalNatW{} women, \PboFaceEvalNatM{} men; every composite averages $N\ge 190$ aligned portraits). \textbf{(A,~B)}~Linear-sRGB
+super-resolved studio composites for the bottom 15\%, median (42nd--58th), and top 15\% within-gender beauty tiers, paired with
+signed percentile rejector maps ($-\Delta$~pct, sapphire), driver maps ($+\Delta$~pct, coral-gold), and \PboFaceTrisN-triangle
+morphometric expansion/contraction contrasts. \textbf{(C)}~Joint $12$-zone interventional Shapley contributions (mean $\Delta$
+within-gender percentile points with 600-draw bootstrap 95\% CIs) separating positive drivers in the top 15\% (solid) from
+negative rejectors in the bottom 15\% (hatched). \textbf{(D)}~Explained human-jury rank variance ($\rho^2$) on the
+$10{,}000$-profile ($20{,}000$-image) held-out benchmark from raw UV crops (H1) to pure aligned facial anatomy (zero metadata:
+$\rho=\PboFacePureSpearman$, \PboFacePureRankVar) and the full multimodal stack (H20: $43.8\%$), versus the
+\PboBenchUnexplainedPct{} single-context gap.}
+\label{fig:pbo-face-drivers}
+\end{figure*}
+
+\begin{table*}[!t]
+\caption{Anatomical beauty drivers ($+\Delta$ within-gender percentile points in the top 15\%) and rejectors ($-\Delta$ points
+in the bottom 15\%) across $12$ canonical Delaunay facial zones (natural-age held-out evaluation cohorts; 600-draw bootstrap
+95\% confidence intervals in brackets).}\label{tab:pbo-face-drivers}
+\scriptsize
+\centering
+\begin{tabularx}{\textwidth}{@{}Lcccccc@{}}
+\toprule
+\tabinput{performance-face-drivers-table.tex}
+\bottomrule
+\end{tabularx}
+\tablenote{Zones are defined on the symmetric $106$-landmark canonical ArcFace/Delaunay template and evaluated by joint
+$12$-zone interventional Shapley coalition attribution centered on the neutral 42nd--58th percentile training cohort.}
+\end{table*}
+
+Second, stratifying non-training portraits across five adult age buckets (`18--24`, `25--34`, `35--44`, `45--54`, and `55+`;
+$n\ge 220$ aligned faces per sex-by-age cell) isolates the physical basis of the platform age gradient
+(Fig.~\ref{fig:pbo-face-age}). Across life-course composites, observed voter percentile declines from
+$\PboFaceAgeObsYoungW\text{th}$ at ages 18--24 to $\PboFaceAgeObsOldW\text{th}$ at $55+$ in women (pure-face model prediction:
+$\PboFaceAgePredYoungW\text{th}$ to $\PboFaceAgePredOldW\text{th}$) and from $\PboFaceAgeObsYoungM\text{th}$ to
+$\PboFaceAgeObsOldM\text{th}$ in men (pure-face prediction: $\PboFaceAgePredYoungM\text{th}$ to
+$\PboFaceAgePredOldM\text{th}$; Fig.~\ref{fig:pbo-face-age}B). Signed attribution maps show warm periorbital, malar, and
+vermilion drivers dominating young-adult portraits before transitioning progressively after age 35 toward cool infraorbital
+tear-trough, nasolabial, and lower-facial soft-tissue rejectors, with steeper periorbital and midface rank penalties in women
+than in men (Fig.~\ref{fig:pbo-face-age}A,C).
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{performance-fig-face-age.pdf}
+\caption{\textbf{Super-resolved facial aging composites and signed beauty-rank attribution across five adult age cohorts.}
+Non-training evaluation portraits stratified across ages 18--24 through $55+$ ($n\ge 220$ aligned individuals per cell).
+\textbf{(A)}~Linear-sRGB canonical composites (top rows per sex) and signed within-gender beauty percentile attribution maps
+(bottom rows per sex), showing the spatial transition from young-adult periorbital, malar, and lip drivers (coral-gold) to
+midlife infraorbital, nasolabial, and lower-facial rejectors (sapphire). \textbf{(B)}~Mean observed human-voter beauty
+percentile (solid) versus metadata-blind pure-face predicted percentile (dashed) across age groups. \textbf{(C)}~Net anatomical
+zone drift from ages 18--24 to $55+$ ($\Delta$ within-gender percentile contribution).}
+\label{fig:pbo-face-age}
+\end{figure*}
+
+Third, computing super-resolved canonical portraits and within-region beauty driver maps (top half minus bottom half of local
+voter percentiles) across all \PboFaceWorldRegionsN{} world regions---United States, South America, Mexico/Central America \&
+Caribbean, Canada, Asia-Pacific \& Oceania, Europe, and the Middle East \& Africa---tests whether facial evaluation criteria
+fragment across geography (Fig.~\ref{fig:pbo-face-world}). Whereas regional upload selectivity shifts raw voter means
+(Fig.~\ref{fig:pbo-face-world}C), the spatial anatomy of within-region beauty drivers is strikingly invariant across the globe:
+pairwise correlations across the \PboFaceWorldRegionsN{} regional driver maps average $r=\PboFaceWorldCorrW$ in women
+($\min r=\PboFaceWorldMinCorrW$) and $r=\PboFaceWorldCorrM$ in men ($\min r=\PboFaceWorldMinCorrM$;
+Fig.~\ref{fig:pbo-face-world}B). Single-context visual crowds everywhere read essentially the same morphological cues of youth,
+ocular-lip definition, and symmetry---and everywhere stop at the same single-channel horizon when forecasting long-term conduct.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{performance-fig-face-world.pdf}
+\caption{\textbf{Global regional canonical composites and cross-regional invariance of facial beauty drivers across \PboFaceWorldRegionsN{} world regions.}
+Natural-age non-training portraits across United States, South America, Mexico/Central America \& Caribbean, Canada,
+Asia-Pacific \& Oceania, Europe, and Middle East \& Africa ($n\ge 75$ aligned portraits per regional composite).
+\textbf{(A)}~Super-resolved linear-sRGB regional portraits and within-region beauty driver maps (above-median minus below-median
+within-gender attribution). \textbf{(B)}~Pairwise spatial correlation matrix ($r$) across regional beauty driver maps (lower
+triangle: women, mean $r=\PboFaceWorldCorrW$; upper triangle: men, mean $r=\PboFaceWorldCorrM$). \textbf{(C)}~Regional mean
+human-voter percentile (filled) versus metadata-blind pure-face prediction (open), separating upload self-selection from
+anatomical scoring.}
+\label{fig:pbo-face-world}
+\end{figure*}
+
+\subsubsection{Childbearing intentions reverse with age while relationship commitment does not}
+The POV dating archive separates two horizons that fertility discussions often conflate: wanting future children and wanting
+a committed partnership (Fig.~\ref{fig:pbo-pov-life}). Among childless profiles seeking the other recorded gender,
+\PboPovWantYoungW{} of women and \PboPovWantYoungM{} of men aged 25--29 select ``Want children'' (women minus men:
+\PboPovGapYoung{} percentage points). By ages 45--49 the shares cross to \PboPovWantOlderW{} of women and
+\PboPovWantOlderM{} of men (\PboPovGapOlder{} points; Fig.~\ref{fig:pbo-pov-life}A). The reversal holds under exact-age
+standardization, among profiles marked single, across all seeking categories, and after excluding nonanswers or
+``Undecided/Open'' responses (\PboPovOpenYoungW{} and \PboPovOpenYoungM{} at 25--29; \PboPovOpenOlderW{} and
+\PboPovOpenOlderM{} at 45--49; Tables~\ref{tab:pbo-pov-responses} and~\ref{tab:pbo-pov-sensitivity};
+Fig.~\ref{fig:pbo-pov}).
+
+Relationship commitment moves in the opposite way: it never reverses (Fig.~\ref{fig:pbo-pov-life}B). Women exceed men in
+seeking marriage or a serious relationship in every age window across the adult life course---from \PboPovSeriousYoungW{}
+versus \PboPovSeriousYoungM{} at ages 25--29, to \PboPovSeriousMidW{} versus \PboPovSeriousMidM{} at 40--49, to
+\PboPovSeriousSenW{} versus \PboPovSeriousSenM{} at 60--69. Women on the platform also report more prior union durability
+at midlife (\PboPovTenYrMidW{} of women vs.\ \PboPovTenYrMidM{} of men aged 40--49 report a longest relationship exceeding
+ten years, as the male-to-female profile ratio narrows from $2.95{:}1$ at 25--29 to $0.98{:}1$ at 60--69;
+Fig.~\ref{fig:pbo-pov-life}C). Within prime reproductive and career-building years, self-reported ambition and schooling
+trace postponement rather than rejection of parenthood (Fig.~\ref{fig:pbo-pov-life}D,E). Among women aged 25--49, moving
+from ``Not Ambitious'' to ``Very Ambitious'' is associated with lower current motherhood (\PboPovAmbParentLowW{} to
+\PboPovAmbParentHighW) alongside \emph{higher} stated desire for children (\PboPovAmbWantLowW{} to \PboPovAmbWantHighW);
+across completed education at ages 30--49, current parenthood falls steeply from high school to doctoral degrees in both
+sexes while childless women's desire for children rises through master's-level schooling.
+
+Crucially, this decoupling of biological fertility timing from long-term partner commitment is not an American idiosyncrasy.
+Across all five countries with large POV sub-cohorts---the United States, United Kingdom, Canada, Brazil, and
+Australia---childless ``Want children'' flips from positive (women above men by $+4.2$ to $+19.7$ points at ages 25--29) to
+negative in all five countries at ages 45--49 ($-3.7$ to $-13.3$ points), whereas serious relationship intent remains
+positive in all five countries at both 25--29 ($+8.8$ to $+15.1$ points) and 45--49 ($+7.1$ to $+16.4$ points;
+Fig.~\ref{fig:pbo-pov-life}F and Table~\ref{tab:pbo-pov-geo}). Midlife women do not stop seeking committed partners; they
+adjust fertility intentions to a finite reproductive window while men's stated fertility horizon extends later.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{performance-fig-pov-lifecourse.pdf}
+\caption{\textbf{Divergent fertility and commitment horizons across \PboPovEligible{} POV dating profiles.} Opposite-sex
+seeking profiles aged 18--79. \textbf{(A)}~Share selecting ``Want children'' among childless profiles by age band (shading:
+25--29 and 45--49). \textbf{(B)}~Share seeking marriage or a committed relationship across six adult age windows: women
+exceed men at every age despite the fertility-intention crossover. \textbf{(C)}~Share reporting a prior relationship
+lasting over ten years, alongside the narrowing male-to-female platform participation ratio. \textbf{(D)}~Current
+parenthood and stated desire for children by self-reported ambition at ages 25--49. \textbf{(E)}~Current parenthood (solid)
+and childless ``Want children'' (dashed) across completed education at ages 30--49, showing reproductive postponement rather
+than lower family ideals among more educated women. \textbf{(F)}~Replication across all five major country cohorts:
+women-minus-men gaps in childless ``Want children'' reverse from ages 25--29 (green circles) to 45--49 (red squares) in 5/5
+countries, while serious commitment at 45--49 (violet diamonds) remains positive in 5/5.}
+\label{fig:pbo-pov-life}
+\end{figure*}
+
+\begin{table*}[t]
+\caption{Five-country replication of the childbearing-intention reversal and persistent female commitment advantage in the
+POV archive (opposite-sex-seeking profiles). Entries in the last four columns are women-minus-men differences in percentage
+points.}\label{tab:pbo-pov-geo}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}Lrrrrrr@{}}
+\toprule
+\tabinput{performance-pov-geography.tex}
+\bottomrule
+\end{tabularx}
+\tablenote{Every cell in the five-country sub-cohorts exceeds \PboMinCell{} profiles. Serious commitment combines marriage
+and long-term relationship intent.}
+\end{table*}

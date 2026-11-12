@@ -1,0 +1,86 @@
+Environmental context in The Minds We Choose
+
+Scope and source preservation
+Run from the minds-integration checkout root. Human sources are in
+scripts/brain and docs/sections/brain. Supplied sources under project/brain/tips
+and tips are read-only. SAFE AI results and manuscripts are separate.
+All transient input, output, logs and builds stay under this checkout's target/.
+
+Inputs
+- Public fossil spreadsheets: supplied unmodified v9 archive, with hashes in the
+  human reference's fossil_environment.source_sha256.
+- LR04: https://lorraine-lisiecki.com/LR04stack.txt, author-hosted August 1, 2005
+  version; SHA-256 7d1a6ca7ffc033e45e20fb76a7f39c8d99df87baa1094260f9dbdc09f0bb8945.
+  Documentation: https://lorraine-lisiecki.com/stack.html.
+  Citation: Lisiecki & Raymo 2005, doi:10.1029/2004PA001071.
+  Raw bytes are cached in target/minds-we-choose/inputs/environment/LR04stack.txt
+  and included as public-inputs/environment/LR04stack.txt in the bundle.
+- Curated chronology: evidence/brain/environment-events.json, schema 1.
+- Validated human aggregate snapshot and separate frozen age/gender baseline.
+  The original aggregate snapshot is retained at
+  target/minds-we-choose/pre-environment-v1/minds-we-choose.json.
+  The updated publication reference is also suitable for aggregate replay.
+- Other public survey, geography and GSS inputs follow the existing human runner
+  and hash checks. Network access may be needed for missing cached public files.
+  No HON/POV rescan, image training, GPU allocation or fleet job is needed here.
+
+The existing Columbia public CSV is required at
+ target/performance-before-outcomes/inputs/speed_dating.csv
+with SHA-256 fda9a924b18880fabe6c7a71961cff20aa3c7cc2a5aa8d6e823c2fc41893814c.
+The supplied v9 code/fetch_speed.py documents public mirrors. Copy a verified
+CSV into target/ or pass --speed-data; do not run an archival fetch script that
+writes into the supplied archive directories or clones into /tmp.
+Python dependencies are numpy, scipy, pandas, openpyxl, matplotlib and pyshp;
+PDF builds use the repository's existing pdflatex packages. The full make required
+gate additionally uses the unchanged Rust/default-study toolchain.
+
+Two reproducible replay runs
+python3 scripts/run.py target/minds-we-choose/environment-run-1 \
+  --study minds-we-choose \
+  --remote-snapshot evidence/brain/reference/minds-we-choose.json \
+  --demographic-frozen evidence/brain/reference/age-gender-baseline.json
+python3 scripts/validate.py target/minds-we-choose/environment-run-1 \
+  --study minds-we-choose --source
+python3 scripts/run.py target/minds-we-choose/environment-run-2 \
+  --study minds-we-choose \
+  --remote-snapshot evidence/brain/reference/minds-we-choose.json \
+  --demographic-frozen evidence/brain/reference/age-gender-baseline.json
+python3 scripts/validate.py target/minds-we-choose/environment-run-2 \
+  --study minds-we-choose --source \
+  --compare target/minds-we-choose/environment-run-1
+
+The comparison excludes documented execution/timestamp metadata, not numerical
+results. The environmental module runs in both fresh and replay human runs.
+--remote-snapshot and --demographic-frozen are rejected for other studies.
+
+Promotion and build
+After both validations succeed, explicitly copy the chosen run's
+minds-we-choose.json into evidence/brain/reference/minds-we-choose.json.
+python3 scripts/paper.py --study minds-we-choose
+python3 scripts/paper.py --study minds-we-choose --check
+python3 -m unittest discover -s tests -p 'test_minds*.py'
+python3 -m unittest discover -s tests -p 'test_brain_paper.py'
+make minds-we-choose
+make required
+
+make required builds the separate SAFE AI PDF as part of the existing gate.
+The extension's verification retained its starting bytes and restored them after
+that build. Keep unrelated working-tree changes intact.
+
+Deliverables
+Main, supplementary and combined PDFs: target/minds-we-choose/*.pdf.
+Standalone vector figures and plotting CSVs: target/minds-we-choose/generated/.
+Validated evidence: evidence/brain/reference/minds-we-choose.json.
+Claim-by-claim change account: evidence/brain/environment-extension.json.
+Complete environmental sources: generated/minds-environment-sources.csv.
+Previous PDFs, evidence and bundle: target/minds-we-choose/pre-environment-v1/.
+Final bundle: target/minds-we-choose/The_Minds_We_Choose_environment_v1.zip.
+
+Interpretation
+Alignment is chronological context, not a causal estimate. Do not fit event-date
+breakpoints or assign significance to overlap. Keep the disputed genetic inference
+separate from measured climate evidence and regional demographic interpretations.
+The scientific account does not depend on accepting the bottleneck or assigning
+a hominin consequence to the impact. The SI records a prior-tektite-count
+inconsistency, and not every quoted impact-age comparison separately restates its
+uncertainty convention. These limitations remain in the register and supplement.

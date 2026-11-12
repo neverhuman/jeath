@@ -1,0 +1,169 @@
+\section{Proofs}\label{app:proofs}
+
+\noindent\textbf{Gaussian tilting lemma.} Let $(A,\mathbf X)$ be jointly Gaussian and $w=\exp(\mathbf h^\top\mathbf X)$. Then
+$\E[Aw]/\E[w]=\E[A]+\Cov(A,\mathbf h^\top\mathbf X)$, by differentiating the joint moment-generating function. If instead
+$w=\exp(kx-\tfrac c2x^2)$ with $x\sim\N(0,V)$, the tilted law of $x$ is $\N\big(kV/(1+cV),\,V/(1+cV)\big)$.
+
+\textbf{Proposition~\ref{prop:identity}.} Write $\E[A\mid Y]=\mu+\kappa(Y-\E Y)$ with $\kappa=\Cov(A,Y)/V_Y$. The residual
+$A-\E[A\mid Y]$ is uncorrelated with every function of $Y$, so
+$\Cov(A,W)=\Cov(\E[A\mid Y],W)=\kappa\,\SD(Y)\Corr(Y,W)\SD(W)$, and $\kappa\,\SD(Y)=\sigma_A\Corr(A,Y)$. Under
+Eq.~\eqref{eq:score}, $\Corr(A,Y)=\lambda V_A/(\sigma_A\SD(Y))=h\sqrt R$. Dividing by $\E W$ gives Eq.~\eqref{eq:identity}.
+Without linearity the first equality still holds and Cauchy--Schwarz gives the bound. If $W$ depends on $Y$ only through
+$Z$, the distribution of $W$ and $\Corr(Y,W)=\Corr(Z,W)$ do not depend on $R$. \qed
+
+\textbf{Proposition~\ref{prop:routes}.} In the infinite-population limit with equal marginal score distributions, ideal rank
+matching pairs equal scores, so the partner's score is $Y_p=Y$ and $Z_p=Z$. Then $C_p=\E[C_p\mid Y]+\varepsilon$ with
+$\E[C_p\mid Y]=\mu+(\lambda V_P/V_Y)(Y-\E Y)$ and $\varepsilon$ independent of everything about the focal individual, so
+$(A,C,C_p,Z)$ is jointly Gaussian. The lemma gives $S=\Cov(A,\beta_NC+\beta_DC_p+\beta_SZ)$. Here $\Cov(A,C)=V_A$;
+$\Cov(A,Z)=\lambda V_A/\SD(Y)=V_A\sqrt{R/V_P}$ because $\sqrt R=\lambda\sqrt{V_P}/\SD(Y)$; and
+$\Cov(A,C_p)=(\lambda V_P/V_Y)\lambda V_A=V_AR$. Each offspring has one parent of each sex, so
+$\Delta\bar A=\tfrac12(S_f+S_m)$ under unbiased transmission. With unequal score marginals, rank matching equates quantiles
+and the same argument applies to standardized scores. \qed
+
+\textbf{Corollaries~\ref{cor:bottleneck}--\ref{cor:score}.} Corollary~\ref{cor:bottleneck} sets $R=0$.
+A pair-output model $W=\exp[b(C_f+C_m)/2]$ implies $\beta_N=\beta_D=b/2$ and $\beta_S=0$ for each parent. For
+Corollary~\ref{cor:score}, $\Cov(A_D,Z)=V_{A,D}/\SD(Y)$ and $\Cov(A,Z)=\lambda V_A/\SD(Y)$. \qed
+
+\textbf{Propositions~\ref{prop:portfolio} and~\ref{prop:diversity}.} The domain average of $G$ is $G$; the average of $K$
+independent domain terms has variance $(V_S+\tau^2+\sigma^2[\rho+(1-\rho)/n])/K$; $\Omega$ adds $\omega^2$. So $V_Y$ is the
+denominator of Eq.~\eqref{eq:RG} and $\Cov(G,Y)=V_G$, giving $R_G=V_G^2/(V_GV_Y)$. For Proposition~\ref{prop:diversity}, write
+each breeding value as $A_X=h_X^2X+\eta_X$ with $\eta_X$ independent of the score; then
+$\Cov(A_G,Z)=h_G^2V_G/\SD(Y)$, $\Cov(A_{S_k},Z)=h_S^2V_S/(K\,\SD(Y))$, and $\Cov(A_\Omega,Z)=h_\Omega^2\omega^2/\SD(Y)$, and
+the lemma applies. \qed
+
+\textbf{Proposition~\ref{prop:assort}.} An offspring's breeding value is $(A_f+A_m)/2+\delta$ with $\Var(\delta)=V_{LE}/2$ in
+the infinitesimal model~\cite{bulmer1980}. Because pairing depends on $A$ only through $C$ and $\E[A\mid C]=h^2C$,
+$\Cov(A_f,A_m)=h^4\Cov(C_f,C_m)=mh^2V_A$. Log-linear selection on jointly Gaussian pairs shifts means without changing
+covariances (lemma), giving Eq.~\eqref{eq:assort}. Setting $V_{A,t+1}=V_{A,t}=V$ and $h^2=V/(V+V_E)$ yields
+$(1-m)V^2+(V_E-V_{LE})V-V_{LE}V_E=0$, whose product of roots is negative for $m<1$, so exactly one root is positive. For
+$m=1$ the equation is linear with root $V_{LE}V_E/(V_E-V_{LE})$, positive only if $V_E>V_{LE}$; otherwise variance grows
+without bound. The response follows from $\Cov(A,X)=\tfrac12V_A(1+m)$. \qed
+
+\textbf{Proposition~\ref{prop:persist}.} Write $C=\mu+x$ and $Y-\E Y=\lambda x+\nu$ with $\nu$ independent of $x$ and $A$.
+Then $\ln w=(\beta_N-c\mu+\beta_S\lambda/\SD(Y))x-\tfrac c2x^2+(\beta_S/\SD(Y))\nu+\text{const}$. The $\nu$ term tilts only
+$\nu$. By the lemma the tilted mean of $x$ is $kV_P/(1+cV_P)$ with $k=\beta_N+\beta_S\sqrt{R/V_P}-c\mu$, and
+$\E[A-\mu\mid x]=h^2x$, so $\Delta\bar A=V_Ak/(1+cV_P)$. Setting $k=0$ gives $\mu^*$. For the saturating benefit,
+$\E[f'(C)]=\beta_Ee^{V_P/2\kappa^2-\mu/\kappa}$; differentiating $\ln\E[f'(C)]=\ln(c\mu)$ with respect to $\ln(1/c)$ gives
+elasticity $\kappa/(\kappa+\mu^*)$. Corollary~\ref{cor:surplus}: $\E[Z]=0$, so $\E[\ln w]=\beta_N\mu-\tfrac c2(\mu^2+V_P)$,
+maximized at $\mu=\beta_N/c$. \qed
+
+\textbf{Proposition~\ref{prop:tissue}.} With $\ln w=\beta_{\mathrm{eff}}(aB+K)-\tfrac{\kappa_B}2B^2-\tfrac{\kappa_K}2K^2$ plus
+terms independent of the means, the selection gradient at the means is
+$\bm\beta=(a\beta_{\mathrm{eff}}-\kappa_B\bar B,\ \beta_{\mathrm{eff}}-\kappa_K\bar K)$ to first order. Lande's equation has a
+stationary point only where $\mathbf G\bm\beta=\mathbf 0$, which for nonsingular $\mathbf G$ requires $\bm\beta=\mathbf 0$,
+giving Eq.~\eqref{eq:tissue}. With $a=0$ the tissue component of $\bm\beta$ is $-\kappa_B\bar B$, so $\bar B\to0$ regardless
+of the off-diagonal elements of $\mathbf G$. With positive-definite $\mathbf G$ and $\kappa_B,\kappa_K>0$ the eigenvalues of
+$\mathbf G\,\mathrm{diag}(\kappa_B,\kappa_K)$ are positive, so the equilibrium is stable whenever they are below two, which
+holds under weak selection. Corollary~\ref{cor:colimit}: the tissue component of $\bm\beta$ is positive exactly when
+Eq.~\eqref{eq:threshold} holds; substituting the maximal validity of Proposition~\ref{prop:portfolio} into $B^*$ gives
+$B_{\max}$. \qed
+
+\textbf{Proposition~\ref{prop:aim} and Corollary~\ref{cor:cue}.} $(A_F,A_G,Y)$ is jointly Gaussian, so $\E[A_X\mid Y]$ is
+linear and the first line of the proof of Proposition~\ref{prop:identity} gives
+$S_{A_X}=[\Cov(A_X,Y)/\SD(Y)]\,\Corr(Y,W)\CV(W)$ for $X\in\{F,G\}$. Writing $A_X=h_X^2X+\eta_X$ with $\eta_X$ independent of
+$Y$, $\Cov(A_F,Y)=h_F^2\bar\ell_FV_F$ and $\Cov(A_G,Y)=h_G^2\bar\ell_GV_G$. The ratio is free of $i$ and of
+$\SD(Y)$. For the corollary, $\Cov(A_Q,Q)=V_{A_Q}$ and $\Cov(A_G,Q)=0$. \qed
+
+\textbf{Proposition~\ref{prop:repeat}.} Put $\alpha=\lambda^2V_P$, $b_0=\tau^2+\rho\sigma^2$ and $c_0=(1-\rho)\sigma^2$, so
+$R(n)=\alpha/(\alpha+b_0+c_0/n)$. Then
+$g(n)\equiv\mathrm d\sqrt{R}/\mathrm dn=\tfrac12\sqrt{R}\,c_0/\big(n[(\alpha+b_0)n+c_0]\big)>0$ and
+\[
+\frac{\mathrm d\ln g}{\mathrm dn}=-\frac{4(\alpha+b_0)n+c_0}{2n[(\alpha+b_0)n+c_0]}<0 ,
+\]
+so $g$ is strictly decreasing, with $g\to\infty$ as $n\to0$ and $g\to0$ as $n\to\infty$. The first-order condition
+$g(n^*)=\delta/B$ therefore has exactly one root, which decreases as $\delta/B$ rises; when the root is below one, a single
+event or none is optimal. $R$ is increasing in $n$, so $R(n^*)$ falls as $\delta/B$ rises. The fixed-risk form substitutes
+$n=D/\delta$. \qed
+
+\textbf{Proposition~\ref{prop:despot}.} For $0\le k<1/q$,
+\[
+\phi(k)\equiv\frac{\mathrm d\ln U}{\mathrm dk}=-\frac{q}{1-kq}+\frac{\theta\,[1-p(k)]}{1+k}.
+\]
+The first term is strictly decreasing in $k$; so is the second, because $p$ is increasing in $k$. Hence $\ln U$ is strictly
+concave with a unique maximizer, and $k^*>0$ exactly when $\phi(0)>0$, that is when $\theta M^\theta/(1+M^\theta)>q$. For
+every $k$, $1-p(k)$ is increasing in $M$ and $-q/(1-kq)$ is decreasing in $q$, so $\phi$ shifts up with $M$ and down with $q$
+and its root moves accordingly. As $M\to\infty$, $1-p\to1$ and $\phi(k)\to-q/(1-kq)+\theta/(1+k)$, whose root is
+$k=(\theta-q)/[q(1+\theta)]$, leaving the dominant the share $1-kq=(1+q)/(1+\theta)$. \qed
+
+\textbf{Corollary~\ref{cor:generalist} and Proposition~\ref{prop:time}.} Divide the first expression in
+Eq.~\eqref{eq:diversity} by the second. For Proposition~\ref{prop:time}, set Eq.~\eqref{eq:RG} equal to $R^*$:
+$D=Q/K+(1-\rho)\sigma^2/(Kn)$, and solve for $n$; the right side exceeds the left for every $n$ when $KD\le Q$. \qed
+
+\textbf{Proposition~\ref{prop:polymath}.} The score is $Y=K^{-1}\sum_k(T_k+U_k+\bar e_k)+\Omega$, so $\partial Y/\partial g=1$ and
+$\partial Y/\partial s_k=1/K$. With $\ln w=\beta_S(Y-\E Y)/\SD(Y)-\tfrac12c_Gg^2-\tfrac12c_S\sum_ks_k^2$ the gradients of log
+fitness are $\beta_S/\SD(Y)-c_Gg$ and $\beta_S/(K\,\SD(Y))-c_Ss_k$, linear in the traits, so under Lande's equation the means
+are stationary where they vanish, which gives Eq.~\eqref{eq:gstar}. The costs at equilibrium are
+$\tfrac12c_Gg^{*2}=\beta_S^2/(2c_G\SD(Y)^2)$ and $K\cdot\tfrac12c_Ss_k^{*2}=\beta_S^2/(2Kc_S\SD(Y)^2)$; their ratio is $Kc_S/c_G$,
+which gives Eq.~\eqref{eq:share}. \qed
+
+\textbf{Proposition~\ref{prop:division} and the remark following it.} Let $k^*=\arg\max_kS_k$. $G$ is independent of the
+choice, so $\Cov(A_G,Y\mid k^*)=h_G^2V_G$. Given $k^*=k$, $S_k$ is distributed as the largest of $K$ independent $\N(0,V_S)$
+variables, with variance $c_KV_S$. Before selection $A_{S_k}=h_S^2S_k+\epsilon$ with $\epsilon$ independent of all the $S_j$
+and hence of the choice, so $\Cov(A_{S_k},Y\mid k^*=k)=h_S^2c_KV_S$. The ratio is Eq.~\eqref{eq:division}; dividing
+Eq.~\eqref{eq:aimK} by it gives $Kc_K$. The statement concerns covariances, which determine the selection differential
+exactly under linear fitness and to first order in $\beta_S$ under exponential fitness, since the maximum of normal
+variables is not normal. For the remark, Stein's lemma gives $\Cov(X_i,f(\mathbf X))=\sum_j\Cov(X_i,X_j)\E[\partial
+f/\partial X_j]$ for jointly normal $\mathbf X$; with $f=\max_k(G+S_k+U_k+\bar e_k)$, $\partial f/\partial G=1$ and
+$\partial f/\partial S_k=\mathbf 1\{k=\arg\max\}$, which has expectation $1/K$. \qed
+
+\textbf{Proposition~\ref{prop:episodes} and Corollary~\ref{cor:floor}.} With $\E z=0$ and $\bar c_+=\E[c\mid c>0]$,
+$\Cov(z,w)=\E[zc]/(p\bar c_+)=\E[zc\mid c>0]/\bar c_+=\E[z\mid c>0]+\Cov(z,c\mid c>0)/\bar c_+$. Also
+$\E w^2=\E[c^2\mid c>0]/(p\bar c_+^2)=(1+I_{c>0})/p$, so $I=(1+I_{c>0})/p-1$. For the corollary, the standardized score $Z$ of
+those retained has mean $\varphi(z_q)/(1-q)$, and $\E[A\mid Z]=\sigma_Ah\sqrt R\,Z$ under the assumptions of
+Proposition~\ref{prop:identity}; $w$ takes the values 0 and $1/(1-q)$, so $\Var(w)=q/(1-q)$. \qed
+
+\textbf{Proposition~\ref{prop:delivery}.} Let $\hat b=\bar b+\kappa_b(Y_b-\E Y_b)$ and $\hat p=\bar p+\kappa_p(Y_p-\E Y_p)$ be the
+posterior means from independent signals, so that $\hat v=\hat p\hat b+\hat c-\hat h$ with the last two terms independent of
+$A_B$ and $A_P$. Then $\Cov(A_B,\hat p\hat b)=\bar p\,\Cov(A_B,\hat b)+\E[A_B(\hat p-\bar p)(\hat b-\bar b)]$; the last term
+vanishes by independence, and $\Cov(A_B,\hat b)=\kappa_b\lambda_bV_{A,B}=R_bV_{A,B}$ as in Proposition~\ref{prop:routes}. The
+same argument gives $S_{A_P}$. Under Lande's equation the means change by $V_{A,B}(sR_b\bar p-c_B\bar b)$ and
+$V_{A,P}(sR_p\bar b-c_P\bar p)$, a linear system whose matrix has a positive eigenvalue exactly when
+$s^2R_bR_p>c_Bc_P$. With $\bar p$ held at one the first equation has the stationary point $\bar b^*=sR_b/c_B$. \qed
+
+\textbf{Proposition~\ref{prop:staging}.} (i)~The mean of $dn$ staged performances is $b$ plus an error of variance
+$\sigma^2/(dn)$, which gives $R_b$. Let $m=(1-d)n$. The number of defaults is $F\mid q\sim\mathrm{Binomial}(m,q)$, so
+$\Cov(F,q)=mV_P$ and, by the law of total variance, $\Var F=m^2V_P+m\,\E[q(1-q)]$. Hence
+$\Corr^2(F,q)=mV_P/(mV_P+\nu)$, which is $R_p$; no assumption about the distribution of $q$ is needed. (ii)~The first
+statement is the binomial probability of no default in $m$ trials; setting it to one half and to 0.05 gives the other two.
+(iii)~With $A$ and $C$ as defined, $1/(R_bR_p)=(1+A/d)(1+C/(1-d))$. Setting the derivative to zero gives
+$A(1-d)(1-d+C)=Cd(d+A)$, that is $(A-C)d^2-2A(1+C)d+A(1+C)=0$. Writing $u^2=A(1+C)$ and $v^2=C(1+A)$, so that
+$u^2-v^2=A-C$, the root in $(0,1)$ is $d^*=(u^2-uv)/(u^2-v^2)=u/(u+v)$. The product is zero at both ends and positive
+between, so the stationary point is the maximum. \qed
+
+\textbf{Proposition~\ref{prop:enforce}.} (i)~Replace $\hat p$ by $e+(1-e)\hat p$ in the proof of
+Proposition~\ref{prop:delivery}: $\Cov(A_B,[e+(1-e)\hat p]\hat b)=[e+(1-e)\bar p]R_bV_{A,B}$ and
+$\Cov(A_P,[e+(1-e)\hat p]\hat b)=(1-e)\bar bR_pV_{A,P}$. (ii)~Under Lande's equation the means change by
+$V_{A,B}(sR_b[e+(1-e)\bar p]-c_B\bar b)$ and $V_{A,P}(sR_p(1-e)\bar b-c_P\bar p)$. At the origin the first is $V_{A,B}sR_be>0$.
+Setting both to zero gives $\bar p=T(1-e)[e+(1-e)\bar p]$, hence Eq.~\eqref{eq:enforceeq}. The Jacobian has negative trace
+and determinant proportional to $c_Bc_P-s^2R_bR_p(1-e)^2$, positive when $T(1-e)^2<1$. The interior solution satisfies
+$\bar p^*\le1$ exactly when $T(1-e)\le1$, which implies $T(1-e)^2<1$; otherwise $\bar p$ rises to its bound, where the
+delivered share is one. (iii)~The delivered share at equilibrium is $\delta^*=e/(1-T(1-e)^2)$, with derivative proportional
+to $1-T(1-e^2)>0$. Writing $x=1-e$, $\bar p^*=Tx(1-x)/(1-Tx^2)$ has derivative proportional to $1-2x+Tx^2$, whose only root
+in $(0,1)$ is $x=(1-\sqrt{1-T})/T$. \qed
+
+\textbf{Corollary~\ref{cor:inflation}.} Exaggeration $f_k$ enters the score exactly as $s_k$ does in the proof of
+Proposition~\ref{prop:polymath}, with $\partial Y/\partial f_k=1/K$ and cost $\tfrac12c_Ff_k^2$, so the gradient of log
+fitness is $\beta_S/(K\,\SD(Y))-c_Ff_k$ and the total cost at equilibrium is $\beta_S^2/(2Kc_F\SD(Y)^2)$. Heritable variation
+in $f_k$ is a domain-specific trait and Eq.~\eqref{eq:aimK} applies to it. \qed
+
+\textbf{Equation~\eqref{eq:coercion}.} Relative fitness is $w=(1-F)w_a+Fw_f$, where $F$ indicates a coerced mating,
+independent of $A$ with mean $\kappa$, and $w_a$, $w_f$ are relative fitness under assessment and under force. Then
+$\Cov(A,w)=(1-\kappa)\Cov(A,w_a)+\kappa\Cov(A,w_f)$. \qed
+
+\textbf{Proposition~\ref{prop:ancestors}.} For a sex with offspring number $k$, the variance effective number in a large
+population is $N\bar k/(\bar k-1+V/\bar k)$~\cite{kimura1963}. With a share $q$ at zero and the rest at mean
+$m=\bar k/(1-q)$ and variance $m+\alpha m^2$, $\E[k^2]=(1-q)\big(m+(1+\alpha)m^2\big)=\bar k+(1+\alpha)\bar k^2/(1-q)$, so
+$V/\bar k=1+\bar k\big[(1+\alpha)/(1-q)-1\big]$ and $\bar k-1+V/\bar k=\bar k(1+\alpha)/(1-q)$. For a marker inherited
+through one sex, the relevant count is offspring of that sex. If each offspring is of that sex with probability
+one-half, the count has mean $\bar k/2$ and variance $V/4+\bar k/4$, and substituting gives the same ratio. \qed
+
+\textbf{Proposition~\ref{prop:waiting}.} By Proposition~\ref{prop:staging} only unstaged occasions inform about delivery,
+so after $t$ periods there are $n=k\lambda(1-d)t$ independent observations, with reliability $nr_1/(1+(n-1)r_1)$
+(Eq.~\ref{eq:sb}). Setting this to $R^*$ and solving, $n=R^*(1-r_1)/[r_1(1-R^*)]$. \qed
+
+\textbf{Corollary~\ref{cor:ritual}.} Solve $n\rho_s/(1+(n-1)\rho_s)\ge\rho_d$ for $n$. The second statement is
+Proposition~\ref{prop:staging} with $d=1$. \qed
+
+\textbf{Corollary~\ref{cor:narrow}.} The assessed score is $Y_T=G+x\,\bar a_T+\bar\varepsilon_T$ with $x$ independent of
+$G$, so $\Cov(Y_T,x)=\bar a_T\Var(x)$ and $\Cov(Y_T,G)=\Var(G)$ for every $T$; the gradients follow from
+Proposition~\ref{prop:identity}. \qed

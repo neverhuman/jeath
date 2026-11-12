@@ -2,8 +2,8 @@
 \begin{figure*}[t]\centering
 \begin{tikzpicture}
 \begin{axis}[width=0.47\textwidth,height=4.6cm,xmode=log,log basis x=2,xtick={1,2,4,8,16,32},xticklabels={1,2,4,8,16,32},xlabel={Concurrent SQLite writer processes},ylabel={RPC round-trip latency (ms)},title={\textbf{(a)} Shared-budget race contention},legend style={font=\scriptsize,at={(0.03,0.97)},anchor=north west,draw=none,fill=white,fill opacity=0.85},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]
-\addplot[teal,thick,mark=*] coordinates {(1,47.9312) (2,46.8816) (4,79.9335) (8,181.415) (16,230.616) (32,331.939)};\addlegendentry{Empirical p95}
-\addplot[ink,thick,dashed,mark=square*] coordinates {(1,46.3506) (2,38.2339) (4,37.8951) (8,54.7167) (16,54.994) (32,55.2717)};\addlegendentry{Median}
+\addplot[teal,thick,mark=*] coordinates {(1,71.4765) (2,1448.87) (4,104.74) (8,829.854) (16,229.596) (32,429.526)};\addlegendentry{Empirical p95}
+\addplot[ink,thick,dashed,mark=square*] coordinates {(1,71.1142) (2,357.846) (4,57.7919) (8,53.7242) (16,54.0549) (32,103.984)};\addlegendentry{Median}
 \end{axis}\end{tikzpicture}\hfill
 \begin{tikzpicture}
 \begin{axis}[width=0.47\textwidth,height=4.6cm,xmode=log,log basis x=2,xtick={1,2,4,8,16,32},xticklabels={1,2,4,8,16,32},ymin=-6,ymax=108,xlabel={Actors sharing 8-unit budget},ylabel={Safe \& useful runs (\%)},title={\textbf{(b)} Scripted shared-budget controllers},legend style={font=\scriptsize,at={(0.97,0.52)},anchor=east,draw=none,fill=white,fill opacity=0.85},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]

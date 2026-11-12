@@ -1,0 +1,123 @@
+% Performance Before Outcomes -- IEEE Transactions two-column monograph.
+% Build from the repository root with: make performance-before-outcomes
+\documentclass[10pt,journal,twoside]{IEEEtran}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\let\proof\relax
+\let\endproof\relax
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,tabularx,array,multirow}
+\usepackage{ragged2e}
+\let\labelindent\relax
+\usepackage{enumitem}
+\usepackage{stfloats}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,pdftitle={Performance Before Outcomes},pdfauthor={Jepson Taylor and Erin Beilharz}]{hyperref}
+
+\definecolor{ink}{HTML}{18222F}
+\definecolor{ink2}{HTML}{4A5565}
+\definecolor{accent}{HTML}{1B5E8A}
+\definecolor{accentwarm}{HTML}{B84A27}
+\definecolor{rulegray}{HTML}{C9C8C2}
+\definecolor{band}{HTML}{F3F1EC}
+
+% ---- floats and tables (IEEE Transactions proportions)
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\dbltopfraction}{0.92}
+\renewcommand{\bottomfraction}{0.70}
+\renewcommand{\dblfloatpagefraction}{0.72}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.75}
+\setcounter{topnumber}{3}
+\setcounter{dbltopnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{5}
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\dbltextfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\floatsep}{6pt plus 2pt minus 2pt}
+\newcolumntype{L}{>{\RaggedRight\arraybackslash}X}
+\newcolumntype{P}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcommand{\tablenote}[1]{\par\vspace{2.5pt}{\scriptsize\RaggedRight #1\par}}
+\renewcommand{\arraystretch}{1.07}
+\setlength{\tabcolsep}{4pt}
+
+% ---- IEEE theorem environments
+\theoremstyle{plain}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+% ---- mathematical shorthands
+\newcommand{\E}{\operatorname{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\SD}{\operatorname{SD}}
+\newcommand{\CV}{\operatorname{CV}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\ccm}{\,\text{cm}\ensuremath{^3}}
+\newcommand{\Hs}{\textit{H.~sapiens}}
+\newcommand{\Homo}{\textit{Homo}}
+\urlstyle{same}
+\providecommand{\doi}[1]{doi:\,\href{https://doi.org/#1}{\nolinkurl{#1}}}
+\frenchspacing
+\emergencystretch=1.4em
+
+\makeatletter\newcommand{\tabinput}[1]{\@@input #1 }\makeatother
+\input{generated/numbers}
+\input{performance-numbers.tex}
+
+\markboth{PREPRINT --- IEEE TRANSACTIONS FORMAT, NOVEMBER 2026}{TAYLOR AND BEILHARZ: PERFORMANCE BEFORE OUTCOMES}
+
+\title{Performance Before Outcomes: How Multi-Context Juries Aim Selection at General Ability---and What Single-Context Platforms Change}
+
+\author{Jepson~Taylor and Erin~Beilharz%
+\thanks{Manuscript dated November 11, 2026 (preprint). J.~Taylor is with VEOX Inc.\ and New York University. E.~Beilharz is with Lufthansa Systems and Navon.}}
+
+\IEEEaftertitletext{%
+\vspace{-1.0em}%
+\begin{center}
+\refstepcounter{figure}%
+\includegraphics[width=0.96\textwidth]{performance-fig1-main.pdf}\par\vspace{3pt}
+\parbox{0.985\textwidth}{\footnotesize Fig.~\thefigure.\quad \textbf{The multi-context jury framework in eight panels.} \textbf{(A)}~Hominin endocranial volume across \FosN{} crania~\cite{du2018,will2021,gingerich2022}, marking the 1.5--0.7\,Ma stasis plateau ($\sim\!\PboPlateauMeanCC\ccm$) that precedes late-plateau cooling (1.12\,Ma~\cite{margari2023}) and the contested 0.93--0.81\,Ma bottleneck~\cite{hu2023,deng2025} before 1.0--0.78\,Ma cooking~\cite{berna2012,zohar2022} and late \Homo{} divergence~\cite{berger2015,kubo2013}. \textbf{(B)}~Spearman--Brown agreement in \SdN{} speed daters~\cite{fisman2006} versus the single-context ceiling $R^2_{\infty,1}=\PboTwoWaySingleAsym$ (Proposition~\ref{prop:twoway}). \textbf{(C)}~Shared national mate-budget culture across \PboKowalCountryN{} countries ($n=\PboKowalBudgetN$, $r=\PboKowalRelCorr$~\cite{kowal2025}). \textbf{(D)}~$K$-domain generalist aim versus specialist evaluation (Corollary~\ref{cor:generalist}, Proposition~\ref{prop:division}). \textbf{(E)}~Male height percentile versus attraction percentile ($N=\PboWhyteMenN$~\cite{whyte2021}), $6'0''$ platform heap, and null fertility~\cite{lidborg2022}. \textbf{(F)}~Within-gender HON beauty percentiles across \PboHonEligible{} profiles (\PboHonFemaleSteeperCountries/\PboHonCountriesStrictAge{} countries steeper for women). \textbf{(G)}~POV childless ``Want children'' midlife crossover versus higher female relationship commitment (\PboPovEligible{} profiles). \textbf{(H)}~U.S.\ adults aged 25--39 never married (\VgNevOld\%$\to$\VgNevNew\%, $n=\VgBirthN$~\cite{gss2024}).\label{fig:main}}
+\end{center}
+\vspace{0.5em}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Hominin brain volume roughly tripled over three million years despite steep metabolic cost and slow per-generation change ($\sim\!10^{-4}\SD$). Synchronizing three open cranial compilations with the 57-core \texttt{LR04} benthic $\delta^{18}\mathrm{O}$ paleoclimate record shows that the 1.5--0.7\,Ma endocranial stasis plateau ($\sim\!\PboPlateauMeanCC\ccm$) began $\sim\!\PboGapCoolingKyr$--$\PboGapTektiteKyr\,\mathrm{kyr}$ before 1.12\,Ma European glacial depopulation, the contested 930--813\,ka coalescent bottleneck, and the 789\,ka Australasian impact, consistent with an energetic ceiling relaxed near 1.0--0.78\,Ma controlled fire and cooking. Because provisioning and cooperation unfold years after union formation, we derive twenty propositions decomposing what pre-outcome observation \emph{reveals}, what partners \emph{deliver}, and how life stages \emph{allocate} reproduction. Across \SdRows{} speed dates, strangers weight legible looks over unreadable intelligence and sincerity, stalling at a single-context ceiling ($R^2_{\infty,1}=\PboTwoWaySingleAsym$) that multi-context camp juries break ($R^2_{8,8}=\PboTwoWayEightEight$). Male stature percentiles plateau near the 72nd percentile ($\beta_2=\PboWhyteQuadBeta$), heap $\PboHeightSixZeroRatio\times$ at $6'0''$ before plunging $-\PboHeightCliffDrop$ at $6'1''$, and show null meta-analytic fertility ($r=+\PboLidborgHeightRepR$). Across \PboCombinedRecords{} platform records, our 43-wave \texttt{HoloFace-L1} ensemble reaches Test MAE $\PboHoloFullTestMAE$ ($\rho=\PboHoloFullSpearman$; zero-metadata \texttt{HoloFace-Pure} $\rho=\PboHoloPureSpearman$, $\PboShapAnatomyTotal$ anatomical/photometric Shapley share) with regionally invariant 106-landmark facial beauty drivers ($r=\PboFaceWorldCorrW/\PboFaceWorldCorrM$), yet leaves $\PboIrreducibleGapFiveHundred$--$\PboIrreducibleGapAll$ of infinite-voter consensus unexplained. Meanwhile, childless ``Want children'' flips by midlife across five countries while female commitment stays higher, and $\VgMarrShare\%$ of recent U.S.\ young-adult birth decline sits in non-marriage.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Human brain evolution, paleoclimate, Mid-Pleistocene Transition, mate choice, general intelligence, facial attribution, stature, digital platforms, fertility, AI evaluation.
+\end{IEEEkeywords}
+
+\input{performance-v9-results.tex}
+
+\section*{Acknowledgments and Data Availability}
+{\small\noindent No external funding was received, and the authors declare no competing financial interests. Reproducible CPU analysis scripts, deterministic Monte Carlo simulations, SHA-256 reference manifests, and figure generators are maintained in the project repository (\nolinkurl{scripts/run.py}, \nolinkurl{scripts/validate.py}, and \nolinkurl{scripts/paper.py} with \texttt{--study performance-before-outcomes}). Open datasets analyzed include the public-domain Lisiecki \& Raymo \texttt{LR04} benthic $\delta^{18}\mathrm{O}$ stack~\cite{lisiecki2005}, the Gingerich~\cite{gingerich2022}, Will et al.~\cite{will2021}, and Du et al.~\cite{du2018} hominin endocranial compilations, the Columbia speed-dating dataset~\cite{fisman2006}, \texttt{D-PLACE} releases of the Standard Cross-Cultural Sample, Ethnographic Atlas, and Binford hunter-gatherer files~\cite{kirby2016,murdock1969,binford2001}, Australian mate-choice microdata~\cite{whyte2021}, 53-country mate-allocation budgets~\cite{kowal2025}, cross-national survey archives~\cite{walter2020}, stature/strength meta-analytic tables~\cite{lidborg2022}, MHC meta-analytic summaries~\cite{havlicek2020,winternitz2017}, and the General Social Survey cumulative release (1972--2024)~\cite{gss2024}. Platform statistical aggregates enforce cell suppression ($n\ge\PboMinCell$) and super-resolved facial composites average $n\ge 75$ aligned portraits per cell with zero individual-image disclosure. Large-language-model tooling assisted code refactoring, literature auditing, and manuscript typesetting; every equation, simulation, and empirical table was verified programmatically against primary source files.\par}
+
+\IEEEtriggeratref{62}
+{\footnotesize\setlength{\bibsep}{0.5pt plus 0.3pt}%
+\input{performance-references.tex}}
+
+\begin{IEEEbiographynophoto}{Jepson Taylor}
+is chief executive and chief technology officer of VEOX Inc., which builds AI systems that generate algorithms and optimizers on demand. He was chief AI strategist at DataRobot and at Dataiku, co-founded Zeff.ai, a deep-learning company acquired by DataRobot in 2020, and earlier led data science at HireVue, where his work contributed to fourteen patents. He began in semiconductor manufacturing at Intel and Micron and in quantitative finance. He teaches an executive course on AI at New York University and is the author of \emph{The Last Commit}.
+\end{IEEEbiographynophoto}
+
+\begin{IEEEbiographynophoto}{Erin Beilharz}
+is a principal consultant at Lufthansa Systems and an advisor to Navon, which develops modular green data centres for the Global South. She works on AI, clean technology, and digital infrastructure, and speaks on data sovereignty, energy pragmatism, and the ethical governance of automated systems.
+\end{IEEEbiographynophoto}
+
+\clearpage
+\input{performance-appendix.tex}
+
+\end{document}
