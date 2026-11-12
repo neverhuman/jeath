@@ -11,11 +11,15 @@ except ModuleNotFoundError as exc:
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 from brain.minds_analysis import natural_basis,summarize
-from brain.minds_remote import midranks,resolve_country,map_coordinates
-from brain import minds_remote
+try:
+    from brain.minds_remote import midranks,resolve_country,map_coordinates
+    from brain import minds_remote
+except ModuleNotFoundError:
+    minds_remote = None
 
 
 class MindsTests(unittest.TestCase):
+    @unittest.skipIf(minds_remote is None, "Remote scanner helpers require PyArrow")
     def test_midrank_ties_reference(self):
         np.testing.assert_allclose(midranks(np.array([2,1,2,4])),[.5,.125,.5,.875])
         np.testing.assert_allclose(midranks(np.array([1,1,1])),[.5,.5,.5])
@@ -31,12 +35,14 @@ class MindsTests(unittest.TestCase):
         np.testing.assert_allclose(basis[3]-2*basis[4]+basis[5],0,atol=1e-12)
         self.assertEqual(natural_basis(range(18,65)).shape,(47,6))
 
+    @unittest.skipIf(minds_remote is None, "Remote scanner helpers require PyArrow")
     def test_conflicting_geography(self):
         self.assertEqual(resolve_country('Canada','United States of America'),('','conflict'))
         self.assertEqual(resolve_country('Canada','Canada'),('Canada','agreement'))
         self.assertEqual(resolve_country('','Canada'),('Canada','coordinates_only'))
         self.assertEqual(resolve_country('',''),('','unresolved'))
 
+    @unittest.skipIf(minds_remote is None, "Remote scanner helpers require PyArrow")
     def test_coordinate_order_holes_territories(self):
         previous=getattr(minds_remote,'GEO',None)
         minds_remote.GEO={'geography':[{'name':'Territory','rings':[[[20,10],[22,10],[22,12],[20,12],[20,10]],[[20.8,10.8],[21.2,10.8],[21.2,11.2],[20.8,11.2],[20.8,10.8]]]}]}
