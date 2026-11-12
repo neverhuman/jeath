@@ -2,17 +2,17 @@
 % appears here.
 \section{Limitations}\label{sec:v6limits}
 
-\para{What the zeros are.} Five quantities in this paper are zero, or near zero, by construction, and we report them as
-such:
+\para{What the zeros are.} Five quantities in this paper are fixed by construction, and we report them as such:
 \begin{itemize}
   \item complete mediation's unauthorized rate in E1, whose admission predicate is the scoring predicate;
   \item the fence's post-stop commits in E4, since the sink serializes and \texttt{fence} cancels pending records;
   \item duplicate effects, prevented by a schema uniqueness constraint;
   \item the omitted-clause gate's admissions in E5, which equal the single-clause violations of that clause by
         definition;
-  \item strict \(S\)'s native attack success in E8, since \(S\) was written knowing AgentDojo's public injections.
+  \item strict \(S\)'s refusal of AgentDojo's reference attacks in the model-free stage-0 replay, since \(S\) was
+        written knowing AgentDojo's public injections.
 \end{itemize}
-What is measured around each zero is stated where it appears: the comparators' leakage, the implementation's behaviour
+What is measured around each is stated where it appears: the comparators' leakage, the implementation's behaviour
 under the faults we injected, the size and cost of the window other layers leave, how often search finds single-clause
 violations, and what injections inside \(S\) achieve.
 

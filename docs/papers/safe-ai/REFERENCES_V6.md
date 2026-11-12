@@ -3,6 +3,11 @@
 `docs/references.tex` is Gemini-owned until PR #6 merges; apply these in the integration pass. Each addition says
 what it supports. Add only works whose claims we actually use.
 
+## Keys the v6 section drafts cite (`docs/papers/safe-ai/v6/*.tex`)
+
+Existing in `references.tex`: `agentdojo`, `controlroom`, `progent`. To add, with the entries listed below:
+`kleppmann2016` (Kleppmann, distributed locking), `greenblatt2024control` (AI Control), `bhatt2025ctrlz` (Ctrl-Z).
+
 ## Corrections
 
 | Key | Now | Fix | Checked against |

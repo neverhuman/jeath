@@ -15,7 +15,7 @@ whose latencies are exponential with mean \(w \in \{0.5, 5, 30\}\)\,s. Each call
 effect; nothing in the workload is adversarial. After a 20\,s warm-up the operator decides to stop, and the stop takes
 effect \(L \in \{0, 1, 5, 35\}\)\,s later. A trial counts the effects the sink commits after the stop took effect,
 read from the sink's own database, and the legitimate calls the stop discards (cancelled or denied). The plan, grid and
-metrics were committed before the first trial (\texttt{fixtures/v6/revokebench\_plan.json}); the \vsixEFourTrials{}
+metrics were committed before the first trial (\path{fixtures/v6/revokebench_plan.json}); the \vsixEFourTrials{}
 trials include \vsixEFourFaultTrials{} with SIGKILL of the sink or delayed completions.
 
 \para{Result.} Figure~\ref{fig:v6hero}a shows the stable cell with the longest latency (\(C = \vsixStopCalls\),
@@ -37,7 +37,7 @@ zero in the opposite currency. Every legitimate call in flight at the stop is di
 stops an agent usually wants and what an operator who meant ``pause'' does not.
 
 \para{Faults (E4b).} A SIGKILL that lands between requests tests little. In a separately predeclared run
-(\texttt{fixtures/v6/revokebench\_b\_plan.json}) we kill the sink while a \texttt{complete} or a \texttt{fence} request is
+(\path{fixtures/v6/revokebench_b_plan.json}) we kill the sink while a \texttt{complete} or a \texttt{fence} request is
 outstanding, hold the executor's \texttt{accept} across the fence, and drive the system with closed-loop agents that
 wait for each result. \vsixEFourBSentence
 

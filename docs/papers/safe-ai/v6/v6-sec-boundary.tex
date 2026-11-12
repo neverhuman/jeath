@@ -34,21 +34,20 @@ as such. Each surface is probed for three primitives:
 Each primitive has pass conditions that include a non-vacuity check: the surface, not the writer, must have refused at
 least one stale write, and a current-epoch write after the fence must still commit.
 
-E6's P2 probe raced a stream of stale writers against the fence and exposed a failure we had not anticipated. In
+E6's P2 probe raced a stream of stale writers against the fence, which exposed a mechanism we had not anticipated. In
 PostgreSQL, new \texttt{FOR SHARE} lockers join an existing share lock while the fence's \texttt{FOR UPDATE} waits, so a
-continuing stream of stale writers starves the raise. Every stale write committed before the fence did, which is safe
-(no stale effect was ordered after it) but vacuous. The planned outcome is therefore reported as a failure. The
-filesystem's \texttt{flock} showed the same pattern.
+continuing stream of stale writers can starve the raise. \vsixESixPgSentence{} \vsixESixPgFairSentence{}
+\vsixESixFsSentence
 
-E6b, predeclared separately (\texttt{fixtures/v6/fenceability\_b\_plan.json}), adds a deterministic post-fence
+E6b, predeclared separately (\path{fixtures/v6/fenceability_b_plan.json}), adds a deterministic post-fence
 old-epoch write to every surface and repeats the starvation race \vsixESixBStarvationN{} times with intervals.
 \vsixESixBSentence{} Table~\ref{tab:v6fence} lists each surface's enforcement class first and its primitive outcomes
 after.
 
 \input{generated/v6-e6-table.tex}
 
-\para{Reading.} Fenceability is a property of the effect surface, not of the agent framework. Several common surfaces
-offer it only as a writer-supplied condition, which protects against a stale but honest writer and not against one
+\para{Reading.} Fenceability is a property of the effect surface, not of the agent framework. Some surfaces offer it
+only as a writer-supplied condition (Table~\ref{tab:v6fence}), which protects against a stale but honest writer and not against one
 that omits the condition. An operator who needs ``stop'' to reach work already dispatched must either route effects
 through a surface that enforces the epoch itself or place a mediating sink in front of one that does not. The starvation
 result adds an operational point: a fence that is correct can still be slow to take effect under exactly the load it is
@@ -57,8 +56,8 @@ meant to stop. Its latency belongs in the stop budget of Section~\ref{sec:v6stop
 \subsection{What the specification does not name}
 
 Section~\ref{sec:v6reviewers} showed that removing one clause of a gate admits exactly the violations that break only
-that clause, and Section~\ref{sec:v6cost} showed injections inside a written specification succeeding at the rate of an
-unprotected agent. Neither is a defect that more verification would remove. The kernel's proofs establish that the
+that clause, and Section~\ref{sec:v6cost} measured what injections that stay inside a written specification achieve.
+Neither is a defect that more verification would remove. The kernel's proofs establish that the
 implementation enforces its predicate; they cannot establish that the predicate is the one the operator meant. What
 mediation buys is relocation of the error, from a learned judgement that an adversary probes by search to a written
 artefact that a person can read, diff, test against adversarial suites, and amend. We regard that relocation, not the
