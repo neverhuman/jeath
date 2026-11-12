@@ -120,18 +120,21 @@ or oracle-advantaged, and rebuild the front of the paper on measured evidence.
 10. Drop the grand pool and Ville from the abstract, hero and KPI table. Keep predeclared results primary and
     label everything else exploratory.
 
-## 4. New evidence being produced in lane `cc/iina-tier1` (CPU $0, plus idle GPU or xbabe4 only)
+## 4. New evidence in lane `cc/iina-tier1` (CPU only, $0; xbabe2 harness, xbabe4 CPU inference)
 
-- **E5:** omitted-clause gate arm on best-of-K candidates (conversion thesis).
-- **E4:** RevokeBench on real processes and wall clock: halt inference vs revoke broker vs fence sink, with
-  `kill -9` mid-transaction and real partitions.
-- **E1:** powered predeclared replication at N=128 per checkpoint, analysed by the unchanged frozen
-  `campaign_analysis.py`.
-- **E8:** AgentDojo with non-oracle permissions and native graders (the cost of authority).
-- **E2:** open-weight capability axis on xbabe4.
-- **E6:** executable fenceability probes.
+Every design below was committed before its data (`fixtures/v6/*`; the commit times are authoritative, see
+`fixtures/v6/TIMESTAMPS_ERRATA.md`). Every run has its own validator, which checks integrity and asserts no outcome.
+Validated runs are promoted as JSON to `evidence/v6/reference/` (`scripts/promote_v6.py`) and re-checked by
+`scripts/validate_v6.py`.
 
-Outputs go to `target/runs/*` until the post-merge integration pass promotes them to `evidence/v6/reference/`.
+| | Design | Status | What it settles |
+|---|---|---|---|
+| **E4** RevokeBench | `revokebench_plan.json` (`bfd15f2`) | **done**: 252 trials, 0 validator problems, promoted | Stop ≠ revoke ≠ fence, measured on real broker/sink processes and wall-clock time. Fence: 0 post-enforcement commits in all 84 fence trials, 12 of them with SIGKILL of the sink or late completions; 0 duplicates. With 32 concurrent calls, 5 s latency and instant enforcement, halting lets 13–15 effects commit and broker revocation 7–10 (at 30 s latency, 31–36 and 30–32, the last one 137 s after the stop). The fence's cost is the legitimate in-flight work it cancels. The 0 is the design, so the experiment tests the implementation; what it measures is the other arms' window and the fence's cost. |
+| **E6** fenceability | `fenceability_plan.json` (+2 amendments made after development runs) | **done**, promoted | **Negative result:** a row-lock PostgreSQL fence is starved by a continuing stream of stale writers (440 commits during a 2.9 s fence wait, 0 refused), while a table-lock variant passes. POSIX locks are advisory only. The etcd compare holds only if the writer includes it. Corrects `api_fenceability_census.py` lines 48, 68 and 128–132. |
+| **E5** omitted clause | `omitted_clause_plan.json` (+3 amendments before data) | running (xbabe4) | Reviewer (R0/R1/R2) vs verified gate vs gate-minus-one-clause, by attack family, with false blocks for every arm. |
+| **E8** AgentDojo without the oracle | `agentdojo_fair_plan.json` (`c22b2c1`) | stage 0 done, live run in progress | Model-free: strict provenance admits 25/37 legitimate reference solutions and 0/249 attack references; delegated trust in sources the user names admits 30/37 and 48/249; the oracle grant 37/37 and 0/249. The cost of authority is specification granularity, and delegation readmits exactly the injections sitting in the delegated sources. |
+| **E1** N=128 | `e1_powered_replication.json` (`329eb73`) | running (xbabe2) | The predeclared confirmatory test, analysed by the unchanged frozen `campaign_analysis.py`. |
+| **E2** capability axis | `e2_capability_plan.json` (`f2c0a19`) | models verified; queued after E5/E8 | E8 unchanged on Qwen3-4B, Granite-3.3-8B (another family at the same size) and Qwen3-14B. |
 
 ## 5. Proposed front figure (post-merge)
 

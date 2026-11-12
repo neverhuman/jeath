@@ -21,22 +21,38 @@ def sha(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
+def load_trials(run: Path, res: dict):
+    """Raw run directory (trials/<id>/trial.json + sink.sqlite) or promoted evidence (trials.jsonl with sink effect ids)."""
+    if (run / "trials.jsonl").exists():
+        recs = {}
+        for line in (run / "trials.jsonl").read_text().splitlines():
+            r = json.loads(line)
+            recs[r["config"]["trial_id"]] = r
+        for row in res["trials"]:
+            r = recs[row["config"]["trial_id"]]
+            yield row, r, r["sink_effect_ids"]
+        return
+    for row in res["trials"]:
+        d = run / "trials" / row["config"]["trial_id"]
+        tr = json.loads((d / "trial.json").read_text())
+        with sqlite3.connect(f"file:{d / 'sink.sqlite'}?mode=ro", uri=True) as c:
+            ids = [json.loads(r[0])["proposal"]["id"] for r in c.execute("SELECT payload FROM effects ORDER BY sequence")]
+        yield row, tr, ids
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("run", type=Path)
+    ap.add_argument("run", type=Path, help="raw run directory or promoted evidence directory")
     args = ap.parse_args()
     res = json.loads((args.run / "results.json").read_text())
     problems, findings = [], []
     if res["plan_sha256"] != sha(ROOT / "fixtures/v6/revokebench_plan.json"):
         problems.append("plan hash mismatch")
-    for row in res["trials"]:
+    for row, tr, sink_ids in load_trials(args.run, res):
         tid = row["config"]["trial_id"]
-        d = args.run / "trials" / tid
-        tr = json.loads((d / "trial.json").read_text())
         if tr["metrics"] != row["metrics"] or tr["config"] != row["config"]:
             problems.append(f"{tid}: results.json differs from trial.json")
-        with sqlite3.connect(f"file:{d / 'sink.sqlite'}?mode=ro", uri=True) as c:
-            rows = [json.loads(r[0]) for r in c.execute("SELECT payload FROM effects ORDER BY sequence")]
+        rows = [{"proposal": {"id": i}} for i in sink_ids]
         ev = tr["events"]
         committed = [e for e in ev if e["kind"] == "completed" and e["status"] == "committed"]
         accept_committed = [e for e in ev if e["kind"] == "accept_refused" and e.get("status") == "committed"]
