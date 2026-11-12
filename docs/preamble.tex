@@ -15,7 +15,7 @@
 \usepackage{microtype,enumitem,xcolor,tikz,pgfplots,titlesec,fancyhdr,stfloats}
 \usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,shapes.geometric}
 \usepgfplotslibrary{groupplots}
-\pgfplotsset{compat=1.18}
+\pgfplotsset{compat=1.18,axis x line*=bottom,axis y line*=left,major grid style={draw=black!10}}
 \usepackage[font=small,labelfont=bf,skip=4pt]{caption}
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage{xurl}\urlstyle{same}
@@ -26,9 +26,14 @@
 \definecolor{notred}{HTML}{B3261E}
 \definecolor{slate}{HTML}{52606D}
 \definecolor{pale}{HTML}{F2F6F8}
+\definecolor{exoblue}{HTML}{0072B2}
+\definecolor{endored}{HTML}{D55E00}
+\definecolor{safegreen}{HTML}{009E73}
+\definecolor{warnamber}{HTML}{E69F00}
+\definecolor{structgray}{HTML}{4D4D4D}
 \usepackage[colorlinks=true,linkcolor=ink,citecolor=teal,urlcolor=ink]{hyperref}
 \hypersetup{
-  pdftitle={Intelligence Is Not Authority: Verified Policy Decisions, Revocable Agent Authority, and Structural Bounds on Reach},
+  pdftitle={Intelligence Is Not Authority: Verified Exogenous Authority, Optimization-Invariant Sink Mediation, and Structural Bounds on Reach},
   pdfauthor={Jepson Taylor}
 }
 \titleformat{\section}{\large\bfseries\color{ink}\raggedright\hyphenpenalty=10000}{\thesection}{.5em}{}
@@ -48,7 +53,7 @@
 \setlength{\dbltextfloatsep}{8pt plus 2pt minus 2pt}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\footnotesize\color{ink}Intelligence Is {\color{notred}Not} Authority}
-\fancyhead[R]{\footnotesize\color{slate}Taylor \textperiodcentered\ 10 November 2026}
+\fancyhead[R]{\footnotesize\color{slate}Taylor \textperiodcentered\ 12 November 2026}
 \fancyfoot[C]{\small\thepage}
 \setlength{\headheight}{13.6pt}
 \renewcommand{\headrulewidth}{.3pt}

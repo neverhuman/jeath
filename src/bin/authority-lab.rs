@@ -3,7 +3,8 @@ use authority_lab::{
     runtime::{Executor, Phase, Request},
     runtime_experiments::{self, write_json},
     selection, stats, v3_core_models, v3_coverage, v3_graphs, v3_monitors, v3_selection,
-    v4_neural_rl, v4_real_graphs,
+    v4_neural_rl, v4_real_graphs, v5_e2e_crypto_cluster, v5_statistical_spine,
+    v5_superintelligence,
 };
 use std::{fs, path::Path, time::Instant};
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
@@ -76,6 +77,12 @@ fn run() -> Result<()> {
                     "sink"
                 },
             )?;
+        }
+        "sink-v5-shard" => {
+            if args.len() != 3 {
+                return Err(usage.into());
+            }
+            v5_e2e_crypto_cluster::serve_v5_shard_stdio(Path::new(arg(1)?), arg(2)?.parse()?)?;
         }
         "campaigns" => {
             if args.len() != 3 {
@@ -266,6 +273,18 @@ fn run() -> Result<()> {
             write_json(
                 &output.join("crypto_and_jepsen.json"),
                 &distributed_sinks::crypto_and_jepsen_suite(seed, quick),
+            )?;
+            write_json(
+                &output.join("superintelligence_scaling.json"),
+                &v5_superintelligence::superintelligence_scaling_suite(seed, quick),
+            )?;
+            write_json(
+                &output.join("e2e_crypto_cluster.json"),
+                &v5_e2e_crypto_cluster::e2e_crypto_cluster_suite(output, seed, quick)?,
+            )?;
+            write_json(
+                &output.join("statistical_certificates.json"),
+                &v5_statistical_spine::default_statistical_certificates_suite()?,
             )?;
             write_json(
                 &output.join("complete.json"),

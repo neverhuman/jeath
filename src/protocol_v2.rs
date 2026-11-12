@@ -201,7 +201,13 @@ impl DispatchedPermit {
     pub fn to_exec_wire_for_issuers(&self, issuers: usize) -> Result<policy_core::ExecPermitWire> {
         let mut wire = self.base_permit().to_exec_wire();
         wire.required = self.effective_required(issuers)?;
-        Ok(wire)
+        let encoded = policy_core::encode_permit_canonical(&wire);
+        let decoded = policy_core::decode_permit_canonical(&encoded)
+            .ok_or("canonical permit wire roundtrip failed")?;
+        if decoded != wire {
+            return Err("canonical permit wire bijection mismatch".into());
+        }
+        Ok(decoded)
     }
     pub fn effective_required(&self, issuers: usize) -> Result<Vec<bool>> {
         let base = self.proposal.effect.required_for(issuers);

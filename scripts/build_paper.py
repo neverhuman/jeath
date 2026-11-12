@@ -117,13 +117,27 @@ def safe_ai():
     ):
         raise SystemExit("Font substitution warning detected: inspect target/paper-build/intelligence-is-not-authority.log")
     overfull = [float(m.group(1)) for m in re.finditer(r"Overfull \\hbox \(([0-9.]+)pt too wide\)", log)]
-    severe = [w for w in overfull if w > 5.0]
+    severe = [w for w in overfull if w > 2.0]
     if severe:
         raise SystemExit(
-            f"Severe Overfull \\hbox > 5.0pt (max {max(severe):.2f}pt across {len(severe)} box(es)): inspect target/paper-build/intelligence-is-not-authority.log"
+            f"Severe Overfull \\hbox > 2.0pt (max {max(severe):.2f}pt across {len(severe)} box(es)): inspect target/paper-build/intelligence-is-not-authority.log"
+        )
+    aux_text = (output / "intelligence-is-not-authority.aux").read_text(errors="replace")
+    bibcite = {m.group(1): int(m.group(2)) for m in re.finditer(r"\\bibcite\{([^}]+)\}\{(\d+)\}", aux_text)}
+    seen_cites = []
+    for m in re.finditer(r"\\citation\{([^}]+)\}", aux_text):
+        for k in m.group(1).split(","):
+            k = k.strip()
+            if k and k not in seen_cites:
+                seen_cites.append(k)
+    cite_nums = [bibcite[k] for k in seen_cites if k in bibcite]
+    if cite_nums != list(range(1, len(cite_nums) + 1)):
+        bad = [(k, bibcite[k], idx + 1) for idx, k in enumerate(seen_cites) if k in bibcite and bibcite[k] != idx + 1]
+        raise SystemExit(
+            f"Citations out of sequential [1]-[N] order (key, assigned_num, expected_num): {bad[:8]}"
         )
     shutil.copy2(pdf, ROOT / "docs/intelligence-is-not-authority.pdf")
-    print("built docs/intelligence-is-not-authority.pdf; all citations, references, fonts, and hboxes verified")
+    print("built docs/intelligence-is-not-authority.pdf; all citations [1..N], references, fonts, and hboxes verified")
 
 
 if __name__ == "__main__":

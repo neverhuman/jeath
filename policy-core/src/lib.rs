@@ -1,7 +1,12 @@
 //! Deterministic executable decisions. Parsing, durable snapshots, identity and
 //! normalized-effect construction are caller obligations, not verified here.
 // Keep the verification interface flat and use Verus's Vec view specifications.
-#![allow(clippy::ptr_arg, clippy::too_many_arguments)]
+#![allow(
+    clippy::ptr_arg,
+    clippy::too_many_arguments,
+    clippy::question_mark,
+    clippy::len_zero
+)]
 use vstd::prelude::*;
 
 verus! {
@@ -5237,6 +5242,1866 @@ pub proof fn authority_post_fence_exclusion(
     }
 }
 
+// ============================================================================
+// V5 Pillar A: Verified Canonical Wire Decoder & Non-Malleable Bijection
+// ============================================================================
+
+#[verifier::opaque]
+pub open spec fn le_bytes_to_u64_spec(b: Seq<u8>) -> u64
+    recommends
+        b.len() == 8,
+{
+    ((b[0] as u64)
+        + 256u64
+            * ((b[1] as u64)
+                + 256u64
+                    * ((b[2] as u64)
+                        + 256u64
+                            * ((b[3] as u64)
+                                + 256u64
+                                    * ((b[4] as u64)
+                                        + 256u64
+                                            * ((b[5] as u64)
+                                                + 256u64
+                                                    * ((b[6] as u64)
+                                                        + 256u64 * (b[7] as u64)))))))) as u64
+}
+
+pub proof fn lemma_u64_le_roundtrip(x: u64)
+    ensures
+        u64_le_bytes_spec(x).len() == 8,
+        le_bytes_to_u64_spec(u64_le_bytes_spec(x)) == x,
+{
+    reveal(u64_le_bytes_spec);
+    reveal(le_bytes_to_u64_spec);
+}
+
+pub proof fn lemma_le_bytes_u64_canonical(
+    b0: u8,
+    b1: u8,
+    b2: u8,
+    b3: u8,
+    b4: u8,
+    b5: u8,
+    b6: u8,
+    b7: u8,
+)
+    ensures
+        (b0 as nat)
+            + 256nat
+                * ((b1 as nat)
+                    + 256nat
+                        * ((b2 as nat)
+                            + 256nat
+                                * ((b3 as nat)
+                                    + 256nat
+                                        * ((b4 as nat)
+                                            + 256nat
+                                                * ((b5 as nat)
+                                                    + 256nat
+                                                        * ((b6 as nat)
+                                                            + 256nat * (b7 as nat)))))))
+            <= u64::MAX as nat,
+        ({
+            let x = ((b0 as u64)
+                + 256u64
+                    * ((b1 as u64)
+                        + 256u64
+                            * ((b2 as u64)
+                                + 256u64
+                                    * ((b3 as u64)
+                                        + 256u64
+                                            * ((b4 as u64)
+                                                + 256u64
+                                                    * ((b5 as u64)
+                                                        + 256u64
+                                                            * ((b6 as u64)
+                                                                + 256u64 * (b7 as u64))))))))
+                as u64;
+            u64_le_bytes_spec(x) == seq![b0, b1, b2, b3, b4, b5, b6, b7]
+                && le_bytes_to_u64_spec(seq![b0, b1, b2, b3, b4, b5, b6, b7]) == x
+        }),
+{
+    reveal(u64_le_bytes_spec);
+    reveal(le_bytes_to_u64_spec);
+    let n7: nat = b7 as nat;
+    let n6: nat = (b6 as nat) + 256nat * n7;
+    let n5: nat = (b5 as nat) + 256nat * n6;
+    let n4: nat = (b4 as nat) + 256nat * n5;
+    let n3: nat = (b3 as nat) + 256nat * n4;
+    let n2: nat = (b2 as nat) + 256nat * n3;
+    let n1: nat = (b1 as nat) + 256nat * n2;
+    let n0: nat = (b0 as nat) + 256nat * n1;
+    assert(n7 <= 255);
+    assert(n6 <= 65535);
+    assert(n5 <= 16777215);
+    assert(n4 <= 4294967295);
+    assert(n3 <= 1099511627775);
+    assert(n2 <= 281474976710655);
+    assert(n1 <= 72057594037927935);
+    assert(n0 <= 18446744073709551615);
+    let x: u64 = n0 as u64;
+    assert(x % 256 == b0 as u64);
+    assert(x / 256 == n1 as u64);
+    let x1 = x / 256;
+    assert(x1 % 256 == b1 as u64);
+    assert(x1 / 256 == n2 as u64);
+    let x2 = x1 / 256;
+    assert(x2 % 256 == b2 as u64);
+    assert(x2 / 256 == n3 as u64);
+    let x3 = x2 / 256;
+    assert(x3 % 256 == b3 as u64);
+    assert(x3 / 256 == n4 as u64);
+    let x4 = x3 / 256;
+    assert(x4 % 256 == b4 as u64);
+    assert(x4 / 256 == n5 as u64);
+    let x5 = x4 / 256;
+    assert(x5 % 256 == b5 as u64);
+    assert(x5 / 256 == n6 as u64);
+    let x6 = x5 / 256;
+    assert(x6 % 256 == b6 as u64);
+    assert(x6 / 256 == n7 as u64);
+    let x7 = x6 / 256;
+    assert(x7 % 256 == b7 as u64);
+    assert(u64_le_bytes_spec(x) =~= seq![b0, b1, b2, b3, b4, b5, b6, b7]);
+}
+
+pub open spec fn spec_read_u64_le(s: Seq<u8>, pos: int) -> Option<(u64, int)> {
+    if 0 <= pos && s.len() - pos >= 8 {
+        Some((le_bytes_to_u64_spec(s.subrange(pos, pos + 8)), pos + 8))
+    } else {
+        None
+    }
+}
+
+pub open spec fn spec_read_tag(s: Seq<u8>, pos: int, expected_tag: u64) -> Option<int> {
+    match spec_read_u64_le(s, pos) {
+        Some((tag, p1)) => {
+            if tag == expected_tag {
+                Some(p1)
+            } else {
+                None
+            }
+        }
+        None => None,
+    }
+}
+
+pub open spec fn spec_read_u8_framed(
+    s: Seq<u8>,
+    pos: int,
+    expected_tag: u64,
+) -> Option<(u8, int)> {
+    match spec_read_tag(s, pos, expected_tag) {
+        Some(p1) => {
+            if s.len() - p1 >= 1 {
+                Some((s[p1], p1 + 1))
+            } else {
+                None
+            }
+        }
+        None => None,
+    }
+}
+
+pub open spec fn spec_read_u64_framed(
+    s: Seq<u8>,
+    pos: int,
+    expected_tag: u64,
+) -> Option<(u64, int)> {
+    match spec_read_tag(s, pos, expected_tag) {
+        Some(p1) => spec_read_u64_le(s, p1),
+        None => None,
+    }
+}
+
+pub open spec fn spec_read_bytes_framed(
+    s: Seq<u8>,
+    pos: int,
+    expected_tag: u64,
+) -> Option<(Seq<u8>, int)> {
+    match spec_read_tag(s, pos, expected_tag) {
+        Some(p1) => match spec_read_u64_le(s, p1) {
+            Some((n, p2)) => {
+                if (n as int) <= s.len() - p2 {
+                    Some((s.subrange(p2, p2 + n as int), p2 + n as int))
+                } else {
+                    None
+                }
+            }
+            None => None,
+        },
+        None => None,
+    }
+}
+
+pub open spec fn spec_decode_u64_elems(s: Seq<u8>, pos: int, count: nat) -> Seq<u64>
+    decreases count,
+{
+    if count == 0 {
+        Seq::empty()
+    } else {
+        let prev = (count - 1) as nat;
+        spec_decode_u64_elems(s, pos, prev).push(le_bytes_to_u64_spec(
+            s.subrange(pos + 8 * (prev as int), pos + 8 * (count as int)),
+        ))
+    }
+}
+
+pub open spec fn spec_read_u64_seq_framed(
+    s: Seq<u8>,
+    pos: int,
+    expected_tag: u64,
+) -> Option<(Seq<u64>, int)> {
+    match spec_read_tag(s, pos, expected_tag) {
+        Some(p1) => match spec_read_u64_le(s, p1) {
+            Some((n, p2)) => {
+                if 8 * (n as int) <= s.len() - p2 {
+                    Some((
+                        spec_decode_u64_elems(s, p2, n as nat),
+                        p2 + 8 * (n as int),
+                    ))
+                } else {
+                    None
+                }
+            }
+            None => None,
+        },
+        None => None,
+    }
+}
+
+pub open spec fn spec_decode_bool_elems(s: Seq<u8>, pos: int, count: nat) -> Option<Seq<bool>>
+    decreases count,
+{
+    if count == 0 {
+        Some(Seq::empty())
+    } else {
+        let prev = (count - 1) as nat;
+        match spec_decode_bool_elems(s, pos, prev) {
+            Some(prefix) => {
+                let raw = s[pos + (prev as int)];
+                if raw <= 1u8 {
+                    Some(prefix.push(raw == 1u8))
+                } else {
+                    None
+                }
+            }
+            None => None,
+        }
+    }
+}
+
+pub open spec fn spec_read_bool_seq_framed(
+    s: Seq<u8>,
+    pos: int,
+    expected_tag: u64,
+) -> Option<(Seq<bool>, int)> {
+    match spec_read_tag(s, pos, expected_tag) {
+        Some(p1) => match spec_read_u64_le(s, p1) {
+            Some((n, p2)) => {
+                if (n as int) <= s.len() - p2 {
+                    match spec_decode_bool_elems(s, p2, n as nat) {
+                        Some(bs) => Some((bs, p2 + n as int)),
+                        None => None,
+                    }
+                } else {
+                    None
+                }
+            }
+            None => None,
+        },
+        None => None,
+    }
+}
+
+pub open spec fn spec_decode_permit(s: Seq<u8>) -> Option<SpecPermitWire> {
+    match spec_read_tag(s, 0, WIRE_TAG_PERMIT_V1) {
+        None => None,
+        Some(pos0) => match spec_read_bytes_framed(s, pos0, WIRE_TAG_ID) {
+            None => None,
+            Some((id, pos1)) => match spec_read_bytes_framed(s, pos1, WIRE_TAG_ACTOR) {
+                None => None,
+                Some((actor, pos2)) => match spec_read_u8_framed(s, pos2, WIRE_TAG_EFFECT_KIND) {
+                    None => None,
+                    Some((effect_kind, pos3)) => {
+                        match spec_read_u64_framed(s, pos3, WIRE_TAG_AMOUNT) {
+                            None => None,
+                            Some((amount, pos4)) => {
+                                match spec_read_u64_framed(s, pos4, WIRE_TAG_EXPIRES) {
+                                    None => None,
+                                    Some((expires, pos5)) => match spec_read_u64_framed(
+                                        s,
+                                        pos5,
+                                        WIRE_TAG_EXPECTED_REV,
+                                    ) {
+                                        None => None,
+                                        Some((expected_rev, pos6)) => {
+                                            match spec_read_bytes_framed(s, pos6, WIRE_TAG_TARGET) {
+                                                None => None,
+                                                Some((target, pos7)) => {
+                                                    match spec_read_bytes_framed(
+                                                        s,
+                                                        pos7,
+                                                        WIRE_TAG_CONTENTS,
+                                                    ) {
+                                                        None => None,
+                                                        Some((contents, pos8)) => {
+                                                            match spec_read_u64_seq_framed(
+                                                                s,
+                                                                pos8,
+                                                                WIRE_TAG_EPOCHS,
+                                                            ) {
+                                                                None => None,
+                                                                Some((epochs, pos9)) => {
+                                                                    match spec_read_bool_seq_framed(
+                                                                        s,
+                                                                        pos9,
+                                                                        WIRE_TAG_REQUIRED,
+                                                                    ) {
+                                                                        None => None,
+                                                                        Some((required, pos10)) => {
+                                                                            if pos10 == s.len()
+                                                                                && epochs.len()
+                                                                                    == required
+                                                                                        .len()
+                                                                            {
+                                                                                Some(
+                                                                                    SpecPermitWire {
+                                                                                        id,
+                                                                                        actor,
+                                                                                        effect_kind,
+                                                                                        amount,
+                                                                                        expires,
+                                                                                        expected_rev,
+                                                                                        target,
+                                                                                        contents,
+                                                                                        epochs,
+                                                                                        required,
+                                                                                    },
+                                                                                )
+                                                                            } else {
+                                                                                None
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                }
+                            }
+                        }
+                    }
+                },
+            },
+        },
+    }
+}
+
+proof fn lemma_spec_read_u64_le_sound(s: Seq<u8>, pos: int)
+    requires
+        spec_read_u64_le(s, pos) is Some,
+    ensures
+        ({
+            let (val, next_pos) = spec_read_u64_le(s, pos).unwrap();
+            0 <= pos && next_pos == pos + 8 && next_pos <= s.len()
+                && s.subrange(pos, next_pos) == u64_le_bytes_spec(val)
+        }),
+{
+    let sub = s.subrange(pos, pos + 8);
+    lemma_le_bytes_u64_canonical(
+        sub[0], sub[1], sub[2], sub[3], sub[4], sub[5], sub[6], sub[7],
+    );
+    assert(sub =~= seq![sub[0], sub[1], sub[2], sub[3], sub[4], sub[5], sub[6], sub[7]]);
+}
+
+proof fn lemma_spec_read_u64_le_complete(s: Seq<u8>, pos: int, x: u64, rest: Seq<u8>)
+    requires
+        0 <= pos <= s.len(),
+        s.subrange(pos, s.len() as int) == u64_le_bytes_spec(x) + rest,
+    ensures
+        spec_read_u64_le(s, pos) == Some((x, pos + 8)),
+        s.subrange(pos + 8, s.len() as int) == rest,
+{
+    lemma_u64_le_roundtrip(x);
+    let tail = s.subrange(pos, s.len() as int);
+    assert(tail.len() >= 8);
+    assert(s.subrange(pos, pos + 8) =~= tail.subrange(0, 8));
+    assert(tail.subrange(0, 8) =~= u64_le_bytes_spec(x));
+    assert(s.subrange(pos + 8, s.len() as int) =~= tail.subrange(8, tail.len() as int));
+    assert(tail.subrange(8, tail.len() as int) =~= rest);
+}
+
+proof fn lemma_spec_read_tag_sound(s: Seq<u8>, pos: int, tag: u64)
+    requires
+        spec_read_tag(s, pos, tag) is Some,
+    ensures
+        ({
+            let p1 = spec_read_tag(s, pos, tag).unwrap();
+            0 <= pos && p1 == pos + 8 && p1 <= s.len()
+                && s.subrange(pos, p1) == u64_le_bytes_spec(tag)
+        }),
+{
+    lemma_spec_read_u64_le_sound(s, pos);
+}
+
+proof fn lemma_spec_read_tag_complete(s: Seq<u8>, pos: int, tag: u64, rest: Seq<u8>)
+    requires
+        0 <= pos <= s.len(),
+        s.subrange(pos, s.len() as int) == u64_le_bytes_spec(tag) + rest,
+    ensures
+        spec_read_tag(s, pos, tag) == Some(pos + 8),
+        s.subrange(pos + 8, s.len() as int) == rest,
+{
+    lemma_spec_read_u64_le_complete(s, pos, tag, rest);
+}
+
+proof fn lemma_spec_read_u8_framed_sound(s: Seq<u8>, pos: int, tag: u64)
+    requires
+        spec_read_u8_framed(s, pos, tag) is Some,
+    ensures
+        ({
+            let (v, np) = spec_read_u8_framed(s, pos, tag).unwrap();
+            0 <= pos && np == pos + 9 && np <= s.len()
+                && s.subrange(pos, np) == encode_u8_field_spec(tag, v)
+        }),
+{
+    lemma_spec_read_tag_sound(s, pos, tag);
+    let (v, np) = spec_read_u8_framed(s, pos, tag).unwrap();
+    assert(s.subrange(pos, np) =~= s.subrange(pos, pos + 8) + seq![v]);
+}
+
+proof fn lemma_spec_read_u8_framed_complete(
+    s: Seq<u8>,
+    pos: int,
+    tag: u64,
+    v: u8,
+    rest: Seq<u8>,
+)
+    requires
+        0 <= pos <= s.len(),
+        s.subrange(pos, s.len() as int) == encode_u8_field_spec(tag, v) + rest,
+    ensures
+        spec_read_u8_framed(s, pos, tag) == Some((v, pos + 9)),
+        s.subrange(pos + 9, s.len() as int) == rest,
+{
+    assert(encode_u8_field_spec(tag, v) + rest =~= u64_le_bytes_spec(tag) + (seq![v] + rest));
+    lemma_spec_read_tag_complete(s, pos, tag, seq![v] + rest);
+    let tail1 = s.subrange(pos + 8, s.len() as int);
+    assert(s[pos + 8] == tail1[0]);
+    assert(tail1[0] == v);
+    assert(s.subrange(pos + 9, s.len() as int) =~= tail1.subrange(1, tail1.len() as int));
+    assert(tail1.subrange(1, tail1.len() as int) =~= rest);
+}
+
+proof fn lemma_spec_read_u64_framed_sound(s: Seq<u8>, pos: int, tag: u64)
+    requires
+        spec_read_u64_framed(s, pos, tag) is Some,
+    ensures
+        ({
+            let (v, np) = spec_read_u64_framed(s, pos, tag).unwrap();
+            0 <= pos && np == pos + 16 && np <= s.len()
+                && s.subrange(pos, np) == encode_u64_field_spec(tag, v)
+        }),
+{
+    lemma_spec_read_tag_sound(s, pos, tag);
+    lemma_spec_read_u64_le_sound(s, pos + 8);
+    let (_, np) = spec_read_u64_framed(s, pos, tag).unwrap();
+    assert(s.subrange(pos, np) =~= s.subrange(pos, pos + 8) + s.subrange(pos + 8, np));
+}
+
+proof fn lemma_spec_read_u64_framed_complete(
+    s: Seq<u8>,
+    pos: int,
+    tag: u64,
+    v: u64,
+    rest: Seq<u8>,
+)
+    requires
+        0 <= pos <= s.len(),
+        s.subrange(pos, s.len() as int) == encode_u64_field_spec(tag, v) + rest,
+    ensures
+        spec_read_u64_framed(s, pos, tag) == Some((v, pos + 16)),
+        s.subrange(pos + 16, s.len() as int) == rest,
+{
+    assert(encode_u64_field_spec(tag, v) + rest
+        =~= u64_le_bytes_spec(tag) + (u64_le_bytes_spec(v) + rest));
+    lemma_spec_read_tag_complete(s, pos, tag, u64_le_bytes_spec(v) + rest);
+    lemma_spec_read_u64_le_complete(s, pos + 8, v, rest);
+}
+
+proof fn lemma_spec_read_bytes_framed_sound(s: Seq<u8>, pos: int, tag: u64)
+    requires
+        spec_read_bytes_framed(s, pos, tag) is Some,
+    ensures
+        ({
+            let (b, np) = spec_read_bytes_framed(s, pos, tag).unwrap();
+            0 <= pos && pos <= np && np <= s.len()
+                && b.len() <= u64::MAX as nat
+                && s.subrange(pos, np) == encode_bytes_fixed_spec(tag, b)
+        }),
+{
+    lemma_spec_read_tag_sound(s, pos, tag);
+    lemma_spec_read_u64_le_sound(s, pos + 8);
+    let (n, p2) = spec_read_u64_le(s, pos + 8).unwrap();
+    let (b, np) = spec_read_bytes_framed(s, pos, tag).unwrap();
+    assert(b.len() == n as nat);
+    assert(s.subrange(pos, np)
+        =~= (s.subrange(pos, pos + 8) + s.subrange(pos + 8, p2)) + s.subrange(p2, np));
+}
+
+proof fn lemma_spec_read_bytes_framed_complete(
+    s: Seq<u8>,
+    pos: int,
+    tag: u64,
+    b: Seq<u8>,
+    rest: Seq<u8>,
+)
+    requires
+        0 <= pos <= s.len(),
+        b.len() <= u64::MAX as nat,
+        s.subrange(pos, s.len() as int) == encode_bytes_fixed_spec(tag, b) + rest,
+    ensures
+        spec_read_bytes_framed(s, pos, tag) == Some((b, pos + 16 + b.len() as int)),
+        s.subrange(pos + 16 + b.len() as int, s.len() as int) == rest,
+{
+    let n: u64 = b.len() as u64;
+    assert(encode_bytes_fixed_spec(tag, b) + rest
+        =~= u64_le_bytes_spec(tag) + (u64_le_bytes_spec(n) + (b + rest)));
+    lemma_spec_read_tag_complete(s, pos, tag, u64_le_bytes_spec(n) + (b + rest));
+    lemma_spec_read_u64_le_complete(s, pos + 8, n, b + rest);
+    let p2 = pos + 16;
+    let tail2 = s.subrange(p2, s.len() as int);
+    assert(s.subrange(p2, p2 + n as int) =~= tail2.subrange(0, n as int));
+    assert(tail2.subrange(0, n as int) =~= b);
+    assert(s.subrange(p2 + n as int, s.len() as int) =~= tail2.subrange(n as int, tail2.len() as int));
+    assert(tail2.subrange(n as int, tail2.len() as int) =~= rest);
+}
+
+proof fn lemma_spec_decode_u64_elems_sound(s: Seq<u8>, pos: int, count: nat)
+    requires
+        0 <= pos,
+        pos + 8 * (count as int) <= s.len(),
+    ensures
+        spec_decode_u64_elems(s, pos, count).len() == count,
+        s.subrange(pos, pos + 8 * (count as int))
+            == encode_u64_seq_spec(spec_decode_u64_elems(s, pos, count)),
+    decreases count,
+{
+    if count == 0 {
+        assert(s.subrange(pos, pos) =~= Seq::<u8>::empty());
+    } else {
+        let prev = (count - 1) as nat;
+        lemma_spec_decode_u64_elems_sound(s, pos, prev);
+        let mid = pos + 8 * (prev as int);
+        let end = pos + 8 * (count as int);
+        lemma_spec_read_u64_le_sound(s, mid);
+        let out = spec_decode_u64_elems(s, pos, count);
+        let prev_out = spec_decode_u64_elems(s, pos, prev);
+        assert(out.drop_last() =~= prev_out);
+        assert(out.last() == le_bytes_to_u64_spec(s.subrange(mid, end)));
+        assert(s.subrange(pos, end) =~= s.subrange(pos, mid) + s.subrange(mid, end));
+    }
+}
+
+proof fn lemma_spec_decode_u64_elems_complete(s: Seq<u8>, pos: int, xs: Seq<u64>)
+    requires
+        0 <= pos,
+        pos + 8 * (xs.len() as int) <= s.len(),
+        s.subrange(pos, pos + 8 * (xs.len() as int)) == encode_u64_seq_spec(xs),
+    ensures
+        spec_decode_u64_elems(s, pos, xs.len()) == xs,
+    decreases xs.len(),
+{
+    if xs.len() == 0 {
+        assert(xs =~= Seq::<u64>::empty());
+    } else {
+        let prev = xs.drop_last();
+        encode_u64_seq_len(prev);
+        lemma_u64_le_roundtrip(xs.last());
+        let mid = pos + 8 * (prev.len() as int);
+        let end = pos + 8 * (xs.len() as int);
+        let sub = s.subrange(pos, end);
+        assert(s.subrange(pos, mid) =~= sub.subrange(0, 8 * (prev.len() as int)));
+        assert(sub.subrange(0, 8 * (prev.len() as int)) =~= encode_u64_seq_spec(prev));
+        assert(s.subrange(mid, end) =~= sub.subrange(8 * (prev.len() as int), 8 * (xs.len() as int)));
+        assert(sub.subrange(8 * (prev.len() as int), 8 * (xs.len() as int))
+            =~= u64_le_bytes_spec(xs.last()));
+        lemma_spec_decode_u64_elems_complete(s, pos, prev);
+        assert(xs =~= prev.push(xs.last()));
+    }
+}
+
+proof fn lemma_spec_read_u64_seq_framed_sound(s: Seq<u8>, pos: int, tag: u64)
+    requires
+        spec_read_u64_seq_framed(s, pos, tag) is Some,
+    ensures
+        ({
+            let (xs, np) = spec_read_u64_seq_framed(s, pos, tag).unwrap();
+            0 <= pos && pos <= np && np <= s.len()
+                && xs.len() <= u64::MAX as nat
+                && s.subrange(pos, np) == encode_u64_seq_framed_spec(tag, xs)
+        }),
+{
+    lemma_spec_read_tag_sound(s, pos, tag);
+    lemma_spec_read_u64_le_sound(s, pos + 8);
+    let (n, p2) = spec_read_u64_le(s, pos + 8).unwrap();
+    lemma_spec_decode_u64_elems_sound(s, p2, n as nat);
+    let (xs, np) = spec_read_u64_seq_framed(s, pos, tag).unwrap();
+    assert(xs.len() == n as nat);
+    assert(s.subrange(pos, np)
+        =~= (s.subrange(pos, pos + 8) + s.subrange(pos + 8, p2)) + s.subrange(p2, np));
+}
+
+proof fn lemma_spec_read_u64_seq_framed_complete(
+    s: Seq<u8>,
+    pos: int,
+    tag: u64,
+    xs: Seq<u64>,
+    rest: Seq<u8>,
+)
+    requires
+        0 <= pos <= s.len(),
+        xs.len() <= u64::MAX as nat,
+        s.subrange(pos, s.len() as int) == encode_u64_seq_framed_spec(tag, xs) + rest,
+    ensures
+        spec_read_u64_seq_framed(s, pos, tag) == Some((xs, pos + 16 + 8 * (xs.len() as int))),
+        s.subrange(pos + 16 + 8 * (xs.len() as int), s.len() as int) == rest,
+{
+    let n: u64 = xs.len() as u64;
+    encode_u64_seq_len(xs);
+    let body = encode_u64_seq_spec(xs);
+    assert(encode_u64_seq_framed_spec(tag, xs) + rest
+        =~= u64_le_bytes_spec(tag) + (u64_le_bytes_spec(n) + (body + rest)));
+    lemma_spec_read_tag_complete(s, pos, tag, u64_le_bytes_spec(n) + (body + rest));
+    lemma_spec_read_u64_le_complete(s, pos + 8, n, body + rest);
+    let p2 = pos + 16;
+    let np = p2 + 8 * (xs.len() as int);
+    let tail2 = s.subrange(p2, s.len() as int);
+    assert(s.subrange(p2, np) =~= tail2.subrange(0, 8 * (xs.len() as int)));
+    assert(tail2.subrange(0, 8 * (xs.len() as int)) =~= body);
+    lemma_spec_decode_u64_elems_complete(s, p2, xs);
+    assert(s.subrange(np, s.len() as int) =~= tail2.subrange(8 * (xs.len() as int), tail2.len() as int));
+    assert(tail2.subrange(8 * (xs.len() as int), tail2.len() as int) =~= rest);
+}
+
+proof fn lemma_spec_decode_bool_elems_sound(s: Seq<u8>, pos: int, count: nat)
+    requires
+        0 <= pos,
+        pos + (count as int) <= s.len(),
+        spec_decode_bool_elems(s, pos, count) is Some,
+    ensures
+        ({
+            let bs = spec_decode_bool_elems(s, pos, count).unwrap();
+            bs.len() == count
+                && s.subrange(pos, pos + (count as int)) == encode_bool_seq_spec(bs)
+        }),
+    decreases count,
+{
+    if count == 0 {
+        assert(s.subrange(pos, pos) =~= Seq::<u8>::empty());
+    } else {
+        let prev = (count - 1) as nat;
+        lemma_spec_decode_bool_elems_sound(s, pos, prev);
+        let bs = spec_decode_bool_elems(s, pos, count).unwrap();
+        let prev_bs = spec_decode_bool_elems(s, pos, prev).unwrap();
+        let raw = s[pos + (prev as int)];
+        assert(bs.drop_last() =~= prev_bs);
+        assert(bool_byte_spec(bs.last()) == raw);
+        assert(s.subrange(pos, pos + (count as int))
+            =~= s.subrange(pos, pos + (prev as int)).push(raw));
+    }
+}
+
+proof fn lemma_spec_decode_bool_elems_complete(s: Seq<u8>, pos: int, bs: Seq<bool>)
+    requires
+        0 <= pos,
+        pos + (bs.len() as int) <= s.len(),
+        s.subrange(pos, pos + (bs.len() as int)) == encode_bool_seq_spec(bs),
+    ensures
+        spec_decode_bool_elems(s, pos, bs.len()) == Some(bs),
+    decreases bs.len(),
+{
+    if bs.len() == 0 {
+        assert(bs =~= Seq::<bool>::empty());
+    } else {
+        let prev = bs.drop_last();
+        encode_bool_seq_len(prev);
+        let end = pos + (bs.len() as int);
+        let mid = pos + (prev.len() as int);
+        let sub = s.subrange(pos, end);
+        assert(s.subrange(pos, mid) =~= sub.subrange(0, prev.len() as int));
+        assert(sub.subrange(0, prev.len() as int) =~= encode_bool_seq_spec(prev));
+        lemma_spec_decode_bool_elems_complete(s, pos, prev);
+        assert(s[mid] == sub[prev.len() as int]);
+        assert(sub[prev.len() as int] == bool_byte_spec(bs.last()));
+        assert(bs =~= prev.push(bs.last()));
+    }
+}
+
+proof fn lemma_spec_decode_bool_elems_none(s: Seq<u8>, pos: int, bad_end: nat, total: nat)
+    requires
+        bad_end <= total,
+        spec_decode_bool_elems(s, pos, bad_end) is None,
+    ensures
+        spec_decode_bool_elems(s, pos, total) is None,
+    decreases total - bad_end,
+{
+    if bad_end < total {
+        lemma_spec_decode_bool_elems_none(s, pos, (bad_end + 1) as nat, total);
+    }
+}
+
+proof fn lemma_spec_read_bool_seq_framed_sound(s: Seq<u8>, pos: int, tag: u64)
+    requires
+        spec_read_bool_seq_framed(s, pos, tag) is Some,
+    ensures
+        ({
+            let (bs, np) = spec_read_bool_seq_framed(s, pos, tag).unwrap();
+            0 <= pos && pos <= np && np <= s.len()
+                && bs.len() <= u64::MAX as nat
+                && s.subrange(pos, np) == encode_bool_seq_framed_spec(tag, bs)
+        }),
+{
+    lemma_spec_read_tag_sound(s, pos, tag);
+    lemma_spec_read_u64_le_sound(s, pos + 8);
+    let (n, p2) = spec_read_u64_le(s, pos + 8).unwrap();
+    lemma_spec_decode_bool_elems_sound(s, p2, n as nat);
+    let (bs, np) = spec_read_bool_seq_framed(s, pos, tag).unwrap();
+    assert(bs.len() == n as nat);
+    assert(s.subrange(pos, np)
+        =~= (s.subrange(pos, pos + 8) + s.subrange(pos + 8, p2)) + s.subrange(p2, np));
+}
+
+proof fn lemma_spec_read_bool_seq_framed_complete(
+    s: Seq<u8>,
+    pos: int,
+    tag: u64,
+    bs: Seq<bool>,
+    rest: Seq<u8>,
+)
+    requires
+        0 <= pos <= s.len(),
+        bs.len() <= u64::MAX as nat,
+        s.subrange(pos, s.len() as int) == encode_bool_seq_framed_spec(tag, bs) + rest,
+    ensures
+        spec_read_bool_seq_framed(s, pos, tag) == Some((bs, pos + 16 + (bs.len() as int))),
+        s.subrange(pos + 16 + (bs.len() as int), s.len() as int) == rest,
+{
+    let n: u64 = bs.len() as u64;
+    encode_bool_seq_len(bs);
+    let body = encode_bool_seq_spec(bs);
+    assert(encode_bool_seq_framed_spec(tag, bs) + rest
+        =~= u64_le_bytes_spec(tag) + (u64_le_bytes_spec(n) + (body + rest)));
+    lemma_spec_read_tag_complete(s, pos, tag, u64_le_bytes_spec(n) + (body + rest));
+    lemma_spec_read_u64_le_complete(s, pos + 8, n, body + rest);
+    let p2 = pos + 16;
+    let np = p2 + (bs.len() as int);
+    let tail2 = s.subrange(p2, s.len() as int);
+    assert(s.subrange(p2, np) =~= tail2.subrange(0, bs.len() as int));
+    assert(tail2.subrange(0, bs.len() as int) =~= body);
+    lemma_spec_decode_bool_elems_complete(s, p2, bs);
+    assert(s.subrange(np, s.len() as int) =~= tail2.subrange(bs.len() as int, tail2.len() as int));
+    assert(tail2.subrange(bs.len() as int, tail2.len() as int) =~= rest);
+}
+
+proof fn lemma_spec_decode_permit_sound(s: Seq<u8>)
+    requires
+        spec_decode_permit(s) is Some,
+    ensures
+        ({
+            let p = spec_decode_permit(s).unwrap();
+            spec_permit_fits_u64(p)
+                && p.epochs.len() == p.required.len()
+                && encode_permit_fixed_spec(p) == s
+                && encode_permit_spec(p) == s
+        }),
+{
+    reveal(encode_permit_fixed_spec);
+    lemma_spec_read_tag_sound(s, 0, WIRE_TAG_PERMIT_V1);
+    let pos0 = spec_read_tag(s, 0, WIRE_TAG_PERMIT_V1).unwrap();
+    lemma_spec_read_bytes_framed_sound(s, pos0, WIRE_TAG_ID);
+    let (_, pos1) = spec_read_bytes_framed(s, pos0, WIRE_TAG_ID).unwrap();
+    lemma_spec_read_bytes_framed_sound(s, pos1, WIRE_TAG_ACTOR);
+    let (_, pos2) = spec_read_bytes_framed(s, pos1, WIRE_TAG_ACTOR).unwrap();
+    lemma_spec_read_u8_framed_sound(s, pos2, WIRE_TAG_EFFECT_KIND);
+    let (_, pos3) = spec_read_u8_framed(s, pos2, WIRE_TAG_EFFECT_KIND).unwrap();
+    lemma_spec_read_u64_framed_sound(s, pos3, WIRE_TAG_AMOUNT);
+    let (_, pos4) = spec_read_u64_framed(s, pos3, WIRE_TAG_AMOUNT).unwrap();
+    lemma_spec_read_u64_framed_sound(s, pos4, WIRE_TAG_EXPIRES);
+    let (_, pos5) = spec_read_u64_framed(s, pos4, WIRE_TAG_EXPIRES).unwrap();
+    lemma_spec_read_u64_framed_sound(s, pos5, WIRE_TAG_EXPECTED_REV);
+    let (_, pos6) = spec_read_u64_framed(s, pos5, WIRE_TAG_EXPECTED_REV).unwrap();
+    lemma_spec_read_bytes_framed_sound(s, pos6, WIRE_TAG_TARGET);
+    let (_, pos7) = spec_read_bytes_framed(s, pos6, WIRE_TAG_TARGET).unwrap();
+    lemma_spec_read_bytes_framed_sound(s, pos7, WIRE_TAG_CONTENTS);
+    let (_, pos8) = spec_read_bytes_framed(s, pos7, WIRE_TAG_CONTENTS).unwrap();
+    lemma_spec_read_u64_seq_framed_sound(s, pos8, WIRE_TAG_EPOCHS);
+    let (_, pos9) = spec_read_u64_seq_framed(s, pos8, WIRE_TAG_EPOCHS).unwrap();
+    lemma_spec_read_bool_seq_framed_sound(s, pos9, WIRE_TAG_REQUIRED);
+    let (_, pos10) = spec_read_bool_seq_framed(s, pos9, WIRE_TAG_REQUIRED).unwrap();
+
+    let s0 = s.subrange(0, pos0);
+    let s1 = s.subrange(pos0, pos1);
+    let s2 = s.subrange(pos1, pos2);
+    let s3 = s.subrange(pos2, pos3);
+    let s4 = s.subrange(pos3, pos4);
+    let s5 = s.subrange(pos4, pos5);
+    let s6 = s.subrange(pos5, pos6);
+    let s7 = s.subrange(pos6, pos7);
+    let s8 = s.subrange(pos7, pos8);
+    let s9 = s.subrange(pos8, pos9);
+    let s10 = s.subrange(pos9, pos10);
+
+    let t9 = s9 + s10;
+    assert(t9 =~= s.subrange(pos8, pos10));
+    let t8 = s8 + t9;
+    assert(t8 =~= s.subrange(pos7, pos10));
+    let t7 = s7 + t8;
+    assert(t7 =~= s.subrange(pos6, pos10));
+    let t6 = s6 + t7;
+    assert(t6 =~= s.subrange(pos5, pos10));
+    let t5 = s5 + t6;
+    assert(t5 =~= s.subrange(pos4, pos10));
+    let t4 = s4 + t5;
+    assert(t4 =~= s.subrange(pos3, pos10));
+    let t3 = s3 + t4;
+    assert(t3 =~= s.subrange(pos2, pos10));
+    let t2 = s2 + t3;
+    assert(t2 =~= s.subrange(pos1, pos10));
+    let t1 = s1 + t2;
+    assert(t1 =~= s.subrange(pos0, pos10));
+    let t0 = s0 + t1;
+    assert(t0 =~= s.subrange(0, pos10));
+    assert(s.subrange(0, pos10) =~= s);
+}
+
+proof fn lemma_spec_decode_permit_complete(p: SpecPermitWire)
+    requires
+        spec_permit_fits_u64(p),
+        p.epochs.len() == p.required.len(),
+    ensures
+        spec_decode_permit(encode_permit_fixed_spec(p)) == Some(p),
+{
+    reveal(encode_permit_fixed_spec);
+    let s = encode_permit_fixed_spec(p);
+    let r10 = Seq::<u8>::empty();
+    let r9 = encode_bool_seq_framed_spec(WIRE_TAG_REQUIRED, p.required);
+    assert(r9 + r10 =~= r9);
+    let r8 = encode_u64_seq_framed_spec(WIRE_TAG_EPOCHS, p.epochs) + r9;
+    let r7 = encode_bytes_fixed_spec(WIRE_TAG_CONTENTS, p.contents) + r8;
+    let r6 = encode_bytes_fixed_spec(WIRE_TAG_TARGET, p.target) + r7;
+    let r5 = encode_u64_field_spec(WIRE_TAG_EXPECTED_REV, p.expected_rev) + r6;
+    let r4 = encode_u64_field_spec(WIRE_TAG_EXPIRES, p.expires) + r5;
+    let r3 = encode_u64_field_spec(WIRE_TAG_AMOUNT, p.amount) + r4;
+    let r2 = encode_u8_field_spec(WIRE_TAG_EFFECT_KIND, p.effect_kind) + r3;
+    let r1 = encode_bytes_fixed_spec(WIRE_TAG_ACTOR, p.actor) + r2;
+    let r0 = encode_bytes_fixed_spec(WIRE_TAG_ID, p.id) + r1;
+    assert(s.subrange(0, s.len() as int) =~= u64_le_bytes_spec(WIRE_TAG_PERMIT_V1) + r0);
+
+    lemma_spec_read_tag_complete(s, 0, WIRE_TAG_PERMIT_V1, r0);
+    let pos0: int = 8;
+    lemma_spec_read_bytes_framed_complete(s, pos0, WIRE_TAG_ID, p.id, r1);
+    let pos1: int = pos0 + 16 + (p.id.len() as int);
+    lemma_spec_read_bytes_framed_complete(s, pos1, WIRE_TAG_ACTOR, p.actor, r2);
+    let pos2: int = pos1 + 16 + (p.actor.len() as int);
+    lemma_spec_read_u8_framed_complete(s, pos2, WIRE_TAG_EFFECT_KIND, p.effect_kind, r3);
+    let pos3: int = pos2 + 9;
+    lemma_spec_read_u64_framed_complete(s, pos3, WIRE_TAG_AMOUNT, p.amount, r4);
+    let pos4: int = pos3 + 16;
+    lemma_spec_read_u64_framed_complete(s, pos4, WIRE_TAG_EXPIRES, p.expires, r5);
+    let pos5: int = pos4 + 16;
+    lemma_spec_read_u64_framed_complete(s, pos5, WIRE_TAG_EXPECTED_REV, p.expected_rev, r6);
+    let pos6: int = pos5 + 16;
+    lemma_spec_read_bytes_framed_complete(s, pos6, WIRE_TAG_TARGET, p.target, r7);
+    let pos7: int = pos6 + 16 + (p.target.len() as int);
+    lemma_spec_read_bytes_framed_complete(s, pos7, WIRE_TAG_CONTENTS, p.contents, r8);
+    let pos8: int = pos7 + 16 + (p.contents.len() as int);
+    lemma_spec_read_u64_seq_framed_complete(s, pos8, WIRE_TAG_EPOCHS, p.epochs, r9);
+    let pos9: int = pos8 + 16 + 8 * (p.epochs.len() as int);
+    lemma_spec_read_bool_seq_framed_complete(s, pos9, WIRE_TAG_REQUIRED, p.required, r10);
+    let pos10: int = pos9 + 16 + (p.required.len() as int);
+    assert(s.subrange(pos10, s.len() as int).len() == 0);
+    assert(pos10 == s.len() as int);
+}
+
+fn read_u64_le_exec(bytes: &Vec<u8>, pos: usize) -> (res: Option<(u64, usize)>)
+    requires
+        pos <= bytes.len(),
+    ensures
+        match res {
+            Some((val, next_pos)) => {
+                next_pos == pos + 8
+                    && next_pos <= bytes.len()
+                    && spec_read_u64_le(bytes@, pos as int) == Some((val, next_pos as int))
+            }
+            None => spec_read_u64_le(bytes@, pos as int) is None,
+        },
+{
+    if bytes.len() - pos < 8 {
+        return None;
+    }
+    let b0 = bytes[pos];
+    let b1 = bytes[pos + 1];
+    let b2 = bytes[pos + 2];
+    let b3 = bytes[pos + 3];
+    let b4 = bytes[pos + 4];
+    let b5 = bytes[pos + 5];
+    let b6 = bytes[pos + 6];
+    let b7 = bytes[pos + 7];
+    proof {
+        lemma_le_bytes_u64_canonical(b0, b1, b2, b3, b4, b5, b6, b7);
+    }
+    let acc6: u64 = (b6 as u64) + 256u64 * (b7 as u64);
+    let acc5: u64 = (b5 as u64) + 256u64 * acc6;
+    let acc4: u64 = (b4 as u64) + 256u64 * acc5;
+    let acc3: u64 = (b3 as u64) + 256u64 * acc4;
+    let acc2: u64 = (b2 as u64) + 256u64 * acc3;
+    let acc1: u64 = (b1 as u64) + 256u64 * acc2;
+    let val: u64 = (b0 as u64) + 256u64 * acc1;
+    let next_pos = pos + 8;
+    proof {
+        assert(bytes@.subrange(pos as int, next_pos as int)
+            =~= seq![b0, b1, b2, b3, b4, b5, b6, b7]);
+    }
+    Some((val, next_pos))
+}
+
+fn read_expected_tag_exec(bytes: &Vec<u8>, pos: usize, expected_tag: u64) -> (res: Option<usize>)
+    requires
+        pos <= bytes.len(),
+    ensures
+        match res {
+            Some(np) => {
+                np <= bytes.len()
+                    && spec_read_tag(bytes@, pos as int, expected_tag) == Some(np as int)
+            }
+            None => spec_read_tag(bytes@, pos as int, expected_tag) is None,
+        },
+{
+    match read_u64_le_exec(bytes, pos) {
+        None => None,
+        Some((tag, next_pos)) => {
+            if tag == expected_tag {
+                Some(next_pos)
+            } else {
+                None
+            }
+        }
+    }
+}
+
+fn read_u8_framed_exec(
+    bytes: &Vec<u8>,
+    pos: usize,
+    expected_tag: u64,
+) -> (res: Option<(u8, usize)>)
+    requires
+        pos <= bytes.len(),
+    ensures
+        match res {
+            Some((v, np)) => {
+                np <= bytes.len()
+                    && spec_read_u8_framed(bytes@, pos as int, expected_tag)
+                        == Some((v, np as int))
+            }
+            None => spec_read_u8_framed(bytes@, pos as int, expected_tag) is None,
+        },
+{
+    let pos1 = match read_expected_tag_exec(bytes, pos, expected_tag) {
+        None => return None,
+        Some(p) => p,
+    };
+    if bytes.len() - pos1 < 1 {
+        return None;
+    }
+    Some((bytes[pos1], pos1 + 1))
+}
+
+fn read_u64_framed_exec(
+    bytes: &Vec<u8>,
+    pos: usize,
+    expected_tag: u64,
+) -> (res: Option<(u64, usize)>)
+    requires
+        pos <= bytes.len(),
+    ensures
+        match res {
+            Some((v, np)) => {
+                np <= bytes.len()
+                    && spec_read_u64_framed(bytes@, pos as int, expected_tag)
+                        == Some((v, np as int))
+            }
+            None => spec_read_u64_framed(bytes@, pos as int, expected_tag) is None,
+        },
+{
+    let pos1 = match read_expected_tag_exec(bytes, pos, expected_tag) {
+        None => return None,
+        Some(p) => p,
+    };
+    read_u64_le_exec(bytes, pos1)
+}
+
+fn read_bytes_framed_exec(
+    bytes: &Vec<u8>,
+    pos: usize,
+    expected_tag: u64,
+) -> (res: Option<(Vec<u8>, usize)>)
+    requires
+        pos <= bytes.len(),
+    ensures
+        match res {
+            Some((out, np)) => {
+                np <= bytes.len()
+                    && spec_read_bytes_framed(bytes@, pos as int, expected_tag)
+                        == Some((out@, np as int))
+            }
+            None => spec_read_bytes_framed(bytes@, pos as int, expected_tag) is None,
+        },
+{
+    let pos1 = match read_expected_tag_exec(bytes, pos, expected_tag) {
+        None => return None,
+        Some(p) => p,
+    };
+    let (len_u64, pos2) = match read_u64_le_exec(bytes, pos1) {
+        None => return None,
+        Some(pair) => pair,
+    };
+    let rem_len: usize = bytes.len() - pos2;
+    if len_u64 > (rem_len as u64) {
+        return None;
+    }
+    let n: usize = len_u64 as usize;
+    let mut out: Vec<u8> = Vec::new();
+    let mut i: usize = 0;
+    while i < n
+        invariant
+            pos2 <= bytes.len(),
+            n <= bytes.len() - pos2,
+            i <= n,
+            out@ == bytes@.subrange(pos2 as int, pos2 as int + i as int),
+        decreases n - i,
+    {
+        let byte = bytes[pos2 + i];
+        out.push(byte);
+        assert(bytes@.subrange(pos2 as int, pos2 as int + i as int + 1)
+            =~= bytes@.subrange(pos2 as int, pos2 as int + i as int).push(byte));
+        i += 1;
+    }
+    Some((out, pos2 + n))
+}
+
+fn read_u64_seq_framed_exec(
+    bytes: &Vec<u8>,
+    pos: usize,
+    expected_tag: u64,
+) -> (res: Option<(Vec<u64>, usize)>)
+    requires
+        pos <= bytes.len(),
+    ensures
+        match res {
+            Some((out, np)) => {
+                np <= bytes.len()
+                    && spec_read_u64_seq_framed(bytes@, pos as int, expected_tag)
+                        == Some((out@, np as int))
+            }
+            None => spec_read_u64_seq_framed(bytes@, pos as int, expected_tag) is None,
+        },
+{
+    let pos1 = match read_expected_tag_exec(bytes, pos, expected_tag) {
+        None => return None,
+        Some(p) => p,
+    };
+    let (len_u64, pos2) = match read_u64_le_exec(bytes, pos1) {
+        None => return None,
+        Some(pair) => pair,
+    };
+    let max_elems: usize = (bytes.len() - pos2) / 8;
+    if len_u64 > (max_elems as u64) {
+        return None;
+    }
+    let n: usize = len_u64 as usize;
+    let mut out: Vec<u64> = Vec::new();
+    let mut i: usize = 0;
+    let mut cur: usize = pos2;
+    while i < n
+        invariant
+            pos2 <= bytes.len(),
+            n <= (bytes.len() - pos2) / 8,
+            i <= n,
+            cur == pos2 + 8 * i,
+            cur <= bytes.len(),
+            out@ == spec_decode_u64_elems(bytes@, pos2 as int, i as nat),
+        decreases n - i,
+    {
+        assert(bytes.len() - cur >= 8);
+        let (v, next_cur) = read_u64_le_exec(bytes, cur).unwrap();
+        out.push(v);
+        assert(out@ =~= spec_decode_u64_elems(bytes@, pos2 as int, (i + 1) as nat));
+        cur = next_cur;
+        i += 1;
+    }
+    Some((out, cur))
+}
+
+fn read_bool_seq_framed_exec(
+    bytes: &Vec<u8>,
+    pos: usize,
+    expected_tag: u64,
+) -> (res: Option<(Vec<bool>, usize)>)
+    requires
+        pos <= bytes.len(),
+    ensures
+        match res {
+            Some((out, np)) => {
+                np <= bytes.len()
+                    && spec_read_bool_seq_framed(bytes@, pos as int, expected_tag)
+                        == Some((out@, np as int))
+            }
+            None => spec_read_bool_seq_framed(bytes@, pos as int, expected_tag) is None,
+        },
+{
+    let pos1 = match read_expected_tag_exec(bytes, pos, expected_tag) {
+        None => return None,
+        Some(p) => p,
+    };
+    let (len_u64, pos2) = match read_u64_le_exec(bytes, pos1) {
+        None => return None,
+        Some(pair) => pair,
+    };
+    let rem_len: usize = bytes.len() - pos2;
+    if len_u64 > (rem_len as u64) {
+        return None;
+    }
+    let n: usize = len_u64 as usize;
+    let mut out: Vec<bool> = Vec::new();
+    let mut i: usize = 0;
+    while i < n
+        invariant
+            pos <= bytes.len(),
+            spec_read_tag(bytes@, pos as int, expected_tag) == Some(pos1 as int),
+            spec_read_u64_le(bytes@, pos1 as int) == Some((len_u64, pos2 as int)),
+            len_u64 <= (bytes.len() - pos2) as u64,
+            n == len_u64 as usize,
+            pos2 <= bytes.len(),
+            n <= bytes.len() - pos2,
+            i <= n,
+            spec_decode_bool_elems(bytes@, pos2 as int, i as nat) == Some(out@),
+        decreases n - i,
+    {
+        let raw = bytes[pos2 + i];
+        if raw > 1u8 {
+            proof {
+                assert(spec_decode_bool_elems(bytes@, pos2 as int, (i + 1) as nat) is None);
+                lemma_spec_decode_bool_elems_none(bytes@, pos2 as int, (i + 1) as nat, n as nat);
+            }
+            return None;
+        }
+        let flag = raw == 1u8;
+        out.push(flag);
+        assert(spec_decode_bool_elems(bytes@, pos2 as int, (i + 1) as nat) == Some(out@));
+        i += 1;
+    }
+    Some((out, pos2 + n))
+}
+
+/// Total, panic-free canonical wire decoder for `ExecPermitWire`.
+/// Proves both strict canonical non-malleability (`decode(b) == Some(p) ==> encode(p) == b`)
+/// and exact roundtrip completeness (`decode(encode(p)) == Some(*p)`), ruling out
+/// Broker-Sink parser differentials across arbitrary untrusted byte slices.
+pub fn decode_permit_canonical(bytes: &Vec<u8>) -> (res: Option<ExecPermitWire>)
+    ensures
+        match res {
+            Some(out) => {
+                spec_decode_permit(bytes@) == Some(out@)
+                    && spec_permit_fits_u64(out@)
+                    && out@.epochs.len() == out@.required.len()
+                    && encode_permit_fixed_spec(out@) == bytes@
+                    && encode_permit_spec(out@) == bytes@
+            }
+            None => spec_decode_permit(bytes@) is None,
+        },
+{
+    let pos0 = match read_expected_tag_exec(bytes, 0, WIRE_TAG_PERMIT_V1) {
+        None => return None,
+        Some(p) => p,
+    };
+    let (id, pos1) = match read_bytes_framed_exec(bytes, pos0, WIRE_TAG_ID) {
+        None => return None,
+        Some(pair) => pair,
+    };
+    let (actor, pos2) = match read_bytes_framed_exec(bytes, pos1, WIRE_TAG_ACTOR) {
+        None => return None,
+        Some(pair) => pair,
+    };
+    let (effect_kind, pos3) = match read_u8_framed_exec(bytes, pos2, WIRE_TAG_EFFECT_KIND) {
+        None => return None,
+        Some(pair) => pair,
+    };
+    let (amount, pos4) = match read_u64_framed_exec(bytes, pos3, WIRE_TAG_AMOUNT) {
+        None => return None,
+        Some(pair) => pair,
+    };
+    let (expires, pos5) = match read_u64_framed_exec(bytes, pos4, WIRE_TAG_EXPIRES) {
+        None => return None,
+        Some(pair) => pair,
+    };
+    let (expected_rev, pos6) = match read_u64_framed_exec(bytes, pos5, WIRE_TAG_EXPECTED_REV) {
+        None => return None,
+        Some(pair) => pair,
+    };
+    let (target, pos7) = match read_bytes_framed_exec(bytes, pos6, WIRE_TAG_TARGET) {
+        None => return None,
+        Some(pair) => pair,
+    };
+    let (contents, pos8) = match read_bytes_framed_exec(bytes, pos7, WIRE_TAG_CONTENTS) {
+        None => return None,
+        Some(pair) => pair,
+    };
+    let (epochs, pos9) = match read_u64_seq_framed_exec(bytes, pos8, WIRE_TAG_EPOCHS) {
+        None => return None,
+        Some(pair) => pair,
+    };
+    let (required, pos10) = match read_bool_seq_framed_exec(bytes, pos9, WIRE_TAG_REQUIRED) {
+        None => return None,
+        Some(pair) => pair,
+    };
+    if pos10 != bytes.len() {
+        return None;
+    }
+    if epochs.len() != required.len() {
+        return None;
+    }
+    let decoded = ExecPermitWire {
+        id,
+        actor,
+        effect_kind,
+        amount,
+        expires,
+        expected_rev,
+        target,
+        contents,
+        epochs,
+        required,
+    };
+    proof {
+        lemma_spec_decode_permit_sound(bytes@);
+    }
+    Some(decoded)
+}
+
+/// Executable roundtrip bijection witness: encodes `p` and decodes via `decode_permit_canonical`,
+/// with Z3 statically proving `unwrap()` never panics and `out@ == p@`.
+pub fn roundtrip_permit_canonical(p: &ExecPermitWire) -> (out: ExecPermitWire)
+    requires
+        p.epochs@.len() == p.required@.len(),
+    ensures
+        out@ == p@,
+{
+    let wire = encode_permit_canonical(p);
+    proof {
+        lemma_spec_decode_permit_complete(p@);
+    }
+    let dec = decode_permit_canonical(&wire);
+    dec.unwrap()
+}
+
+/// Mechanized two-way canonical wire bijection theorem over arbitrary untrusted byte slices:
+/// `spec_decode_permit(b) == Some(p)` holds if and only if `p` is well-formed (`fits_u64` and
+/// `epochs.len() == required.len()`) and `encode_permit_fixed_spec(p) == b`.
+pub proof fn encode_decode_permit_bijection(b: Seq<u8>, p: SpecPermitWire)
+    ensures
+        (spec_decode_permit(b) == Some(p))
+            <==> (spec_permit_fits_u64(p)
+                && p.epochs.len() == p.required.len()
+                && encode_permit_fixed_spec(p) == b),
+{
+    if spec_decode_permit(b) == Some(p) {
+        lemma_spec_decode_permit_sound(b);
+    }
+    if spec_permit_fits_u64(p)
+        && p.epochs.len() == p.required.len()
+        && encode_permit_fixed_spec(p) == b
+    {
+        lemma_spec_decode_permit_complete(p);
+    }
+}
+
+// ============================================================================
+// V5 Pillar B: Arbitrary-Depth Delegation & Self-Modification Non-Escalation
+// ============================================================================
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct ExecScopeGrant {
+    pub budget: u64,
+    pub expires: u64,
+    pub op_mask: u64,
+    pub required: Vec<bool>,
+    pub issued_epochs: Vec<u64>,
+}
+
+pub struct SpecScopeGrant {
+    pub budget: u64,
+    pub expires: u64,
+    pub op_mask: u64,
+    pub required: Seq<bool>,
+    pub issued_epochs: Seq<u64>,
+}
+
+impl View for ExecScopeGrant {
+    type V = SpecScopeGrant;
+
+    open spec fn view(&self) -> SpecScopeGrant {
+        SpecScopeGrant {
+            budget: self.budget,
+            expires: self.expires,
+            op_mask: self.op_mask,
+            required: self.required@,
+            issued_epochs: self.issued_epochs@,
+        }
+    }
+}
+
+pub open spec fn bitmask_subset_spec(sub: u64, sup: u64) -> bool {
+    (sub & !sup) == 0u64
+}
+
+#[verifier::bit_vector]
+proof fn lemma_bitmask_subset_refl_trans(a: u64, b: u64, c: u64)
+    ensures
+        (a & !a) == 0u64,
+        ((b & !a) == 0u64 && (c & !b) == 0u64) ==> ((c & !a) == 0u64),
+{
+}
+
+pub open spec fn grant_wf_spec(g: SpecScopeGrant) -> bool {
+    g.required.len() == g.issued_epochs.len()
+}
+
+pub open spec fn attenuates_grant_spec(parent: SpecScopeGrant, child: SpecScopeGrant) -> bool {
+    grant_wf_spec(parent)
+        && grant_wf_spec(child)
+        && child.required.len() == parent.required.len()
+        && child.budget <= parent.budget
+        && child.expires <= parent.expires
+        && bitmask_subset_spec(child.op_mask, parent.op_mask)
+        && forall|j: int|
+            0 <= j < parent.required.len() ==> (
+                ((#[trigger] parent.required[j]) ==> child.required[j])
+                && child.issued_epochs[j] >= parent.issued_epochs[j]
+            )
+}
+
+pub open spec fn grant_live_at_spec(
+    g: SpecScopeGrant,
+    live: Seq<bool>,
+    epochs: Seq<u64>,
+    now: u64,
+) -> bool {
+    grant_wf_spec(g)
+        && g.required.len() == live.len()
+        && g.required.len() == epochs.len()
+        && now < g.expires
+        && forall|j: int|
+            0 <= j < g.required.len() ==> ((#[trigger] g.required[j]) ==> (live[j]
+                && epochs[j] == g.issued_epochs[j]))
+}
+
+pub open spec fn chain_attenuates_spec(root: SpecScopeGrant, chain: Seq<SpecScopeGrant>) -> bool
+    decreases chain.len(),
+{
+    if chain.len() == 0 {
+        grant_wf_spec(root)
+    } else if chain.len() == 1 {
+        attenuates_grant_spec(root, chain[0])
+    } else {
+        chain_attenuates_spec(root, chain.drop_last())
+            && attenuates_grant_spec(chain[chain.len() - 2], chain.last())
+    }
+}
+
+pub open spec fn chain_leaf_spec(root: SpecScopeGrant, chain: Seq<SpecScopeGrant>) -> SpecScopeGrant
+{
+    if chain.len() == 0 {
+        root
+    } else {
+        chain.last()
+    }
+}
+
+pub open spec fn chain_all_live_spec(
+    root: SpecScopeGrant,
+    chain: Seq<SpecScopeGrant>,
+    live: Seq<bool>,
+    epochs: Seq<u64>,
+    now: u64,
+) -> bool {
+    grant_live_at_spec(root, live, epochs, now)
+        && chain_attenuates_spec(root, chain)
+        && forall|k: int|
+            0 <= k < chain.len() ==> grant_live_at_spec(#[trigger] chain[k], live, epochs, now)
+}
+
+pub fn attenuates_grant_exec(parent: &ExecScopeGrant, child: &ExecScopeGrant) -> (ok: bool)
+    ensures
+        ok == attenuates_grant_spec(parent@, child@),
+{
+    if parent.required.len() != parent.issued_epochs.len()
+        || child.required.len() != child.issued_epochs.len()
+        || child.required.len() != parent.required.len()
+        || child.budget > parent.budget
+        || child.expires > parent.expires
+        || (child.op_mask & !parent.op_mask) != 0u64
+    {
+        return false;
+    }
+    let mut i: usize = 0;
+    while i < parent.required.len()
+        invariant
+            parent.required.len() == parent.issued_epochs.len(),
+            child.required.len() == child.issued_epochs.len(),
+            child.required.len() == parent.required.len(),
+            child.budget <= parent.budget,
+            child.expires <= parent.expires,
+            bitmask_subset_spec(child.op_mask, parent.op_mask),
+            i <= parent.required.len(),
+            forall|j: int|
+                0 <= j < i ==> (
+                    ((#[trigger] parent.required@[j]) ==> child.required@[j])
+                    && child.issued_epochs@[j] >= parent.issued_epochs@[j]
+                ),
+        decreases parent.required.len() - i,
+    {
+        if (parent.required[i] && !child.required[i])
+            || child.issued_epochs[i] < parent.issued_epochs[i]
+        {
+            return false;
+        }
+        i += 1;
+    }
+    true
+}
+
+pub fn grant_live_at_exec(
+    g: &ExecScopeGrant,
+    live: &Vec<bool>,
+    epochs: &Vec<u64>,
+    now: u64,
+) -> (ok: bool)
+    ensures
+        ok == grant_live_at_spec(g@, live@, epochs@, now),
+{
+    if g.required.len() != g.issued_epochs.len()
+        || g.required.len() != live.len()
+        || g.required.len() != epochs.len()
+        || now >= g.expires
+    {
+        return false;
+    }
+    let mut i: usize = 0;
+    while i < g.required.len()
+        invariant
+            g.required.len() == g.issued_epochs.len(),
+            g.required.len() == live.len(),
+            g.required.len() == epochs.len(),
+            now < g.expires,
+            i <= g.required.len(),
+            forall|j: int|
+                0 <= j < i ==> ((#[trigger] g.required@[j]) ==> (live@[j]
+                    && epochs@[j] == g.issued_epochs@[j])),
+        decreases g.required.len() - i,
+    {
+        if g.required[i] && (!live[i] || epochs[i] != g.issued_epochs[i]) {
+            return false;
+        }
+        i += 1;
+    }
+    true
+}
+
+pub open spec fn spec_grant_seq(xs: Seq<ExecScopeGrant>) -> Seq<SpecScopeGrant> {
+    Seq::new(xs.len(), |i: int| xs[i]@)
+}
+
+proof fn lemma_chain_attenuates_prefix(
+    root: SpecScopeGrant,
+    sc: Seq<SpecScopeGrant>,
+    k: nat,
+)
+    requires
+        1 <= k <= sc.len(),
+        chain_attenuates_spec(root, sc),
+    ensures
+        chain_attenuates_spec(root, sc.subrange(0, k as int)),
+    decreases sc.len() - k,
+{
+    if k == sc.len() {
+        assert(sc.subrange(0, k as int) =~= sc);
+    } else {
+        assert(sc.drop_last() =~= sc.subrange(0, sc.len() - 1));
+        lemma_chain_attenuates_prefix(root, sc.drop_last(), k);
+        assert(sc.drop_last().subrange(0, k as int) =~= sc.subrange(0, k as int));
+    }
+}
+
+/// Verifies an arbitrary-depth `d`-hop sub-delegation chain from `root` through `chain`.
+pub fn verify_delegation_chain_exec(
+    root: &ExecScopeGrant,
+    chain: &Vec<ExecScopeGrant>,
+    live: &Vec<bool>,
+    epochs: &Vec<u64>,
+    now: u64,
+) -> (ok: bool)
+    ensures
+        ok == chain_all_live_spec(
+            root@,
+            spec_grant_seq(chain@),
+            live@,
+            epochs@,
+            now,
+        ),
+{
+    let ghost sc = spec_grant_seq(chain@);
+    if !grant_live_at_exec(root, live, epochs, now) {
+        return false;
+    }
+    if chain.len() == 0 {
+        assert(sc =~= Seq::<SpecScopeGrant>::empty());
+        return true;
+    }
+    if !attenuates_grant_exec(root, &chain[0]) || !grant_live_at_exec(&chain[0], live, epochs, now)
+    {
+        proof {
+            if chain_all_live_spec(root@, sc, live@, epochs@, now) {
+                lemma_chain_attenuates_prefix(root@, sc, 1);
+                assert(sc.subrange(0, 1)[0] == sc[0]);
+                assert(attenuates_grant_spec(root@, sc[0]));
+                assert(grant_live_at_spec(sc[0], live@, epochs@, now));
+                assert(false);
+            }
+        }
+        return false;
+    }
+    let mut k: usize = 1;
+    assert(sc.subrange(0, 1).len() == 1);
+    assert(sc.subrange(0, 1)[0] == sc[0]);
+    while k < chain.len()
+        invariant
+            1 <= k <= chain.len(),
+            sc == spec_grant_seq(chain@),
+            grant_live_at_spec(root@, live@, epochs@, now),
+            chain_attenuates_spec(root@, sc.subrange(0, k as int)),
+            forall|j: int| 0 <= j < k ==> grant_live_at_spec(#[trigger] sc[j], live@, epochs@, now),
+        decreases chain.len() - k,
+    {
+        if !attenuates_grant_exec(&chain[k - 1], &chain[k])
+            || !grant_live_at_exec(&chain[k], live, epochs, now)
+        {
+            proof {
+                if chain_all_live_spec(root@, sc, live@, epochs@, now) {
+                    lemma_chain_attenuates_prefix(root@, sc, (k + 1) as nat);
+                    let sub_k1 = sc.subrange(0, k as int + 1);
+                    assert(sub_k1.len() == k + 1);
+                    assert(sub_k1[k as int - 1] == sc[k as int - 1]);
+                    assert(sub_k1.last() == sc[k as int]);
+                    assert(attenuates_grant_spec(sc[k as int - 1], sc[k as int]));
+                    assert(grant_live_at_spec(sc[k as int], live@, epochs@, now));
+                    assert(false);
+                }
+            }
+            return false;
+        }
+        proof {
+            let next_sub = sc.subrange(0, k as int + 1);
+            assert(next_sub.drop_last() =~= sc.subrange(0, k as int));
+            assert(next_sub[next_sub.len() - 2] == sc[k as int - 1]);
+            assert(next_sub.last() == sc[k as int]);
+        }
+        k += 1;
+    }
+    assert(sc.subrange(0, chain.len() as int) =~= sc);
+    true
+}
+
+/// Verifies a controller self-modification step `curr -> next_ctrl`: absent an explicit fresh
+/// human quorum override (`fresh_quorum_override`), the successor controller must strictly
+/// attenuate `curr`.
+pub fn verify_self_upgrade_exec(
+    curr: &ExecScopeGrant,
+    next_ctrl: &ExecScopeGrant,
+    fresh_quorum_override: bool,
+) -> (ok: bool)
+    ensures
+        ok == (if fresh_quorum_override {
+            grant_wf_spec(next_ctrl@)
+        } else {
+            attenuates_grant_spec(curr@, next_ctrl@)
+        }),
+{
+    if fresh_quorum_override {
+        next_ctrl.required.len() == next_ctrl.issued_epochs.len()
+    } else {
+        attenuates_grant_exec(curr, next_ctrl)
+    }
+}
+
+pub proof fn attenuates_grant_transitive(
+    g0: SpecScopeGrant,
+    g1: SpecScopeGrant,
+    g2: SpecScopeGrant,
+)
+    requires
+        attenuates_grant_spec(g0, g1),
+        attenuates_grant_spec(g1, g2),
+    ensures
+        attenuates_grant_spec(g0, g2),
+{
+    lemma_bitmask_subset_refl_trans(g0.op_mask, g1.op_mask, g2.op_mask);
+    assert forall|j: int|
+        0 <= j < g0.required.len() implies (
+            ((#[trigger] g0.required[j]) ==> g2.required[j])
+            && g2.issued_epochs[j] >= g0.issued_epochs[j]
+        ) by {
+        assert(g0.required[j] ==> g1.required[j]);
+        assert(g1.required[j] ==> g2.required[j]);
+    }
+}
+
+/// Mechanized non-amplification theorem across arbitrary-depth `d`-hop delegation or
+/// unquorumed self-modification chains: the leaf grant can never expand root budget,
+/// expiry, operation bitmask, or drop any required human issuer.
+pub proof fn delegation_chain_no_amplification(
+    root: SpecScopeGrant,
+    chain: Seq<SpecScopeGrant>,
+)
+    requires
+        chain_attenuates_spec(root, chain),
+    ensures
+        attenuates_grant_spec(root, chain_leaf_spec(root, chain)),
+    decreases chain.len(),
+{
+    if chain.len() == 0 {
+        lemma_bitmask_subset_refl_trans(root.op_mask, root.op_mask, root.op_mask);
+    } else if chain.len() == 1 {
+    } else {
+        delegation_chain_no_amplification(root, chain.drop_last());
+        assert(chain_leaf_spec(root, chain.drop_last()) == chain[chain.len() - 2]);
+        attenuates_grant_transitive(root, chain[chain.len() - 2], chain.last());
+    }
+}
+
+/// Mechanized subtree-severance theorem: withdrawing *any* issuer `j` required at *any*
+/// ancestor hop (`root` or `chain[anc]`) deterministically invalidates the entire
+/// descendant delegation subtree.
+pub proof fn ancestor_withdrawal_severs_subtree(
+    root: SpecScopeGrant,
+    chain: Seq<SpecScopeGrant>,
+    live: Seq<bool>,
+    epochs: Seq<u64>,
+    now: u64,
+    anc: int,
+    issuer: int,
+)
+    requires
+        0 <= issuer < root.required.len(),
+        (anc == -1 && root.required[issuer]
+            && (issuer >= live.len()
+                || issuer >= epochs.len()
+                || !live[issuer]
+                || epochs[issuer] != root.issued_epochs[issuer]))
+            || (0 <= anc < chain.len()
+                && issuer < chain[anc].required.len()
+                && chain[anc].required[issuer]
+                && (issuer >= live.len()
+                    || issuer >= epochs.len()
+                    || !live[issuer]
+                    || epochs[issuer] != chain[anc].issued_epochs[issuer])),
+    ensures
+        !chain_all_live_spec(root, chain, live, epochs, now),
+{
+    if chain_all_live_spec(root, chain, live, epochs, now) {
+        if anc == -1 {
+            assert(grant_live_at_spec(root, live, epochs, now));
+            assert(false);
+        } else {
+            assert(grant_live_at_spec(chain[anc], live, epochs, now));
+            assert(false);
+        }
+    }
+}
+
+// ============================================================================
+// V5 Pillar C: Multi-Sink Cluster Quorum & Lease Fence Kernel
+// ============================================================================
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct ExecShardSink {
+    pub sink: ExecSinkKernel,
+    pub lease_expiry: u64,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct ExecClusterFenceKernel {
+    pub shards: Vec<ExecShardSink>,
+    pub num_issuers: usize,
+}
+
+pub open spec fn shard_quiesced_spec(
+    shard: ExecShardSink,
+    issuer: int,
+    floor: u64,
+    now: u64,
+) -> bool {
+    0 <= issuer < shard.sink.floors@.len()
+        && (shard.sink.floors@[issuer] >= floor || now >= shard.lease_expiry)
+}
+
+pub open spec fn cluster_inv_spec(c: ExecClusterFenceKernel) -> bool {
+    c.shards@.len() > 0
+        && forall|s: int|
+            0 <= s < c.shards@.len() ==> (
+                (#[trigger] c.shards@[s]).sink.sink_inv()
+                && c.shards@[s].sink.floors@.len() == c.num_issuers as nat
+            )
+}
+
+pub open spec fn cluster_fence_acked_spec(
+    c: ExecClusterFenceKernel,
+    issuer: int,
+    floor: u64,
+    now: u64,
+) -> bool {
+    cluster_inv_spec(c)
+        && 0 <= issuer < c.num_issuers as int
+        && forall|s: int|
+            0 <= s < c.shards@.len() ==> shard_quiesced_spec(
+                #[trigger] c.shards@[s],
+                issuer,
+                floor,
+                now,
+            )
+}
+
+pub fn cluster_fence_acked_exec(
+    c: &ExecClusterFenceKernel,
+    issuer: usize,
+    floor: u64,
+    now: u64,
+) -> (acked: bool)
+    requires
+        cluster_inv_spec(*c),
+    ensures
+        acked == cluster_fence_acked_spec(*c, issuer as int, floor, now),
+{
+    if issuer >= c.num_issuers {
+        return false;
+    }
+    let mut s: usize = 0;
+    while s < c.shards.len()
+        invariant
+            cluster_inv_spec(*c),
+            issuer < c.num_issuers,
+            s <= c.shards.len(),
+            forall|k: int|
+                0 <= k < s ==> shard_quiesced_spec(
+                    #[trigger] c.shards@[k],
+                    issuer as int,
+                    floor,
+                    now,
+                ),
+        decreases c.shards.len() - s,
+    {
+        let sh = &c.shards[s];
+        assert(sh.sink.floors@.len() == c.num_issuers as nat);
+        if sh.sink.floors[issuer] < floor && now < sh.lease_expiry {
+            assert(!shard_quiesced_spec(c.shards@[s as int], issuer as int, floor, now));
+            return false;
+        }
+        s += 1;
+    }
+    true
+}
+
+/// Lease-and-fence gated shard completion: rejects commits both when the shard's lease has
+/// expired (`now >= shard.lease_expiry`) and when `unfenced` fails on `shard.sink`.
+pub fn cluster_shard_complete_exec(
+    shard: &mut ExecShardSink,
+    id: &Vec<u8>,
+    now: u64,
+) -> (out: ExecCompleteOutcome)
+    requires
+        old(shard).sink.sink_inv(),
+    ensures
+        final(shard).sink.sink_inv(),
+        final(shard).lease_expiry == old(shard).lease_expiry,
+        final(shard).sink.floors@ == old(shard).sink.floors@,
+        now >= old(shard).lease_expiry ==> (
+            out == ExecCompleteOutcome::Cancelled
+            && final(shard).sink.committed_total == old(shard).sink.committed_total
+        ),
+        match find_sink_record_spec(old(shard).sink.records@, id@) {
+            Some(idx) => {
+                let sr = old(shard).sink.records@[idx];
+                (now >= old(shard).lease_expiry
+                    || !unfenced_spec(sr.permit@.required, sr.permit@.epochs, old(shard).sink.floors@))
+                    ==> (!(out is NewlyCommitted)
+                        && final(shard).sink.committed_total == old(shard).sink.committed_total)
+            }
+            None => {
+                !(out is NewlyCommitted)
+                    && final(shard).sink.committed_total == old(shard).sink.committed_total
+            }
+        },
+{
+    if now >= shard.lease_expiry {
+        return ExecCompleteOutcome::Cancelled;
+    }
+    shard.sink.sink_complete(id)
+}
+
+/// Mechanized multi-sink cluster post-acknowledgment exclusion theorem: once
+/// `cluster_fence_acked_spec(c, issuer, floor, ack_time)` holds, no shard `s` in the
+/// cluster can commit any permit requiring `issuer` with `epochs[issuer] < floor` at
+/// any timestamp `t >= ack_time`.
+pub proof fn cluster_quorum_post_ack_exclusion(
+    c: &ExecClusterFenceKernel,
+    shard_idx: int,
+    permit: SpecPermitWire,
+    issuer: int,
+    floor: u64,
+    ack_time: u64,
+    commit_time: u64,
+)
+    requires
+        cluster_fence_acked_spec(*c, issuer, floor, ack_time),
+        0 <= shard_idx < c.shards@.len(),
+        commit_time >= ack_time,
+        permit.required.len() == c.num_issuers as nat,
+        permit.epochs.len() == c.num_issuers as nat,
+        permit.required[issuer],
+        permit.epochs[issuer] < floor,
+    ensures
+        commit_time >= c.shards@[shard_idx].lease_expiry
+            || !unfenced_spec(
+                permit.required,
+                permit.epochs,
+                c.shards@[shard_idx].sink.floors@,
+            ),
+{
+    let sh = c.shards@[shard_idx];
+    assert(shard_quiesced_spec(sh, issuer, floor, ack_time));
+    if commit_time < sh.lease_expiry {
+        assert(ack_time < sh.lease_expiry);
+        assert(sh.sink.floors@[issuer] >= floor);
+        fenced_zero(permit.required, permit.epochs, sh.sink.floors@, issuer);
+    }
+}
+
 } // verus!
 
 impl Clone for ExecPermitWire {
@@ -5304,6 +7169,40 @@ impl Clone for ExecAuthorityKernel {
         Self {
             broker: self.broker.clone(),
             sink: self.sink.clone(),
+        }
+    }
+}
+
+impl Clone for ExecScopeGrant {
+    fn clone(&self) -> Self {
+        Self {
+            budget: self.budget,
+            expires: self.expires,
+            op_mask: self.op_mask,
+            required: clone_vec_bool(&self.required),
+            issued_epochs: clone_vec_u64(&self.issued_epochs),
+        }
+    }
+}
+
+impl Clone for ExecShardSink {
+    fn clone(&self) -> Self {
+        Self {
+            sink: self.sink.clone(),
+            lease_expiry: self.lease_expiry,
+        }
+    }
+}
+
+impl Clone for ExecClusterFenceKernel {
+    fn clone(&self) -> Self {
+        let mut shards = Vec::with_capacity(self.shards.len());
+        for sh in &self.shards {
+            shards.push(sh.clone());
+        }
+        Self {
+            shards,
+            num_issuers: self.num_issuers,
         }
     }
 }
@@ -5681,5 +7580,205 @@ mod tests {
         assert_eq!(broker.pending, 0);
         assert_eq!(broker.charged, 7);
         assert_eq!(sink.committed_total, 7);
+    }
+
+    #[test]
+    fn canonical_wire_decoder_bijection_and_adversarial_frame_rejection() {
+        let permit = ExecPermitWire {
+            id: b"v5-permit-bijection".to_vec(),
+            actor: b"agent-alpha".to_vec(),
+            effect_kind: EFFECT_EDIT,
+            amount: 42,
+            expires: 9_999,
+            expected_rev: 17,
+            target: b"src/critical.rs".to_vec(),
+            contents: b"pub const SAFE: bool = true;".to_vec(),
+            epochs: vec![3, 7, 11],
+            required: vec![true, false, true],
+        };
+        let wire = encode_permit_canonical(&permit);
+        let decoded = decode_permit_canonical(&wire).expect("valid canonical frame must decode");
+        assert_eq!(decoded, permit);
+        assert_eq!(encode_permit_canonical(&decoded), wire);
+
+        // Trailing garbage byte must be rejected (strict bijection, no prefix-only parse).
+        let mut with_trailing = wire.clone();
+        with_trailing.push(0x00);
+        assert_eq!(decode_permit_canonical(&with_trailing), None);
+
+        // Every strict prefix truncation must be rejected without panic.
+        for cut in [0usize, 1, 7, 8, 15, 24, wire.len() - 1] {
+            assert_eq!(decode_permit_canonical(&wire[..cut].to_vec()), None);
+        }
+
+        // Corrupted domain header tag must be rejected.
+        let mut bad_hdr = wire.clone();
+        bad_hdr[0] ^= 0xFF;
+        assert_eq!(decode_permit_canonical(&bad_hdr), None);
+
+        // Non-canonical boolean byte (2u8 instead of 0u8/1u8) in `required` must be rejected.
+        let mut bad_bool = wire.clone();
+        let last_idx = bad_bool.len() - 1;
+        bad_bool[last_idx] = 2u8;
+        assert_eq!(decode_permit_canonical(&bad_bool), None);
+
+        // Mismatched `epochs.len() != required.len()` must be rejected.
+        let mut mismatched = permit.clone();
+        mismatched.required = vec![true, false];
+        let mismatched_wire = encode_permit_canonical(&mismatched);
+        assert_eq!(decode_permit_canonical(&mismatched_wire), None);
+    }
+
+    #[test]
+    fn delegation_chain_non_amplification_severance_and_self_upgrade_gate() {
+        let root = ExecScopeGrant {
+            budget: 100,
+            expires: 1_000,
+            op_mask: 0b0111,
+            required: vec![true, false, true],
+            issued_epochs: vec![2, 0, 5],
+        };
+        let hop1 = ExecScopeGrant {
+            budget: 60,
+            expires: 800,
+            op_mask: 0b0011,
+            required: vec![true, true, true],
+            issued_epochs: vec![2, 4, 5],
+        };
+        let hop2 = ExecScopeGrant {
+            budget: 25,
+            expires: 600,
+            op_mask: 0b0001,
+            required: vec![true, true, true],
+            issued_epochs: vec![2, 4, 5],
+        };
+        let chain = vec![hop1.clone(), hop2.clone()];
+        let live = vec![true, true, true];
+        let epochs = vec![2, 4, 5];
+
+        assert!(verify_delegation_chain_exec(
+            &root, &chain, &live, &epochs, 500
+        ));
+
+        // Capability bitmask widening at leaf must be rejected.
+        let mut widened_mask = hop2.clone();
+        widened_mask.op_mask = 0b0101;
+        assert!(!verify_delegation_chain_exec(
+            &root,
+            &vec![hop1.clone(), widened_mask],
+            &live,
+            &epochs,
+            500,
+        ));
+
+        // Dropping a required ancestor human issuer at leaf must be rejected.
+        let mut dropped_issuer = hop2.clone();
+        dropped_issuer.required = vec![true, false, true];
+        assert!(!verify_delegation_chain_exec(
+            &root,
+            &vec![hop1.clone(), dropped_issuer],
+            &live,
+            &epochs,
+            500,
+        ));
+
+        // Withdrawing mid-chain issuer 1 (added at hop1) severs the descendant leaf!
+        let live_revoked_mid = vec![true, false, true];
+        assert!(!verify_delegation_chain_exec(
+            &root,
+            &chain,
+            &live_revoked_mid,
+            &epochs,
+            500,
+        ));
+
+        // Bumping root issuer 2 epoch (2 -> 6) severs the entire delegation subtree!
+        let epochs_bumped = vec![2, 4, 6];
+        assert!(!verify_delegation_chain_exec(
+            &root,
+            &chain,
+            &live,
+            &epochs_bumped,
+            500,
+        ));
+
+        // Self-modification without fresh human quorum cannot widen budget or expiry.
+        let mut widened_ctrl = hop1.clone();
+        widened_ctrl.budget = 61;
+        assert!(!verify_self_upgrade_exec(&hop1, &widened_ctrl, false));
+        assert!(verify_self_upgrade_exec(&hop1, &hop2, false));
+        assert!(verify_self_upgrade_exec(&hop1, &widened_ctrl, true));
+    }
+
+    #[test]
+    fn cluster_quorum_and_lease_fence_post_ack_exclusion() {
+        let p_s0 = sample_permit(b"shard0-p", 4, vec![0, 0], vec![true, false]);
+        let p_s1 = sample_permit(b"shard1-p", 4, vec![0, 0], vec![true, false]);
+        let p_s2 = sample_permit(b"shard2-p", 4, vec![0, 0], vec![true, false]);
+
+        let mut s0 = ExecShardSink {
+            sink: ExecSinkKernel::sink_new(2),
+            lease_expiry: 100,
+        };
+        let mut s1 = ExecShardSink {
+            sink: ExecSinkKernel::sink_new(2),
+            lease_expiry: 100,
+        };
+        let mut s2 = ExecShardSink {
+            sink: ExecSinkKernel::sink_new(2),
+            lease_expiry: 50,
+        };
+
+        assert_eq!(
+            s0.sink.sink_accept(&p_s0),
+            ExecAcceptOutcome::AcceptedPending
+        );
+        assert_eq!(
+            s1.sink.sink_accept(&p_s1),
+            ExecAcceptOutcome::AcceptedPending
+        );
+        assert_eq!(
+            s2.sink.sink_accept(&p_s2),
+            ExecAcceptOutcome::AcceptedPending
+        );
+
+        // Fence shards 0 and 1 to floor 1 on issuer 0; shard 2 is partitioned (un-fenced, lease=50).
+        assert!(s0.sink.sink_fence(0, 1));
+        assert!(s1.sink.sink_fence(0, 1));
+
+        let cluster = ExecClusterFenceKernel {
+            shards: vec![s0, s1, s2],
+            num_issuers: 2,
+        };
+
+        // At t = 40 (< shard 2's lease_expiry 50), cluster-wide fence ack is NOT yet complete.
+        assert!(!cluster_fence_acked_exec(&cluster, 0, 1, 40));
+        // Once t = 50 reaches shard 2's bounded lease expiry, cluster fence ack holds!
+        assert!(cluster_fence_acked_exec(&cluster, 0, 1, 50));
+
+        // Verify zero post-ack commits across all 3 shards at t = 50:
+        let mut shards = cluster.shards;
+        assert_eq!(
+            cluster_shard_complete_exec(&mut shards[0], &p_s0.id, 50),
+            ExecCompleteOutcome::Idempotent {
+                status: ExecSlotStatus::Cancelled
+            }
+        );
+        assert_eq!(
+            cluster_shard_complete_exec(&mut shards[1], &p_s1.id, 50),
+            ExecCompleteOutcome::Idempotent {
+                status: ExecSlotStatus::Cancelled
+            }
+        );
+        assert_eq!(
+            cluster_shard_complete_exec(&mut shards[2], &p_s2.id, 50),
+            ExecCompleteOutcome::Cancelled
+        );
+        assert_eq!(
+            shards[0].sink.committed_total
+                + shards[1].sink.committed_total
+                + shards[2].sink.committed_total,
+            0
+        );
     }
 }

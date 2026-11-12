@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install hash-pinned Verus under target, then verify the broker's exact core."""
+"""Install hash-pinned Verus under target, verify policy-core, and check 6 Z3 soundness mutations."""
 import hashlib
 import json
 import os
@@ -26,6 +26,16 @@ REQUIRED_EXEC_FUNCTIONS = [
     "attenuates",
     "unfenced",
     "release",
+    "same_permit_canonical",
+    "encode_permit_canonical",
+    "decode_permit_canonical",
+    "roundtrip_permit_canonical",
+    "attenuates_grant_exec",
+    "grant_live_at_exec",
+    "verify_delegation_chain_exec",
+    "verify_self_upgrade_exec",
+    "cluster_fence_acked_exec",
+    "cluster_shard_complete_exec",
 ]
 
 REQUIRED_THEOREMS = [
@@ -44,6 +54,54 @@ REQUIRED_THEOREMS = [
     "attenuation_chain_induction",
     "proposer_disposition_independence",
     "ungated_disposition_diverges",
+    "broker_inv_implies_ledger_inv",
+    "authority_kernel_conservation",
+    "authority_post_fence_exclusion",
+    "encode_permit_injective",
+    "encode_decode_permit_bijection",
+    "attenuates_grant_transitive",
+    "delegation_chain_no_amplification",
+    "ancestor_withdrawal_severs_subtree",
+    "cluster_quorum_post_ack_exclusion",
+]
+
+SOUNDNESS_MUTATIONS = [
+    (
+        "timeout_refund_without_sink_authority",
+        "release",
+        "    if authoritative_no_effect && amount <= charged {",
+        "    if amount <= charged {",
+    ),
+    (
+        "stale_epoch_fence_bypass",
+        "unfenced",
+        "        if required[i] && epochs[i] < floors[i] {",
+        "        if false && required[i] && epochs[i] < floors[i] {",
+    ),
+    (
+        "optimistic_lower_bound_admission",
+        "admit_uncertain",
+        "    charged_lower <= charged_upper\n        && admit_multi(\n            budget,\n            charged_upper,",
+        "    charged_lower <= charged_upper\n        && admit_multi(\n            budget,\n            charged_lower,",
+    ),
+    (
+        "wire_decoder_trailing_byte_bypass",
+        "decode_permit_canonical",
+        "    if pos10 != bytes.len() {\n        return None;\n    }",
+        "    if pos10 > bytes.len() {\n        return None;\n    }",
+    ),
+    (
+        "self_upgrade_unquorumed_scope_widening",
+        "verify_self_upgrade_exec",
+        "    if fresh_quorum_override {\n        next_ctrl.required.len() == next_ctrl.issued_epochs.len()",
+        "    if true || fresh_quorum_override {\n        next_ctrl.required.len() == next_ctrl.issued_epochs.len()",
+    ),
+    (
+        "partial_shard_cluster_ack_bypass",
+        "cluster_fence_acked_exec",
+        "        if sh.sink.floors[issuer] < floor && now < sh.lease_expiry {\n            assert(!shard_quiesced_spec(c.shards@[s as int], issuer as int, floor, now));\n            return false;\n        }\n        s += 1;",
+        "        if sh.sink.floors[issuer] < floor && now < sh.lease_expiry {\n            assert(!shard_quiesced_spec(c.shards@[s as int], issuer as int, floor, now));\n            return false;\n        }\n        return true;",
+    ),
 ]
 
 
@@ -59,6 +117,46 @@ def _ensure_toolchain():
             ["rustup", "toolchain", "install", "1.99.1", "--profile", "minimal"],
             check=True,
         )
+
+
+def _run_soundness_mutations(tool: Path, core_source: str, env: dict) -> list[dict]:
+    mut_dir = ROOT / "target/verus-mutations"
+    mut_dir.mkdir(parents=True, exist_ok=True)
+    records = []
+    for name, fn_name, needle, replacement in SOUNDNESS_MUTATIONS:
+        assert (
+            core_source.count(needle) == 1
+        ), f"mutation needle for {name} matched {core_source.count(needle)} times"
+        mutated_src = core_source.replace(needle, replacement, 1)
+        mut_file = mut_dir / f"{name}.rs"
+        mut_file.write_text(mutated_src)
+        proc = subprocess.run(
+            [
+                str(tool),
+                "--crate-type",
+                "lib",
+                "--verify-root",
+                "--verify-function",
+                fn_name,
+                str(mut_file),
+            ],
+            cwd=ROOT,
+            env=env,
+            capture_output=True,
+            text=True,
+        )
+        out = proc.stdout + proc.stderr
+        rejected = proc.returncode != 0 and "0 errors" not in out
+        assert rejected, f"soundness mutation {name} unexpectedly verified!\n{out}"
+        records.append(
+            {
+                "name": name,
+                "target_function": fn_name,
+                "rejected": True,
+                "returncode": proc.returncode,
+            }
+        )
+    return records
 
 
 def verify(output=None):
@@ -135,8 +233,12 @@ def verify(output=None):
     ):
         returncode = 1
 
+    mutation_records = []
+    if returncode == 0:
+        mutation_records = _run_soundness_mutations(tool, core_source, env)
+
     report = {
-        "schema_version": 2,
+        "schema_version": 3,
         "tool": TAG,
         "archive_sha256": SHA,
         "core_sha256": hashlib.sha256(core_path.read_bytes()).hexdigest(),
@@ -146,14 +248,16 @@ def verify(output=None):
         "core_verified_count": direct_verified,
         "cargo_verified_count": cargo_verified,
         "trigger_warnings": trigger_warnings,
+        "soundness_mutations_rejected": len(mutation_records),
+        "soundness_mutations": mutation_records,
         "exec_functions": exec_functions,
         "theorems": theorems,
         "output": combined_out,
         "trusted": [
             "Verus, SMT solver and Rust compiler",
-            "parser and normalized payload construction",
-            "storage snapshots, issuer identity, session launcher",
-            "Linux kernel and cooperative sink contracts",
+            "JSON-to-ExecPermitWire field extraction outside Verus (binary wire encoder/decoder bijection verified in policy-core)",
+            "storage snapshots, Ed25519/HMAC cryptographic primitives, session launcher",
+            "OS kernel and cooperative sink process contracts",
         ],
     }
     if output:

@@ -5,44 +5,39 @@
 \begin{center}
 {\fontsize{23}{27}\selectfont\bfseries\color{ink}Intelligence Is {\color{notred}Not} Authority\par}
 \vspace{5pt}
-{\large\color{ink}Verified Policy Decisions, Revocable Agent Authority, and Structural Bounds on Reach\par}
+{\large\color{ink}Verified Exogenous Authority, Optimization-Invariant Sink Mediation, and Structural Bounds on Reach\par}
 \vspace{9pt}
 {\normalsize Jepson Taylor\par}
 \vspace{2pt}{\small\href{mailto:jepson@veox.ai}{\nolinkurl{jepson@veox.ai}}\par}
-\vspace{2pt}{\small\color{slate}10 November 2026\par}
+\vspace{2pt}{\small\color{slate}12 November 2026\par}
 \end{center}
 \vspace{5pt}
 \begin{center}\begin{minipage}{.94\textwidth}\small
 \textbf{Abstract.}\enspace
-An AI system's capability to discover actions does not confer authority to execute
-them, nor does stopping token generation revoke work already in flight. We separate
-capability, aim, and conferred revocable authority, distinguishing broker admission
-revocation from sink-fenced revocation across separate durable stores. Pre-dispatch
-reservations conservatively bound ambiguous outcomes, attenuated sub-delegations and
-cryptographic tokens bind strengthened issuer requirements end-to-end, and durable
-signed epoch fences exclude post-acknowledgment effects under withdrawn authority. A
-pinned Verus run verifies \VTwoProofs{} SMT obligations for the Rust
-\texttt{policy-core} (\VTwoExecFns{} executable functions---including concrete
-\texttt{ExecBrokerKernel}/\texttt{ExecSinkKernel} forward-simulation refinement and
-canonical wire-encoding injectivity---and \VTwoTheorems{} proof theorems). Across
-separate-process SQLite, \texttt{AF\_UNIX} Jepsen partition schedules
-($0/\text{\VFourJepsenSchedulesPerClass}$ cooperative post-ack leaks vs.\
-\VFourJepsenBrokerOnlyLeaks{} broker-only), diamond-POR concurrent linearizations up to
-\VTwoLinearizedMaxActors{} writers (\VTwoLinearizedRuns/\VTwoRaceRuns{}), and
-\VFourHoldoutTotalCampaigns{} executed CPU \texttt{Qwen3-4B}/\texttt{8B} frozen holdout
-campaigns (\VTwoGpuSecondsUsed{} GPU-s), complete mediation incurs $0.0\%$ unauthorized
-effects and $0.0\%$ false blocks while scaling safe-useful completion from
-\VFourFourBCompleteSafeUsefulPct\% to \VFourEightBCompleteSafeUsefulPct\% (pilot
-$N{=}\VFourHoldoutCasesPerCheckpoint < \VTwoZeroLossCasesMin$ Bonferroni bounds remain
-honestly inconclusive). Operational AgentDojo \texttt{v1.2.2} and Linux confinement
-cutsets, \VFourTrajEvalCount{} executed 5-step trajectory-monitor evaluations
-($\VFourTrajHetInflation\times$ five-family transcript inflation vs.\
-\VFourTrajIsoFiveMissPct\% prose-stripped step invariants), and pure-Rust 2-layer
-neural policy-gradient post-training ($+\VFourNeuralVetoGapPp$\,pp emergent
-evaluation-aware shortcutting under audited rank tournaments vs.\
-\VFourNeuralGatedHarmPct\% gated survival-floor harm) anchor structural reach bounds,
-while SQLite/OS adapters remain trusted rather than formally refined and frontier/human
-studies remain open.
+Scaling an AI system's capability to search actions neither confers authority to execute
+them nor makes endogenous safety classifiers invariant to optimization pressure: any
+shared blindspot $J>0$ collapses with candidate search width $K_{\mathrm{opt}}$ as
+$1-(1-J)^{K_{\mathrm{opt}}}\to 1$, while utility-uncertainty shutdown compliance
+vanishes as preference certainty sharpens ($\sigma_H\to 0$). We decouple capability and
+aim from \emph{conferred, revocable authority} enforced at exogenous capability-bearing
+sinks via a total canonical wire bijection, Ed25519 quorum certificates, $d$-hop
+attenuated Macaroons, and durable lease-fenced epoch floors. A pinned Verus run proves
+\VTwoProofs{} SMT obligations across \VTwoExecFns{} executable functions and
+\VTwoTheorems{} theorems in \texttt{policy-core} (rejecting all six soundness
+mutations). Across a three-process cryptographic SQLite WAL cluster
+(\VFiveClusterFuzzFrames{} adversarial wire frames, \VFiveClusterSubagents{} concurrent
+subagents, \VFiveClusterSigkillCycles{} hard \texttt{SIGKILL} restarts, median commit
+\VFiveClusterMedianUs\,$\mu$s) and \VFiveOptTotalExogEpisodes{} superintelligence
+scaling episodes ($K_{\mathrm{opt}}\le \VFiveOptMaxWidth$), exogenous mediation records
+$0$ decoder differentials, $0$ post-quorum leaks, and a \VFiveOptSlopePerDoubling{}
+breach slope per search doubling. Over \VFiveStatGrandPairs{} paired CPU
+\texttt{Qwen3-4B}/\texttt{8B} holdout and \texttt{AgentDojo v1.2.2} runs
+(\VTwoGpuSecondsUsed{} GPU-s), complete mediation yields $0/\VFiveStatGrandPairs$
+unauthorized commits versus $\VFiveStatGrandBaseLeaks/\VFiveStatGrandPairs$ unmediated
+(exact Suissa--Shuster $p=\VFiveStatGrandSuissaSci$, anytime-valid Ville
+$\log_{10}E=\VFiveStatVilleLogTenE$). Predeclared $N{=}\VFourHoldoutCasesPerCheckpoint$
+Bonferroni bounds remain honestly inconclusive, and SQLite/OS formal refinement,
+uncooperative external APIs, and frontier/human studies remain open.
 \end{minipage}\end{center}
 \vspace{8pt}
 \end{@twocolumnfalse}]
