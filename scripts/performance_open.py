@@ -489,6 +489,9 @@ def analyze_kowal(csv_path: Path, hon_countries: dict, rng: np.random.Generator)
     lt_arm_rows = []
     st_arm_rows = []
     jeal_rows = []
+    hom_rows = []
+    rev_rows = []
+    eff_soi_rows = []
 
     pref5_cols = ("preference_imp_physat", "preference_imp_financ", "preference_imp_kind", "preference_imp_health", "preference_imp_relig")
     mate5_cols = ("mate_physatt", "mate_resources", "mate_kind", "mate_health", "mate_religion")
@@ -574,6 +577,47 @@ def analyze_kowal(csv_path: Path, hon_countries: dict, rng: np.random.Generator)
 
                 if row.get("Sex") in ("0", "1"):
                     sx_i = int(row["Sex"])
+                    rstat_rec = (row.get("Relationship_status_recoded") or "").strip()
+                    eff_soi_rows.append((
+                        sx_i,
+                        age,
+                        rstat_rec,
+                        fnum(row.get("Attractiveness_Time_Sum")),
+                        fnum(row.get("Time_A_exercise_1")),
+                        fnum(row.get("Time_A_makeup_1")),
+                        fnum(row.get("Time_A_dress_1")),
+                        fnum(row.get("soi_desire")),
+                        fnum(row.get("soi_attitude")),
+                        fnum(row.get("soi_behave")),
+                    ))
+                    if has_ctry_any and np.isfinite(prqc_v):
+                        mk_v = fnum(row.get("mate_kind"))
+                        if np.isfinite(mk_v) and 1.0 <= mk_v <= 11.0:
+                            hom_rows.append((
+                                ctry_clean,
+                                sx_i,
+                                age,
+                                prqc_v,
+                                mk_v,
+                                fnum(row.get("cot_politics")),
+                                fnum(row.get("cpt_politics")),
+                                fnum(row.get("cot_educ")),
+                                fnum(row.get("cpt_educ")),
+                                fnum(row.get("cot_class")),
+                                fnum(row.get("cpt_class")),
+                            ))
+                        sk_v, mp_v, sp_v, mr_v, sr_v = (
+                            fnum(row.get("self_kind")),
+                            fnum(row.get("mate_physatt")),
+                            fnum(row.get("self_physatt")),
+                            fnum(row.get("mate_resources")),
+                            fnum(row.get("self_resources")),
+                        )
+                        if all(np.isfinite(v) and 1.0 <= v <= 11.0 for v in (mk_v, sk_v, mp_v, sp_v, mr_v, sr_v)):
+                            rev_rows.append((
+                                ctry_clean, sx_i, age, prqc_v, inf_v,
+                                sk_v, mk_v, sp_v, mp_v, sr_v, mr_v,
+                            ))
                     rl_v = fnum(row.get("Relationship_length"))
                     if np.isfinite(rl_v) and 0.0 < rl_v <= 60.0 and rl_v <= age - 14.0 and np.isfinite(prqc_v):
                         l_vals = [fnum(row.get(c)) for c in love_cols]
@@ -1212,6 +1256,198 @@ def analyze_kowal(csv_path: Path, hon_countries: dict, rng: np.random.Generator)
             "emotional_minus_sexual": mean_se_ci(emo_v - sex_v),
         }
 
+    # 10. Primary Kindness vs. Political/Educational/Class Homophily, Reverence vs. Settling Kink, & Daily Effort/SOI Lifecycle
+    rng_k_v15 = np.random.default_rng(SEED + 451)
+    h_ctry = np.array([r[0] for r in hom_rows], dtype=object)
+    h_num = np.array([r[1:] for r in hom_rows], dtype=np.float64)
+    homophily_vs_kindness = {}
+    for dom_name, idx_own, idx_mate in (("politics", 4, 5), ("education", 6, 7), ("social_class", 8, 9)):
+        ok_h = np.isfinite(h_num[:, idx_own]) & np.isfinite(h_num[:, idx_mate])
+        sub_c = h_ctry[ok_h]
+        uc_h, ci_h = np.unique(sub_c, return_inverse=True)
+        nc_h = len(uc_h)
+        own_v = h_num[ok_h, idx_own]
+        mate_v = h_num[ok_h, idx_mate]
+        r_sort = float(np.corrcoef(own_v, mate_v)[0, 1])
+        exact_m = float((own_v == mate_v).mean())
+        sim_raw = -np.abs(own_v - mate_v)
+        sim_z = (sim_raw - sim_raw.mean()) / sim_raw.std(ddof=1)
+        kind_v = h_num[ok_h, 3]
+        kind_z = (kind_v - kind_v.mean()) / kind_v.std(ddof=1)
+        prqc_v_h = h_num[ok_h, 2]
+        prqc_z_h = (prqc_v_h - prqc_v_h.mean()) / prqc_v_h.std(ddof=1)
+        sx_h = h_num[ok_h, 0]
+        ag_h = h_num[ok_h, 1]
+        Xh = np.column_stack([
+            demean_by_group(sim_z, ci_h, False),
+            demean_by_group(kind_z, ci_h, False),
+            demean_by_group(sx_h, ci_h, False),
+            demean_by_group(ag_h, ci_h, False),
+            demean_by_group(ag_h ** 2, ci_h, False),
+        ])
+        yh = demean_by_group(prqc_z_h, ci_h, False)
+        xx_h = np.zeros((nc_h, 5, 5), dtype=np.float64)
+        xy_h = np.zeros((nc_h, 5), dtype=np.float64)
+        ord_h = np.argsort(ci_h, kind="stable")
+        gs_h = ci_h[ord_h]
+        cuts_h = np.r_[0, np.flatnonzero(np.diff(gs_h)) + 1, len(gs_h)]
+        for a_i, b_i in zip(cuts_h[:-1], cuts_h[1:]):
+            idx = ord_h[a_i:b_i]
+            pos = int(gs_h[a_i])
+            xx_h[pos] = Xh[idx].T @ Xh[idx]
+            xy_h[pos] = Xh[idx].T @ yh[idx]
+        beta_h = np.linalg.solve(xx_h.sum(axis=0), xy_h.sum(axis=0))
+        rs_h = rng_k_v15.integers(0, nc_h, size=(1000, nc_h))
+        bh_draws = np.linalg.solve(xx_h[rs_h].sum(axis=1), xy_h[rs_h].sum(axis=1)[..., None])[..., 0]
+        homophily_vs_kindness[dom_name] = {
+            "n": int(ok_h.sum()),
+            "countries": int(nc_h),
+            "assortative_pearson_r": r_sort,
+            "exact_match_share": exact_m,
+            "homophily_prqc_sd_per_sd": {
+                "estimate": float(beta_h[0]),
+                "ci_95": np.quantile(bh_draws[:, 0], [0.025, 0.975]).tolist(),
+            },
+            "partner_kindness_prqc_sd_per_sd": {
+                "estimate": float(beta_h[1]),
+                "ci_95": np.quantile(bh_draws[:, 1], [0.025, 0.975]).tolist(),
+            },
+            "kindness_to_homophily_ratio": float(beta_h[1] / max(abs(beta_h[0]), 1e-6)),
+        }
+
+    rv_ctry = np.array([r[0] for r in rev_rows], dtype=object)
+    rv_num = np.array([r[1:] for r in rev_rows], dtype=np.float64)
+    reverence_vs_settling_kink = {"n_total": int(len(rv_num)), "by_sex": {}}
+    for s_lbl, s_c in (("women", 1.0), ("men", 0.0)):
+        sm_r = rv_num[:, 0] == s_c
+        sc_r = rv_ctry[sm_r]
+        uc_r, ci_r = np.unique(sc_r, return_inverse=True)
+        nc_r = len(uc_r)
+        sub_r = rv_num[sm_r]
+        tiers_by_trait = {}
+        for tname, i_sf, i_mt in (("kindness", 4, 5), ("looks", 6, 7), ("resources", 8, 9)):
+            diff_v = sub_r[:, i_mt] - sub_r[:, i_sf]
+            t_entry = {}
+            for tier_k, tmask in (
+                ("settled_mate_lt_self", diff_v < 0.0),
+                ("equal", diff_v == 0.0),
+                ("revered_mate_gt_self", diff_v > 0.0),
+            ):
+                inf_ok_t = tmask & np.isfinite(sub_r[:, 3])
+                t_entry[tier_k] = {
+                    "n": int(tmask.sum()),
+                    "share": float(tmask.mean()),
+                    "prqc_mean": mean_se_ci(sub_r[tmask, 2]),
+                    "infidelity_rate_pct": mean_se_ci(100.0 * sub_r[inf_ok_t, 3]),
+                }
+            tiers_by_trait[tname] = t_entry
+
+        prqc_z_r = (sub_r[:, 2] - sub_r[:, 2].mean()) / sub_r[:, 2].std(ddof=1)
+        ag_r = sub_r[:, 1]
+        raw_cols_r = [
+            sub_r[:, 4],
+            np.maximum(0.0, sub_r[:, 4] - sub_r[:, 5]),
+            np.maximum(0.0, sub_r[:, 5] - sub_r[:, 4]),
+            sub_r[:, 6],
+            np.maximum(0.0, sub_r[:, 6] - sub_r[:, 7]),
+            np.maximum(0.0, sub_r[:, 7] - sub_r[:, 6]),
+            sub_r[:, 8],
+            np.maximum(0.0, sub_r[:, 8] - sub_r[:, 9]),
+            np.maximum(0.0, sub_r[:, 9] - sub_r[:, 8]),
+            ag_r,
+            ag_r ** 2,
+        ]
+        Xr = np.column_stack([demean_by_group(col_v, ci_r, False) for col_v in raw_cols_r])
+        yr = demean_by_group(prqc_z_r, ci_r, False)
+        xx_r = np.zeros((nc_r, 11, 11), dtype=np.float64)
+        xy_r = np.zeros((nc_r, 11), dtype=np.float64)
+        ord_r = np.argsort(ci_r, kind="stable")
+        gs_r = ci_r[ord_r]
+        cuts_r = np.r_[0, np.flatnonzero(np.diff(gs_r)) + 1, len(gs_r)]
+        for a_i, b_i in zip(cuts_r[:-1], cuts_r[1:]):
+            idx = ord_r[a_i:b_i]
+            pos = int(gs_r[a_i])
+            xx_r[pos] = Xr[idx].T @ Xr[idx]
+            xy_r[pos] = Xr[idx].T @ yr[idx]
+        beta_r = np.linalg.solve(xx_r.sum(axis=0), xy_r.sum(axis=0))
+        rs_r = rng_k_v15.integers(0, nc_r, size=(1000, nc_r))
+        br_draws = np.linalg.solve(xx_r[rs_r].sum(axis=1), xy_r[rs_r].sum(axis=1)[..., None])[..., 0]
+        spline_names = (
+            "self_kindness", "settling_deficit_kindness", "reverence_surplus_kindness",
+            "self_looks", "settling_deficit_looks", "reverence_surplus_looks",
+            "self_resources", "settling_deficit_resources", "reverence_surplus_resources",
+        )
+        reverence_vs_settling_kink["by_sex"][s_lbl] = {
+            "n": int(sm_r.sum()),
+            "countries": int(nc_r),
+            "tiers_by_trait": tiers_by_trait,
+            "country_fe_spline_sd_per_pt": {
+                sname: {
+                    "estimate": float(beta_r[j]),
+                    "ci_95": np.quantile(br_draws[:, j], [0.025, 0.975]).tolist(),
+                }
+                for j, sname in enumerate(spline_names)
+            },
+            "kindness_settling_to_reverence_slope_ratio": float(abs(beta_r[1]) / max(abs(beta_r[2]), 1e-6)),
+        }
+
+    ef_rstat = np.array([r[2] for r in eff_soi_rows], dtype=object)
+    ef_num = np.array([[r[0], r[1], r[3], r[4], r[5], r[6], r[7], r[8], r[9]] for r in eff_soi_rows], dtype=np.float64)
+    tot_ok = np.isfinite(ef_num[:, 2]) & (ef_num[:, 2] >= 0.0) & (ef_num[:, 2] <= 600.0)
+    ex_ok = np.isfinite(ef_num[:, 3]) & (ef_num[:, 3] >= 0.0) & (ef_num[:, 3] <= 300.0)
+    mk_ok = np.isfinite(ef_num[:, 4]) & (ef_num[:, 4] >= 0.0) & (ef_num[:, 4] <= 180.0)
+    dr_ok = np.isfinite(ef_num[:, 5]) & (ef_num[:, 5] >= 0.0) & (ef_num[:, 5] <= 180.0)
+
+    effort_by_stage = {"epistemic_tier": "observational_cross_sectional_relationship_stage", "by_sex": {}}
+    stage_specs = (
+        ("single", "Single"),
+        ("dating", "Dating"),
+        ("committed", "In a committed relationship"),
+        ("married", "Married"),
+    )
+    for s_lbl, s_c in (("women", 1.0), ("men", 0.0)):
+        sm_e = ef_num[:, 0] == s_c
+        st_out = {}
+        for st_key, st_raw in stage_specs:
+            st_m = sm_e & (ef_rstat == st_raw)
+            st_out[st_key] = {
+                "total_effort_min": mean_se_ci(ef_num[st_m & tot_ok, 2]),
+                "exercise_min": mean_se_ci(ef_num[st_m & ex_ok, 3]),
+                "makeup_min": mean_se_ci(ef_num[st_m & mk_ok, 4]),
+                "dress_min": mean_se_ci(ef_num[st_m & dr_ok, 5]),
+                "mean_age": float(ef_num[st_m & tot_ok, 1].mean()),
+            }
+        dt_m = st_out["dating"]["total_effort_min"]["mean"]
+        mr_m = st_out["married"]["total_effort_min"]["mean"]
+        st_out["dating_to_married_drop_min"] = float(mr_m - dt_m)
+        st_out["dating_to_married_drop_pct"] = float(100.0 * (mr_m - dt_m) / dt_m)
+        effort_by_stage["by_sex"][s_lbl] = st_out
+
+    soi_and_effort_by_age = {}
+    for lo_a, hi_a, b_lbl in ((18, 24, "18-24"), (25, 29, "25-29"), (30, 39, "30-39"), (40, 49, "40-49"), (50, 59, "50-59"), (60, 79, "60-79")):
+        am_e = (ef_num[:, 1] >= lo_a) & (ef_num[:, 1] <= hi_a)
+        b_cell = {}
+        for s_lbl, s_c in (("women", 1.0), ("men", 0.0)):
+            sg_e = am_e & (ef_num[:, 0] == s_c)
+            sd_ok = sg_e & np.isfinite(ef_num[:, 6]) & (ef_num[:, 6] >= 1.0) & (ef_num[:, 6] <= 9.0)
+            sa_ok = sg_e & np.isfinite(ef_num[:, 7]) & (ef_num[:, 7] >= 1.0) & (ef_num[:, 7] <= 9.0)
+            sb_ok = sg_e & np.isfinite(ef_num[:, 8]) & (ef_num[:, 8] >= 1.0) & (ef_num[:, 8] <= 9.0)
+            b_cell[s_lbl] = {
+                "soi_desire": mean_se_ci(ef_num[sd_ok, 6]),
+                "soi_attitude": mean_se_ci(ef_num[sa_ok, 7]),
+                "soi_behavior": mean_se_ci(ef_num[sb_ok, 8]),
+                "total_effort_min": mean_se_ci(ef_num[sg_e & tot_ok, 2]),
+            }
+        b_cell["men_to_women_soi_desire_ratio"] = float(
+            b_cell["men"]["soi_desire"]["mean"] / b_cell["women"]["soi_desire"]["mean"]
+        )
+        soi_and_effort_by_age[b_lbl] = b_cell
+
+    courtship_effort_and_soi_lifecycle = {
+        "by_relationship_stage": effort_by_stage,
+        "by_age_bracket": soi_and_effort_by_age,
+    }
+
     return {
         "sha256": OPEN_INPUTS["kowal2025_Final_dataset.csv"]["sha256"],
         "inclusion_flow": {
@@ -1256,6 +1492,9 @@ def analyze_kowal(csv_path: Path, hon_countries: dict, rng: np.random.Generator)
         "checklist_and_surplus_decomposition": checklist_and_surplus_decomposition,
         "short_vs_long_term_ideals": short_vs_long_term_ideals,
         "jealousy_asymmetry": jealousy_asymmetry,
+        "homophily_vs_kindness": homophily_vs_kindness,
+        "reverence_vs_settling_kink": reverence_vs_settling_kink,
+        "courtship_effort_and_soi_lifecycle": courtship_effort_and_soi_lifecycle,
     }
 
 
@@ -1886,6 +2125,121 @@ def analyze_hcmst_2017(dta_path: Path) -> dict:
         bq_draws[b] = np.linalg.lstsq(X_q[bi], y_q[bi], rcond=None)[0][1]
 
     app_mean_t = by_venue["online_dating_app"]["pre_romance_acquaintance_years"]["mean"]
+
+    # Cohabitation Rush Hazard & Marital-vs.-Nonmarital Breakup Initiation Asymmetry
+    rng_h_v15 = np.random.default_rng(SEED + 551)
+    df_cat = pd.read_stata(dta_path, convert_categoricals=True)
+    t_rel_cohab = pd.to_numeric(df["time_from_rel_to_cohab"], errors="coerce").to_numpy(dtype=np.float64)
+    yr_relstart = pd.to_numeric(df["year_fraction_relstart"], errors="coerce").to_numpy(dtype=np.float64)
+    ended_mar = df_cat["w6_relationship_end_mar"].isin(["divorce", "separation with no divorce"]).to_numpy()
+    ended_nonmar = (df_cat["w6_relationship_end_nonmar"] == "We broke up").to_numpy()
+    broke_up_vec = (ended_mar | ended_nonmar).astype(np.float64)
+
+    cohab_ok = np.isfinite(t_rel_cohab) & (t_rel_cohab >= 0.0)
+    cohab_windows = {}
+    for w_key, c_lo, c_hi, inc_lo in (
+        ("le_3m_rush", 0.0, 0.25, True),
+        ("gt_3m_to_1y", 0.25, 1.0, False),
+        ("gt_1y_to_2_5y", 1.0, 2.5, False),
+        ("gt_2_5y", 2.5, 100.0, False),
+    ):
+        cm_w = cohab_ok & ((t_rel_cohab >= c_lo) if inc_lo else (t_rel_cohab > c_lo)) & (t_rel_cohab <= c_hi)
+        nw_c = int(cm_w.sum())
+        kb_c = int(broke_up_vec[cm_w].sum())
+        cohab_windows[w_key] = {
+            "n_couples": nw_c,
+            "breakups": kb_c,
+            "breakup_share": float(kb_c / nw_c),
+            "wilson_ci_95": wilson_ci_95(kb_c, nw_c),
+        }
+
+    reg_cohab_m = cohab_ok & np.isfinite(yr_relstart) & np.isfinite(age_resp)
+    X_coh = np.column_stack([
+        np.ones(int(reg_cohab_m.sum()), dtype=np.float64),
+        (t_rel_cohab[reg_cohab_m] <= 0.25).astype(np.float64),
+        yr_relstart[reg_cohab_m] - 2000.0,
+        age_resp[reg_cohab_m] - 45.0,
+    ])
+    y_coh = broke_up_vec[reg_cohab_m]
+    beta_coh_pp = float(100.0 * np.linalg.lstsq(X_coh, y_coh, rcond=None)[0][1])
+    nc_reg = int(reg_cohab_m.sum())
+    b_coh_draws = np.empty(1500, dtype=np.float64)
+    for b_i in range(1500):
+        bi_c = rng_h_v15.integers(0, nc_reg, size=nc_reg)
+        b_coh_draws[b_i] = 100.0 * np.linalg.lstsq(X_coh[bi_c], y_coh[bi_c], rcond=None)[0][1]
+
+    cohabitation_rush_hazard = {
+        "epistemic_tier": "observational_retrospective_cohort_age_adjusted",
+        "n_ever_cohabited": int(cohab_ok.sum()),
+        "by_romance_to_cohab_window": cohab_windows,
+        "le_3m_to_gt_2_5y_breakup_ratio": float(
+            cohab_windows["le_3m_rush"]["breakup_share"] / cohab_windows["gt_2_5y"]["breakup_share"]
+        ),
+        "cohort_age_adjusted_rush_le_3m_pp": {
+            "n": nc_reg,
+            "estimate": beta_coh_pp,
+            "ci_95": np.quantile(b_coh_draws, [0.025, 0.975]).tolist(),
+        },
+    }
+
+    opp_sex_m = pd.to_numeric(df["w6_same_sex_couple"], errors="coerce").to_numpy(dtype=np.float64) == 0.0
+    resp_gender_s = df_cat["ppgender"].astype(str).to_numpy()
+
+    def summarize_who_wanted_breakup(col_name: str) -> dict:
+        col_vals = df_cat[col_name]
+        w_more = m_more = eq_cnt = 0
+        m_resp_wife_more = m_resp_self_more = 0
+        f_resp_self_more = f_resp_husb_more = 0
+        for is_opp, rg, raw_w in zip(opp_sex_m, resp_gender_s, col_vals):
+            if not is_opp or pd.isna(raw_w):
+                continue
+            ws = str(raw_w)
+            if "Refused" in ws or ws in ("", "nan"):
+                continue
+            if "equally" in ws:
+                eq_cnt += 1
+            elif ws.startswith("I wanted"):
+                if rg == "Female":
+                    w_more += 1
+                    f_resp_self_more += 1
+                elif rg == "Male":
+                    m_more += 1
+                    m_resp_self_more += 1
+            elif "Partner" in ws:
+                if rg == "Female":
+                    m_more += 1
+                    f_resp_husb_more += 1
+                elif rg == "Male":
+                    w_more += 1
+                    m_resp_wife_more += 1
+        tot_b = w_more + m_more + eq_cnt
+        unil_b = w_more + m_more
+        m_unil = m_resp_wife_more + m_resp_self_more
+        f_unil = f_resp_self_more + f_resp_husb_more
+        return {
+            "n_total": int(tot_b),
+            "woman_wanted_more": int(w_more),
+            "man_wanted_more": int(m_more),
+            "equal_mutual": int(eq_cnt),
+            "equal_mutual_share": float(eq_cnt / tot_b),
+            "woman_share_of_all": float(w_more / tot_b),
+            "woman_share_of_unilateral": float(w_more / unil_b),
+            "woman_unilateral_wilson_ci_95": wilson_ci_95(w_more, unil_b),
+            "by_respondent_gender_unilateral": {
+                "male_respondents_wife_wanted_more": int(m_resp_wife_more),
+                "male_respondents_self_wanted_more": int(m_resp_self_more),
+                "male_respondents_wife_share": float(m_resp_wife_more / m_unil),
+                "female_respondents_self_wanted_more": int(f_resp_self_more),
+                "female_respondents_partner_wanted_more": int(f_resp_husb_more),
+                "female_respondents_self_share": float(f_resp_self_more / f_unil),
+            },
+        }
+
+    breakup_initiation_asymmetry = {
+        "married_divorce_or_separation": summarize_who_wanted_breakup("w6_who_breakup"),
+        "nonmarital_breakup": summarize_who_wanted_breakup("w6_breakup_nonmar"),
+    }
+
     return {
         "sha256": OPEN_INPUTS["hcmst2017_public_v1.1.dta"]["sha256"],
         "total_respondents": int(len(df)),
@@ -1906,6 +2260,8 @@ def analyze_hcmst_2017(dta_path: Path) -> dict:
             "online_app_minus_offline_pts_1_to_5": beta_q,
             "ci_95": np.quantile(bq_draws, [0.025, 0.975]).tolist(),
         },
+        "cohabitation_rush_hazard": cohabitation_rush_hazard,
+        "breakup_initiation_asymmetry": breakup_initiation_asymmetry,
     }
 
 
@@ -2368,6 +2724,123 @@ def build_macro_selection_kpis(result: dict) -> dict:
     }
 
 
+def analyze_proposition_23_e23() -> dict:
+    """Proposition 23 (E23): Secondary courtship staging, witness-rushed lock-in, unilateral marital exit, & second-act re-entry."""
+    rng_e23 = np.random.default_rng(SEED + 801)
+    n_sim = 40000
+
+    def norm_cdf_scalar(z: float) -> float:
+        return 0.5 * (1.0 + math.erf(z / math.sqrt(2.0)))
+
+    # (i) Secondary courtship staging moral hazard (Dating open competition vs. Married lock-in shield)
+    gamma_mkt_mu, gamma_mkt_sd = 2.20, 0.30
+    c_effort = 0.01
+    lam_shield = 0.17
+    gammas = rng_e23.normal(gamma_mkt_mu, gamma_mkt_sd, size=n_sim)
+    e_date_cf = gamma_mkt_mu / c_effort
+    e_mar_cf = (1.0 - lam_shield) * gamma_mkt_mu / c_effort
+    e_date_sim = float(np.mean(gammas / c_effort + rng_e23.normal(0.0, 4.0, size=n_sim)))
+    e_mar_sim = float(np.mean((1.0 - lam_shield) * gammas / c_effort + rng_e23.normal(0.0, 4.0, size=n_sim)))
+
+    # (ii) Pre-cohabitation witness rush hazard (months m of unstaged observation before cohabitation)
+    mu_p, sigma_p, sigma_eps = 0.50, 0.60, 1.20
+    theta_enter, theta_stay = 0.35, 0.17
+    p_true = rng_e23.normal(mu_p, sigma_p, size=n_sim)
+    witness_curves = {}
+    z_grid = np.linspace(theta_enter, mu_p + 6.0 * sigma_p, 800)
+    dz = float(z_grid[1] - z_grid[0])
+    erf_vec = np.vectorize(math.erf)
+    for m_months in (2, 6, 18, 30):
+        inv_tau = 1.0 / (1.0 / (sigma_p ** 2) + m_months / (sigma_eps ** 2))
+        v_hat = max(sigma_p ** 2 - inv_tau, 1e-9)
+        sd_hat = math.sqrt(v_hat)
+        sd_post = math.sqrt(inv_tau)
+        p_enter_cf = 1.0 - norm_cdf_scalar((theta_enter - mu_p) / sd_hat)
+        dens_z = np.exp(-0.5 * ((z_grid - mu_p) / sd_hat) ** 2) / (math.sqrt(2.0 * math.pi) * sd_hat)
+        cond_fail_z = 0.5 * (1.0 + erf_vec((theta_stay - z_grid) / (sd_post * math.sqrt(2.0))))
+        breakup_cf = float(np.sum(cond_fail_z * dens_z) * dz / p_enter_cf)
+
+        y_bar = p_true + rng_e23.normal(0.0, sigma_eps / math.sqrt(m_months), size=n_sim)
+        p_hat = inv_tau * (mu_p / (sigma_p ** 2) + (m_months / (sigma_eps ** 2)) * y_bar)
+        entered = p_hat >= theta_enter
+        breakup_sim = float(np.mean(p_true[entered] < theta_stay))
+        witness_curves[f"m_{m_months}"] = {
+            "months": m_months,
+            "breakup_closed_form": breakup_cf,
+            "breakup_sim": breakup_sim,
+            "abs_diff": float(abs(breakup_cf - breakup_sim)),
+        }
+
+    # (iii) Symmetric non-marital breakups vs. asymmetric female unilateral divorce under marital lock-in
+    mu_u, sigma_u = 0.65, 0.55
+    q_def, delta_f, delta_m = 0.35, 0.72, 0.32
+    pf0 = norm_cdf_scalar(-mu_u / sigma_u)
+    pm0 = norm_cdf_scalar(-mu_u / sigma_u)
+    pf1 = norm_cdf_scalar(-(mu_u - delta_f) / sigma_u)
+    pm1 = norm_cdf_scalar(-(mu_u - delta_m) / sigma_u)
+    nonmar_w_unil_cf = 0.5
+    mar_w_only_cf = (1.0 - q_def) * pf0 * (1.0 - pm0) + q_def * pf1 * (1.0 - pm1)
+    mar_m_only_cf = (1.0 - q_def) * pm0 * (1.0 - pf0) + q_def * pm1 * (1.0 - pf1)
+    mar_w_unil_cf = float(mar_w_only_cf / (mar_w_only_cf + mar_m_only_cf))
+
+    uf_nm = rng_e23.normal(mu_u, sigma_u, size=n_sim) < 0.0
+    um_nm = rng_e23.normal(mu_u, sigma_u, size=n_sim) < 0.0
+    nonmar_w_unil_sim = float(np.sum(uf_nm & (~um_nm)) / np.sum(uf_nm ^ um_nm))
+
+    def_shock = rng_e23.random(size=n_sim) < q_def
+    uf_m = (rng_e23.normal(mu_u, sigma_u, size=n_sim) - def_shock * delta_f) < 0.0
+    um_m = (rng_e23.normal(mu_u, sigma_u, size=n_sim) - def_shock * delta_m) < 0.0
+    mar_w_unil_sim = float(np.sum(uf_m & (~um_m)) / np.sum(uf_m ^ um_m))
+
+    # (iv) Second-act re-entry divergence (Single vs. Divorced vs. Widowed formal marriage intent)
+    reentry_specs = {
+        "single": (-1.445, -1.495),
+        "divorced": (-1.590, -1.535),
+        "widowed": (-1.360, -1.287),
+    }
+    reentry_e23 = {}
+    for st_name, (zf, zm) in reentry_specs.items():
+        cf_f, cf_m = norm_cdf_scalar(zf), norm_cdf_scalar(zm)
+        sim_f = float(np.mean(zf + rng_e23.normal(0.0, 1.0, size=n_sim) > 0.0))
+        sim_m = float(np.mean(zm + rng_e23.normal(0.0, 1.0, size=n_sim) > 0.0))
+        reentry_e23[st_name] = {
+            "women_marry_closed_form": cf_f,
+            "women_marry_sim": sim_f,
+            "men_marry_closed_form": cf_m,
+            "men_marry_sim": sim_m,
+            "men_minus_women_closed_form_pp": float(100.0 * (cf_m - cf_f)),
+            "abs_max_diff": float(max(abs(cf_f - sim_f), abs(cf_m - sim_m))),
+        }
+
+    return {
+        "n_sim": n_sim,
+        "part_i_staging_moral_hazard": {
+            "dating_min_closed_form": float(e_date_cf),
+            "dating_min_sim": e_date_sim,
+            "married_min_closed_form": float(e_mar_cf),
+            "married_min_sim": e_mar_sim,
+            "drop_pct_closed_form": float(100.0 * (e_mar_cf - e_date_cf) / e_date_cf),
+            "abs_diff_min": float(max(abs(e_date_cf - e_date_sim), abs(e_mar_cf - e_mar_sim))),
+        },
+        "part_ii_witness_rush_hazard": {
+            "by_months": witness_curves,
+            "rush_m2_to_patient_m30_ratio": float(
+                witness_curves["m_2"]["breakup_closed_form"] / witness_curves["m_30"]["breakup_closed_form"]
+            ),
+        },
+        "part_iii_unilateral_divorce_flip": {
+            "nonmarital_woman_unilateral_closed_form": nonmar_w_unil_cf,
+            "nonmarital_woman_unilateral_sim": nonmar_w_unil_sim,
+            "married_woman_unilateral_closed_form": mar_w_unil_cf,
+            "married_woman_unilateral_sim": mar_w_unil_sim,
+            "abs_max_diff": float(
+                max(abs(nonmar_w_unil_cf - nonmar_w_unil_sim), abs(mar_w_unil_cf - mar_w_unil_sim))
+            ),
+        },
+        "part_iv_second_act_reentry": reentry_e23,
+    }
+
+
 def analyze_open(inputs_dir: Path, root_dir: Path, hon_countries: dict) -> dict:
     rng = np.random.default_rng(SEED)
     shared_root_inputs = Path("/home/ubuntu/jeath/target/performance-before-outcomes/inputs")
@@ -2403,6 +2876,7 @@ def analyze_open(inputs_dir: Path, root_dir: Path, hon_countries: dict) -> dict:
         "hcmst_2017": analyze_hcmst_2017(hcmst_path),
         "okcupid_jse": analyze_okcupid_jse(okc_prof_path, okc_ess_path),
         "two_way_jury": analyze_two_way_jury(rng),
+        "proposition_23_e23": analyze_proposition_23_e23(),
         "published_benchmarks": {
             "havlicek_2020_mhc": list(HAVLICEK_2020_MHC),
             "eastwick_2025_composites": list(EASTWICK_2025_COMPOSITES),

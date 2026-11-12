@@ -1,7 +1,7 @@
 % Self-contained four-part technical appendix for Performance Before Outcomes (IEEE two-column monograph).
 \twocolumn[{\noindent{\footnotesize\scshape\color{accent}Technical Appendix}\par\vspace{2pt}
 \noindent{\Large\bfseries Formal Models, Complete Proofs, Paleoclimatic Audit, and Platform Sensitivity}\par\vspace{3pt}
-\noindent{\footnotesize\color{ink2} Appendix~A: Twenty-Two Propositions, Corollaries, and Complete Proofs \quad$\cdot$\quad Appendix~B: Numerical Verification and the 1.5--0.7\,Ma Plateau Audit \quad$\cdot$\quad Appendix~C: Digital-Platform, Stature, Facial-Attribution, and \texttt{HoloFace-L1} Audits \quad$\cdot$\quad Appendix~D: Survey Cohort Robustness and Pre-Committed Falsifiers}\par\vspace{4pt}
+\noindent{\footnotesize\color{ink2} Appendix~A: Twenty-Three Propositions, Corollaries, and Complete Proofs \quad$\cdot$\quad Appendix~B: Numerical Verification and the 1.5--0.7\,Ma Plateau Audit \quad$\cdot$\quad Appendix~C: Digital-Platform, Stature, Facial-Attribution, and \texttt{HoloFace-L1} Audits \quad$\cdot$\quad Appendix~D: Survey Cohort Robustness and Pre-Committed Falsifiers}\par\vspace{4pt}
 \noindent{\color{rulegray}\rule{\textwidth}{0.5pt}}\par\vspace{8pt}}]
 
 \appendices
@@ -319,6 +319,16 @@ For $\Delta_{\mathrm{pair}}>0$, equilibrium brain volume increases strictly in p
 \end{equation}
 \end{proposition}
 
+\begin{proposition}[Lifecycle staging and marital exit]\label{prop:lifecycle}
+Consider courtship, union lock-in, dissolution, and remarriage across stages:
+\begin{enumerate}[leftmargin=1.5em,itemsep=1pt,topsep=2pt]
+\item[(i)] \emph{Courtship staging drop.} If daily secondary display effort $e\ge 0$ yields market return $\gamma_{\mathrm{mkt}}(1-\lambda_{\mathrm{stage}})e-\tfrac{c_e}{2}e^2$ with courtship $\lambda_{\mathrm{date}}=0$ and marital commitment shield $\lambda_{\mathrm{mar}}\in(0,1)$, optimal effort falls from $e_{\mathrm{date}}^*=\gamma_{\mathrm{mkt}}/c_e$ to $e_{\mathrm{mar}}^*=(1-\lambda_{\mathrm{mar}})e_{\mathrm{date}}^*$ (fractional drop $-\lambda_{\mathrm{mar}}$).
+\item[(ii)] \emph{Pre-cohabitation rush hazard.} Suppose latent primary reliability $p\sim\N(\mu_p,\sigma_p^2)$ is audited across $m>0$ unstaged periods via $\bar Y_m=p+\bar\varepsilon_m$ ($\bar\varepsilon_m\sim\N(0,\sigma_\varepsilon^2/m)$), with posterior mean $\hat p_m\sim\N(\mu_p,\sigma_p^2-\tau_m^2)$ and residual variance $\tau_m^2=(\sigma_p^{-2}+m\sigma_\varepsilon^{-2})^{-1}$. Entering lock-in when $\hat p_m\ge\theta_{\mathrm{in}}$ yields post-entry failure rate $H(m)=\Pr(p<\theta_{\mathrm{stay}}\mid\hat p_m\ge\theta_{\mathrm{in}})$, which decreases strictly with $m$ whenever $\theta_{\mathrm{in}}\ge\mu_p>\theta_{\mathrm{stay}}$.
+\item[(iii)] \emph{Marriage-specific unilateral exit flip.} Let spouses $s\in\{f,m\}$ draw independent baseline continuation utilities $U_{s,0}\sim\N(\mu_u,\sigma_u^2)$ ($\mu_u>0$). Without lock-in or defection ($q=0$), unilateral exit $\Pr(U_f<0<U_m\mid U_f<0\oplus U_m<0)=\tfrac12$. Under marital lock-in where unscreened primary defection occurs with probability $q\in(0,1)$ and imposes asymmetric domestic/care loss $\delta_f>\delta_m>0$ ($U_s=U_{s,0}-D\delta_s$, $D\sim\mathrm{Bernoulli}(q)$) with $\mu_u\ge\tfrac12\delta_f$, women's share of unilateral divorces strictly exceeds $\tfrac12$.
+\item[(iv)] \emph{Second-act re-entry divergence.} Let formal marriage demand be $P_{s,h}=\Phi(z_{s,h})$ for sex $s$ and marital history $h\in\{\mathrm{sin},\mathrm{div},\mathrm{wid}\}$. Updating legal lock-in cost after divorce ($z_{f,\mathrm{div}}=z_{f,\mathrm{sin}}-\kappa_{\mathrm{lock}}$, $\kappa_{\mathrm{lock}}>0$) lowers $P_{f,\mathrm{div}}<P_{f,\mathrm{sin}}$ without lowering intrinsic pair-bond valuation, whereas losing a cooperative hearth via widowhood raises male replacement demand above female ($P_{m,\mathrm{wid}}>P_{f,\mathrm{wid}}$) whenever male solitary domestic loss exceeds female ($z_{m,\mathrm{wid}}>z_{f,\mathrm{wid}}$).
+\end{enumerate}
+\end{proposition}
+
 \subsection{Complete Proofs}\label{app:proofs}
 \noindent\textbf{Gaussian tilting lemma.} For jointly Gaussian $(A,\mathbf X)$ and $w=\exp(\mathbf h^\top\mathbf X)$, differentiating the joint moment-generating function gives $\E[Aw]/\E[w]=\E[A]+\Cov(A,\mathbf h^\top\mathbf X)$. For $x\sim\N(0,V)$ and $w=\exp(kx-\tfrac c2x^2)$, completing the square yields tilted law $\N(kV/(1+cV),V/(1+cV))$.
 
@@ -338,16 +348,18 @@ For $\Delta_{\mathrm{pair}}>0$, equilibrium brain volume increases strictly in p
 
 \noindent\textbf{Proposition~\ref{prop:childhood}.} Under $\widehat{O}\sim\N(\mu_O,\sigma_O^2)$, bond survival through $T_J$ has probability $\Pr(\widehat{O}\le u_0+L)=\Phi\big((u_0+L-\mu_O)/\sigma_O\big)=p_{\mathrm{bond}}(L)$. Equating $\kappa_1(B_{\mathrm{cap}}-B_0)^2=M_{\mathrm{tot}}(L)$ on $B_{\mathrm{cap}}>B_0$ gives $B_{\mathrm{cap}}(L,\kappa_1)=B_0+\tau\sqrt{M_{\mathrm{tot}}(L)}$ with $\tau=\kappa_1^{-1/2}$. For $B\sim\N(\bar B,V_P)$ under $\ln w(B)=\beta_S B-\tfrac{\lambda_V}{2}(B-B_{\mathrm{cap}})^2$, Lande's selection gradient $\partial\E[\ln w]/\partial\bar B=\beta_S-\lambda_V(\bar B-B_{\mathrm{cap}})$ has unique globally stable zero $B^*(L,\kappa_1)=B_{\mathrm{cap}}(L,\kappa_1)+\beta_S/\lambda_V$, establishing Eq.~\eqref{eq:childhood} (reducing to the solitary-mother ceiling $B_0+\sqrt{M_{\mathrm{mom}}/\kappa_1}+\beta_S/\lambda_V$ when $\Delta_{\mathrm{allo}}=\Delta_{\mathrm{pair}}=0$). Differentiating $B^*=B_0+\tau\sqrt{M_{\mathrm{tot}}(L)}+\beta_S/\lambda_V$ yields $\partial B^*/\partial L=\tau\Delta_{\mathrm{pair}}\varphi(z)/(2\sigma_O\sqrt{M_{\mathrm{tot}}(L)})>0$ for $z=(u_0+L-\mu_O)/\sigma_O$ and $\Delta_{\mathrm{pair}}>0$, and differentiating with respect to $\tau$ yields Eq.~\eqref{eq:childcomp}. \qed
 
+\noindent\textbf{Proposition~\ref{prop:lifecycle}.} (i)~Strict concavity in $e$ gives first-order condition $\gamma_{\mathrm{mkt}}(1-\lambda_{\mathrm{stage}})-c_ee^*=0$, hence $e_{\mathrm{mar}}^*/e_{\mathrm{date}}^*=1-\lambda_{\mathrm{mar}}$. (ii)~Conditional on $\hat p_m=z\ge\theta_{\mathrm{in}}$, $p\mid(\hat p_m=z)\sim\N(z,\tau_m^2)$, so $\Pr(p<\theta_{\mathrm{stay}}\mid\hat p_m=z)=\Phi\big((\theta_{\mathrm{stay}}-z)/\tau_m\big)$, which decreases strictly in both $z$ and $\tau_m^{-1}$ since $z\ge\theta_{\mathrm{in}}>\theta_{\mathrm{stay}}$; moreover, $\hat p_m=\mu_p+s_m Z$ ($Z\sim\N(0,1)$, $s_m=\sqrt{\sigma_p^2-\tau_m^2}$ strictly increasing in $m$), and for $\theta_{\mathrm{in}}\ge\mu_p$ the truncated standardized variable $Z\mid(Z\ge(\theta_{\mathrm{in}}-\mu_p)/s_m)$ induces $\hat p_m(m)=\mu_p+s_m Z$ with $\partial[\theta_{\mathrm{stay}}-(\mu_p+s_m z)]/\partial m<0$ at every quantile above truncation, strictly reducing $H(m)$. (iii)~At $q=0$, $U_{f,0},U_{m,0}$ are i.i.d., so $\Pr(U_f<0<U_m)=\Pr(U_m<0<U_f)$. For $q>0$, let $p_{s,1}=\Phi(-(\mu_u-\delta_s)/\sigma_u)$; since $\delta_f>\delta_m>0$, $p_{f,1}>p_{m,1}$, so $p_{f,1}(1-p_{m,1})-p_{m,1}(1-p_{f,1})=p_{f,1}-p_{m,1}>0$, strictly lifting women's unilateral share $[(1-q)p_0(1-p_0)+qp_{f,1}(1-p_{m,1})]/[(1-q)2p_0(1-p_0)+q(p_{f,1}+p_{m,1}-2p_{f,1}p_{m,1})]>\tfrac12$. (iv)~Monotonicity of $\Phi(\cdot)$ yields $\Phi(z_{f,\mathrm{sin}}-\kappa_{\mathrm{lock}})<\Phi(z_{f,\mathrm{sin}})$ and $\Phi(z_{m,\mathrm{wid}})>\Phi(z_{f,\mathrm{wid}})$. \qed
+
 \setcounter{table}{0}
 \renewcommand{\thetable}{B\arabic{table}}
 \renewcommand{\theHtable}{AppB.tab.\arabic{table}}
 
 \section{Simulation Verification and Paleoclimatic Audit of the \texorpdfstring{1.5--0.7\,Ma}{1.5-0.7 Ma} Plateau}\label{app:paleo}
 
-Every analytical proposition in Appendix~\ref{app:theory} was verified in Python with fixed \texttt{SeedSequence} seeds against independent Monte Carlo and individual-based evolutionary simulations (E1--E22, plus zero-shared-code audit scripts A1--A17; Table~\ref{tab:experiments}). Across all closed-form checks, simulated selection differentials, equilibrium trait means, and variance recursions agree with analytical formulas within Monte Carlo sampling precision (maximum standardized deviation $|z|=\AudZ$; exact algebraic and quadrature checks $\le\AudEq$).
+Every analytical proposition in Appendix~\ref{app:theory} was verified in Python with fixed \texttt{SeedSequence} seeds against independent Monte Carlo and individual-based evolutionary simulations (E1--E23, plus zero-shared-code audit scripts A1--A17; Table~\ref{tab:experiments}). Across all closed-form checks, simulated selection differentials, equilibrium trait means, and variance recursions agree with analytical formulas within Monte Carlo sampling precision (maximum standardized deviation $|z|=\AudZ$; exact algebraic and quadrature checks $\le\AudEq$).
 
 \begin{table}[!t]
-\caption{Summary of Numerical Verification Suite (\texttt{E1}--\texttt{E22}, \texttt{A1}--\texttt{A17}).}\label{tab:experiments}
+\caption{Summary of Numerical Verification Suite (\texttt{E1}--\texttt{E23}, \texttt{A1}--\texttt{A17}).}\label{tab:experiments}
 \scriptsize
 \setlength{\tabcolsep}{3.2pt}
 \begin{tabularx}{\columnwidth}{@{}lLL@{}}
@@ -358,7 +370,7 @@ E1--E3, E9 & Props.~\ref{prop:identity}--\ref{prop:diversity} ($10^5$--$2\times1
 E4--E6 & Props.~\ref{prop:assort}--\ref{prop:tissue}, deferred acceptance & Infinitesimal $V_A$ within \MGerr\%; Lande tissue eq.\ $\PersSim\pm\PersSD$ vs.\ \PersPred \\
 E10--E12 & Props.~\ref{prop:aim}--\ref{prop:despot} (contest aim, risk, skew) & Aim $|z|=\AimMaxZ$; optimal bout count $|z|=\RepMaxZ$; log-concavity exact \\
 E15--E16 & Props.~\ref{prop:time}--\ref{prop:division}, \ref{prop:staging}--\ref{prop:enforce} & Aim ratio within \PolyAimErr\%; staging $\le\VerMaxDiff$; IBM enforcement $\le\EnfIbmDiff$ \\
-E21--E22, 2-way & Props.~\ref{prop:ancestors}--\ref{prop:childhood}, Cor.~\ref{cor:ritual}--\ref{cor:narrow} & Drift $N_e/N$ within \NtAncErr\%; 2-way MC $|\Delta R^2|\le 0.003$; E22 Lande $|\Delta B^*|\le 0.75\ccm$ \\
+E21--E23, 2-way & Props.~\ref{prop:ancestors}--\ref{prop:lifecycle}, Cor.~\ref{cor:ritual}--\ref{cor:narrow} & Drift $N_e/N$ within \NtAncErr\%; 2-way $|\Delta R^2|\le 0.003$; E22 $|\Delta B^*|\le 0.75\ccm$; E23 $|\Delta e^*|\le 0.04$\,min, $|\Delta\Pr|\le 0.006$ \\
 A1--A17 & Independent re-derivations \& raw-file recounts & Quadrature $\AudQuad$; Lande $\AudEq$; raw survey/culture recounts $\AudCultures$ diff \\
 \bottomrule
 \end{tabularx}
@@ -452,7 +464,7 @@ Tables~\ref{tab:hon_sens}--\ref{tab:pov_sens} audit the 6.68M Hot-or-Not and 1.1
 
 \section{Survey Cohort Robustness and Pre-Committed Falsifiers}\label{app:falsifiers}
 
-Tables~\ref{tab:gssrobust} and~\ref{tab:gssgate} verify that the sex-asymmetric access differential on men's personal income ($\GssIncMAcc\SD$) versus negative family-size differentials in both sexes (General Social Survey, 1972--2024, $n=\GssN$) holds across unweighted estimation, narrower completed-fertility ages (50--74), survey-period splits, and birth cohorts (1920--1979) even as non-marital childbearing rose. Finally, Table~\ref{tab:falsifiers} pre-commits fourteen discriminating empirical tests and explicit observations that would falsify or bound each link of the multi-context jury framework.
+Tables~\ref{tab:gssrobust} and~\ref{tab:gssgate} verify that the sex-asymmetric access differential on men's personal income ($\GssIncMAcc\SD$) versus negative family-size differentials in both sexes (General Social Survey, 1972--2024, $n=\GssN$) holds across unweighted estimation, narrower completed-fertility ages (50--74), survey-period splits, and birth cohorts (1920--1979) even as non-marital childbearing rose. Finally, Table~\ref{tab:falsifiers} pre-commits fifteen discriminating empirical tests and explicit observations that would falsify or bound each link of the multi-context jury framework.
 
 \begin{table*}[!t]
 \caption{Robustness of the Access--Number Selection Decomposition Across Survey Weights, Age Windows, and Periods (GSS 1972--2024).}\label{tab:gssrobust}
@@ -473,9 +485,9 @@ Tables~\ref{tab:gssrobust} and~\ref{tab:gssgate} verify that the sex-asymmetric 
 \end{table*}
 
 \begin{table*}[!t]
-\caption{Fourteen Pre-Committed Discriminating Predictions and Explicit Falsifying Outcomes.}\label{tab:falsifiers}
+\caption{Fifteen Pre-Committed Discriminating Predictions and Explicit Falsifying Outcomes.}\label{tab:falsifiers}
 \scriptsize
-\renewcommand{\arraystretch}{0.80}
+\renewcommand{\arraystretch}{0.79}
 \setlength{\tabcolsep}{3.5pt}
 \begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}p{0.20\textwidth}LL@{}}
 \toprule
@@ -495,6 +507,7 @@ F11 & Cue vs.\ trait response (Cor.~\ref{cor:cue}) & Separating preference slope
 F12 & Witness density and union timing (Prop.~\ref{prop:waiting}) & Survival analysis of time-to-cohabitation/marriage by mutual-acquaintance and kin-witness density at first meeting & Thin witness networks show equal or faster progression to durable fertility-producing unions, net of selection \\
 F13 & Entry filtering vs.\ pair-bond welfare (Prop.~\ref{prop:love}) & Longitudinal tracking of unions formed via vertical filters vs.\ social networks, plus social-media abstinence trials & Entry consensus attributes (money, stature, photo rank) predict multi-year satisfaction as strongly as kindness \\
 F14 & Childhood metabolic \& pair-bond ceiling (Prop.~\ref{prop:childhood}) & Phylogenetic regression of adult endocranial volume on juvenile brain RMR, biparental care, and diet across mammals & Lineages cross the $\sim\!650$--$700\ccm$ juvenile ceiling under solo maternal care without pair-bond/dietary release \\
+F15 & Lifecycle staging, rush hazard \& exit (Prop.~\ref{prop:lifecycle}) & Prospective dyadic time-use diaries from courtship into marriage, pre-cohabitation witness audits, and registry remarriage panels & Within-couple staging effort stays flat after marriage, $\le 3$\,mo rushed cohabitation shows equal survival, or marital exit stays sex-symmetric \\
 \bottomrule
 \end{tabularx}
 \end{table*}

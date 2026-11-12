@@ -517,11 +517,11 @@ def fig1_main_plot(data):
     chk_kow = kowal["checklist_and_surplus_decomposition"]["pooled"]["predictors_sd_per_sd"]
     pvc_gap = 100.0 * data["holoface_benchmark"]["psychometric_voter_ceiling"]["tiers"]["votes_500_plus"]["irreducible_single_context_gap_full"]
 
-    fig = plt.figure(figsize=(7.22, 2.88))
-    outer = fig.add_gridspec(1, 3, width_ratios=[1.22, 1.15, 1.08], wspace=0.33)
-    fig.subplots_adjust(left=0.068, right=0.992, bottom=0.155, top=0.885)
+    fig = plt.figure(figsize=(7.22, 2.94))
+    outer = fig.add_gridspec(1, 3, width_ratios=[1.22, 1.15, 1.08], wspace=0.36)
+    fig.subplots_adjust(left=0.068, right=0.992, bottom=0.155, top=0.880)
 
-    # Panel A: 800-kyr Brain Ceiling (~908 cm^3), Childhood 66.3% RMR Peak & Campfire-Love Release
+    # Panel A: Brain Growth, 800-kyr Stasis (~908 cm^3), & Cooking + Childhood Pair-Bond Release
     a_gs = outer[0, 0].subgridspec(2, 1, height_ratios=[1.92, 1.0], hspace=0.10)
     ax_a = fig.add_subplot(a_gs[0, 0])
     ax_lr = fig.add_subplot(a_gs[1, 0], sharex=ax_a)
@@ -543,49 +543,49 @@ def fig1_main_plot(data):
     xx = np.linspace(3.28, 0.01, 500)
     ax_a.plot(xx, fossil_step_curve(fossils, xx), color=INK, lw=1.7, zorder=5)
     ax_a.annotate(
-        "", xy=(1.12, 1660), xytext=(1.50, 1660),
+        "", xy=(1.12, 1820), xytext=(1.50, 1820),
         arrowprops=dict(arrowstyle="<->", color=INK, lw=0.75),
     )
-    ax_a.text(1.31, 1770, "380–711 kyr lead", fontsize=5.3, color=INK, ha="center", va="bottom", fontweight="bold")
+    ax_a.text(1.31, 1980, "380\u2013711 kyr lead", fontsize=5.1, color=INK, ha="center", va="bottom", fontweight="bold")
     ax_a.text(
-        1.12, 1080, "~908 cm³\nstasis", fontsize=5.4, color=INK, ha="center", va="center", fontweight="bold",
-        linespacing=1.02, bbox=dict(boxstyle="round,pad=0.12", fc="white", ec="none", alpha=0.86),
+        1.12, 1120, "Stalled 800 kyr\n(~908 cm\u00b3)", fontsize=5.2, color=INK, ha="center", va="center", fontweight="bold",
+        linespacing=1.02, bbox=dict(boxstyle="round,pad=0.12", fc="white", ec="none", alpha=0.88),
     )
     ax_a.text(
-        2.56, 1520,
-        f"Age 4.5: {cc['kuzawa_2014_brain_metabolism']['peak_rmr_pct']:.1f}% RMR\nSCCS: 0% solo mom",
-        fontsize=4.85, color=VIOLET, ha="center", va="center", fontweight="bold", linespacing=1.02,
+        2.58, 1380,
+        f"Age 4.5: {cc['kuzawa_2014_brain_metabolism']['peak_rmr_pct']:.0f}% RMR\nSCCS: 0% solo mom",
+        fontsize=4.8, color=VIOLET, ha="center", va="center", fontweight="bold", linespacing=1.02,
         bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
     )
     for xf in (1.0, 0.78):
         ax_a.plot([xf], [318], marker="^", ms=4.0, color=AQUA, zorder=6)
-    ax_a.text(0.84, 540, "fire + pair-bond\n(+50%/Myr surge)", fontsize=4.95, color=AQUA, ha="center", fontweight="bold", linespacing=1.0)
+    ax_a.text(0.82, 540, "Fire + love\n(+50%/Myr)", fontsize=4.9, color=AQUA, ha="center", fontweight="bold", linespacing=1.0)
     dot(ax_a, [0.08], [426], VIOLET, "o", s=14, z=5)
-    ax_a.text(0.42, 342, "insular dwarfs", fontsize=5.0, color=INK2, ha="center")
+    ax_a.text(0.40, 340, "dwarfs", fontsize=4.9, color=INK2, ha="center")
     ax_a.set_yscale("log")
     ax_a.set_xlim(3.32, -0.16)
-    ax_a.set_ylim(295, 2380)
-    ax_a.set_yticks([400, 800, 1500])
-    ax_a.set_yticklabels(["400", "800", "1,500"])
+    ax_a.set_ylim(285, 2950)
+    ax_a.set_yticks([400, 800, 1600])
+    ax_a.set_yticklabels(["400", "800", "1,600"])
     ax_a.minorticks_off()
     plt.setp(ax_a.get_xticklabels(), visible=False)
-    panel(ax_a, "A", "Campfire & love release (233 crania)", ylabel="cm$^3$ (log)", fontsize=7.8, pad=4)
+    panel(ax_a, "A", "When brains grew vs. stalled", ylabel="cm$^3$ (log)", fontsize=7.6, pad=4)
 
     lr = pp["lr04_plot_series"]
     ax_lr.fill_between(lr["envelope_age_ma"], lr["envelope_p10"], lr["envelope_p90"], color=B300, alpha=0.22, lw=0)
     ax_lr.plot(lr["age_ma"], lr["d18o_permil"], color=MEN, lw=0.6, alpha=0.82)
     ax_lr.plot(lr["envelope_age_ma"], lr["envelope_mean"], color=INK, lw=1.05)
-    ax_lr.set_ylim(2.85, 5.25)
+    ax_lr.set_ylim(2.68, 5.48)
     ax_lr.set_yticks([3.2, 4.6])
     ax_lr.set_xticks([3, 2, 1, 0])
     ax_lr.grid(axis="y", color=GRID, lw=0.5)
     ax_lr.set_xlabel("Million years ago (Ma)", labelpad=3.0)
     ax_lr.set_ylabel("$\\delta^{18}$O (\u2030)", fontsize=6.4, labelpad=2.5)
-    ax_lr.text(1.15, 4.86, "MIS 34", fontsize=5.0, color=MEN, ha="right", fontweight="bold")
-    ax_lr.text(0.76, 3.16, "Ne~1,280\ncontested", fontsize=4.8, color=VIOLET, ha="right", linespacing=0.98)
+    ax_lr.text(1.16, 5.02, "MIS 34", fontsize=4.9, color=MEN, ha="right", fontweight="bold")
+    ax_lr.text(0.74, 2.98, "Ne~1,280 (contested)", fontsize=4.6, color=VIOLET, ha="right")
 
-    # Panel B: Front-Door Filtering vs. Pair-Bond Love Reversal (90.5k + 47.9k + HCMST)
-    b_gs = outer[0, 1].subgridspec(2, 1, height_ratios=[1.0, 1.08], hspace=0.40)
+    # Panel B: Secondary Entry Filters vs. Primary Pair-Bond Criteria (90.5k + 47.9k)
+    b_gs = outer[0, 1].subgridspec(2, 1, height_ratios=[1.0, 1.08], hspace=0.42)
     ax_b1 = fig.add_subplot(b_gs[0, 0])
     ax_b2 = fig.add_subplot(b_gs[1, 0])
     traits_b = [("resources", "Money"), ("looks", "Looks"), ("kindness", "Kindness")]
@@ -603,17 +603,16 @@ def fig1_main_plot(data):
     ax_b1.grid(axis="x", color=GRID, lw=0.5)
     ax_b1.set_yticks(yb, [t[1] for t in traits_b], fontsize=6.4)
     ax_b1.invert_yaxis()
-    ax_b1.set_xlim(-1.4, 6.2)
+    ax_b1.set_xlim(-1.4, 6.4)
     ax_b1.set_xticks([0, 2, 4, 6])
     n_door_k = kowal["partnering_slopes"]["n"] / 1000.0
-    ax_b1.set_xlabel(f"1. Union entry slope (pp / SD, {n_door_k:.1f}k)", fontsize=6.3, labelpad=1.8)
-    panel(ax_b1, "B", "Entry vs. pair-bond reversal", fontsize=7.8, pad=4)
+    ax_b1.set_xlabel(f"1. Secondary entry gate (pp / SD, {n_door_k:.1f}k)", fontsize=6.2, labelpad=1.8)
+    panel(ax_b1, "B", "Secondary entry vs. primary bond", fontsize=7.6, pad=4)
     aud_r = hcm["audit_compression_ratios"]["institutional_kin_to_app_mean_ratio"]
-    hob_r = chk_hw["r_objective_hobby_corr_yes"]["estimate"]
     ax_b1.text(
-        6.08, 1.85,
-        f"{pvc_gap:.0f}% photo blind\nApp audit \u00f7{aud_r:.1f}\nHobby r={hob_r:+.2f}",
-        fontsize=4.85, color=INK2, ha="right", va="center", linespacing=1.0,
+        6.28, 1.90,
+        f"{pvc_gap:.0f}% photo blind;\nApp audit \u00f7{aud_r:.1f}",
+        fontsize=4.85, color=INK2, ha="right", va="center", linespacing=1.02,
         bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
     )
 
@@ -631,17 +630,15 @@ def fig1_main_plot(data):
     ax_b2.grid(axis="x", color=GRID, lw=0.5)
     ax_b2.set_yticks(yb, [t[1] for t in traits_b], fontsize=6.4)
     ax_b2.invert_yaxis()
-    ax_b2.set_xlim(-0.04, 0.37)
+    ax_b2.set_xlim(-0.04, 0.39)
     ax_b2.set_xticks([0.0, 0.15, 0.30])
     n_bond_k = kowal["pair_bond_reversal"]["relationship_quality_prqc"]["n"] / 1000.0
-    ax_b2.set_xlabel(f"2. Bond quality (SD / SD, {n_bond_k:.1f}k couples)", fontsize=6.3, labelpad=2.5)
+    ax_b2.set_xlabel(f"2. Primary bond love (SD / SD, {n_bond_k:.1f}k)", fontsize=6.2, labelpad=2.5)
     ax_b2.legend(loc="lower left", fontsize=5.4, handletextpad=0.25, labelspacing=0.15)
-    j_rel = joel["satisfaction"]["models"]["ActorRelBaseline"]["unweighted_mean_r2_pct"]
-    j_trt = joel["satisfaction"]["models"]["PartnerTraitBaseline"]["unweighted_mean_r2_pct"]
     k_fit_r = chk_kow["partner_kindness"]["estimate"] / chk_kow["idiographic_checklist_fit"]["estimate"]
     ax_b2.text(
-        0.362, -0.15,
-        f"Money & marry-up \u2248 0;\nKindness {k_fit_r:.1f}\u00d7 checklist;\ndyadic {j_rel:.0f}% vs {j_trt:.1f}% R\u00b2",
+        0.382, -0.18,
+        f"Money & marry-up \u2248 0;\nKindness {k_fit_r:.1f}\u00d7 checklist",
         fontsize=4.85, color=INK, ha="right", va="top", linespacing=1.02,
         bbox=dict(boxstyle="round,pad=0.12", fc="white", ec="none", alpha=0.88),
     )
@@ -674,19 +671,19 @@ def fig1_main_plot(data):
     x_cross = pov["childless_crossover"]["band_midpoint_interpolated_age"]
     ax_c.axvline(x_cross, color=VIOLET, lw=0.85, ls=":", zorder=2)
     ax_c.scatter([x_cross], [np.interp(x_cross, bx, w_k)], s=22, facecolor=VIOLET, edgecolor="white", lw=0.5, zorder=6)
-    ax_c.text(20.0, 84.5, "Serious commitment: W > M always", fontsize=5.4, color=INK, fontweight="bold")
-    ax_c.text(x_cross + 1.3, 39.5, f"Age ~{x_cross:.0f}\nwant-kids\ncrossover", fontsize=5.2, color=VIOLET, fontweight="bold", linespacing=1.02)
+    ax_c.text(19.5, 86.5, "Serious commitment: W > M always", fontsize=5.3, color=INK, fontweight="bold")
+    ax_c.text(x_cross + 1.4, 39.5, f"Age ~{x_cross:.0f}\nwant-kids\ncrossover", fontsize=5.1, color=VIOLET, fontweight="bold", linespacing=1.02)
     ax_c.text(
         19.5, 4.5, "U.S. birth drop: 94% = non-marriage\n(observational; ~2.7 ideal unchanged)",
-        fontsize=4.95, color=INK2, linespacing=1.04,
+        fontsize=4.9, color=INK2, linespacing=1.04,
         bbox=dict(boxstyle="round,pad=0.15", fc=BAND, ec="none", alpha=0.92),
     )
     ax_c.set_xlim(18, 69)
-    ax_c.set_ylim(0, 93)
+    ax_c.set_ylim(0, 96)
     ax_c.set_xticks([20, 35, 50, 65])
     ax_c.set_yticks([0, 30, 60, 90])
-    panel(ax_c, "C", "Horizons vs. devotion (1.14M)", xlabel="Age (years)", ylabel="Share of profiles (%)", fontsize=7.8, pad=4)
-    ax_c.legend(loc="center right", bbox_to_anchor=(1.0, 0.62), fontsize=5.6, handlelength=1.4, labelspacing=0.18)
+    panel(ax_c, "C", "Clocks vs. devotion (1.14M)", xlabel="Age (years)", ylabel="Share of profiles (%)", fontsize=7.6, pad=4)
+    ax_c.legend(loc="center right", bbox_to_anchor=(1.0, 0.62), fontsize=5.5, handlelength=1.4, labelspacing=0.18)
 
     return pdf(fig)
 
@@ -752,29 +749,29 @@ def fossils_paleoclimate_plot(data):
     ax_top.plot(xx, fossil_step_curve(fossils, xx), color=INK, lw=1.65, zorder=5, label="Stasis\u2013step")
 
     ax_top.annotate(
-        "", xy=(1.12, 1650), xytext=(1.50, 1650),
+        "", xy=(1.12, 1520), xytext=(1.50, 1520),
         arrowprops=dict(arrowstyle="<->", color=INK, lw=0.75),
     )
-    ax_top.text(1.31, 1770, "380\u2013711 kyr lag", fontsize=4.9, color=INK, ha="center", va="bottom", fontweight="bold")
+    ax_top.text(1.31, 1640, "380\u2013711 kyr lead", fontsize=4.85, color=INK, ha="center", va="bottom", fontweight="bold")
     ax_top.text(
-        1.27, 1130, "~908 cm\u00b3\nplateau", fontsize=4.9, color=INK, ha="center", va="center", fontweight="bold", linespacing=1.0,
-        bbox=dict(boxstyle="round,pad=0.12", fc="white", ec="none", alpha=0.86),
+        1.14, 1230, "Stalled 800 kyr\n(~908 cm\u00b3)", fontsize=4.85, color=INK, ha="center", va="center", fontweight="bold", linespacing=1.0,
+        bbox=dict(boxstyle="round,pad=0.12", fc="white", ec="none", alpha=0.92),
     )
     for xf in (1.0, 0.78):
         ax_top.plot([xf], [315], marker="^", ms=3.5, color=AQUA, zorder=6)
     ax_top.text(
-        0.89, 395, "fire & cooking", fontsize=4.7, color=AQUA, ha="center", fontweight="bold",
+        0.88, 405, "fire & cooking", fontsize=4.7, color=AQUA, ha="center", fontweight="bold",
         bbox=dict(boxstyle="round,pad=0.08", fc="white", ec="none", alpha=0.82),
     )
 
     ax_top.set_yscale("log")
-    ax_top.set_ylim(295, 2350)
-    ax_top.set_yticks([400, 600, 1000, 1500, 2000])
-    ax_top.set_yticklabels(["400", "600", "1,000", "1,500", "2,000"])
+    ax_top.set_ylim(285, 3150)
+    ax_top.set_yticks([400, 700, 1200, 2200])
+    ax_top.set_yticklabels(["400", "700", "1,200", "2,200"])
     ax_top.minorticks_off()
     plt.setp(ax_top.get_xticklabels(), visible=False)
-    panel(ax_top, "A", "Stasis\u2013step vs. LR04 stack", ylabel="cm$^3$ (log)", fontsize=7.6)
-    ax_top.legend(loc="upper left", fontsize=4.6, ncol=2, columnspacing=0.45, labelspacing=0.14, handletextpad=0.20)
+    panel(ax_top, "A", "Growth, stasis & LR04 stack", ylabel="cm$^3$ (log)", fontsize=7.6)
+    ax_top.legend(loc="upper left", fontsize=4.45, ncol=2, columnspacing=0.40, labelspacing=0.12, handletextpad=0.18)
 
     lr = pp["lr04_plot_series"]
     lr_age = np.asarray(lr["age_ma"], dtype=float)
@@ -877,12 +874,12 @@ def fossils_paleoclimate_plot(data):
         bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
     )
     ax_c1.set_xlim(-0.5, 22.8)
-    ax_c1.set_ylim(2, 74)
+    ax_c1.set_ylim(0, 76)
     ax_c1.set_xticks([0, 4.5, 10, 16, 22], ["0", "4.5", "10", "16", "22"])
     ax_c1.set_xlabel("Childhood age (yr, Kuzawa 2014)", fontsize=5.9, labelpad=1.5)
     ax_c1.set_ylabel("Brain %", fontsize=6.0)
     panel(ax_c1, "C", "Child brain peak & love ceiling", fontsize=7.6, pad=4)
-    ax_c1.legend(loc="lower right", fontsize=4.6, labelspacing=0.12, handlelength=1.2)
+    ax_c1.legend(loc="lower left", fontsize=4.55, labelspacing=0.12, handlelength=1.15, frameon=True, facecolor="white", framealpha=0.90, edgecolor="none")
 
     e22_regs = cc["proposition_22_e22_coevolution"]["regimes"]
     r_specs = [
@@ -943,7 +940,10 @@ def fossils_paleoclimate_plot(data):
         ax_e.plot([i - 0.26, i + 0.26], [vals.mean(), vals.mean()], color=INK, lw=1.45, zorder=4)
         ax_e.text(i, vals.max() + 45, f"{vals.mean():,.0f}", ha="center", va="bottom", fontsize=5.8, fontweight="bold", color=INK)
     ax_e.axhline(1349, color=MUTED, lw=0.75, ls=(0, (3, 2)), zorder=1)
-    ax_e.text(0.42, 1405, "recent 1,349", ha="center", va="bottom", fontsize=4.8, color=INK2)
+    ax_e.text(
+        2.48, 1295, "recent 1,349", ha="right", va="top", fontsize=4.75, color=INK2,
+        bbox=dict(boxstyle="round,pad=0.08", fc="white", ec="none", alpha=0.88),
+    )
     ax_e.axhspan(465, 560, color=VIOLET, alpha=0.16, lw=0, zorder=1)
     ax_e.text(1.0, 512, "H. naledi (465\u2013560)", ha="center", va="center", fontsize=5.1, color=VIOLET, fontweight="bold")
     ax_e.axhline(426, color=GOLD, lw=1.05, zorder=2)
@@ -1047,10 +1047,10 @@ def jury_choice_plot(data):
             c = e17["did"]["panel"][n_sex]["coef"][a]
             ax.vlines(r1_map[a], c[1], c[2], color=col, lw=1.0, zorder=2)
             dot(ax, [r1_map[a]], [c[0]], col, mk, s=18 if mk == "o" else 14, z=3, label=lab if idx_a == 0 else None)
-    for x_t, y_t, txt in ((0.385, 8.2, "Looks"), (0.265, 9.6, "Fun"), (0.155, 7.6, "Intel.,\nambition"), (0.072, -4.8, "Sincerity")):
+    for x_t, y_t, txt in ((0.385, 8.2, "Looks"), (0.265, 9.6, "Fun"), (0.155, 7.6, "Intel.,\nambition"), (0.088, -6.3, "Sincerity")):
         ax.text(x_t, y_t, txt, fontsize=5.3, color=INK2, ha="center", va="center", linespacing=1.02)
     ax.set_xlim(0.0, 0.45)
-    ax.set_ylim(-7.5, 21.5)
+    ax.set_ylim(-9.0, 21.5)
     panel(ax, "B", "4-min legibility governs choice", xlabel="Single-observer agreement ($r_1$)", ylabel="Yes slope / panel SD (pp)", fontsize=7.6)
     ax.legend(loc="upper left", fontsize=5.5)
 
@@ -1289,9 +1289,9 @@ def generalist_verify_plot(data):
     ax.scatter([1], [sat_1], color=RED, marker="s", s=26, zorder=5, label=f"1-date SAT $R^2$ ({sat_1:.2f}%)")
     ax.set_xticks(ks)
     ax.set_xlim(0.6, 9.4)
-    ax.set_ylim(-2, 60)
+    ax.set_ylim(-2, 70)
     panel(ax, "E", "Live SAT blindness vs 9-domain voice", xlabel="Distinct written domains observed ($K$)", ylabel="Cognitive validity / $R^2$ (%)", fontsize=7.5)
-    ax.legend(loc="upper left", bbox_to_anchor=(0.0, 0.99), fontsize=4.85, labelspacing=0.18)
+    ax.legend(loc="upper left", bbox_to_anchor=(0.0, 0.99), fontsize=4.85, labelspacing=0.16)
     ax.text(
         9.25, 11.5,
         f"Partner SAT\u2192'Yes':\n$r={sat_b['r_partner_sat_vs_yes']['estimate']:+.3f}$ (null)\n9 domains: {mdv['k9_to_k1_validity_ratio']:.1f}\u00d7 gain",
@@ -1314,7 +1314,7 @@ def generalist_verify_plot(data):
     ax.plot(qx, stat_y, color=GOLD, lw=1.35, ls="--", marker="^", ms=3.2, label="Ask height/money/looks")
     ax.set_xticks(qx, q_keys)
     ax.set_xlim(0.75, 5.25)
-    ax.set_ylim(0, 24.5)
+    ax.set_ylim(0, 26.2)
     panel(ax, "F", f"Assortative mind requests ($N={amr['n_users_ge3_domains_with_essay9']:,}$)", xlabel="Writer multi-domain lexical quintile", ylabel="'Message me if' share (%)", fontsize=7.5)
     ax.legend(loc="upper left", fontsize=4.9, labelspacing=0.16)
     p0_sh = 100.0 * tpp["prompts"]["essay0"]["share"]
@@ -1336,7 +1336,7 @@ def ethnography_ancestors_plot(data):
     VG = _v9_json("e19_village")
     N = _v9_json("e21_notes")
 
-    fig, axes = plt.subplots(2, 2, figsize=(7.22, 4.80))
+    fig, axes = plt.subplots(2, 2, figsize=(7.22, 4.56))
     fig.subplots_adjust(left=0.14, right=0.985, bottom=0.10, top=0.89, wspace=0.46, hspace=0.50)
 
     # Panel A: SCCS Spouse-Choice Juries (186 Societies + Foragers)
@@ -1545,8 +1545,8 @@ def gss_fertility_gate_plot(data):
     gss_all = osyn["v9_anchors"]["gss_three_episodes_all"]
     hcm = osyn["hcmst_2017"]
 
-    fig, axes = plt.subplots(2, 3, figsize=(7.24, 4.82))
-    fig.subplots_adjust(left=0.088, right=0.985, bottom=0.105, top=0.905, wspace=0.38, hspace=0.52)
+    fig, axes = plt.subplots(2, 3, figsize=(7.24, 4.86))
+    fig.subplots_adjust(left=0.088, right=0.985, bottom=0.105, top=0.905, wspace=0.44, hspace=0.52)
 
     def _plot_mw(ax, xs, men_s, wom_s, m_lbl="Men", w_lbl="Women"):
         for ser, col, mk, off, lb in ((wom_s, WOMEN, "D", 0.05, w_lbl), (men_s, MEN, "o", -0.05, m_lbl)):
@@ -1598,10 +1598,10 @@ def gss_fertility_gate_plot(data):
     ax.grid(False)
     ax.grid(axis="x", color=GRID, lw=0.55)
     ax.set_yticks(yb, [x[1] for x in ep_traits], fontsize=5.6)
-    ax.invert_yaxis()
+    ax.set_ylim(3.48, -1.28)
     ax.set_xlim(-0.16, 0.08)
-    panel(ax, "B", "Status & WORDSUM: +pair, \u2212births", xlabel="Standardized episode gradient (\u03b2)", fontsize=7.5)
-    ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.62), fontsize=4.55, labelspacing=0.12, handletextpad=0.18)
+    panel(ax, "B", "Status & WORDSUM: +pair, \u2212births", xlabel="Standardized episode gradient (\u03b2)", fontsize=7.4)
+    ax.legend(loc="upper left", fontsize=4.5, labelspacing=0.12, handletextpad=0.18, frameon=True, facecolor="white", framealpha=0.92, edgecolor="none")
 
     # Panel C: Childlessness Share of Opportunity I + Non-Marital Parenthood Gate
     ax = axes[0, 2]
@@ -1709,7 +1709,7 @@ def height_attraction_plot(data):
     tpp = okc["ten_prompt_portfolio"]
 
     fig, axes = plt.subplots(2, 3, figsize=(7.24, 4.78))
-    fig.subplots_adjust(left=0.072, right=0.988, bottom=0.105, top=0.905, wspace=0.37, hspace=0.49)
+    fig.subplots_adjust(left=0.072, right=0.988, bottom=0.105, top=0.905, wspace=0.45, hspace=0.49)
 
     # Panel A: Height Percentile vs Mean Attraction Percentile (Whyte 2021, N=7,060)
     ax = axes[0, 0]
@@ -1771,17 +1771,17 @@ def height_attraction_plot(data):
     ax.scatter([72], [str_sh[inc_grid.index(72)]], color=GOLD, edgecolor=INK, s=34, zorder=5)
     ax.set_xticks([67, 69, 71, 72, 73, 75], ["5'7\"", "5'9\"", "5'11\"", "6'0\"", "6'1\"", "6'3\""])
     ax.set_xlim(66.6, 75.4)
-    ax.set_ylim(2.0, 19.2)
+    ax.set_ylim(1.4, 19.2)
     panel(ax, "C", "Audience staging: straight vs gay men", xlabel="OkCupid SF reported height", ylabel="Share of valid male profiles (%)", fontsize=7.4)
     ax.legend(loc="upper left", fontsize=5.0, labelspacing=0.16)
     inc_sm = 100.0 * ost["groups"]["men_straight"]["income_disclosure"]["disclosed_positive_share"]
     inc_gm = 100.0 * ost["groups"]["men_gay"]["income_disclosure"]["disclosed_positive_share"]
     inc_sw = 100.0 * ost["groups"]["women_straight"]["income_disclosure"]["disclosed_positive_share"]
     ax.text(
-        75.25, 11.4,
-        f"5'11\u21926'0: +{str_st['jump_5ft11_to_6ft0_pct']:.1f}% Str\nvs \u2212{abs(gay_st['jump_5ft11_to_6ft0_pct']):.1f}% Gay (no surge)\nIncome shown: {inc_sm:.1f}% Str M\nvs {inc_gm:.1f}% Gay M, {inc_sw:.1f}% W",
-        fontsize=4.65, color=INK, ha="right", va="bottom", linespacing=1.06,
-        bbox=dict(boxstyle="round,pad=0.15", fc=BAND, ec="none", alpha=0.93),
+        66.85, 2.15,
+        f"6'0\" surge: +{str_st['jump_5ft11_to_6ft0_pct']:.1f}% Str vs \u2212{abs(gay_st['jump_5ft11_to_6ft0_pct']):.1f}% Gay\nIncome shown: {inc_sm:.1f}% Str vs {inc_gm:.1f}% Gay",
+        fontsize=4.65, color=INK, ha="left", va="bottom", linespacing=1.06,
+        bbox=dict(boxstyle="round,pad=0.14", fc=BAND, ec="none", alpha=0.93),
     )
 
     # Panel D: POV Male Height Percentile vs Union Durability, Casual Strategy & Parenthood
@@ -1846,10 +1846,10 @@ def height_attraction_plot(data):
     ey_p = 100.0 * e3["eyes"]["share"]
     ht_p = 100.0 * e3["height"]["share"]
     ax.text(
-        22.3, 0.15,
-        f"Humor: {e9['ratios']['humor_to_tall']:.1f}\u00d7 tall,\n{e9['ratios']['humor_to_wealth']:.1f}\u00d7 wealth.\nFirst noticed (48.4k):\nSmile {sm_p:.1f}%, Eyes {ey_p:.1f}%\nvs Height {ht_p:.1f}%",
+        22.3, 0.20,
+        f"Humor: {e9['ratios']['humor_to_tall']:.1f}\u00d7 tall, {e9['ratios']['humor_to_wealth']:.1f}\u00d7 wealth;\nFirst noticed: smile {sm_p:.0f}% vs height {ht_p:.0f}%",
         fontsize=4.65, color=INK, ha="right", va="bottom", linespacing=1.06,
-        bbox=dict(boxstyle="round,pad=0.15", fc=BAND, ec="none", alpha=0.93),
+        bbox=dict(boxstyle="round,pad=0.14", fc=BAND, ec="none", alpha=0.93),
     )
 
     return pdf(fig)
@@ -1865,7 +1865,7 @@ def world_synthesis_plot(data):
     cn = data["hon"]["cross_national"]
 
     fig, axes = plt.subplots(2, 3, figsize=(7.24, 4.90))
-    fig.subplots_adjust(left=0.078, right=0.99, bottom=0.10, top=0.90, wspace=0.35, hspace=0.48)
+    fig.subplots_adjust(left=0.078, right=0.99, bottom=0.10, top=0.90, wspace=0.40, hspace=0.48)
 
     # Panel A: Whyte 2021 9-Trait Stated Importance Dumbbell Hierarchy (N = 7,060)
     ax = axes[0, 0]
@@ -1894,7 +1894,7 @@ def world_synthesis_plot(data):
     ax.grid(axis="x", color=GRID, lw=0.55)
     ax.set_yticks(yp_a, [t[1] for t in trait_labels], fontsize=5.8)
     ax.set_xlim(18, 92)
-    panel(ax, "A", "Trust & connection lead (Whyte, N=7,060)", xlabel="Stated importance (0–100)")
+    panel(ax, "A", "Trust & connection lead (7.1k)", xlabel="Stated importance (0–100)")
     ax.legend(loc="lower right", fontsize=5.8, handletextpad=0.25)
 
     # Panel B: Kowal 53-Country Compositional Budget Sex Differences
@@ -1991,9 +1991,9 @@ def love_bond_plot(data):
     hcm = osyn["hcmst_2017"]
     swv = data["pov"]["self_written_voice"]
 
-    fig = plt.figure(figsize=(7.24, 5.02))
-    outer = fig.add_gridspec(2, 3, width_ratios=[1.08, 1.05, 1.05], height_ratios=[1.02, 1.0], wspace=0.38, hspace=0.49)
-    fig.subplots_adjust(left=0.095, right=0.988, bottom=0.098, top=0.918)
+    fig = plt.figure(figsize=(7.24, 5.04))
+    outer = fig.add_gridspec(2, 3, width_ratios=[1.06, 1.08, 1.04], height_ratios=[1.02, 1.0], wspace=0.50, hspace=0.49)
+    fig.subplots_adjust(left=0.098, right=0.988, bottom=0.098, top=0.918)
 
     # Panel A: 47,932-Couple Horse Race Across Cultural Regimes (Kindness vs. Checklist Fit vs. Marrying Up)
     ax_a = fig.add_subplot(outer[0, 0])
@@ -2045,11 +2045,11 @@ def love_bond_plot(data):
     sat_m = joel["satisfaction"]["models"]
     com_m = joel["commitment"]["models"]
     j_rows = [
-        ("ActorRelBaseline", "Perceived commitment\n& apprec. (base)"),
-        ("ActorRelFollowup", "Perceived commitment\n(1\u20134 yr follow-up)"),
-        ("ActorTraitBaseline", "Own attachment &\ntraits (base)"),
-        ("PartnerTraitBaseline", "All partner traits\ncombined (base)"),
-        ("PartnerTraitFollowup", "All partner traits\n(1\u20134 yr follow-up)"),
+        ("ActorRelBaseline", "Partner commit.\n& apprec. (base)"),
+        ("ActorRelFollowup", "Partner commit.\n(1\u20134y follow-up)"),
+        ("ActorTraitBaseline", "Own traits &\nattachment"),
+        ("PartnerTraitBaseline", "Partner traits\n(base)"),
+        ("PartnerTraitFollowup", "Partner traits\n(1\u20134y follow-up)"),
     ]
     yb = np.arange(len(j_rows))
     for i, (mkey, _) in enumerate(j_rows):
@@ -2122,9 +2122,9 @@ def love_bond_plot(data):
         ax_d.fill_between(dx, los, his, color=col, alpha=0.13, lw=0)
         ax_d.plot(dx, ys, color=col, lw=1.6, marker=mk, ms=3.2, label=lab)
     ax_d.set_xticks(dx, d_labs, fontsize=5.6)
-    ax_d.set_ylim(2.92, 4.48)
+    ax_d.set_ylim(2.90, 4.72)
     panel(ax_d, "D", "25-yr commitment arc (50.0k)", xlabel="Relationship duration", ylabel="Sternberg love (1\u20135)", fontsize=7.5)
-    ax_d.legend(loc="upper right", fontsize=4.8, ncol=3, columnspacing=0.35, handlelength=1.0)
+    ax_d.legend(loc="upper right", fontsize=4.75, ncol=3, columnspacing=0.35, handlelength=1.0, frameon=True, facecolor="white", framealpha=0.90, edgecolor="none")
     j_em = kow["jealousy_asymmetry"]["by_sex"]["women"]["emotional_1_to_7"]["mean"]
     j_sx = kow["jealousy_asymmetry"]["by_sex"]["women"]["sexual_1_to_7"]["mean"]
     sm_inf = kow["social_media_and_alternatives"]["slopes_per_daily_hour"]["infidelity_pp_per_hour"]["estimate"]
@@ -2198,6 +2198,220 @@ def love_bond_plot(data):
 
 
 # ---------------------------------------------------------------------------
+# 4C. PRIMARY VS. SECONDARY MATING CRITERIA & MALE-FEMALE LIFECYCLE DYNAMICS
+# ---------------------------------------------------------------------------
+def primary_secondary_dynamics_plot(data):
+    speed = data["speed_dating"]
+    pov = data["pov"]
+    osyn = data["open_synthesis"]
+    kow = osyn["kowal_2025"]
+    hcm = osyn["hcmst_2017"]
+
+    fig = plt.figure(figsize=(7.24, 5.08))
+    outer = fig.add_gridspec(2, 3, width_ratios=[1.05, 1.08, 1.05], height_ratios=[1.02, 1.0], wspace=0.46, hspace=0.52)
+    fig.subplots_adjust(left=0.092, right=0.988, bottom=0.100, top=0.918)
+
+    # Panel A: Cross-Sex Mind-Reading Blindness (Perceived 2_1 minus Actual 1_1) & 4.5x Initiation Asymmetry
+    ax_a = fig.add_subplot(outer[0, 0])
+    csm = speed["checklist_and_hindsight"]["cross_sex_misperception"]
+    init_s = speed["checklist_and_hindsight"]["post_event_followup_3_4_weeks"]["initiation_by_sex"]
+    attrs_a = [
+        ("attr", "Looks"),
+        ("shar", "Shared int."),
+        ("fun", "Fun / humor"),
+        ("amb", "Ambition"),
+        ("sinc", "Sincerity"),
+        ("intel", "Intelligence"),
+    ]
+    ya = np.arange(len(attrs_a))
+    ax_a.axvline(0.0, color=MUTED, lw=0.75, ls=(0, (2, 2)))
+    for (ckey, clbl, col, mk), off in zip(
+        (("women_about_men", "W reading M", WOMEN, "D"), ("men_about_women", "M reading W", MEN, "o")),
+        (-0.15, 0.15),
+    ):
+        dp = csm[ckey]["delta_points"]
+        ests = [dp[ak]["estimate"] for ak, _ in attrs_a]
+        los = [dp[ak]["interval_95"][0] for ak, _ in attrs_a]
+        his = [dp[ak]["interval_95"][1] for ak, _ in attrs_a]
+        ax_a.errorbar(
+            ests, ya + off, xerr=[[e - l for e, l in zip(ests, los)], [h - e for e, h in zip(ests, his)]],
+            color=col, fmt=mk, ms=3.5, elinewidth=0.95, capsize=1.8, label=clbl,
+        )
+    ax_a.grid(False)
+    ax_a.grid(axis="x", color=GRID, lw=0.55)
+    ax_a.set_yticks(ya, [a[1] for a in attrs_a], fontsize=5.4)
+    ax_a.set_ylim(5.6, -1.35)
+    ax_a.set_xlim(-8.8, 12.2)
+    ax_a.legend(loc="upper left", fontsize=4.65, ncol=2, columnspacing=0.4, handletextpad=0.2, frameon=True, facecolor="white", framealpha=0.92, edgecolor="none")
+    call_r = init_s["male_to_female_calls_per_match_ratio"]
+    ax_a.text(
+        11.8, 5.42,
+        f"Post-match calls:\nMen {call_r:.1f}\u00d7 women",
+        fontsize=4.65, color=INK, ha="right", va="bottom", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+    panel(ax_a, "A", "Cross-sex mind-reading error", xlabel="Perceived \u2212 actual weight (pts)", fontsize=7.4)
+
+    # Panel B: The Homophily Paradox (Strong Demographic Sorting vs. Dominant Primary Kindness Love)
+    ax_b = fig.add_subplot(outer[0, 1])
+    hvk = kow["homophily_vs_kindness"]
+    rows_b = [
+        ("Primary kindness", hvk["politics"]["partner_kindness_prqc_sd_per_sd"], None, AQUA),
+        ("Politics match", hvk["politics"]["homophily_prqc_sd_per_sd"], hvk["politics"]["assortative_pearson_r"], VIOLET),
+        ("Class match", hvk["social_class"]["homophily_prqc_sd_per_sd"], hvk["social_class"]["assortative_pearson_r"], MEN),
+        ("Education match", hvk["education"]["homophily_prqc_sd_per_sd"], hvk["education"]["assortative_pearson_r"], GOLD),
+    ]
+    yb = np.arange(len(rows_b))
+    ax_b.axvline(0.0, color=MUTED, lw=0.75, ls=(0, (2, 2)))
+    for i, (_, sl_d, sort_r, col_b) in enumerate(rows_b):
+        ev = sl_d["estimate"]
+        lo, hi = sl_d["ci_95"]
+        ax_b.barh(i, ev, height=0.52, color=col_b, alpha=0.88, zorder=2)
+        ax_b.errorbar(ev, i, xerr=[[ev - lo], [hi - ev]], color=INK, fmt="none", elinewidth=0.95, capsize=1.8, zorder=4)
+        tag = f"+{ev:.2f}" if sort_r is None else f"+{ev:.2f} (sort r=+{sort_r:.2f})"
+        ax_b.text(hi + 0.012, i, tag, va="center", ha="left", fontsize=4.65, fontweight="bold" if sort_r is None else "normal", color=INK)
+    ax_b.grid(False)
+    ax_b.grid(axis="x", color=GRID, lw=0.55)
+    ax_b.set_yticks(yb, [r[0] for r in rows_b], fontsize=5.3)
+    ax_b.set_ylim(4.15, -0.55)
+    ax_b.set_xlim(-0.02, 0.50)
+    r_lo = hvk["politics"]["kindness_to_homophily_ratio"]
+    r_hi = hvk["education"]["kindness_to_homophily_ratio"]
+    ax_b.text(
+        0.485, 4.02,
+        f"Kindness = {r_lo:.1f}\u2013{r_hi:.1f}\u00d7 sorting tags",
+        fontsize=4.65, color=INK, ha="right", va="bottom", fontweight="bold",
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+    panel(ax_b, "B", "Homophily paradox (150 ctry.)", xlabel="Bond love slope (PRQC SD / SD)", fontsize=7.4)
+
+    # Panel C: Partner Reverence (mate > self) vs. The "Settling" Kink (mate < self)
+    ax_c = fig.add_subplot(outer[0, 2])
+    rsk = kow["reverence_vs_settling_kink"]["by_sex"]
+    traits_c = [("kindness", "Kindness"), ("looks", "Looks"), ("resources", "Money")]
+    yc = np.arange(len(traits_c))
+    ax_c.axvline(0.0, color=MUTED, lw=0.75, ls=(0, (2, 2)))
+    for (s_k, col, mk), off in zip((("women", WOMEN, "D"), ("men", MEN, "o")), (-0.15, 0.15)):
+        sp = rsk[s_k]["country_fe_spline_sd_per_pt"]
+        for i, (tk, _) in enumerate(traits_c):
+            st_d = sp[f"settling_deficit_{tk}"]
+            rv_d = sp[f"reverence_surplus_{tk}"]
+            ax_c.errorbar(
+                st_d["estimate"], i + off,
+                xerr=[[st_d["estimate"] - st_d["ci_95"][0]], [st_d["ci_95"][1] - st_d["estimate"]]],
+                color=col, fmt=mk, mfc="white", ms=3.4, elinewidth=0.9, capsize=1.6,
+            )
+            ax_c.errorbar(
+                rv_d["estimate"], i + off,
+                xerr=[[rv_d["estimate"] - rv_d["ci_95"][0]], [rv_d["ci_95"][1] - rv_d["estimate"]]],
+                color=col, fmt=mk, mfc=col, ms=3.5, elinewidth=0.95, capsize=1.6,
+            )
+    ax_c.grid(False)
+    ax_c.grid(axis="x", color=GRID, lw=0.55)
+    ax_c.set_yticks(yc, [t[1] for t in traits_c], fontsize=5.5)
+    ax_c.set_ylim(2.90, -1.02)
+    ax_c.set_xlim(-0.22, 0.16)
+    leg_c = [
+        Line2D([], [], marker="o", ls="", ms=3.3, mfc="white", mec=INK, label="Settled (<self)"),
+        Line2D([], [], marker="o", ls="", ms=3.4, mfc=INK, mec=INK, label="Revered (>self)"),
+    ]
+    ax_c.legend(handles=leg_c, loc="upper left", fontsize=4.55, ncol=2, columnspacing=0.35, handletextpad=0.15, frameon=True, facecolor="white", framealpha=0.92, edgecolor="none")
+    w_inf_drop = rsk["women"]["tiers_by_trait"]["looks"]["settled_mate_lt_self"]["infidelity_rate_pct"]["mean"] - rsk["women"]["tiers_by_trait"]["looks"]["revered_mate_gt_self"]["infidelity_rate_pct"]["mean"]
+    m_inf_drop = rsk["men"]["tiers_by_trait"]["looks"]["settled_mate_lt_self"]["infidelity_rate_pct"]["mean"] - rsk["men"]["tiers_by_trait"]["looks"]["revered_mate_gt_self"]["infidelity_rate_pct"]["mean"]
+    ax_c.text(
+        0.152, 2.76,
+        f"Revered vs settled:\n\u2212{w_inf_drop:.0f} to \u2212{m_inf_drop:.0f} pp infid.",
+        fontsize=4.6, color=INK, ha="right", va="bottom", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+    panel(ax_c, "C", "Reverence vs. settling kink", xlabel="Love slope per 1\u20137 pt (SD)", fontsize=7.4)
+
+    # Panel D: Pre-Commitment Courtship Staging Surge (Single -> Dating -> Committed -> Married)
+    ax_d = fig.add_subplot(outer[1, 0])
+    stg = kow["courtship_effort_and_soi_lifecycle"]["by_relationship_stage"]["by_sex"]
+    s_keys = ["single", "dating", "committed", "married"]
+    s_labs = ["Single", "Dating", "Commit.", "Married"]
+    sx = np.arange(4)
+    for s_k, s_lbl, col, mk in (("women", "Women", WOMEN, "D"), ("men", "Men", MEN, "o")):
+        means = [stg[s_k][k]["total_effort_min"]["mean"] for k in s_keys]
+        los = [stg[s_k][k]["total_effort_min"]["ci_95"][0] for k in s_keys]
+        his = [stg[s_k][k]["total_effort_min"]["ci_95"][1] for k in s_keys]
+        ax_d.fill_between(sx, los, his, color=col, alpha=0.14, lw=0)
+        ax_d.plot(sx, means, color=col, lw=1.6, marker=mk, ms=3.4, label=s_lbl)
+    ax_d.set_xticks(sx, s_labs, fontsize=5.5)
+    ax_d.set_xlim(-0.25, 3.25)
+    ax_d.set_ylim(148, 254)
+    ax_d.legend(loc="upper right", fontsize=4.9, ncol=2, columnspacing=0.45)
+    dw = abs(stg["women"]["dating_to_married_drop_pct"])
+    dm = abs(stg["men"]["dating_to_married_drop_pct"])
+    ax_d.text(
+        -0.12, 151.5,
+        f"Marriage drop: \u2212{dw:.0f}% W,\n\u2212{dm:.0f}% M (Prop. 23i)",
+        fontsize=4.65, color=INK, ha="left", va="bottom", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+    panel(ax_d, "D", "Courtship staging surge (65.9k)", xlabel="Relationship stage (obs.)", ylabel="Daily effort (min/day)", fontsize=7.4)
+
+    # Panel E: Pre-Cohabitation Rush Hazard & Marriage-Specific Female Unilateral Exit Flip (HCMST)
+    ax_e = fig.add_subplot(outer[1, 1])
+    crh = hcm["cohabitation_rush_hazard"]
+    bw = crh["by_romance_to_cohab_window"]
+    bia = hcm["breakup_initiation_asymmetry"]
+    w_keys = ["le_3m_rush", "gt_3m_to_1y", "gt_1y_to_2_5y", "gt_2_5y"]
+    w_labs = ["\u22643 mo", "3\u201312m", "1\u20132.5y", "2.5y+"]
+    w_cols = [RED, GOLD, B300, AQUA]
+    wx = np.arange(4)
+    for i, (wk, wcol) in enumerate(zip(w_keys, w_cols)):
+        sh = 100.0 * bw[wk]["breakup_share"]
+        lo, hi = 100.0 * bw[wk]["wilson_ci_95"][0], 100.0 * bw[wk]["wilson_ci_95"][1]
+        ax_e.bar(i, sh, width=0.58, color=wcol, alpha=0.86, zorder=2)
+        ax_e.errorbar(i, sh, yerr=[[sh - lo], [hi - sh]], color=INK, fmt="none", elinewidth=0.95, capsize=2.0, zorder=4)
+        ax_e.text(i, hi + 0.35, f"{sh:.1f}%", ha="center", va="bottom", fontsize=4.8, fontweight="bold", color=INK)
+    ax_e.grid(False)
+    ax_e.grid(axis="y", color=GRID, lw=0.55)
+    ax_e.set_xticks(wx, w_labs, fontsize=5.5)
+    ax_e.set_xlim(-0.55, 3.55)
+    ax_e.set_ylim(0, 14.8)
+    div_w = 100.0 * bia["married_divorce_or_separation"]["woman_share_of_unilateral"]
+    hus_w = 100.0 * bia["married_divorce_or_separation"]["by_respondent_gender_unilateral"]["male_respondents_wife_share"]
+    ax_e.text(
+        3.45, 14.1,
+        f"Rush = {crh['le_3m_to_gt_2_5y_breakup_ratio']:.1f}\u00d7 breakup;\nDivorce: {div_w:.0f}% W ({hus_w:.0f}% M-rep)",
+        fontsize=4.6, color=INK, ha="right", va="top", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+    panel(ax_e, "E", "Rushed cohab & exit flip (HCMST)", xlabel="Pre-cohabitation wait", ylabel="Observed breakup (%)", fontsize=7.4)
+
+    # Panel F: Lifespan Hearth Action-Verb Calendar & Widowhood vs. Divorce Second-Act Re-Entry (1.14M POV)
+    ax_f = fig.add_subplot(outer[1, 2])
+    avc = pov["self_written_voice"]["action_verb_calendar"]
+    sar = pov["second_act_reentry"]["headline_contrasts"]
+    a_br = [("18-22", 20.0), ("23-27", 25.0), ("28-34", 31.0), ("35-44", 39.5), ("45-54", 49.5), ("55-64", 59.5), ("65-79", 71.0)]
+    ax_x = np.array([x for _, x in a_br])
+    w_ck = [100.0 * avc["by_age_bracket"][k]["cook_bake_hearth"]["Female"]["share"] for k, _ in a_br]
+    m_ck = [100.0 * avc["by_age_bracket"][k]["cook_bake_hearth"]["Male"]["share"] for k, _ in a_br]
+    p_pt = [100.0 * avc["by_age_bracket"][k]["party_nightlife"]["Pooled"]["share"] for k, _ in a_br]
+    sh_v = avc["lifespan_shifts_18_22_to_65_79"]
+    ax_f.plot(ax_x, w_ck, color=WOMEN, lw=1.6, marker="D", ms=3.1, label=f"W cook/hearth ({sh_v['female_cook_rise_ratio']:.1f}\u00d7)")
+    ax_f.plot(ax_x, m_ck, color=MEN, lw=1.6, marker="o", ms=3.1, label=f"M cook/hearth ({sh_v['male_cook_rise_ratio']:.1f}\u00d7)")
+    ax_f.plot(ax_x, p_pt, color=GOLD, lw=1.35, ls="--", marker="^", ms=3.0, label=f"Party/club ({sh_v['pooled_party_drop_pct']:.0f}%)")
+    ax_f.set_xlim(17, 74)
+    ax_f.set_ylim(0, 39.0)
+    ax_f.set_xticks([20, 35, 50, 65])
+    ax_f.legend(loc="upper left", fontsize=4.55, labelspacing=0.14, handlelength=1.2, frameon=True, facecolor="white", framealpha=0.92, edgecolor="none")
+    dm_drop = abs(sar["divorced_vs_single_female_marry_change_pct_40_49"])
+    ax_f.text(
+        18.2, 20.0,
+        f"40\u201349 remarry: Div. W \u2212{dm_drop:.0f}%\n(81% serious); Wid. M > W",
+        fontsize=4.55, color=INK, ha="left", va="bottom", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+    panel(ax_f, "F", "Hearth verbs & 2nd act (1.05M)", xlabel="Age (years)", ylabel="Mentions in essays (%)", fontsize=7.4)
+
+    return pdf(fig)
+
+
+# ---------------------------------------------------------------------------
 # 5. 6.68M HON ARCHITECTURE: LORENZ ATTENTION & PORTFOLIO (Gate G14 deduplicated)
 # ---------------------------------------------------------------------------
 def hon_architecture_plot(data):
@@ -2265,7 +2479,7 @@ def pov_lifecourse_plot(data):
     bands = [(lo, hi) for lo, hi in data["cohorts"]["pov_bands"] if hi <= 74]
 
     fig, axes = plt.subplots(2, 3, figsize=(7.24, 4.95))
-    fig.subplots_adjust(left=0.076, right=0.99, bottom=0.105, top=0.905, wspace=0.35, hspace=0.49)
+    fig.subplots_adjust(left=0.076, right=0.99, bottom=0.105, top=0.905, wspace=0.40, hspace=0.49)
 
     def _shared_age(ax):
         ax.set_xlim(17, 76)
@@ -2310,9 +2524,9 @@ def pov_lifecourse_plot(data):
     ax.plot(fa_x, [fa_age["Female"][k]["mean_predicted_pct"] for k in fa_k], color=WOMEN, lw=1.25, ls="--", marker="D", mfc="white", ms=3.2, label="W face-only")
     ax.plot(fa_x, [fa_age["Male"][k]["mean_predicted_pct"] for k in fa_k], color=MEN, lw=1.25, ls="--", marker="o", mfc="white", ms=3.2, label="M face-only")
     _shared_age(ax)
-    ax.set_ylim(8, 84)
-    panel(ax, "B", "Photo rank vs. anatomy (6.68M)", ylabel="Within-sex percentile")
-    ax.legend(loc="lower left", fontsize=5.1, ncol=2, columnspacing=0.45, handlelength=1.3, labelspacing=0.16)
+    ax.set_ylim(3, 86)
+    panel(ax, "B", "Photo rank vs. face (6.68M)", ylabel="Within-sex percentile")
+    ax.legend(loc="lower left", fontsize=5.0, ncol=2, columnspacing=0.40, handlelength=1.25, labelspacing=0.14)
 
     # Panel C: Childless 'Want Children' Crossover at Age ~42 (1.14M POV + 5/5 Countries)
     ax = axes[0, 2]
@@ -2333,7 +2547,7 @@ def pov_lifecourse_plot(data):
     ax.scatter([xc], [np.interp(xc, centers, yw_c)], s=22, facecolor=VIOLET, edgecolor="white", lw=0.5, zorder=5)
     _shared_age(ax)
     ax.set_ylim(0, 56)
-    panel(ax, "C", "Childless 'Want kids' crosses (~42)", ylabel="Childless wanting children (%)")
+    panel(ax, "C", "Childless 'Want kids' (~42)", ylabel="Childless wanting children (%)")
     ax.text(xc + 1.5, 42.0, f"Crosses age {xc:.1f}\n(5/5 countries:\nUS, UK, CA, BR, AU)", fontsize=5.1, color=VIOLET, fontweight="bold", linespacing=1.05)
 
     # ROW 2: UNBROKEN HUMAN TRUTHS ACROSS ADULTHOOD (AGES 18-75)
@@ -3589,6 +3803,94 @@ def numbers(data):
         "PboOkcSfGapOlder": format_pp(sfc_b["by_age_band"]["45-54"]["women_minus_men_pp"]),
     })
 
+    # v15 Primary vs. Secondary Mating Criteria, Cross-Source Male-Female Dynamics & Proposition 23 (E23) macros
+    csm_b = chk_sd_b["cross_sex_misperception"]
+    sspi_b = chk_sd_b["same_sex_pluralistic_ignorance"]
+    init_b = fup_b["initiation_by_sex"]
+    hvk_b = kow["homophily_vs_kindness"]
+    rsk_b = kow["reverence_vs_settling_kink"]["by_sex"]
+    ces_b = kow["courtship_effort_and_soi_lifecycle"]
+    stg_b = ces_b["by_relationship_stage"]["by_sex"]
+    crh_b = hcm_b["cohabitation_rush_hazard"]
+    bia_b = hcm_b["breakup_initiation_asymmetry"]
+    avc_b = swv["action_verb_calendar"]
+    sar_b = pov["second_act_reentry"]
+    e23_b = osyn["proposition_23_e23"]
+
+    w_inf_rev_drop = (
+        rsk_b["women"]["tiers_by_trait"]["looks"]["settled_mate_lt_self"]["infidelity_rate_pct"]["mean"]
+        - rsk_b["women"]["tiers_by_trait"]["looks"]["revered_mate_gt_self"]["infidelity_rate_pct"]["mean"]
+    )
+    m_inf_rev_drop = (
+        rsk_b["men"]["tiers_by_trait"]["looks"]["settled_mate_lt_self"]["infidelity_rate_pct"]["mean"]
+        - rsk_b["men"]["tiers_by_trait"]["looks"]["revered_mate_gt_self"]["infidelity_rate_pct"]["mean"]
+    )
+
+    values.update({
+        "PboMindReadLooksW": f"{csm_b['women_about_men']['delta_points']['attr']['estimate']:+.1f}",
+        "PboMindReadIntelW": f"{csm_b['women_about_men']['delta_points']['intel']['estimate']:+.1f}",
+        "PboMindReadSincW": f"{csm_b['women_about_men']['delta_points']['sinc']['estimate']:+.1f}",
+        "PboMindReadLooksM": f"{csm_b['men_about_women']['delta_points']['attr']['estimate']:+.1f}",
+        "PboMindReadIntelM": f"{csm_b['men_about_women']['delta_points']['intel']['estimate']:+.1f}",
+        "PboMindReadSincM": f"{csm_b['men_about_women']['delta_points']['sinc']['estimate']:+.1f}",
+        "PboPeerIgnorLooksW": f"{sspi_b['women']['delta_points']['attr']['estimate']:+.1f}",
+        "PboPeerIgnorLooksM": f"{sspi_b['men']['delta_points']['attr']['estimate']:+.1f}",
+        "PboCallRatioMF": f"{init_b['male_to_female_calls_per_match_ratio']:.1f}",
+        "PboZeroCallsW": format_rate(init_b["women"]["zero_calls_placed_share"]),
+        "PboZeroCallsM": format_rate(init_b["men"]["zero_calls_placed_share"]),
+        "PboHomoPolR": f"{hvk_b['politics']['assortative_pearson_r']:+.2f}",
+        "PboHomoClsR": f"{hvk_b['social_class']['assortative_pearson_r']:+.2f}",
+        "PboHomoEduR": f"{hvk_b['education']['assortative_pearson_r']:+.2f}",
+        "PboHomoPolSlope": f"{hvk_b['politics']['homophily_prqc_sd_per_sd']['estimate']:+.2f}",
+        "PboHomoClsSlope": f"{hvk_b['social_class']['homophily_prqc_sd_per_sd']['estimate']:+.2f}",
+        "PboHomoEduSlope": f"{hvk_b['education']['homophily_prqc_sd_per_sd']['estimate']:+.2f}",
+        "PboHomoPolRatio": f"{hvk_b['politics']['kindness_to_homophily_ratio']:.1f}",
+        "PboHomoClsRatio": f"{hvk_b['social_class']['kindness_to_homophily_ratio']:.1f}",
+        "PboHomoEduRatio": f"{hvk_b['education']['kindness_to_homophily_ratio']:.1f}",
+        "PboSettleKindSlopeW": f"{rsk_b['women']['country_fe_spline_sd_per_pt']['settling_deficit_kindness']['estimate']:+.2f}",
+        "PboSettleKindSlopeM": f"{rsk_b['men']['country_fe_spline_sd_per_pt']['settling_deficit_kindness']['estimate']:+.2f}",
+        "PboRevKindSlopeW": f"{rsk_b['women']['country_fe_spline_sd_per_pt']['reverence_surplus_kindness']['estimate']:+.2f}",
+        "PboRevKindSlopeM": f"{rsk_b['men']['country_fe_spline_sd_per_pt']['reverence_surplus_kindness']['estimate']:+.2f}",
+        "PboSettleRevRatioW": f"{rsk_b['women']['kindness_settling_to_reverence_slope_ratio']:.1f}",
+        "PboSettleRevRatioM": f"{rsk_b['men']['kindness_settling_to_reverence_slope_ratio']:.1f}",
+        "PboRevResSlopeW": f"{rsk_b['women']['country_fe_spline_sd_per_pt']['reverence_surplus_resources']['estimate']:+.2f}",
+        "PboRevResSlopeM": f"{rsk_b['men']['country_fe_spline_sd_per_pt']['reverence_surplus_resources']['estimate']:+.2f}",
+        "PboRevLooksInfDropW": f"{w_inf_rev_drop:.1f}",
+        "PboRevLooksInfDropM": f"{m_inf_rev_drop:.1f}",
+        "PboEffortDatingW": f"{stg_b['women']['dating']['total_effort_min']['mean']:.0f}",
+        "PboEffortMarriedW": f"{stg_b['women']['married']['total_effort_min']['mean']:.0f}",
+        "PboEffortDropPctW": f"{abs(stg_b['women']['dating_to_married_drop_pct']):.1f}\\%",
+        "PboEffortDatingM": f"{stg_b['men']['dating']['total_effort_min']['mean']:.0f}",
+        "PboEffortMarriedM": f"{stg_b['men']['married']['total_effort_min']['mean']:.0f}",
+        "PboEffortDropPctM": f"{abs(stg_b['men']['dating_to_married_drop_pct']):.1f}\\%",
+        "PboSoiRatioYoung": f"{ces_b['by_age_bracket']['18-24']['men_to_women_soi_desire_ratio']:.2f}",
+        "PboSoiRatioOld": f"{ces_b['by_age_bracket']['60-79']['men_to_women_soi_desire_ratio']:.2f}",
+        "PboCohabRushPct": format_rate(crh_b["by_romance_to_cohab_window"]["le_3m_rush"]["breakup_share"]),
+        "PboCohabSlowPct": format_rate(crh_b["by_romance_to_cohab_window"]["gt_2_5y"]["breakup_share"]),
+        "PboCohabRushRatio": f"{crh_b['le_3m_to_gt_2_5y_breakup_ratio']:.1f}",
+        "PboCohabRushAdjPP": f"{crh_b['cohort_age_adjusted_rush_le_3m_pp']['estimate']:+.1f}",
+        "PboDivUnilatW": format_rate(bia_b["married_divorce_or_separation"]["woman_share_of_unilateral"]),
+        "PboDivHusRepW": format_rate(bia_b["married_divorce_or_separation"]["by_respondent_gender_unilateral"]["male_respondents_wife_share"]),
+        "PboNonMarUnilatW": format_rate(bia_b["nonmarital_breakup"]["woman_share_of_unilateral"]),
+        "PboVerbCookYoungW": format_rate(avc_b["by_age_bracket"]["18-22"]["cook_bake_hearth"]["Female"]["share"]),
+        "PboVerbCookOldW": format_rate(avc_b["by_age_bracket"]["65-79"]["cook_bake_hearth"]["Female"]["share"]),
+        "PboVerbCookRiseW": f"{avc_b['lifespan_shifts_18_22_to_65_79']['female_cook_rise_ratio']:.1f}",
+        "PboVerbCookYoungM": format_rate(avc_b["by_age_bracket"]["18-22"]["cook_bake_hearth"]["Male"]["share"]),
+        "PboVerbCookOldM": format_rate(avc_b["by_age_bracket"]["65-79"]["cook_bake_hearth"]["Male"]["share"]),
+        "PboVerbCookRiseM": f"{avc_b['lifespan_shifts_18_22_to_65_79']['male_cook_rise_ratio']:.1f}",
+        "PboVerbPartyDrop": f"{abs(avc_b['lifespan_shifts_18_22_to_65_79']['pooled_party_drop_pct']):.1f}\\%",
+        "PboDivMarryDropW": f"{abs(sar_b['headline_contrasts']['divorced_vs_single_female_marry_change_pct_40_49']):.1f}\\%",
+        "PboDivSeriousMidW": format_rate(sar_b["by_age_window"]["40-49"]["divorced"]["Female"]["serious_commitment"]["share"]),
+        "PboSinMarryMidW": format_rate(sar_b["by_age_window"]["40-49"]["single"]["Female"]["marry_intent"]["share"]),
+        "PboDivMarryMidW": format_rate(sar_b["by_age_window"]["40-49"]["divorced"]["Female"]["marry_intent"]["share"]),
+        "PboWidMarryMidM": format_rate(sar_b["by_age_window"]["40-49"]["widowed"]["Male"]["marry_intent"]["share"]),
+        "PboWidMarryMidW": format_rate(sar_b["by_age_window"]["40-49"]["widowed"]["Female"]["marry_intent"]["share"]),
+        "PboWidMarrySenM": format_rate(sar_b["by_age_window"]["60-75"]["widowed"]["Male"]["marry_intent"]["share"]),
+        "PboWidMarrySenW": format_rate(sar_b["by_age_window"]["60-75"]["widowed"]["Female"]["marry_intent"]["share"]),
+        "PboETwentyThreeDropPct": f"{abs(e23_b['part_i_staging_moral_hazard']['drop_pct_closed_form']):.1f}\\%",
+        "PboETwentyThreeDivW": format_rate(e23_b["part_iii_unilateral_divorce_flip"]["married_woman_unilateral_closed_form"]),
+    })
+
     for name in values:
         assert name.isalpha(), f"LaTeX macro name must be alphabetic: {name}"
     return "".join(f"\\newcommand{{\\{name}}}{{{value}}}\n" for name, value in values.items())
@@ -3962,22 +4264,60 @@ def references_bbl(generated_tex=None):
     return "\n".join(out_lines) + "\n"
 
 
+def primary_secondary_table(data):
+    speed = data["speed_dating"]
+    pov = data["pov"]
+    osyn = data["open_synthesis"]
+    kow = osyn["kowal_2025"]
+    hcm = osyn["hcmst_2017"]
+    lid = osyn["lidborg_2022"]
+    joel = osyn["joel_2020"]
+    sccs = osyn["betzig_sccs"]
+    gss_all = osyn["v9_anchors"]["gss_three_episodes_all"]
+    e17 = _v9_json("e17_speed")
+
+    chk_k = kow["checklist_and_surplus_decomposition"]["pooled"]["predictors_sd_per_sd"]
+    hvk = kow["homophily_vs_kindness"]
+    rsk = kow["reverence_vs_settling_kink"]["by_sex"]
+    hw = speed["checklist_and_hindsight"]["hobby_checklist_vs_live_wavelength"]
+    sat_b = speed["checklist_and_hindsight"]["objective_sat_blindness"]
+    mdv = osyn["okcupid_jse"]["ten_prompt_portfolio"]["multi_domain_lexical_validity"]
+    ost = osyn["okcupid_jse"]["orientation_staging_experiment"]
+
+    lines = [
+        r"\multicolumn{5}{@{}l}{\emph{Panel A: Secondary Mating Criteria (high stranger legibility $\rho_X$, strong entry/sorting, near-zero bond or fertility welfare $\alpha_X \approx 0$)}}\\",
+        rf"Single-photo facial rank & 6.68M HON; 20k \texttt{{HoloFace-L1}} & $\rho={data['holoface_benchmark']['holoface_full_multimodal']['test_l1']['spearman_r']:.3f}$ (27.3\% 500+ gap) & Entry $+{kow['partnering_slopes']['by_sex']['men']['looks']['pp_per_sd']:.1f}$/+${kow['partnering_slopes']['by_sex']['women']['looks']['pp_per_sd']:.1f}$\,pp/SD & Bond $+{chk_k['partner_looks']['estimate']:.2f}$\,SD ($\approx\frac{{1}}{{2}}$ kindness); aging divorce {100*sccs['causes']['old_age_loss_of_looks']['share_mentioned']:.1f}\%\\",
+        rf"Male stature \& $6'0''$ threshold & 781.7k POV; 59.9k \texttt{{OkCupid}}; $k=97$ & Instant box; $+{ost['groups']['men_straight']['stature']['jump_5ft11_to_6ft0_pct']:.1f}\%$ straight surge & Mating $r={lid['height']['mating']['re_mean_r']:+.3f}$ & $>3$-yr union flat (85.6\%); fertility $r={lid['height']['reproduction_all']['re_mean_r']:+.3f}$ (null)\\",
+        rf"Income \& ``marrying-up'' surplus & 90.5k Kowal; 34.1k U.S.\ GSS & Instant bracket; $1.66\times$ straight M show & Entry $+{kow['partnering_slopes']['by_sex']['men']['resources']['pp_per_sd']:.1f}$\,pp/SD; GSS $+{gss_all['income']['men']['pairing'][0]:.3f}$ & Bond ${chk_k['partner_resources']['estimate']:+.2f}$\,SD; marry-up ${chk_k['marrying_up_surplus']['estimate']:+.2f}$\,SD; marital births ${gss_all['income']['men']['number'][0]:+.3f}$\\",
+        rf"17-hobby \& 5-trait checklist tags & 7,941 speed-date dyads; 47.9k couples & Instant profile tags & 17-hobby ``Yes'' $r={hw['r_objective_hobby_corr_yes']['estimate']:+.3f}$ (null) & 5-trait checklist fit $+{chk_k['idiographic_checklist_fit']['estimate']:.2f}$\,SD ($5.3\times$ below kindness)\\",
+        rf"Politics, class \& degree sorting & 47.4k--50.0k couples (150 countries) & Instant credential / label & Assortative $r=+{hvk['politics']['assortative_pearson_r']:.2f}$ / $+{hvk['social_class']['assortative_pearson_r']:.2f}$ / $+{hvk['education']['assortative_pearson_r']:.2f}$ & Bond $+{hvk['politics']['homophily_prqc_sd_per_sd']['estimate']:.2f}$ / $+{hvk['social_class']['homophily_prqc_sd_per_sd']['estimate']:.2f}$ / $+{hvk['education']['homophily_prqc_sd_per_sd']['estimate']:.2f}$\,SD ($5.1\text{{--}}8.9\times$ below kindness)\\",
+        r"\addlinespace\multicolumn{5}{@{}l}{\emph{Panel B: Primary Mating Criteria (low zero-context legibility $\rho_{K,0}\ll \rho_X$, multi-context witness audit, dominant love \& survival $\alpha_K \gg |\alpha_X|$)}}\\",
+        rf"Everyday kindness \& warmth & 47.9k couples; 1.05M POV essays & 4-min $r_1={e17['jury']['sinc']['r1']:.2f}$ (near-blind) & Entry ${kow['partnering_slopes']['by_sex']['men']['kindness']['pp_per_sd']:+.2f}$/${kow['partnering_slopes']['by_sex']['women']['kindness']['pp_per_sd']:+.2f}$\,pp/SD ($\approx 0$) & \textbf{{$\#1$ bond driver ($+{chk_k['partner_kindness']['estimate']:.2f}$\,SD)}}; settling kink ${rsk['women']['country_fe_spline_sd_per_pt']['settling_deficit_kindness']['estimate']:+.2f}$\,SD/pt\\",
+        rf"Live play, humor \& dyadic spark & 8,378 speed dates; 47.3k \texttt{{OkCupid}} & 60.5\% unique dyadic SRM variance & Live wavelength $r={hw['r_live_shared_wavelength_yes']['estimate']:+.3f}$ ($20\times$ tags) & $\#1$ ``Message me if'' cue ($25.4\times$ tall, $74.9\times$ wealth)\\",
+        rf"General intelligence ($g$) \& curiosity & SAT dates ($n=6{{,}}822$); 9-domain essays & 1-date SAT $R^2={100*sat_b['stranger_intel_sat_r2']:.2f}\%$ (blind) & $K=9$ domains: $5.1\times$ lexical validity; GSS $+{gss_all['vocabulary']['men']['pairing'][0]:.3f}$ & Couple SAT $r={sat_b['r_matched_couple_sat']:+.2f}$; hindsight snaps back $+{speed['checklist_and_hindsight']['within_person_shifts']['threeweek_stated_minus_nextday_realized']['women']['delta_points']['intel']['estimate']:.1f}$\,pts\\",
+        rf"Unstaged devotion \& witness patience & 43 longit.\ studies; 3,510 \texttt{{HCMST}} & App pre-romance $0.27$\,yr ($\div 9.7$ kin) & $\le 3$\,mo rush = \textbf{{$3.1\times$ breakup}} vs.\ $2.5+$ yr & Dyadic devotion explains \textbf{{{joel['satisfaction']['models']['ActorRelBaseline']['unweighted_mean_r2_pct']:.1f}\%}} vs.\ traits {joel['satisfaction']['models']['PartnerTraitBaseline']['unweighted_mean_r2_pct']:.1f}\% $R^2$\\",
+        rf"Emotional fidelity \& hearth care & 160 SCCS soc.; 136 childcare soc. & Lullaby $5.0\times$ love-song $d$ (29.4k raters) & Hearth cooking verbs rise \textbf{{$4.2\text{{--}}4.9\times$}} (18--79) & Betrayal cited $14.3\times$ aging looks; $+{osyn['childhood_coevolution']['proposition_22_e22_coevolution']['love_devotion_gain_cm3']:.0f}\,\mathrm{{cm^3}}$ love gain\\",
+    ]
+    return "\n".join(lines) + "\n"
+
+
 def macro_kpi_table(data):
     pp = data["paleoclimate_plateau"]
     pvc_500 = data["holoface_benchmark"]["psychometric_voter_ceiling"]["tiers"]["votes_500_plus"]
     speed = data["speed_dating"]
     dc = speed["dyadic_chemistry"]
     hw = speed["checklist_and_hindsight"]["hobby_checklist_vs_live_wavelength"]
-    wps = speed["checklist_and_hindsight"]["within_person_shifts"]
+    csm = speed["checklist_and_hindsight"]["cross_sex_misperception"]
     pov = data["pov"]
     swv = pov["self_written_voice"]
-    hon = data["hon"]
+    sar = pov["second_act_reentry"]["headline_contrasts"]
     osyn = data["open_synthesis"]
     cc = osyn["childhood_coevolution"]
     nhs = osyn["nhs_campfire"]
     hcm = osyn["hcmst_2017"]
     kow = osyn["kowal_2025"]
     chk_k = kow["checklist_and_surplus_decomposition"]["pooled"]
+    hvk = kow["homophily_vs_kindness"]
     joel = osyn["joel_2020"]
     sccs = osyn["betzig_sccs"]
     lid = osyn["lidborg_2022"]
@@ -3988,57 +4328,57 @@ def macro_kpi_table(data):
 
     rows = [
         (
-            r"\textbf{1. Campfire \& Childhood Release}",
-            "Why did brains stall at $\\sim\\!908\\,\\mathrm{cm^3}$ (1.50--0.70\\,Ma) and why did big brains require pair-bond love?",
+            r"\textbf{1. When Brains Grew vs.\ Stalled}",
+            r"When did hominin brains expand, why did they stall for 800\,kyr (1.50--0.70\,Ma), and what released the surge?",
             f"{pp['plateau_summary']['gingerich_n']} crania + \\texttt{{LR04}} + {cc['sccs_alloparenting_and_sharing']['early_childhood_nonmaternal_majority_sccs52']['coded_societies']} SCCS societies",
-            rf"Stasis leads crises by \textbf{{{pp['timing_gap_summary']['onset_to_mis34_cooling_kyr']:.0f}--{pp['timing_gap_summary']['onset_to_bolaven_impact_kyr']:.0f}\,kyr}}; age-4.5 brain uses \textbf{{{cc['kuzawa_2014_brain_metabolism']['peak_rmr_pct']:.1f}\% RMR}} ({cc['kuzawa_2014_brain_metabolism']['peak_der_pct']:.1f}\% DER); $+50\%/\mathrm{{Myr}}$ post-fire surge",
-            rf"SCCS solo-mother childhood care is \textbf{{0/136 (0.0\%)}}; cooking w/o pair-bond love stalls at $\sim\!{cc['proposition_22_e22_coevolution']['regimes']['cooking_without_pair_bond_love']['equilibrium_cm3_closed_form']:,.0f}\,\mathrm{{cm^3}}$ vs.\ {cc['proposition_22_e22_coevolution']['regimes']['late_homo_cooking_plus_pair_bond_love']['equilibrium_cm3_closed_form']:,.0f} (Props.~\ref{{prop:tissue}},~\ref{{prop:childhood}})",
+            rf"Grew to $\sim\!908\,\mathrm{{cm^3}}$ by 1.5\,Ma, stalled \textbf{{800\,kyr}} (\textbf{{{pp['timing_gap_summary']['onset_to_mis34_cooling_kyr']:.0f}--{pp['timing_gap_summary']['onset_to_bolaven_impact_kyr']:.0f}\,kyr}} before crises), then surged \textbf{{$+50\%/\mathrm{{Myr}}$}} post-cooking; age-4.5 brain uses \textbf{{{cc['kuzawa_2014_brain_metabolism']['peak_rmr_pct']:.1f}\% RMR}}",
+            rf"SCCS solo-mother care is \textbf{{0/136 (0.0\%)}}; cooking w/o pair-bond love stalls at $\sim\!{cc['proposition_22_e22_coevolution']['regimes']['cooking_without_pair_bond_love']['equilibrium_cm3_closed_form']:,.0f}\,\mathrm{{cm^3}}$ vs.\ {cc['proposition_22_e22_coevolution']['regimes']['late_homo_cooking_plus_pair_bond_love']['equilibrium_cm3_closed_form']:,.0f} (Props.~\ref{{prop:tissue}},~\ref{{prop:childhood}})",
         ),
         (
             r"\textbf{2. Multi-Modal Legibility Wall}",
-            "How much human mind, character, and devotion stays invisible to zero-context strangers across photos, talk, and song?",
+            "Why do zero-context strangers over-weight secondary cues while missing primary mind and devotion?",
             r"20,000 \texttt{HoloFace-L1} portraits + 8,378 dates + 484k essays + 118 songs",
-            rf"\textbf{{{100.0 * pvc_500['irreducible_single_context_gap_full']:.1f}\%}} photo rank-variance gap; 4-min stranger explains \textbf{{{100.0 * speed['checklist_and_hindsight']['objective_sat_blindness']['stranger_intel_sat_r2']:.2f}\%}} of partner SAT (SAT$\to$Yes null) vs.\ \textbf{{{osyn['okcupid_jse']['ten_prompt_portfolio']['multi_domain_lexical_validity']['k9_to_k1_validity_ratio']:.1f}$\times$}} across 9 essay domains",
+            rf"\textbf{{{100.0 * pvc_500['irreducible_single_context_gap_full']:.1f}\%}} photo rank-variance gap; 4-min stranger explains \textbf{{{100.0 * speed['checklist_and_hindsight']['objective_sat_blindness']['stranger_intel_sat_r2']:.2f}\%}} of partner SAT vs.\ \textbf{{{osyn['okcupid_jse']['ten_prompt_portfolio']['multi_domain_lexical_validity']['k9_to_k1_validity_ratio']:.1f}$\times$}} across 9 essay domains",
             rf"Blind raters ($N\!=\!29{{,}}357$) decode lullabies ($d\!=\!+{nhs['acoustic_legibility_gradient']['lullaby']['cohen_d']:.2f}$) \textbf{{{nhs['lullaby_to_love_d_ratio']:.1f}$\times$}} over love songs ($+{nhs['acoustic_legibility_gradient']['love']['cohen_d']:.2f}$; Props.~\ref{{prop:portfolio}},~\ref{{prop:twoway}})",
         ),
         (
-            r"\textbf{3. Play vs.\ Hobby-Tag Null}",
-            "Does live spark come from matching profile hobby tags or from unique two-person conversational play?",
-            rf"{dc['variance_partition']['like']['n']:,} ratings + {hw['n_common_dyad_decisions']:,} 17-hobby dyads + Waves 1--3",
-            rf"Objective 17-hobby tag overlap is \textbf{{null ($r\!=\!{hw['r_objective_hobby_corr_yes']['estimate']:+.3f}$)}} vs.\ live wavelength \textbf{{$r\!=\!{hw['r_live_shared_wavelength_yes']['estimate']:+.3f}$ ({hw['live_to_checklist_r_ratio']:.1f}$\times$)}}; \textbf{{{100.0 * dc['variance_partition']['like']['unbiased_srm_shares']['unique_dyadic_and_noise']:.1f}\%}} unique SRM spark",
-            rf"Women show a $+{wps['nextday_realized_minus_pre_stated']['women']['delta_points']['attr']['estimate']:.1f}$\,pt 24h looks hijack before intelligence snaps back ($+{wps['threeweek_stated_minus_nextday_realized']['women']['delta_points']['intel']['estimate']:.1f}$\,pts at 3--4 wks; Prop.~\ref{{prop:love}}(ii))",
+            r"\textbf{3. Mind-Reading Error \& Play}",
+            "How badly do men and women misread opposite-sex priorities, and what creates live romantic spark?",
+            rf"{dc['variance_partition']['like']['n']:,} ratings + {hw['n_common_dyad_decisions']:,} hobby dyads + 690 matches",
+            rf"Both sexes overestimate opposite-sex looks weight (\textbf{{$+{csm['women_about_men']['delta_points']['attr']['estimate']:.1f}$ W / $+{csm['men_about_women']['delta_points']['attr']['estimate']:.1f}$ M pts}}) \& underestimate intelligence (\textbf{{${csm['women_about_men']['delta_points']['intel']['estimate']:+.1f}$ / ${csm['men_about_women']['delta_points']['intel']['estimate']:+.1f}$}}); men call \textbf{{{speed['checklist_and_hindsight']['post_event_followup_3_4_weeks']['initiation_by_sex']['male_to_female_calls_per_match_ratio']:.1f}$\times$}} more",
+            rf"17-hobby overlap is \textbf{{null ($r\!=\!{hw['r_objective_hobby_corr_yes']['estimate']:+.3f}$)}} vs.\ live play \textbf{{$r\!=\!{hw['r_live_shared_wavelength_yes']['estimate']:+.3f}$ ({hw['live_to_checklist_r_ratio']:.1f}$\times$)}}; \textbf{{{100.0 * dc['variance_partition']['like']['unbiased_srm_shares']['unique_dyadic_and_noise']:.1f}\%}} unique SRM spark (Prop.~\ref{{prop:love}}(ii))",
         ),
         (
-            r"\textbf{4. Voice vs.\ Audience Staging}",
-            "What do humans ask for in their own words vs.\\ how audience-targeted platform filters distort self-presentation?",
-            rf"{swv['eligible_with_essay']['Pooled']:,} POV + 484k \texttt{{OkCupid}} essays + 6.68M HON",
-            rf"Women write family (\textbf{{{100.0 * swv['themes']['family_kids_home']['Female']['share']:.1f}\%}}, \textbf{{{swv['voice_to_checkbox_ratios']['female_family_to_tall']:.0f}$\times$}} $6'0''$); \texttt{{OkCupid}} ``message me if'' asks humor/kindness \textbf{{{osyn['okcupid_jse']['ten_prompt_portfolio']['essay9_message_me_if']['ratios']['humor_to_tall']:.1f}$\times$}} tall \& \textbf{{{osyn['okcupid_jse']['ten_prompt_portfolio']['essay9_message_me_if']['ratios']['humor_to_wealth']:.1f}$\times$}} wealth",
-            rf"Straight men surge \textbf{{$+{osyn['okcupid_jse']['orientation_staging_experiment']['groups']['men_straight']['stature']['jump_5ft11_to_6ft0_pct']:.1f}\%$}} at $6'0''$ (gay men \textbf{{${osyn['okcupid_jse']['orientation_staging_experiment']['groups']['men_gay']['stature']['jump_5ft11_to_6ft0_pct']:+.1f}\%$}}, no surge) \& show income \textbf{{{osyn['okcupid_jse']['orientation_staging_experiment']['straight_to_gay_male_income_disclosure_ratio']:.2f}$\times$}} more (Prop.~\ref{{prop:staging}})",
+            r"\textbf{4. Voice vs.\ Secondary Staging}",
+            r"What do men and women seek in their own words vs.\ how secondary platform filters trigger strategic staging?",
+            rf"{swv['eligible_with_essay']['Pooled']:,} POV + 484k \texttt{{OkCupid}} essays + 65.9k effort logs",
+            rf"Women write family (\textbf{{{swv['voice_to_checkbox_ratios']['female_family_to_tall']:.0f}$\times$}} $6'0''$); ``message me if'' asks humor \textbf{{{osyn['okcupid_jse']['ten_prompt_portfolio']['essay9_message_me_if']['ratios']['humor_to_tall']:.1f}$\times$}} tall \& \textbf{{{osyn['okcupid_jse']['ten_prompt_portfolio']['essay9_message_me_if']['ratios']['humor_to_wealth']:.1f}$\times$}} wealth; courtship effort drops \textbf{{$-14\%$/$-20\%$}} in marriage",
+            rf"Straight men surge \textbf{{$+{osyn['okcupid_jse']['orientation_staging_experiment']['groups']['men_straight']['stature']['jump_5ft11_to_6ft0_pct']:.1f}\%$}} at $6'0''$ (gay men \textbf{{${osyn['okcupid_jse']['orientation_staging_experiment']['groups']['men_gay']['stature']['jump_5ft11_to_6ft0_pct']:+.1f}\%$}}) \& show income \textbf{{{osyn['okcupid_jse']['orientation_staging_experiment']['straight_to_gay_male_income_disclosure_ratio']:.2f}$\times$}} more (Props.~\ref{{prop:staging}},~\ref{{prop:lifecycle}}(i))",
         ),
         (
-            r"\textbf{5. 10$\times$ App Audit Compression}",
-            "How sharply has digital courtship compressed the pre-romantic everyday witness observation that screens character?",
-            rf"{hcm['total_respondents']:,} Stanford \texttt{{HCMST}} U.S.\ adults ({hcm['meeting_coded_couples']:,} couples)",
-            rf"Dating-app pre-romance acquaintance averages \textbf{{{hcm['by_venue']['online_dating_app']['pre_romance_acquaintance_years']['mean']:.2f}\,yr (med.\ 0.0\,yr)}} vs.\ \textbf{{{hcm['institutional_and_kin_pooled']['pre_romance_acquaintance_years']['mean']:.2f}\,yr}} institutional/kin (\textbf{{{hcm['audit_compression_ratios']['institutional_kin_to_app_mean_ratio']:.1f}$\times$}}; school {hcm['audit_compression_ratios']['school_to_app_mean_ratio']:.1f}$\times$)",
-            rf"Intact app unions match offline quality ({hcm['by_venue']['online_dating_app']['intact_relationship_quality_1_to_5']['mean']:.2f} vs.\ {hcm['institutional_and_kin_pooled']['intact_relationship_quality_1_to_5']['mean']:.2f}; adj.\ diff.\ {hcm['intact_quality_boundary_check']['online_app_minus_offline_pts_1_to_5']:+.2f}, null)---apps strip pre-entry audit (Prop.~\ref{{prop:waiting}})",
+            r"\textbf{5. Audit Collapse \& Rush Hazard}",
+            "What happens when digital apps compress pre-romantic witness audits and couples rush into lock-in?",
+            rf"{hcm['total_respondents']:,} Stanford \texttt{{HCMST}} adults ({hcm['cohabitation_rush_hazard']['n_ever_cohabited']:,} cohabited)",
+            rf"Apps compress pre-romance acquaintance \textbf{{{hcm['audit_compression_ratios']['institutional_kin_to_app_mean_ratio']:.1f}$\times$}} ($0.27$ vs.\ $2.58$\,yr); rushing to cohabit in \textbf{{$\le 3$\,mo triples breakup}} ({100*hcm['cohabitation_rush_hazard']['by_romance_to_cohab_window']['le_3m_rush']['breakup_share']:.1f}\% vs.\ {100*hcm['cohabitation_rush_hazard']['by_romance_to_cohab_window']['gt_2_5y']['breakup_share']:.1f}\%)",
+            rf"Non-marital breakups are near-symmetric, whereas \textbf{{marital divorces flip to {100*hcm['breakup_initiation_asymmetry']['married_divorce_or_separation']['woman_share_of_unilateral']:.1f}\% female initiation}} (85.7\% in husbands' reports; Prop.~\ref{{prop:lifecycle}}(ii--iii))",
         ),
         (
-            r"\textbf{6. Love Reversal \& Marry-Up Null}",
-            "Do money, checklists, or ``marrying out of your league'' build love, or does unconditional kindness rule the bond?",
+            r"\textbf{6. Primary Love vs.\ Homophily}",
+            "Do secondary sorting tags (politics, class, degrees, money) or primary kindness and reverence sustain love?",
             rf"{kow['inclusion_flow']['source_rows']:,} adults ({kow['checklist_and_surplus_decomposition']['n_total']:,} couples) + 43 longit.\ studies",
-            rf"Kindness (\textbf{{${chk_k['predictors_sd_per_sd']['partner_kindness']['estimate']:+.2f}$\,SD}}) beats 5-trait checklist fit (${chk_k['predictors_sd_per_sd']['idiographic_checklist_fit']['estimate']:+.2f}$, \textbf{{{chk_k['kindness_to_checklist_ratio']:.1f}$\times$}}), money (${chk_k['predictors_sd_per_sd']['partner_resources']['estimate']:+.2f}$), \& ``marrying up'' (\textbf{{${chk_k['predictors_sd_per_sd']['marrying_up_surplus']['estimate']:+.2f}$\,SD $\approx 0$}})",
-            rf"Holds in egalitarian \& collectivist regimes; 43 longit.\ studies: dyadic \textbf{{{joel['satisfaction']['models']['ActorRelBaseline']['unweighted_mean_r2_pct']:.1f}\%}} vs.\ traits {joel['satisfaction']['models']['PartnerTraitBaseline']['unweighted_mean_r2_pct']:.1f}\% $R^2$ (Prop.~\ref{{prop:love}})",
+            rf"Primary kindness (\textbf{{${chk_k['predictors_sd_per_sd']['partner_kindness']['estimate']:+.2f}$\,SD}}) beats politics/class/degree homophily (\textbf{{{hvk['politics']['kindness_to_homophily_ratio']:.1f}--{hvk['education']['kindness_to_homophily_ratio']:.1f}$\times$}}), checklist fit (\textbf{{{chk_k['kindness_to_checklist_ratio']:.1f}$\times$}}), money, \& marry-up ($\approx 0$)",
+            rf"Settling on kindness penalizes love \textbf{{1.8$\times$}} steeper than surplus adds; 43 longit.\ studies: devotion \textbf{{{joel['satisfaction']['models']['ActorRelBaseline']['unweighted_mean_r2_pct']:.1f}\%}} vs.\ traits {joel['satisfaction']['models']['PartnerTraitBaseline']['unweighted_mean_r2_pct']:.1f}\% $R^2$ (Prop.~\ref{{prop:love}})",
         ),
         (
-            r"\textbf{7. Age-41 Flip vs.\ Devotion}",
-            "Which male--female decisions flip with biological clocks, and which hold invariant from 18 to 75?",
-            r"1.14M POV + 84.6k age-gap + 85.0k jealousy + 160 SCCS",
-            rf"Childless ``Want kids'' flips at \textbf{{Age $\sim\!{pov['childless_crossover']['band_midpoint_interpolated_age']:.0f}$}}, while serious commitment stays \textbf{{W $>$ M}} ($+8$ to $+12$\,pp) and 25+ yr commitment rises ({kow['triangular_love_arc']['by_duration']['<=1y']['commitment']['mean']:.2f}$\to${kow['triangular_love_arc']['by_duration']['25y+']['commitment']['mean']:.2f}/5)",
-            rf"Women weight emotional over sexual betrayal ({kow['jealousy_asymmetry']['by_sex']['women']['emotional_1_to_7']['mean']:.2f} vs.\ {kow['jealousy_asymmetry']['by_sex']['women']['sexual_1_to_7']['mean']:.2f}/7); divorces cite betrayal \textbf{{{sccs['adultery_to_aging_looks_ratio']:.1f}$\times$}} over aging looks",
+            r"\textbf{7. Clocks, Verbs \& Second Acts}",
+            "How do male and female desires, hearth verbs, and remarriage choices diverge or converge from 18 to 79?",
+            r"1.14M POV + 1.05M essays + 85.0k jealousy + 160 SCCS",
+            rf"Childless ``Want kids'' flips at \textbf{{Age $\sim\!{pov['childless_crossover']['band_midpoint_interpolated_age']:.0f}$}}, casual SOI widens ($1.46\to 1.77\times$ M$>$W), yet hearth cooking verbs rise \textbf{{$4.2\text{{--}}4.9\times$}} \& commitment stays W$>$M",
+            rf"40--49 divorced W cut marriage intent \textbf{{$-{abs(sar['divorced_vs_single_female_marry_change_pct_40_49']):.0f}\%$}} (keeping \textbf{{80.8\%}} serious bond), while widowed M exceed W (Prop.~\ref{{prop:lifecycle}}(iv))",
         ),
         (
             r"\textbf{8. The 94\% Modern Pairing Gate}",
-            "Did modern births fall because people stopped wanting children or because single-context markets stall union entry?",
+            "Did modern births fall because adults stopped wanting families or because stranger markets stall union entry?",
             r"34,092 U.S.\ GSS adults (incl.\ \texttt{WORDSUM}) + 232 meta-effects",
             rf"\textbf{{94\%}} of U.S.\ birth drop sits in non-marriage; male pairing is positive on income (${gss_m['pairing'][0]:+.3f}$), schooling ($+{gss_all['schooling']['men']['pairing'][0]:.3f}$), \& \texttt{{WORDSUM}} (\textbf{{${gss_v['pairing'][0]:+.3f}$}})",
             rf"Within-marriage births invert all four (${gss_m['number'][0]:+.3f}$ to ${gss_all['schooling']['men']['number'][0]:+.3f}$); height fertility null ($r\!=\!{lid['height']['reproduction_all']['re_mean_r']:+.3f}$; Props.~\ref{{prop:episodes}},~\ref{{prop:waiting}})",
@@ -4053,8 +4393,10 @@ def generate(data):
     plateau_tbl = plateau_events_table(data)
     holo_tbl = holoface_table(data)
     macro_tbl = macro_kpi_table(data)
+    prim_sec_tbl = primary_secondary_table(data)
     gen_tex = {
         "performance-macro-kpi-table.tex": macro_tbl,
+        "performance-primary-secondary-table.tex": prim_sec_tbl,
         "performance-pov-responses.tex": responses,
         "performance-pov-sensitivity.tex": sensitivity,
         "performance-hon-sensitivity.tex": rating_table(hon["ratings"]),
@@ -4078,6 +4420,7 @@ def generate(data):
         "performance-fig-ethnography.pdf": ethnography_ancestors_plot(data),
         "performance-fig-world-synthesis.pdf": world_synthesis_plot(data),
         "performance-fig-love-bond.pdf": love_bond_plot(data),
+        "performance-fig-primary-secondary-dynamics.pdf": primary_secondary_dynamics_plot(data),
         "performance-fig-hon-architecture.pdf": hon_architecture_plot(data),
         "performance-fig-holoface-ceiling.pdf": holoface_ceiling_plot(data),
         "performance-fig-face-drivers.pdf": face_drivers_plot(data),

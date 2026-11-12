@@ -317,6 +317,53 @@ class PlatformStudyTests(unittest.TestCase):
         self.assertGreater(tpp["essay3_first_noticed"]["themes"]["smile_laugh"]["share"], 0.25)
         self.assertGreater(okc["sf_childless_fertility_crossover"]["interpolated_crossover_age"], 36.5)
 
+        # v15 cross-source male-female mating dynamics, Proposition 23 (E23), & Table III checks
+        csm = chk_sd["cross_sex_misperception"]
+        self.assertGreater(csm["women_about_men"]["delta_points"]["attr"]["interval_95"][0], 5.0)
+        self.assertGreater(csm["men_about_women"]["delta_points"]["attr"]["interval_95"][0], 4.0)
+        self.assertLess(csm["women_about_men"]["delta_points"]["intel"]["interval_95"][1], -4.0)
+        init_sx = chk_sd["post_event_followup_3_4_weeks"]["initiation_by_sex"]
+        self.assertGreater(init_sx["male_to_female_calls_per_match_ratio"], 4.0)
+
+        kov = ref["open_synthesis"]["kowal_2025"]
+        hvk = kov["homophily_vs_kindness"]
+        self.assertGreater(hvk["politics"]["assortative_pearson_r"], 0.55)
+        self.assertGreater(hvk["politics"]["kindness_to_homophily_ratio"], 4.5)
+        self.assertGreater(hvk["education"]["kindness_to_homophily_ratio"], 6.0)
+
+        rsk = kov["reverence_vs_settling_kink"]
+        self.assertGreater(rsk["by_sex"]["women"]["kindness_settling_to_reverence_slope_ratio"], 1.5)
+        self.assertGreater(rsk["by_sex"]["men"]["kindness_settling_to_reverence_slope_ratio"], 1.5)
+        for sx_k in ("women", "men"):
+            lt = rsk["by_sex"][sx_k]["tiers_by_trait"]["looks"]
+            self.assertLess(
+                lt["revered_mate_gt_self"]["infidelity_rate_pct"]["mean"]
+                - lt["settled_mate_lt_self"]["infidelity_rate_pct"]["mean"],
+                -5.0,
+            )
+
+        cesl = kov["courtship_effort_and_soi_lifecycle"]
+        self.assertLess(cesl["by_relationship_stage"]["by_sex"]["women"]["dating_to_married_drop_pct"], -10.0)
+        self.assertLess(cesl["by_relationship_stage"]["by_sex"]["men"]["dating_to_married_drop_pct"], -15.0)
+
+        crh = hcm["cohabitation_rush_hazard"]
+        self.assertGreater(crh["le_3m_to_gt_2_5y_breakup_ratio"], 2.5)
+        bia = hcm["breakup_initiation_asymmetry"]
+        self.assertGreater(bia["married_divorce_or_separation"]["woman_share_of_unilateral"], 0.60)
+
+        e23 = ref["open_synthesis"]["proposition_23_e23"]
+        self.assertLess(e23["part_i_staging_moral_hazard"]["abs_diff_min"], 1.5)
+        self.assertLess(e23["part_iii_unilateral_divorce_flip"]["abs_max_diff"], 0.02)
+        self.assertGreater(e23["part_iii_unilateral_divorce_flip"]["married_woman_unilateral_closed_form"], 0.60)
+
+        avc = ref["pov"]["self_written_voice"]["action_verb_calendar"]["lifespan_shifts_18_22_to_65_79"]
+        self.assertGreater(avc["female_cook_rise_ratio"], 3.5)
+        self.assertGreater(avc["male_cook_rise_ratio"], 3.5)
+        self.assertLess(avc["pooled_party_drop_pct"], -50.0)
+        sar = ref["pov"]["second_act_reentry"]["headline_contrasts"]
+        self.assertLess(sar["divorced_vs_single_female_marry_change_pct_40_49"], -20.0)
+        self.assertGreater(sar["widowed_men_minus_women_marry_pp_40_49"], 0.5)
+
         macros_tex = ppaper.numbers(ref)
         self.assertIn(r"\newcommand{\PboBondKindW}", macros_tex)
         self.assertIn(r"\newcommand{\PboJoelBaseRatio}", macros_tex)
@@ -327,8 +374,14 @@ class PlatformStudyTests(unittest.TestCase):
         self.assertIn(r"\newcommand{\PboOkcStrJump}", macros_tex)
         self.assertIn(r"\newcommand{\PboOkcDomGain}", macros_tex)
         self.assertIn(r"\newcommand{\PboOkcSfCrossAge}", macros_tex)
+        self.assertIn(r"\newcommand{\PboHomoPolRatio}", macros_tex)
+        self.assertIn(r"\newcommand{\PboRevKindSlopeW}", macros_tex)
+        self.assertIn(r"\newcommand{\PboCohabRushRatio}", macros_tex)
+        self.assertIn(r"\newcommand{\PboETwentyThreeDivW}", macros_tex)
         kpi_tex = ppaper.macro_kpi_table(ref)
         self.assertEqual(kpi_tex.strip().count(r"\\"), 8)
+        psec_tex = ppaper.primary_secondary_table(ref)
+        self.assertGreaterEqual(psec_tex.strip().count(r"\\"), 8)
 
 
 if __name__ == "__main__":
