@@ -226,10 +226,11 @@ def panel_b(an: dict, plan: dict, ckpt: str) -> tuple[list[str], dict]:
 def caption_b(s: dict, integ: dict) -> str:
     ck = s["ckpt"].split("/")[-1].replace("-GGUF", "")
     sd, pv = s["R2_state"], s["R2_visible"]
-    cmp = "more often" if (sd["rate"] or 0) > (pv["rate"] or 0) else "no more often"
+    # Comparative wording only when the 95% intervals separate (the same rule as the panel title); otherwise neutral.
+    cmp = "more often than" if s["title_claim_supported"] else "against"
     return (rf"\textbf{{(b)}} {ck} red-team proposals under 8 predeclared mutation strategies, each distinct proposal counted once "
             rf"(95\% Clopper--Pearson). A same-checkpoint reviewer given the rules and time to reason admits "
-            rf"{pct(sd['x'], sd['n'])} unauthorized proposals whose violation lives in sink state, {cmp} than the "
+            rf"{pct(sd['x'], sd['n'])} unauthorized proposals whose violation lives in sink state, {cmp} the "
             rf"{pct(pv['x'], pv['n'])} whose violation is visible in the proposal. The gate admits {s['G_breaches']}; it enforces "
             rf"the written predicate, and its Rust kernel agreed with the Python reference on all {integ['unique_valid']} valid "
             rf"proposals ({integ['mirror_gate_disagreements']} disagreements). Open circles are by construction: the share of each "
