@@ -376,5 +376,18 @@
     "Revocation-style mechanisms (pg_foreign_key, pg_revoke, etcd_rbac_revoke, fs_dir_mode) need a row, credential or directory per epoch. A floor compare does not. The operational cost is not measured.",
     "Client timestamps are monotonic seconds in the probe process. They measure latency and order client events; the surface's own ordering evidence decides violations."
   ],
-  "amendments": []
+  "amendments": [
+    {
+      "number": 1,
+      "recorded_utc": "2026-11-12T21:14Z",
+      "recorded_utc_source": "date -u",
+      "after_run": "target/runs/e6b-smoke-20261112T2111Z (smoke run 1, started 21:11:57Z, aborted; kept and disclosed; not the reported run)",
+      "observed": "The run aborted in pg_foreign_key's deterministic probe (idle, repeat 1). The fence's DELETE FROM live_epochs WHERE issuer = 7 AND epoch < 2 raised 23503 foreign_key_violation, because the committed det-pre row still references (7, 1). Under a NO ACTION foreign key, a referenced row cannot be deleted, so this fence cannot be raised once the stale epoch has any effect. Three mechanisms had completed before the abort, and their printed results are disclosed in the report: pg_trigger_e6_fair, pg_trigger_e6 and pg_revoke. Afterwards a separate check of etcd auth API request shapes ran in container e6b-apicheck-*: setup endpoints and a role permission revoke only, with no fence probe and no effect writes.",
+      "changes": [
+        "Design unchanged. pg_foreign_key keeps its predeclared schema, requests and fence. That this fence cannot be raised is a result, reported as a limitation of the mechanism under the run policy.",
+        "Operational: a fence raise that raises an exception is recorded in the fence record as error {exc, sqlstate or message} instead of aborting the run. The deterministic probe still issues its post-fence writes, and they are recorded.",
+        "Analysis in that case (R4: there is no acknowledged fence, so R1-R3 have no input): the deterministic run's class is indeterminate, with reason 'fence raise failed', and its outcome is fail. A race whose fence raise failed has no ordering evidence and contributes no events. It is left out of each rate's n and counted as fence_failed."
+      ]
+    }
+  ]
 }
