@@ -505,7 +505,7 @@ def check(data):
     assert sccs["causes"]["old_age_loss_of_looks"]["share_mentioned"] < 0.08
 
     mk = data["macro_selection_kpis"]
-    assert mk["schema_version"] == 2 and len(mk["kpis"]) == 8
+    assert mk["schema_version"] == 2 and len(mk["kpis"]) == 9
 
     # 8. v13 Cross-Scale Causal Closure & Empirical Audit Validation
     chk_sd = data["speed_dating"]["checklist_and_hindsight"]
@@ -695,3 +695,87 @@ def check(data):
     assert e23["part_iv_second_act_reentry"]["widowed"]["men_minus_women_closed_form_pp"] > 0.5
     for st_e23 in e23["part_iv_second_act_reentry"].values():
         assert st_e23["abs_max_diff"] < 0.015
+
+    # 11. v16 Outlier Confidence vs. Arrogance, Audience Priors, Alpha Asymmetry & Proposition 24 (E24)
+    cab = data["speed_dating"]["confidence_and_backlash"]
+    awd = cab["agency_x_warmth_dyadic"]
+    m2f = awd["male_chooser_to_female_target"]
+    f2m = awd["female_chooser_to_male_target"]
+    assert m2f["warm_outlier_agency"]["yes_share"] > 0.65
+    assert f2m["warm_outlier_agency"]["yes_share"] > 0.58
+    assert m2f["warm_outlier_over_humble_low_pp"] > 40.0
+    assert f2m["warm_outlier_over_humble_low_pp"] > 40.0
+    assert awd["female_to_male_coldness_backlash_ratio"] > 1.75
+
+    aam = cab["audience_age_modulation"]
+    assert abs(aam["age_le_24"]["coefficients"]["target_overclaim"]["slope_pp"]) < 1.0
+    assert aam["age_25_28"]["coefficients"]["target_overclaim"]["ci_95_pp"][1] < 0.0
+    assert aam["age_ge_29"]["coefficients"]["target_overclaim"]["ci_95_pp"][1] < -1.5
+    assert aam["mature_to_young_overclaim_penalty_ratio"] > 7.0
+
+    arm = cab["audience_race_modulation"]
+    assert arm["white_euro"]["coefficients"]["target_overclaim"]["ci_95_pp"][1] < -1.4
+    assert arm["white_euro"]["coefficients"]["amb"]["ci_95_pp"][1] < -1.0
+    assert arm["asian"]["coefficients"]["amb"]["ci_95_pp"][1] < -1.0
+    assert arm["asian"]["coefficients"]["fun"]["slope_pp"] > 6.5
+    assert arm["black"]["coefficients"]["amb"]["slope_pp"] > 2.0
+
+    st_sd = cab["status_threat"]
+    assert st_sd["male_chooser_evaluating_woman"]["coefficients"]["target_outsmarts_chooser"]["ci_95_pp"][1] < -2.0
+    assert abs(st_sd["female_chooser_evaluating_man"]["coefficients"]["target_outsmarts_chooser"]["slope_pp"]) < 1.0
+    assert st_sd["male_chooser_strata"]["ambition_insecure_men_le7"]["coefficients"]["amb"]["ci_95_pp"][1] < 0.0
+
+    aee = pov["alpha_executive_and_ethnicity"]
+    ex_pov = aee["executives_ages_30_54"]
+    for sx_e in ("Female", "Male"):
+        for sl_e in ("executive_founder_owner", "non_executive_pool"):
+            cell_e = ex_pov["by_sex"][sx_e][sl_e]
+            assert cell_e["n"] >= minimum
+            check_rate(cell_e["divorced"])
+            check_rate(cell_e["childless"])
+            check_rate(cell_e["very_ambitious_all"])
+    ex_con = ex_pov["contrasts"]
+    assert ex_con["female_minus_male_exec_divorced_pp"] > 12.0
+    assert ex_con["female_to_male_exec_divorced_ratio"] > 1.65
+    assert ex_con["female_exec_minus_nonexec_divorced_pp"] > 6.5
+    assert ex_con["female_exec_minus_nonexec_childless_pp"] > 3.0
+    assert ex_con["male_exec_minus_nonexec_childless_pp"] < 0.0
+    assert ex_con["female_minus_male_exec_very_ambitious_pp"] < -12.0
+    amb_eth = aee["ambition_by_ethnicity_ages_25_49"]
+    assert amb_eth["Black"]["Male"]["share"] > 0.48 and amb_eth["Black"]["Female"]["share"] > 0.40
+    assert amb_eth["Asian"]["Male"]["share"] < 0.28 and amb_eth["Caucasian"]["Male"]["share"] < 0.28
+
+    iap = osyn["influence_and_prestige"]
+    kow_ip = iap["kowal_175_countries"]
+    assert kow_ip["archetypes_by_sex"]["men"]["warm_outlier_minus_humble_partnered_pp"] > 19.0
+    assert kow_ip["archetypes_by_sex"]["men"]["warm_outlier_minus_cold_mate_kind"] > 1.0
+    assert kow_ip["archetypes_by_sex"]["women"]["warm_outlier_minus_cold_mate_kind"] > 1.0
+    assert kow_ip["archetypes_by_sex"]["men"]["warm_outlier_minus_cold_prqc"] > 0.25
+    assert kow_ip["archetypes_by_sex"]["women"]["warm_outlier_minus_cold_prqc"] > 0.22
+    assert kow_ip["relative_resource_asymmetry"]["women"]["out_earns_prqc_diff"] < -0.35
+    assert kow_ip["edu_class_singlehood_ages_30_55"]["women"]["phd_minus_hs_single_pp"] > 3.0
+    assert kow_ip["edu_class_singlehood_ages_30_55"]["men"]["phd_minus_hs_single_pp"] < 0.0
+
+    sccs_ip = iap["sccs_coalition_leadership"]
+    eg_sccs = sccs_ip["regimes"]["egalitarian_sccs270_eq1"]
+    st_sccs = sccs_ip["regimes"]["class_stratified_sccs270_ge2"]
+    assert eg_sccs["checked_leaders_share"] == 1.0
+    assert eg_sccs["persuasion_or_consultation_share"] > 0.92
+    assert st_sccs["backed_by_force_share"] > 0.55
+    assert sccs_ip["egalitarian_respect_to_force_ratio"] > 3.1
+    assert eg_sccs["silent_followership_withdrawal_share"] > 0.80
+
+    okc_ip = iap["okcupid_heros_journey_and_execs"]
+    assert okc_ip["heros_journey_triad"]["mean_prompts_filled_k"] > 9.5
+    assert okc_ip["passive_unfilled"]["mean_prompts_filled_k"] < 7.5
+    assert okc_ip["triad_to_passive_k_ratio"] > 1.30
+
+    e24 = osyn["proposition_24_e24"]
+    assert e24["max_abs_diff"] < 0.01
+    assert e24["part_i_experience_graded_arrogance"]["m_1"]["arrogance_minus_calibrated"] > 0.5
+    assert e24["part_i_experience_graded_arrogance"]["m_20"]["arrogance_minus_calibrated"] < -0.9
+    assert (
+        e24["part_iii_alpha_double_bind_escape"]["alpha_female_dual_signal_high_caliber_pool"]["closed_form"]
+        > e24["part_iii_alpha_double_bind_escape"]["alpha_female_playing_small_insecure_pool"]["closed_form"] + 0.35
+    )
+    assert e24["part_iv_heros_journey_vs_self_aggrandizing"]["standing_ratio"] > 5.0

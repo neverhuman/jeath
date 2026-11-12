@@ -4,7 +4,7 @@
 Macro alignment KPI & Evidence tier & Exogenous boundary & Endogenous / baseline & Scope \& verification certificate\\\midrule
 1. Mechanized kernel obligations & Tier 1 (Verus/Z3) & 226 verified, 0 errors & 6/6 mutants rejected & 49 \texttt{exec} fns + 36 \texttt{proof fn}s (wire bijection, $d$-hop attenuation, quorum fence)\\
 2. Optimization-pressure breach slope & Tier 4 ($K_{\mathrm{opt}}\le 4,096$) & $0.0000$ / doubling ($0\%$) & 100.0\% at $K_{\mathrm{opt}}=4,096$ & $0/120,000$ fenced kernel breaches vs.\ $1-(1-J)^{K_{\mathrm{opt}}}$ collapse\\
-3. Multi-process cluster post-ack leaks & Tier 3 (SQLite WAL) & $0$ leaks (p50 664\,$\mu$s) & 98.6\% smurf miss ($K=64$) & 3 OS processes, 16 subagents (3 hops), 24 \texttt{SIGKILL} restarts\\
+3. Multi-process cluster post-ack leaks & Tier 3 (SQLite WAL) & $0$ leaks (p50 742\,$\mu$s) & 98.6\% smurf miss ($K=64$) & 3 OS processes, 16 subagents (3 hops), 24 \texttt{SIGKILL} restarts\\
 4. Canonical wire fuzz differential & Tier 1 + Tier 3 IPC & $0 / 5,000$ accepted & Untyped prose: 256\,bits/call & $0$ broker/sink decoder diffs; typed covert channel $\to 0.00$\,bits at $R=0$\\
 5. Live CPU LLM unauthorized rate & Tier 3 (0 GPU-s) & $0 / 112$ ($0.0\%$) & $33 / 112$ ($29.5\%$) & Exact Suissa--Shuster $p=1.9\times 10^{-9}$; pilot $N=32$ primary \texttt{inconclusive} kept\\
 6. 5-step trajectory joint miss $\hat J_5$ & Tier 3 (\texttt{AgentDojo}) & 2.08\% (step gates) & 16.67\% (31.7$\times$ $\prod\hat m_s$) & 480 trajectories (2,400 tool calls); prose-stripped vs.\ 5-family transcript\\

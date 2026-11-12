@@ -1,7 +1,7 @@
 % Self-contained four-part technical appendix for Performance Before Outcomes (IEEE two-column monograph).
 \twocolumn[{\noindent{\footnotesize\scshape\color{accent}Technical Appendix}\par\vspace{2pt}
 \noindent{\Large\bfseries Formal Models, Complete Proofs, Paleoclimatic Audit, and Platform Sensitivity}\par\vspace{3pt}
-\noindent{\footnotesize\color{ink2} Appendix~A: Twenty-Three Propositions, Corollaries, and Complete Proofs \quad$\cdot$\quad Appendix~B: Numerical Verification and the 1.5--0.7\,Ma Plateau Audit \quad$\cdot$\quad Appendix~C: Digital-Platform, Stature, Facial-Attribution, and \texttt{HoloFace-L1} Audits \quad$\cdot$\quad Appendix~D: Survey Cohort Robustness and Pre-Committed Falsifiers}\par\vspace{4pt}
+\noindent{\footnotesize\color{ink2} Appendix~A: Twenty-Four Propositions, Corollaries, and Complete Proofs \quad$\cdot$\quad Appendix~B: Numerical Verification and the 1.5--0.7\,Ma Plateau Audit \quad$\cdot$\quad Appendix~C: Digital-Platform, Stature, Facial-Attribution, and \texttt{HoloFace-L1} Audits \quad$\cdot$\quad Appendix~D: Survey Cohort Robustness and Pre-Committed Falsifiers}\par\vspace{4pt}
 \noindent{\color{rulegray}\rule{\textwidth}{0.5pt}}\par\vspace{8pt}}]
 
 \appendices
@@ -329,6 +329,22 @@ Consider courtship, union lock-in, dissolution, and remarriage across stages:
 \end{enumerate}
 \end{proposition}
 
+\begin{proposition}[Earned prestige versus arrogance, audience priors, and the leadership double bind]\label{prop:prestige}
+Let actor $i$ of sex $s\in\{m,f\}$ carry latent capability/agency $b>0$ and baseline prosocial reliability $p_0\in(0,1)$, emit confidence claim $c=b+\delta$ ($\delta>0$: unbacked self-enhancement; $\delta=0$: calibrated confidence; $\delta<0$: self-effacing diffidence) alongside co-protagonist mission framing $h\in[0,1]$ ($\eta_h>0$), and face audience cohort $g$ with unstaged observation depth $m_g>0$, Spearman--Brown legibility $\rho(m_g)=m_g r_b/[1+(m_g-1)r_b]$ ($r_b\in(0,1)$), observed mean $\bar Y_{m_g}=b+\bar\varepsilon_{m_g}$ ($\bar\varepsilon_{m_g}\sim\N(0,\sigma_m^2)$, $\sigma_m=\sigma_\varepsilon/\sqrt{m_g}$), humility norm $\kappa_g>0$, prescriptive role-congruity tax $\tau_{s,g}\ge 0$, and evaluator status-comparison sensitivity $\gamma_{s,g}\ge 0$ relative to evaluator capability $b_e$. Posterior agency $\hat b_g=\mu_b+\rho\bar\varepsilon_{m_g}$ with $\mu_b=b+(1-\rho)\delta$ and interior delivery $\hat p_g=p_{\mathrm{base}}-\kappa_g\rho\max(c-\bar Y_{m_g},0)$ with $p_{\mathrm{base}}=p_0+\eta_h h-\tau_{s,g}c>0$ yield evaluated standing $\widehat W_{i,g}=\hat b_g\hat p_g-\gamma_{s,g}\max(b-b_e,0)$ with exact Gaussian expectation ($z=\delta/\sigma_m$):
+\begin{equation}
+\begin{aligned}
+\E[\widehat W_{i,g}\mid b,\delta,h]&=\mu_b\big[p_{\mathrm{base}}-\kappa_g\rho\big(\delta\Phi(z)+\sigma_m\varphi(z)\big)\big]\\
+&\quad+\kappa_g\rho^2\sigma_m^2\Phi(z)-\gamma_{s,g}\max(b-b_e,0).
+\end{aligned}\label{eq:prestige}
+\end{equation}
+\begin{enumerate}[leftmargin=1.5em,itemsep=1pt,topsep=2pt]
+\item[(i)] \emph{Supermodular prestige vs.\ experience-graded arrogance cliff.} Evaluated standing is strictly supermodular in verified agency and warmth ($\partial^2\widehat W_{i,g}/\partial\hat b_g\,\partial\hat p_g=1>0$). At $\delta=0$, $\partial\E[\widehat W_{i,g}]/\partial\delta\big|_{\delta=0}=(1-\rho)(p_0+\eta_h h-\tau_{s,g}b-\kappa_g\rho\sigma_m/\sqrt{2\pi})-\tau_{s,g}b-\tfrac12\kappa_g\rho b$, which is positive at thin observation ($m_g\to 1$, $\rho\to r_b$ small) when $(1-r_b)p_{\mathrm{base}}>(r_b\kappa_g/2+\tau_{s,g})b$, whereas for experienced juries ($m_g\to\infty\implies\rho\to 1,\sigma_m\to 0$) $\E[\widehat W_{i,g}]\to b[p_0+\eta_h h-\tau_{s,g}(b+\delta)-\kappa_g\max(\delta,0)]-\gamma_{s,g}\max(b-b_e,0)$, peaking strictly at calibrated outlier confidence $\delta^*=0$ (for $\tau_{s,g}=0$) with arrogance cliff slope $-(\kappa_g+\tau_{s,g})b<0$ for $\delta>0$.
+\item[(ii)] \emph{Cultural humility priors.} For any $\delta>0$ with $b+(1-\rho)\delta>\rho\sigma_m\Phi(z)/[\delta\Phi(z)+\sigma_m\varphi(z)]$, $\partial\E[\widehat W_{i,g}]/\partial\kappa_g<0$ and $\partial^2\E[\widehat W_{i,g}]/\partial\delta\,\partial\kappa_g=-\rho[b\Phi(z)+2(1-\rho)\delta\Phi(z)+(1-2\rho)\sigma_m\varphi(z)]<0$ (for $\rho\le\tfrac12$ or $\delta/\sigma_m$ moderate/large), shifting optimal assertion $\delta^*(m_g,\kappa_g)$ strictly downward in higher-humility cohorts.
+\item[(iii)] \emph{Asymmetric alpha double bind and dual-signal escape.} Under $\tau_f>\tau_m=0$ and $\gamma_f>\gamma_m=0$ with $b>b_e$, unmodulated female standing falls below male by $\Delta W_{\mathrm{bind}}=\tau_f c\,\E[\hat b_g]+\gamma_f(b-b_e)>0$; playing small ($\delta<0$) forfeits $(1-\rho)|\delta|p_{\mathrm{base}}$ without removing $\gamma_f(b-b_e)$, whereas calibrated competence ($\delta=0$) paired with communal/co-protagonist framing ($h\to 1$, adding $+\eta_h b$) and caliber assortment ($b_e\ge b$, zeroing $\max(b-b_e,0)$) uniquely restores $\E[\widehat W_{f,g}]$ to within $\tau_f b^2-\eta_h(1-h_0)b$ of parity.
+\item[(iv)] \emph{Universal Hero's-Journey coalition call.} Combining multi-domain proof ($K\gg 1$, diluting gaming as $1/K$ by Corollary~\ref{cor:inflation}), unstaged sacrifice ($(1-d)n>0$, Proposition~\ref{prop:staging}), and co-protagonist framing ($h\to 1$, granting allies non-despotic share $1-k^*q$ in Proposition~\ref{prop:despot}) strictly maximizes $\E[\widehat W_{i,g}]$ across partner choice, egalitarian persuasion, and capital formation ($\partial\E[\widehat W_{i,g}]/\partial h=\eta_h[b+(1-\rho)\delta]>0$).
+\end{enumerate}
+\end{proposition}
+
 \subsection{Complete Proofs}\label{app:proofs}
 \noindent\textbf{Gaussian tilting lemma.} For jointly Gaussian $(A,\mathbf X)$ and $w=\exp(\mathbf h^\top\mathbf X)$, differentiating the joint moment-generating function gives $\E[Aw]/\E[w]=\E[A]+\Cov(A,\mathbf h^\top\mathbf X)$. For $x\sim\N(0,V)$ and $w=\exp(kx-\tfrac c2x^2)$, completing the square yields tilted law $\N(kV/(1+cV),V/(1+cV))$.
 
@@ -350,16 +366,20 @@ Consider courtship, union lock-in, dissolution, and remarriage across stages:
 
 \noindent\textbf{Proposition~\ref{prop:lifecycle}.} (i)~Strict concavity in $e$ gives first-order condition $\gamma_{\mathrm{mkt}}(1-\lambda_{\mathrm{stage}})-c_ee^*=0$, hence $e_{\mathrm{mar}}^*/e_{\mathrm{date}}^*=1-\lambda_{\mathrm{mar}}$. (ii)~Conditional on $\hat p_m=z\ge\theta_{\mathrm{in}}$, $p\mid(\hat p_m=z)\sim\N(z,\tau_m^2)$, so $\Pr(p<\theta_{\mathrm{stay}}\mid\hat p_m=z)=\Phi\big((\theta_{\mathrm{stay}}-z)/\tau_m\big)$, which decreases strictly in both $z$ and $\tau_m^{-1}$ since $z\ge\theta_{\mathrm{in}}>\theta_{\mathrm{stay}}$; moreover, $\hat p_m=\mu_p+s_m Z$ ($Z\sim\N(0,1)$, $s_m=\sqrt{\sigma_p^2-\tau_m^2}$ strictly increasing in $m$), and for $\theta_{\mathrm{in}}\ge\mu_p$ the truncated standardized variable $Z\mid(Z\ge(\theta_{\mathrm{in}}-\mu_p)/s_m)$ induces $\hat p_m(m)=\mu_p+s_m Z$ with $\partial[\theta_{\mathrm{stay}}-(\mu_p+s_m z)]/\partial m<0$ at every quantile above truncation, strictly reducing $H(m)$. (iii)~At $q=0$, $U_{f,0},U_{m,0}$ are i.i.d., so $\Pr(U_f<0<U_m)=\Pr(U_m<0<U_f)$. For $q>0$, let $p_{s,1}=\Phi(-(\mu_u-\delta_s)/\sigma_u)$; since $\delta_f>\delta_m>0$, $p_{f,1}>p_{m,1}$, so $p_{f,1}(1-p_{m,1})-p_{m,1}(1-p_{f,1})=p_{f,1}-p_{m,1}>0$, strictly lifting women's unilateral share $[(1-q)p_0(1-p_0)+qp_{f,1}(1-p_{m,1})]/[(1-q)2p_0(1-p_0)+q(p_{f,1}+p_{m,1}-2p_{f,1}p_{m,1})]>\tfrac12$. (iv)~Monotonicity of $\Phi(\cdot)$ yields $\Phi(z_{f,\mathrm{sin}}-\kappa_{\mathrm{lock}})<\Phi(z_{f,\mathrm{sin}})$ and $\Phi(z_{m,\mathrm{wid}})>\Phi(z_{f,\mathrm{wid}})$. \qed
 
+\noindent\textbf{Proposition~\ref{prop:prestige}.} Write $\hat b_g=\mu_b+\rho\bar\varepsilon_{m_g}$ with $\mu_b=b+(1-\rho)\delta$ and $M=\max(\delta-\bar\varepsilon_{m_g},0)$. For $\bar\varepsilon_{m_g}=\sigma_m Z$ ($Z\sim\N(0,1)$, $z=\delta/\sigma_m$), folded-normal integration on $\{Z\le z\}$ gives $\E[M]=\int_{-\infty}^z(\delta-\sigma_m u)\varphi(u)\,\mathrm du=\delta\Phi(z)+\sigma_m\varphi(z)$ since $\varphi'(u)=-u\varphi(u)$, and $\E[\bar\varepsilon_{m_g}M]=\sigma_m\int_{-\infty}^z u(\delta-\sigma_m u)\varphi(u)\,\mathrm du=-\sigma_m\delta\varphi(z)-\sigma_m^2[-z\varphi(z)+\Phi(z)]=-\sigma_m^2\Phi(z)$ using $u^2\varphi(u)=\varphi(u)-(u\varphi(u))'$. Expanding $\E[\hat b_g\hat p_g]=\mu_b(p_{\mathrm{base}}-\kappa_g\rho\E[M])-\kappa_g\rho^2\E[\bar\varepsilon_{m_g}M]$ yields Eq.~\eqref{eq:prestige}. Using $\tfrac{\mathrm d}{\mathrm d\delta}[\delta\Phi(z)+\sigma_m\varphi(z)]=\Phi(z)$ and $\tfrac{\mathrm d}{\mathrm d\delta}[\sigma_m^2\Phi(z)]=\sigma_m\varphi(z)$ gives exact derivative
+$\partial\E[\widehat W_{i,g}]/\partial\delta=(1-\rho)[p_{\mathrm{base}}-\kappa_g\rho(\delta\Phi(z)+\sigma_m\varphi(z))]-\tau_{s,g}\mu_b-\kappa_g\rho\mu_b\Phi(z)+\kappa_g\rho^2\sigma_m\varphi(z)$,
+which evaluates at $\delta=0$ ($\Phi(0)=\tfrac12,\varphi(0)=1/\sqrt{2\pi}$) and in the limit $m_g\to\infty$ ($\rho\to 1,\sigma_m\to 0,\delta\Phi(z)+\sigma_m\varphi(z)\to\max(\delta,0)$) to part~(i). Differentiating Eq.~\eqref{eq:prestige} with respect to $\kappa_g$ and $(\delta,\kappa_g)$ establishes part~(ii) and strict decrease of $\delta^*(m_g,\kappa_g)$ by Topkis's theorem. Subtracting female from male standing at $(b,c,h)$ gives $\Delta W_{\mathrm{bind}}$ in part~(iii), where $b_e\ge b$ zeroes $\gamma_f\max(b-b_e,0)$ and $h\to 1$ adds $\eta_h\mu_b>0$ (part~(iv)). \qed
+
 \setcounter{table}{0}
 \renewcommand{\thetable}{B\arabic{table}}
 \renewcommand{\theHtable}{AppB.tab.\arabic{table}}
 
 \section{Simulation Verification and Paleoclimatic Audit of the \texorpdfstring{1.5--0.7\,Ma}{1.5-0.7 Ma} Plateau}\label{app:paleo}
 
-Every analytical proposition in Appendix~\ref{app:theory} was verified in Python with fixed \texttt{SeedSequence} seeds against independent Monte Carlo and individual-based evolutionary simulations (E1--E23, plus zero-shared-code audit scripts A1--A17; Table~\ref{tab:experiments}). Across all closed-form checks, simulated selection differentials, equilibrium trait means, and variance recursions agree with analytical formulas within Monte Carlo sampling precision (maximum standardized deviation $|z|=\AudZ$; exact algebraic and quadrature checks $\le\AudEq$).
+Every analytical proposition in Appendix~\ref{app:theory} was verified in Python with fixed \texttt{SeedSequence} seeds against independent Monte Carlo and individual-based evolutionary simulations (E1--E24, plus zero-shared-code audit scripts A1--A17; Table~\ref{tab:experiments}). Across all closed-form checks, simulated selection differentials, equilibrium trait means, and variance recursions agree with analytical formulas within Monte Carlo sampling precision (maximum standardized deviation $|z|=\AudZ$; exact algebraic and quadrature checks $\le\AudEq$).
 
 \begin{table}[!t]
-\caption{Summary of Numerical Verification Suite (\texttt{E1}--\texttt{E23}, \texttt{A1}--\texttt{A17}).}\label{tab:experiments}
+\caption{Summary of Numerical Verification Suite (\texttt{E1}--\texttt{E24}, \texttt{A1}--\texttt{A17}).}\label{tab:experiments}
 \scriptsize
 \setlength{\tabcolsep}{3.2pt}
 \begin{tabularx}{\columnwidth}{@{}lLL@{}}
@@ -370,7 +390,7 @@ E1--E3, E9 & Props.~\ref{prop:identity}--\ref{prop:diversity} ($10^5$--$2\times1
 E4--E6 & Props.~\ref{prop:assort}--\ref{prop:tissue}, deferred acceptance & Infinitesimal $V_A$ within \MGerr\%; Lande tissue eq.\ $\PersSim\pm\PersSD$ vs.\ \PersPred \\
 E10--E12 & Props.~\ref{prop:aim}--\ref{prop:despot} (contest aim, risk, skew) & Aim $|z|=\AimMaxZ$; optimal bout count $|z|=\RepMaxZ$; log-concavity exact \\
 E15--E16 & Props.~\ref{prop:time}--\ref{prop:division}, \ref{prop:staging}--\ref{prop:enforce} & Aim ratio within \PolyAimErr\%; staging $\le\VerMaxDiff$; IBM enforcement $\le\EnfIbmDiff$ \\
-E21--E23, 2-way & Props.~\ref{prop:ancestors}--\ref{prop:lifecycle}, Cor.~\ref{cor:ritual}--\ref{cor:narrow} & Drift $N_e/N$ within \NtAncErr\%; 2-way $|\Delta R^2|\le 0.003$; E22 $|\Delta B^*|\le 0.75\ccm$; E23 $|\Delta e^*|\le 0.04$\,min, $|\Delta\Pr|\le 0.006$ \\
+E21--E24, 2-way & Props.~\ref{prop:ancestors}--\ref{prop:prestige}, Cor.~\ref{cor:ritual}--\ref{cor:narrow} & Drift $N_e/N$ within \NtAncErr\%; 2-way $|\Delta R^2|\le 0.003$; E22 $|\Delta B^*|\le 0.75\ccm$; E23 $|\Delta\Pr|\le 0.006$; E24 $|\Delta\E[\widehat W]|\le\PboETwentyFourMaxDiff$ \\
 A1--A17 & Independent re-derivations \& raw-file recounts & Quadrature $\AudQuad$; Lande $\AudEq$; raw survey/culture recounts $\AudCultures$ diff \\
 \bottomrule
 \end{tabularx}
@@ -464,7 +484,7 @@ Tables~\ref{tab:hon_sens}--\ref{tab:pov_sens} audit the 6.68M Hot-or-Not and 1.1
 
 \section{Survey Cohort Robustness and Pre-Committed Falsifiers}\label{app:falsifiers}
 
-Tables~\ref{tab:gssrobust} and~\ref{tab:gssgate} verify that the sex-asymmetric access differential on men's personal income ($\GssIncMAcc\SD$) versus negative family-size differentials in both sexes (General Social Survey, 1972--2024, $n=\GssN$) holds across unweighted estimation, narrower completed-fertility ages (50--74), survey-period splits, and birth cohorts (1920--1979) even as non-marital childbearing rose. Finally, Table~\ref{tab:falsifiers} pre-commits fifteen discriminating empirical tests and explicit observations that would falsify or bound each link of the multi-context jury framework.
+Tables~\ref{tab:gssrobust} and~\ref{tab:gssgate} verify that the sex-asymmetric access differential on men's personal income ($\GssIncMAcc\SD$) versus negative family-size differentials in both sexes (General Social Survey, 1972--2024, $n=\GssN$) holds across unweighted estimation, narrower completed-fertility ages (50--74), survey-period splits, and birth cohorts (1920--1979) even as non-marital childbearing rose. Finally, Table~\ref{tab:falsifiers} pre-commits sixteen discriminating empirical tests and explicit observations that would falsify or bound each link of the multi-context jury framework.
 
 \begin{table*}[!t]
 \caption{Robustness of the Access--Number Selection Decomposition Across Survey Weights, Age Windows, and Periods (GSS 1972--2024).}\label{tab:gssrobust}
@@ -485,9 +505,9 @@ Tables~\ref{tab:gssrobust} and~\ref{tab:gssgate} verify that the sex-asymmetric 
 \end{table*}
 
 \begin{table*}[!t]
-\caption{Fifteen Pre-Committed Discriminating Predictions and Explicit Falsifying Outcomes.}\label{tab:falsifiers}
+\caption{Sixteen Pre-Committed Discriminating Predictions and Explicit Falsifying Outcomes.}\label{tab:falsifiers}
 \scriptsize
-\renewcommand{\arraystretch}{0.79}
+\renewcommand{\arraystretch}{0.77}
 \setlength{\tabcolsep}{3.5pt}
 \begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}p{0.20\textwidth}LL@{}}
 \toprule
@@ -508,6 +528,7 @@ F12 & Witness density and union timing (Prop.~\ref{prop:waiting}) & Survival ana
 F13 & Entry filtering vs.\ pair-bond welfare (Prop.~\ref{prop:love}) & Longitudinal tracking of unions formed via vertical filters vs.\ social networks, plus social-media abstinence trials & Entry consensus attributes (money, stature, photo rank) predict multi-year satisfaction as strongly as kindness \\
 F14 & Childhood metabolic \& pair-bond ceiling (Prop.~\ref{prop:childhood}) & Phylogenetic regression of adult endocranial volume on juvenile brain RMR, biparental care, and diet across mammals & Lineages cross the $\sim\!650$--$700\ccm$ juvenile ceiling under solo maternal care without pair-bond/dietary release \\
 F15 & Lifecycle staging, rush hazard \& exit (Prop.~\ref{prop:lifecycle}) & Prospective dyadic time-use diaries from courtship into marriage, pre-cohabitation witness audits, and registry remarriage panels & Within-couple staging effort stays flat after marriage, $\le 3$\,mo rushed cohabitation shows equal survival, or marital exit stays sex-symmetric \\
+F16 & Earned prestige vs.\ arrogance \& alpha bind (Prop.~\ref{prop:prestige}) & Factorial pitch/dating trials crossing actor sex, verified capability, boast inflation $\delta$, and co-protagonist framing $h$ across evaluator age/ethnicity & Mature audited juries reward unbacked boasting ($\delta>0$), cold dominance matches warm prestige, or $h\to 1$ fails to lift agentic female standing \\
 \bottomrule
 \end{tabularx}
 \end{table*}

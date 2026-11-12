@@ -192,6 +192,7 @@ def pov():
         "source_record_no", "id", "age", "gender", "seeking", "haschildren",
         "wantchildren", "maritalstatus", "intent", "for", "ambition",
         "college_id", "relationshipage_id", "height", "body", "car", "state_id",
+        "ethnicity", "profession",
         "headline", "description", "interests",
     ]
     table = read("POV_source_fields", columns)
@@ -760,6 +761,110 @@ def pov():
         },
     }
 
+    # --- v16: Alpha Executive / Founder Status & Ethnic Ambition Priors ---
+    if "profession" in sub.column_names:
+        prof_clean = pc.utf8_lower(pc.utf8_trim_whitespace(pc.fill_null(sub["profession"], "")))
+        has_prof = pc.greater_equal(pc.utf8_length(prof_clean), 2).to_numpy(zero_copy_only=False)
+        is_exec_np = pc.fill_null(
+            pc.match_substring_regex(
+                prof_clean,
+                r"\b(ceo|chief executive|executive|president|vice president|vp|founder|co-founder|entrepreneur|business owner|owner|director|managing partner|cfo|coo|cto)\b",
+            ),
+            False,
+        ).to_numpy(zero_copy_only=False)
+    else:
+        has_prof = np.zeros(n_sub, dtype=bool)
+        is_exec_np = np.zeros(n_sub, dtype=bool)
+
+    very_amb_mask = np.array([(v or "").strip() == "Very Ambitious" for v in amb_list], dtype=bool)
+    has_amb_mask = np.array([(v or "").strip() in POV_AMBITION_ORDER for v in amb_list], dtype=bool)
+    divorced_mask = marital_code == 1
+    single_mask = marital_code == 0
+    known_parent_mask = (parent_np == 0) | (parent_np == 1) | (parent_np == 2)
+    childless_mask = parent_np == 0
+    in_exec_age = (age_np >= 30) & (age_np <= 54) & has_prof
+
+    def summarize_exec_slice(smask: np.ndarray) -> dict | None:
+        n_s = int(smask.sum())
+        if n_s < MIN_CELL:
+            return None
+        kp_m = smask & known_parent_mask
+        amb_m = smask & has_amb_mask
+        return {
+            "n": n_s,
+            "divorced": rate_cell(divorced_mask[smask].sum(), n_s),
+            "single_never_married": rate_cell(single_mask[smask].sum(), n_s),
+            "very_ambitious_all": rate_cell(very_amb_mask[smask].sum(), n_s),
+            "very_ambitious_answered": rate_cell(very_amb_mask[amb_m].sum(), int(amb_m.sum())),
+            "over_3y_union": rate_cell(over_3y_mask[smask].sum(), n_s),
+            "over_10y_union": rate_cell(over_10y_mask[smask].sum(), n_s),
+            "serious_commitment": rate_cell(serious_mask[smask].sum(), n_s),
+            "childless": rate_cell(childless_mask[kp_m].sum(), int(kp_m.sum())),
+        }
+
+    exec_by_sex = {}
+    for sex_label, sx_mask in (("Female", is_f), ("Male", ~is_f)):
+        exec_by_sex[sex_label] = {
+            "executive_founder_owner": summarize_exec_slice(in_exec_age & sx_mask & is_exec_np),
+            "non_executive_pool": summarize_exec_slice(in_exec_age & sx_mask & (~is_exec_np)),
+        }
+
+    f_exec = exec_by_sex["Female"]["executive_founder_owner"]
+    f_non = exec_by_sex["Female"]["non_executive_pool"]
+    m_exec = exec_by_sex["Male"]["executive_founder_owner"]
+    m_non = exec_by_sex["Male"]["non_executive_pool"]
+
+    eth_order = (
+        "Caucasian", "Black", "Hispanic", "Mixed Race", "Asian",
+        "Native American", "Indian", "Middle Eastern", "Other Ethnicity",
+    )
+    eth_raw = [(v or "").strip() for v in optional_pylist(sub, "ethnicity")]
+    eth_map = {name: idx for idx, name in enumerate(eth_order)}
+    eth_code = np.array([eth_map.get(v, -1) for v in eth_raw], dtype=np.int8)
+    in_amb_age = (age_np >= 25) & (age_np <= 49) & has_amb_mask
+    ethnicity_ambition = {}
+    for idx_e, ename in enumerate(eth_order):
+        em_f = in_amb_age & is_f & (eth_code == idx_e)
+        em_m = in_amb_age & (~is_f) & (eth_code == idx_e)
+        cf = rate_cell(very_amb_mask[em_f].sum(), int(em_f.sum()))
+        cm = rate_cell(very_amb_mask[em_m].sum(), int(em_m.sum()))
+        if cf or cm:
+            ethnicity_ambition[ename] = {
+                "Female": cf,
+                "Male": cm,
+                "female_minus_male_pp": _safe_pp_diff(cf, cm),
+            }
+
+    alpha_executive_and_ethnicity = {
+        "executives_ages_30_54": {
+            "by_sex": exec_by_sex,
+            "contrasts": {
+                "female_minus_male_exec_divorced_pp": _safe_pp_diff(
+                    _slice_cell(f_exec, "divorced"), _slice_cell(m_exec, "divorced")
+                ),
+                "female_to_male_exec_divorced_ratio": _safe_ratio(
+                    _slice_cell(f_exec, "divorced"), _slice_cell(m_exec, "divorced")
+                ),
+                "female_exec_minus_nonexec_divorced_pp": _safe_pp_diff(
+                    _slice_cell(f_exec, "divorced"), _slice_cell(f_non, "divorced")
+                ),
+                "male_exec_minus_nonexec_divorced_pp": _safe_pp_diff(
+                    _slice_cell(m_exec, "divorced"), _slice_cell(m_non, "divorced")
+                ),
+                "female_minus_male_exec_very_ambitious_pp": _safe_pp_diff(
+                    _slice_cell(f_exec, "very_ambitious_all"), _slice_cell(m_exec, "very_ambitious_all")
+                ),
+                "female_exec_minus_nonexec_childless_pp": _safe_pp_diff(
+                    _slice_cell(f_exec, "childless"), _slice_cell(f_non, "childless")
+                ),
+                "male_exec_minus_nonexec_childless_pp": _safe_pp_diff(
+                    _slice_cell(m_exec, "childless"), _slice_cell(m_non, "childless")
+                ),
+            },
+        },
+        "ambition_by_ethnicity_ages_25_49": ethnicity_ambition,
+    }
+
     return {
         "accounts": accounts, "eligible": eligible, "bands": bins, "sensitivity": sensitivity,
         "exclusions_in_order": {"age": len(table) - total(age_ok),
@@ -780,6 +885,7 @@ def pov():
         "childless_crossover": childless_crossover,
         "self_written_voice": self_written_voice,
         "second_act_reentry": second_act_reentry,
+        "alpha_executive_and_ethnicity": alpha_executive_and_ethnicity,
     }
 
 
