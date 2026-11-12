@@ -10,48 +10,47 @@ predeclared design.
 \subsection{Which surfaces can be fenced}
 
 Our sink is cooperative by construction: it is our code, and it checks the epoch because we wrote it to. A deployment's
-effects land elsewhere, in databases, object stores, orchestration APIs and payment processors. For each surface the
-question is whether \emph{the surface itself} refuses a write carrying an old epoch, atomically with the effect, or
-whether it only refuses when the writer remembers to ask. We separate three \emph{enforcement classes}:
+effects land elsewhere, in databases, coordination stores, file systems, object stores and orchestration APIs. For each
+such surface the question is whether \emph{the surface itself} refuses a write by a holder of the old epoch, atomically
+with the effect, or only when the writer remembers to ask. One rule, applied to every mechanism from deterministic
+probes, assigns an \emph{enforcement class}, strongest first:
 \begin{itemize}
-  \item \emph{sink-enforced}: a bare stale write, sent with no guard at all, is refused by the surface;
-  \item \emph{writer-supplied condition}: the surface refuses atomically only if the writer attaches the condition (a
-        compare on a revision, an \texttt{If-Match}); a writer that omits it is admitted;
+  \item \emph{surface-native}: a built-in check of the surface (a constraint, a permission) refuses the stale write, even
+        when the writer omits every field that exists for the fence;
+  \item \emph{author code in the surface}: code we installed and the surface runs on every write (a trigger) refuses it,
+        under the same omission test;
+  \item \emph{writer-supplied condition}: the surface refuses only because the writer submitted the condition (a compare,
+        an epoch column); a writer that leaves it out commits;
   \item \emph{advisory}: the surface never refuses; writers that honour a lock refuse themselves.
 \end{itemize}
-Only the first is a fence against a writer that is itself compromised or merely buggy. Code we install in the surface
-(a PostgreSQL trigger, for example) counts as sink-enforced only while that code is part of the surface's trusted
-configuration, and we say so wherever it is used.
+Only the first two hold against a writer that is buggy or compromised, and the second only while the installed code is
+part of the surface's trusted configuration.
 
-\para{Probes (E6, E6b).} We ran executable probes against local single-node reference instances of PostgreSQL~16,
-etcd~v3.5.17 and a POSIX filesystem. Amazon S3 and the Kubernetes API are recorded from documentation only, and marked
-as such. Each surface is probed for three primitives:
-\begin{itemize}
-  \item P1, idempotent retry under concurrent duplicate delivery;
-  \item P2, an epoch fence evaluated atomically with the effect;
-  \item P3, a hold that survives an unclean stop and that revocation cancels before it takes effect.
-\end{itemize}
-Each primitive has pass conditions that include a non-vacuity check: the surface, not the writer, must have refused at
-least one stale write, and a current-epoch write after the fence must still commit.
+\para{Probes (E6, E6b).} We probed local single-node reference instances of PostgreSQL~16, etcd~v3.5.17 and a POSIX
+filesystem; Amazon S3 and the Kubernetes API are recorded from documentation only. E6 tested three primitives per
+surface: idempotent retry (P1), an epoch fence atomic with the effect (P2), and a hold that survives an unclean stop and
+that revocation cancels (P3). \vsixESixPOneThreeSentence{} Its P2 probe raced a stream of stale writers against the
+fence and exposed a mechanism we had not anticipated: in PostgreSQL, new \texttt{FOR SHARE} lockers join an existing
+share lock while the fence's \texttt{FOR UPDATE} waits, so a continuing stream of stale writers can starve the raise.
 
-E6's P2 probe raced a stream of stale writers against the fence, which exposed a mechanism we had not anticipated. In
-PostgreSQL, new \texttt{FOR SHARE} lockers join an existing share lock while the fence's \texttt{FOR UPDATE} waits, so a
-continuing stream of stale writers can starve the raise. \vsixESixPgSentence{} \vsixESixPgFairSentence{}
-\vsixESixFsSentence
-
-E6b, predeclared separately (\path{fixtures/v6/fenceability_b_plan.json}), adds a deterministic post-fence
-old-epoch write to every surface and repeats the starvation race \vsixESixBStarvationN{} times with intervals.
-\vsixESixBSentence{} Table~\ref{tab:v6fence} lists each surface's enforcement class first and its primitive outcomes
-after.
+E6b, predeclared separately (\path{fixtures/v6/fenceability_b_plan.json}), re-tests only the fence. It probes
+\vsixESixBMechanisms{} mechanisms deterministically, \vsixESixBRuns{} runs each, with \vsixESixBVariants{} writer
+variants: the stale writer as specified, with the epoch
+omitted, with every fence field omitted, claiming the new epoch, and a fresh writer. It then repeats E6's race
+\vsixESixBStarvationN{} times per mechanism, with and without added load. \vsixESixBSentence{} Table~\ref{tab:v6fence}
+gives every mechanism.
 
 \input{generated/v6-e6-table.tex}
 
-\para{Reading.} Fenceability is a property of the effect surface, not of the agent framework. Some surfaces offer it
-only as a writer-supplied condition (Table~\ref{tab:v6fence}), which protects against a stale but honest writer and not against one
-that omits the condition. An operator who needs ``stop'' to reach work already dispatched must either route effects
-through a surface that enforces the epoch itself or place a mediating sink in front of one that does not. The starvation
-result adds an operational point: a fence that is correct can still be slow to take effect under exactly the load it is
-meant to stop. Its latency belongs in the stop budget of Section~\ref{sec:v6stop}.
+\para{Reading.} Three results bear on the stop problem. First, fenceability is a property of the effect surface and of
+how its fence is bound, not of the agent framework. An epoch that the writer states can be omitted or forged, so such a
+fence stops a stale writer that is honest and nothing else. Second, binding the epoch to a credential resists a writer
+that lies, but revoking a credential is not automatically a fence: on one surface it behaved exactly like revocation at
+our broker, refusing new work while letting work already running commit. Whether a surface's revoke reaches in-flight
+work has to be tested, not assumed. Third, a fence that is correct can still be slow to take effect under the load it is
+meant to stop; its latency belongs in the stop budget of Section~\ref{sec:v6stop}. An operator who needs ``stop'' to
+reach dispatched work must route effects through a surface whose fence is native and reaches in-flight writes, or place
+a mediating sink in front of one whose fence does not.
 
 \subsection{What the specification does not name}
 
