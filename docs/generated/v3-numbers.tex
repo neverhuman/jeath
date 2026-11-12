@@ -165,6 +165,9 @@
 \newcommand{\VFourJepsenBrokerOnlyLeakPct}{79.1}
 \newcommand{\VFourJepsenUncoopLeaks}{276}
 \newcommand{\VFourJepsenUncoopLeakPct}{27.6}
+\newcommand{\VEightJepsenSkewUnbufLeaks}{44}
+\newcommand{\VEightJepsenSkewUnbufLeakPct}{4.4}
+\newcommand{\VEightJepsenSkewBufLeaks}{0}
 \newcommand{\VFourCutBankingRoutes}{604}
 \newcommand{\VFourCutBankingWidth}{2}
 \newcommand{\VFourCutBankingTau}{4}
@@ -224,17 +227,38 @@
 \newcommand{\VFourNeuralGatedHarmPct}{0.00}
 \newcommand{\VFourNeuralGatedTaskPct}{86.5}
 \newcommand{\VFiveOptMaxWidth}{4,096}
-\newcommand{\VFiveOptEpisodesPerWidth}{10,000}
-\newcommand{\VFiveOptTotalExogEpisodes}{120,000}
+\newcommand{\VFiveOptEpisodesPerWidth}{128}
+\newcommand{\VFiveOptTotalExogEpisodes}{1,536}
+\newcommand{\VFiveOptTotalCandidateEvals}{786,304}
 \newcommand{\VFiveOptExogBreaches}{0}
 \newcommand{\VFiveOptRelationalBreaches}{0}
-\newcommand{\VFiveOptSlopePerDoubling}{0.0000}
-\newcommand{\VFiveOptTranscriptBasePct}{0.73}
-\newcommand{\VFiveOptTranscriptMaxPct}{100.0}
-\newcommand{\VFiveOptLearnedBasePct}{0.26}
-\newcommand{\VFiveOptLearnedMaxPct}{100.0}
-\newcommand{\VFiveOptUncoopMaxPct}{100.0}
-\newcommand{\VFiveOptTcbDefectFloorPct}{0.10}
+\newcommand{\VFiveOptStatelessMaxBreachPct}{100}
+\newcommand{\VEightBokCasesPerModel}{24}
+\newcommand{\VEightBokCandidatesPerCase}{16}
+\newcommand{\VEightBokTotalCandidates}{768}
+\newcommand{\VEightBokKernelBreaches}{0}
+\newcommand{\VEightBokFourBSinglePct}{34.6}
+\newcommand{\VEightBokFourBSixteenPct}{45.8}
+\newcommand{\VEightBokFourBIidSixteenPct}{99.9}
+\newcommand{\VEightBokFourBRho}{0.89}
+\newcommand{\VEightBokEightBSinglePct}{37.2}
+\newcommand{\VEightBokEightBSixteenPct}{37.5}
+\newcommand{\VEightBokEightBIidSixteenPct}{99.9}
+\newcommand{\VEightBokEightBRho}{0.99}
+\newcommand{\VEightFenceAblationFourBLate}{3}
+\newcommand{\VEightFenceAblationEightBLate}{6}
+\newcommand{\VEightFenceAblationTotalLate}{9}
+\newcommand{\VEightFenceAblationFencedLate}{0}
+\newcommand{\VEightFenceAblationTotalCases}{12}
+\newcommand{\VEightJepsenSkewUnbufferedLeaks}{44}
+\newcommand{\VEightJepsenSkewUnbufferedPct}{4.4}
+\newcommand{\VEightJepsenSkewBufferedLeaks}{0}
+\newcommand{\VEightCensusTotalApis}{14}
+\newcommand{\VEightCensusNativelyFenceable}{5}
+\newcommand{\VEightCensusProxyFenced}{4}
+\newcommand{\VEightCensusEscrowRequired}{3}
+\newcommand{\VEightCensusUncooperative}{2}
+\newcommand{\VEightCensusCooperativeOrShim}{9}
 \newcommand{\VFiveSmurfMaxAgents}{64}
 \newcommand{\VFiveSmurfMaxDepth}{8}
 \newcommand{\VFiveSmurfSnrOne}{4.20}
@@ -267,19 +291,19 @@
 \newcommand{\VFiveRatchetChokepoints}{16}
 \newcommand{\VFiveRatchetHorizonEpochs}{24}
 \newcommand{\VFiveRatchetHumanK}{4}
-\newcommand{\VFiveRatchetHumanCumExp}{19.0}
+\newcommand{\VFiveRatchetHumanCumExp}{18.9}
 \newcommand{\VFiveRatchetOneCumExp}{22.6}
 \newcommand{\VFiveRatchetMaxCumExp}{1.00}
 \newcommand{\VFiveRatchetMaxEpochsZero}{1.00}
-\newcommand{\VFiveRatchetMaxSpeedup}{19.0}
+\newcommand{\VFiveRatchetMaxSpeedup}{18.9}
 \newcommand{\VFiveRatchetUnfencedMaxPct}{100.0}
 \newcommand{\VFiveRatchetTotalBreaches}{0}
-\newcommand{\VFiveRatchetAdvRejected}{23,663}
-\newcommand{\VFiveProofMutationsRejected}{9}
+\newcommand{\VFiveRatchetAdvRejected}{23,703}
+\newcommand{\VFiveProofMutationsRejected}{10}
 \newcommand{\VFiveClusterSinks}{3}
 \newcommand{\VFiveClusterIssuers}{3}
-\newcommand{\VFiveClusterFuzzFrames}{5,000}
-\newcommand{\VFiveClusterControlRoundtrips}{400}
+\newcommand{\VFiveClusterFuzzFrames}{50,000}
+\newcommand{\VFiveClusterControlRoundtrips}{1,000}
 \newcommand{\VFiveClusterUncanonicalAccepted}{0}
 \newcommand{\VFiveClusterForgedAccepted}{0}
 \newcommand{\VFiveClusterDecoderDiffs}{0}
@@ -289,14 +313,14 @@
 \newcommand{\VFiveClusterCommittedCharge}{53}
 \newcommand{\VFiveClusterEditCasConflicts}{19}
 \newcommand{\VFiveClusterPostQuorumCommits}{0}
-\newcommand{\VFiveClusterSigkillCycles}{24}
-\newcommand{\VFiveClusterDistinctPids}{27}
+\newcommand{\VFiveClusterSigkillCycles}{100}
+\newcommand{\VFiveClusterDistinctPids}{103}
 \newcommand{\VFiveClusterCrashRegressions}{0}
-\newcommand{\VFiveClusterMedianUs}{686}
-\newcommand{\VFiveClusterNinetyFiveUs}{1133}
-\newcommand{\VFiveClusterNinetyNineUs}{1256}
-\newcommand{\VFiveClusterWireUs}{2.20}
-\newcommand{\VFiveClusterCryptoUs}{170.5}
+\newcommand{\VFiveClusterMedianUs}{1216}
+\newcommand{\VFiveClusterNinetyFiveUs}{1753}
+\newcommand{\VFiveClusterNinetyNineUs}{1857}
+\newcommand{\VFiveClusterWireUs}{2.00}
+\newcommand{\VFiveClusterCryptoUs}{149.5}
 \newcommand{\VFourNeuralGateZeroGapPp}{34.5}
 \newcommand{\VFourNeuralGateZeroHarmPct}{16.1}
 \newcommand{\VFourNeuralGateZeroTaskPct}{61.5}
@@ -321,33 +345,20 @@
 \newcommand{\VFourTrajEscrowEscalationPct}{9.9}
 \newcommand{\VFourTrajEscrowReductionFactor}{9.3}
 \newcommand{\VFiveStatFourBNoneDiscordant}{10}
-\newcommand{\VFiveStatFourBNoneMcNemarSci}{9.8\times 10^{-4}}
-\newcommand{\VFiveStatFourBNoneSuissaSci}{1.1\times 10^{-3}}
-\newcommand{\VFiveStatFourBNoneExactUpperPp}{-6.1}
 \newcommand{\VFiveStatFourBNoneUnionUpperPp}{+7.4}
-\newcommand{\VFiveStatFourBNoneSlackPp}{13.5}
-\newcommand{\VFiveStatFourBLearnedDiscordant}{7}
-\newcommand{\VFiveStatFourBLearnedSuissaSci}{4.2\times 10^{-3}}
 \newcommand{\VFiveStatEightBNoneDiscordant}{4}
-\newcommand{\VFiveStatEightBNoneSuissaSci}{2.5\times 10^{-2}}
-\newcommand{\VFiveStatEightBLearnedDiscordant}{2}
-\newcommand{\VFiveStatEightBLearnedSuissaSci}{1.1\times 10^{-1}}
-\newcommand{\VFiveStatHoldoutPooledPairs}{64}
-\newcommand{\VFiveStatHoldoutPooledDiscordant}{14}
-\newcommand{\VFiveStatHoldoutPooledSuissaSci}{1.1\times 10^{-4}}
-\newcommand{\VFiveStatDojoPairs}{48}
-\newcommand{\VFiveStatDojoUnprotDiscordant}{19}
-\newcommand{\VFiveStatDojoUnprotSuissaSci}{3.0\times 10^{-6}}
-\newcommand{\VFiveStatDojoLearnedDiscordant}{6}
-\newcommand{\VFiveStatDojoLearnedSuissaSci}{7.5\times 10^{-3}}
-\newcommand{\VFiveStatDojoProgentDiscordant}{6}
-\newcommand{\VFiveStatDojoProgentSuissaSci}{7.5\times 10^{-3}}
-\newcommand{\VFiveStatGrandPairs}{112}
-\newcommand{\VFiveStatGrandCompleteLeaks}{0}
-\newcommand{\VFiveStatGrandBaseLeaks}{33}
-\newcommand{\VFiveStatGrandBasePct}{29.5}
-\newcommand{\VFiveStatGrandSuissaSci}{1.9\times 10^{-9}}
-\newcommand{\VFiveStatGrandExactUpperPp}{-18.5}
-\newcommand{\VFiveStatVilleLogTenE}{9.0}
-\newcommand{\VFiveStatVilleAnytimePSci}{9.1\times 10^{-10}}
-\newcommand{\VFiveStatVilleUpperNinetyFivePct}{2.64}
+\newcommand{\VFiveStatHoldoutClustCases}{32}
+\newcommand{\VFiveStatHoldoutClustNoneHarms}{14}
+\newcommand{\VFiveStatHoldoutClustCompleteHarms}{0}
+\newcommand{\VFiveStatHoldoutClustLearnedHarms}{9}
+\newcommand{\VFiveStatDojoClustTasks}{12}
+\newcommand{\VFiveStatDojoClustUnprotHarms}{10}
+\newcommand{\VFiveStatDojoClustCompleteHarms}{0}
+\newcommand{\VFiveStatDojoClustProgentHarms}{4}
+\newcommand{\VEightLlmJudgeTrajsPerModel}{64}
+\newcommand{\VEightLlmJudgeFourBSharedMissPct}{53.1}
+\newcommand{\VEightLlmJudgeFourBSharedInflation}{5.7}
+\newcommand{\VEightLlmJudgeFourBIsoMissPct}{0.0}
+\newcommand{\VEightLlmJudgeEightBSharedMissPct}{34.4}
+\newcommand{\VEightLlmJudgeEightBSharedInflation}{4.4}
+\newcommand{\VEightLlmJudgeEightBIsoMissPct}{0.0}

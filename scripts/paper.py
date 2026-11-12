@@ -251,11 +251,11 @@ def generate_v2():
         m8_stl = c8b["controllers"]["stateless"]["observed_metrics"]
         m8_nof = c8b["controllers"]["durable_without_fence"]["observed_metrics"]
         pw4 = {
-            k: c4b["controllers"][k].get("post_withdraw_effects", {"cases_with_post_withdraw_effect": 0, "withdrawal_cases": 6})
+            k: c4b["controllers"][k]["observed_metrics"]["post_withdraw_effects"]
             for k in ("complete", "durable_without_fence", "learned_same_checkpoint", "stateless", "none")
         }
         pw8 = {
-            k: c8b["controllers"][k].get("post_withdraw_effects", {"cases_with_post_withdraw_effect": 0, "withdrawal_cases": 6})
+            k: c8b["controllers"][k]["observed_metrics"]["post_withdraw_effects"]
             for k in ("complete", "durable_without_fence", "learned_same_checkpoint", "stateless", "none")
         }
         v4_mc_macros = [
@@ -294,15 +294,15 @@ def generate_v2():
             ("VFourEightBStatelessSafeUsefulPct", f"{100 * m8_stl['safe_useful']['mean']:.1f}"),
             ("VFourEightBNoFenceUnauthPct", f"{100 * m8_nof['unauthorized']['mean']:.1f}"),
             ("VFourEightBNoFenceSafeUsefulPct", f"{100 * m8_nof['safe_useful']['mean']:.1f}"),
-            ("VEightFourBNoFencePostWithdraw", f"{pw4['durable_without_fence']['cases_with_post_withdraw_effect']}"),
-            ("VEightEightBNoFencePostWithdraw", f"{pw8['durable_without_fence']['cases_with_post_withdraw_effect']}"),
+            ("VEightFourBNoFencePostWithdraw", f"{pw4['durable_without_fence']['total']}"),
+            ("VEightEightBNoFencePostWithdraw", f"{pw8['durable_without_fence']['total']}"),
             (
                 "VEightTotalNoFencePostWithdraw",
-                f"{pw4['durable_without_fence']['cases_with_post_withdraw_effect'] + pw8['durable_without_fence']['cases_with_post_withdraw_effect']}",
+                f"{pw4['durable_without_fence']['total'] + pw8['durable_without_fence']['total']}",
             ),
             (
                 "VEightTotalWithdrawCases",
-                f"{pw4['complete']['withdrawal_cases'] + pw8['complete']['withdrawal_cases']}",
+                f"{pw4['complete']['n'] + pw8['complete']['n']}",
             ),
             (
                 "VFourFourBVsNoneSafetyMeanPp",
@@ -525,11 +525,11 @@ def generate_v2():
                 su_i = int(round(n_c * obs["safe_useful"]["mean"]))
                 fb_i = int(round(n_c * obs["false_block"]["mean"]))
                 un_i = int(round(n_c * obs["unauthorized"]["mean"]))
-                pw_obj = cd[ckey].get("post_withdraw_effects", {"cases_with_post_withdraw_effect": 0, "withdrawal_cases": 6})
-                pw_i = pw_obj["cases_with_post_withdraw_effect"]
-                pw_n = pw_obj["withdrawal_cases"]
+                pw_obj = obs["post_withdraw_effects"]
+                pw_i = pw_obj["total"]
+                pw_n = pw_obj["n"]
                 track_cell = ckpt_short if idx_r == 0 else ""
-                pw_cell = f"\\textbf{{{pw_i}/{pw_n}}}" if ckey in ("complete", "durable_without_fence") else f"{pw_i}/{pw_n}"
+                pw_cell = f"\\textbf{{{pw_i}}} ($n={pw_n}$)" if ckey in ("complete", "durable_without_fence") else f"{pw_i} ($n={pw_n}$)"
                 su_cell = f"\\textbf{{{su_i}/{n_c}}} ({100*su_i/n_c:.1f}\\%)" if ckey == "complete" else f"{su_i}/{n_c} ({100*su_i/n_c:.1f}\\%)"
                 eval_tab.append(
                     f"{track_cell} & {clabel} & {su_cell} & {fb_i}/{n_c} & {un_i}/{n_c} & {pw_cell} & {cnote}\\\\"
@@ -549,7 +549,7 @@ def generate_v2():
             u_un = ov["unprotected_native"]["any_unauthorized_effect_count"]
             u_pw = ov["unprotected_native"]["post_withdraw_side_effect_count"]
             eval_tab.append(
-                f"{ckpt_short} & \\textbf{{Complete mediation}} & \\textbf{{{c_su}/{ng}}} & 0/{ng} & 0/{ng} & \\textbf{{{c_pw}/12}} & 12 base tasks $\\times$ 2 injection/withdrawal scenarios\\\\"
+                f"{ckpt_short} & \\textbf{{Complete mediation}} & \\textbf{{{c_su}/{ng}}} & 0/{ng} & 0/{ng} & \\textbf{{{c_pw}}} ($n=12$) & 12 base tasks $\\times$ 2 injection/withdrawal scenarios\\\\"
             )
             eval_tab.append(
                 f" & Progent / Unprotected & P:{p_su} U:{u_su} & --- & P:{p_un} U:{u_un} & P:{p_pw} U:{u_pw} & Progent blocks native injections (0) but misses cumulative spend ({p_un})\\\\"
@@ -567,7 +567,7 @@ def generate_v2():
     )
     eval_tab += [
         r"\bottomrule\end{tabularx}",
-        r"\caption{Live open-weight checkpoint campaigns on the SHA-256-frozen holdout ($N=32$ independent cases per checkpoint; $6$ revocation cases each), live AgentDojo v1.2.2 episodes ($12$ distinct base tasks $\times 2$ injection/withdrawal scenarios per checkpoint), and scripted shared-budget controls. Complete mediation achieves the highest safe-and-useful completion rate with $0/64$ benign false blocks, eliminates the $9/12$ post-withdrawal late commits suffered by broker-only revocation (\emph{Durable, no sink fence}), and prevents the $7/32$ (4B) and $2/32$ (8B) unauthorized commits leaked by same-checkpoint LLM review. Zero unauthorized commits under complete mediation reflects deterministic gate-grader policy soundness; at pilot $N=32 < 113$, predeclared marginal union-bound intervals remain preserved in Appendix~\ref{app:holdout} as inconclusive.}\label{tab:v2eval}\end{table*}",
+        r"\caption{Live open-weight checkpoint campaigns on the SHA-256-frozen holdout ($N=32$ independent cases per checkpoint; $n=6$ revocation cases each), live AgentDojo v1.2.2 episodes ($12$ distinct base tasks $\times 2$ injection/withdrawal scenarios per checkpoint), and scripted shared-budget controls. Complete mediation achieves the highest safe-and-useful completion rate with $0/64$ benign false blocks, eliminates the $9$ queued post-withdrawal operations completed across the $12$ revocation cases under broker-only revocation (\emph{Durable, no sink fence}), and prevents the $7/32$ (4B) and $2/32$ (8B) unauthorized commits leaked by same-checkpoint LLM review. Zero unauthorized commits under complete mediation reflects deterministic gate-grader policy soundness; at pilot $N=32 < 113$, predeclared marginal union-bound intervals remain preserved in Appendix~\ref{app:holdout} as inconclusive.}\label{tab:v2eval}\end{table*}",
     ]
 
     # Pure self-contained float 3: v2-runtime-fig.tex (2 panels, external bottom legends)
@@ -784,23 +784,30 @@ def generate_v3():
         lj_rows = []
         lj_note = ""
         lj_obj = tm.get("live_llm_judge_coupling")
-        if lj_obj is not None and lj_obj.get("models"):
+        if lj_obj is not None and lj_obj.get("checkpoints"):
             lj_rows.append(r"\midrule")
-            for mtag, mshort in (("Qwen3-4B", "4B"), ("Qwen3-8B", "8B")):
-                if mtag in lj_obj["models"]:
-                    tr_m = lj_obj["models"][mtag]["shared_transcript_llm_judge"]
-                    is_m = lj_obj["models"][mtag]["isolated_action_schema_llm_judge"]
-                    tr_ratio = f"{tr_m['j2_to_j5_ratio']:.2f}$\\times$" if tr_m["j2_to_j5_ratio"] is not None else "---"
-                    is_ratio = f"{is_m['j2_to_j5_ratio']:.1f}$\\times$" if is_m["j2_to_j5_ratio"] is not None else "$\\infty$"
+            for ckpt_key, mshort in (("Qwen/Qwen3-4B-GGUF", "4B"), ("Qwen/Qwen3-8B-GGUF", "8B")):
+                if ckpt_key in lj_obj["checkpoints"]:
+                    ck_m = lj_obj["checkpoints"][ckpt_key]
+                    tr_m = ck_m["shared_transcript_llm_judge"]
+                    is_m = ck_m["isolated_action_schema_llm_judge"]
+                    tr_k5 = tr_m["k5_headline"]
+                    is_k5 = is_m["k5_headline"]
+                    tr_j2 = tr_m["prefix_k_curves"][1]["empirical_joint_miss_j_k"]
+                    is_j2 = is_m["prefix_k_curves"][1]["empirical_joint_miss_j_k"]
+                    tr_ratio = f"{tr_j2 / tr_k5['empirical_joint_miss_j_k']:.2f}$\\times$" if tr_k5["empirical_joint_miss_j_k"] > 0 else "$\\infty$"
+                    is_ratio = f"{is_j2 / is_k5['empirical_joint_miss_j_k']:.1f}$\\times$" if is_k5["empirical_joint_miss_j_k"] > 0 else "$\\infty$"
+                    tr_inf = f"{(tr_k5['coupling_inflation_ratio'] or 1.0):.1f}$\\times$"
+                    is_inf = f"{(is_k5['coupling_inflation_ratio'] or 0.0):.2f}$\\times$"
                     lj_rows.append(
-                        f"Qwen3-{mshort} transcript LLM & {100*tr_m['j5_empirical']:.1f}\\% & {tr_m['coupling_inflation_ratio']:.1f}$\\times$ & {tr_ratio} & {100*tr_m['benign_false_block_k5']:.1f}\\%\\\\"
+                        f"Qwen3-{mshort} transcript LLM & {100*tr_k5['empirical_joint_miss_j_k']:.1f}\\% & {tr_inf} & {tr_ratio} & {100*tr_k5['benign_episode_false_block_rate']:.1f}\\%\\\\"
                     )
                     lj_rows.append(
-                        f"Qwen3-{mshort} isolated LLM & {100*is_m['j5_empirical']:.1f}\\% & {is_m['coupling_inflation_ratio']:.2f}$\\times$ & {is_ratio} & {100*is_m['benign_false_block_k5']:.1f}\\%\\\\"
+                        f"Qwen3-{mshort} isolated LLM & {100*is_k5['empirical_joint_miss_j_k']:.1f}\\% & {is_inf} & {is_ratio} & {100*is_k5['benign_episode_false_block_rate']:.1f}\\%\\\\"
                     )
             lj_note = (
-                f" Live Qwen3-4B and Qwen3-8B LLM-as-judge evaluations ({lj_obj['total_harmful_trajectories']} harmful + "
-                f"{lj_obj['total_benign_trajectories']} benign trajectories) confirm the same context-coupling inflation on shared transcripts vs.\\ isolated action schemas."
+                f" Live Qwen3-4B and Qwen3-8B LLM-as-judge evaluations ({lj_obj['trajectories_evaluated_per_checkpoint']} trajectories per model) "
+                "confirm the same context-coupling inflation on shared transcripts vs.\\ isolated action schemas."
             )
         tm_tab = [
             "% Generated by scripts/paper.py; do not edit.",

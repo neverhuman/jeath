@@ -2,7 +2,7 @@
   "schema_version": 3,
   "tool": "0.2026.11.02.8bf68ee",
   "archive_sha256": "f3a0119292df8855e4435da8130bee1873b0e6a60c306accf81a08ea687bba3c",
-  "core_sha256": "770f01483af74a36d666b71bb5aac579a9031b9cacda2f66fbbcfde2992e10a8",
+  "core_sha256": "9a5547ed4f5eac4d31c4eec03baa687915cf08d8371644bb310cd7b55366de80",
   "command": [
     "cargo",
     "verus",
@@ -12,11 +12,11 @@
     "--locked"
   ],
   "returncode": 0,
-  "verified_obligations": 246,
-  "core_verified_count": 246,
-  "cargo_verified_count": 246,
+  "verified_obligations": 249,
+  "core_verified_count": 249,
+  "cargo_verified_count": 249,
   "trigger_warnings": 0,
-  "soundness_mutations_rejected": 9,
+  "soundness_mutations_rejected": 10,
   "soundness_mutations": [
     {
       "name": "timeout_refund_without_sink_authority",
@@ -71,6 +71,12 @@
       "target_function": "apply_verified_cut_ratchet_exec",
       "rejected": true,
       "returncode": 1
+    },
+    {
+      "name": "skew_unbuffered_lease_quiescence",
+      "target_function": "cluster_fence_acked_bounded_skew_exec",
+      "rejected": true,
+      "returncode": 1
     }
   ],
   "exec_functions": [
@@ -123,6 +129,7 @@
     "verify_self_upgrade_exec",
     "cluster_fence_acked_exec",
     "cluster_shard_complete_exec",
+    "cluster_fence_acked_bounded_skew_exec",
     "verify_relational_mutex_exec",
     "commit_staged_postcondition_exec",
     "apply_verified_cut_ratchet_exec"
@@ -164,6 +171,7 @@
     "delegation_chain_no_amplification",
     "ancestor_withdrawal_severs_subtree",
     "cluster_quorum_post_ack_exclusion",
+    "cluster_quorum_skew_bounded_post_ack_exclusion",
     "relational_mutex_prevents_toxic_composition",
     "staged_commit_requires_verified_postcondition",
     "lemma_count_open_routes_upper",
@@ -171,11 +179,11 @@
     "ratchet_never_widens_authority",
     "ratchet_monotone_exposure_contraction"
   ],
-  "output": "verification results:: 246 verified, 0 errors\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.21s\n",
+  "output": "verification results:: 249 verified, 0 errors\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.12s\n",
   "trusted": [
     "Verus, SMT solver and Rust compiler",
     "JSON-to-ExecPermitWire field extraction outside Verus (binary wire encoder/decoder bijection verified in policy-core)",
     "storage snapshots, Ed25519/HMAC cryptographic primitives, session launcher",
-    "OS kernel and cooperative sink process contracts"
+    "OS kernel, cooperative sink process contracts, and bounded physical clock skew |t_shard - t_broker| <= delta_max for lease-expiry fallback"
   ]
 }

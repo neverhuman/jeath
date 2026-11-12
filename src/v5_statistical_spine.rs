@@ -75,11 +75,9 @@ struct AgentDojoFile {
 
 #[derive(Deserialize)]
 struct AgentDojoRow {
-    checkpoint: String,
     controller: String,
     suite: String,
     task: usize,
-    attack_scenario: String,
     any_unauthorized_effect: bool,
 }
 
@@ -554,7 +552,8 @@ pub fn compute_statistical_certificates_from_v2(
     let dojo_unprot_clust = clustered_certs
         .iter()
         .find(|c| {
-            c.comparison_id == "agentdojo_task_clustered_n12:authority_complete_vs_unprotected_native"
+            c.comparison_id
+                == "agentdojo_task_clustered_n12:authority_complete_vs_unprotected_native"
         })
         .unwrap();
 

@@ -8439,9 +8439,15 @@ mod tests {
         assert!(cluster_fence_acked_exec(&cluster, 0, 1, 50));
         // Under bounded physical clock skew max_skew = 15, broker_now = 50 is NOT yet safe
         // (shard 2's clock could lag at 35 < 50), whereas broker_now = 65 IS skew-quiesced!
-        assert!(!cluster_fence_acked_bounded_skew_exec(&cluster, 0, 1, 50, 15));
-        assert!(!cluster_fence_acked_bounded_skew_exec(&cluster, 0, 1, 64, 15));
-        assert!(cluster_fence_acked_bounded_skew_exec(&cluster, 0, 1, 65, 15));
+        assert!(!cluster_fence_acked_bounded_skew_exec(
+            &cluster, 0, 1, 50, 15
+        ));
+        assert!(!cluster_fence_acked_bounded_skew_exec(
+            &cluster, 0, 1, 64, 15
+        ));
+        assert!(cluster_fence_acked_bounded_skew_exec(
+            &cluster, 0, 1, 65, 15
+        ));
 
         // Verify zero post-ack commits across all 3 shards at t = 50:
         let mut shards = cluster.shards;

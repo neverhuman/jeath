@@ -1246,7 +1246,10 @@ mod tests {
         let rep = authority_scaling_suite(20261112, true);
 
         // Track 1: Full-width candidate sweep executes all K_opt steps with zero exogenous breaches
-        assert!(rep.track1_optimization_invariance.verus_unbounded_forall_verified);
+        assert!(
+            rep.track1_optimization_invariance
+                .verus_unbounded_forall_verified
+        );
         assert_eq!(
             rep.track1_optimization_invariance.total_exogenous_breaches,
             0

@@ -115,9 +115,8 @@ fn rfc_8032_ed25519_official_vectors_and_openssl_cli_cross_check() {
     )
     .expect("hex");
     // RFC 8032 §7.1 TEST 1024 key derivation + 1024-byte multi-block message verification
-    let seed_1024 =
-        hex_decode("f5e5767cf153319517630f226876b86c8160cc583bc013744c6bf255f5cc0ee5")
-            .expect("seed 1024");
+    let seed_1024 = hex_decode("f5e5767cf153319517630f226876b86c8160cc583bc013744c6bf255f5cc0ee5")
+        .expect("seed 1024");
     let mut seed_1024_arr = [0u8; 32];
     seed_1024_arr.copy_from_slice(&seed_1024);
     let pk_1024 = ed25519_public_key(&seed_1024_arr);
@@ -125,7 +124,9 @@ fn rfc_8032_ed25519_official_vectors_and_openssl_cli_cross_check() {
         hex_encode(&pk_1024),
         "278117fc144c72340f67d0f2316e8386ceffbf2b2428c9c51fef7c597f1d426e"
     );
-    let msg_1024_bytes: Vec<u8> = (0u16..1024).map(|i| (i.wrapping_mul(37) & 0xff) as u8).collect();
+    let msg_1024_bytes: Vec<u8> = (0u16..1024)
+        .map(|i| (i.wrapping_mul(37) & 0xff) as u8)
+        .collect();
     let sig_1024 = ed25519_sign(&seed_1024_arr, &msg_1024_bytes);
     assert!(ed25519_verify(&pk_1024, &msg_1024_bytes, &sig_1024));
 
