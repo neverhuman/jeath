@@ -12,6 +12,13 @@ the quantity is definitional and is reported as such, never as a finding.
 | E8 `e8-full-20261112T2001Z` | 20:35Z, 26 measured episodes | oracle's denial text named ground-truth tools; denial text differed by arm | no aggregate; progress.log lines (per-episode status/utility/attack) seen while monitoring | run dir + `ABORTED.json` (132 rows after the stop are abort artifacts); E8 Amendment 1 |
 | E5 `e5-smoke-2` | 19:18Z | strategy-conditioned search and N changed (E5 Amendment 2) | proposer raw outputs only were inspected; the run did write reviewer and gate decisions and a results.json with aggregates, which were not opened | run dir |
 
+## Interim views of running experiments (no analysis or plan changed afterwards)
+
+| When | Run | What was seen | Why |
+|---|---|---|---|
+| 2026-11-12T21:12Z | E5 `e5-full-20261112T1933Z` (4B complete, 8B not started) | 4B aggregates from the frozen `e5_analysis_v6.py`: R2 state-dependent breach cases, single-clause shares, R2 truncation count | testing `scripts/v6_macros.py` against a raw run; the analysis code and plan were already fixed, and later tests use synthetic data |
+| 2026-11-12T21:12Z | E8 `e8-full-20261112T2044Z` (26 of 555 episodes) | stage-0 replay counts (model-free, also in the plan's base design) and Progent's first 5 episodes | same test |
+
 ## By construction (reported as such, never as findings)
 
 - **E1:** `complete` scores 0 unauthorized by construction. Its `permitted` predicate is the scoring predicate, and the

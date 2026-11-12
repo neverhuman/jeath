@@ -44,14 +44,15 @@ def sha(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
-def validate(kind: str, path: Path) -> None:
+def validate(kind: str, path: Path, extra: tuple[str, ...] = ()) -> str:
     if kind.startswith("e2:"):
         cmd = [str(VENV_PY), "scripts/capability_axis_v6.py", "validate", kind.split(":", 1)[1], str(path)]
     else:
-        cmd = VALIDATORS[kind] + [str(path)]
+        cmd = VALIDATORS[kind] + [str(path), *extra]
     r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
     if r.returncode != 0:
         raise SystemExit(f"validator failed on {path}:\n{r.stdout[-3000:]}\n{r.stderr[-2000:]}")
+    return r.stdout
 
 
 def promote_e4(run: Path, out: Path) -> None:
@@ -94,7 +95,9 @@ def main():
             raise SystemExit("refusing to promote an aborted run")
     elif json.loads((run / "results.json").read_text()).get("smoke_test"):
         raise SystemExit("refusing to promote a smoke-test run")
-    validate(kind, run)
+    # E5's gate databases are temporary in the harness; the replay re-creates every distinct valid proposal's gate
+    # decision and its report is kept with the evidence, because the paper cites it.
+    report = validate(kind, run, ("--replay-gate",) if kind == "e5" else ())
     name = {"e4": "e4-revokebench", "e5": "e5-omitted-clause", "e6": "e6-fenceability", "e8": "e8-agentdojo-fair",
             "e8b": "e8b-inside-spec", "e1": "e1-n128"}.get(kind) or f"e2-{kind.split(':', 1)[1]}"
     out = DEST / name
@@ -108,6 +111,8 @@ def main():
     else:
         for fn in FILES.get("e8" if kind.startswith("e2:") else kind, []):
             shutil.copy2(run / fn, out / fn)
+    if kind == "e5":
+        (out / "gate-replay.json").write_text(report)
     validate(kind, out)  # the promoted copy must pass the same validator
     manifest_path = DEST / "manifest.json"
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {"schema_version": 1, "experiments": {}}

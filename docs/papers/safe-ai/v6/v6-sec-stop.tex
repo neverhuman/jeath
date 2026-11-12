@@ -31,7 +31,7 @@ so duplicates are impossible rather than rare. What E4 measures is (i) that this
 under the faults we injected, and (ii) the size and cost of the window the other two layers leave open. That window is
 queueing, and it behaves like queueing. Where the offered load \(\rho = \lambda w / C\) is below one, halting leaks
 roughly the calls in flight, \(\approx \lambda w\) (Little's law), and revocation leaks the calls already accepted.
-Where \(\rho \ge 1\) (\vsixEFourOverloadedCells{} of the six \((w, C)\) cells), the backlog grows during the warm-up and
+Where \(\rho \ge 1\) (\vsixEFourOverloadedCells{} of the \vsixEFourWCCells{} \((w, C)\) cells), the backlog grows during the warm-up and
 halting leaks all of it; we report those cells separately and do not apply Little's law to them. The fence pays for its
 zero in the opposite currency. Every legitimate call in flight at the stop is discarded, which is what an operator who
 stops an agent usually wants and what an operator who meant ``pause'' does not.
