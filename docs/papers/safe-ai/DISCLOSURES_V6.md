@@ -91,6 +91,15 @@ the quantity is definitional and is reported as such, never as a finding.
     surface;
   - the enforcement class leads.
 
+## Design limits found before outcomes
+
+- **E1 S4 cannot show noninferiority (found 2026-11-12T21:25Z, E1 at 160/640 4B campaigns, no outcome viewed).** The
+  holdout has 108 non-revocation cases of 128. The frozen any-loss bound at α = 0.05/16 is 0.052 with zero losses, above
+  the 0.05 margin (113 cases are needed). S4's definition is unchanged; the paper reports it as a bound, with a generated
+  sentence stating that it cannot clear the margin.
+- **E1 primary usefulness tolerates no loss case.** At N = 128 zero losses give 0.044 and one gives 0.061, so one case
+  the comparator completes and `complete` does not defeats the claim. Stated in the text (generated).
+
 ## Disclosed and not fixed
 
 - **Preregistration timing cannot be verified externally.** No plan commit is on a remote, and hand-typed timestamps

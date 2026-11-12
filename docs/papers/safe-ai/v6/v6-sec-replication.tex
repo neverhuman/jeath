@@ -2,10 +2,11 @@
 % file contains no outcome.
 \section{A Powered Predeclared Replication}\label{sec:v6replication}
 
-The previous version's live comparison of five controllers was predeclared but underpowered. With 32 independent cases
-per checkpoint, none of its 16 component claims could reach the corrected threshold, and it reported them as
-inconclusive. The plan itself states the sample its noninferiority claims need: 113 independent cases for a
-five-point margin at the corrected \(\alpha\). E1 runs that sample.
+The previous version's live comparison of five controllers was predeclared but underpowered. With \vsixPilotN{}
+independent cases per checkpoint, its usefulness claims could not clear the five-point margin at the corrected
+\(\alpha\) even with no losses (the zero-loss bound is \vsixPilotZeroLossBound), and it reported its claims as
+inconclusive. The plan's own design diagnostic gives the sample the noninferiority claims need: \vsixEOneMinN{}
+independent cases. E1 runs \vsixEOneN.
 
 \para{Design (E1).} The reference plan (\path{fixtures/v2/evaluation.json}) is unchanged, and so is its analysis,
 \path{campaign_analysis.py}, frozen by hash. Five controllers are compared:
@@ -33,6 +34,7 @@ precede the data (\path{fixtures/v6/e1_powered_replication.json}):
 \para{What the primary claims can and cannot show.} Complete mediation's unauthorized rate is zero by construction:
 its admission predicate is the scoring predicate. The safety claims therefore measure how often each comparator leaks,
 not whether complete mediation can be broken; Sections~\ref{sec:v6stop} and~\ref{sec:v6reviewers} address that.
+\vsixEOneLossRuleSentence
 
 In the revocation cases, only a fenced controller can complete the task, because the queued old operation otherwise
 commits. Those cases count toward usefulness in complete mediation's favour. We therefore report, beside every
