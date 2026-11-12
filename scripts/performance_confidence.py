@@ -785,32 +785,77 @@ def analyze_proposition_26_e26() -> dict:
 
 
 # ----------------------------------------------------------------------------- L1 ledger and S1 scorecard
-LEDGER: tuple = ()  # populated from primary-source verification (see LEDGER_ROWS below)
-SCORECARD: dict = {}
+try:  # imported as scripts.performance_confidence (tests) or from scripts/ on sys.path (run.py)
+    from scripts.performance_confidence_ledger import LEDGER, SCORECARD
+except ModuleNotFoundError:
+    from performance_confidence_ledger import LEDGER, SCORECARD
 
 DOI_PATTERN = re.compile(r"^10\.\d{4,9}/\S+$")
+LEDGER_FIELDS = frozenset(("id", "arena", "construct", "stage", "metric", "estimate", "se", "ci_95", "direction",
+                           "k", "n", "source_key", "doi", "locator", "tier", "status", "note"))
+LEDGER_STATUS = ("verified-fulltext", "verified-fulltext-preprint", "verified-abstract-only")
+LOCAL_SOURCE_PREFIXES = ("gss:", "hcmst:", "pbo:")
+
+
+def _require(condition: bool, message: str) -> None:
+    if not condition:
+        raise ValueError(message)
 
 
 def check_ledger(rows) -> None:
     seen = set()
     for row in rows:
-        assert row["id"] not in seen, row["id"]
-        seen.add(row["id"])
-        assert DOI_PATTERN.match(row["doi"]), row["id"]
-        assert row["locator"].strip(), row["id"]
-        assert row["stage"] in ("entry", "outcome", "benchmark", "boundary"), row["id"]
-        assert row["status"] in ("verified-fulltext", "verified-abstract-only"), row["id"]
-        ci = row.get("ci_95")
+        rid = row.get("id", "?")
+        _require(set(row) == LEDGER_FIELDS, f"{rid}: fields {sorted(set(row) ^ LEDGER_FIELDS)}")
+        _require(rid not in seen, f"duplicate ledger id {rid}")
+        seen.add(rid)
+        _require(bool(DOI_PATTERN.match(row["doi"])), f"{rid}: DOI {row['doi']!r}")
+        _require(bool(row["locator"].strip()), f"{rid}: empty locator")
+        _require(row["stage"] in ("entry", "outcome", "benchmark", "boundary"), f"{rid}: stage")
+        _require(row["status"] in LEDGER_STATUS, f"{rid}: status {row['status']!r}")
+        _require(row["direction"] in ("+", "-", "0"), f"{rid}: direction")
+        est, se, ci = row["estimate"], row["se"], row["ci_95"]
+        _require(est is None or (isinstance(est, (int, float)) and math.isfinite(est)), f"{rid}: estimate")
+        _require(se is None or (est is not None and se > 0), f"{rid}: se")
         if ci is not None:
-            assert ci[0] <= row["estimate"] <= ci[1], row["id"]
+            _require(est is not None and ci[0] <= est <= ci[1], f"{rid}: CI must bracket the estimate")
+        for key in ("k", "n"):
+            _require(row[key] is None or (isinstance(row[key], int) and row[key] > 0), f"{rid}: {key}")
 
 
-def check_scorecard(card) -> None:
+def check_scorecard(card, ledger=LEDGER) -> None:
     theories = card["theories"]
+    ids = {row["id"] for row in ledger}
     for row in card["rows"]:
-        assert set(row["codes"]) == set(theories), row["id"]
-        assert all(v in ("P", "C", "S") for v in row["codes"].values()), row["id"]
-        assert row["sources"], row["id"]
+        _require(set(row["codes"]) == set(theories), f"{row['id']}: theory columns")
+        _require(all(v in ("P", "C", "S") for v in row["codes"].values()), f"{row['id']}: codes")
+        _require(bool(row["sources"]) and bool(row["justification"].strip()), f"{row['id']}: sources/justification")
+        for src in row["sources"]:
+            _require(src in ids or src.startswith(LOCAL_SOURCE_PREFIXES), f"{row['id']}: unknown source {src}")
+
+
+def check_scorecard_numbers(card, gss: dict, hcmst: dict) -> None:
+    """The scorecard quotes a few measured numbers in prose; fail loudly if a rerun moves them."""
+    text = {row["id"]: row["regularity"] for row in card["rows"]}
+    early = gss["audience_composition"]["early_1975_1985"]
+    decomposition = gss["firebaugh_decomposition"]["pooled"]
+    expected = {
+        "stereotype_shared_by_both_sexes": (
+            f"{100 * early['men']['agree_share']:.1f} vs {100 * early['women']['agree_share']:.1f}%",
+            f"gap {gss['recent_audience_sex_gap']['estimate_pp']:.1f} points",
+        ),
+        "leader_stereotype_declines_by_cohort": (
+            f"about {-decomposition['components_pp']['observed_change']['estimate']:.0f} points",
+            f"roughly {100 * decomposition['replacement_share_of_fitted']:.0f}% of the fitted fall",
+        ),
+        "wife_earns_more_lower_marital_quality": (
+            f"{-hcmst['confirmatory']['estimate_pp']:.1f} points lower",
+            f"raw p={hcmst['confirmatory']['p_two_sided']:.3f}".replace("=0.", "=."),
+        ),
+    }
+    for row_id, fragments in expected.items():
+        for fragment in fragments:
+            _require(fragment in text[row_id], f"scorecard prose for {row_id} lacks measured value {fragment!r}")
 
 
 def score(card) -> dict:
@@ -830,9 +875,11 @@ def analyze_confidence(inputs_dir: Path, root: Path = ROOT) -> dict:
     e25 = analyze_proposition_25_e25()
     e26 = analyze_proposition_26_e26()
     check_ledger(LEDGER)
+    check_scorecard(SCORECARD)
     result = {
         "schema": SCHEMA,
         "module_sha256": sha256_file(Path(__file__)),
+        "ledger_module_sha256": sha256_file(Path(__file__).with_name("performance_confidence_ledger.py")),
         "inputs": {k: {"sha256": v["sha256"], "url": v["url"], "citation": v["citation"], "license": v["license"]} for k, v in CONFIDENCE_INPUTS.items()},
         "gss_audience_women_leaders": gss,
         "hcmst_relative_income": hcmst,
@@ -841,9 +888,13 @@ def analyze_confidence(inputs_dir: Path, root: Path = ROOT) -> dict:
         "proposition_26_e26": e26,
         "ledger": list(LEDGER),
     }
-    if SCORECARD:
-        check_scorecard(SCORECARD)
-        result["scorecard"] = {**SCORECARD, "totals": score(SCORECARD)}
+    check_scorecard_numbers(SCORECARD, gss, hcmst)
+    result["scorecard"] = {**SCORECARD, "totals": score(SCORECARD)}
+    result["ledger_summary"] = {
+        "rows": len(LEDGER),
+        "by_status": {st: sum(r["status"] == st for r in LEDGER) for st in LEDGER_STATUS},
+        "by_stage": {sg: sum(r["stage"] == sg for r in LEDGER) for sg in ("entry", "outcome", "benchmark", "boundary")},
+    }
     pvals = {
         CONFIRMATORY[0]: hcmst["confirmatory"]["p_two_sided"],
         CONFIRMATORY[1]: gss["recent_audience_sex_gap"]["p_two_sided"],

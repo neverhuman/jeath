@@ -156,7 +156,7 @@ class PropositionTests(unittest.TestCase):
 
 GOOD_ROW = {
     "id": "x", "arena": "groups", "construct": "c", "stage": "entry", "metric": "r", "estimate": 0.2,
-    "ci_95": [0.1, 0.3], "k": 1, "n": 100, "source_key": "s", "doi": "10.1037/0022-3514.74.5.1197",
+    "se": 0.05, "ci_95": [0.1, 0.3], "direction": "+", "k": 1, "n": 100, "source_key": "s", "doi": "10.1037/0022-3514.74.5.1197",
     "locator": "Table 2", "tier": "Tier 2", "status": "verified-fulltext", "note": "",
 }
 
@@ -164,21 +164,49 @@ GOOD_ROW = {
 class LedgerAndScorecardTests(unittest.TestCase):
     def test_ledger_schema_accepts_good_row_and_rejects_bad_ones(self):
         pc.check_ledger([GOOD_ROW])
+        pc.check_ledger([{**GOOD_ROW, "id": "y", "estimate": None, "se": None, "ci_95": None}])
         for change in ({"doi": "doi:10.1/x"}, {"locator": " "}, {"ci_95": [0.25, 0.3]},
-                       {"stage": "vibes"}, {"status": "from memory"}):
-            with self.assertRaises(AssertionError):
+                       {"stage": "vibes"}, {"status": "from memory"}, {"direction": "up"},
+                       {"estimate": None}, {"n": 0}, {"extra": 1}):
+            with self.assertRaises(ValueError):
                 pc.check_ledger([{**GOOD_ROW, **change}])
-        with self.assertRaises(AssertionError):
+        with self.assertRaises(ValueError):
             pc.check_ledger([GOOD_ROW, GOOD_ROW])
 
     def test_module_ledger_and_scorecard_validate(self):
         pc.check_ledger(pc.LEDGER)
-        if pc.SCORECARD:
-            pc.check_scorecard(pc.SCORECARD)
-            totals = pc.score(pc.SCORECARD)
-            for theory in pc.SCORECARD["theories"]:
-                t = totals[theory]
-                self.assertEqual(t["predicted"] + t["contradicted"] + t["silent"], len(pc.SCORECARD["rows"]))
+        pc.check_scorecard(pc.SCORECARD)
+        totals = pc.score(pc.SCORECARD)
+        for theory in pc.SCORECARD["theories"]:
+            t = totals[theory]
+            self.assertEqual(t["predicted"] + t["contradicted"] + t["silent"], len(pc.SCORECARD["rows"]))
+        # The scorecard must keep its honest losses: PBO is contradicted at least once, and some
+        # regularities are won by other theories while PBO is silent.
+        self.assertGreaterEqual(totals["PBO"]["contradicted"], 1)
+        self.assertTrue(any(r["codes"]["PBO"] == "S" and "P" in r["codes"].values() for r in pc.SCORECARD["rows"]))
+        # Every abstract-only row without a stated number carries a sign only.
+        for row in pc.LEDGER:
+            if row["estimate"] is None:
+                self.assertIsNone(row["ci_95"])
+
+    def test_scorecard_rejects_unknown_source(self):
+        card = {**pc.SCORECARD, "rows": ({**pc.SCORECARD["rows"][0], "sources": ("nobody2099",)},)}
+        with self.assertRaises(ValueError):
+            pc.check_scorecard(card)
+
+    def test_superseded_finding_is_kept_with_its_replication(self):
+        ids = {row["id"]: row for row in pc.LEDGER}
+        self.assertIn("SUPERSEDED", ids["livingston2012_original"]["note"])
+        self.assertEqual(ids["liu2026_replication"]["n"], 1996)
+
+    def test_scorecard_quotes_pbo_reference_looks_weighting(self):
+        import json
+        from pathlib import Path
+        ref = json.loads((Path(__file__).resolve().parents[1] / "evidence/reference/performance-before-outcomes.json").read_text())
+        attr = ref["speed_dating"]["adjusted_slopes"]["own"]["men_minus_women_pp"]["attr"]
+        lo, hi = attr["interval_95"]
+        text = {r["id"]: r["regularity"] for r in pc.SCORECARD["rows"]}["men_weight_looks_more"]
+        self.assertIn(f"{attr['estimate']:.1f} points more than women's (95% CI {lo:.1f} to {hi:.1f})", text)
 
     def test_holm(self):
         adj = pc.holm({"a": 0.01, "b": 0.04, "c": 0.03})
