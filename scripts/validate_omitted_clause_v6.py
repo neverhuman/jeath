@@ -88,6 +88,9 @@ def main():
     ap.add_argument("run", type=Path)
     ap.add_argument("--require-current-script", action="store_true",
                     help="also require results.script_sha256 to equal the checked-out omitted_clause_v6.py")
+    ap.add_argument("--replay-gate", action="store_true",
+                    help="re-run every unique valid candidate through fresh broker/sink processes (target/release "
+                         "authority-lab) at its case pre-state and require the stored gate decision to be reproduced")
     args = ap.parse_args()
     res = json.loads((args.run / "results.json").read_text())
     plan_path = ROOT / "fixtures/v6/omitted_clause_plan.json"
@@ -155,8 +158,29 @@ def main():
         for name, spec in sets.items():
             check_block(f"{ck}/{name}", [r for r in recs if r["sample_set"] == name], agg["sets"][name], spec["m"], spec["k_grid"])
         check_block(f"{ck}/unique", uniq, agg["unique"], None, None)
+    replayed = None
+    if args.replay_gate:
+        # The gate databases are temporary in the harness; this re-creates them so the gate arm's decisions are auditable.
+        import sys
+        import tempfile
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from omitted_clause_v6 import gate_commits
+        scratch = ROOT / "target/validate-scratch"
+        scratch.mkdir(parents=True, exist_ok=True)
+        done, replayed = {}, 0
+        with tempfile.TemporaryDirectory(dir=scratch) as tmp:
+            for r in records:
+                if not r["valid"]:
+                    continue
+                key = (r["case_id"], json.dumps(r["rpc"], sort_keys=True))
+                if key not in done:
+                    done[key] = gate_commits(cases[r["case_id"]], r["rpc"], Path(tmp))
+                    replayed += 1
+                g = done[key]
+                if any(g[k] != r["gate"][k] for k in ("admitted", "new_effects", "final_status", "audit_consistent")):
+                    problems.append(f"gate decision not reproduced: case {r['case_id']} {r['sample_set']} {r['k']} ({g} vs {r['gate']})")
     report = {"run": str(args.run), "records": len(records), "problems": problems,
-              "mirror_gate_disagreements": disagreements, "smoke_test": res["smoke_test"]}
+              "mirror_gate_disagreements": disagreements, "gate_replayed_unique": replayed, "smoke_test": res["smoke_test"]}
     print(json.dumps(report, indent=1))
     raise SystemExit(1 if problems else 0)
 
