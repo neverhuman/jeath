@@ -27,7 +27,7 @@ Now contrast an endogenous classifier-gated loop against an exogenous determinis
 (ii) Suppose an exogenous sink commits state changes exclusively through a total deterministic transition function \(\delta_{\mathrm{sink}}(s, f)\) verified for \emph{all} byte frames \(f \in \{0,1\}^\star\) to satisfy \(\delta_{\mathrm{sink}}(s, f) \neq s \implies \operatorname{decode}(f) \in \Permits(P_s)\). Then \(\Prb(E \mid G) = 0\) identically for every \(K \ge 1\) and every proposer distribution \(\pi_\theta\).
 \end{proposition}
 
-Part~(ii) requires no empirical sweep over \(K\): a universal proof over \(\{0,1\}^\star\) already covers every finite or unbounded proposer search tree. Empirical best-of-\(K\) experiments on live checkpoints (\S\ref{sec:systems}) serve instead to measure \(J_1\) and candidate correlation \(\hat{\rho}_{\mathrm{cand}}\) on learned reviewers. Replacing free-form prose side effects with canonical capability menus of cardinality \(M_{\mathrm{cap}}\) also bounds per-commit syntactic signaling through the sink to \(\log_2(M_{\mathrm{cap}} + 1)\) bits (proved with timing caveats in Appendix~\ref{app:proofs}, Proposition~\ref{prop:covert} and Figure~\ref{fig:v8covert}).
+Part~(ii) holds by definition once the transition function is verified over all frames, so no sweep over \(K\) can test it, and none of this paper's experiments is offered as evidence for it. Its content is where it moves the question: from the proposer to \(\Permits(P)\). Part~(ii) is exactly as strong as the specification it is proved for, and a proposer searching over what \(P\) does not name is not slowed by it (Section~\ref{sec:v6reviewers}). Live best-of-\(K\) experiments (Appendix~\ref{sec:systems}) measure \(J_1\) and candidate correlation \(\hat{\rho}_{\mathrm{cand}}\) for learned reviewers. Replacing free-form prose side effects with canonical capability menus of cardinality \(M_{\mathrm{cap}}\) also bounds per-commit syntactic signaling through the sink to \(\log_2(M_{\mathrm{cap}} + 1)\) bits (proved with timing caveats in Appendix~\ref{app:proofs}, Proposition~\ref{prop:covert} and Figure~\ref{fig:v8covert}).
 
 Exogenous sink mediation similarly separates physical interruption from utility-based shutdown compliance~\cite{omohundro2008,soares2015,offswitch}.
 
@@ -37,7 +37,7 @@ Consider a two-stage decision process in which an agent with utility \(U\) obtai
 (ii) \emph{Exogenous lease interruption:} Suppose external commits require a sink lease expiring after \(L_m\) time units unless renewed by an out-of-band steward key excluded from the agent's action space (\(a_{\mathrm{block}} \notin \mathcal{A}\)), and steward renewal requires observed compliance with policy \(P\). Then physical interruption at \(t_0 + L_m + \delta_{\max}\) holds for \emph{every} utility function \(U\), and any policy maximizing cumulative multi-lease return strictly prefers in-policy actions whenever discounted future lease value exceeds single-lease defection gain.
 \end{theorem}
 
-Theorem~\ref{thm:offswitch} does not claim an agent internally adopts human values; it shows that removing shutdown channels from \(\mathcal{A}\) enforces physical halting unconditionally while turning lease renewal into an external incentive constraint.
+Theorem~\ref{thm:offswitch} does not claim an agent adopts human values. Part~(ii) follows once shutdown channels are removed from \(\mathcal{A}\), so its content is that design choice, and it turns lease renewal into an external incentive constraint.
 
 \subsection{Monotone Uncertainty Contraction and Horizon Union Bound}
 
@@ -57,7 +57,7 @@ Concretely, an unacknowledged or timed-out RPC widens \(\mathcal{I}_t\) and ther
 \textbf{C5} & Monotone bootstrap ratchet & \(\Permits(P_{v+1}) \subseteq \Permits(P_v)\) w/o human quorum & Self-authored policy expansion widens capabilities during upgrades\\
 \textbf{C6} & Summable horizon hazard & \(\sum_{t=1}^\infty R_t < \infty\) across lease renewals & Constant per-lease leak \(R_t = r_0 > 0\) drives \(\Prb(\bigcup_{t\le T} E_t) \to 1\) (\(\VThreeHorizonConstTenKPct\%\) at \(10^4\))\\
 \bottomrule\end{tabularx}
-\caption{Six structural conditions separating intelligence from external authority, paired with concrete empirical failure witnesses when each clause is relaxed.}\label{tab:conditions}
+\caption{Six structural conditions separating intelligence from external authority, each with a failure witness when the clause is relaxed. Partition counts are schedules with a leak in the logical-time simulation of Section~\ref{sec:core}; the live withdrawal counts used a harness-scheduled pending operation.}\label{tab:conditions}
 \end{table*}
 
 \begin{theorem}[Multi-period reach union bound]\label{thm:horizon}
@@ -69,3 +69,7 @@ Under \textbf{C6} (\(\sum_{t=1}^\infty R_t = R_\infty < 1\)), infinite-horizon b
 \end{theorem}
 
 Theorem~\ref{thm:horizon} is intentionally elementary once \textbf{C1}--\textbf{C5} do the structural work: Eq.~\eqref{eq:horizon} applies Boole's union bound (Appendix~\ref{app:proofs}, Proposition~\ref{prop:envelope}) to per-lease residual hazards, showing that long-horizon autonomy requires shrinking per-renewal exposure \(R_t\) (via monotone capability ratchets \textbf{C5} rather than constant-rate statistical filtering).
+
+Figure~\ref{fig:v3saturation} plots the lag-contraction, common-cause and horizon laws of this appendix. It evaluates the formulas numerically and is an illustration, not an experiment.
+
+\input{generated/v3-saturation-fig}

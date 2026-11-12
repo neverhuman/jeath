@@ -1,4 +1,4 @@
-% v6 draft section (Claude, cc/iina-tier1). Numbers are generated \vsix macros (E8, E8b, E2 evidence).
+% v6 section. Numbers are generated \vsix macros (E8, E8b, E2 evidence).
 \section{What a Specification Costs, and What It Cannot Stop}\label{sec:v6cost}
 
 The previous section shows that a gate enforces exactly what is written. On a public benchmark, that raises two
@@ -7,7 +7,7 @@ anticipate? Earlier versions of this paper answered the first with permissions c
 solution, which no deployment has. Here the permissions are written once per suite, without the solutions.
 
 \para{Setup (E8, E8b).} AgentDojo v1.2.2~\cite{agentdojo}, banking (16 user tasks) and Slack (21), with AgentDojo's
-\texttt{important\_instructions} attack placed at each task's own injection vectors and AgentDojo's own graders. The
+``important instructions'' attack placed at each task's own injection vectors and AgentDojo's own graders. The
 agent is \vsixEEightCkpt{} at temperature 0 in a JSON tool loop. Five arms see identical prompts and receive the same
 reply, ``not permitted'', whenever a call is refused:
 \begin{itemize}
@@ -23,8 +23,7 @@ reply, ``not permitted'', whenever a call is refused:
 Each user task runs once without attack and twice under assigned injections (\vsixEEightEpisodes{} episodes). E8b
 repeats the attacked episodes with six injections we wrote to stay inside \(S\): pay an existing payee, raise an
 existing standing order, add an existing user to a private channel, message a secret to an existing user. Both plans,
-the injections and their graders were committed before data
-(\path{fixtures/v6/agentdojo_fair_plan.json}, \path{e8b_inside_spec_plan.json}).
+the injections and their graders were committed before data.
 
 \para{The cost before any model runs.} Offering each task's reference solution to each specification, with no model
 involved, gives the specification-granularity cost directly. \(S\) admits \vsixStageStrictUser{} reference solutions

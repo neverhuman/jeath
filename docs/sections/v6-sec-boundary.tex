@@ -1,4 +1,4 @@
-% v6 draft section (Claude, cc/iina-tier1). Numbers are generated \vsix macros (E6, E6b evidence); the per-surface
+% v6 section. Numbers are generated \vsix macros (E6, E6b evidence); the per-surface
 % table is generated (v6-e6-table.tex). Conferral is a design, not a result.
 \section{Where the Guarantee Ends}\label{sec:v6boundary}
 
@@ -33,7 +33,7 @@ that revocation cancels (P3). \vsixESixPOneThreeSentence{} Its P2 probe raced a 
 fence and exposed a mechanism we had not anticipated: in PostgreSQL, new \texttt{FOR SHARE} lockers join an existing
 share lock while the fence's \texttt{FOR UPDATE} waits, so a continuing stream of stale writers can starve the raise.
 
-E6b, predeclared separately (\path{fixtures/v6/fenceability_b_plan.json}), re-tests only the fence. It probes
+E6b, predeclared separately, re-tests only the fence. It probes
 \vsixESixBMechanisms{} mechanisms deterministically, \vsixESixBRuns{} runs each, with \vsixESixBVariants{} writer
 variants: the stale writer as specified, with the epoch
 omitted, with every fence field omitted, claiming the new epoch, and a fresh writer. It then repeats E6's race

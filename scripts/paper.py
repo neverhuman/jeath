@@ -1380,11 +1380,35 @@ def generate_v3():
     return out
 
 
+def generate_v6():
+    """The v6 front figure, text macros and tables, from promoted evidence/v6/reference only. Missing evidence is an
+    error: there is no draft or placeholder path here (scripts/v6_macros.py --draft writes drafts outside docs/)."""
+    from types import SimpleNamespace
+
+    import hero_v6
+    import v6_macros
+
+    ref = ROOT / "evidence/v6/reference"
+    need = {k: ref / v6_macros.SOURCES[k] for k in ("e4", "e5", "e8", "e8b")}
+    absent = [k for k, d in need.items() if not (d / "results.json").exists()]
+    if absent:
+        raise SystemExit(f"v6 evidence not promoted: {', '.join(absent)} (scripts/promote_v6.py)")
+    hero = hero_v6.build(SimpleNamespace(e4=need["e4"], e5=need["e5"], e8=need["e8"], e8b=need["e8b"],
+                                         ckpt="Qwen/Qwen3-8B-GGUF", layout_preview=False))
+    text, missing = v6_macros.build(SimpleNamespace(ckpt="Qwen/Qwen3-8B-GGUF", draft=False, sources={}))
+    assert not missing
+    assert hero["v6-hero-fig.tex"].count(r"\captionof{figure}") == 1  # a non-float under the abstract, like v5's
+    for k in ("v6-e1-table.tex", "v6-pilot-table.tex", "v6-e5-table.tex", "v6-e6-table.tex"):
+        assert_pure_float(k, text[k])
+    return hero | text
+
+
 def generate():
     result = {}
     result.update(generate_v1())
     result.update(generate_v2())
     result.update(generate_v3())
+    result.update(generate_v6())
     return result
 
 

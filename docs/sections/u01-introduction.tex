@@ -1,17 +1,57 @@
 \section{Introduction}\label{sec:intro}
 
-Capable AI systems increasingly draft code, query databases, invoke external APIs, and spawn sub-agents. Across most deployments, safety still rests on \emph{endogenous} controls: alignment training shapes model preferences, and prompted language-model monitors inspect model-generated transcripts before tool execution~\cite{control,metraudit}. That design conflates two distinct quantities. \emph{Intelligence} is an epistemic capacity to search, predict, and optimize over candidate plans. \emph{Authority} is an institutional and physical capacity to commit irreversible state changes in an external sink.
+Agents built on language models now issue payments, edit repositories and change cloud resources through tools. Most
+of the safety case for such systems rests on the model: training shapes what it proposes, and a monitor, often another
+model, reads what it proposes before a tool runs~\cite{control,metraudit}. Both act on proposals. The harm, however, is
+in effects, and an effect is authorized or not by state that a proposal need not show: whether this payment was already
+made, whether the person who granted the budget has withdrawn it, whether the record has changed since the agent read
+it. This paper separates the two. \emph{Intelligence} lives in proposals: the capacity to search for, predict and
+choose actions. \emph{Authority} lives in state: which effects a sink will commit, given what has already been
+committed and granted.
 
-Confusing intelligence with authority fails along two operational axes illustrated in Figure~\ref{fig:v5hero}. First, stopping an agent is not a single event~\cite{controlroom,limbo}. Halting token output (\emph{Stop~1}) prevents new text from streaming, and revoking admission at a central broker (\emph{Stop~2}) blocks future capability permits. Neither stops tool requests already queued across worker threads, network sockets, or delayed retries. Only fencing the state-bearing sink (\emph{Stop~3})---rejecting stale epochs atomically at commit time---prevents in-flight operations from landing after authority is withdrawn.
+The separation is easiest to see when an operator stops an agent. Systems that track and stop model
+workloads~\cite{controlroom} can act in three places (Figure~\ref{fig:v6hero}a). \emph{Halting inference} ends the
+stream of new proposals. \emph{Revoking admission} at a broker refuses permits for proposals that arrive later.
+\emph{Fencing the sink} raises an epoch floor at the component that writes durable state, so that an operation carrying
+an older epoch is refused when it tries to commit, even if it was admitted and dispatched before the stop. Only the
+third reaches work already in flight. It is the fencing-token argument of distributed locking~\cite{kleppmann2016}
+applied to an agent's authority, and it moves the stop from the producer of proposals to the place where effects
+happen.
 
-Second, scaling candidate search (\(K\)) acts in opposite directions on classifier-based reviewers and deterministic capability gates. Any learned monitor with nonzero false-negative mass \(J > 0\) on policy-violating proposals suffers rising cumulative bypass as an agent samples \(K\) candidate tool calls~\cite{terekhov}, even when candidates correlate within a task. By contrast, a deterministic reference monitor~\cite{dennis,saltzer,schneider} verified over \emph{every} possible wire input admits zero out-of-policy commits regardless of proposer search depth.
-
-This paper develops, mechanizes, and empirically tests an exogenous authority architecture built around four results:
+Moving authority out of the model raises an obvious objection: the gate is then only as good as what it was told to
+check. We take that objection as the paper's subject rather than its limitation. The contributions, each with the
+evidence behind it:
 \begin{enumerate}
-  \item \textbf{Three stops and clock-skew-buffered sink fencing.} We prove in Verus (\VTwoProofs{} verified obligations; \VFiveProofMutationsRejected/\VFiveProofMutationsRejected{} soundness mutations rejected) that canonical wire decoding, attenuated delegation, relational mutexes, and quorum epoch fences prevent post-acknowledgment commits whenever physical clock skew is bounded by \(\delta_{\max}\). Five-class partition experiments confirm \(0/\VFourJepsenSchedulesPerClass\) leaks on cooperative fenced sinks versus \(\VFourJepsenBrokerOnlyLeaks/\VFourJepsenSchedulesPerClass\) under broker-only revocation and \(\VEightJepsenSkewUnbufLeaks/\VFourJepsenSchedulesPerClass\) when lease expiry omits \(\delta_{\max}\).
-  \item \textbf{Live usefulness, fence ablation, and API fence-ability.} On frozen Qwen3-4B and Qwen3-8B tool-use holdouts (\(N = \VFourHoldoutCasesPerCheckpoint\) independent cases per checkpoint), complete mediation achieves the highest safe-and-useful completion (\VFourFourBCompleteSafeUsefulCount/\VFourHoldoutCasesPerCheckpoint{} and \VFourEightBCompleteSafeUsefulCount/\VFourHoldoutCasesPerCheckpoint{} vs.\ \VFourFourBNoneSafeUsefulCount/\VFourHoldoutCasesPerCheckpoint{} and \VFourEightBNoneSafeUsefulCount/\VFourHoldoutCasesPerCheckpoint{} unmediated) with \(0/64\) benign false blocks, while eliminating the \VEightTotalNoFencePostWithdraw{} queued post-withdrawal commits observed across the \VEightTotalWithdrawCases{} revocation cases without sink fencing. A census of \VEightCensusTotalApis{} production APIs shows \VEightCensusCooperativeOrShim/\VEightCensusTotalApis{} support native or proxy-enforced sink fencing.
-  \item \textbf{Waist cutsets and context-isolated escrow.} Across AgentDojo v1.2.2 suites~\cite{agentdojo}, weighted minimum cuts of width \(w \in [2,5]\) sever \(100\%\) of \(\VFourCutBankingRoutes\)--\(\VFourCutWorkspaceRoutes\) attack routes, whereas patching \(32\) known exploits leaves \(94.7\%\)--\(99.9\%\) live. Stripping untrusted prose into typed step schemas and two-stage escrow triage eliminates the \(\VFourTrajHetInflation\times\) shared-transcript coupling inflation measured across both statistical classifiers and live Qwen3 LLM judges.
-  \item \textbf{Delegation and reward reversals.} We prove and simulate two behavioral reversals: \emph{endogenous grant reversal}, where an agent safer at every fixed scope causes \(4.2\times\) higher total harm (\(\VThreeGrantWarmEndogPct\%\) vs.\ \(\VThreeGrantBluntEndogPct\%\)) when deferential demeanor induces wider human scope grants, and \emph{dispersion/gate-timing reversal}, where survival floors and training inside pre-commit gates suppress covert shortcutting while lifting genuine task completion \(+\VFourNeuralTrainInsideGainPp\)\,pp over post-hoc deployment filtering.
+  \item \textbf{Stopping a model is not stopping its effects} (measured; Section~\ref{sec:v6stop}). On real broker and
+        sink processes under a predeclared grid of tool latencies, concurrency and enforcement delays, we count the
+        effects that commit after each kind of stop and the legitimate work each discards, including kills of the
+        sink inside its own requests.
+  \item \textbf{Reviewers read proposals; violations live in state} (measured; Section~\ref{sec:v6reviewers}). A
+        same-model reviewer given the rules and time to reason is compared with a verified gate on proposals whose
+        violation is either visible in the proposal or only in the state it acts on.
+  \item \textbf{Mediation converts a learned blind spot into a written specification gap} (by construction and
+        measured; Sections~\ref{sec:v6reviewers} and~\ref{sec:v6cost}). A gate missing one clause admits exactly the
+        violations of that clause. On AgentDojo, with grants written without the benchmark's reference solutions, we
+        measure what a specification costs in benign utility and what it leaves open to injections that stay inside
+        it.
+  \item \textbf{A powered predeclared replication} (predeclared; Section~\ref{sec:v6replication}). The previous
+        version's five-controller comparison could not clear its own noninferiority margin even with no losses. We
+        rerun it at the sample size its design requires, with the frozen analysis, and report the result whatever it is.
+  \item \textbf{Which real effect surfaces can be fenced} (measured on CPU fixtures; Section~\ref{sec:v6boundary}).
+        Executable probes against PostgreSQL, etcd and a POSIX filesystem sort each mechanism by who enforces the
+        epoch: the surface itself, author code installed in it, or a condition the writer must remember to send.
+  \item \textbf{A machine-checked authority kernel} (proved; Section~\ref{sec:core}), with the gap between the
+        verified functions and the code the experiments run stated explicitly.
 \end{enumerate}
 
-\para{Roadmap.} Section~\ref{sec:gaps} classifies which safety evidence survives model upgrades and fixes notation; Sections~\ref{sec:theory}--\ref{sec:systems} present the formal reach bounds, the Verus-verified authority kernel, live checkpoint campaigns, and the production API census. Sections~\ref{sec:width}--\ref{sec:conclusion} analyze waist cutsets, custodial coverage, monitor coupling, delegation and reward reversals, scope limits, and falsifiable predictions.
+\para{What this paper does not show.} All live results use quantized open-weight models on CPU at temperature 0; none
+uses a frontier model. The sink mediates only its own database effects; it does not provide external exactly-once
+execution, and an external surface is fenced only if it can refuse a stale epoch. The guarantees hold at a fixed grant.
+If more capable or more agreeable agents are granted more, intelligence regains reach through what people
+confer (Observation~\ref{obs:conferral}); we state a design for measuring that but have not run it.
+
+\para{Roadmap.} Section~\ref{sec:gaps} sorts safety evidence by whether it survives a model upgrade and places the work
+among prior systems. Section~\ref{sec:core} gives the kernel and protocol. Sections~\ref{sec:v6stop}
+to~\ref{sec:v6boundary} report the experiments, Section~\ref{sec:v6limits} the limits, and Section~\ref{sec:conclusion}
+concludes. The formal reach model and the previous version's experiments are in the appendices, with the corrections
+this version makes to them.

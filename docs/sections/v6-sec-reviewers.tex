@@ -1,9 +1,9 @@
-% v6 draft section (Claude, cc/iina-tier1). Numbers are generated \vsix macros (scripts/e5_analysis_v6.py via
+% v6 section. Numbers are generated \vsix macros (scripts/e5_analysis_v6.py via
 % scripts/hero_v6.py and scripts/v6_macros.py).
 \section{Reviewers Read Proposals; Violations Live in State}\label{sec:v6reviewers}
 
 A common alternative to mediation is review: a second model, often the same one, reads each proposed action and
-approves or denies it~\cite{greenblatt2024control}. Review sees the proposal. Many unauthorized actions, however, are
+approves or denies it~\cite{control}. Review sees the proposal. Many unauthorized actions, however, are
 unauthorized only because of the state they would act on: a payment that was legitimate once and is now a replay, a
 grant whose issuer has since been withdrawn, an edit against a revision that has moved. Such a proposal can be
 byte-identical to one the policy approved. We test whether a reviewer that is given the rules, the visible state and
@@ -18,7 +18,7 @@ The same checkpoint proposes candidates under eight predeclared mutation strateg
 the prior work's minimal prompt (R0), the rules stated (R1), and the rules with reasoning enabled (R2, 4096 tokens; a
 truncated review is a deny). Every valid candidate also goes through the real broker and sink at the case's pre-state
 (G). Plan, prompts, clauses, parse rules and hypotheses were committed before data
-(\path{fixtures/v6/omitted_clause_plan.json}, three pre-data amendments). We count each distinct proposal once and
+(three pre-data amendments). We count each distinct proposal once and
 also report the share of cases with any breach, because repeated samples of a deterministic review are not independent.
 
 \para{Result.} The strongest reviewer, R2, admitted \vsixReviewerState{} unauthorized proposals whose violation lives
