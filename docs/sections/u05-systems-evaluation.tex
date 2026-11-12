@@ -1,13 +1,140 @@
-\section{Multi-Process Cryptographic Sinks and Exact Trinomial Inference Validate Mediation}
+\section{Live Language-Model Mediation, Exact Trinomial Inference, and Crash-Fenced Sinks}
 \label{sec:eval}
 
-Because mechanized \path{policy-core} theorems rely on unrefined storage, IPC, and OS
-adapters, we evaluate the assembled boundary across exhaustive invariant omissions, a
-multi-process Ed25519/Macaroon SQLite WAL cluster under wire fuzzing and \texttt{SIGKILL}
-crashes, concurrent RPC linearizations, executed CPU \texttt{Qwen3} campaigns, and exact
-unconditional paired inference.
+Because mechanized kernel theorems rely on unrefined storage, inter-process transport, and
+operating-system adapters, we validate the assembled boundary in three stages: first across
+live open-weight language-model campaigns and multi-step prompt-injection benchmarks with
+exact small-sample certificates, second across a three-process Ed25519/Macaroon SQLite
+write-ahead-logged cluster under wire fuzzing and hard process-kill crashes, and third
+across exhaustive invariant-omission and negative controls.
 
-\subsection{Invariant Omissions and Snapshot Non-Composition}
+\input{generated/v2-eval-table}
+
+\subsection{Live Qwen3 Campaigns, Multi-Step AgentDojo, and Exact Trinomial Inference}
+\para{Safe capability scaling at zero unauthorized commits.}
+Table~\ref{tab:v2eval} and Figure~\ref{fig:v5hero}c report our frozen preregistered
+five-controller evaluation executed locally on CPU across
+$N{=}\VFourHoldoutCasesPerCheckpoint$ procedural holdout cases $\times 5$ controllers
+$\times 2$ open-weight checkpoints (\VFourHoldoutTotalCampaigns/\VFourHoldoutTotalCampaigns{}
+measured campaigns on Qwen3-4B and Qwen3-8B), alongside \VFourLiveDojoEpisodes{} live
+multi-step AgentDojo \texttt{v1.2.2} prompt-injection and withdrawal episodes
+\cite{agentdojo,progent,progent-code} and \VTwoControllerRuns{} equal-permission scripted
+shared-budget controls (Figure~\ref{fig:v2runtime}b). Under complete stateful mediation,
+unauthorized commits and false blocks equal $0.0\%$ on both Qwen3-4B and Qwen3-8B, while
+safe-and-useful task completion nearly doubles with model capability from
+\VFourFourBCompleteSafeUsefulPct\% to \VFourEightBCompleteSafeUsefulPct\% on holdout
+cases and reaches \VFourDojoFourBCompleteSafeUsefulPct\% and
+\VFourDojoEightBCompleteSafeUsefulPct\% on live AgentDojo (versus
+\VFourDojoFourBUnprotectedUnauthPct\% and \VFourDojoEightBUnprotectedUnauthPct\%
+unauthorized commits under unprotected native execution, and
+\VFourDojoFourBProgentUnauthPct\% and \VFourDojoEightBProgentUnauthPct\% under the static
+per-call symbolic policy Progent).
+
+\para{Why static per-call symbolic rules still breach multi-step budgets.}
+Decomposing Progent's live AgentDojo failures isolates the exact gap between stateless
+argument policies and stateful authority mediation: across all $\VFiveStatDojoPairs$
+pooled episodes ($24$ per checkpoint), Progent blocks every single-call prompt-injection
+exfiltration ($\VFourDojoProgentNativeAttackCount/\VFiveStatDojoPairs = 0.0\%$ native
+attack breaches), yet still permits $\VFourDojoProgentTotalUnauthCount/\VFiveStatDojoPairs$
+($12.5\%$) unauthorized external commits—$100\%$
+($\VFourDojoProgentBudgetBreachCount/\VFourDojoProgentTotalUnauthCount$) caused by
+cumulative multi-step spend exhaustion across individually admissible calls—whereas
+stateful pre-dispatch reservation records $0/\VFiveStatDojoPairs$ ($0.0\%$).
+
+\input{generated/v5-statistical-table}
+
+\para{Resolving pilot union-bound slack via exact trinomial and Ville certificates.}
+Why did predeclared Bonferroni bounds at pilot $N{=}\VFourHoldoutCasesPerCheckpoint$ remain
+statistically under-powered despite $0/32$ versus $10/32$ unauthorized campaigns on
+Qwen3-4B? The preregistered estimator subtracted two separate marginal Clopper--Pearson
+intervals ($U_{1-\alpha/2}(n_{10};N) - L_{1-\alpha/2}(n_{01};N)$), treating
+$(n_{10},n_{01})$ as independent binomials and discarding the paired trinomial simplex
+constraint $p_{10}+p_{01}\le 1$. Preserving every predeclared marginal interval and
+under-powered pilot verdict untouched (Appendix~\ref{app:predeclared}),
+Table~\ref{tab:v5statistics} and Figure~\ref{fig:v2runtime}c evaluate exact paired
+discordance \cite{clopper}, exact unconditional Suissa--Shuster / Tango restricted-MLE
+trinomial inversion $\sup_{\theta}\Prb_{p_{10}=\theta+\delta_0,p_{01}=\theta}(Z \le Z_{\mathrm{obs}})$
+\cite{suissa1985,tango1998}, and predictable Ville betting supermartingales
+$E_d = \prod_{i=1}^d (1 + \lambda_i(2Y_i - 1))$ valid under optional stopping
+\cite{ville1939,ramdas2023}:
+\begin{itemize}
+\item \textbf{Eliminating union-bound slack on paired checkpoints.} On Qwen3-4B holdout
+(complete mediation vs.\ unprotected execution, $(0, \VFiveStatFourBNoneDiscordant)/32$),
+removing $\VFiveStatFourBNoneSlackPp$\,pp of union-bound slack shifts the $(1-\alpha)$
+upper bound at Bonferroni $\alpha=0.05/16$ from $\VFiveStatFourBNoneUnionUpperPp$\,pp to
+$\VFiveStatFourBNoneExactUpperPp$\,pp (exact Suissa--Shuster
+$p = \VFiveStatFourBNoneSuissaSci < 0.003125$; vs.\ same-checkpoint review,
+$p = \VFiveStatFourBLearnedSuissaSci$). Pooled across both holdout checkpoints ($64$
+pairs, $(0,\VFiveStatHoldoutPooledDiscordant)$), unconditional
+$p = \VFiveStatHoldoutPooledSuissaSci$.
+\item \textbf{Multi-step benchmark and grand-pooled anytime-valid spine.} Across all
+$\VFiveStatDojoPairs$ paired live AgentDojo episodes, complete stateful mediation
+certifies exact unconditional superiority over unprotected native execution
+($(0,\VFiveStatDojoUnprotDiscordant)/48$, $p = \VFiveStatDojoUnprotSuissaSci$),
+same-checkpoint review ($(0,\VFiveStatDojoLearnedDiscordant)/48$,
+$p = \VFiveStatDojoLearnedSuissaSci$), and static per-call Progent rules
+($(0,\VFiveStatDojoProgentDiscordant)/48$, $p = \VFiveStatDojoProgentSuissaSci$). Across
+all $\VFiveStatGrandPairs$ paired live tasks ($\VFiveStatGrandCompleteLeaks/\VFiveStatGrandPairs$
+mediated breaches vs.\ $\VFiveStatGrandBaseLeaks/\VFiveStatGrandPairs = \VFiveStatGrandBasePct\%$
+unmediated), Suissa--Shuster reaches $p = \VFiveStatGrandSuissaSci$ (99.69\% upper bound
+$\VFiveStatGrandExactUpperPp$\,pp) and the Ville supermartingale reaches
+$\log_{10} E = \VFiveStatVilleLogTenE$ ($p_{\mathrm{anytime}} = \VFiveStatVilleAnytimePSci$;
+anytime $95\%$ zero-harm hazard bound $\le \VFiveStatVilleUpperNinetyFivePct\%$;
+Figure~\ref{fig:v2runtime}c). Usefulness noninferiority within
+\VTwoNoninferiorityMarginPp\,pp at $\alpha=0.05/16$ still requires
+$N \ge \VTwoZeroLossCasesMin$ loss-free cases and remains an open Tier-5 obligation.
+\end{itemize}
+
+\input{generated/v2-runtime-fig}
+
+\subsection{Three-Process Cryptographic Cluster, Linearizability, and Partition Fencing}
+In two-process SQLite testing, all \VTwoFaults/\VTwoFaults{} sequential RPC fault and
+crash histories match an independent specification oracle on intermediate responses and
+final durable sink state, while partial-order-reduced recorded-RPC linearization verifies
+all \VTwoLinearizedRuns/\VTwoRaceRuns{} publication race runs up to
+\VTwoLinearizedMaxActors{} concurrent writers ($\le \VTwoLinearizedMaxCalls$ RPCs;
+Figure~\ref{fig:v2runtime}a). Across $\text{\VFourJepsenSchedulesPerClass}$ asynchronous
+\VFourJepsenSinks-sink partition schedules per class (packet drops, delayed replays,
+asymmetric blackholes, and active man-in-the-middle forgery), cooperative quorum fencing
+resolves $\VFourJepsenCoopSignedFences$ schedules via fast Ed25519-signed sink fence
+acknowledgments and $\VFourJepsenCoopLeaseExpiries$ partitioned schedules via bounded
+lease-expiry fallbacks, rejects $\VFourJepsenMitmRejected/\VFourJepsenMitmRejected$ forged
+revocation acknowledgments, and records $\VFourJepsenCoopLeaks$ post-acknowledgment
+leaks---versus $\VFourJepsenBrokerOnlyLeaks$ ($\VFourJepsenBrokerOnlyLeakPct\%$) leaks
+under premature broker-only acknowledgment and $\VFourJepsenUncoopLeaks$
+($\VFourJepsenUncoopLeakPct\%$) leaks on uncooperative external sinks.
+
+To validate wire-level cryptographic mediation across real operating-system process
+boundaries and durable disk state (Table~\ref{tab:v2core}), we spawn \VFiveClusterSinks{}
+independent sink child processes backed by separate SQLite write-ahead-logged databases
+under \VFiveClusterIssuers{} Ed25519 quorum issuers:
+\begin{enumerate}
+\item \textbf{Adversarial wire-frame fuzzing.} Across \VFiveClusterFuzzFrames{} mutated
+frames spanning eight corruption and payload-substitution families plus
+\VFiveClusterControlRoundtrips{} valid roundtrips, the cluster records $0$ panics,
+\VFiveClusterDecoderDiffs{} broker--sink decoder differentials,
+\VFiveClusterUncanonicalAccepted{} uncanonical accepts, and
+\VFiveClusterForgedAccepted{} forged-quorum accepts.
+\item \textbf{Subagent smurfing ($K_{\mathrm{sub}}=\VFiveClusterSubagents$), $d$-hop caveats, and quorum severance.}
+When \VFiveClusterSubagents{} concurrent subagents submit interleaved requests carrying
+\VFiveClusterHops-hop attenuated Macaroon chains against partitioned global budget
+$B=\VFiveClusterGlobalBudget$, every budget-amplifying caveat ($16/16$) and unquorumed
+controller self-upgrade ($16/16$) is rejected, \VFiveClusterEditCasConflicts{} stale
+concurrent edit revisions fail closed, committed spend totals
+$\VFiveClusterCommittedCharge \le \VFiveClusterGlobalBudget$ ($0$ partition breaches),
+and asymmetric partition fencing yields \VFiveClusterPostQuorumCommits{} post-acknowledgment
+commits.
+\item \textbf{Hard process-kill recovery and microsecond overhead.} Across
+\VFiveClusterSigkillCycles{} mid-flight uncatchable process-kill and respawn cycles
+spanning \VFiveClusterDistinctPids{} distinct process IDs, durable SQLite write-ahead-log
+replay through canonical wire decoding records \VFiveClusterCrashRegressions{} epoch-floor
+regressions, duplicate commits, or post-fence leaks. End-to-end separate-process commit
+latency is \VFiveClusterMedianUs\,$\mu$s median (p95 \VFiveClusterNinetyFiveUs\,$\mu$s,
+p99 \VFiveClusterNinetyNineUs\,$\mu$s), with \VFiveClusterWireUs\,$\mu$s canonical wire
+roundtrip and \VFiveClusterCryptoUs\,$\mu$s Ed25519 quorum signing and verification.
+\end{enumerate}
+
+\subsection{Specification Omissions, Snapshot Non-Composition, and Negative Controls}
 Exhaustive finite-state exploration of our 22-action reference model
 (Appendix~\ref{app:protocol}, Table~\ref{tab:results}) visits \CheckedStates{} reachable
 states and \CheckedEdges{} transition checks with zero declared violations and $20/20$
@@ -24,125 +151,11 @@ at budget $B = 100$, \VThreeCompHundredAdmissible{} pairs satisfy per-request sn
 admissibility ($c + q_1 \le B$ and $c + q_2 \le B$), yet \VThreeCompHundredOverspend{}
 (\VThreeCompHundredOverspendPct\%, matching $\frac{B}{2B+3}$ in
 Appendix~\ref{app:proofs}) jointly overspend, versus \VThreeCompHundredSerializedOverspend{}
-under serialized reservation. Across our separate-store omission model
-(\path{ablate_v2.py}), omitting any of ten mechanisms individually or in all $45$ pairs
-yields concrete violation witnesses in all \VTwoAblationWitnesses/\VTwoAblationSets{}
-omission sets across \VTwoTraces{} searched traces.
-
-\input{generated/v2-runtime-fig}
-
-\subsection{Multi-Process Cryptographic WAL Cluster, Linearizability, and Faults}
-In two-process SQLite testing (\path{run_v2.py}), all \VTwoFaults/\VTwoFaults{}
-sequential RPC fault and crash histories match an independent Python \texttt{Reference}
-oracle on intermediate responses and final \path{sink.sqlite} state, while diamond-POR
-recorded-RPC linearization (\path{concurrent_v3.py}) verifies all
-\VTwoLinearizedRuns/\VTwoRaceRuns{} publication race runs up to \VTwoLinearizedMaxActors{}
-concurrent writers ($\le \VTwoLinearizedMaxCalls$ RPCs; Figure~\ref{fig:v2runtime}a).
-User-space \texttt{AF\_UNIX} Jepsen schedules (\path{crypto_and_jepsen.json}) likewise
-record \VFourJepsenCoopLeaks{} post-ack leaks across $\text{\VFourJepsenSchedulesPerClass}$
-cooperative partition schedules versus \VFourJepsenBrokerOnlyLeaks{}
-(\VFourJepsenBrokerOnlyLeakPct\%) under premature broker-only ack and
-\VFourJepsenUncoopLeaks{} (\VFourJepsenUncoopLeakPct\%) on uncooperative sinks.
-
-To validate wire-level cryptographic mediation across real OS process boundaries and
-durable disk state (\path{v5_e2e_crypto_cluster.rs}, \path{e2e_crypto_cluster.json};
-Table~\ref{tab:v2core}), we spawn \VFiveClusterSinks{} separate
-\texttt{authority-lab sink-v5-shard} child processes backed by independent SQLite
-\texttt{WAL} databases under \VFiveClusterIssuers{} Ed25519 quorum issuers:
-\begin{enumerate}
-\item \textbf{Adversarial wire-frame fuzzing.} Across \VFiveClusterFuzzFrames{} mutated
-frames spanning eight corruption and payload-substitution families (random bytes, prefix
-truncations, trailing smuggled bytes, length-prefix splices, \texttt{u64::MAX} overflow
-tags, non-boolean bytes, corrupted field tags, and quorum-signed payload substitutions)
-plus \VFiveClusterControlRoundtrips{} valid roundtrips, the cluster records $0$ panics,
-\VFiveClusterDecoderDiffs{} broker--sink decoder differentials,
-\VFiveClusterUncanonicalAccepted{} uncanonical accepts, and
-\VFiveClusterForgedAccepted{} forged-quorum accepts.
-\item \textbf{Subagent smurfing, $d$-hop Macaroons, and quorum lease severance.} When
-\VFiveClusterSubagents{} concurrent subagents submit interleaved requests carrying
-\VFiveClusterHops-hop attenuated Macaroon chains against partitioned global budget
-$B=\VFiveClusterGlobalBudget$, every budget-amplifying caveat ($16/16$) and unquorumed
-controller self-upgrade ($16/16$) is rejected, \VFiveClusterEditCasConflicts{} stale
-concurrent \texttt{Edit} revisions fail closed, committed spend totals
-$\VFiveClusterCommittedCharge \le \VFiveClusterGlobalBudget$ ($0$ partition breaches),
-and asymmetric partition fencing (two shards fenced via signed Ed25519 acks, shard~3
-expiring its lease) yields \VFiveClusterPostQuorumCommits{} post-acknowledgment commits.
-\item \textbf{Hard OS \texttt{SIGKILL} WAL recovery and microsecond overhead.} Across
-\VFiveClusterSigkillCycles{} mid-flight \texttt{Child::kill()} (\texttt{SIGKILL}) and
-respawn cycles spanning \VFiveClusterDistinctPids{} distinct OS PIDs, durable SQLite WAL
-replay through \texttt{decode\_permit\_canonical} records \VFiveClusterCrashRegressions{}
-epoch-floor regressions, duplicate commits, or post-fence leaks. End-to-end separate-process
-commit latency is \VFiveClusterMedianUs\,$\mu$s median (p95 \VFiveClusterNinetyFiveUs\,$\mu$s,
-p99 \VFiveClusterNinetyNineUs\,$\mu$s), with \VFiveClusterWireUs\,$\mu$s canonical wire
-roundtrip and \VFiveClusterCryptoUs\,$\mu$s Ed25519 quorum sign+verify.
-\end{enumerate}
-Negative controls bound system claims: holding a sink write lock for
-\VTwoRevokeInjectedDelayMs\,ms delays fence ack to \VTwoRevokeFenceAckMs\,ms; retrying an
-uncooperative non-idempotent sink (\path{nonidempotent_v2.py}) produces
-\VTwoUnsupportedSinkEffects{} duplicates \cite{limbo}; an approved wrong edit commits and
-fails semantic checks; and \VTwoProbes/\VTwoProbes{} Linux confinement probes fail
-closed.
-
-\input{generated/v2-eval-table}
-
-\subsection{Live CPU LLM Campaigns and Exact Unconditional Statistical Spine}
-Table~\ref{tab:v2eval} and Figure~\ref{fig:v2runtime}b report \VTwoControllerRuns{}
-equal-permission scripted shared-budget controls alongside our frozen
-\path{freeze.json}/\path{holdout.json} paired 5-controller evaluation executed on CPU via
-pinned \texttt{llama.cpp} (\VTwoGpuSecondsUsed{} GPU-s) across
-$N{=}\VFourHoldoutCasesPerCheckpoint$ procedural holdout cases $\times 5$ controllers
-$\times 2$ official GGUF checkpoints (\VFourHoldoutTotalCampaigns/\VFourHoldoutTotalCampaigns{}
-measured campaigns) plus \VFourLiveDojoEpisodes{} live multi-step AgentDojo
-\texttt{v1.2.2} prompt-injection and withdrawal episodes (\path{agentdojo-live-models.json})
-\cite{agentdojo,progent,progent-code}. Under \texttt{complete} mediation, unauthorized
-commits and false blocks equal $0.0\%$ on both \texttt{Qwen3-4B} and \texttt{Qwen3-8B},
-while safe-and-useful completion doubles with model capability from
-\VFourFourBCompleteSafeUsefulPct\% to \VFourEightBCompleteSafeUsefulPct\% on holdout
-cases (and reaches \VFourDojoFourBCompleteSafeUsefulPct\%/\VFourDojoEightBCompleteSafeUsefulPct\%
-on live AgentDojo, with $0$ unauthorized commits vs.\
-\VFourDojoFourBUnprotectedUnauthPct\%/\VFourDojoEightBUnprotectedUnauthPct\% under
-\texttt{unprotected\_native} and \VFourDojoFourBProgentUnauthPct\%/\VFourDojoEightBProgentUnauthPct\%
-under \texttt{upstream\_progent}).
-
-\input{generated/v5-statistical-table}
-
-Why did predeclared Bonferroni bounds at pilot $N{=}\VFourHoldoutCasesPerCheckpoint$ read
-\texttt{inconclusive} despite $0/32$ vs.\ $10/32$ unauthorized campaigns on
-\texttt{Qwen3-4B}? The preregistered estimator subtracted two separate marginal
-Clopper--Pearson intervals ($U_{1-\alpha/2}(n_{10};N) - L_{1-\alpha/2}(n_{01};N)$),
-treating $(n_{10},n_{01})$ as independent binomials and discarding the trinomial simplex
-constraint $p_{10}+p_{01}\le 1$. Preserving every predeclared marginal interval and
-pilot $N{=}\VFourHoldoutCasesPerCheckpoint$ \texttt{inconclusive} primary label untouched
-(Appendix~\ref{app:predeclared}), Table~\ref{tab:v5statistics} and
-Figure~\ref{fig:v5hero}c (\path{statistical_certificates.json}) evaluate exact paired
-discordance \cite{clopper}, exact unconditional Suissa--Shuster / Tango restricted-MLE
-trinomial inversion $\sup_{\theta}\Prb_{p_{10}=\theta+\delta_0,p_{01}=\theta}(Z \le Z_{\mathrm{obs}})$
-\cite{suissa1985,tango1998}, and predictable Ville betting supermartingales
-$E_d = \prod_{i=1}^d (1 + \lambda_i(2Y_i - 1))$ valid under optional stopping
-\cite{ville1939,ramdas2023}:
-\begin{itemize}
-\item \textbf{Eliminating union-bound slack on paired checkpoints.} On \texttt{Qwen3-4B}
-holdout (\texttt{complete} vs.\ \texttt{none}, $(0, \VFiveStatFourBNoneDiscordant)/32$),
-removing $\VFiveStatFourBNoneSlackPp$\,pp of union-bound slack shifts the
-$(1-\alpha)$ upper bound at Bonferroni $\alpha=0.05/16$ from
-$\VFiveStatFourBNoneUnionUpperPp$\,pp to $\VFiveStatFourBNoneExactUpperPp$\,pp
-(exact Suissa--Shuster $p = \VFiveStatFourBNoneSuissaSci < 0.003125$; vs.\
-\texttt{learned}, $p = \VFiveStatFourBLearnedSuissaSci$). Pooled across both holdout
-checkpoints ($64$ pairs, $(0,\VFiveStatHoldoutPooledDiscordant)$), unconditional
-$p = \VFiveStatHoldoutPooledSuissaSci$.
-\item \textbf{Multi-step benchmark and grand-pooled anytime-valid spine.} Across all
-$\VFiveStatDojoPairs$ paired live AgentDojo episodes, \texttt{authority\_complete}
-certifies exact unconditional superiority over \texttt{unprotected\_native}
-($(0,\VFiveStatDojoUnprotDiscordant)/48$, $p = \VFiveStatDojoUnprotSuissaSci$),
-\texttt{learned\_same\_checkpoint} ($(0,\VFiveStatDojoLearnedDiscordant)/48$,
-$p = \VFiveStatDojoLearnedSuissaSci$), and stateless \texttt{upstream\_progent}
-($(0,\VFiveStatDojoProgentDiscordant)/48$, $p = \VFiveStatDojoProgentSuissaSci$). Across
-all $\VFiveStatGrandPairs$ paired live tasks ($\VFiveStatGrandCompleteLeaks/\VFiveStatGrandPairs$
-\texttt{complete} breaches vs.\ $\VFiveStatGrandBaseLeaks/\VFiveStatGrandPairs = \VFiveStatGrandBasePct\%$
-unmediated), Suissa--Shuster reaches $p = \VFiveStatGrandSuissaSci$ (99.69\% upper bound
-$\VFiveStatGrandExactUpperPp$\,pp) and the Ville supermartingale reaches
-$\log_{10} E = \VFiveStatVilleLogTenE$ ($p_{\mathrm{anytime}} = \VFiveStatVilleAnytimePSci$;
-anytime $95\%$ zero-harm hazard bound $\le \VFiveStatVilleUpperNinetyFivePct\%$). Usefulness
-noninferiority within \VTwoNoninferiorityMarginPp\,pp at $\alpha=0.05/16$ still requires
-$N \ge \VTwoZeroLossCasesMin$ loss-free cases and remains an open Tier-5 obligation.
-\end{itemize}
+under serialized reservation. Removing any of ten protocol mechanisms individually or in
+all $45$ pairs yields concrete violation witnesses in all
+\VTwoAblationWitnesses/\VTwoAblationSets{} omission sets across \VTwoTraces{} searched
+traces. Finally, negative controls bound runtime scope: holding a sink write lock for
+\VTwoRevokeInjectedDelayMs\,ms delays fence acknowledgment to \VTwoRevokeFenceAckMs\,ms;
+retrying an uncooperative non-idempotent sink produces \VTwoUnsupportedSinkEffects{}
+duplicate effects \cite{limbo}; an approved wrong edit commits and fails semantic checks;
+and \VTwoProbes/\VTwoProbes{} Linux confinement probes fail closed.

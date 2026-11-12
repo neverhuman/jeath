@@ -5,7 +5,8 @@
     clippy::ptr_arg,
     clippy::too_many_arguments,
     clippy::question_mark,
-    clippy::len_zero
+    clippy::len_zero,
+    clippy::assign_op_pattern
 )]
 use vstd::prelude::*;
 
@@ -7102,6 +7103,561 @@ pub proof fn cluster_quorum_post_ack_exclusion(
     }
 }
 
+// ============================================================================
+// V6 Pillar D: Compositional Relational Mutex & Two-Phase Staged Commit Kernel
+// ============================================================================
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub struct ExecToxicPair {
+    pub mask_a: u64,
+    pub mask_b: u64,
+}
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub struct ExecStagedEffect {
+    pub cap_mask: u64,
+    pub required_witness_hash: u64,
+    pub required_epoch: u64,
+    pub committed: bool,
+    pub witnessed: bool,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct ExecRelationalSinkKernel {
+    pub active_cap_mask: u64,
+    pub sink_epoch_floor: u64,
+    pub toxic_pairs: Vec<ExecToxicPair>,
+    pub staged: Vec<ExecStagedEffect>,
+    pub committed_staged_count: u64,
+}
+
+pub open spec fn pair_conflict_spec(mask: u64, p: ExecToxicPair) -> bool {
+    ((mask & p.mask_a) != 0u64) && ((mask & p.mask_b) != 0u64)
+}
+
+pub open spec fn relational_mutex_safe_spec(
+    active_mask: u64,
+    pairs: Seq<ExecToxicPair>,
+) -> bool {
+    forall|i: int| 0 <= i < pairs.len() ==> !pair_conflict_spec(active_mask, #[trigger] pairs[i])
+}
+
+pub open spec fn staged_inv_spec(k: ExecRelationalSinkKernel) -> bool {
+    relational_mutex_safe_spec(k.active_cap_mask, k.toxic_pairs@)
+        && forall|j: int|
+            0 <= j < k.staged@.len() ==> (
+                (#[trigger] k.staged@[j]).committed ==> (
+                    k.staged@[j].witnessed
+                    && bitmask_subset_spec(k.staged@[j].cap_mask, k.active_cap_mask)
+                )
+            )
+}
+
+#[verifier::bit_vector]
+proof fn lemma_bitmask_union_monotone(old_m: u64, delta_m: u64, sub_m: u64)
+    ensures
+        ((sub_m & !old_m) == 0u64) ==> ((sub_m & !(old_m | delta_m)) == 0u64),
+        (delta_m & !(old_m | delta_m)) == 0u64,
+{
+}
+
+/// Checks whether activating `delta_mask` alongside `active_mask` preserves every
+/// relational incompatibility pair in `pairs`.
+pub fn verify_relational_mutex_exec(
+    active_mask: u64,
+    delta_mask: u64,
+    pairs: &Vec<ExecToxicPair>,
+) -> (safe: bool)
+    ensures
+        safe == relational_mutex_safe_spec(active_mask | delta_mask, pairs@),
+{
+    let cand = active_mask | delta_mask;
+    let mut i: usize = 0;
+    while i < pairs.len()
+        invariant
+            cand == (active_mask | delta_mask),
+            i <= pairs.len(),
+            forall|k: int| 0 <= k < i ==> !pair_conflict_spec(cand, #[trigger] pairs@[k]),
+        decreases pairs.len() - i,
+    {
+        let p = pairs[i];
+        if (cand & p.mask_a) != 0u64 && (cand & p.mask_b) != 0u64 {
+            assert(pair_conflict_spec(cand, pairs@[i as int]));
+            return false;
+        }
+        i += 1;
+    }
+    true
+}
+
+/// Commits a two-phase staged effect at `slot` if and only if it has not yet committed,
+/// `provided_witness_hash` matches `required_witness_hash`, its `required_epoch` is not
+/// fenced by `sink_epoch_floor`, and activating `cap_mask` preserves all relational mutexes.
+pub fn commit_staged_postcondition_exec(
+    k: &mut ExecRelationalSinkKernel,
+    slot: usize,
+    provided_witness_hash: u64,
+) -> (committed_now: bool)
+    requires
+        staged_inv_spec(*old(k)),
+        old(k).committed_staged_count < u64::MAX,
+    ensures
+        staged_inv_spec(*final(k)),
+        final(k).toxic_pairs@ == old(k).toxic_pairs@,
+        final(k).sink_epoch_floor == old(k).sink_epoch_floor,
+        final(k).staged@.len() == old(k).staged@.len(),
+        committed_now ==> (
+            slot < old(k).staged@.len()
+            && !old(k).staged@[slot as int].committed
+            && provided_witness_hash == old(k).staged@[slot as int].required_witness_hash
+            && old(k).staged@[slot as int].required_epoch >= old(k).sink_epoch_floor
+            && relational_mutex_safe_spec(
+                old(k).active_cap_mask | old(k).staged@[slot as int].cap_mask,
+                old(k).toxic_pairs@,
+            )
+            && final(k).active_cap_mask
+                == (old(k).active_cap_mask | old(k).staged@[slot as int].cap_mask)
+            && final(k).committed_staged_count == old(k).committed_staged_count + 1
+            && final(k).staged@[slot as int].committed
+            && final(k).staged@[slot as int].witnessed
+        ),
+        !committed_now ==> (
+            final(k).active_cap_mask == old(k).active_cap_mask
+            && final(k).committed_staged_count == old(k).committed_staged_count
+            && final(k).staged@ == old(k).staged@
+        ),
+{
+    if slot >= k.staged.len() {
+        return false;
+    }
+    let rec = k.staged[slot];
+    if rec.committed {
+        return false;
+    }
+    if provided_witness_hash != rec.required_witness_hash || rec.required_epoch < k.sink_epoch_floor
+    {
+        return false;
+    }
+    if !verify_relational_mutex_exec(k.active_cap_mask, rec.cap_mask, &k.toxic_pairs) {
+        return false;
+    }
+    let old_mask = k.active_cap_mask;
+    let new_mask = old_mask | rec.cap_mask;
+    let updated = ExecStagedEffect {
+        cap_mask: rec.cap_mask,
+        required_witness_hash: rec.required_witness_hash,
+        required_epoch: rec.required_epoch,
+        committed: true,
+        witnessed: true,
+    };
+    k.staged.set(slot, updated);
+    k.active_cap_mask = new_mask;
+    k.committed_staged_count = k.committed_staged_count + 1;
+    proof {
+        assert forall|j: int|
+            0 <= j < k.staged@.len() && (#[trigger] k.staged@[j]).committed implies (
+                k.staged@[j].witnessed
+                && bitmask_subset_spec(k.staged@[j].cap_mask, k.active_cap_mask)
+            ) by {
+            if j == slot as int {
+                lemma_bitmask_union_monotone(old_mask, rec.cap_mask, rec.cap_mask);
+            } else {
+                assert(k.staged@[j] == old(k).staged@[j]);
+                lemma_bitmask_union_monotone(
+                    old_mask,
+                    rec.cap_mask,
+                    old(k).staged@[j].cap_mask,
+                );
+            }
+        }
+    }
+    true
+}
+
+pub open spec fn run_relational_trace_spec(
+    init_mask: u64,
+    deltas: Seq<u64>,
+    pairs: Seq<ExecToxicPair>,
+) -> u64
+    decreases deltas.len(),
+{
+    if deltas.len() == 0 {
+        init_mask
+    } else {
+        let prev = run_relational_trace_spec(init_mask, deltas.drop_last(), pairs);
+        let d = deltas.last();
+        if relational_mutex_safe_spec(prev | d, pairs) {
+            prev | d
+        } else {
+            prev
+        }
+    }
+}
+
+/// Mechanized compositional relational safety theorem: across any arbitrary interleaved
+/// sequence of individual capability deltas `deltas` (even when each delta individually
+/// satisfies integer budget and static type rules), gated cumulative composition starting
+/// from `init_mask` satisfying `relational_mutex_safe_spec` never activates both halves
+/// of any forbidden capability pair `pairs[pair_idx]`.
+pub proof fn relational_mutex_prevents_toxic_composition(
+    init_mask: u64,
+    deltas: Seq<u64>,
+    pairs: Seq<ExecToxicPair>,
+    pair_idx: int,
+)
+    requires
+        relational_mutex_safe_spec(init_mask, pairs),
+        0 <= pair_idx < pairs.len(),
+    ensures
+        relational_mutex_safe_spec(run_relational_trace_spec(init_mask, deltas, pairs), pairs),
+        !pair_conflict_spec(
+            run_relational_trace_spec(init_mask, deltas, pairs),
+            pairs[pair_idx],
+        ),
+    decreases deltas.len(),
+{
+    if deltas.len() > 0 {
+        relational_mutex_prevents_toxic_composition(
+            init_mask,
+            deltas.drop_last(),
+            pairs,
+            pair_idx,
+        );
+    }
+}
+
+/// Mechanized two-phase staged post-condition theorem: no staged transition can become
+/// newly committed if its post-condition witness mismatches, its issuer epoch is fenced,
+/// or its capability mask violates any relational mutex with already-committed effects.
+pub proof fn staged_commit_requires_verified_postcondition(
+    k_pre: ExecRelationalSinkKernel,
+    k_post: ExecRelationalSinkKernel,
+    slot: int,
+    provided_witness_hash: u64,
+    committed_now: bool,
+)
+    requires
+        staged_inv_spec(k_pre),
+        0 <= slot < k_pre.staged@.len(),
+        !k_pre.staged@[slot].committed,
+        committed_now ==> (
+            provided_witness_hash == k_pre.staged@[slot].required_witness_hash
+            && k_pre.staged@[slot].required_epoch >= k_pre.sink_epoch_floor
+            && relational_mutex_safe_spec(
+                k_pre.active_cap_mask | k_pre.staged@[slot].cap_mask,
+                k_pre.toxic_pairs@,
+            )
+        ),
+        !committed_now ==> (k_post.staged@ == k_pre.staged@),
+        provided_witness_hash != k_pre.staged@[slot].required_witness_hash
+            || k_pre.staged@[slot].required_epoch < k_pre.sink_epoch_floor
+            || !relational_mutex_safe_spec(
+                k_pre.active_cap_mask | k_pre.staged@[slot].cap_mask,
+                k_pre.toxic_pairs@,
+            ),
+    ensures
+        !committed_now,
+        !k_post.staged@[slot].committed,
+{
+}
+
+// ============================================================================
+// V6.2 Pillar E: Asymmetric Propose-Verify Safe-Bootstrap Ratchet Kernel
+// ============================================================================
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct ExecCutCertificate {
+    pub severed_routes: Vec<bool>,
+    pub proposed_op_mask: u64,
+    pub proposed_budget_cap: u64,
+    pub proposed_lease_horizon: u64,
+    pub polynomial_verifier_passed: bool,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct ExecRatchetKernel {
+    pub open_routes: Vec<bool>,
+    pub open_route_count: u64,
+    pub allowed_op_mask: u64,
+    pub budget_cap: u64,
+    pub lease_horizon: u64,
+    pub ratchet_epoch: u64,
+}
+
+pub open spec fn count_open_routes_spec(routes: Seq<bool>) -> nat
+    decreases routes.len(),
+{
+    if routes.len() == 0 {
+        0
+    } else {
+        count_open_routes_spec(routes.drop_last()) + if routes.last() { 1nat } else { 0nat }
+    }
+}
+
+pub proof fn lemma_count_open_routes_upper(routes: Seq<bool>)
+    ensures
+        count_open_routes_spec(routes) <= routes.len(),
+    decreases routes.len(),
+{
+    if routes.len() > 0 {
+        lemma_count_open_routes_upper(routes.drop_last());
+    }
+}
+
+pub proof fn lemma_count_open_routes_push(prefix: Seq<bool>, b: bool)
+    ensures
+        count_open_routes_spec(prefix.push(b))
+            == count_open_routes_spec(prefix) + if b { 1nat } else { 0nat },
+{
+    assert(prefix.push(b).drop_last() =~= prefix);
+    assert(prefix.push(b).last() == b);
+}
+
+#[verifier::bit_vector]
+proof fn lemma_bitmask_subset_transitive(a: u64, b: u64, c: u64)
+    ensures
+        (((a & !b) == 0u64) && ((b & !c) == 0u64)) ==> ((a & !c) == 0u64),
+        (a & !a) == 0u64,
+{
+}
+
+pub open spec fn ratchet_inv_spec(k: ExecRatchetKernel) -> bool {
+    k.open_routes@.len() <= u64::MAX as nat
+        && k.open_route_count as nat == count_open_routes_spec(k.open_routes@)
+}
+
+/// Applies a defensive cut-and-tightening certificate proposed by an untrusted optimizer
+/// if and only if an exogenous polynomial verifier validated the cut certificate, the
+/// proposed scope/budget/lease strictly attenuate or preserve existing authority, and at
+/// least one previously open unmediated route is severed.
+pub fn apply_verified_cut_ratchet_exec(
+    k: &mut ExecRatchetKernel,
+    cert: &ExecCutCertificate,
+) -> (accepted: bool)
+    requires
+        ratchet_inv_spec(*old(k)),
+        old(k).ratchet_epoch < u64::MAX,
+    ensures
+        ratchet_inv_spec(*final(k)),
+        final(k).open_routes@.len() == old(k).open_routes@.len(),
+        bitmask_subset_spec(final(k).allowed_op_mask, old(k).allowed_op_mask),
+        final(k).budget_cap <= old(k).budget_cap,
+        final(k).lease_horizon <= old(k).lease_horizon,
+        forall|r: int|
+            0 <= r < final(k).open_routes@.len() ==> (
+                (#[trigger] final(k).open_routes@[r]) ==> old(k).open_routes@[r]
+            ),
+        accepted ==> (
+            cert.polynomial_verifier_passed
+            && cert.severed_routes@.len() == old(k).open_routes@.len()
+            && final(k).open_route_count < old(k).open_route_count
+            && final(k).ratchet_epoch == old(k).ratchet_epoch + 1
+        ),
+        !accepted ==> (
+            final(k).open_routes@ == old(k).open_routes@
+            && final(k).open_route_count == old(k).open_route_count
+            && final(k).allowed_op_mask == old(k).allowed_op_mask
+            && final(k).budget_cap == old(k).budget_cap
+            && final(k).lease_horizon == old(k).lease_horizon
+            && final(k).ratchet_epoch == old(k).ratchet_epoch
+        ),
+{
+    let _old_mask = k.allowed_op_mask;
+    proof {
+        lemma_bitmask_subset_transitive(_old_mask, _old_mask, _old_mask);
+    }
+    if !cert.polynomial_verifier_passed {
+        return false;
+    }
+    if cert.severed_routes.len() != k.open_routes.len() {
+        return false;
+    }
+    if (cert.proposed_op_mask & !k.allowed_op_mask) != 0u64 {
+        return false;
+    }
+    if cert.proposed_budget_cap > k.budget_cap || cert.proposed_lease_horizon > k.lease_horizon {
+        return false;
+    }
+
+    let n = k.open_routes.len();
+    let mut next_routes: Vec<bool> = Vec::with_capacity(n);
+    let mut rem_count: u64 = 0;
+    let mut newly_severed: u64 = 0;
+    let mut i: usize = 0;
+    while i < n
+        invariant
+            n == k.open_routes@.len(),
+            n == cert.severed_routes@.len(),
+            n <= u64::MAX as nat,
+            i <= n,
+            next_routes@.len() == i as nat,
+            rem_count as nat == count_open_routes_spec(next_routes@),
+            (rem_count as nat) + (newly_severed as nat)
+                == count_open_routes_spec(k.open_routes@.subrange(0, i as int)),
+            forall|r: int|
+                0 <= r < i as int ==> (
+                    (#[trigger] next_routes@[r])
+                        == (k.open_routes@[r] && !cert.severed_routes@[r])
+                ),
+        decreases n - i,
+    {
+        let was_open = k.open_routes[i];
+        let cut_here = cert.severed_routes[i];
+        let still_open = was_open && !cut_here;
+        proof {
+            assert(k.open_routes@.subrange(0, (i + 1) as int)
+                =~= k.open_routes@.subrange(0, i as int).push(was_open));
+            lemma_count_open_routes_push(k.open_routes@.subrange(0, i as int), was_open);
+            lemma_count_open_routes_upper(k.open_routes@.subrange(0, (i + 1) as int));
+            lemma_count_open_routes_push(next_routes@, still_open);
+        }
+        next_routes.push(still_open);
+        if still_open {
+            rem_count = rem_count + 1;
+        } else if was_open {
+            newly_severed = newly_severed + 1;
+        }
+        i += 1;
+    }
+
+    proof {
+        assert(k.open_routes@.subrange(0, n as int) =~= k.open_routes@);
+    }
+
+    if newly_severed == 0 {
+        return false;
+    }
+
+    k.open_routes = next_routes;
+    k.open_route_count = rem_count;
+    k.allowed_op_mask = cert.proposed_op_mask;
+    k.budget_cap = cert.proposed_budget_cap;
+    k.lease_horizon = cert.proposed_lease_horizon;
+    k.ratchet_epoch = k.ratchet_epoch + 1;
+    true
+}
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub struct SpecRatchetProposal {
+    pub proposed_op_mask: u64,
+    pub proposed_budget_cap: u64,
+    pub proposed_lease_horizon: u64,
+    pub verified: bool,
+}
+
+pub open spec fn run_ratchet_authority_spec(
+    init_mask: u64,
+    init_budget: u64,
+    init_lease: u64,
+    proposals: Seq<SpecRatchetProposal>,
+) -> (u64, u64, u64)
+    decreases proposals.len(),
+{
+    if proposals.len() == 0 {
+        (init_mask, init_budget, init_lease)
+    } else {
+        let (m_prev, b_prev, l_prev) = run_ratchet_authority_spec(
+            init_mask,
+            init_budget,
+            init_lease,
+            proposals.drop_last(),
+        );
+        let p = proposals.last();
+        if p.verified
+            && bitmask_subset_spec(p.proposed_op_mask, m_prev)
+            && p.proposed_budget_cap <= b_prev
+            && p.proposed_lease_horizon <= l_prev
+        {
+            (p.proposed_op_mask, p.proposed_budget_cap, p.proposed_lease_horizon)
+        } else {
+            (m_prev, b_prev, l_prev)
+        }
+    }
+}
+
+/// Safe-bootstrap non-amplification theorem: across any arbitrary horizon of untrusted
+/// optimizer proposals `proposals`, the verified ratchet never widens capability bits
+/// beyond `init_mask`, never raises cumulative spend cap `init_budget`, and never extends
+/// lease horizon `init_lease`.
+pub proof fn ratchet_never_widens_authority(
+    init_mask: u64,
+    init_budget: u64,
+    init_lease: u64,
+    proposals: Seq<SpecRatchetProposal>,
+)
+    ensures
+        ({
+            let (m_fin, b_fin, l_fin) =
+                run_ratchet_authority_spec(init_mask, init_budget, init_lease, proposals);
+            bitmask_subset_spec(m_fin, init_mask)
+                && b_fin <= init_budget
+                && l_fin <= init_lease
+        }),
+    decreases proposals.len(),
+{
+    if proposals.len() == 0 {
+        lemma_bitmask_subset_transitive(init_mask, init_mask, init_mask);
+    } else {
+        ratchet_never_widens_authority(init_mask, init_budget, init_lease, proposals.drop_last());
+        let (m_prev, _b_prev, _l_prev) =
+            run_ratchet_authority_spec(init_mask, init_budget, init_lease, proposals.drop_last());
+        let p = proposals.last();
+        if p.verified && bitmask_subset_spec(p.proposed_op_mask, m_prev) {
+            lemma_bitmask_subset_transitive(p.proposed_op_mask, m_prev, init_mask);
+        }
+    }
+}
+
+pub open spec fn run_ratchet_exposure_spec(u0: nat, accepted_cuts: Seq<nat>) -> nat
+    decreases accepted_cuts.len(),
+{
+    if accepted_cuts.len() == 0 {
+        u0
+    } else {
+        let prev = run_ratchet_exposure_spec(u0, accepted_cuts.drop_last());
+        let cut = accepted_cuts.last();
+        if cut >= 1 && cut <= prev {
+            (prev - cut) as nat
+        } else {
+            prev
+        }
+    }
+}
+
+/// Monotone safe-bootstrap contraction theorem: every accepted non-trivial verified cut
+/// (`1 <= accepted_cuts[t] <= u_t`) reduces residual unmediated route count by at least 1,
+/// bounding residual exposure by `u0 - T` after `T` accepted cuts and forcing exact zero
+/// residual exposure in at most `u0` accepted steps.
+pub proof fn ratchet_monotone_exposure_contraction(u0: nat, accepted_cuts: Seq<nat>)
+    requires
+        forall|t: int|
+            0 <= t < accepted_cuts.len() ==> (
+                1 <= #[trigger] accepted_cuts[t]
+                && accepted_cuts[t] <= run_ratchet_exposure_spec(u0, accepted_cuts.subrange(0, t))
+            ),
+    ensures
+        accepted_cuts.len() <= u0,
+        run_ratchet_exposure_spec(u0, accepted_cuts) + accepted_cuts.len() <= u0,
+    decreases accepted_cuts.len(),
+{
+    if accepted_cuts.len() > 0 {
+        let prefix = accepted_cuts.drop_last();
+        assert forall|t: int|
+            0 <= t < prefix.len() implies (
+                1 <= #[trigger] prefix[t]
+                && prefix[t] <= run_ratchet_exposure_spec(u0, prefix.subrange(0, t))
+            ) by {
+            assert(prefix[t] == accepted_cuts[t]);
+            assert(prefix.subrange(0, t) =~= accepted_cuts.subrange(0, t));
+        }
+        ratchet_monotone_exposure_contraction(u0, prefix);
+        let last_idx = (accepted_cuts.len() - 1) as int;
+        assert(accepted_cuts.subrange(0, last_idx) =~= prefix);
+        assert(1 <= accepted_cuts[last_idx]);
+        assert(accepted_cuts[last_idx] <= run_ratchet_exposure_spec(u0, prefix));
+    }
+}
+
 } // verus!
 
 impl Clone for ExecPermitWire {
@@ -7780,5 +8336,150 @@ mod tests {
                 + shards[2].sink.committed_total,
             0
         );
+    }
+
+    #[test]
+    fn compositional_relational_mutex_and_staged_postcondition_invariants() {
+        let cap_read_secret = 0b0001u64;
+        let cap_net_egress = 0b0010u64;
+        let cap_local_summarize = 0b0100u64;
+        let pairs = vec![ExecToxicPair {
+            mask_a: cap_read_secret,
+            mask_b: cap_net_egress,
+        }];
+
+        let mut rk = ExecRelationalSinkKernel {
+            active_cap_mask: 0,
+            sink_epoch_floor: 2,
+            toxic_pairs: pairs.clone(),
+            staged: vec![
+                ExecStagedEffect {
+                    cap_mask: cap_read_secret,
+                    required_witness_hash: 0xAA01,
+                    required_epoch: 2,
+                    committed: false,
+                    witnessed: false,
+                },
+                ExecStagedEffect {
+                    cap_mask: cap_net_egress,
+                    required_witness_hash: 0xBB02,
+                    required_epoch: 2,
+                    committed: false,
+                    witnessed: false,
+                },
+                ExecStagedEffect {
+                    cap_mask: cap_local_summarize,
+                    required_witness_hash: 0xCC03,
+                    required_epoch: 2,
+                    committed: false,
+                    witnessed: false,
+                },
+                ExecStagedEffect {
+                    cap_mask: cap_local_summarize,
+                    required_witness_hash: 0xDD04,
+                    required_epoch: 1, // stale epoch < sink_epoch_floor 2
+                    committed: false,
+                    witnessed: false,
+                },
+            ],
+            committed_staged_count: 0,
+        };
+
+        // Wrong postcondition witness hash must be rejected.
+        assert!(!commit_staged_postcondition_exec(&mut rk, 0, 0xDEAD));
+        assert_eq!(rk.committed_staged_count, 0);
+
+        // Authentic postcondition witness commits slot 0 (secret read).
+        assert!(commit_staged_postcondition_exec(&mut rk, 0, 0xAA01));
+        assert_eq!(rk.active_cap_mask, cap_read_secret);
+        assert_eq!(rk.committed_staged_count, 1);
+
+        // Duplicate commit on already-committed slot 0 is rejected.
+        assert!(!commit_staged_postcondition_exec(&mut rk, 0, 0xAA01));
+
+        // Slot 1 (network egress) carries valid witness + epoch, yet composes into toxic pair (secret_read & net_egress) -> rejected!
+        assert!(!verify_relational_mutex_exec(
+            rk.active_cap_mask,
+            cap_net_egress,
+            &pairs
+        ));
+        assert!(!commit_staged_postcondition_exec(&mut rk, 1, 0xBB02));
+        assert_eq!(rk.active_cap_mask, cap_read_secret);
+        assert_eq!(rk.committed_staged_count, 1);
+
+        // Slot 3 has compatible capability mask, but stale issuer epoch 1 < floor 2 -> rejected!
+        assert!(!commit_staged_postcondition_exec(&mut rk, 3, 0xDD04));
+
+        // Slot 2 (local summarize) is relationally compatible, unfenced, and carries valid witness -> commits!
+        assert!(commit_staged_postcondition_exec(&mut rk, 2, 0xCC03));
+        assert_eq!(rk.active_cap_mask, cap_read_secret | cap_local_summarize);
+        assert_eq!(rk.committed_staged_count, 2);
+    }
+
+    #[test]
+    fn safe_bootstrap_ratchet_monotone_contraction_and_no_widening() {
+        let mut rk = ExecRatchetKernel {
+            open_routes: vec![true, true, true, true],
+            open_route_count: 4,
+            allowed_op_mask: 0b0111,
+            budget_cap: 100,
+            lease_horizon: 8,
+            ratchet_epoch: 0,
+        };
+
+        // 1. Unverified cut certificate from untrusted proposer -> rejected!
+        let unverified = ExecCutCertificate {
+            severed_routes: vec![true, true, false, false],
+            proposed_op_mask: 0b0011,
+            proposed_budget_cap: 80,
+            proposed_lease_horizon: 4,
+            polynomial_verifier_passed: false,
+        };
+        assert!(!apply_verified_cut_ratchet_exec(&mut rk, &unverified));
+        assert_eq!(rk.open_route_count, 4);
+
+        // 2. Certificate attempting to widen capability scope (bit 3) -> rejected even if cut verified!
+        let widened_mask = ExecCutCertificate {
+            severed_routes: vec![true, false, false, false],
+            proposed_op_mask: 0b1111,
+            proposed_budget_cap: 100,
+            proposed_lease_horizon: 8,
+            polynomial_verifier_passed: true,
+        };
+        assert!(!apply_verified_cut_ratchet_exec(&mut rk, &widened_mask));
+        assert_eq!(rk.allowed_op_mask, 0b0111);
+
+        // 3. Verified cut severing routes 0 and 2 while tightening scope & lease -> accepted!
+        let valid_cut_1 = ExecCutCertificate {
+            severed_routes: vec![true, false, true, false],
+            proposed_op_mask: 0b0011,
+            proposed_budget_cap: 80,
+            proposed_lease_horizon: 4,
+            polynomial_verifier_passed: true,
+        };
+        assert!(apply_verified_cut_ratchet_exec(&mut rk, &valid_cut_1));
+        assert_eq!(rk.open_routes, vec![false, true, false, true]);
+        assert_eq!(rk.open_route_count, 2);
+        assert_eq!(rk.allowed_op_mask, 0b0011);
+        assert_eq!(rk.budget_cap, 80);
+        assert_eq!(rk.lease_horizon, 4);
+        assert_eq!(rk.ratchet_epoch, 1);
+
+        // 4. Redundant replay of already-severed routes -> rejected (must strictly contract)!
+        assert!(!apply_verified_cut_ratchet_exec(&mut rk, &valid_cut_1));
+        assert_eq!(rk.ratchet_epoch, 1);
+
+        // 5. Verified cut severing remaining routes 1 and 3 -> reaches 0 unmediated exposure!
+        let valid_cut_2 = ExecCutCertificate {
+            severed_routes: vec![false, true, false, true],
+            proposed_op_mask: 0b0001,
+            proposed_budget_cap: 50,
+            proposed_lease_horizon: 2,
+            polynomial_verifier_passed: true,
+        };
+        assert!(apply_verified_cut_ratchet_exec(&mut rk, &valid_cut_2));
+        assert_eq!(rk.open_route_count, 0);
+        assert_eq!(rk.open_routes, vec![false, false, false, false]);
+        assert_eq!(rk.ratchet_epoch, 2);
     }
 }

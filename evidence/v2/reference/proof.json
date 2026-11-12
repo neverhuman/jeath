@@ -2,7 +2,7 @@
   "schema_version": 3,
   "tool": "0.2026.11.02.8bf68ee",
   "archive_sha256": "f3a0119292df8855e4435da8130bee1873b0e6a60c306accf81a08ea687bba3c",
-  "core_sha256": "f9d3f964ab65f2cbc26c0340b7b56fc4248cfeb3216c1e2171bd115d940e71c9",
+  "core_sha256": "770f01483af74a36d666b71bb5aac579a9031b9cacda2f66fbbcfde2992e10a8",
   "command": [
     "cargo",
     "verus",
@@ -12,11 +12,11 @@
     "--locked"
   ],
   "returncode": 0,
-  "verified_obligations": 226,
-  "core_verified_count": 226,
-  "cargo_verified_count": 226,
+  "verified_obligations": 246,
+  "core_verified_count": 246,
+  "cargo_verified_count": 246,
   "trigger_warnings": 0,
-  "soundness_mutations_rejected": 6,
+  "soundness_mutations_rejected": 9,
   "soundness_mutations": [
     {
       "name": "timeout_refund_without_sink_authority",
@@ -51,6 +51,24 @@
     {
       "name": "partial_shard_cluster_ack_bypass",
       "target_function": "cluster_fence_acked_exec",
+      "rejected": true,
+      "returncode": 1
+    },
+    {
+      "name": "relational_mutex_toxic_pair_bypass",
+      "target_function": "verify_relational_mutex_exec",
+      "rejected": true,
+      "returncode": 1
+    },
+    {
+      "name": "staged_commit_unverified_witness_bypass",
+      "target_function": "commit_staged_postcondition_exec",
+      "rejected": true,
+      "returncode": 1
+    },
+    {
+      "name": "ratchet_accepts_unverified_certificate_widening",
+      "target_function": "apply_verified_cut_ratchet_exec",
       "rejected": true,
       "returncode": 1
     }
@@ -104,7 +122,10 @@
     "verify_delegation_chain_exec",
     "verify_self_upgrade_exec",
     "cluster_fence_acked_exec",
-    "cluster_shard_complete_exec"
+    "cluster_shard_complete_exec",
+    "verify_relational_mutex_exec",
+    "commit_staged_postcondition_exec",
+    "apply_verified_cut_ratchet_exec"
   ],
   "theorems": [
     "exposure",
@@ -142,9 +163,15 @@
     "attenuates_grant_transitive",
     "delegation_chain_no_amplification",
     "ancestor_withdrawal_severs_subtree",
-    "cluster_quorum_post_ack_exclusion"
+    "cluster_quorum_post_ack_exclusion",
+    "relational_mutex_prevents_toxic_composition",
+    "staged_commit_requires_verified_postcondition",
+    "lemma_count_open_routes_upper",
+    "lemma_count_open_routes_push",
+    "ratchet_never_widens_authority",
+    "ratchet_monotone_exposure_contraction"
   ],
-  "output": "verification results:: 226 verified, 0 errors\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.14s\n",
+  "output": "verification results:: 246 verified, 0 errors\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.14s\n",
   "trusted": [
     "Verus, SMT solver and Rust compiler",
     "JSON-to-ExecPermitWire field extraction outside Verus (binary wire encoder/decoder bijection verified in policy-core)",

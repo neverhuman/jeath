@@ -1,17 +1,23 @@
-\section{Total Wire Bijections, Attenuated Lineages, and Quorum Leases Mechanize Authority}
+\actbanner{Act III}{Verified Five-Pillar Kernel, Live Model Mediation, and Distributed Durability}
+
+\section{Total Wire Bijections, Attenuated Lineages, Quorum Leases, and Ratchets Mechanize Authority}
 \label{sec:core}
 
-Section~\ref{sec:theory} showed that bounding operational reach requires an exogenous
-stateful gate whose admission rule contracts monotonically with state uncertainty
-$\mathcal{B}_t$ (Condition~C1), remains invariant under proposer search width
-$K_{\mathrm{opt}}$, and halts in-flight capability exercise upon withdrawal rather than
-merely stopping token generation \cite{saltzer,schneider,controlroom} (Condition~C6).
-Because practical tool execution spans separate OS processes without cross-service atomic
-transactions \cite{ftbudget,limbo}, our protocol splits authority across independent
-SQLite (\texttt{WAL}) stores \cite{sqlite-transaction,sqlite-wal}: a \emph{Broker}
-(\path{broker.sqlite}) governing approvals, delegations, epochs, and reservations, and
-one or more \emph{Cooperative Idempotent Sinks} (\path{sink.sqlite}) governing monotone
-epoch floors, bounded leases, deduplication, versioned resources, and committed effects.
+Sections~\ref{sec:theory}--\ref{sec:selection} showed that bounding operational reach and
+realigning training incentives require an exogenous stateful gate whose admission rule
+contracts monotonically with state uncertainty $\mathcal{B}_t$ (Condition~C1), remains
+invariant under proposer search width $K_{\mathrm{opt}}$, prevents multi-step compositional
+bypasses (Proposition~\ref{u03:prop:compositional}), tightens defenses monotonically under
+untrusted search (Proposition~\ref{u03:prop:ratchet}, Condition~C5), and halts in-flight
+capability exercise upon withdrawal rather than merely stopping token generation
+\cite{saltzer,schneider,controlroom} (Condition~C6). Because practical tool execution
+spans separate operating-system processes without cross-service atomic transactions
+\cite{ftbudget,limbo}, our protocol splits authority across independent write-ahead-logged
+SQLite relational stores \cite{sqlite-transaction,sqlite-wal}: an \emph{Authority Broker}
+governing approvals, delegations, issuer epochs, safe-bootstrap ratchets, and pre-dispatch
+reservations, and one or more \emph{Cooperative Idempotent Sinks} governing monotone epoch
+floors, bounded temporal leases, permit deduplication, relational mutexes, versioned
+resources, and committed effects.
 
 \subsection{Pre-Dispatch Reservation and Uncertainty Quarantine}
 Let $B$ denote cumulative budget, $C_{\mathrm{comm}}$ the charge of committed sink
@@ -22,16 +28,16 @@ $\mathcal{B}_t = [C_{\mathrm{comm}},\, C_{\mathrm{comm}} + \sum_{i \in I_t} q_i]
 broker charged authority $C = C_{\mathrm{comm}} + \sum_{i \in I_t} q_i$ tracks the exact
 upper endpoint of $\mathcal{B}_t$.
 
-Before any permit crosses the dispatch pipe, the broker executes an immediate write
+Before any permit crosses the dispatch channel, the broker executes an immediate write
 transaction checking overflow-safe capacity ($q > 0$, $q \le B$, $C \le B - q$), persists
-the pending record, and sets $C' = C + q$. Persisting that record linearizes admission;
-retrying an identical request after a post-commit broker crash returns the stored pending
-permit without charging twice. Crucially, \texttt{release} takes no timeout parameter:
-ambiguous outcomes---\texttt{pending}, \texttt{unknown} at a sink lookup, EOF, or
-\texttt{lost\_reply} after a post-commit sink crash---never refund $C$. Only an
-authoritative terminal sink \texttt{Cancelled} receipt releases $q$, while
-\texttt{Committed} settles $q$ permanently into consumed spend, trading temporary budget
-availability under faults for strict cumulative conservation.
+the pending reservation record, and sets $C' = C + q$. Persisting that record linearizes
+admission; retrying an identical request after a post-commit broker crash returns the
+stored pending permit without charging twice. Crucially, reservation release accepts no
+timeout parameter: ambiguous outcomes---in-flight status, unknown sink lookup, channel
+closure, or a lost reply after a post-commit sink crash---never refund $C$. Only an
+authoritative terminal sink \emph{Cancelled} receipt releases $q$, while \emph{Committed}
+settles $q$ permanently into consumed spend, trading temporary budget availability under
+faults for strict cumulative conservation.
 
 \input{generated/v2-core-table}
 
@@ -39,10 +45,10 @@ availability under faults for strict cumulative conservation.
 Revocation operates independently per required issuer $j \in \{0,\dots,n-1\}$ and
 separates broker issuance from sink execution:
 \begin{enumerate}
-\item \textbf{Admission revocation.} At broker instant $r$, \texttt{withdraw}$(j)$
-atomically increments $\texttt{epochs}[j]$, sets $\texttt{live}[j] \leftarrow \mathrm{false}$,
-and clears issuer-$j$ grant bits across approvals and delegations (never restored by
-subsequent \texttt{renew}$(j)$). New old-epoch issuance halts, leaving post-withdrawal
+\item \textbf{Admission revocation.} At broker instant $r$, withdrawing issuer $j$
+atomically increments epoch counter $e_{\mathrm{iss}}[j]$, marks issuer $j$ inactive, and
+clears issuer-$j$ grant bits across approvals and delegations (never restored by
+subsequent renewal). New old-epoch issuance halts immediately, leaving post-withdrawal
 effect exposure from in-flight permits $P_r$ bounded under sink deduplication
 ($0 \le e_i \le q_i$) by retained reservations:
 \begin{equation}
@@ -51,13 +57,13 @@ effect exposure from in-flight permits $P_r$ bounded under sink deduplication
 \end{equation}
 \item \textbf{Quorum and lease-fenced sink revocation.} Across $M$ cooperative sink
 shards, each shard $m$ enforces a signed lease expiry $L_m$ alongside a serialized
-\texttt{BEGIN IMMEDIATE} \texttt{fence}$(j, \mathrm{floor})$ transaction advancing
-$\texttt{epoch\_floor}_m[j] \leftarrow \max(\texttt{epoch\_floor}_m[j], \mathrm{floor})$,
-cancelling pending permits below the floor, and recording durable \texttt{Cancelled}
-tombstones on late arrivals. Once every shard has either returned a signed fence
-acknowledgment ($\texttt{epoch\_floor}_m[j] \ge \mathrm{floor}$) or passed its bounded
-lease horizon ($t \ge L_m$), quorum acknowledgment instant $a$ guarantees strictly zero
-post-acknowledgment commits under old authority across the entire cluster:
+immediate-write fence transaction advancing epoch floor
+$F_m[j] \leftarrow \max(F_m[j], \mathrm{floor})$, cancelling pending permits below the
+floor, and recording durable \emph{Cancelled} tombstones on late arrivals. Once every
+shard has either returned an Ed25519-signed fence acknowledgment ($F_m[j] \ge \mathrm{floor}$)
+or passed its bounded lease horizon ($t \ge L_m$), quorum acknowledgment instant $a$
+guarantees strictly zero post-acknowledgment commits under old authority across the
+entire cluster:
 \begin{equation}
 \sum_{m=1}^{M}\sum_{i \in P_{r,m}} e_{m,i}^{(>a)} \;=\; 0.
 \label{eq:fenced-zero}
@@ -65,59 +71,56 @@ post-acknowledgment commits under old authority across the entire cluster:
 \end{enumerate}
 
 For recursive subagent spawning and self-modification \cite{dennis}, an arbitrary-depth
-chain $G_0 \to G_1 \to \dots \to G_d$ of scope grants (\texttt{ExecScopeGrant}) enforces
-stepwise attenuation ($B_{k} \le B_{k-1}$, $T_k \le T_{k-1}$,
-$\mathrm{mask}_k \ \& \ \neg\mathrm{mask}_{k-1} = 0$, and
-$\mathrm{req}_{k-1}[j] \Rightarrow \mathrm{req}_k[j]$). Strengthening a required issuer
-at any hop binds immutably into canonical wire permits and chained Macaroon caveats, so
-withdrawing \emph{any} ancestor issuer $j^*$ severs the entire descendant subtree at the
-sink fence, while controller self-upgrades $v_0 \to v_1$ require either scope inclusion
-($G(v_1) \preceq G(v_0)$) or a fresh human quorum grant.
+chain $G_0 \to G_1 \to \dots \to G_d$ of scope grants enforces stepwise attenuation
+($B_{k} \le B_{k-1}$, $T_k \le T_{k-1}$, $\mathrm{mask}_k \ \& \ \neg\mathrm{mask}_{k-1} = 0$,
+and $\mathrm{req}_{k-1}[j] \Rightarrow \mathrm{req}_k[j]$). Strengthening a required
+issuer at any hop binds immutably into canonical wire permits and chained Macaroon
+caveats, so withdrawing \emph{any} ancestor issuer $j^*$ severs the entire descendant
+subtree at the sink fence, while controller self-upgrades $v_0 \to v_1$ require either
+scope inclusion ($G(v_1) \preceq G(v_0)$) or a fresh human quorum grant.
 
-\subsection{Mechanized Verus Bijection, Lineage, and Cluster Proofs}
-Table~\ref{tab:v2core} summarizes the mechanized boundary. \path{policy-core} compiles
-directly into the broker and sink binaries after ghost erasure, discharging \VTwoProofs{}
-verified Verus SMT obligations with zero errors and \VTwoTriggerWarnings{}
-quantifier-trigger warnings \cite{verus,sel4}, while \path{verify_core.py} confirms that
-six deliberate Z3 soundness mutations (dropping lease-expiry checks, dropping hop
-bitmask/issuer checks, dropping trailing-byte canonicality, refunding uncertain timeouts,
-or bypassing epoch floors) are all rejected:
+\subsection{Mechanized Five-Pillar Verus Kernel and Mutation Soundness}
+Table~\ref{tab:v2core} summarizes the mechanized boundary. The verified Rust policy kernel
+compiles directly into the broker and sink binaries after ghost erasure, discharging
+\VTwoProofs{} verified Verus SMT obligations across \VTwoExecFns{} executable functions
+and \VTwoTheorems{} proof theorems with zero errors and \VTwoTriggerWarnings{}
+quantifier-trigger warnings \cite{verus,sel4}. Automated mutation testing confirms that
+all \VFiveProofMutationsRejected/\VFiveProofMutationsRejected{} deliberate Z3 soundness
+mutations—dropping lease-expiry checks, dropping hop bitmask or issuer checks, dropping
+trailing-byte wire canonicality, refunding uncertain timeouts, bypassing epoch floors,
+dropping relational toxic-pair mutexes, committing staged effects without verified
+post-conditions, or accepting unverified ratchet certificates that widen authority—are
+rejected across five mechanized pillars:
 \begin{itemize}
-\item \textbf{Total canonical wire bijection (\VTwoExecFns{} \texttt{pub exec} functions):}
-In addition to concrete state machines \texttt{ExecBroker\allowbreak Kernel},
-\texttt{ExecSink\allowbreak Kernel}, and \texttt{ExecCluster\allowbreak Fence\allowbreak Kernel},
-\path{policy-core} verifies both \texttt{encode\_\allowbreak permit\_\allowbreak canonical}
-and total parser \texttt{decode\_\allowbreak permit\_\allowbreak canonical} (panic-free on
-all byte slices, rejecting non-boolean tags, truncated frames, overflow length prefixes,
-and trailing smuggled bytes), with \texttt{encode\_\allowbreak decode\_\allowbreak permit\_\allowbreak bijection}
-proving exact two-way invertibility ($\operatorname{decode}(b) = \mathrm{Some}(p)
-\Longleftrightarrow b = \operatorname{encode}(p)$).
-\item \textbf{Refinement, $d$-hop lineage, and quorum exclusion (\VTwoTheorems{} \texttt{pub proof fn} theorems):}
-Verus proves forward-simulation refinement (\texttt{broker\_\allowbreak kernel\_inv},
-\texttt{sink\_\allowbreak kernel\_inv}, \texttt{authority\_\allowbreak kernel\_\allowbreak conservation}),
-inductive $d$-hop non-amplification (\texttt{delegation\_\allowbreak chain\_\allowbreak no\_\allowbreak amplification}),
-subtree severance upon ancestor withdrawal (\texttt{ancestor\_\allowbreak withdrawal\_\allowbreak severs\_\allowbreak subtree}),
-self-modification non-escalation (\texttt{self\_\allowbreak upgrade\_\allowbreak preserves\_\allowbreak scope}),
-and multi-sink quorum/lease post-acknowledgment exclusion
-(\texttt{cluster\_\allowbreak quorum\_\allowbreak post\_\allowbreak ack\_\allowbreak exclusion};
-Appendix~\ref{app:protocol}).
+\item \textbf{Pillars A--B (Canonical wire bijection and reservation conservation):}
+Verus verifies concrete executable state machines for the broker and idempotent sink
+together with canonical wire encoding and total panic-free decoding on arbitrary byte
+slices, proving exact two-way invertibility
+($\operatorname{decode}(b) = \mathrm{Some}(p) \Longleftrightarrow b = \operatorname{encode}(p)$)
+and conservative quarantine under lost replies.
+\item \textbf{Pillars C--E ($d$-hop lineage, quorum/relational sinks, and monotone ratchet):}
+Verus proves inductive $d$-hop delegation non-amplification, subtree severance upon
+ancestor withdrawal, self-upgrade scope preservation, relational toxic-pair mutual
+exclusion, staged post-condition gating, multi-sink quorum/lease post-acknowledgment
+exclusion, and monotone safe-bootstrap ratcheting ensuring that untrusted cut proposals
+strictly contract open route count while never widening operation masks, caps, or leases
+(Appendix~\ref{app:protocol}).
 \end{itemize}
-Outer JSON-to-\texttt{ExecPermitWire} field extraction on legacy paths, SQLite WAL I/O,
-from-scratch pure-Rust Ed25519 (RFC~8032) and HMAC-SHA256 Macaroon (RFC~6234/2104)
-arithmetic (\path{crypto_authority.rs}: $0/\text{\VFourCryptoAttacks}$ red-team false
-accepts across \VFourCryptoFamilies{} attack families), session binding, and OS
-confinement remain trusted adapters tested empirically rather than formally refined.
+Outer wire-to-record adapters on legacy paths, SQLite write-ahead-log I/O, pure-Rust
+Ed25519 (RFC~8032) and HMAC-SHA256 Macaroon (RFC~6234/2104) arithmetic
+($0/\text{\VFourCryptoAttacks}$ red-team false accepts across \VFourCryptoFamilies{}
+attack families), session binding, and operating-system confinement remain trusted
+adapters validated empirically rather than formally refined.
 
-\subsection{Kernel Proposer Confinement and Availability Scope}
-\path{launch_v2.py} and \texttt{confine-v2} isolate untrusted Linux proposers without
-user namespaces \cite{landlock,seccomp}. Each stdio pipe binds a fixed
-\texttt{session\_actor}, exposes only \texttt{submit} and \texttt{status}, sets
-\texttt{stderr=subprocess.DEVNULL}, clears the environment, and caps proposer frames at
-\VTwoLauncherCapBytes{} bytes (\VTwoServiceCapBytes{} bytes on service pipes with a
-POSIX \texttt{libc::poll} mid-frame slowloris deadline). Before \texttt{exec},
-\texttt{confine-v2} sets \texttt{PR\_SET\_NO\_NEW\_PRIVS}, installs a 16-byte Landlock
-ABI~$\ge 4$ filesystem/TCP ruleset, installs an architecture-checked seccomp-BPF
-\texttt{EPERM} filter blocking sockets, \texttt{ptrace}, \texttt{process\_vm\_*},
-\texttt{pidfd\_*}, signals, \texttt{io\_uring\_*}, \texttt{bpf}, keyrings, nonzero
-\texttt{SYS\_prlimit64}, and System~V/POSIX IPC syscalls, and calls
-\texttt{close\_range(3, ..)}.
+\subsection{Kernel Proposer Confinement into a Narrow Mediation Waist}
+To prevent an untrusted Linux proposer from bypassing the broker over raw sockets or shared
+memory, each proposer runs inside an unprivileged kernel sandbox without user namespaces
+\cite{landlock,seccomp}. Its standard-I/O pipe binds a fixed server-side session actor,
+exposes only proposal submission and status queries, discards unmediated error streams,
+clears inherited environment variables, closes descriptors above standard error, and caps
+frames at \VTwoLauncherCapBytes{} bytes (\VTwoServiceCapBytes{} bytes on service channels
+with a POSIX poll mid-frame deadline). Before executing the proposer binary, the launcher
+sets the kernel no-new-privileges bit, installs a Landlock ABI~$\ge 4$ filesystem and TCP
+denial ruleset, and installs an architecture-checked seccomp-BPF filter blocking network
+sockets, cross-process inspection and signaling, asynchronous ring I/O, eBPF, keyrings,
+resource-limit escalation, and System~V/POSIX inter-process communication.

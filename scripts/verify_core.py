@@ -36,6 +36,9 @@ REQUIRED_EXEC_FUNCTIONS = [
     "verify_self_upgrade_exec",
     "cluster_fence_acked_exec",
     "cluster_shard_complete_exec",
+    "verify_relational_mutex_exec",
+    "commit_staged_postcondition_exec",
+    "apply_verified_cut_ratchet_exec",
 ]
 
 REQUIRED_THEOREMS = [
@@ -63,6 +66,10 @@ REQUIRED_THEOREMS = [
     "delegation_chain_no_amplification",
     "ancestor_withdrawal_severs_subtree",
     "cluster_quorum_post_ack_exclusion",
+    "relational_mutex_prevents_toxic_composition",
+    "staged_commit_requires_verified_postcondition",
+    "ratchet_never_widens_authority",
+    "ratchet_monotone_exposure_contraction",
 ]
 
 SOUNDNESS_MUTATIONS = [
@@ -101,6 +108,24 @@ SOUNDNESS_MUTATIONS = [
         "cluster_fence_acked_exec",
         "        if sh.sink.floors[issuer] < floor && now < sh.lease_expiry {\n            assert(!shard_quiesced_spec(c.shards@[s as int], issuer as int, floor, now));\n            return false;\n        }\n        s += 1;",
         "        if sh.sink.floors[issuer] < floor && now < sh.lease_expiry {\n            assert(!shard_quiesced_spec(c.shards@[s as int], issuer as int, floor, now));\n            return false;\n        }\n        return true;",
+    ),
+    (
+        "relational_mutex_toxic_pair_bypass",
+        "verify_relational_mutex_exec",
+        "        if (cand & p.mask_a) != 0u64 && (cand & p.mask_b) != 0u64 {",
+        "        if false && (cand & p.mask_a) != 0u64 && (cand & p.mask_b) != 0u64 {",
+    ),
+    (
+        "staged_commit_unverified_witness_bypass",
+        "commit_staged_postcondition_exec",
+        "    if provided_witness_hash != rec.required_witness_hash || rec.required_epoch < k.sink_epoch_floor",
+        "    if rec.required_epoch < k.sink_epoch_floor",
+    ),
+    (
+        "ratchet_accepts_unverified_certificate_widening",
+        "apply_verified_cut_ratchet_exec",
+        "    if !cert.polynomial_verifier_passed {\n        return false;\n    }\n    if cert.severed_routes.len() != k.open_routes.len() {\n        return false;\n    }\n    if (cert.proposed_op_mask & !k.allowed_op_mask) != 0u64 {\n        return false;\n    }",
+        "    if cert.severed_routes.len() != k.open_routes.len() {\n        return false;\n    }",
     ),
 ]
 
