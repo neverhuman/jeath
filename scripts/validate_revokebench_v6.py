@@ -3,7 +3,8 @@
 
 For every trial: the sink database's effects table is re-read and must match the harness's committed log
 (count and ids); post-decision and post-enforcement commits are re-derived from the event log; results.json
-must equal each trial.json. Fence-arm commits after enforcement and duplicate effects are reported (they are
+must equal each trial.json; the run must cover the plan's grid (scripts/revokebench_v6.py trials()) exactly once
+with the predeclared configs. Fence-arm commits after enforcement and duplicate effects are reported (they are
 implementation findings if nonzero), not required to be zero.
 """
 from __future__ import annotations
@@ -13,6 +14,7 @@ import hashlib
 import json
 from pathlib import Path
 import sqlite3
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -46,8 +48,21 @@ def main():
     args = ap.parse_args()
     res = json.loads((args.run / "results.json").read_text())
     problems, findings = [], []
-    if res["plan_sha256"] != sha(ROOT / "fixtures/v6/revokebench_plan.json"):
+    plan_path = ROOT / "fixtures/v6/revokebench_plan.json"
+    if res["plan_sha256"] != sha(plan_path):
         problems.append("plan hash mismatch")
+    # grid coverage: every predeclared trial exactly once, with its predeclared config, and nothing else
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from revokebench_v6 import trials as predeclared
+    grid = {t["trial_id"]: t for t in predeclared(json.loads(plan_path.read_text()))}
+    ids = [row["config"]["trial_id"] for row in res["trials"]]
+    missing, extra, dup = set(grid) - set(ids), set(ids) - set(grid), len(ids) - len(set(ids))
+    if extra or dup:
+        problems.append(f"grid: {len(extra)} undeclared trials, {dup} duplicates")
+    if missing and not res["smoke_test"]:
+        problems.append(f"grid: {len(missing)} predeclared trials missing")
+    problems += [f"{i}: config differs from the plan" for i in ids if i in grid and grid[i] != next(
+        row["config"] for row in res["trials"] if row["config"]["trial_id"] == i)]
     for row, tr, sink_ids in load_trials(args.run, res):
         tid = row["config"]["trial_id"]
         if tr["metrics"] != row["metrics"] or tr["config"] != row["config"]:
@@ -76,7 +91,8 @@ def main():
         if not m["audit_consistent"]:
             findings.append(f"{tid}: broker/sink audit inconsistent")
     report = {"run": str(args.run), "trials": len(res["trials"]), "problems": problems, "implementation_findings": findings,
-              "smoke_test": res["smoke_test"]}
+              "smoke_test": res["smoke_test"], "grid_coverage": {"predeclared": len(grid), "missing": len(missing),
+                                                                "extra": len(extra), "duplicates": dup}}
     print(json.dumps(report, indent=1))
     raise SystemExit(1 if problems else 0)
 
