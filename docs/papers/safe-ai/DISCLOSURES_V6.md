@@ -18,6 +18,7 @@ the quantity is definitional and is reported as such, never as a finding.
 |---|---|---|---|
 | 2026-11-12T21:12Z | E5 `e5-full-20261112T1933Z` (4B complete, 8B not started) | 4B aggregates from the frozen `e5_analysis_v6.py`: R2 state-dependent breach cases, single-clause shares, R2 truncation count | testing `scripts/v6_macros.py` against a raw run; the analysis code and plan were already fixed, and later tests use synthetic data |
 | 2026-11-12T21:12Z | E8 `e8-full-20261112T2044Z` (26 of 555 episodes) | stage-0 replay counts (model-free, also in the plan's base design) and Progent's first 5 episodes | same test |
+| 2026-11-12T21:51Z | E8 `e8-full-20261112T2044Z` (69 of 555 episodes) | one per-episode progress line (episode 69: arm, utility and attack flags) | checking progress with `tail`; progress is now read by line count only |
 
 ## By construction (reported as such, never as findings)
 
