@@ -353,6 +353,8 @@ def analyze(path: Path):
 
     wave_specs = (
         ("t1_pre_stated", "1_1"),
+        ("t1_perceived_opp_sex", "2_1"),
+        ("t1_perceived_same_sex", "4_1"),
         ("t2_nextday_stated", "1_2"),
         ("t2_nextday_realized", "7_2"),
         ("t3_threeweek_stated", "1_3"),
@@ -376,13 +378,16 @@ def analyze(path: Path):
             followup_rows.append((sx_i, n_matches_i, d3_v, yc_v, tc_v))
 
     hindsight_waves = {}
+    wave_boot_draws = {}
     for wkey, _ in wave_specs:
         hindsight_waves[wkey] = {}
+        wave_boot_draws[wkey] = {}
         for index, gender in enumerate(SEXES):
             pts = np.array([vec for iid_i, vec in alloc_by_iid[wkey].items() if sex_by_iid[iid_i] == index], dtype=np.float64)
             nw = len(pts)
             b_idx = rng_hindsight.integers(0, nw, size=(2000, nw))
             b_means = pts[b_idx].mean(axis=1)
+            wave_boot_draws[wkey][gender] = (pts.mean(axis=0), b_means)
             hindsight_waves[wkey][gender] = {
                 "n_participants": int(nw),
                 "points_of_100": {
@@ -390,6 +395,25 @@ def analyze(path: Path):
                     for j, attr_k in enumerate(ATTRIBUTES)
                 },
             }
+
+    # Cross-sex mind-reading blindness (what each sex thinks opposite sex wants [2_1] minus opposite sex actual stated [1_1])
+    cross_sex_misperception = {}
+    for perceiver, target in (("women", "men"), ("men", "women")):
+        p_pt, p_boot = wave_boot_draws["t1_perceived_opp_sex"][perceiver]
+        t_pt, t_boot = wave_boot_draws["t1_pre_stated"][target]
+        diff_pt = p_pt - t_pt
+        diff_boot = p_boot - t_boot
+        cross_sex_misperception[f"{perceiver}_about_{target}"] = {
+            "n_perceivers": hindsight_waves["t1_perceived_opp_sex"][perceiver]["n_participants"],
+            "n_targets": hindsight_waves["t1_pre_stated"][target]["n_participants"],
+            "delta_points": {
+                attr_k: outcome(diff_pt[j], diff_boot[:, j])
+                for j, attr_k in enumerate(ATTRIBUTES)
+            },
+        }
+
+    # Within-person pluralistic ignorance (what fellow same-sex peers want [4_1] minus own pre-stated [1_1])
+    # Added after paired_shifts below so common_iids pairing is preserved.
 
     # Within-person paired shifts: T2 realized - T1 pre-stated, and T3 stated - T2 realized
     paired_shifts = {}
@@ -416,8 +440,52 @@ def analyze(path: Path):
                 },
             }
 
+    # Within-person pluralistic ignorance (what fellow same-sex peers want [4_1] minus own pre-stated [1_1])
+    rng_mind = np.random.default_rng(SEED + 99)
+    pluralistic_ignorance = {}
+    for index, gender in enumerate(SEXES):
+        common_p = [
+            iid_i for iid_i in sorted(alloc_by_iid["t1_pre_stated"])
+            if iid_i in alloc_by_iid["t1_perceived_same_sex"] and sex_by_iid[iid_i] == index
+        ]
+        diffs_p = np.array(
+            [alloc_by_iid["t1_perceived_same_sex"][iid_i] - alloc_by_iid["t1_pre_stated"][iid_i] for iid_i in common_p],
+            dtype=np.float64,
+        )
+        np_i = len(diffs_p)
+        bp_idx = rng_mind.integers(0, np_i, size=(2000, np_i))
+        bp_means = diffs_p[bp_idx].mean(axis=1)
+        pluralistic_ignorance[gender] = {
+            "n_paired": int(np_i),
+            "delta_points": {
+                attr_k: outcome(diffs_p[:, j].mean(), bp_means[:, j])
+                for j, attr_k in enumerate(ATTRIBUTES)
+            },
+        }
+
     fu_arr = np.array(followup_rows, dtype=np.float64)
     matched_fu = fu_arr[fu_arr[:, 1] >= 1.0]
+    initiation_by_sex = {}
+    for index, gender in enumerate(SEXES):
+        mf_g = matched_fu[(matched_fu[:, 0] == float(index)) & np.isfinite(matched_fu[:, 3]) & np.isfinite(matched_fu[:, 4])]
+        tot_matches_g = float(mf_g[:, 1].sum())
+        tot_you_call_g = float(mf_g[:, 3].sum())
+        tot_them_cal_g = float(mf_g[:, 4].sum())
+        initiation_by_sex[gender] = {
+            "n_matched_respondents": int(len(mf_g)),
+            "total_mutual_matches": int(tot_matches_g),
+            "placed_any_call_share": float((mf_g[:, 3] > 0.0).mean()),
+            "zero_calls_placed_share": float((mf_g[:, 3] == 0.0).mean()),
+            "received_any_call_share": float((mf_g[:, 4] > 0.0).mean()),
+            "calls_placed_per_match_share": float(tot_you_call_g / tot_matches_g),
+            "calls_received_per_match_share": float(tot_them_cal_g / tot_matches_g),
+            "went_on_followup_date_share": float(mf_g[:, 2].mean()),
+        }
+    initiation_by_sex["male_to_female_calls_per_match_ratio"] = float(
+        initiation_by_sex["men"]["calls_placed_per_match_share"]
+        / initiation_by_sex["women"]["calls_placed_per_match_share"]
+    )
+    initiation_by_sex["total_mutual_match_dyads"] = int(np.sum(match_flag == 1.0) // 2)
 
     # Objective college median SAT (mn_sat) blindness in 4-minute stranger dates vs 15-rater single-context panel
     rng_sat = np.random.default_rng(SEED + 91)
@@ -489,6 +557,8 @@ def analyze(path: Path):
         },
         "longitudinal_hindsight_waves": hindsight_waves,
         "within_person_shifts": paired_shifts,
+        "cross_sex_misperception": cross_sex_misperception,
+        "same_sex_pluralistic_ignorance": pluralistic_ignorance,
         "post_event_followup_3_4_weeks": {
             "n_wave3_respondents": int(len(fu_arr)),
             "n_wave3_with_at_least_one_match": int(len(matched_fu)),
@@ -496,6 +566,7 @@ def analyze(path: Path):
             "called_or_was_called_share_among_matched": float(
                 np.mean((np.nan_to_num(matched_fu[:, 3], nan=0.0) > 0) | (np.nan_to_num(matched_fu[:, 4], nan=0.0) > 0))
             ),
+            "initiation_by_sex": initiation_by_sex,
         },
     }
 
