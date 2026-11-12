@@ -619,6 +619,45 @@ def pov():
             return float(num_cell["share"] / den_cell["share"])
         return None
 
+    def _safe_pct_change(end_cell: dict | None, start_cell: dict | None) -> float | None:
+        if end_cell and start_cell and start_cell["share"] > 0.0:
+            return float(100.0 * (end_cell["share"] - start_cell["share"]) / start_cell["share"])
+        return None
+
+    def _safe_pp_diff(a_cell: dict | None, b_cell: dict | None) -> float | None:
+        if a_cell and b_cell:
+            return float(100.0 * (a_cell["share"] - b_cell["share"]))
+        return None
+
+    # Adulthood Action-Verb Calendar across 7 age brackets (18-22 to 65-79)
+    verb_brackets = ((18, 22), (23, 27), (28, 34), (35, 44), (45, 54), (55, 64), (65, 79))
+    action_verbs_spec = (
+        ("party_nightlife", "Party, clubbing, or hanging out", r"\b(party|partying|clubbing|clubs|shots|hang out|hanging out|chilling)\b"),
+        ("study_build_career", "Studying, building, or career", r"\b(studying|graduating|college|working hard|building|career|starting my own|entrepreneur)\b"),
+        ("cook_bake_hearth", "Cooking, baking, or home dinner", r"\b(cook|cooking|bake|baking|grill|grilling|making dinner|home cooked)\b"),
+        ("cuddle_affection", "Cuddling, holding hands, or affection", r"\b(cuddle|cuddling|snuggle|snuggling|holding hands|kissing|hugging|affectionate)\b"),
+        ("travel_explore", "Travel, exploring, or road trips", r"\b(travel|traveling|travelling|explore|exploring|cruises|cruising|road trip|road trips|see the world)\b"),
+        ("garden_walk_companion", "Gardening, long walks, or growing old", r"\b(garden|gardening|long walks|walking on the beach|retired|retirement|grow old|companion)\b"),
+    )
+    verb_by_bracket = {age_band(lo, hi): {} for lo, hi in verb_brackets}
+    verb_overall = {}
+    for vkey, vlabel, vpat in action_verbs_spec:
+        vhit = pc.fill_null(pc.match_substring_regex(txt_lower, vpat), False).to_numpy(zero_copy_only=False)
+        verb_overall[vkey] = {
+            "label": vlabel,
+            "Pooled": rate_cell(vhit[has_essay].sum(), has_essay.sum()),
+            "Female": rate_cell(vhit[has_essay & is_f].sum(), (has_essay & is_f).sum()),
+            "Male": rate_cell(vhit[has_essay & ~is_f].sum(), (has_essay & ~is_f).sum()),
+        }
+        for lo, hi in verb_brackets:
+            bkey = age_band(lo, hi)
+            bmask = has_essay & (age_np >= lo) & (age_np <= hi)
+            verb_by_bracket[bkey][vkey] = {
+                "Pooled": rate_cell(vhit[bmask].sum(), bmask.sum()),
+                "Female": rate_cell(vhit[bmask & is_f].sum(), (bmask & is_f).sum()),
+                "Male": rate_cell(vhit[bmask & ~is_f].sum(), (bmask & ~is_f).sum()),
+            }
+
     self_written_voice = {
         "min_trimmed_chars": 30,
         "eligible_with_essay": {
@@ -628,6 +667,28 @@ def pov():
         },
         "themes": voice_overall,
         "by_life_window": voice_by_window,
+        "action_verb_calendar": {
+            "overall": verb_overall,
+            "by_age_bracket": verb_by_bracket,
+            "lifespan_shifts_18_22_to_65_79": {
+                "female_cook_rise_ratio": _safe_ratio(
+                    verb_by_bracket["65-79"]["cook_bake_hearth"]["Female"],
+                    verb_by_bracket["18-22"]["cook_bake_hearth"]["Female"],
+                ),
+                "male_cook_rise_ratio": _safe_ratio(
+                    verb_by_bracket["65-79"]["cook_bake_hearth"]["Male"],
+                    verb_by_bracket["18-22"]["cook_bake_hearth"]["Male"],
+                ),
+                "pooled_party_drop_pct": _safe_pct_change(
+                    verb_by_bracket["65-79"]["party_nightlife"]["Pooled"],
+                    verb_by_bracket["18-22"]["party_nightlife"]["Pooled"],
+                ),
+                "male_minus_female_cuddle_65_79_pp": _safe_pp_diff(
+                    verb_by_bracket["65-79"]["cuddle_affection"]["Male"],
+                    verb_by_bracket["65-79"]["cuddle_affection"]["Female"],
+                ),
+            },
+        },
         "voice_to_checkbox_ratios": {
             "female_family_to_tall": _safe_ratio(
                 voice_overall["family_kids_home"]["Female"],
@@ -652,6 +713,53 @@ def pov():
         },
     }
 
+    # --- Second-Act Marital Re-Entry (Single vs. Divorced vs. Separated vs. Widowed at identical ages) ---
+    reentry_windows = ((25, 29), (30, 39), (40, 49), (50, 59), (60, 75))
+    reentry_statuses = ((0, "single"), (1, "divorced"), (2, "separated"), (3, "widowed"))
+    reentry_by_window = {}
+    for lo, hi in reentry_windows:
+        wkey = age_band(lo, hi)
+        in_w = (age_np >= lo) & (age_np <= hi)
+        reentry_by_window[wkey] = {
+            s_name: {
+                sex_label: summarize_trait_slice(in_w & smask & (marital_code == s_idx))
+                for sex_label, smask in (("Female", is_f), ("Male", ~is_f))
+            }
+            for s_idx, s_name in reentry_statuses
+        }
+    w40 = reentry_by_window["40-49"]
+    w30 = reentry_by_window["30-39"]
+    w60 = reentry_by_window["60-75"]
+
+    def _slice_cell(s_dict: dict | None, metric_key: str) -> dict | None:
+        return s_dict[metric_key] if s_dict else None
+
+    second_act_reentry = {
+        "by_age_window": reentry_by_window,
+        "headline_contrasts": {
+            "divorced_vs_single_female_marry_change_pct_40_49": _safe_pct_change(
+                _slice_cell(w40["divorced"]["Female"], "marry_intent"),
+                _slice_cell(w40["single"]["Female"], "marry_intent"),
+            ),
+            "divorced_minus_single_female_serious_pp_40_49": _safe_pp_diff(
+                _slice_cell(w40["divorced"]["Female"], "serious_commitment"),
+                _slice_cell(w40["single"]["Female"], "serious_commitment"),
+            ),
+            "widowed_men_minus_women_marry_pp_30_39": _safe_pp_diff(
+                _slice_cell(w30["widowed"]["Male"], "marry_intent"),
+                _slice_cell(w30["widowed"]["Female"], "marry_intent"),
+            ),
+            "widowed_men_minus_women_marry_pp_40_49": _safe_pp_diff(
+                _slice_cell(w40["widowed"]["Male"], "marry_intent"),
+                _slice_cell(w40["widowed"]["Female"], "marry_intent"),
+            ),
+            "widowed_men_minus_women_marry_pp_60_75": _safe_pp_diff(
+                _slice_cell(w60["widowed"]["Male"], "marry_intent"),
+                _slice_cell(w60["widowed"]["Female"], "marry_intent"),
+            ),
+        },
+    }
+
     return {
         "accounts": accounts, "eligible": eligible, "bands": bins, "sensitivity": sensitivity,
         "exclusions_in_order": {"age": len(table) - total(age_ok),
@@ -671,6 +779,7 @@ def pov():
         "geography": geography,
         "childless_crossover": childless_crossover,
         "self_written_voice": self_written_voice,
+        "second_act_reentry": second_act_reentry,
     }
 
 

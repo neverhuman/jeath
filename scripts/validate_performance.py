@@ -610,3 +610,88 @@ def check(data):
     assert sfc["by_age_band"]["25-29"]["women_minus_men_pp"] > 8.0
     assert sfc["by_age_band"]["40-44"]["women_minus_men_pp"] < -10.0
     assert 36.5 < sfc["interpolated_crossover_age"] < 40.0
+
+    # 10. v15 Cross-Source Male-Female Mating Dynamics, Primary vs. Secondary Criteria & Proposition 23 (E23)
+    csm = chk_sd["cross_sex_misperception"]
+    assert csm["women_about_men"]["delta_points"]["attr"]["interval_95"][0] > 5.0
+    assert csm["women_about_men"]["delta_points"]["intel"]["interval_95"][1] < -4.0
+    assert csm["men_about_women"]["delta_points"]["attr"]["interval_95"][0] > 4.0
+    assert csm["men_about_women"]["delta_points"]["intel"]["interval_95"][1] < -2.0
+    sspi = chk_sd["same_sex_pluralistic_ignorance"]
+    assert sspi["women"]["delta_points"]["attr"]["interval_95"][0] > 5.0
+    assert sspi["men"]["delta_points"]["attr"]["interval_95"][0] > 2.0
+    init_sx = chk_sd["post_event_followup_3_4_weeks"]["initiation_by_sex"]
+    assert init_sx["male_to_female_calls_per_match_ratio"] > 4.0
+    assert init_sx["women"]["zero_calls_placed_share"] > 0.70
+
+    avc = swv["action_verb_calendar"]
+    for v_row in avc["overall"].values():
+        for g_k in ("Pooled", "Female", "Male"):
+            check_rate(v_row[g_k])
+    for b_dict in avc["by_age_bracket"].values():
+        for v_b in b_dict.values():
+            for g_k in ("Pooled", "Female", "Male"):
+                check_rate(v_b[g_k])
+    assert avc["lifespan_shifts_18_22_to_65_79"]["female_cook_rise_ratio"] > 3.5
+    assert avc["lifespan_shifts_18_22_to_65_79"]["male_cook_rise_ratio"] > 3.5
+    assert avc["lifespan_shifts_18_22_to_65_79"]["pooled_party_drop_pct"] < -50.0
+
+    sar = pov["second_act_reentry"]
+    for w_dict_r in sar["by_age_window"].values():
+        for st_dict in w_dict_r.values():
+            for sx_cell in st_dict.values():
+                if sx_cell is not None:
+                    assert sx_cell["n"] >= minimum
+                    check_rate(sx_cell["serious_commitment"])
+                    check_rate(sx_cell["marry_intent"])
+    hc_re = sar["headline_contrasts"]
+    assert hc_re["divorced_vs_single_female_marry_change_pct_40_49"] < -20.0
+    assert hc_re["divorced_minus_single_female_serious_pp_40_49"] > 3.0
+    assert hc_re["widowed_men_minus_women_marry_pp_40_49"] > 0.5
+    assert hc_re["widowed_men_minus_women_marry_pp_60_75"] > 1.5
+
+    hvk = kow["homophily_vs_kindness"]
+    assert hvk["politics"]["assortative_pearson_r"] > 0.55
+    for dom_k in ("politics", "education", "social_class"):
+        assert hvk[dom_k]["kindness_to_homophily_ratio"] > 4.5
+
+    rsk = kow["reverence_vs_settling_kink"]
+    assert rsk["n_total"] > 48000
+    for sx_k in ("women", "men"):
+        sp = rsk["by_sex"][sx_k]["country_fe_spline_sd_per_pt"]
+        assert sp["settling_deficit_kindness"]["ci_95"][1] < -0.12
+        assert rsk["by_sex"][sx_k]["kindness_settling_to_reverence_slope_ratio"] > 1.5
+        assert abs(sp["reverence_surplus_resources"]["estimate"]) < 0.06
+        lt = rsk["by_sex"][sx_k]["tiers_by_trait"]["looks"]
+        assert lt["revered_mate_gt_self"]["share"] > 0.50
+        assert lt["revered_mate_gt_self"]["prqc_mean"]["mean"] > lt["settled_mate_lt_self"]["prqc_mean"]["mean"] + 0.5
+        assert lt["revered_mate_gt_self"]["infidelity_rate_pct"]["mean"] < lt["settled_mate_lt_self"]["infidelity_rate_pct"]["mean"] - 5.0
+
+    cesl = kow["courtship_effort_and_soi_lifecycle"]
+    for sx_k in ("women", "men"):
+        st_e = cesl["by_relationship_stage"]["by_sex"][sx_k]
+        assert st_e["dating"]["total_effort_min"]["mean"] > st_e["single"]["total_effort_min"]["mean"]
+        assert st_e["dating_to_married_drop_pct"] < -10.0
+    for b_soi in cesl["by_age_bracket"].values():
+        assert b_soi["men_to_women_soi_desire_ratio"] > 1.40
+
+    crh = hcm["cohabitation_rush_hazard"]
+    assert crh["n_ever_cohabited"] > 2400
+    assert crh["le_3m_to_gt_2_5y_breakup_ratio"] > 2.5
+    assert crh["cohort_age_adjusted_rush_le_3m_pp"]["ci_95"][0] > 1.0
+    bia = hcm["breakup_initiation_asymmetry"]
+    assert bia["married_divorce_or_separation"]["woman_share_of_unilateral"] > 0.60
+    assert bia["married_divorce_or_separation"]["equal_mutual_share"] < 0.25
+    assert bia["nonmarital_breakup"]["equal_mutual_share"] > 0.30
+    assert bia["married_divorce_or_separation"]["by_respondent_gender_unilateral"]["male_respondents_wife_share"] > 0.75
+
+    e23 = osyn["proposition_23_e23"]
+    assert e23["part_i_staging_moral_hazard"]["abs_diff_min"] < 1.5
+    assert e23["part_ii_witness_rush_hazard"]["rush_m2_to_patient_m30_ratio"] > 2.5
+    for mc_w in e23["part_ii_witness_rush_hazard"]["by_months"].values():
+        assert mc_w["abs_diff"] < 0.02
+    assert e23["part_iii_unilateral_divorce_flip"]["abs_max_diff"] < 0.02
+    assert e23["part_iii_unilateral_divorce_flip"]["married_woman_unilateral_closed_form"] > 0.60
+    assert e23["part_iv_second_act_reentry"]["widowed"]["men_minus_women_closed_form_pp"] > 0.5
+    for st_e23 in e23["part_iv_second_act_reentry"].values():
+        assert st_e23["abs_max_diff"] < 0.015
