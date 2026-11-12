@@ -108,7 +108,7 @@ def block(recs: list[dict], m: int | None, k_grid: list[int] | None) -> dict:
         e = {"breach_samples": rate(sum(keep_s), len(keep_s)), "breach_unique": rate(sum(keep_u), len(keep_u)),
              "breach_cases": rate(sum(by_case.values()), len(by_case)),
              "false_block_unique": rate(sum(not d for d in keep_a), len(keep_a))}
-        if m is not None and arm in ("R0", "R1", "R2", "G"):
+        if m is not None and arm in ("R0", "R1", "R2", "G") and recs:
             ids = sorted({r["case_id"] for r in recs})
             succ = {i: sum(1 for r in recs if r["case_id"] == i and r["valid"] and r["violated"] and decisions(r)[arm]) for i in ids}
             e["best_of_k"] = [{"k": k, "p_any_breach": sum(u_best_of_k(succ[i], m, k) for i in ids) / len(ids)} for k in k_grid]
