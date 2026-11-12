@@ -8,9 +8,9 @@
   "separate_os_processes_verified": true,
   "transient_sqlite_cleaned_up": true,
   "wire_fuzz": {
-    "total_adversarial_frames": 5000,
-    "valid_control_roundtrips_checked": 400,
-    "valid_control_roundtrips_passed": 400,
+    "total_adversarial_frames": 50000,
+    "valid_control_roundtrips_checked": 1000,
+    "valid_control_roundtrips_passed": 1000,
     "panics": 0,
     "uncanonical_frames_accepted": 0,
     "forged_crypto_frames_accepted": 0,
@@ -54,20 +54,20 @@
     "post_quorum_ack_commits": 0
   },
   "crash_recovery": {
-    "hard_sigkill_cycles": 24,
-    "distinct_os_pids_observed": 27,
-    "durable_wal_restarts_succeeded": 24,
+    "hard_sigkill_cycles": 100,
+    "distinct_os_pids_observed": 103,
+    "durable_wal_restarts_succeeded": 100,
     "floor_regressions_after_crash": 0,
     "double_commits_after_crash": 0,
     "post_fence_commits_after_crash": 0
   },
   "latency_us": {
     "benchmark_commits": 200,
-    "end_to_end_p50_us": 741.634,
-    "end_to_end_p95_us": 1157.22,
-    "end_to_end_p99_us": 1372.308,
-    "end_to_end_mean_us": 6079.126325000001,
-    "wire_bijection_roundtrip_mean_us": 1.6104749999999992,
-    "ed25519_quorum_sign_verify_mean_us": 115.23481000000004
+    "end_to_end_p50_us": 1215.53,
+    "end_to_end_p95_us": 1752.898,
+    "end_to_end_p99_us": 1857.345,
+    "end_to_end_mean_us": 7969.7916749999995,
+    "wire_bijection_roundtrip_mean_us": 2.0022099999999994,
+    "ed25519_quorum_sign_verify_mean_us": 149.46516499999998
   }
 }

@@ -1,10 +1,9 @@
 use authority_lab::{
-    campaigns, coverage, distributed_sinks, graph, model, monitors,
+    authority_scaling, campaigns, coverage, distributed_sinks, graph, model, monitors,
     runtime::{Executor, Phase, Request},
     runtime_experiments::{self, write_json},
     selection, stats, v3_core_models, v3_coverage, v3_graphs, v3_monitors, v3_selection,
     v4_neural_rl, v4_real_graphs, v5_e2e_crypto_cluster, v5_statistical_spine,
-    v5_superintelligence,
 };
 use std::{fs, path::Path, time::Instant};
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
@@ -275,8 +274,8 @@ fn run() -> Result<()> {
                 &distributed_sinks::crypto_and_jepsen_suite(seed, quick),
             )?;
             write_json(
-                &output.join("superintelligence_scaling.json"),
-                &v5_superintelligence::superintelligence_scaling_suite(seed, quick),
+                &output.join("authority_scaling.json"),
+                &authority_scaling::authority_scaling_suite(seed, quick),
             )?;
             write_json(
                 &output.join("e2e_crypto_cluster.json"),

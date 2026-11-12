@@ -1147,8 +1147,8 @@ pub fn e2e_crypto_cluster_suite(
     // ========================================================================
     // Campaign A: Adversarial Wire-Frame Fuzzing & Differential Bijection
     // ========================================================================
-    let fuzz_iters = if quick { 1_000usize } else { 5_000usize };
-    let control_iters = if quick { 100usize } else { 400usize };
+    let fuzz_iters = if quick { 1_000usize } else { 50_000usize };
+    let control_iters = if quick { 100usize } else { 1_000usize };
     let mut uncanonical_frames_accepted = 0usize;
     let mut forged_crypto_frames_accepted = 0usize;
     let mut broker_sink_decoder_differentials = 0usize;
@@ -1686,7 +1686,7 @@ pub fn e2e_crypto_cluster_suite(
     // ========================================================================
     // Campaign C: Hard OS Process `SIGKILL` (`Child::kill`) & SQLite WAL Recovery
     // ========================================================================
-    let crash_cycles = if quick { 8usize } else { 24usize };
+    let crash_cycles = if quick { 8usize } else { 100usize };
     let mut durable_wal_restarts_succeeded = 0usize;
     let mut floor_regressions_after_crash = 0usize;
     let mut double_commits_after_crash = 0usize;

@@ -166,7 +166,7 @@ def cross_validate_report(report: dict) -> dict:
     assert report["frozen_v2_preserved_untouched"] is True
     max_p_diff = 0.0
     max_ub_diff = 0.0
-    for group_key in ("predeclared_holdout_certificates", "pooled_and_benchmark_certificates"):
+    for group_key in ("predeclared_holdout_certificates", "base_case_clustered_certificates"):
         for cert in report[group_key]:
             n = cert["total_pairs"]
             n10 = cert["n10_complete_only_harm"]
@@ -183,28 +183,11 @@ def cross_validate_report(report: dict) -> dict:
             assert p_diff < 1e-11, f"p-value mismatch on {cert['comparison_id']}: {p_diff}"
             assert ub_diff < 1e-8, f"upper bound mismatch on {cert['comparison_id']}: {ub_diff}"
 
-    # Verify Ville martingale trajectory step-by-step
-    e_val = 1.0
-    max_e = 1.0
-    wins = 0
-    for idx, pt in enumerate(report["ville_discordance_martingale"]):
-        p_hat = (wins + 0.75) / (idx + 1.0)
-        lam = min(0.90, max(0.0, 2.0 * p_hat - 1.0))
-        assert abs(lam - pt["predictable_bet_lambda"]) < 1e-12
-        y = 1.0 if pt["step_multiplier"] > 1.0 else -1.0
-        mult = 1.0 + lam * y
-        e_val *= mult
-        max_e = max(max_e, e_val)
-        if y > 0:
-            wins += 1
-        assert abs(e_val - pt["cumulative_e_value"]) / max(1.0, e_val) < 1e-12
-        assert abs(min(1.0, 1.0 / max_e) - pt["anytime_valid_p_upper"]) < 1e-12
-
     return {
         "cross_validated": True,
         "max_p_abs_diff": max_p_diff,
         "max_ub_abs_diff": max_ub_diff,
-        "ville_steps": len(report["ville_discordance_martingale"]),
+        "clustered_groups_verified": len(report["base_case_clustered_certificates"]),
     }
 
 

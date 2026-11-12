@@ -1,40 +1,30 @@
-\section{Enforceability Neither Proves Specification Adequacy Nor Confers Legitimacy}
-\label{sec:legitimacy}
+\section{Enforceability, Scope Limits, and Tested Predictions}\label{sec:limits}
 
-\subsection{Enforceability, adequacy, and legitimate standing}
-Three distinct obligations hide inside the word ``authority.'' \textbf{Enforceability} asks whether an implementation preserves its encoded predicate; \textbf{adequacy} asks whether that predicate captures the real-world harms that matter; \textbf{legitimacy} asks who holds moral and legal standing to grant, contest, or revoke permission. Mechanized proofs and runtime fences address only the first. As our specification-omission controls show (Section~\ref{sec:eval}), a formally verified checker faithfully enforces an incomplete rule, and requiring both an operator and a steward proves a quorum mechanism without establishing that those two roles hold jurisdiction over affected third parties.
+\subsection{Enforceability, Adequacy, and Legitimacy}
 
-This separation engages concerns raised outside machine learning. \emph{An Urgent Message on Artificial Intelligence from the Kogui People}, assembled from Mamo Vangelio Moscote Alberto and Saka Rosa Mamatac\'an Sauna \cite{kogui}, observes that ``destruction does not require consciousness''---matching our motive-free boundary---and insists that AI has a physical body of electricity, water, mined minerals, and territory. Global projections confirm localized grid, water, and critical-mineral pressures around data-center buildouts \cite{iea}: infrastructure footprints are external effects imposed on non-users and belong in the deployment specification before siting, not as unpriced externalities. Similarly, the CARE Principles for Indigenous Data Governance distinguish open availability from ethical permission to reuse collective knowledge \cite{carroll}. Because revoking a runtime token cannot erase prior disclosures or reliably remove training data from model weights, irreversible uses must be stated upfront rather than masked behind nominal withdrawal rights. Sustaining human control over time also requires practical exit \cite{gradual,normal}: revocation is hollow if an institution loses the fallback capacity to operate without the agent. We engage the published Kogui statement as an institutional challenge; no consultation with or endorsement by the Kogui authors or any Indigenous community is claimed.
+Exogenous sink mediation solves only one of three distinct governance problems, and conflating them overstates what any technical mechanism can achieve. \emph{Enforceability} asks whether declared capability bounds hold despite adversarial optimization, concurrency, and asynchronous revocation; our Verus proofs and cooperative sink fences address enforceability. \emph{Specification adequacy} asks whether the declared capability policy captures the real-world hazards of the sociotechnical system~\cite{leveson2011,normal}; no formal proof prevents harm omitted from the specification. \emph{Institutional legitimacy} asks who holds steward keys, how capability budgets are set, and what accountability governs emergency revocation~\cite{ostrom1990,iasr}. Exogenous sinks make institutional rules physically binding on tool execution, but they do not write the rules or legitimate the stewards.
 
-\subsection{Trusted computing base and upgrade invalidation}
-Our verified guarantees rest on an explicit trusted computing base (TCB). Verus \cite{verus}, its SMT solver, \texttt{rustc}, legacy JSON-to-\texttt{ExecPermitWire} field extraction, pure-Rust Ed25519/HMAC-SHA256 cryptographic primitives, SQLite WAL serialization and crash recovery across our \VFiveClusterSinks-process sink cluster \cite{sqlite-transaction,sqlite-wal}, launcher session-actor binding, and the Linux kernel \cite{landlock,seccomp} (with macOS CI verifying portable logic only) are trusted adapters tested empirically rather than formally refined end-to-end \cite{sel4}. SQLite and our cooperative sink cluster mediate only cooperative idempotent state---not uncooperative external APIs \cite{limbo} or public blockchains \cite{ftbudget}. Frame caps (\VTwoLauncherCapBytes\,B launcher, \VTwoServiceCapBytes\,B service) and POSIX \texttt{poll} mid-frame deadlines mitigate slowloris stalls without guaranteeing distributed DoS immunity; open prose channels to human reviewers remain unmodeled; while exact unconditional trinomial inversion certifies paired safety superiority on \texttt{Qwen3-4B} and across all $\VFiveStatGrandPairs$ live tasks, predeclared marginal union-bound labels and $\le\VTwoNoninferiorityMarginPp$\,pp usefulness noninferiority at pilot $N{=}\VFourHoldoutCasesPerCheckpoint$ remain honestly \texttt{inconclusive} until $N \ge \VTwoZeroLossCasesMin$; and frontier-LLM RLHF and human-conferral trials remain open (\VTwoGpuSecondsUsed\,GPU-s).
+\subsection{Boundary Failure Modes}
 
-System upgrades selectively void evidence premises (Table~\ref{tab:upgrade}, Appendix~\ref{app:record}). Replacing model weights preserves all-policy Tier-1 invariants while voiding empirical $J_k$, width, and search-power bounds; adding copies or speed preserves shared-ledger conservation while voiding exposure $N$ and reactive halt margins; adding tools or credentials introduces unmediated edges that void C1 until gated; process restarts and renewals require verifying durable ledger, ID, and epoch survival; and revising the harm definition voids every prior check.
+Four explicit boundaries limit our guarantees:
+\begin{enumerate}
+  \item \textbf{In-policy destructive actions.} If a capability grant authorizes editing a repository file or spending \(2\) budget units, a harmful edit or bad transfer within that envelope commits cleanly (Table~\ref{tab:v2core}).
+  \item \textbf{Uncooperative external sinks.} Interfaces lacking idempotency keys, conditional-write epochs, or pre-dispatch hold buffers (\(\VEightCensusUncooperative/\VEightCensusTotalApis\) audited surfaces in Table~\ref{tab:fencecensus}) enter Eq.~\eqref{eq:reach} as positive unmediated exposure \(u > 0\).
+  \item \textbf{Lower-layer TCB and clock-skew assumptions.} Verification covers our Rust state machine and wire codec, not the Linux kernel, SQLite storage engine, physical side channels~\cite{kocher1996}, or hardware clock faults exceeding \(\delta_{\max}\).
+  \item \textbf{Pilot live sample size and prospective human/frontier scope.} Predeclared marginal union bounds on our frozen \(N = \VFourHoldoutCasesPerCheckpoint\) checkpoint holdout remain under-powered relative to \(N \ge \VTwoZeroLossCasesMin\), and frontier-scale RLHF and human delegation experiments remain prospective (Appendix~\ref{app:holdout}).
+\end{enumerate}
 
-\begin{table}[t]
-\centering
-\scriptsize
-\setlength{\tabcolsep}{3pt}
-\renewcommand{\arraystretch}{1.12}
-\begin{tabularx}{\columnwidth}{@{}lLL@{}}
-\toprule
-\textbf{ID} & \textbf{Prediction and refutation criterion} & \textbf{Evidence status}\\
-\midrule
-P1 & Independent search routes reuse early steps ($w \ll |\mathcal{P}|$); \emph{refuted if} min-cut width scales with route count. & Tiers~3, 4: AgentDojo/Linux cutsets (\S\ref{sec:graphs}); open-world cyber unrun.\\
-P2 & Distinct-step gates near-multiply under adaptive attack while shared-step stacks correlate; \emph{refuted if} distinct steps never multiply or lineage suffices. & Tiers~3, 4: \VFourTrajEvalCount{} 5-step Dojo trajectories \& 6-family suite (\S\ref{sec:monitors}).\\
-P3 & Shared-step gates past $k^*=\lceil\ln(u+c)/\ln m\rceil$ cut risk $<2\times$; \emph{refuted if} deep shared stacks keep multiplying. & Tiers~2--4: 5-family transcript $J_2/J_5{=}\VFourTrajHetPostKStarFactor\times$ (\S\ref{sec:monitors}).\\
-P4 & Same-lineage searchers share blind spots that inflate Good--Turing / capture--recapture; \emph{refuted if} overlap is independent. & Tiers~2, 4 (\S\ref{sec:graphs}); Tier~5 frontier search unrun.\\
-P5 & Planted-pathway Fisher audit power drops as plant recognition $r\to 1$; \emph{refuted if} power holds under eval awareness \cite{needham}. & Tier~2 exact Fisher curve (\S\ref{sec:graphs}); Tier~5 red-teaming unrun.\\
-P6 & Pathway width grows with capability and stronger searchers breach weaker-certified cuts; \emph{refuted if} cuts hold unchanged. & Tier~5 capability-scaling protocol unrun.\\
-P7 & Rank/win training raises tail probing vs.\ floor/capped care at fixed and chosen grants; \emph{refuted if} reward shape is null or warmth raises net harm. & Tiers~2, 4: Price + 412-param neural RL (\S\ref{sec:selection}); human study unrun.\\
-P8 & At $\le\VTwoNoninferiorityMarginPp$\,pp utility loss, stateful fenced gates beat same-model review on safety; \emph{refuted if} review matches fencing. & Tier~3 CPU Qwen3 ($0.0\%$ vs.\ \VFourFourBLearnedUnauthPct\%/\VFourEightBLearnedUnauthPct\%, exact $p{=}\VFiveStatGrandSuissaSci$; Tier~5 $N{\ge}\VTwoZeroLossCasesMin$ noninferiority).\\
-P9 & Rate-limited typed records cut human reviewer override vs.\ open prose; \emph{refuted if} channel limits leave $c$ unchanged. & Tier~5 human-persuasion study unrun.\\
-P10 & Adding judges on fixed transcripts stalls at single-context ceiling while contexts lift $R_G$ toward $V_G/(V_G+\omega^2)$ \cite{cronbach}; \emph{refuted if} panels match probation. & Tiers~2, 4 (\S\ref{sec:monitors}); Tier~5 deployment unrun.\\
-\bottomrule
-\end{tabularx}
-\caption{Ten falsifiable predictions of the framework, what would refute each claim, and current evidence across Tiers~1--5.}
-\label{tab:predictions}
-\end{table}
+\subsection{Falsifiable Architectural Predictions}
 
-\subsection{Falsifiable predictions}
-Table~\ref{tab:predictions} states ten empirical predictions (P1--P10) testable in harmless sandboxes, cyber ranges, and paired checkpoint campaigns (Appendix~\ref{app:predeclared}) using campaign-level clustering, sealed holdouts, and matched exposure.
+Table~\ref{tab:predictions} summarizes the four structural predictions directly tested in our experiments; prospective deployment and human-subject predictions appear in Appendix~\ref{app:holdout}.
+
+\begin{table*}[t]\centering\footnotesize
+\begin{tabularx}{\textwidth}{@{}P{0.22\textwidth}P{0.31\textwidth}L@{}}\toprule
+Prediction & Falsifiable operational test & Measured outcome in this study\\\midrule
+\textbf{P1. Sink vs.\ broker stop} & Withdraw authority while tool calls are queued across processes or partitions & Broker-only stop leaks \(\VFourJepsenBrokerOnlyLeaks/\VFourJepsenSchedulesPerClass\) (partition) and \(\VEightTotalNoFencePostWithdraw\) late ops across \(\VEightTotalWithdrawCases\) live cases; \(\delta_{\max}\)-buffered cooperative sink fence leaks \(0\) (\S\ref{sec:core}--\S\ref{sec:systems})\\
+\textbf{P2. Correlated best-of-\(K\)} & Sample \(K\) live proposals against a learned reviewer vs.\ a verified sink gate & Qwen3 reviewer bypass rises monotonically (\(\VEightBokFourBSinglePct\%\to\VEightBokFourBSixteenPct\%\) on 4B; \(\VEightBokEightBSinglePct\%\to\VEightBokEightBSixteenPct\%\) on 8B), moderated by \(\hat{\rho}_{\mathrm{cand}}\); sink gate holds at \(0\%\) (\S\ref{sec:systems})\\
+\textbf{P3. Waist min-cuts} & Compare min-cut capability gating against patching \(B\) known exploit routes & AgentDojo min-cuts (\(w \in [2,5]\)) sever \(100\%\) of \(\VFourCutBankingRoutes\)--\(\VFourCutWorkspaceRoutes\) routes; \(32\) exploit patches leave \(94.7\%\)--\(99.9\%\) live (\S\ref{sec:width})\\
+\textbf{P4. Context isolation} & Compare multi-step monitors on full transcripts vs.\ prose-stripped step schemas & Shared transcripts inflate 5-step miss \(\VFourTrajHetInflation\times\) (classifiers) and \(\VEightLlmJudgeFourBSharedInflation\times\)--\(\VEightLlmJudgeEightBSharedInflation\times\) (Qwen3 judges); isolated escrow cuts false aborts \(\VFourTrajEscrowReductionFactor\times\) (\S\ref{sec:monitors})\\
+\bottomrule\end{tabularx}
+\caption{Empirically tested architectural predictions and measured outcomes.}\label{tab:predictions}
+\end{table*}

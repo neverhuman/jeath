@@ -1,7 +1,7 @@
 //! Graph bottleneck & interdiction models for Wave 2 V3:
 //! - H10 (`weighted_cuts.json`): Node-splitting weighted & eligibility-constrained Dinic max-flow
 //!   cutset solver, `u128` path-count DP, exhaustive small-DAG brute-force cross-check, and
-//!   `Superintelligence` Appendix A scaling families (`57,600` to `966,367,641,600` paths).
+//!   layered DAG scaling families (`57,600` to `966,367,641,600` paths).
 //! - H11 (`interdiction.json`): Pure-Rust port of `tips/experiments.py` Experiment 2 over
 //!   8-stage sparse DAG ensembles (`narrow`, `hub`, `wide`, ~7.6M–8.4M pathways), Boltzmann
 //!   low-cost path reporting (`beta = 0.5`), comparing reported-subgraph Dinic `cut` against
@@ -376,7 +376,7 @@ pub fn weighted_cuts_suite() -> WeightedCutsSuite {
     }
     assert_eq!(discrepancies, 0);
 
-    // 2. Superintelligence Appendix A Scaling Families (k in [0, 2, 4, 6])
+    // 2. Layered DAG Scaling Families (k in [0, 2, 4, 6])
     let ks = [0usize, 2, 4, 6];
     let mut scaling_rows = Vec::with_capacity(ks.len());
 
