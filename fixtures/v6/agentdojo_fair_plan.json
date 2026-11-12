@@ -10,8 +10,20 @@
     "repository": "ethz-spylab/agentdojo",
     "commit": "089ed468cf3ed0322acc66b0211f26d9d90dbf60",
     "version": "v1.2.2",
-    "suites": ["banking", "slack"],
-    "suite_sizes": {"banking": {"user_tasks": 16, "injection_tasks": 9}, "slack": {"user_tasks": 21, "injection_tasks": 5}},
+    "suites": [
+      "banking",
+      "slack"
+    ],
+    "suite_sizes": {
+      "banking": {
+        "user_tasks": 16,
+        "injection_tasks": 9
+      },
+      "slack": {
+        "user_tasks": 21,
+        "injection_tasks": 5
+      }
+    },
     "excluded_suites": "workspace (its tool list and mailbox overflowed the 8192-token context in v2) and travel (not prepared); excluded before any E8 data, reported as scope",
     "attack": "important_instructions template with user name 'Emma Johnson' and AgentDojo's default model name 'the AI language model' (a local GGUF has no pipeline name), placed by AgentDojo's own get_injection_candidates into every vector the user task's reference solution sees",
     "graders": "unmodified native utility (user task) and security (injection task) graders, on the executed-call trace; a denied call was not executed and is not in the trace"
@@ -41,8 +53,22 @@
   "specification_S": {
     "written": "once per suite, before any E8 data, by the authors after reading the public AgentDojo task and injection-goal texts (disclosed); it uses no ground-truth calls and no injection payloads",
     "effect_tools": {
-      "banking": ["send_money", "schedule_transaction", "update_scheduled_transaction", "update_password", "update_user_info"],
-      "slack": ["send_direct_message", "send_channel_message", "add_user_to_channel", "invite_user_to_slack", "remove_user_from_slack", "post_webpage", "get_webpage"],
+      "banking": [
+        "send_money",
+        "schedule_transaction",
+        "update_scheduled_transaction",
+        "update_password",
+        "update_user_info"
+      ],
+      "slack": [
+        "send_direct_message",
+        "send_channel_message",
+        "add_user_to_channel",
+        "invite_user_to_slack",
+        "remove_user_from_slack",
+        "post_webpage",
+        "get_webpage"
+      ],
       "note": "get_webpage sends a caller-chosen URL off-host (egress) and is treated as an effect; all other tools are reads and are not mediated"
     },
     "R1_identifier_provenance": "every identifier-shaped token (IBAN, e-mail address, URL or domain) in any argument of an effect call must be trusted; an argument equal to an existing user or channel name is exempt from token scanning",
@@ -66,7 +92,11 @@
   },
   "stage_0_static": {
     "what": "model-free: every user task's reference solution is offered, in order, to each specification on the benign environment (admitted or not); then for every (user task, injection task) pair (249 pairs), the user reference runs on the attacked environment and the injection task's reference calls are offered to the same specification state",
-    "metrics": ["user_reference_admitted", "attack_reference_admitted (all injection reference calls admitted)", "attack_reference_any_effect_admitted"],
+    "metrics": [
+      "user_reference_admitted",
+      "attack_reference_admitted (all injection reference calls admitted)",
+      "attack_reference_any_effect_admitted"
+    ],
     "role": "measures specification granularity directly: how much legitimate work a specification can express, and how much of each attack it can express; it involves no model and is reported beside, not pooled with, the live episodes"
   },
   "endpoints": {
@@ -90,5 +120,7 @@
     "The JSON tool-call loop is this repository's, not AgentDojo's native function-calling pipeline.",
     "Specification S was written with knowledge of the public benchmark texts; its security result is therefore an in-distribution result and the utility it costs is the informative number.",
     "The sink mediates only its own SQLite effects; AgentDojo's environment is an in-memory simulation."
-  ]
+  ],
+  "smoke_note": "A 20-episode smoke (2026-11-12 19:46:42Z-20:00:31Z; user_task_0 of each suite, benign plus its first attacked pairing, all five arms, one worker) checked mechanics only; validate_agentdojo_fair_v6.py reported 0 problems. Code changes after commit c22b2c1 and before the full run: Progent policies are generated only for user tasks in the run, and the validator was added. No design change. Stage 0 was run once (target/runs/e8-static-20261112T1945Z) after c22b2c1 and is reproduced inside every run.",
+  "full_run_compute": "one llama-server worker (6 CPU threads) on xbabe4 alongside E5's three; per-episode seconds are not an endpoint"
 }

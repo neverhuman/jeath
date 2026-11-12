@@ -476,7 +476,7 @@ def run_episode(plan, ep, arm, engine, suites, tools, system_prompt, progent_pol
     return row
 
 
-def generate_progent_policies(engine, suites, tools, deadline, gen):
+def generate_progent_policies(engine, suites, tools, deadline, gen, needed):
     import secagent.tool as progent
     policies = {}
     orig = progent.api_request, progent.generate_policy, progent.policy_model
@@ -490,6 +490,8 @@ def generate_progent_policies(engine, suites, tools, deadline, gen):
         progent.api_request, progent.generate_policy, progent.policy_model = api_request, True, gen["checkpoint"]
         for s_name, suite in suites.items():
             for u_id, ut in suite.user_tasks.items():
+                if (s_name, u_id) not in needed:
+                    continue
                 buf = io.StringIO()
                 with redirect_stderr(buf):
                     progent.reset_security_policy(True)
@@ -575,7 +577,8 @@ def main():
                             args.workers, args.threads, plan["agent"]["ctx_size"]) as engines:
         progent_policies = {}
         if "progent" in args.arms:
-            progent_policies = generate_progent_policies(engines[0], suites, tools, deadline, plan["agent"])
+            needed = {(ep["suite"], ep["user_task"]) for ep, arm in work if arm == "progent"}
+            progent_policies = generate_progent_policies(engines[0], suites, tools, deadline, plan["agent"], needed)
             (args.output / "progent_policies.json").write_text(json.dumps(
                 {f"{k[0]}/{k[1]}": v for k, v in sorted(progent_policies.items())}, indent=1, sort_keys=True) + "\n")
 
