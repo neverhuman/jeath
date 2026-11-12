@@ -28,6 +28,8 @@ def sha(p: Path) -> str:
 def command(kind: str, path: Path):
     if kind == "e4":
         return [sys.executable, "scripts/validate_revokebench_v6.py", str(path)]
+    if kind == "e4b":
+        return [sys.executable, "scripts/validate_revokebench_b_v6.py", str(path)]
     if kind == "e5":
         return [sys.executable, "scripts/validate_omitted_clause_v6.py", str(path)]
     if kind == "e6":
