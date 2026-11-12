@@ -9,11 +9,11 @@
 Running `make required` executes the complete CPU verification and reproducibility pipeline:
 
 1. **Workspace & Confinement Sanity:** Verifies clean working paths inside `target/`, checks that all **6** archival files in `tips/` match `tips/manifest.json` byte-for-byte (bijective file-set + SHA-256 check), and runs Rust unit, integration, and bounded schedule-interleaving tests (`cargo test --locked`, including `tests/protocol_v2_interleavings.rs`).
-2. **Mechanized Verus Core Verification (`scripts/verify_core.py`):** Runs hash-pinned Verus (`release/0.2026.11.02.8bf68ee`, Rust `1.99.1-x86_64-unknown-linux-gnu` toolchain under `target/tooling/`, workspace `rustc 1.95.0`) on `policy-core/src/lib.rs`, asserting `171` verified items (`41` public `exec` functions including `ExecBrokerKernel`/`ExecSinkKernel` + `encode_permit_canonical`, and `29` public `proof fn` theorems), `0` errors, `0` trigger warnings, and rejection of `3` deliberate Z3 soundness mutations.
+2. **Mechanized Verus Core Verification (`scripts/verify_core.py`):** Runs hash-pinned Verus (`release/0.2026.11.02.8bf68ee`, Rust `1.99.1-x86_64-unknown-linux-gnu` toolchain under `target/tooling/`, workspace `rustc 1.95.0`) on `policy-core/src/lib.rs`, asserting `226` verified obligations (`49` public `exec` functions including `ExecBrokerKernel`, `ExecSinkKernel`, `ExecClusterFenceKernel`, `encode_permit_canonical`, `decode_permit_canonical`, and `ExecScopeGrant` lineage/self-upgrade checkers, plus `36` public `proof fn` theorems), `0` errors, `0` trigger warnings, and rejection of all `6` deliberate Z3 soundness mutations.
 3. **V2 Protocol & Systems Validation (`analyze-v2` + `concurrent_v3.py`):** Validates `evidence/v2/reference/` against current source hashes (`--source`), recomputes sequential fault histories, `55`-cell (`10` single + `45` pairwise) abstract omission search, and `model-campaigns-analyzed.json`, and runs diamond-POR recorded-RPC real-time interval linearization (`scripts/concurrent_v3.py`) across all `18/18` publication `1, 2, 4, 8, 16, 32`-actor race traces.
-4. **V3/V4 Pure-Rust Suite Validation (`scripts/validate_v3.py --source`):** Validates all `19` deterministic JSON artifacts in `evidence/v3/reference/` (plus `trajectory_monitors.json`) against source hashes, tolerances, negative-result invariants, and exact analytical checks.
+4. **V3--V5 Pure-Rust & Statistical Spine Validation (`scripts/validate_v3.py --source`):** Validates all `22` deterministic JSON artifacts in `evidence/v3/reference/` (plus `trajectory_monitors.json`) against source hashes, tolerances, negative-result invariants, and exact analytical/statistical cross-checks (`scripts/statistical_spine_v5.py`).
 5. **Preserved V1 Validation (`scripts/validate.py --source-ref 12b5579`):** Verifies that `evidence/reference/*.json` still validates cleanly against historical commit `12b5579` and `evidence/reference/revision-index.json`.
-6. **Python Unit Suites & Manuscript Build:** Runs all `unittest` suites (`tests/test_*.py`, covering `campaign_analysis.py`, `concurrent_v3.py`, `benchmark_v2.py`, `infer_v2.py`, and paper macro sync) and compiles `docs/intelligence-is-not-authority.pdf` via `scripts/build_paper.py` (`0` LaTeX errors, `0` undefined citations/references, `0` non-whitelist warnings).
+6. **Python Unit Suites & Manuscript Build:** Runs all `unittest` suites (`tests/test_*.py`, covering `campaign_analysis.py`, `concurrent_v3.py`, `benchmark_v2.py`, `infer_v2.py`, `statistical_spine_v5.py`, and paper macro sync) and compiles `docs/intelligence-is-not-authority.pdf` via `scripts/build_paper.py` (`0` LaTeX errors, `0` undefined citations/references, strict `[1]..[N]` first-appearance citation order, and `Overfull \hbox <= 2.0pt`).
 
 ---
 
@@ -28,7 +28,7 @@ python3 scripts/concurrent_v3.py evidence/v2/reference
 ```
 
 ### Measured V2 Components (`evidence/v2/reference/`)
-- **`proof.json` (`scripts/verify_core.py`):** Records the `43` verified Verus obligations on `policy-core/src/lib.rs`, exact binary/source SHA-256 digests, and `0` trigger warnings.
+- **`proof.json` (`scripts/verify_core.py`):** Records the `226` verified Verus obligations on `policy-core/src/lib.rs`, `6/6` rejected Z3 soundness mutations, exact binary/source SHA-256 digests, and `0` trigger warnings.
 - **`faults.json` (`31` separate-process RPC histories):** Runs separate `broker-v2` (`broker.sqlite`) and `sink-v2` (`sink.sqlite`) processes under WAL `synchronous=FULL` (SQLite `3.53.2`). Includes `3` positive semantic controls (`transfer`, `release`, `edit`), `delegated_transfer_extra_steward_fenced` (verifying that `DispatchedPermit` immutably binds strengthened `required` issuer vectors through sink fencing while keeping `actor + proposal` proposer retry identity), pre/post-commit `SIGKILL` crash/recovery, uncertain reservation timeout non-refund, and **3 retained systems negative controls**:
   1. *Delayed sink write lock:* `200` ms injected sink lock delays fenced withdrawal acknowledgment to `264.63` ms while holding `8` budget units unavailable (`0` post-ack commits).
   2. *Non-idempotent sink:* Disabling sink unique-ID deduplication produces `2` duplicate effects on retry.
@@ -45,14 +45,14 @@ python3 scripts/concurrent_v3.py evidence/v2/reference
 
 ---
 
-## 3. V3 Standalone Pure-Rust Simulation Suite (`evidence/v3/reference/`)
+## 3. V3--V5 Standalone Pure-Rust, Multi-Process Crypto Cluster & Statistical Spine (`evidence/v3/reference/`)
 
 ```bash
-python3 scripts/run_v3.py target/my-v3-run --seed 20261110
+python3 scripts/run_v3.py target/my-v3-run --profile publication --seed 20261110
 python3 scripts/validate_v3.py target/my-v3-run --source
 ```
 
-`authority-lab run-v3` (`src/v3_core_models.rs`, `src/v3_coverage.rs`, `src/v3_graphs.rs`, `src/v3_monitors.rs`, `src/v3_selection.rs`) uses deterministic `SplitMix64` substreams with zero external crates or Python ML dependencies to produce `16` JSON artifacts (`provenance.json` + `15` Mechanism/Selection artifacts):
+`authority-lab run-v3` (`src/v3_*.rs`, `src/v4_*.rs`, `src/v5_*.rs`) uses deterministic `SplitMix64` substreams, separate-process `sink-v5-shard` SQLite WAL child processes, and exact trinomial/Ville statistical routines to produce `22` JSON artifacts (plus `trajectory_monitors.json` from `scripts/trajectory_monitors.py`):
 
 | Artifact(s) | Hypotheses | Method & Key Parameters |
 | --- | --- | --- |
@@ -63,7 +63,9 @@ python3 scripts/validate_v3.py target/my-v3-run --source
 | `weighted_cuts.json`, `interdiction.json` | H10, H11 | Exact topological path DP + split-vertex Dinic min-cut + `2,048` brute-force checks; `200` 8-stage sparse DAGs/family (`20` smoke; `narrow` waist `6` vs `30` other layers, `hub`/`wide` `27` nodes/stage, `out_degree=6`) comparing reported-subgraph min-cut (`cut`) vs `patch_specific` and `patch_random` (`0..32`, grid `{0,3,6,9,12,16,20,24,32}`) |
 | `coverage_v3.json`, `audit_power.json` | H12, H13 | Shuffled Zipf ($p_r \propto 1/r, K=2,000, N=12,000$ across `4` searchers $\times 3,000$ draws, `200` trials; `25` smoke) Good–Turing & two-list Chapman capture–recapture under honest, 15% blind spot, and 5% strategic critical withholding; McAllester–Schapire vs Clopper–Pearson bounds; exact Fisher planted-audit power ($P \in \{40, 200\}$, $21$ grid points $r \in \{0.00, 0.05, \dots, 1.00\}$) |
 | `copula.json`, `monitors_v3.json`, `assessment_variance.json` | H14, H15 | `200`-node Golub–Welsch Gaussian-copula quadrature ($m=0.10, \rho \in \{0.0, 0.3, 0.6, 0.9\}, k \in \{1..8\}$); `24`-task (`6` smoke) `20`D `6`-family classifier suite (`MLP2L`, `LogisticL2`, `RegQDA`, `KNN15`, `RBFKernel`, `BoostedStumps`) across shared-step, distinct-steps, $\rho_{\text{adv}} \in \{0.0, 1.0, 2.0, 3.0\}$, 8-query feedback, $K \in \{1..32\}$ retries, and benign false-block calibration; portfolio $R_G$ & Cronbach crossed $V(m,k)$ |
-| `selection_v3.json` | H16 | 2-trait `(gamble share s, capacity c)` co-evolution (`N=2,000, G=80, 16` reps; `400/50/8` smoke, exact Price covariance check `< 3.2e-14`) across `taken_rank`, `conferred_rank`, `caretaker`, `floor`, rank-bar sweep (`0.02..0.90`), harm-penalty sweep (`0..1.00`), and external gate $q_{\text{gate}} \in \{0..1.00\}$ |
+| `selection_v3.json` | Selection | 2-trait `(gamble share s, capacity c)` co-evolution (`N=2,000, G=80, 16` reps; `400/50/8` smoke, exact Price covariance check `< 3.2e-14`) across `taken_rank`, `conferred_rank`, `caretaker`, `floor`, rank-bar sweep (`0.02..0.90`), harm-penalty sweep (`0..1.00`), and external gate $q_{\text{gate}} \in \{0..1.00\}$ |
+| `crypto_and_jepsen.json`, `real_tool_cutsets.json`, `neural_post_training.json` | V4 Crypto, Graphs, Neural RL | `12,000` Ed25519/Macaroon attacks + `600` `AF_UNIX` Jepsen schedules/class; AgentDojo `v1.2.2` + Linux Landlock/seccomp Dinic min-cuts; `412`-parameter REINFORCE/GRPO neural MDP (`24` seeds) |
+| `superintelligence_scaling.json`, `e2e_crypto_cluster.json`, `statistical_certificates.json` | V5 SI Scaling, WAL Cluster, Exact Stats | $K_{\text{opt}} \in \{1..4096\}$ optimization invariance (`0/120,000` exogenous breaches), $K \in \{1..64\}$ smurfing & $d$-hop attenuation, typed covert-channel contraction to `0.00` bits, exogenous off-switch game; `3`-process Ed25519/Macaroon SQLite WAL cluster (`5,000` wire-fuzz frames, `24` `SIGKILL` restarts); exact Suissa–Shuster / Tango trinomial & Ville martingale certificates (`112` paired live tasks) |
 
 To refresh paper macros and tables after an authorized scientific run, validate the new `target/` run, copy top-level JSON into the corresponding `evidence/*/reference/` directory (or run `scripts/reference_v2.py` for V2), run `python3 scripts/paper.py`, and run `make required`. Never edit numbers by hand in `docs/generated/*.tex`.
 

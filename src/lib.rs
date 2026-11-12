@@ -19,3 +19,6 @@ pub mod v3_monitors;
 pub mod v3_selection;
 pub mod v4_neural_rl;
 pub mod v4_real_graphs;
+pub mod v5_e2e_crypto_cluster;
+pub mod v5_statistical_spine;
+pub mod v5_superintelligence;

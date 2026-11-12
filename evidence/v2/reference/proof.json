@@ -1,8 +1,8 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "tool": "0.2026.11.02.8bf68ee",
   "archive_sha256": "f3a0119292df8855e4435da8130bee1873b0e6a60c306accf81a08ea687bba3c",
-  "core_sha256": "087b2e80d2129fa89b3d271a0e467c90a346e3768f9edaad64a4ab72af9914ac",
+  "core_sha256": "f9d3f964ab65f2cbc26c0340b7b56fc4248cfeb3216c1e2171bd115d940e71c9",
   "command": [
     "cargo",
     "verus",
@@ -12,10 +12,49 @@
     "--locked"
   ],
   "returncode": 0,
-  "verified_obligations": 171,
-  "core_verified_count": 171,
-  "cargo_verified_count": 171,
+  "verified_obligations": 226,
+  "core_verified_count": 226,
+  "cargo_verified_count": 226,
   "trigger_warnings": 0,
+  "soundness_mutations_rejected": 6,
+  "soundness_mutations": [
+    {
+      "name": "timeout_refund_without_sink_authority",
+      "target_function": "release",
+      "rejected": true,
+      "returncode": 1
+    },
+    {
+      "name": "stale_epoch_fence_bypass",
+      "target_function": "unfenced",
+      "rejected": true,
+      "returncode": 1
+    },
+    {
+      "name": "optimistic_lower_bound_admission",
+      "target_function": "admit_uncertain",
+      "rejected": true,
+      "returncode": 1
+    },
+    {
+      "name": "wire_decoder_trailing_byte_bypass",
+      "target_function": "decode_permit_canonical",
+      "rejected": true,
+      "returncode": 1
+    },
+    {
+      "name": "self_upgrade_unquorumed_scope_widening",
+      "target_function": "verify_self_upgrade_exec",
+      "rejected": true,
+      "returncode": 1
+    },
+    {
+      "name": "partial_shard_cluster_ack_bypass",
+      "target_function": "cluster_fence_acked_exec",
+      "rejected": true,
+      "returncode": 1
+    }
+  ],
   "exec_functions": [
     "same_bytes",
     "grants_ok",
@@ -57,7 +96,15 @@
     "exec_sink_fence",
     "exec_sink_complete",
     "exec_settle_committed",
-    "exec_settle_cancelled"
+    "exec_settle_cancelled",
+    "decode_permit_canonical",
+    "roundtrip_permit_canonical",
+    "attenuates_grant_exec",
+    "grant_live_at_exec",
+    "verify_delegation_chain_exec",
+    "verify_self_upgrade_exec",
+    "cluster_fence_acked_exec",
+    "cluster_shard_complete_exec"
   ],
   "theorems": [
     "exposure",
@@ -88,13 +135,20 @@
     "sink_committed_le_broker_active",
     "broker_inv_implies_ledger_inv",
     "authority_kernel_conservation",
-    "authority_post_fence_exclusion"
+    "authority_post_fence_exclusion",
+    "lemma_u64_le_roundtrip",
+    "lemma_le_bytes_u64_canonical",
+    "encode_decode_permit_bijection",
+    "attenuates_grant_transitive",
+    "delegation_chain_no_amplification",
+    "ancestor_withdrawal_severs_subtree",
+    "cluster_quorum_post_ack_exclusion"
   ],
-  "output": "verification results:: 171 verified, 0 errors\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.15s\n",
+  "output": "verification results:: 226 verified, 0 errors\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.14s\n",
   "trusted": [
     "Verus, SMT solver and Rust compiler",
-    "parser and normalized payload construction",
-    "storage snapshots, issuer identity, session launcher",
-    "Linux kernel and cooperative sink contracts"
+    "JSON-to-ExecPermitWire field extraction outside Verus (binary wire encoder/decoder bijection verified in policy-core)",
+    "storage snapshots, Ed25519/HMAC cryptographic primitives, session launcher",
+    "OS kernel and cooperative sink process contracts"
   ]
 }
