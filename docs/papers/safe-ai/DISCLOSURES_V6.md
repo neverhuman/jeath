@@ -82,14 +82,24 @@ the quantity is definitional and is reported as such, never as a finding.
   between commit and reply (10/10 such trials); E4's fault trials could in principle include that case. E4 and E4b
   counts are not pooled.
 
-## In progress (separate lanes, predeclared before their data)
+## Fenceability rerun (E6b)
 
-- **E6b** (`cc/e6b`, xbabe0):
-  - a deterministic post-fence old-epoch write per surface;
-  - the starvation probe repeated N=20 with CIs;
-  - one enforcement-class rule for every surface, so that PostgreSQL's trigger is author-written code inside the
-    surface;
-  - the enforcement class leads.
+- **E6b (done; plan `d1fbc9b` at 21:04:35Z before any E6b probe; Amendment 1 `8548617` after an aborted smoke run,
+  operational only, design unchanged; run `e6b-20261112T2115Z` on xbabe0 from 21:15:33Z; validator 0 problems; promoted
+  as `e6b-fenceability`):** 9 mechanisms × 40 deterministic runs × 5 writer variants; E6's race, unchanged, 20 repeats per
+  mechanism in idle and loaded conditions.
+- **E6 relabelled:** E6 called its PostgreSQL trigger `sink_enforced`. Under E6b's single rule it is a writer-supplied
+  condition (a stale write that omits the epoch commits, 40/40). The paper's table now comes from E6b.
+- **Idle condition contaminated after repeat 10:** from about 21:18:26Z another user's `cols_h450_gpu.py` raised CPU busy
+  in idle blocks from about 0.02 to 0.41 (loaded blocks 0.77 to 0.99). Not touched, not rerun, no runs chosen. An
+  exploratory split, not predeclared: E6's trigger in the idle condition starved 10/10 in clean repeats (refusal 1/10)
+  and 8/10 in affected repeats (refusal 5/10).
+- **Other:** two smoke runs and an etcd API shape check came before the reported run. Harness and validator were committed
+  after the run, byte-identical to the hashed versions; only the plan predates the data. Trigger and foreign-key writers
+  ran as superuser, as in E6, and privilege bypass is not tested. P1 and P3 were not re-run.
+- **E6 P3 inconsistency (open, reported):** E6 excluded the filesystem's staged-file plus rename design as "a protocol
+  built on the filesystem" but counted etcd's lease-staged key, whose promotion also depends on a compare the promoter
+  supplies. Not reclassified after the fact; the text states it (generated sentence).
 
 ## Design limits found before outcomes
 
