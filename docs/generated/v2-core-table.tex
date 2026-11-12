@@ -9,6 +9,6 @@ Full-scale concurrent linearization & Tier 3 (local SQLite) & Partial-order real
 Ed25519/Macaroon \& 3-sink partitions & Tier 3 (Unix sockets) & 10,000 crypto attacks; 1,000 partition/drop/MITM schedules (288 signed acks + 712 lease expiries vs.\ 791 broker-only, 276 uncooperative leaks) & 0 accepts; 0 leaks\\
 3-process crypto SQLite WAL cluster & Tier 3 (OS IPC + WAL) & 5,000 wire-fuzz frames, 16 subagents (3 hops), 24 hard process-kill restarts & 0 diffs; 0 post-ack leaks\\
 Linux Landlock v4 + seccomp boundary & Tier 3 (Linux ABI) & Filesystem/TCP Landlock, 64-bit resource-limit filter, SysV/POSIX IPC + pre-existing queue canary & 11/11 confined\\
-Non-idempotent \& omitted-spec controls & Tier 3 (negative) & Uncooperative sink duplicates (2 effects); 445.8\,ms delayed fence ack; authorized bad edit commits & All 3 reproduced\\
+Non-idempotent \& omitted-spec controls & Tier 3 (negative) & Uncooperative sink duplicates (2 effects); 584.2\,ms delayed fence ack; authorized bad edit commits & All 3 reproduced\\
 \bottomrule\end{tabularx}
 \caption{Summary of mechanized authority-kernel obligations and separate-process protocol checks. Executable Rust state transitions, canonical wire bijection, $d$-hop attenuation, relational mutexes, quorum lease fencing, and monotone safe-bootstrap ratcheting are verified in Verus; SQLite write-ahead-logged durability, hard process-kill recovery, and Linux kernel confinement are tested empirically rather than formally refined.}\label{tab:v2core}\end{table*}

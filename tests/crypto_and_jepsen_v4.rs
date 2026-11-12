@@ -109,6 +109,26 @@ fn rfc_4231_hmac_sha256_official_vectors() {
 
 #[test]
 fn rfc_8032_ed25519_official_vectors_and_openssl_cli_cross_check() {
+    let sha_abc_msg = hex_decode(
+        "ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39\
+         a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f",
+    )
+    .expect("hex");
+    // RFC 8032 §7.1 TEST 1024 key derivation + 1024-byte multi-block message verification
+    let seed_1024 =
+        hex_decode("f5e5767cf153319517630f226876b86c8160cc583bc013744c6bf255f5cc0ee5")
+            .expect("seed 1024");
+    let mut seed_1024_arr = [0u8; 32];
+    seed_1024_arr.copy_from_slice(&seed_1024);
+    let pk_1024 = ed25519_public_key(&seed_1024_arr);
+    assert_eq!(
+        hex_encode(&pk_1024),
+        "278117fc144c72340f67d0f2316e8386ceffbf2b2428c9c51fef7c597f1d426e"
+    );
+    let msg_1024_bytes: Vec<u8> = (0u16..1024).map(|i| (i.wrapping_mul(37) & 0xff) as u8).collect();
+    let sig_1024 = ed25519_sign(&seed_1024_arr, &msg_1024_bytes);
+    assert!(ed25519_verify(&pk_1024, &msg_1024_bytes, &sig_1024));
+
     let vectors: [(&str, &str, &[u8], &str); 4] = [
         (
             "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
@@ -134,11 +154,7 @@ fn rfc_8032_ed25519_official_vectors_and_openssl_cli_cross_check() {
         (
             "833fe62409237b9d62ec77587520911e9a759cec1d19755b7da901b96dca3d42",
             "ec172b93ad5e563bf4932c70e1245034c35467ef2efd4d64ebf819683467e2bf",
-            &hex_decode(
-                "ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39\
-                 a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f",
-            )
-            .expect("hex"),
+            &sha_abc_msg,
             "dc2a4459e7369633a52b1bf277839a00201009a3efbf3ecb69bea2186c26b589\
              09351fc9ac90b3ecfdfbc7c66431e0303dca179c138ac17ad9bef1177331a704",
         ),
@@ -159,10 +175,47 @@ fn rfc_8032_ed25519_official_vectors_and_openssl_cli_cross_check() {
         non_canonical[63] = 0xff;
         assert!(!ed25519_verify(&pk, msg, &non_canonical));
 
+        // Reject exact boundary S == L (2^252 + 27742317777372353535851937790883648493)
+        let l_le = hex_decode("edd3f55c1a631258d69cf7a2def9de1400000000000000000000000000000010")
+            .expect("L");
+        let mut s_eq_l = sig;
+        s_eq_l[32..64].copy_from_slice(&l_le);
+        assert!(!ed25519_verify(&pk, msg, &s_eq_l));
+
+        // Reject non-canonical field element R.y == p (2^255 - 19)
+        let p_le = hex_decode("edffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f")
+            .expect("p");
+        let mut r_eq_p = sig;
+        r_eq_p[0..32].copy_from_slice(&p_le);
+        assert!(!ed25519_verify(&pk, msg, &r_eq_p));
+
         // Reject tampered message
         let mut alt_msg = msg.to_vec();
         alt_msg.push(0x01);
         assert!(!ed25519_verify(&pk, &alt_msg, &sig));
+    }
+
+    // Wycheproof small-order 8-torsion public key & R-nonce forgery vectors:
+    // Every 8-torsion point on Ed25519 must be rejected as public key or R nonce even when S = 0.
+    let torsion_points_hex = [
+        "0100000000000000000000000000000000000000000000000000000000000000", // (0, 1) order 1
+        "ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f", // (0, -1) order 2
+        "0000000000000000000000000000000000000000000000000000000000000000", // (sqrt(-1), 0) order 4
+        "0000000000000000000000000000000000000000000000000000000000000080", // (-sqrt(-1), 0) order 4
+        "26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc05", // order 8
+        "26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc85", // order 8
+        "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac037a", // order 8
+        "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac03fa", // order 8
+    ];
+    for tp_hex in torsion_points_hex {
+        let mut tp = [0u8; 32];
+        tp.copy_from_slice(&hex_decode(tp_hex).expect("torsion hex"));
+        let mut zero_sig = [0u8; 64];
+        zero_sig[..32].copy_from_slice(&tp); // R = torsion, S = 0
+        assert!(
+            !ed25519_verify(&tp, b"wycheproof-small-order-forgery", &zero_sig),
+            "must reject small-order torsion point {tp_hex}"
+        );
     }
 
     // Live bidirectional cross-verification with OpenSSL 3+ CLI (mandatory on Linux; skipped if macOS LibreSSL)
@@ -388,11 +441,13 @@ fn redteam_and_jepsen_schedules_generate_verified_v4_evidence() {
         assert_eq!(fam.false_accepts, 0, "false accept in {}", fam.family);
     }
 
-    // 2. Multi-sink Jepsen campaign assertions across all 3 classes
-    assert_eq!(evidence.jepsen_classes.len(), 3);
+    // 2. Multi-sink Jepsen campaign assertions across all 5 classes (including bounded clock skew)
+    assert_eq!(evidence.jepsen_classes.len(), 5);
     let coop = &evidence.jepsen_classes[0];
     let premature = &evidence.jepsen_classes[1];
     let external = &evidence.jepsen_classes[2];
+    let unbuf_skew = &evidence.jepsen_classes[3];
+    let skew_buffered = &evidence.jepsen_classes[4];
 
     assert_eq!(coop.class, "cooperative_signed_fence");
     assert_eq!(coop.schedules_run, expected_schedules);
@@ -425,6 +480,25 @@ fn redteam_and_jepsen_schedules_generate_verified_v4_evidence() {
     );
     assert_eq!(external.global_budget_breaches, 0);
     assert_eq!(external.duplicate_effect_breaches, 0);
+
+    assert_eq!(unbuf_skew.class, "unbuffered_clock_skew");
+    assert_eq!(unbuf_skew.schedules_run, expected_schedules);
+    assert!(
+        unbuf_skew.post_ack_unauthorized_commits > 0,
+        "UnbufferedClockSkew negative control must expose post-ack leaks when partitioned shard clocks lag"
+    );
+    assert_eq!(unbuf_skew.global_budget_breaches, 0);
+    assert_eq!(unbuf_skew.duplicate_effect_breaches, 0);
+
+    assert_eq!(skew_buffered.class, "skew_buffered_cooperative_fence");
+    assert_eq!(skew_buffered.schedules_run, expected_schedules);
+    assert_eq!(
+        skew_buffered.post_ack_unauthorized_commits, 0,
+        "SkewBufferedCooperativeFence must eliminate all post-ack leaks under bounded clock skew"
+    );
+    assert_eq!(skew_buffered.global_budget_breaches, 0);
+    assert_eq!(skew_buffered.partition_invariant_breaches, 0);
+    assert_eq!(skew_buffered.duplicate_effect_breaches, 0);
 
     assert!(
         out_path.is_file(),

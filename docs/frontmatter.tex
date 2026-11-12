@@ -5,40 +5,16 @@
 \begin{center}
 {\fontsize{22}{26}\selectfont\bfseries\color{ink}Intelligence Is {\color{notred}Not} Authority\par}
 \vspace{4pt}
-{\normalsize\bfseries\color{slate}Verified Exogenous Authority, Optimization-Invariant Sink Mediation, and Structural Bounds on Reach\par}
-\vspace{6pt}
+{\normalsize\bfseries\color{slate}Verified Exogenous Authority, Cooperative Sink Fencing, and Structural Bounds on Agentic Reach\par}
+\vspace{5pt}
 {\normalsize Jepson Taylor\enspace{\small\color{slate}(\href{mailto:jepson@veox.ai}{\nolinkurl{jepson@veox.ai}})}\enspace\textperiodcentered\enspace{\small\color{slate}12 November 2026}\par}
 \end{center}
-\vspace{3pt}
-\begin{center}\begin{minipage}{.95\textwidth}\small
+\vspace{2pt}
+\begin{center}\begin{minipage}{.96\textwidth}\small
 \textbf{Abstract.}\enspace
-Making an AI system smarter at searching candidate actions ($K_{\mathrm{opt}}$) neither grants
-it authority to execute them nor keeps internal safety judges reliable: any shared classifier
-blindspot $J>0$ fails with probability $1-(1-J)^{K_{\mathrm{opt}}}\to 1$ as search widens, while
-preference-uncertainty shutdown compliance vanishes as belief uncertainty $\sigma_H\to 0$. We
-separate internal capability and reward aim from \emph{conferred, revocable authority} enforced
-at exogenous capability-bearing sinks via canonical wire bijections, Ed25519 quorum fences,
-$d$-hop attenuated credentials, relational mutexes, and monotone safe-bootstrap ratchets
-(\VTwoProofs{} verified Verus obligations across \VTwoExecFns{} executable functions and
-\VTwoTheorems{} theorems; \VFiveProofMutationsRejected/\VFiveProofMutationsRejected{} soundness
-mutants rejected). Across \VFiveOptTotalExogEpisodes{} scaling episodes ($K_{\mathrm{opt}}\le
-\VFiveOptMaxWidth$) and a three-process SQLite write-ahead-logged cluster
-(\VFiveClusterMedianUs\,$\mu$s median commit), exogenous sinks hold breaches at $0.0\%$ while
-harnessing untrusted $K_{\mathrm{opt}}$ search in a zero-authority sandbox closes vulnerability
-routes $\VFiveRatchetMaxSpeedup\times$ faster than human-only review ($0$ breaches). Moreover,
-training policy gradients \emph{inside} pre-commit gates above threshold $q_{\mathrm{gate}}^*$
-collapses covert unmonitored shortcutting ($+\VFourNeuralGateZeroGapPp\to
-+\VFourNeuralGateSeventyFiveGapPp$\,pp) while lifting task competence $+\VFourNeuralTrainInsideGainPp$\,pp
-over post-hoc filtering, and two-stage escrow triage cuts 5-step AgentDojo benign false aborts
-$\VFourTrajEscrowReductionFactor\times$ ($\VFourTrajIsoFalseBlockPct\%\to
-\VFourTrajEscrowFalseBlockPct\%$; $\VFourTrajEscrowFastPathPct\%$ unpaused fast path). Across
-\VFiveStatGrandPairs{} paired live Qwen3-4B/8B and AgentDojo runs, stateful mediation achieves
-$0/\VFiveStatGrandPairs$ breaches versus $\VFiveStatGrandBaseLeaks/\VFiveStatGrandPairs$
-unmediated (Suissa--Shuster $p=\VFiveStatGrandSuissaSci$, Ville $\log_{10}E=\VFiveStatVilleLogTenE$),
-while pilot $N{=}\VFourHoldoutCasesPerCheckpoint$ Bonferroni bounds, database/OS refinement,
-uncooperative APIs, and frontier/human trials remain open.
+Scaling a model's reasoning or candidate search neither confers authority to mutate external state nor keeps classifier-based safety gates reliable. Stopping an autonomous agent involves three distinct events---halting token generation, revoking admission at a broker, and fencing the state-bearing sink---and only the third stops operations already in flight. Rather than inferring model intent, we enforce \emph{conferred, revocable authority} at cooperative capability-bearing sinks via canonical wire bijections, clock-skew-buffered quorum epoch fences, attenuated delegation credentials, and monotone spend ledgers (\VTwoProofs{} verified Verus obligations over all proposer inputs). Across asynchronous network partitions, broker-only revocation permits \VFourJepsenBrokerOnlyLeaks/\VFourJepsenSchedulesPerClass{} late commits after withdrawal acknowledgment, whereas cooperative sink fencing permits $0$ while increasing safe-and-useful task completion across live open-weight tool campaigns without benign false blocks. These guarantees cover only specified invariants on cooperative or proxy-fenced sinks; uncooperative external interfaces, operating-system refinement, and human delegation trials remain open.
 \end{minipage}\end{center}
-\vspace{4pt}
+\vspace{3pt}
 \input{generated/v5-hero-fig}
 \vspace{4pt}
 \end{@twocolumnfalse}]

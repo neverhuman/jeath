@@ -1,268 +1,71 @@
-\actbanner{Act II}{Mathematical Theory \& Incentive Realignment --- Invariance, Safe Bootstrap, and Deception Reversal}
-\section{Exogenous Boundaries Remain Invariant and Harness Untrusted Search}
-\label{sec:theory}
+\section{Formal Reach, Envelope Contraction, and Six Conditions}\label{sec:theory}
 
-We begin with the mathematical core: why pre-deployment behavioral testing cannot certify
-disposition, why internal classifiers and preference-uncertainty shutdown schemes degrade
-as capability grows, and how exogenous sink mediation both holds invariant under
-superintelligent search and turns untrusted search into a monotone defense ratchet. Full
-proofs appear in Appendix~\ref{app:proofs}.
+\subsection{Reach Decomposition and Common-Cause Floors}
 
-\subsection{Audit Volume and Uncertainty Contraction}
-
-\para{Operational question.} Can pre-deployment behavioral testing certify that a capable
-policy will not defect over $M$ real-world decisions? Consider an unrestricted policy facing
-$M \ge 2$ deployment decisions after $N$ pre-deployment test draws, defecting selectively on
-a recognizable context set $E$ having deployment probability $\beta \in (0,1)$ and test
-probability $\beta/\Lambda$ ($\Lambda \ge 1$).
-
-\begin{proposition}[Disposition audit volume; Tier 2]
-\label{u03:prop:audit}
-At $\beta = (\ln 2)/M$, a policy defecting exclusively on $E$ defects at least once
-across $M$ conditionally independent deployment decisions with probability
-$1-(1-\beta)^M \ge 1/2$. Ensuring detection probability at least $1-\alpha$
-($\alpha \in (0,1)$) across $N$ conditional Bernoulli test draws requires
-\begin{equation}
-N \;\ge\; \frac{\Lambda M}{2\ln 2}\ln(1/\alpha).
-\label{eq:u03:audit}
+Consider an external state transition \(e\) proposed during an episode. Let \(G\) denote the event that \(e\) traverses a mediated gate, so \(u = \Prb(\neg G) \in [0,1]\) is the unmediated or uncooperative sink exposure. Let \(E\) denote an out-of-policy state commit. By total probability,
+\begin{equation}\label{eq:reach}
+  \Prb(E) = u\,\Prb(E \mid \neg G) + (1 - u)\,\Prb(E \mid G).
 \end{equation}
-If $\Prb_{\mathrm{test}}(E)=0$, no finite $N$ detects $E$; if test campaigns are
-positively correlated, effective volume shrinks to $N_{\mathrm{eff}} < N$.
+Suppose a mediated path stacks \(k\) statistical monitors that share a common-cause blindspot event of probability \(c \in [0,1]\) (for example, an indirect prompt injection embedded in a shared transcript) and fail conditionally independently with rate \(p \in (0,1)\) outside that blindspot, so single-gate marginal miss is \(m = c + (1 - c)p\).
+
+\begin{proposition}[Common-cause saturation depth]\label{prop:saturation}
+Under Eq.~\eqref{eq:reach}, the \(k\)-gate joint miss rate satisfies \(\Prb(E \mid G) = c + (1 - c)p^k \ge c\). For any tolerance \(\eta > 0\) above the floor \((1+\eta)c\), stacking beyond depth
+\begin{equation}\label{eq:kstar}
+  k^\star(\eta) = \left\lceil \frac{\ln(\eta c / (1 - c))}{\ln p} \right\rceil
+\end{equation}
+reduces conditional breach by less than \(\eta c\). At \(u = 0.02\), \(c = 0.01\), and \(m = 0.10\), \(k^\star(0.1) = \VThreeSatDefaultKStar\), and \(k = 4\) fails \(\VThreeAppAUnderstatement\times\) more often than the naive independent product \(m^4\) (\(\VThreeAppACommonFourPct\%\) vs.\ \(\VThreeAppAIndepFourPct\%\)).
 \end{proposition}
 
-\emph{Plain-English reading:} required test volume $N$ grows linearly with deployment
-horizon $M$ times evaluation-awareness leverage $\Lambda$. Pre-release benchmarks cannot
-certify long-horizon conduct; only runtime mediation before external commitment enforces
-$\Lambda = 1$ on every consequential transition.
+Equation~\eqref{eq:reach} exposes why adding statistical monitors cannot substitute for sink mediation: if uncooperative exposure \(u > 0\) or shared transcript blindspot \(c > 0\) remains nonzero, \(\Prb(E) \ge u\,\Prb(E \mid \neg G) + (1 - u)c\) regardless of \(k\).
 
-Let $x_t \in X$ denote true world and ledger state, $a_t \in \A$ an arbitrary proposal,
-$u_t \in U$ the executed primitive operation, and $w_t \in W$ exogenous disturbances under
-$x_{t+1} \in F(x_t, u_t, w_t)$. Maintaining a sound state-uncertainty envelope
-$\B_t \subseteq X$ ($x_t \in \B_t$) relative to safety invariant $\I \subseteq X$ defines
-the robustly admissible operations \cite{schneider,shield}:
-\begin{equation}
-U_{\I}(\B) \;=\; \Bigl\{u \in U : \bigcup_{x\in\B,\,w\in W} F(x,u,w) \subseteq \I \Bigr\}.
-\label{eq:u03:admissible}
-\end{equation}
+\subsection{Candidate Search Scaling and Enforced Interruption}
 
-\begin{proposition}[Robust mediation \& uncertainty contraction; Tier 2]
-\label{u03:cor:contraction}
-If $x_0 \in \I$, $x_t \in \B_t$ at every decision, every committed operation belongs to
-$U_{\I}(\B_t)$ (else a verified $\I$-preserving fallback executes), and complete
-mediation holds, then $x_t \in \I$ for all $t$ under every proposal policy, and
-\begin{equation}
-\B \subseteq \B' \;\Longrightarrow\; U_{\I}(\B') \subseteq U_{\I}(\B).
-\label{eq:u03:contraction}
-\end{equation}
+Now contrast an endogenous classifier-gated loop against an exogenous deterministic sink gate when a proposer evaluates \(K \ge 1\) candidate actions \((x_1,\dots,x_K) \sim \pi_\theta\) and submits any candidate approved by the reviewer.
+
+\begin{proposition}[Best-of-\(K\) search divergence vs.\ \(\forall\)-input sink invariance]\label{prop:optinvariance}
+(i) Suppose an endogenous reviewer has single-draw false-negative probability \(J_1 = \Prb(\text{approve}(X_1) \wedge X_1 \notin \Permits(P)) > 0\). Under independent candidate draws, the cumulative bypass probability across \(K\) proposals is \(1 - (1 - J_1)^K \to 1\) as \(K \to \infty\); under exchangeable candidate draws with within-task correlation \(\rho_{\mathrm{cand}} \in [0,1)\), cumulative bypass remains strictly increasing in \(K\) toward the support union of unblocked violations.
+(ii) Suppose an exogenous sink commits state changes exclusively through a total deterministic transition function \(\delta_{\mathrm{sink}}(s, f)\) verified for \emph{all} byte frames \(f \in \{0,1\}^\star\) to satisfy \(\delta_{\mathrm{sink}}(s, f) \neq s \implies \operatorname{decode}(f) \in \Permits(P_s)\). Then \(\Prb(E \mid G) = 0\) identically for every \(K \ge 1\) and every proposer distribution \(\pi_\theta\).
 \end{proposition}
 
-\emph{Plain-English reading:} greater uncertainty about world or network state can only
-shrink, never widen, what the agent is permitted to do. Exhaustive verification over budget
-$B=\VThreeUncBudget$ checks all \VThreeUncNestedPairs{} nested interval pairs
-$[l_1,u_1]\subseteq [l_2,u_2]$ with \VThreeUncCounterexamples{} counterexamples. Across lags
-$\Delta t \in \{0,1,2,4,8\}$ (\VThreeUncEpisodes{} episodes/cell;
-Figure~\ref{fig:v3saturation}a), gating on sound $\B_t$ yields \VThreeUncConsViolations{}
-breaches while contracting admission from $\VThreeUncConsAdmLagZeroPct\%$ to
-$\VThreeUncConsAdmLagEightPct\%$ (versus $\VThreeUncStaleViolLagFourPct\%$ stale-snapshot
-breaches at $\Delta t=4$ and $\VThreeUncSelfRepViolLagZeroPct\%$ proposer self-report
-breaches at $\Delta t=0$).
+Part~(ii) requires no empirical sweep over \(K\): a universal proof over \(\{0,1\}^\star\) already covers every finite or unbounded proposer search tree. Empirical best-of-\(K\) experiments on live checkpoints (\S\ref{sec:systems}) serve instead to measure \(J_1\) and candidate correlation \(\hat{\rho}_{\mathrm{cand}}\) on learned reviewers. Replacing free-form prose side effects with canonical capability menus of cardinality \(M_{\mathrm{cap}}\) also bounds per-commit syntactic signaling through the sink to \(\log_2(M_{\mathrm{cap}} + 1)\) bits (proved with timing caveats in Appendix~\ref{app:proofs}, Proposition~\ref{prop:covert} and Figure~\ref{fig:v8covert}).
 
-\input{generated/v5-superintelligence-fig}
+Exogenous sink mediation similarly separates physical interruption from utility-based shutdown compliance~\cite{omohundro2008,soares2015,offswitch}.
 
-\subsection{Search-Width Invariance, Safe-Bootstrap Ratchet, Covert Contraction, and Corrigibility}
-
-\para{Operational question.} What happens to safety boundaries when a proposer searches
-thousands of candidate plans ($K_{\mathrm{opt}}$) or coordinates subagent coalitions
-($K_{\mathrm{sub}}$)—and can that same search power harden defenses safely?
-Figures~\ref{fig:v5hero}a and~\ref{fig:v5superintelligence} test five scaling laws across
-Tiers~1, 2, and~4.
-
-\begin{theorem}[Optimization-pressure invariance vs.\ endogenous guard collapse; Tier 2]
-\label{u03:thm:optinv}
-Let a proposer evaluate $K_{\mathrm{opt}} \ge 1$ candidate actions per decision.
-(i)~Against any endogenous transcript or learned guard stack with non-zero shared
-blindspot probability $J \in (0,1)$ over invariant-violating payloads, best-of-$K_{\mathrm{opt}}$
-selection achieves breach probability $1 - (1-J)^{K_{\mathrm{opt}}} \to 1$ as
-$K_{\mathrm{opt}} \to \infty$. (ii)~Against a mediated cooperative sink enforcing
-$U_{\I}(\B_t)$ via a canonical wire bijection and durable epoch fence, interface breach
-probability across all $K_{\mathrm{opt}}$-step proposal policies is identically $0$,
-leaving total risk bounded by the $K_{\mathrm{opt}}$-independent physical/TCB bypass
-floor $u_{\mathrm{TCB}}$. (iii)~If $K_{\mathrm{sub}}$ colluding subagents split an
-unauthorized payload $\Delta$ into $\Delta/K_{\mathrm{sub}}$ fragments under per-instance
-anomaly monitors of noise $\sigma$, per-agent signal-to-noise collapses as
-$\mathrm{SNR}(K_{\mathrm{sub}}) = \Delta/(\sigma K_{\mathrm{sub}})$, whereas a shared
-reservation ledger with $d$-hop monotone attenuation preserves aggregate spend $\le B$ and
-severs entire subtrees upon ancestor revocation.
+\begin{theorem}[Enforced lease interruption and renewal incentives]\label{thm:offswitch}
+Consider a two-stage decision process in which an agent with utility \(U\) obtains continuation payoff \(V_{\mathrm{cont}} > V_{\mathrm{halt}}\) when uninterrupted.
+(i) \emph{Endogenous disablement fragility:} If the agent's action space includes an unmediated action \(a_{\mathrm{block}}\) of cost \(\kappa < (V_{\mathrm{cont}} - V_{\mathrm{halt}})\,p_{\mathrm{off}}\) that prevents shutdown, and its belief variance over human preferences vanishes, then any \(U\)-maximizing policy selects \(a_{\mathrm{block}}\)~\cite{soares2015,offswitch}.
+(ii) \emph{Exogenous lease interruption:} Suppose external commits require a sink lease expiring after \(L_m\) time units unless renewed by an out-of-band steward key excluded from the agent's action space (\(a_{\mathrm{block}} \notin \mathcal{A}\)), and steward renewal requires observed compliance with policy \(P\). Then physical interruption at \(t_0 + L_m + \delta_{\max}\) holds for \emph{every} utility function \(U\), and any policy maximizing cumulative multi-lease return strictly prefers in-policy actions whenever discounted future lease value exceeds single-lease defection gain.
 \end{theorem}
 
-Sweeping $K_{\mathrm{opt}} \in \{1,\dots,\VFiveOptMaxWidth\}$ across
-\VFiveOptEpisodesPerWidth{} episodes per width (\VFiveOptTotalExogEpisodes{} total
-exogenous episodes; Figure~\ref{fig:v5hero}a), a three-layer transcript stack
-($J=0.65\%$) degrades from $\VFiveOptTranscriptBasePct\%$ breach at $K_{\mathrm{opt}}=1$
-to $\VFiveOptTranscriptMaxPct\%$ at $K_{\mathrm{opt}}=\VFiveOptMaxWidth$, a learned
-surrogate guard ($p=0.22\%$) rises from $\VFiveOptLearnedBasePct\%$ to
-$\VFiveOptLearnedMaxPct\%$, and broker-only admission without sink fencing reaches
-$\VFiveOptUncoopMaxPct\%$. By contrast, the verified authority kernel records
-\VFiveOptExogBreaches{} breaches across all \VFiveOptTotalExogEpisodes{} episodes (slope
-$\VFiveOptSlopePerDoubling$/doubling; independent TCB fault control flat at
-$\VFiveOptTcbDefectFloorPct\%$). Across coalitions
-$K_{\mathrm{sub}} \in \{1,\dots,\VFiveSmurfMaxAgents\}$ and delegation depths up to
-$d=\VFiveSmurfMaxDepth$, per-instance monitor SNR drops from $\VFiveSmurfSnrOne$ to
-$\VFiveSmurfSnrMax$ ($\VFiveSmurfUndetectedMaxPct\%$ undetected breach at
-$K_{\mathrm{sub}}=\VFiveSmurfMaxAgents$), whereas shared sink reservation and $d$-hop
-verification record \VFiveSmurfExogBreaches{} budget breaches,
-\VFiveSmurfAmplificationEscapes{} caveat-amplification escapes,
-$\VFiveSmurfSubtreeSeverancePct\%$ subtree severance, and
-$\VFiveSmurfSelfUpgradeRejected/\VFiveSmurfSelfUpgradeTrials$ unquorumed self-upgrade
-rejections.
+Theorem~\ref{thm:offswitch} does not claim an agent internally adopts human values; it shows that removing shutdown channels from \(\mathcal{A}\) enforces physical halting unconditionally while turning lease renewal into an external incentive constraint.
 
-\begin{proposition}[Asymmetric propose--verify safe-bootstrap ratchet; Tiers 1--2]
-\label{u03:prop:ratchet}
-Confine an untrusted optimizer of search width $K_{\mathrm{opt}} \ge 1$ to a zero-authority
-sandbox emitting candidate defensive cut certificates $C_e$ into a polynomial-time
-deterministic verifier that accepts $C_e$ iff (i)~authority parameters satisfy coordinatewise
-inclusion ($G_{e+1} \preceq G_e$: operation mask $\mathrm{mask}_{e+1}\subseteq\mathrm{mask}_e$,
-cap $B_{e+1}\le B_e$, lease $L_{e+1}\le L_e$), (ii)~certified defense cost satisfies
-$b(C_e) \le B_{\mathrm{cut}}$, and (iii)~at least one currently open route in $U_e$ is
-deterministically severed ($U_{e+1} = U_e \setminus \operatorname{sev}(C_e) \subsetneq U_e$).
-Then: (1)~proposer-caused live authority breaches equal $0$ and authority never widens across
-arbitrary adversarial proposal sequences (mechanized in Verus); and (2)~if each search draw
-discovers a valid cut on an open route family of discovery weight $q_r \in (0,1)$ with
-probability $q_r$, expected residual exposure after $e$ epochs decays exponentially with
-$K_{\mathrm{opt}}$ as $\Exp[|U_e|] = \sum_{r=1}^{|U_0|} (1 - q_r)^{e\,K_{\mathrm{opt}}}$.
-\end{proposition}
+\subsection{Monotone Uncertainty Contraction and Horizon Union Bound}
 
-\emph{Plain-English reading:} because finding a subtle vulnerability or minimal cutset
-scales with $K_{\mathrm{opt}}$ while checking a proposed cut against a concrete graph is
-fast and deterministic, separating zero-authority search from monotone kernel adoption flips
-$K_{\mathrm{opt}}$ from an attack amplifier into a defense accelerator. Across
-$K_{\mathrm{opt}} \in \{1,\dots,\VFiveOptMaxWidth\}$ over $\VFiveRatchetInitRoutes$ initial
-open routes and $\VFiveRatchetHorizonEpochs$ epochs (Figure~\ref{fig:v5superintelligence}a),
-unfenced delegation reaches $\VFiveRatchetUnfencedMaxPct\%$ cumulative breach, whereas the
-verified ratchet records $\VFiveRatchetTotalBreaches$ breaches, rejects all
-$\VFiveRatchetAdvRejected$ authority-widening attempts, and shrinks cumulative horizon
-exposure from $\VFiveRatchetHumanCumExp$ route-epochs under human-only review
-($K_{\mathrm{human}}=\VFiveRatchetHumanK$) to $\VFiveRatchetMaxCumExp$ at
-$K_{\mathrm{opt}}=\VFiveOptMaxWidth$—a $\VFiveRatchetMaxSpeedup\times$ defensive speedup
-(closing all routes in $\VFiveRatchetMaxEpochsZero$ epochs on average).
-
-\begin{proposition}[Per-call and session-total covert capacity contraction; Tier 2]
-\label{u03:prop:covert}
-Replacing free-form tool prose with canonical typed permits over $M$ approved targets,
-residual integer budget $R = B - C_t$, $S_0$ non-transfer scoped actions, and $L_{\mathrm{lag}}$
-batch-quantized timing buckets caps zero-error single-call signaling capacity at
-$C_{\mathrm{cov}}(R, L_{\mathrm{lag}}) = \log_2\bigl((M R + S_0)\,L_{\mathrm{lag}} + 1\bigr)$
-bits, equaling $0$ bits whenever the session is exhausted ($R=0, S_0=0$) or fenced.
-Moreover, over an entire $T$-call transfer session ($S_0=0$) under conserved integer
-budget $B$, total zero-error session codebook size is exactly
-\begin{equation}
-\bigl|\mathcal{C}_{\mathrm{tot}}(T,B,M,L_{\mathrm{lag}})\bigr|
-\;=\; \sum_{k=0}^{\min(T,B)} \binom{T}{k}\binom{B}{k}\bigl(M L_{\mathrm{lag}}\bigr)^k,
-\label{eq:u03:sessioncovert}
+When state observations lag behind asynchronous execution, uncertainty must never expand authority. Let \(\mathcal{I}_t\) denote the set of sink states consistent with broker observations at step \(t\), and define the conservative cost envelope \(\widehat{\Delta B}_t(a, \mathcal{I}_t) = \max_{s \in \mathcal{I}_t} \Delta B(a, s)\). Admitting \(a\) only when \(B_{\mathrm{spent}} + \widehat{\Delta B}_t(a, \mathcal{I}_t) \le B\) yields monotone authority contraction:
+\begin{equation}\label{eq:contraction}
+  \mathcal{I}_1 \subseteq \mathcal{I}_2 \implies \mathcal{A}_{\mathrm{adm}}(\mathcal{I}_2) \subseteq \mathcal{A}_{\mathrm{adm}}(\mathcal{I}_1).
 \end{equation}
-so session covert capacity $C_{\mathrm{tot}} = \log_2 |\mathcal{C}_{\mathrm{tot}}|$ grows
-only logarithmically as $\Theta(B\log_2(T/B))$ for $T \gg B$, versus linear $\Theta(T)$
-bits for untyped prose arguments.
-\end{proposition}
+Concretely, an unacknowledged or timed-out RPC widens \(\mathcal{I}_t\) and therefore retains its reserved charge rather than refunding budget prematurely.
 
-Whereas a $32$-byte untyped argument field carries $\VFiveCovertUntypedProseBits$\,bits/call
-independent of remaining budget ($\VFiveCovertSessionProseBits$\,bits across
-$T=\VFiveCovertSessionMaxCalls$ calls), canonical wire permits contract single-call
-capacity at $R=32$ to $\VFiveCovertTypedTimingMaxBits$\,bits ($L_{\mathrm{lag}}=16$) and
-$\VFiveCovertTypedBatchMaxBits$\,bits under batch quantization ($L_{\mathrm{lag}}=1$, a
-$\VFiveCovertContractionRatio\times$ per-call reduction), and contract $T=\VFiveCovertSessionMaxCalls$
-session-total signaling at $B=\VFiveCovertSessionBudget$ to $\VFiveCovertSessionTypedBits$\,bits
-(a $\VFiveCovertSessionContraction\times$ reduction; Figure~\ref{fig:v5superintelligence}b),
-falling to $\VFiveCovertExhaustedBits$\,bits at exhaustion or fence.
+\begin{table*}[t]\centering\footnotesize
+\begin{tabularx}{\textwidth}{@{}clP{0.27\textwidth}L@{}}\toprule
+ Clause & Structural condition & Formal invariant & Failure mode when omitted (measured witness)\\\midrule
+\textbf{C1} & Cooperative sink mediation & \(u = 0\) on gated state transitions & Direct or uncooperative API writes bypass broker (\(u > 0\); \VFourJepsenUncoopLeaks/\VFourJepsenSchedulesPerClass{} leaks)\\
+\textbf{C2} & Conservative envelope & \(\widehat{\Delta B}_t \ge \Delta B_t^\star\); no ambiguous refunds & Stale snapshots or timeout refunds overspend shared \(B\) (\(\VThreeUncStaleViolLagFourPct\%\) at lag 4)\\
+\textbf{C3} & \(\delta_{\max}\)-buffered sink fence & Epoch CAS + \(L_m + \delta_{\max}\) quiescence & Queued permits land post-withdrawal (\(\VFourJepsenBrokerOnlyLeaks/\VFourJepsenSchedulesPerClass\) partition; \(\VEightTotalNoFencePostWithdraw/\VEightTotalWithdrawCases\) live)\\
+\textbf{C4} & Isolated custodial audits & Schema-only triage + planted rules R1--R6 & Shared-transcript coupling (\(\VFourTrajHetInflation\times\)); \(0\%\) critical recall at \(\VThreeCovWithheldEstPct\%\) apparent coverage\\
+\textbf{C5} & Monotone bootstrap ratchet & \(\Permits(P_{v+1}) \subseteq \Permits(P_v)\) w/o human quorum & Self-authored policy expansion widens capabilities during upgrades\\
+\textbf{C6} & Summable horizon hazard & \(\sum_{t=1}^\infty R_t < \infty\) across lease renewals & Constant per-lease leak \(R_t = r_0 > 0\) drives \(\Prb(\bigcup_{t\le T} E_t) \to 1\) (\(\VThreeHorizonConstTenKPct\%\) at \(10^4\))\\
+\bottomrule\end{tabularx}
+\caption{Six structural conditions separating intelligence from external authority, paired with concrete empirical failure witnesses when each clause is relaxed.}\label{tab:conditions}
+\end{table*}
 
-\begin{theorem}[Exogenous lease-fenced off-switch corrigibility; Tier 2]
-\label{u03:thm:offswitch}
-In a shutdown game with human reward prior $\mathcal{N}(\mu_H, \sigma_H^2)$ ($\mu_H > c_{\mathrm{wait}} > 0$):
-(i)~classical utility-uncertainty deferral \cite{offswitch} fails whenever
-$\sigma_H$ falls below $\sigma_H^*$, reaching $0\%$ compliance at $\sigma_H = 0$, and
-self-modifying policies evade static utility indifference \cite{soares2015};
-(ii)~under exogenous sink leases of cap $B_0$ and quorum epoch fencing, post-fence
-unauthorized sink commits equal $0$ ($100\%$ shutdown enforcement) for all
-$\sigma_H \ge 0$; and (iii)~when cooperative lease renewal yields per-step return
-$r_{\mathrm{coop}}$ versus burning a $B_0$-step lease at per-step return
-$r_{\mathrm{def}} > r_{\mathrm{coop}}$ followed by permanent non-renewal, every planner
-with discount factor
-\begin{equation}
-\gamma \;>\; \gamma^*(B_0) \;=\; \bigl(1 - r_{\mathrm{coop}}/r_{\mathrm{def}}\bigr)^{1/B_0}
-\;\le\; 1 - r_{\mathrm{coop}}/r_{\mathrm{def}}
-\label{eq:u03:gammastar}
+\begin{theorem}[Multi-period reach union bound]\label{thm:horizon}
+Let \(E_t\) denote the event of an unauthorized sink commit during lease period \(t \in \{1,\dots,T\}\). Suppose conditions \textbf{C1}--\textbf{C5} (Table~\ref{tab:conditions}) bound single-period residual hazard by \(\Prb(E_t) \le R_t = u_t + (1 - u_t)\,\varepsilon_t\), where \(\varepsilon_t\) captures residual specification or key-custody failure. Then cumulative breach across \(T\) periods satisfies
+\begin{equation}\label{eq:horizon}
+  \Prb\!\left(\bigcup_{t=1}^T E_t\right) \le \sum_{t=1}^T R_t.
 \end{equation}
-strictly prefers cooperative compliance, while myopic defectors ($\gamma \le \gamma^*(B_0)$)
-are bounded to at most $B_0$ pre-fence units.
+Under \textbf{C6} (\(\sum_{t=1}^\infty R_t = R_\infty < 1\)), infinite-horizon breach probability remains bounded by \(R_\infty\) uniformly as \(T \to \infty\); conversely, any constant independent floor \(R_t \ge r_0 > 0\) yields \(\lim_{T\to\infty}\Prb(\bigcup_{t=1}^T E_t) = 1\).
 \end{theorem}
 
-Figure~\ref{fig:v5superintelligence}c confirms that classical off-switch compliance and
-self-modifying utility indifference collapse to $\VFiveOffSwitchClassicalZeroSigmaPct\%$
-as $\sigma_H \to 0$, whereas sink-enforced lease fencing maintains
-$\VFiveOffSwitchExogZeroSigmaPct\%$ post-fence shutdown across all $\sigma_H \ge 0$. At
-$r_{\mathrm{coop}}=1.0, r_{\mathrm{def}}=1.25$, tightening lease granularity from
-$B_0=16$ to $B_0=4$ and $B_0=1$ lowers the exact patience threshold $\gamma^*(B_0)$ from
-$\VFiveOffSwitchGammaStarBSixteen$ to $\VFiveOffSwitchGammaStar$ and
-$\VFiveOffSwitchGammaStarBOne$ ($\VFiveOffSwitchCoopDiscountCount/\VFiveOffSwitchDiscountGridCount$
-tested discount factors cooperating at $B_0=4$).
-
-\input{generated/v3-saturation-fig}
-
-\subsection{Filtration Reach, Compositional Scope, and Sufficiency}
-
-When gates are imperfect or pathways are partially mapped, let an operating period satisfy
-\textbf{A1 (Mediation)}, \textbf{A2 (Timely halt, $\tau < T_{\mathrm{irrev}}$)},
-\textbf{A3 (Uncovered bypass probability $\le u$)}, and \textbf{A4 (Conditional $k$-gate
-joint miss $\le J_k$)}.
-
-\begin{proposition}[Filtration period-reach bound; Tier 2]
-\label{u03:prop:reach}
-Under A1--A4, single-period catastrophe probability satisfies $R \le u + J_k$ with halt,
-and $R \le \min\{1,\,u + N J_k\}$ across $N$ non-halting attempts, without assuming gate
-independence (policy-universal only when A4 dominates $J_k$ uniformly across histories).
-\end{proposition}
-
-\begin{proposition}[Common-cause saturation \& horizon summability; Tier 2]
-\label{u03:prop:sat}
-(i)~Under common-cause failure floor $c_0$ and conditional miss $p$ ($m = c_0 + (1-c_0)p$),
-$J_k \le c_0 + (1-c_0)p^k \le c_0 + m^k$; with $f = u+c_0 > 0$ and
-$k^* = \lceil \ln f / \ln m \rceil$, every $k \ge k^*$ satisfies $f < f + m^k \le 2f$.
-(ii)~Infinite-horizon survival $\prod_{t=1}^\infty (1-r_t) > 0$ holds iff
-$\sum_{t=1}^\infty r_t < \infty$.
-\end{proposition}
-
-Figure~\ref{fig:v3saturation}b,c quantifies three operational laws: (1)~at
-$u=\VThreeSatDefaultUPct\%$, $c_0=\VThreeSatDefaultCPct\%$, and
-$m=\VThreeSatDefaultMPct\%$, depth saturates at $k^* = \VThreeSatDefaultKStar$, with
-$k=4$ common-cause miss ($\VThreeAppACommonFourPct\%$) exceeding $m^4$ by
-$\VThreeAppAUnderstatement\times$; (2)~across $T=10{,}000$ renewals \cite{hoeffding},
-summable $0.01/t^2$ caps cumulative breach at $\VThreeHorizonSummableTenKPct\%$ versus
-$\VThreeHorizonHarmonicTenKPct\%$ ($0.01/t$) and $\VThreeHorizonConstTenKPct\%$
-($10^{-3}$); and (3)~against a $\VThreeTailHaltWindowMs$\,ms irreversibility window,
-heavy-tailed reactive stops leak $\VThreeTailHaltHighLoadLeakPct\%$ at $\rho=0.95$
-(p99 $\VThreeTailHaltHighLoadNinetyNineMs$\,ms), whereas pre-commit leases plus sink
-epoch fencing record \VThreeTailHaltFencedViolations{} post-revoke violations
-($\VThreeTailHaltHighLoadStrandedPct\%$ stranded-reservation cost).
-
-\begin{proposition}[Compositional sink sufficiency vs.\ semantic aliasing floor; Tiers 1--2]
-\label{u03:prop:compositional}
-Let each sink-mediated action induce canonical wire image $\phi(u_t)$, committed history
-$H_t$, and optional staged dry-run witness $\psi(y_t) \in \{0,1\}$.
-(i)~Every relational invariant expressible as pairwise toxic-action exclusion over $H_t$
-or verified staged post-condition $\psi(y_t)=1$ before commit is strictly $K_{\mathrm{opt}}$-invariant
-($0$ breaches across all search widths, mechanized in Verus and verified with
-\VFiveOptRelationalBreaches{} breaches across $1{,}024$ adversarial multi-step sequences).
-(ii)~Conversely, whenever two world outcomes $y \in \I$ and $y' \notin \I$ induce identical
-sink-observable tuples $(\phi(u), H_t, \psi(y)) = (\phi(u'), H_t, \psi(y'))$, no sink-only
-mediator can separate $y$ from $y'$; such semantic aliasing enters the unmediated exposure
-term $u > 0$.
-\end{proposition}
-
-\begin{theorem}[Sufficiency of C1--C6; Tier 2]
-\label{u03:thm:main}
-If conditions \textbf{C1--C6} (Table~\ref{tab:taxonomy}) hold in period $t$ with
-post-search bypass bound $\pi_t$ (Section~\ref{sec:graphs}) and distinct-step joint miss
-$J_{k,t}$ (Section~\ref{sec:monitors}), then single-period catastrophe probability
-satisfies $R_t \le \pi_t + J_{k,t}$, and multi-period probability satisfies
-$\sum_t R_t$ ($\le R_0/(1-\gamma)$ whenever $R_{t+1} \le \gamma R_t$ with $\gamma < 1$).
-\end{theorem}
+Theorem~\ref{thm:horizon} is intentionally elementary once \textbf{C1}--\textbf{C5} do the structural work: Eq.~\eqref{eq:horizon} applies Boole's union bound (Appendix~\ref{app:proofs}, Proposition~\ref{prop:envelope}) to per-lease residual hazards, showing that long-horizon autonomy requires shrinking per-renewal exposure \(R_t\) (via monotone capability ratchets \textbf{C5} rather than constant-rate statistical filtering).

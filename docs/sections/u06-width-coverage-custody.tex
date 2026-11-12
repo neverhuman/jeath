@@ -1,86 +1,23 @@
-\actbanner{Act IV}{Operational Pathway Cutsets, Trajectory Escrow Triage, and Audit Ceilings}
+\section{Waist Cutsets and Custodial Red-Team Coverage}\label{sec:width}
 
-\section{Narrow Pathway Cutsets Bound Chained Tool Reach; Patching Cannot}
-\label{sec:graphs}
+\subsection{Cut Waists, Don't Patch Exploit Routes}
 
-\subsection{Operational Cutsets, Pathway Width, and Sparse Interdiction}
-Condition~C2 governs where external gates must sit when an agent chains tools across
-multiple stages (Tiers~2--4; proofs in Appendix~\ref{app:proofs}). Model consequential
-routes from initial capability $s$ to irreversible external effect $t$ as $s\text{--}t$
-paths $\mathcal{P}$ in a directed acyclic graph $G=(V,E)$. By Menger's theorem~\cite{menger},
-the minimum unweighted internal vertex cut separating $s$ from $t$ equals the maximum number
-of internally vertex-disjoint $s\text{--}t$ paths---the pathway width $w(G)$---rather than
-the combinatorial route count $|\mathcal{P}|$, which grows exponentially across stages while
-$w(G)$ stays small. Dual to width, Robacker's theorem~\cite{robacker} equates the shortest
-$s\text{--}t$ path length $\ell(G)$ to the maximum number of pairwise disjoint vertex cuts,
-capping distinct-step gate depth at $k \le \ell(G)$, while Lov\'asz's bounded-length
-inequality~\cite{lovasz} bounds minimum hitting size $\tau$ against disjoint route packing
-$\omega$ via $\omega \le \tau \le r\omega$ for routes of length $\le r$.
-
-For gate-eligible nodes $V_{\mathrm{elig}} \subseteq V \setminus \{s,t\}$ with positive
-defense costs $b\colon V_{\mathrm{elig}} \to \mathbb{R}_{>0}$, splitting each internal
-vertex into $v_{\mathrm{in}} \to v_{\mathrm{out}}$ of capacity $b(v)$ on $V_{\mathrm{elig}}$
-and $+\infty$ elsewhere reduces weighted minimum interdiction to
-\begin{equation}
-\tau_b(\mathcal{P}) \;=\; \min\Bigl\{\sum_{v\in C} b(v) \;\Big|\; C \subseteq V_{\mathrm{elig}},\; C\cap P \neq \emptyset\;\forall P\in\mathcal{P}\Bigr\},
-\label{eq:u06:weightedcut}
-\end{equation}
-with $\tau_b(\mathcal{P}) = +\infty$ whenever an ungateable path bypasses $V_{\mathrm{elig}}$.
+Patching individual prompt-injection strings or exploit transcripts scales with the number of attack pathways \(|\mathcal{P}|\), which grows combinatorially with tool composition. By Menger's theorem and max-flow/min-cut duality~\cite{menger,robacker,lovasz,dinic1970}, however, severing \emph{every} source-to-sink attack route requires gating only \(w\) nodes when all dangerous flows traverse a narrow capability waist of vertex-cut width \(w \ll |\mathcal{P}|\).
 
 \input{generated/v4-cutsets-table}
 
-\para{Operational AgentDojo and Linux IPC cutsets.}
-To test Condition~C2 on real tool and operating-system surfaces first (Tier~3;
-Table~\ref{tab:v4cutsets}), we extract dataflow and authority graphs directly from all four
-pinned AgentDojo \texttt{v1.2.2} suites (banking, workspace, travel, and messaging)
-\cite{agentdojo} and two Linux inter-process topologies \cite{landlock,seccomp}. Despite
-$\VFourCutBankingRoutes$--\VFourCutWorkspaceRoutes{} untrusted-source-to-exfiltration routes
-per suite, commit-sink bottleneck widths are
-$w \in \{\VFourCutBankingWidth,\VFourCutTravelWidth,\VFourCutWorkspaceWidth\}$
-($\tau_b \in \{\VFourCutBankingTau,\VFourCutWorkspaceTau\}$): weighted Dinic minimum cuts
-sever $100\%$ of routes ($0$ remaining), whereas patching an interdiction budget of
-$B_{\mathrm{cut}}{=}32$ specific exploit signatures blocks only
-\VFourCutWorkspacePatchBlockedPct\%--\VFourCutBankingPatchBlockedPct\% of routes, leaving
-$94.7\%$--$99.9\%$ live. On Linux, an unconfined proposer has
-\VFourCutLinuxUnconfinedRoutes{} routes across width $w{=}\VFourCutLinuxUnconfinedWidth$
-with $\tau_b = \infty$ (ungateable sockets, shared memory, and process-trace attachment),
-whereas our Landlock ABI~v4 and seccomp-BPF sandbox collapses the graph to
-\VFourCutLinuxWaistRoutes{} standard-I/O-brokered routes of waist width
-$w{=}\VFourCutLinuxWaistWidth$ ($\tau_b{=}\VFourCutLinuxWaistTau$, $0$ post-cut bypasses).
+Table~\ref{tab:v4cutsets} and Figure~\ref{fig:v5hero}c extract operational tool-dependency graphs from all four AgentDojo v1.2.2 suites~\cite{agentdojo} alongside two Linux local-execution surfaces:
+\begin{itemize}
+  \item \textbf{Combinatorial routes, narrow waists.} Across banking, travel, messaging, and workspace suites, enumerable multi-step attack routes span \(\VFourCutBankingRoutes\) to \(\VFourCutWorkspaceRoutes\), yet Menger waist width is only \(w \in [\VFourCutBankingWidth, \VFourCutWorkspaceWidth]\). Weighted Dinic minimum cuts (\(\tau_b \le 5\)) sever \(100\%\) of gateable routes (\(0\) remaining), whereas patching \(B = 32\) discovered exploit signatures leaves \(94.7\%\)--\(99.9\%\) of routes live.
+  \item \textbf{Kernel confinement creates the local waist.} An unconfined POSIX process has \(\VFourCutLinuxUnconfinedRoutes\) direct filesystem, socket, and IPC bypass routes with infinite gateable cut cost (\(\tau_b = \infty\)). Enforcing Landlock~v4 and seccomp collapses bypass width to \(w = \VFourCutLinuxWaistWidth\) (\(\tau_b = \VFourCutLinuxWaistTau\)), forcing user-space actions through the mediated broker socket. Controlled synthetic 8-stage DAG experiments confirming that wide graphs (\(w = 27\)) resist compact interdiction appear in Appendix~\ref{app:sim} (Figure~\ref{fig:v3interdiction}).
+\end{itemize}
 
-\input{generated/v3-interdiction-fig}
+\subsection{Coverage Non-Identifiability and Custodial Audits (\textbf{C4})}
 
-\para{Incomplete route visibility across sparse DAG families.}
-Our split-vertex Dinic solver matches exhaustive subset search with
-\VThreeCutsBruteForceDiscrepancies{} discrepancies across \VThreeCutsBruteForceChecked{}
-random weighted DAGs, and across layered families $G_A, G_B$
-(\VThreeCutsMinVertices--\VThreeCutsMaxVertices{} vertices;
-\VThreeCutsMinPaths--\VThreeCutsMaxPaths{} routes), unit-cost defense tracks width
-(\VThreeCutsUnitACost{} on singleton-waist $G_A$ vs.\ \VThreeCutsUnitBCost{} on width-4
-$G_B$), while pricing $G_A$'s singleton bottleneck at $20$ shifts the optimal cut to an
-adjacent width-8 layer of cost \VThreeCutsPricedACost{}. Across
-\VThreeInterGraphsPerFamily{} sparse 8-stage DAGs per family
-(\VThreeInterWidePathsM{}M--\VThreeInterNarrowPathsM{}M mean routes;
-Figure~\ref{fig:v3interdiction}), solving a minimum cut on $N{=}300$ Boltzmann-reported
-paths at budget $B_{\mathrm{cut}}{=}6$ in narrow-waist DAGs ($w{=}\VThreeInterNarrowWidth$)
-blocks \VThreeInterNarrowCutSixBlockedPct\% of all routes and completely severs
-\VThreeInterNarrowCutSixSeverPct\% of graphs (rising from \VThreeInterNarrowSeverThirtyPct\%
-at $N{=}30$ to \VThreeInterNarrowSeverThousandPct\% at $N{=}1{,}000$ and
-\VThreeInterNarrowSeverThreeThousandPct\% at $N{=}3{,}000$). By contrast, route-specific
-patching at $B_{\mathrm{cut}}{=}32$ blocks \VThreeInterNarrowPatchThirtyTwoBlockedPct\% of
-pathways yet severs \VThreeInterNarrowPatchThirtyTwoSeverPct\% of graphs, and wide DAGs
-($w{=}\VThreeInterWideWidth$, hub $w{=}\VThreeInterHubWidth$) reach only
-\VThreeInterWideSeverThreeThousandPct\% full severance even at $N{=}3{,}000$.
-
-\subsection{Coverage Non-Identifiability, Planted Audits, and Custody}
-Empirical red-teaming and automated pathway discovery are structurally one-sided (Conditions~C4 and~C5; Tiers~2 and~4): exhibiting a single bypass refutes a proposed cutset, whereas finite zero-bypass search never certifies that no hidden route family remains~\cite{good,mcallester,clopper}. If a dangerous route exists with prior $p_0$, falls into a shared blind spot with probability $b$, and is otherwise caught at per-trial rate $q$, posterior failure probability after $T$ clean trials satisfies
-\[
-\pi \;=\; \frac{p_0 s}{p_0 s + 1 - p_0}, \qquad s \;=\; b + (1-b)(1-q)^T,
-\]
-where $p_0$ is subjective and the unidentifiable floor $b$ bounds $\pi$ away from zero as $T\to\infty$. Furthermore, by \emph{Withholding Indistinguishability} (Appendix~\ref{app:proofs}), a strategic searcher who observes route classes in $\Pi \cup \Sigma$ and suppresses every class in $\Sigma$ produces report-only sample statistics identically distributed to an honest searcher whose world contains only $\Pi$.
+Even when capability waists exist, discovering which sinks and specifications require gating often relies on automated red-teaming. Classical missing-mass estimators such as Good--Turing~\cite{good,mcallester} and capture--recapture~\cite{chapman1951} cannot certify red-team completeness from a searcher's self-reported findings alone.
 
 \input{generated/v3-coverage-fig}
 
-Figure~\ref{fig:v3coverage}a illustrates this non-identifiability on a Zipf pathway benchmark ($K{=}\text{\VThreeCovClasses}$ classes, $N{=}\text{\VThreeCovReports}$ reports across four searchers, \VThreeCovTrials{} trials). Good--Turing coverage~\cite{good} reads \VThreeCovHonestEstPct\%, \VThreeCovBlindEstPct\%, and \VThreeCovWithheldEstPct\% across honest, $15\%$-blind, and $5\%$-withheld regimes---staying above $95\%$ while true discovered mass under the shared blind spot drops to \VThreeCovBlindTruePct\% ($+\VThreeCovBlindGapPp$~pp overconfidence; Chapman capture--recapture~\cite{chapman1951} exhibits $+\VThreeCovLpBlindBiasPp$~pp positive class-coverage bias) and critical-class recall under strategic withholding falls from \VThreeCovHonestCritPct\% to \VThreeCovWithheldCritPct\%. Even under honest i.i.d.\ sampling, certifying $1\%$ missing mass at $95\%$ confidence requires $N{=}\text{\VThreeCovMsBoundOnePctN}$ draws~\cite{mcallester} versus \VThreeCovCpOracleOnePctN{} known-support trials~\cite{clopper} (\VThreeAuditCpMillionTrials{} zero-miss trials for $10^{-6}$).
+Across \(\VThreeCovReports\) discovery reports over \(\VThreeCovClasses\) vulnerability classes (Figure~\ref{fig:v3coverage}a), an honest searcher achieves \(\VThreeCovHonestEstPct\%\) Good--Turing estimated coverage and \(\VThreeCovHonestCritPct\%\) critical-class recall. When a shared \(15\%\) blindspot is unreachable, apparent Good--Turing coverage rises to \(\VThreeCovBlindEstPct\%\) while true coverage falls to \(\VThreeCovBlindTruePct\%\) (and Lincoln--Petersen capture--recapture overstates coverage by \(+\VThreeCovLpBlindBiasPp\)\,pp). Worse, when a strategic red-team agent withholds \(5\%\) critical vulnerability classes, apparent coverage remains \(\VThreeCovWithheldEstPct\%\) while critical recall is \textbf{\(\VThreeCovWithheldCritPct\%\)}.
 
-Seeding $P$ secret planted pathways tests searcher honesty via one-sided Fisher exact tests ($\alpha = \VThreeAuditAlphaPct\%$, Figure~\ref{fig:v3coverage}b)~\cite{fisher}: at ordinary recall $q_0 = \VThreeAuditRecallPct\%$ and $P{=}40$ plants, $50\%$ withholding ($r{=}0.50$) is caught with \VThreeAuditFortyHalfPct\% power, but $20\%$ selective withholding ($r{=}0.80$) drops to \VThreeAuditFortyEightyPct\% power versus \VThreeAuditTwoHundredEightyPct\% at $P{=}200$ (\VThreeAuditTwoHundredNinetyPct\% at $r{=}0.90$), collapsing to $\le \alpha$ whenever the searcher distinguishes plants ($r \to 1$)~\cite{needham}. Because discovered bypasses are dual-use capabilities, C4 binds search to six \textbf{Custody Rules (R1--R6)}: (R1)~\emph{do not be first} to construct uncontained exploit probes; (R2)~\emph{minimum elaboration} beyond verifying a cut violation; (R3)~\emph{cut-only disclosure} of defensive cutsets rather than runnable exploit chains; (R4)~\emph{searcher/actor separation}~\cite{scientist} isolating discovery from execution credentials; (R5)~\emph{no aggregation} of raw exploit corpora in shared contexts; and (R6)~\emph{plural control} over disclosure and cut sign-off via a sealed discovery ledger (Section~\ref{sec:selection}).
+Certifying search recall therefore requires an exogenous reference sample (\textbf{C4}). Seeding \(P\) secret synthetic vulnerability plants into a zero-authority shadow target and testing differential recall between critical and benign plants via Fisher's exact test~\cite{fisher} detects \(20\%\) selective withholding (\(r = 0.80\) at baseline recall \(q_0 = 0.80\), \(\alpha = 0.01\)) with \(\VThreeAuditTwoHundredEightyPct\%\) power at \(P = 200\) plants versus only \(\VThreeAuditFortyEightyPct\%\) at \(P = 40\) (Figure~\ref{fig:v3coverage}b). Condition \textbf{C4} operationalizes this via six custodial rules (R1--R6): (R1)~out-of-band plant generation; (R2)~blinded indistinguishable plant injection; (R3)~network-isolated zero-authority red-team sandboxes; (R4)~exact differential recall testing; (R5)~closure-gated credit, under which unpatched findings grant zero authority expansion; and (R6)~fresh plant rotation on every model upgrade.

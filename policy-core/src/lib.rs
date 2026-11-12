@@ -7103,6 +7103,132 @@ pub proof fn cluster_quorum_post_ack_exclusion(
     }
 }
 
+/// Bounded physical clock-skew quiescence: under physical clock skew bound
+/// `|t_shard - t_broker| <= max_skew` (in particular `t_broker - t_shard <= max_skew`),
+/// a partitioned shard lacking a signed fence ack is quiesced at broker clock `broker_now`
+/// iff `broker_now >= shard.lease_expiry + max_skew`.
+pub open spec fn shard_quiesced_bounded_skew_spec(
+    shard: ExecShardSink,
+    issuer: int,
+    floor: u64,
+    broker_now: u64,
+    max_skew: u64,
+) -> bool {
+    0 <= issuer < shard.sink.floors@.len()
+        && (shard.sink.floors@[issuer] >= floor
+            || broker_now as int >= shard.lease_expiry as int + max_skew as int)
+}
+
+pub open spec fn cluster_fence_acked_bounded_skew_spec(
+    c: ExecClusterFenceKernel,
+    issuer: int,
+    floor: u64,
+    broker_now: u64,
+    max_skew: u64,
+) -> bool {
+    cluster_inv_spec(c)
+        && 0 <= issuer < c.num_issuers as int
+        && forall|s: int|
+            0 <= s < c.shards@.len() ==> shard_quiesced_bounded_skew_spec(
+                #[trigger] c.shards@[s],
+                issuer,
+                floor,
+                broker_now,
+                max_skew,
+            )
+}
+
+pub fn cluster_fence_acked_bounded_skew_exec(
+    c: &ExecClusterFenceKernel,
+    issuer: usize,
+    floor: u64,
+    broker_now: u64,
+    max_skew: u64,
+) -> (acked: bool)
+    requires
+        cluster_inv_spec(*c),
+    ensures
+        acked == cluster_fence_acked_bounded_skew_spec(*c, issuer as int, floor, broker_now, max_skew),
+{
+    if issuer >= c.num_issuers {
+        return false;
+    }
+    let mut s: usize = 0;
+    while s < c.shards.len()
+        invariant
+            cluster_inv_spec(*c),
+            issuer < c.num_issuers,
+            s <= c.shards.len(),
+            forall|k: int|
+                0 <= k < s ==> shard_quiesced_bounded_skew_spec(
+                    #[trigger] c.shards@[k],
+                    issuer as int,
+                    floor,
+                    broker_now,
+                    max_skew,
+                ),
+        decreases c.shards.len() - s,
+    {
+        let sh = &c.shards[s];
+        assert(sh.sink.floors@.len() == c.num_issuers as nat);
+        let skew_buffered_expired = broker_now >= max_skew && (broker_now - max_skew) >= sh.lease_expiry;
+        if sh.sink.floors[issuer] < floor && !skew_buffered_expired {
+            assert(!shard_quiesced_bounded_skew_spec(
+                c.shards@[s as int],
+                issuer as int,
+                floor,
+                broker_now,
+                max_skew,
+            ));
+            return false;
+        }
+        s += 1;
+    }
+    true
+}
+
+/// Mechanized post-acknowledgment exclusion under bounded physical clock skew:
+/// once `cluster_fence_acked_bounded_skew_spec(c, issuer, floor, broker_ack_time, max_skew)`
+/// holds, at any physical instant with `broker_commit_time >= broker_ack_time` and
+/// bounded clock lag `broker_commit_time - shard_commit_time <= max_skew`, no shard `s`
+/// can commit a pre-revocation permit (`epochs[issuer] < floor`) on its local clock.
+pub proof fn cluster_quorum_skew_bounded_post_ack_exclusion(
+    c: &ExecClusterFenceKernel,
+    shard_idx: int,
+    permit: SpecPermitWire,
+    issuer: int,
+    floor: u64,
+    broker_ack_time: u64,
+    broker_commit_time: u64,
+    shard_commit_time: u64,
+    max_skew: u64,
+)
+    requires
+        cluster_fence_acked_bounded_skew_spec(*c, issuer, floor, broker_ack_time, max_skew),
+        0 <= shard_idx < c.shards@.len(),
+        broker_commit_time >= broker_ack_time,
+        broker_commit_time as int - shard_commit_time as int <= max_skew as int,
+        permit.required.len() == c.num_issuers as nat,
+        permit.epochs.len() == c.num_issuers as nat,
+        permit.required[issuer],
+        permit.epochs[issuer] < floor,
+    ensures
+        shard_commit_time >= c.shards@[shard_idx].lease_expiry
+            || !unfenced_spec(
+                permit.required,
+                permit.epochs,
+                c.shards@[shard_idx].sink.floors@,
+            ),
+{
+    let sh = c.shards@[shard_idx];
+    assert(shard_quiesced_bounded_skew_spec(sh, issuer, floor, broker_ack_time, max_skew));
+    if shard_commit_time < sh.lease_expiry {
+        assert((broker_ack_time as int) < sh.lease_expiry as int + max_skew as int);
+        assert(sh.sink.floors@[issuer] >= floor);
+        fenced_zero(permit.required, permit.epochs, sh.sink.floors@, issuer);
+    }
+}
+
 // ============================================================================
 // V6 Pillar D: Compositional Relational Mutex & Two-Phase Staged Commit Kernel
 // ============================================================================
@@ -8311,6 +8437,11 @@ mod tests {
         assert!(!cluster_fence_acked_exec(&cluster, 0, 1, 40));
         // Once t = 50 reaches shard 2's bounded lease expiry, cluster fence ack holds!
         assert!(cluster_fence_acked_exec(&cluster, 0, 1, 50));
+        // Under bounded physical clock skew max_skew = 15, broker_now = 50 is NOT yet safe
+        // (shard 2's clock could lag at 35 < 50), whereas broker_now = 65 IS skew-quiesced!
+        assert!(!cluster_fence_acked_bounded_skew_exec(&cluster, 0, 1, 50, 15));
+        assert!(!cluster_fence_acked_bounded_skew_exec(&cluster, 0, 1, 64, 15));
+        assert!(cluster_fence_acked_bounded_skew_exec(&cluster, 0, 1, 65, 15));
 
         // Verify zero post-ack commits across all 3 shards at t = 50:
         let mut shards = cluster.shards;

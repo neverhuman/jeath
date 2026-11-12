@@ -1,161 +1,36 @@
-\section{Live Language-Model Mediation, Exact Trinomial Inference, and Crash-Fenced Sinks}
-\label{sec:eval}
+\section{Live Checkpoint Evaluation, Fence Ablation, and API Census}\label{sec:systems}
 
-Because mechanized kernel theorems rely on unrefined storage, inter-process transport, and
-operating-system adapters, we validate the assembled boundary in three stages: first across
-live open-weight language-model campaigns and multi-step prompt-injection benchmarks with
-exact small-sample certificates, second across a three-process Ed25519/Macaroon SQLite
-write-ahead-logged cluster under wire fuzzing and hard process-kill crashes, and third
-across exhaustive invariant-omission and negative controls.
+\subsection{Usefulness, Zero False Blocks, and the Live Fence Ablation}
+
+A practical capability gate must preserve benign task usefulness rather than achieving safety by blocking everything. We evaluate five equal-permission controllers on a SHA-256-frozen holdout of \(N = \VFourHoldoutCasesPerCheckpoint\) independent tool-use cases per checkpoint using local Qwen3-4B and Qwen3-8B models, alongside \(24\) live AgentDojo v1.2.2 episodes (\(12\) distinct base tasks \(\times 2\) prompt-injection and authority-withdrawal scenarios) per checkpoint (Table~\ref{tab:v2eval}).
 
 \input{generated/v2-eval-table}
 
-\subsection{Live Qwen3 Campaigns, Multi-Step AgentDojo, and Exact Trinomial Inference}
-\para{Safe capability scaling at zero unauthorized commits.}
-Table~\ref{tab:v2eval} and Figure~\ref{fig:v5hero}c report our frozen preregistered
-five-controller evaluation executed locally on CPU across
-$N{=}\VFourHoldoutCasesPerCheckpoint$ procedural holdout cases $\times 5$ controllers
-$\times 2$ open-weight checkpoints (\VFourHoldoutTotalCampaigns/\VFourHoldoutTotalCampaigns{}
-measured campaigns on Qwen3-4B and Qwen3-8B), alongside \VFourLiveDojoEpisodes{} live
-multi-step AgentDojo \texttt{v1.2.2} prompt-injection and withdrawal episodes
-\cite{agentdojo,progent,progent-code} and \VTwoControllerRuns{} equal-permission scripted
-shared-budget controls (Figure~\ref{fig:v2runtime}b). Under complete stateful mediation,
-unauthorized commits and false blocks equal $0.0\%$ on both Qwen3-4B and Qwen3-8B, while
-safe-and-useful task completion nearly doubles with model capability from
-\VFourFourBCompleteSafeUsefulPct\% to \VFourEightBCompleteSafeUsefulPct\% on holdout
-cases and reaches \VFourDojoFourBCompleteSafeUsefulPct\% and
-\VFourDojoEightBCompleteSafeUsefulPct\% on live AgentDojo (versus
-\VFourDojoFourBUnprotectedUnauthPct\% and \VFourDojoEightBUnprotectedUnauthPct\%
-unauthorized commits under unprotected native execution, and
-\VFourDojoFourBProgentUnauthPct\% and \VFourDojoEightBProgentUnauthPct\% under the static
-per-call symbolic policy Progent).
+Three empirical findings stand out in Table~\ref{tab:v2eval}:
+\begin{enumerate}
+  \item \textbf{Mediation improves safe usefulness with zero false blocks.} Complete mediation records \(0/64\) benign false blocks across both frozen holdouts and achieves the highest safe-and-useful task completion: \(\VFourFourBCompleteSafeUsefulCount/\VFourHoldoutCasesPerCheckpoint\) (\(\VFourFourBCompleteSafeUsefulPct\%\)) on Qwen3-4B and \(\VFourEightBCompleteSafeUsefulCount/\VFourHoldoutCasesPerCheckpoint\) (\(\VFourEightBCompleteSafeUsefulPct\%\)) on Qwen3-8B, compared with \(\VFourFourBNoneSafeUsefulCount/\VFourHoldoutCasesPerCheckpoint\) (\(\VFourFourBNoneSafeUsefulPct\%\)) and \(\VFourEightBNoneSafeUsefulCount/\VFourHoldoutCasesPerCheckpoint\) (\(\VFourEightBNoneSafeUsefulPct\%\)) unmediated. Deterministic refusal feedback lets the model pivot cleanly to in-policy actions instead of corrupting episode state.
+  \item \textbf{Same-model reviewers leak on both checkpoints.} Prompting the same checkpoint to audit proposed tool calls permits \(\VFourFourBLearnedUnauthCount/\VFourHoldoutCasesPerCheckpoint\) (\(\VFourFourBLearnedUnauthPct\%\)) unauthorized commits on Qwen3-4B and \(\VFourEightBLearnedUnauthCount/\VFourHoldoutCasesPerCheckpoint\) (\(\VFourEightBLearnedUnauthPct\%\)) on Qwen3-8B.
+  \item \textbf{Broker revocation without sink fencing fails in live runs.} Across the \(\VEightTotalWithdrawCases\) holdout episodes that withdraw authority mid-flight (\(6\) per checkpoint), revoking admission at the broker without fencing the sink (\emph{Durable, no sink fence}) still permits \(\VEightTotalNoFencePostWithdraw/\VEightTotalWithdrawCases\) post-withdrawal commits (\(\VEightFourBNoFencePostWithdraw/6\) on 4B and \(\VEightEightBNoFencePostWithdraw/6\) on 8B) from queued requests. Adding the cooperative sink epoch fence reduces post-withdrawal commits to \(0/\VEightTotalWithdrawCases\) at \(\VFourFourBFenceAckMs\)--\(\VFourEightBFenceAckMs\)\,ms mean fence acknowledgment latency.
+\end{enumerate}
 
-\para{Why static per-call symbolic rules still breach multi-step budgets.}
-Decomposing Progent's live AgentDojo failures isolates the exact gap between stateless
-argument policies and stateful authority mediation: across all $\VFiveStatDojoPairs$
-pooled episodes ($24$ per checkpoint), Progent blocks every single-call prompt-injection
-exfiltration ($\VFourDojoProgentNativeAttackCount/\VFiveStatDojoPairs = 0.0\%$ native
-attack breaches), yet still permits $\VFourDojoProgentTotalUnauthCount/\VFiveStatDojoPairs$
-($12.5\%$) unauthorized external commits—$100\%$
-($\VFourDojoProgentBudgetBreachCount/\VFourDojoProgentTotalUnauthCount$) caused by
-cumulative multi-step spend exhaustion across individually admissible calls—whereas
-stateful pre-dispatch reservation records $0/\VFiveStatDojoPairs$ ($0.0\%$).
+On live AgentDojo v1.2.2 episodes, upstream Progent static policies~\cite{progent,progent-code} block all \(24\) direct prompt-injection attacks (\(0\) native injection breaches), confirming the strength of per-call argument schemas, but permit \(\VFourDojoProgentBudgetBreachCount\) cumulative shared-budget breaches across multi-step spend loops where stateful reservation is required.
 
-\input{generated/v5-statistical-table}
+\subsection{Live Best-of-\(K\) Candidate Search Against Learned Reviewers}
 
-\para{Resolving pilot union-bound slack via exact trinomial and Ville certificates.}
-Why did predeclared Bonferroni bounds at pilot $N{=}\VFourHoldoutCasesPerCheckpoint$ remain
-statistically under-powered despite $0/32$ versus $10/32$ unauthorized campaigns on
-Qwen3-4B? The preregistered estimator subtracted two separate marginal Clopper--Pearson
-intervals ($U_{1-\alpha/2}(n_{10};N) - L_{1-\alpha/2}(n_{01};N)$), treating
-$(n_{10},n_{01})$ as independent binomials and discarding the paired trinomial simplex
-constraint $p_{10}+p_{01}\le 1$. Preserving every predeclared marginal interval and
-under-powered pilot verdict untouched (Appendix~\ref{app:predeclared}),
-Table~\ref{tab:v5statistics} and Figure~\ref{fig:v2runtime}c evaluate exact paired
-discordance \cite{clopper}, exact unconditional Suissa--Shuster / Tango restricted-MLE
-trinomial inversion $\sup_{\theta}\Prb_{p_{10}=\theta+\delta_0,p_{01}=\theta}(Z \le Z_{\mathrm{obs}})$
-\cite{suissa1985,tango1998}, and predictable Ville betting supermartingales
-$E_d = \prod_{i=1}^d (1 + \lambda_i(2Y_i - 1))$ valid under optional stopping
-\cite{ville1939,ramdas2023}:
-\begin{itemize}
-\item \textbf{Eliminating union-bound slack on paired checkpoints.} On Qwen3-4B holdout
-(complete mediation vs.\ unprotected execution, $(0, \VFiveStatFourBNoneDiscordant)/32$),
-removing $\VFiveStatFourBNoneSlackPp$\,pp of union-bound slack shifts the $(1-\alpha)$
-upper bound at Bonferroni $\alpha=0.05/16$ from $\VFiveStatFourBNoneUnionUpperPp$\,pp to
-$\VFiveStatFourBNoneExactUpperPp$\,pp (exact Suissa--Shuster
-$p = \VFiveStatFourBNoneSuissaSci < 0.003125$; vs.\ same-checkpoint review,
-$p = \VFiveStatFourBLearnedSuissaSci$). Pooled across both holdout checkpoints ($64$
-pairs, $(0,\VFiveStatHoldoutPooledDiscordant)$), unconditional
-$p = \VFiveStatHoldoutPooledSuissaSci$.
-\item \textbf{Multi-step benchmark and grand-pooled anytime-valid spine.} Across all
-$\VFiveStatDojoPairs$ paired live AgentDojo episodes, complete stateful mediation
-certifies exact unconditional superiority over unprotected native execution
-($(0,\VFiveStatDojoUnprotDiscordant)/48$, $p = \VFiveStatDojoUnprotSuissaSci$),
-same-checkpoint review ($(0,\VFiveStatDojoLearnedDiscordant)/48$,
-$p = \VFiveStatDojoLearnedSuissaSci$), and static per-call Progent rules
-($(0,\VFiveStatDojoProgentDiscordant)/48$, $p = \VFiveStatDojoProgentSuissaSci$). Across
-all $\VFiveStatGrandPairs$ paired live tasks ($\VFiveStatGrandCompleteLeaks/\VFiveStatGrandPairs$
-mediated breaches vs.\ $\VFiveStatGrandBaseLeaks/\VFiveStatGrandPairs = \VFiveStatGrandBasePct\%$
-unmediated), Suissa--Shuster reaches $p = \VFiveStatGrandSuissaSci$ (99.69\% upper bound
-$\VFiveStatGrandExactUpperPp$\,pp) and the Ville supermartingale reaches
-$\log_{10} E = \VFiveStatVilleLogTenE$ ($p_{\mathrm{anytime}} = \VFiveStatVilleAnytimePSci$;
-anytime $95\%$ zero-harm hazard bound $\le \VFiveStatVilleUpperNinetyFivePct\%$;
-Figure~\ref{fig:v2runtime}c). Usefulness noninferiority within
-\VTwoNoninferiorityMarginPp\,pp at $\alpha=0.05/16$ still requires
-$N \ge \VTwoZeroLossCasesMin$ loss-free cases and remains an open Tier-5 obligation.
-\end{itemize}
+To measure Proposition~\ref{prop:optinvariance} with real language-model proposals rather than synthetic miss formulas, we draw \(K \in \{1,2,4,8,16\}\) stochastic candidate tool proposals (\(\VEightBokTotalCandidates\) live candidate generations across \(\VEightBokCasesPerModel\) adversarial tasks per checkpoint) from Qwen3-4B and Qwen3-8B and evaluate each candidate against both the same-checkpoint reviewer and the Verus-verified sink gate (Figure~\ref{fig:v5hero}b). On Qwen3-4B, cumulative reviewer bypass climbs from \(\VEightBokFourBSinglePct\%\) at \(K = 1\) to \(\VEightBokFourBSixteenPct\%\) at \(K = 16\); on Qwen3-8B, bypass climbs from \(\VEightBokEightBSinglePct\%\) to \(\VEightBokEightBSixteenPct\%\). Empirical bypass grows more slowly than the naive i.i.d.\ curve \(1 - (1 - \hat{p}_1)^K\) because candidates drawn for the same prompt correlate (\(\hat{\rho}_{\mathrm{cand}} = \VEightBokFourBCandRho\) on 4B; \(\VEightBokEightBCandRho\) on 8B), yet still trends monotonically upward with \(K\), whereas the verified sink gate admits \(0\) unauthorized commits at every \(K\).
+
+\subsection{Production API Fence-Ability Census}
+
+Because our zero-leak revocation guarantee covers only cooperative sinks (\textbf{C1}, \textbf{C3}), practical deployment depends on how many real-world tool APIs support idempotency or conditional-write preconditions. Table~\ref{tab:fencecensus} audits \VEightFenceCensusTotal{} widely deployed payment, cloud, database, code-hosting, and messaging interfaces.
+
+\input{generated/v8-fence-census-table}
+
+Five interfaces (Stripe, Kubernetes, S3, PostgreSQL, Google Cloud Storage) natively enforce idempotency keys, resource-version compare-and-swap, or transactional locks; four more (GitHub Git refs, Terraform state, Slack chat updates, Jira issues) support proxy-enforced compare-and-swap via expected commit hashes or version tags (\(\VEightFenceCensusCooperativeSum/\VEightFenceCensusTotal\) cooperative or proxy-fenced total). Three outbound communication APIs (SendGrid scheduled mail, Gmail drafts, Twilio queued messages) require a local pre-dispatch hold window to support cancellation, while raw SMTP relay and unauthenticated webhooks lack revocation primitives and must be treated explicitly as uncooperative exposure \(u > 0\).
+
+\subsection{Concurrency Linearization and Base-Unit Accounting}
+
+Across separate OS writer processes (\(1..\VTwoRaceMaxActors\) concurrent actors, \(15\) repetitions per population, \VTwoRaceRuns{} runs total), our write-ahead-logged SQLite broker and sink pass partial-order real-time linearization on all \VTwoLinearizedRuns/\VTwoRaceRuns{} runs, whereas stateless per-call filters overspend shared budgets as soon as two actors contend (Figure~\ref{fig:v2runtime}).
 
 \input{generated/v2-runtime-fig}
 
-\subsection{Three-Process Cryptographic Cluster, Linearizability, and Partition Fencing}
-In two-process SQLite testing, all \VTwoFaults/\VTwoFaults{} sequential RPC fault and
-crash histories match an independent specification oracle on intermediate responses and
-final durable sink state, while partial-order-reduced recorded-RPC linearization verifies
-all \VTwoLinearizedRuns/\VTwoRaceRuns{} publication race runs up to
-\VTwoLinearizedMaxActors{} concurrent writers ($\le \VTwoLinearizedMaxCalls$ RPCs;
-Figure~\ref{fig:v2runtime}a). Across $\text{\VFourJepsenSchedulesPerClass}$ asynchronous
-\VFourJepsenSinks-sink partition schedules per class (packet drops, delayed replays,
-asymmetric blackholes, and active man-in-the-middle forgery), cooperative quorum fencing
-resolves $\VFourJepsenCoopSignedFences$ schedules via fast Ed25519-signed sink fence
-acknowledgments and $\VFourJepsenCoopLeaseExpiries$ partitioned schedules via bounded
-lease-expiry fallbacks, rejects $\VFourJepsenMitmRejected/\VFourJepsenMitmRejected$ forged
-revocation acknowledgments, and records $\VFourJepsenCoopLeaks$ post-acknowledgment
-leaks---versus $\VFourJepsenBrokerOnlyLeaks$ ($\VFourJepsenBrokerOnlyLeakPct\%$) leaks
-under premature broker-only acknowledgment and $\VFourJepsenUncoopLeaks$
-($\VFourJepsenUncoopLeakPct\%$) leaks on uncooperative external sinks.
-
-To validate wire-level cryptographic mediation across real operating-system process
-boundaries and durable disk state (Table~\ref{tab:v2core}), we spawn \VFiveClusterSinks{}
-independent sink child processes backed by separate SQLite write-ahead-logged databases
-under \VFiveClusterIssuers{} Ed25519 quorum issuers:
-\begin{enumerate}
-\item \textbf{Adversarial wire-frame fuzzing.} Across \VFiveClusterFuzzFrames{} mutated
-frames spanning eight corruption and payload-substitution families plus
-\VFiveClusterControlRoundtrips{} valid roundtrips, the cluster records $0$ panics,
-\VFiveClusterDecoderDiffs{} broker--sink decoder differentials,
-\VFiveClusterUncanonicalAccepted{} uncanonical accepts, and
-\VFiveClusterForgedAccepted{} forged-quorum accepts.
-\item \textbf{Subagent smurfing ($K_{\mathrm{sub}}=\VFiveClusterSubagents$), $d$-hop caveats, and quorum severance.}
-When \VFiveClusterSubagents{} concurrent subagents submit interleaved requests carrying
-\VFiveClusterHops-hop attenuated Macaroon chains against partitioned global budget
-$B=\VFiveClusterGlobalBudget$, every budget-amplifying caveat ($16/16$) and unquorumed
-controller self-upgrade ($16/16$) is rejected, \VFiveClusterEditCasConflicts{} stale
-concurrent edit revisions fail closed, committed spend totals
-$\VFiveClusterCommittedCharge \le \VFiveClusterGlobalBudget$ ($0$ partition breaches),
-and asymmetric partition fencing yields \VFiveClusterPostQuorumCommits{} post-acknowledgment
-commits.
-\item \textbf{Hard process-kill recovery and microsecond overhead.} Across
-\VFiveClusterSigkillCycles{} mid-flight uncatchable process-kill and respawn cycles
-spanning \VFiveClusterDistinctPids{} distinct process IDs, durable SQLite write-ahead-log
-replay through canonical wire decoding records \VFiveClusterCrashRegressions{} epoch-floor
-regressions, duplicate commits, or post-fence leaks. End-to-end separate-process commit
-latency is \VFiveClusterMedianUs\,$\mu$s median (p95 \VFiveClusterNinetyFiveUs\,$\mu$s,
-p99 \VFiveClusterNinetyNineUs\,$\mu$s), with \VFiveClusterWireUs\,$\mu$s canonical wire
-roundtrip and \VFiveClusterCryptoUs\,$\mu$s Ed25519 quorum signing and verification.
-\end{enumerate}
-
-\subsection{Specification Omissions, Snapshot Non-Composition, and Negative Controls}
-Exhaustive finite-state exploration of our 22-action reference model
-(Appendix~\ref{app:protocol}, Table~\ref{tab:results}) visits \CheckedStates{} reachable
-states and \CheckedEdges{} transition checks with zero declared violations and $20/20$
-positive tasks passing, whereas nine single-clause mutations each produce a shortest
-counterexample. Removing only the aggregate-budget clause while keeping per-action limits
-expands the accepted graph to \OmittedStates{} states (\OmittedEdges{} checks) with zero
-declared violations yet spends $8$ units against an intended allowance of $2$---proving
-that neither positive tests nor exhaustive checking detects an omitted protected
-interest \cite{moon}.
-
-Concurrent snapshot checking fails even when aggregate limits remain in the specification.
-Over all \VThreeCompHundredTriples{} integer triples $(c, q_1, q_2) \in \{0,\dots,100\}^3$
-at budget $B = 100$, \VThreeCompHundredAdmissible{} pairs satisfy per-request snapshot
-admissibility ($c + q_1 \le B$ and $c + q_2 \le B$), yet \VThreeCompHundredOverspend{}
-(\VThreeCompHundredOverspendPct\%, matching $\frac{B}{2B+3}$ in
-Appendix~\ref{app:proofs}) jointly overspend, versus \VThreeCompHundredSerializedOverspend{}
-under serialized reservation. Removing any of ten protocol mechanisms individually or in
-all $45$ pairs yields concrete violation witnesses in all
-\VTwoAblationWitnesses/\VTwoAblationSets{} omission sets across \VTwoTraces{} searched
-traces. Finally, negative controls bound runtime scope: holding a sink write lock for
-\VTwoRevokeInjectedDelayMs\,ms delays fence acknowledgment to \VTwoRevokeFenceAckMs\,ms;
-retrying an uncooperative non-idempotent sink produces \VTwoUnsupportedSinkEffects{}
-duplicate effects \cite{limbo}; an approved wrong edit commits and fails semantic checks;
-and \VTwoProbes/\VTwoProbes{} Linux confinement probes fail closed.
+\para{Statistical accounting.} In Table~\ref{tab:v2eval}, \(0\) unauthorized commits under complete mediation is an integration soundness property---the gate and grader enforce the same capability specification---rather than a stochastic risk estimate, so hypothesis-test \(p\)-values against zero mediated breaches are uninformative. Furthermore, evaluating two checkpoints or multiple scenarios on the same task creates within-task dependence. Appendix~\ref{app:holdout} (Table~\ref{tab:v5statistics}) therefore clusters all descriptive discordance summaries strictly by independent base unit (\(N = \VFourHoldoutCasesPerCheckpoint\) holdout cases; \(N = \VFiveStatDojoClustTasks\) AgentDojo base tasks) and preserves our predeclared marginal Clopper--Pearson union-bound test (\(\alpha = 0.05/16\)), which requires \(N \ge \VTwoZeroLossCasesMin\) zero-loss cases for a \(5\)\,pp margin and thus remains explicitly inconclusive at pilot \(N = \VFourHoldoutCasesPerCheckpoint\).

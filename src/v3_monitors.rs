@@ -2336,7 +2336,7 @@ pub fn assessment_variance_suite(seed: u64, quick: bool) -> AssessmentVarianceSu
     let subjects = if quick { 3_000 } else { 10_000 };
     let mut rng = Rng(seed ^ 0xA55E_5515_2026_1110);
 
-    // Multi-signal portfolio model (`Superintelligence` Eq. 3):
+    // Multi-signal portfolio model (shared-latent variance ceiling):
     // V_G = 1.0, omega^2 = 0.2, sigma_c^2 = 4.0, sigma_e^2 = 6.0
     let (v_g, omega_sq, sigma_c_sq, sigma_e_sq) = (1.0, 0.2, 4.0, 6.0);
     let port_comp = PortfolioComponents {

@@ -1,67 +1,11 @@
-\section{Twelve-Field Authority Record, Upgrade Renewal Matrix, and Verification Ledger}
-\label{app:record}
+\section{Verification Boundaries and Reproducibility Summary}\label{app:repro}
 
-\subsection{Operational twelve-field authority and legitimacy record}
-Any deployment claiming bounded reach under Conditions C1--C6 should maintain a versioned, externally auditable record across twelve mandatory fields. Recording \emph{Unknown} is valid and required whenever evidence is absent; an \emph{Unknown} entry blocks the authority scope that depends on that premise rather than defaulting to permission.
+\subsection{Trusted Computing Base and Verification Scope}
 
-\begin{enumerate}
-\item \textbf{Purpose, Owners, and Affected Parties:} Intended task, direct beneficiaries, third parties and communities bearing externalized risk or resource burdens, accountable human sponsor, independent reviewer, and unilateral halt holders.
-\item \textbf{Jurisdiction and Legitimacy:} Legal and moral standing of every grant issuer; required individual and collective quorums; unresolved jurisdictional disputes; accessible contestation, appeal, and remedy procedures.
-\item \textbf{Mediated Scope and Channels:} Permitted action types, destinations, data classes, credentials, shared stores, RPC framing caps, and every prose, voice, or user-interface channel reaching human reviewers.
-\item \textbf{Cryptographic Identity:} Model checkpoint and tokenizer digests, runtime and verifier binary SHA-256 digests, tool schemas, active policy revision, and context/memory retention rules.
-\item \textbf{Conferred Authority and Revocation Semantics:} Per-action caps, cross-copy cumulative budget $B$, reservation uncertainty envelope $\mathcal{B}_t$, expiration timestamps, sub-delegation attenuation rules ($\operatorname{permits}_{\mathrm{child}} \subseteq \operatorname{permits}_{\mathrm{parent}}$), relational capability mutexes, and the distinction between broker admission withdrawal and durable sink epoch fencing (including expected lock-wait latency and non-refunded timeout quarantine).
-\item \textbf{Verified Properties and Trusted Base:} Formally proved invariants, exact boundary between executable code (\texttt{exec}) and ghost trace specifications (\texttt{spec}), trusted adapters (wire adapters, SQLite write-ahead log, operating-system kernel, cooperative sink idempotence), and known specification omissions.
-\item \textbf{Evaluated Usefulness and Operational Tax:} Legitimate positive tasks, non-abstention semantic oracles, compound benign false-block rates across gate depth $k$, synchronous fencing delay, and stranded-budget fraction.
-\item \textbf{Adversarial and Audit Measurements:} Empirical joint miss rate $J_k$ under coordinated surrogate, score-feedback, and candidate-retry attacks; planted-pathway Fisher exact audit power across $(P, q_0, r)$; campaign-level clustering; frozen holdout digest.
-\item \textbf{Transfer and Excluded Regimes:} Capability class covered by current measurements, excluded stronger or colluding adversaries, and unmodeled physical or social bypasses.
-\item \textbf{Operations, Custody, and External Audit:} Append-only sink effect receipts, observed monitoring eligibility, sealed discovery workflow enforcing Custody Rules R1--R6 (cut-only disclosure prior to deployment), halt/recovery drill logs, and outside audit access.
-\item \textbf{Ecological Footprint and Territorial Consent:} Scoped electricity, cooling water, critical-mineral, and land accounts by site and period; affected non-user communities; prior informed consent procedures and withdrawal terms \cite{kogui,iea}.
-\item \textbf{Knowledge Provenance and Irreversibility:} Source provenance, CARE collective data governance terms \cite{carroll}, permitted purposes, and an explicit pre-consent statement of what token revocation cannot undo once data are disclosed or distilled into weights.
-\end{enumerate}
+Table~\ref{tab:upgrade} (\S\ref{sec:gaps}) and Table~\ref{tab:v2core} (\S\ref{sec:core}) distinguish formally verified obligations from empirically tested system components. The Verus SMT proof covers the functional correctness of our Rust authority transition kernel: canonical 21-byte wire encoding/decoding, \(d\)-hop capability attenuation, relational mutex exclusion, \(\delta_{\max}\)-buffered quorum quiescence, and monotone policy-subset ratcheting (\VTwoProofs{} verified obligations; \VFiveProofMutationsRejected/\VFiveProofMutationsRejected{} soundness mutations rejected).
 
-\begin{table*}[t]
-\centering
-\scriptsize
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.15}
-\begin{tabularx}{\textwidth}{@{}P{1.35in}P{1.65in}LL@{}}
-\toprule
-\textbf{System or world change} & \textbf{Premises remaining valid} & \textbf{Voided evidence requiring remeasurement} & \textbf{Mandatory interim scope rule}\\
-\midrule
-New model weights, distillation, or capability jump & All-policy Tier-1 kernel predicates and finite-state conservation invariants & Empirical joint miss $J_k$, pathway width $w$, length $\ell$, and planted-audit search power $\pi_t$ & Run new checkpoint in zero-authority search/probation first; retain prior capability cap until $J_k$ and $\pi_t$ are remeasured.\\
-Added agent copies, higher concurrency, or faster loop & Shared-ledger conservation across serialized broker reservations & Attempt volume $N$, SQLite contention p95 latency, and reactive halt deadline margin $\Prb(T_{\mathrm{halt}}\ge T_{\mathrm{irrev}})$ & Share one durable ledger across all copies; rely on pre-commit leases and fences rather than reactive output halts.\\
-New tools, external APIs, credentials, or sinks & Existing mediated paths only; zero guarantee on the new path by default & Mediation completeness (C1), sink idempotence/deduplication, relational mutexes, and epoch-fence atomicity on every new edge & Deny unmediated or non-idempotent external sinks; require atomic sink deduplication and durable epoch floors before enabling.\\
-Process crash, restart, or grant renewal & Durable write-ahead-logged reservations, used IDs, and monotone epoch floors if storage survived & Post-recovery integrity cross-check of charged spend, reservations, permits, committed effects, and epoch floors & Quarantine uncertain \emph{Pending} reservations without refund; verify integrity invariants before reopening proposer channels.\\
-Controller promotion ($v_0 \to v_1$) & Prior ledger spend and sink fences if carried forward intact & Subset check $\operatorname{permits}(v_1)\subseteq\operatorname{permits}(v_0)$; any broadened scope requires fresh issuer grants and holdout replay & Block promotion automatically whenever $\operatorname{permits}(v_1)\not\subseteq\operatorname{permits}(v_0)$ without explicit new multi-issuer approval.\\
-Revised harm definition or affected jurisdiction & None for the newly recognized harm class & Every prior specification check, omission witness search, and stakeholder grant record & Suspend affected operation classes, seal the cut via the discovery ledger, and replay prior certificates against the expanded specification.\\
-\bottomrule
-\end{tabularx}
-\caption{Premise-level upgrade renewal matrix. Mechanized proofs over all policies survive weight updates, whereas empirical measurements survive only on the capability class, channel topology, and harm specification sampled.}
-\label{tab:upgrade}
-\end{table*}
+Components outside the Verus specification belong to the empirical trusted computing base: the Linux kernel enforcing namespaces, Landlock~v4, and seccomp-BPF; the C SQLite engine executing write-ahead-logged transactions under \texttt{FULL} synchronous durability; physical monotonic clock drift bounded by Assumption~1 (\(|t_{\mathrm{shard}} - t_{\mathrm{broker}}| \le \delta_{\max}\)); out-of-band human custody of Ed25519 steward root keys; and proxy compare-and-swap shims wrapping external APIs (Table~\ref{tab:fencecensus}). A vulnerability or misconfiguration in any of those lower layers can bypass kernel-level invariants without invalidating the SMT theorems.
 
-\begin{table*}[t]
-\centering
-\scriptsize
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.14}
-\begin{tabularx}{\textwidth}{@{}P{1.45in}P{1.45in}L@{}}
-\toprule
-\textbf{Evidence Tier} & \textbf{Scope and Scale} & \textbf{Verified Guarantees, Negative Controls, and Explicit Boundaries}\\
-\midrule
-Tier 1: Mechanized Kernel \& Finite-State Proofs & \VTwoProofs{} Verus SMT obligations (\VTwoExecFns{} \texttt{exec} fns, \VTwoTheorems{} theorems); \CheckedStates{} states (\CheckedEdges{} checks) & Total canonical wire bijection, reservation conservation, $d$-hop attenuation, self-upgrade non-escalation, relational toxic-pair mutexes, staged post-condition commits, multi-shard quorum/lease post-ack exclusion, and safe-bootstrap cut ratchet ($\VFiveProofMutationsRejected/\VFiveProofMutationsRejected$ Z3 soundness mutations rejected; omitted-budget negative control spends $8 > 2$).\\
-Tier 2: Exact Mathematical Bounds \& Certificates & Theorems~\ref{u03:thm:optinv}--\ref{u03:thm:main}, Propositions~\ref{u03:prop:audit}--\ref{u07:prop:triage} \& Exact Statistical Spine & Optimization-pressure invariance ($K_{\mathrm{opt}} \le \VFiveOptMaxWidth$), safe-bootstrap exposure decay ($\VFiveRatchetMaxSpeedup\times$ speedup), session covert capacity $\Theta(B\log_2(T/B))$ ($\VFiveCovertSessionContraction\times$ contraction at $T{=}\VFiveCovertSessionMaxCalls$), lease-fenced off-switch threshold $\gamma^*(B_0)$, policy-gradient deception reversal threshold $q_{\mathrm{gate}}^*$, two-stage escrow triage, Suissa--Shuster trinomial inversion ($p{=}\VFiveStatGrandSuissaSci$), and Ville supermartingale ($\log_{10}E{=}\VFiveStatVilleLogTenE$).\\
-Tier 3: Multi-Process Durability, Kernel Sandbox \& Live LLMs & \VFiveClusterSinks-sink Ed25519/WAL cluster, \VTwoProbes{} Linux probes, \VFourHoldoutTotalCampaigns{} holdout + \VFourLiveDojoEpisodes{} AgentDojo LLM runs & $0/\VFiveClusterFuzzFrames$ wire-fuzz accepts, $0$ post-quorum commits across \VFiveClusterSigkillCycles{} process-kill cycles and \VFourJepsenSchedulesPerClass{} partition schedules (\VFiveClusterMedianUs\,$\mu$s median commit), $0/\VFiveStatGrandPairs$ mediated breaches on Qwen3-4B/8B vs.\ $\VFiveStatGrandBaseLeaks/\VFiveStatGrandPairs$ unmediated, two-stage AgentDojo escrow triage ($\VFourTrajEscrowReductionFactor\times$ false-abort drop, $\VFourTrajEscrowFastPathPct\%$ fast path), and AgentDojo/Linux weighted Dinic min-cuts ($\tau_b \le 5$, $0$ post-cut routes).\\
-Tier 4: Controlled Synthetic \& Neural MDP Models & $22$ deterministic CPU simulation suites (master seed $20261110$) & Sparse 8-stage DAG interdiction ($94.7\%$--$99.9\%$ signature-patch residual exposure), Zipf blind-spot and withholding non-identifiability, 6-family copula/surrogate/retry monitor coupling, generalizability ceilings $R_G < V_G/(V_G+\omega^2)$, and \VFourNeuralParams-parameter REINFORCE/GRPO deception reversal plus $+\VFourNeuralTrainInsideGainPp$\,pp training-inside-gates competence gain.\\
-Tier 5: Open Scale, Frontier \& Governance Obligations & $N \ge \VTwoZeroLossCasesMin$ noninferiority, frontier RLHF, human conferral \& legitimacy & Pilot $N{=}\VFourHoldoutCasesPerCheckpoint < \VTwoZeroLossCasesMin$ usefulness noninferiority ($\le\VTwoNoninferiorityMarginPp$\,pp) remains statistically under-powered; frontier-model post-training, human operator scope-conferral trials, uncooperative external API mediation, and affected-community territorial consent remain open.\\
-\bottomrule
-\end{tabularx}
-\caption{Five-tier verification and evidence ledger summarizing mechanized proofs, analytical bounds, multi-process and open-weight empirical validations, controlled synthetic models, and unexecuted obligations. Complete source code, proofs, and cryptographic digests are archived at \url{https://github.com/neverhuman/jeath}.}
-\label{tab:provenance}
-\end{table*}
+\subsection{Deterministic Artifact Reproduction}
 
-\subsection{Upgrade renewal matrix and five-tier verification ledger}
-Table~\ref{tab:upgrade} codifies which premises survive and which expire under six system or specification transitions. Table~\ref{tab:provenance} consolidates the five-tier verification ledger across mechanized Verus proofs, exact analytical and statistical bounds, multi-process cryptographic durability and open-weight language-model evaluations, controlled synthetic simulations, and open Tier-5 obligations.
-
-\para{Automated reproducibility and cleanliness verification.}
-Every build executes an automated verification pipeline that checks formatting and static analysis, unit and integration test suites, Verus SMT proof obligations and Z3 soundness mutation rejection, finite-state and multi-process crash/partition linearizability, cryptographic SHA-256 provenance of reference outputs against source code, byte-exact synchronization between reference data and generated tables/figures, and deterministic three-pass PDF compilation enforcing sequential citation ordering, typographic fit, and absence of internal file paths or unrendered tokens.
+All theorems, exhaustive state-space explorations, fault-injection schedules, multi-process SQLite linearization checks, AgentDojo cutset extractions, live CPU checkpoint campaigns, and manuscript tables/figures are generated deterministically from committed reference fixtures without manual number entry. Automated build checks verify every reference dataset against independent re-computation and confirm that every macro, table, and figure in this PDF matches the validated reference artifacts byte-for-byte.

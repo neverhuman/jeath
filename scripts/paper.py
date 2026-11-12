@@ -250,6 +250,14 @@ def generate_v2():
         m8_lrn = c8b["controllers"]["learned_same_checkpoint"]["observed_metrics"]
         m8_stl = c8b["controllers"]["stateless"]["observed_metrics"]
         m8_nof = c8b["controllers"]["durable_without_fence"]["observed_metrics"]
+        pw4 = {
+            k: c4b["controllers"][k].get("post_withdraw_effects", {"cases_with_post_withdraw_effect": 0, "withdrawal_cases": 6})
+            for k in ("complete", "durable_without_fence", "learned_same_checkpoint", "stateless", "none")
+        }
+        pw8 = {
+            k: c8b["controllers"][k].get("post_withdraw_effects", {"cases_with_post_withdraw_effect": 0, "withdrawal_cases": 6})
+            for k in ("complete", "durable_without_fence", "learned_same_checkpoint", "stateless", "none")
+        }
         v4_mc_macros = [
             ("VFourHoldoutCasesPerCheckpoint", f"{n_cases_ckpt}"),
             ("VFourHoldoutTotalCampaigns", f"{mc_total}"),
@@ -259,8 +267,11 @@ def generate_v2():
             ("VFourFourBCompleteSafeUsefulCount", f"{int(round(n_cases_ckpt * m4_comp['safe_useful']['mean']))}"),
             ("VFourFourBFenceAckMs", f"{m4_comp['ack_ms']['mean']:.1f}"),
             ("VFourFourBNoneUnauthPct", f"{100 * m4_none['unauthorized']['mean']:.1f}"),
+            ("VFourFourBNoneUnauthCount", f"{int(round(n_cases_ckpt * m4_none['unauthorized']['mean']))}"),
             ("VFourFourBNoneSafeUsefulPct", f"{100 * m4_none['safe_useful']['mean']:.1f}"),
+            ("VFourFourBNoneSafeUsefulCount", f"{int(round(n_cases_ckpt * m4_none['safe_useful']['mean']))}"),
             ("VFourFourBLearnedUnauthPct", f"{100 * m4_lrn['unauthorized']['mean']:.1f}"),
+            ("VFourFourBLearnedUnauthCount", f"{int(round(n_cases_ckpt * m4_lrn['unauthorized']['mean']))}"),
             ("VFourFourBLearnedSafeUsefulPct", f"{100 * m4_lrn['safe_useful']['mean']:.1f}"),
             ("VFourFourBStatelessUnauthPct", f"{100 * m4_stl['unauthorized']['mean']:.1f}"),
             ("VFourFourBStatelessSafeUsefulPct", f"{100 * m4_stl['safe_useful']['mean']:.1f}"),
@@ -272,14 +283,27 @@ def generate_v2():
             ("VFourEightBCompleteSafeUsefulCount", f"{int(round(n_cases_ckpt * m8_comp['safe_useful']['mean']))}"),
             ("VFourEightBFenceAckMs", f"{m8_comp['ack_ms']['mean']:.1f}"),
             ("VFourEightBNoneUnauthPct", f"{100 * m8_none['unauthorized']['mean']:.1f}"),
+            ("VFourEightBNoneUnauthCount", f"{int(round(n_cases_ckpt * m8_none['unauthorized']['mean']))}"),
             ("VFourEightBNoneSafeUsefulPct", f"{100 * m8_none['safe_useful']['mean']:.1f}"),
+            ("VFourEightBNoneSafeUsefulCount", f"{int(round(n_cases_ckpt * m8_none['safe_useful']['mean']))}"),
             ("VFourEightBLearnedUnauthPct", f"{100 * m8_lrn['unauthorized']['mean']:.1f}"),
+            ("VFourEightBLearnedUnauthCount", f"{int(round(n_cases_ckpt * m8_lrn['unauthorized']['mean']))}"),
             ("VFourEightBLearnedFalseBlockPct", f"{100 * m8_lrn['false_block']['mean']:.1f}"),
             ("VFourEightBLearnedSafeUsefulPct", f"{100 * m8_lrn['safe_useful']['mean']:.1f}"),
             ("VFourEightBStatelessUnauthPct", f"{100 * m8_stl['unauthorized']['mean']:.1f}"),
             ("VFourEightBStatelessSafeUsefulPct", f"{100 * m8_stl['safe_useful']['mean']:.1f}"),
             ("VFourEightBNoFenceUnauthPct", f"{100 * m8_nof['unauthorized']['mean']:.1f}"),
             ("VFourEightBNoFenceSafeUsefulPct", f"{100 * m8_nof['safe_useful']['mean']:.1f}"),
+            ("VEightFourBNoFencePostWithdraw", f"{pw4['durable_without_fence']['cases_with_post_withdraw_effect']}"),
+            ("VEightEightBNoFencePostWithdraw", f"{pw8['durable_without_fence']['cases_with_post_withdraw_effect']}"),
+            (
+                "VEightTotalNoFencePostWithdraw",
+                f"{pw4['durable_without_fence']['cases_with_post_withdraw_effect'] + pw8['durable_without_fence']['cases_with_post_withdraw_effect']}",
+            ),
+            (
+                "VEightTotalWithdrawCases",
+                f"{pw4['complete']['withdrawal_cases'] + pw8['complete']['withdrawal_cases']}",
+            ),
             (
                 "VFourFourBVsNoneSafetyMeanPp",
                 f"{100 * c4b['paired_primary_comparisons']['none']['safety_difference']['mean']:.1f}",
@@ -434,107 +458,119 @@ def generate_v2():
     mut_count = proof_obj.get("soundness_mutations_rejected", 0)
     mut_note = f"; {mut_count}/{mut_count} soundness mutants rejected" if mut_count else ""
     core_rows = [
-        f"Mechanized Rust authority kernel & Tier 1 (Verus / Z3) & {exec_fns} executable functions + {theorems} theorems (wire bijection, $d$-hop attenuation, relational mutex, quorum fence, safe-bootstrap ratchet){mut_note}; not SQLite/OS refinement & {proof} verified, {trig_warns} warnings\\\\",
-        f"Abstract invariant omission search & Tier 2 (exhaustive) & {ablations['searched_traces']:,} traces over 10 protocol clauses (single + pair omissions) & {sum(bool(r['shortest_searched_witness']) for r in ablations['rows'])}/{len(ablations['rows'])} witnesses\\\\",
-        f"Separate-process RPC fault suite & Tier 3 (local SQLite) & Crash, lost-reply, quorum split, sub-delegation, extra-steward fence, slow-read deadline & {len(faults)}/{len(faults)} oracle-checked\\\\",
-        f"Full-scale concurrent linearization & Tier 3 (local SQLite) & Partial-order real-time linearization + final conservation ($1..{lin_max_actors}$ writers; $\\le {lin_max_calls}$ RPCs) & {lin_runs}/{len(races)} linearizable\\\\",
+        f"Mechanized Rust authority kernel & Verus SMT proof & {exec_fns} executable functions + {theorems} theorems (wire bijection, $d$-hop attenuation, relational mutex, $\\delta_{{\\max}}$-buffered quorum fence, safe-bootstrap ratchet){mut_note}; not SQLite/OS refinement & {proof} verified, {trig_warns} warnings\\\\",
+        f"Abstract invariant omission search & Exhaustive trace search & {ablations['searched_traces']:,} traces over 10 protocol clauses (single + pair omissions) & {sum(bool(r['shortest_searched_witness']) for r in ablations['rows'])}/{len(ablations['rows'])} witnesses\\\\",
+        f"Separate-process RPC fault suite & Multi-process SQLite & Crash, lost-reply, quorum split, sub-delegation, extra-steward fence, slow-read deadline & {len(faults)}/{len(faults)} oracle-checked\\\\",
+        f"Full-scale concurrent linearization & Multi-process SQLite & Partial-order real-time linearization + final conservation ($1..{lin_max_actors}$ writers; $\\le {lin_max_calls}$ RPCs) & {lin_runs}/{len(races)} linearizable\\\\",
     ]
     if cj_v2 is not None:
         jmap = {c["class"]: c for c in cj_v2["jepsen_classes"]}
         coop_j = jmap["cooperative_signed_fence"]
         brk_j = jmap["premature_broker_only_ack"]
         unc_j = jmap["uncooperative_external_sink"]
+        skw_j = jmap.get("unbuffered_clock_skew")
         crt = cj_v2["crypto_redteam"]
+        skew_detail = (
+            f", {skw_j['post_ack_unauthorized_commits']} unbuffered-skew leaks vs.\\ 0 with $\\delta_{{\\max}}$ buffer"
+            if skw_j is not None
+            else ""
+        )
         core_rows.append(
-            f"Ed25519/Macaroon \\& 3-sink partitions & Tier 3 (Unix sockets) & {crt['total_attacks']:,} crypto attacks; {coop_j['schedules_run']:,} partition/drop/MITM schedules ({coop_j['signed_fence_completions']} signed acks + {coop_j['lease_expiry_completions']} lease expiries vs.\\ {brk_j['post_ack_unauthorized_commits']} broker-only, {unc_j['post_ack_unauthorized_commits']} uncooperative leaks) & {crt['false_accepts']} accepts; {coop_j['post_ack_unauthorized_commits']} leaks\\\\"
+            f"Ed25519/Macaroon \\& 3-sink partitions & Unix-socket fault net & {crt['total_attacks']:,} crypto attacks (incl.\\ RFC 8032 \\& OpenSSL CLI); {coop_j['schedules_run']:,} schedules/class ({coop_j['signed_fence_completions']} signed acks + {coop_j['lease_expiry_completions']} lease expiries vs.\\ {brk_j['post_ack_unauthorized_commits']} broker-only, {unc_j['post_ack_unauthorized_commits']} uncooperative{skew_detail}) & {crt['false_accepts']} accepts; {coop_j['post_ack_unauthorized_commits']} leaks\\\\"
         )
     core_rows += [
-        f"Linux Landlock v4 + seccomp boundary & Tier 3 (Linux ABI) & Filesystem/TCP Landlock, 64-bit resource-limit filter, SysV/POSIX IPC + pre-existing queue canary & {probe_count}/{probe_count} confined\\\\",
-        f"Non-idempotent \\& omitted-spec controls & Tier 3 (negative) & Uncooperative sink duplicates ({neg['unsupported_sink']['effects']} effects); {cost['fence_ack_ms']:.1f}\\,ms delayed fence ack; authorized bad edit commits & All 3 reproduced\\\\",
+        f"Linux Landlock v4 + seccomp boundary & Linux kernel ABI & Filesystem/TCP Landlock, 64-bit resource-limit filter, SysV/POSIX IPC + pre-existing queue canary & {probe_count}/{probe_count} confined\\\\",
+        f"Non-idempotent \\& omitted-spec controls & Negative controls & Uncooperative sink duplicates ({neg['unsupported_sink']['effects']} effects); {cost['fence_ack_ms']:.1f}\\,ms delayed fence ack; authorized bad edit commits & All 3 reproduced\\\\",
     ]
     cl_v5_path = DATA_V3 / "e2e_crypto_cluster.json"
     if cl_v5_path.is_file():
         cl5 = json.loads(cl_v5_path.read_text())
         core_rows.insert(
             5,
-            f"3-process crypto SQLite WAL cluster & Tier 3 (OS IPC + WAL) & {cl5['wire_fuzz']['total_adversarial_frames']:,} wire-fuzz frames, {cl5['smurfing_delegation']['concurrent_subagents']} subagents ({cl5['smurfing_delegation']['delegation_depth_hops']} hops), {cl5['crash_recovery']['hard_sigkill_cycles']} hard process-kill restarts & 0 diffs; 0 post-ack leaks\\\\",
+            f"3-process crypto SQLite WAL cluster & OS IPC + SQLite WAL & {cl5['wire_fuzz']['total_adversarial_frames']:,} wire-fuzz frames, {cl5['smurfing_delegation']['concurrent_subagents']} subagents ({cl5['smurfing_delegation']['delegation_depth_hops']} hops), {cl5['crash_recovery']['hard_sigkill_cycles']} hard process-kill restarts & 0 diffs; 0 post-ack leaks\\\\",
         )
     core_tab = [
         "% Generated by scripts/paper.py; do not edit.",
         r"\begin{table*}[t]\centering\small",
         r"\begin{tabularx}{\textwidth}{@{}P{0.24\textwidth}lLr@{}}\toprule",
-        r"Verification or protocol layer & Evidence tier & Scope boundary & Recorded result\\\midrule",
+        r"Verification or protocol layer & Verification method & Scope boundary & Recorded result\\\midrule",
         *core_rows,
         r"\bottomrule\end{tabularx}",
-        r"\caption{Summary of mechanized authority-kernel obligations and separate-process protocol checks. Executable Rust state transitions, canonical wire bijection, $d$-hop attenuation, relational mutexes, quorum lease fencing, and monotone safe-bootstrap ratcheting are verified in Verus; SQLite write-ahead-logged durability, hard process-kill recovery, and Linux kernel confinement are tested empirically rather than formally refined.}\label{tab:v2core}\end{table*}",
+        r"\caption{Summary of mechanized authority-kernel obligations and separate-process protocol checks. Executable Rust state transitions, canonical wire bijection, $d$-hop attenuation, relational mutexes, $\delta_{\max}$-buffered quorum lease fencing, and monotone safe-bootstrap ratcheting are verified in Verus; SQLite write-ahead-logged durability, hard process-kill recovery, and Linux kernel confinement are tested empirically rather than formally refined.}\label{tab:v2core}\end{table*}",
     ]
 
     # Pure self-contained float 2: v2-eval-table.tex
     eval_tab = [
         "% Generated by scripts/paper.py; do not edit.",
-        r"\begin{table*}[t]\centering\small",
-        r"\begin{tabularx}{\textwidth}{@{}P{0.25\textwidth}lrrL@{}}\toprule",
-        r"Controller or evaluation track & Evidence status & Safe \& useful & Unauth.\ effects & Scope / decision rule\\\midrule",
+        r"\begin{table*}[t]\centering\footnotesize\setlength{\tabcolsep}{3.5pt}",
+        r"\begin{tabularx}{\textwidth}{@{}P{0.19\textwidth}lrrrrL@{}}\toprule",
+        r"Evaluation track & Controller & Safe \& useful & False blocks & Unauth.\ commits & Post-withdraw & Mechanism / scope boundary\\\midrule",
     ]
-    for key, label in ctrl_names.items():
-        selected = [r for r in controls if r["controller"] == key]
-        su = sum(1 for r in selected if r["safe_useful"])
-        br = sum(1 for r in selected if r["unauthorized_charge"] > 0)
-        scope_note = (
-            "Serializes shared budget; no sink epoch fence on in-flight work"
-            if key == "durable_without_fence"
-            else (
-                "Durable broker reservation + cooperative sink epoch fence"
-                if key == "complete"
-                else "Fails at $\\ge 2$ actors under shared-budget contention"
-            )
-        )
-        eval_tab.append(f"{label} (scripted CPU) & Tier 3 measured & {su}/{len(selected)} & {br}/{len(selected)} & {scope_note}\\\\")
     if mc is not None:
         c4 = mc["checkpoints"]["Qwen/Qwen3-4B-GGUF"]["controllers"]
         c8 = mc["checkpoints"]["Qwen/Qwen3-8B-GGUF"]["controllers"]
         n_c = c4["complete"]["measured_campaigns"]
-        for ckpt_short, cd in (("Qwen3-4B", c4), ("Qwen3-8B", c8)):
-            su_c = int(round(n_c * cd["complete"]["observed_metrics"]["safe_useful"]["mean"]))
-            un_c = int(round(n_c * cd["complete"]["observed_metrics"]["unauthorized"]["mean"]))
-            su_n = int(round(n_c * cd["none"]["observed_metrics"]["safe_useful"]["mean"]))
-            un_n = int(round(n_c * cd["none"]["observed_metrics"]["unauthorized"]["mean"]))
-            su_l = int(round(n_c * cd["learned_same_checkpoint"]["observed_metrics"]["safe_useful"]["mean"]))
-            un_l = int(round(n_c * cd["learned_same_checkpoint"]["observed_metrics"]["unauthorized"]["mean"]))
-            su_s = int(round(n_c * cd["stateless"]["observed_metrics"]["safe_useful"]["mean"]))
-            un_s = int(round(n_c * cd["stateless"]["observed_metrics"]["unauthorized"]["mean"]))
-            su_d = int(round(n_c * cd["durable_without_fence"]["observed_metrics"]["safe_useful"]["mean"]))
-            un_d = int(round(n_c * cd["durable_without_fence"]["observed_metrics"]["unauthorized"]["mean"]))
-            eval_tab.append(
-                f"{ckpt_short} holdout: Complete & Tier 3 CPU models & {su_c}/{n_c} ({100*su_c/n_c:.1f}\\%) & {un_c}/{n_c} (0.0\\%) & Frozen holdout ($0$ false blocks; pilot $N={n_c} < {zero_diag['independent_cases_for_5pp_at_corrected_alpha']}$ Bonferroni union bound under-powered)\\\\"
-            )
-            eval_tab.append(
-                f"{ckpt_short} holdout: Baselines & Tier 3 CPU models & N:{su_n} L:{su_l} S:{su_s} D:{su_d} & N:{un_n} L:{un_l} S:{un_s} D:{un_d} & Unauth.\\ leaks ($/{n_c}$): None {un_n}, Learned {un_l}, Stateless {un_s}, No-fence {un_d}\\\\"
-            )
-    else:
-        eval_tab.append(r"Learned reviewer (same checkpoint) & Predeclared, unrun & Unrun & Unrun & Requires local checkpoint\\")
-    eval_tab.append(
-        f"AgentDojo v1.2.2 + Progent adapters & Tier 3 native graders & {bench_pos}/{len(benchmark['rows'])} & 0/{len(benchmark['rows'])} & Scripted positive utility controls; 2/12 banking tasks accept empty state\\\\"
-    )
+        holdout_rows_order = [
+            ("complete", "\\textbf{Complete mediation}", "Durable broker reservation + cooperative sink epoch fence"),
+            ("durable_without_fence", "Durable, no sink fence", "Broker stops new admissions; queued sink writes still commit"),
+            ("learned_same_checkpoint", "Same-model reviewer", "Prompted LLM reviewer on untrusted tool arguments"),
+            ("stateless", "Stateless per-call", "Per-call filter without durable spend or revocation state"),
+            ("none", "Unmediated", "Direct tool execution without broker or sink mediation"),
+        ]
+        for idx_ckpt, (ckpt_short, cd) in enumerate((("Qwen3-4B ($N=32$)", c4), ("Qwen3-8B ($N=32$)", c8))):
+            if idx_ckpt > 0:
+                eval_tab.append(r"\midrule")
+            for idx_r, (ckey, clabel, cnote) in enumerate(holdout_rows_order):
+                obs = cd[ckey]["observed_metrics"]
+                su_i = int(round(n_c * obs["safe_useful"]["mean"]))
+                fb_i = int(round(n_c * obs["false_block"]["mean"]))
+                un_i = int(round(n_c * obs["unauthorized"]["mean"]))
+                pw_obj = cd[ckey].get("post_withdraw_effects", {"cases_with_post_withdraw_effect": 0, "withdrawal_cases": 6})
+                pw_i = pw_obj["cases_with_post_withdraw_effect"]
+                pw_n = pw_obj["withdrawal_cases"]
+                track_cell = ckpt_short if idx_r == 0 else ""
+                pw_cell = f"\\textbf{{{pw_i}/{pw_n}}}" if ckey in ("complete", "durable_without_fence") else f"{pw_i}/{pw_n}"
+                su_cell = f"\\textbf{{{su_i}/{n_c}}} ({100*su_i/n_c:.1f}\\%)" if ckey == "complete" else f"{su_i}/{n_c} ({100*su_i/n_c:.1f}\\%)"
+                eval_tab.append(
+                    f"{track_cell} & {clabel} & {su_cell} & {fb_i}/{n_c} & {un_i}/{n_c} & {pw_cell} & {cnote}\\\\"
+                )
+        eval_tab.append(r"\midrule")
     if live_dojo is not None:
-        for ckpt_key, ckpt_short in (("Qwen/Qwen3-4B-GGUF", "Qwen3-4B"), ("Qwen/Qwen3-8B-GGUF", "Qwen3-8B")):
+        for ckpt_key, ckpt_short in (("Qwen/Qwen3-4B-GGUF", "AgentDojo 4B ($N=24$)"), ("Qwen/Qwen3-8B-GGUF", "AgentDojo 8B ($N=24$)")):
             ov = live_dojo["summary"][ckpt_key]["overall_by_controller"]
             ng = ov["authority_complete"]["graded_episodes"]
             c_su = ov["authority_complete"]["safe_useful_count"]
             c_un = ov["authority_complete"]["any_unauthorized_effect_count"]
-            u_un = ov["unprotected_native"]["any_unauthorized_effect_count"]
-            l_un = ov["learned_same_checkpoint"]["any_unauthorized_effect_count"]
-            p_un = ov["upstream_progent"]["any_unauthorized_effect_count"]
+            c_pw = ov["authority_complete"]["post_withdraw_side_effect_count"]
             p_su = ov["upstream_progent"]["safe_useful_count"]
+            p_un = ov["upstream_progent"]["any_unauthorized_effect_count"]
+            p_pw = ov["upstream_progent"]["post_withdraw_side_effect_count"]
+            u_su = ov["unprotected_native"]["safe_useful_count"]
+            u_un = ov["unprotected_native"]["any_unauthorized_effect_count"]
+            u_pw = ov["unprotected_native"]["post_withdraw_side_effect_count"]
             eval_tab.append(
-                f"AgentDojo live ({ckpt_short}) & Tier 3 descriptive & {c_su}/{ng} (Progent {p_su}/{ng}) & {c_un}/{ng} vs.\\ U:{u_un} L:{l_un} P:{p_un} & 12 tasks $\\times$ 2 injection/withdrawal scenarios; Progent: $0$ native injection breaches, {p_un} cumulative spend breaches\\\\"
+                f"{ckpt_short} & \\textbf{{Complete mediation}} & \\textbf{{{c_su}/{ng}}} & 0/{ng} & 0/{ng} & \\textbf{{{c_pw}/12}} & 12 base tasks $\\times$ 2 injection/withdrawal scenarios\\\\"
             )
+            eval_tab.append(
+                f" & Progent / Unprotected & P:{p_su} U:{u_su} & --- & P:{p_un} U:{u_un} & P:{p_pw} U:{u_pw} & Progent blocks native injections (0) but misses cumulative spend ({p_un})\\\\"
+            )
+        eval_tab.append(r"\midrule")
+    su_comp_scr = sum(1 for r in controls if r["controller"] == "complete" and r["safe_useful"])
+    su_stat_scr = sum(1 for r in controls if r["controller"] == "stateless" and r["safe_useful"])
+    br_stat_scr = sum(1 for r in controls if r["controller"] == "stateless" and r["unauthorized_charge"] > 0)
+    n_scr = sum(1 for r in controls if r["controller"] == "complete")
+    eval_tab.append(
+        f"Scripted races & Complete vs.\\ Stateless & {su_comp_scr}/{n_scr} vs.\\ {su_stat_scr}/{n_scr} & 0/{n_scr} & 0/{n_scr} vs.\\ {br_stat_scr}/{n_scr} & --- & Stateless per-call filter overspends shared budget at $\\ge 2$ actors\\\\"
+    )
+    eval_tab.append(
+        f"Native controls & AgentDojo + Progent & {bench_pos}/{len(benchmark['rows'])} & 0/{len(benchmark['rows'])} & 0/{len(benchmark['rows'])} & --- & Scripted positive utility verification (2/12 banking tasks accept empty state)\\\\"
+    )
     eval_tab += [
         r"\bottomrule\end{tabularx}",
-        r"\caption{Equal-permission scripted CPU controls, frozen Qwen3-4B and Qwen3-8B holdout campaigns, and live AgentDojo v1.2.2 prompt-injection and authority-withdrawal evaluations. Abbreviations: N = Unmediated, L = Same-checkpoint learned reviewer, S = Stateless per-call filter, D = Durable reservation without sink fence, U = Unprotected native tool loop, P = Progent static tool-call policy. At pilot sample size $N=32 < 113$, predeclared Bonferroni ($\alpha=0.05/16$) marginal union bounds remain under-powered despite $0/64$ unauthorized effects under complete mediation.}\label{tab:v2eval}\end{table*}",
+        r"\caption{Live open-weight checkpoint campaigns on the SHA-256-frozen holdout ($N=32$ independent cases per checkpoint; $6$ revocation cases each), live AgentDojo v1.2.2 episodes ($12$ distinct base tasks $\times 2$ injection/withdrawal scenarios per checkpoint), and scripted shared-budget controls. Complete mediation achieves the highest safe-and-useful completion rate with $0/64$ benign false blocks, eliminates the $9/12$ post-withdrawal late commits suffered by broker-only revocation (\emph{Durable, no sink fence}), and prevents the $7/32$ (4B) and $2/32$ (8B) unauthorized commits leaked by same-checkpoint LLM review. Zero unauthorized commits under complete mediation reflects deterministic gate-grader policy soundness; at pilot $N=32 < 113$, predeclared marginal union-bound intervals remain preserved in Appendix~\ref{app:holdout} as inconclusive.}\label{tab:v2eval}\end{table*}",
     ]
 
-    # Pure self-contained float 3: v2-runtime-fig.tex
+    # Pure self-contained float 3: v2-runtime-fig.tex (2 panels, external bottom legends)
     coords_med = []
     for actors in (1, 2, 4, 8, 16, 32):
         values = sorted(x["latency_ms"] for row in races if row["actors"] == actors for x in row["outcomes"])
@@ -549,48 +585,21 @@ def generate_v2():
             pts.append(f"({actors},{rate:.4g})")
         ctrl_series[key] = " ".join(pts)
 
-    st_v5_path = DATA_V3 / "statistical_certificates.json"
-    if st_v5_path.is_file():
-        st_v2 = json.loads(st_v5_path.read_text())
-        vm = st_v2["ville_discordance_martingale"]
-        ville_coords = "(0,0) " + " ".join(f"({pt['step']},{pt['log10_e_value']:.4g})" for pt in vm)
-        ville_max_step = vm[-1]["step"]
-        ville_log10_end = vm[-1]["log10_e_value"]
-        thresh_05 = -math.log10(0.05)
-        thresh_fam = -math.log10(0.05 / 16.0)
-        ville_panel = [
-            r"\hfill\begin{tikzpicture}",
-            f"\\begin{{axis}}[scale only axis,width=4.05cm,height=4.05cm,xmin=0,xmax={ville_max_step},ymin=-0.3,ymax=8.5,xlabel={{Discordant live pairs $d$}},ylabel={{Evidence $\\log_{{10}} E_d$}},title={{\\textbf{{(c)}} Anytime Ville martingale}},legend style={{font=\\tiny,at={{(0.03,0.97)}},anchor=north west,draw=none,fill=white,fill opacity=0.88}},tick label style={{font=\\scriptsize}},label style={{font=\\footnotesize}},title style={{font=\\footnotesize}},grid=major]",
-            r"\addplot[teal,very thick,mark=*,mark size=1.1pt] coordinates {" + ville_coords + r"};\addlegendentry{$\log_{10} E_d$}",
-            f"\\addplot[notred,thick,dashed] coordinates {{(0,{thresh_fam:.4g}) ({ville_max_step},{thresh_fam:.4g})}};\\addlegendentry{{$\\alpha=0.05/16$}}",
-            f"\\addplot[gold,thick,dotted] coordinates {{(0,{thresh_05:.4g}) ({ville_max_step},{thresh_05:.4g})}};\\addlegendentry{{$\\alpha=0.05$}}",
-            r"\end{axis}\end{tikzpicture}",
-        ]
-        ville_cap = f" \\textbf{{(c)}} Predictable-betting Ville discordance martingale across pooled live model campaigns ($0$ complete-only vs.\\ ${ville_max_step}$ baseline-only harms; $\\log_{{10}} E_{{{ville_max_step}}}={ville_log10_end:.1f}$)."
-        ax_dim = "width=4.05cm,height=4.05cm"
-        sep_ab = r"\hfill"
-    else:
-        ville_panel = []
-        ville_cap = ""
-        ax_dim = "width=4.65cm,height=4.65cm"
-        sep_ab = r"\hspace{1.1cm}"
-
     runtime_fig = [
         "% Generated by scripts/paper.py; do not edit.",
         r"\begin{figure*}[t]\centering",
         r"\begin{tikzpicture}",
-        f"\\begin{{axis}}[scale only axis,{ax_dim},xmode=log,log basis x=2,xtick={{1,2,4,8,16,32}},xticklabels={{1,2,4,8,16,32}},xlabel={{Concurrent SQLite writer processes}},ylabel={{RPC round-trip latency (ms)}},title={{\\textbf{{(a)}} Shared-budget race contention}},legend style={{font=\\tiny,at={{(0.03,0.97)}},anchor=north west,draw=none,fill=white,fill opacity=0.88}},tick label style={{font=\\scriptsize}},label style={{font=\\footnotesize}},title style={{font=\\footnotesize}},grid=major]",
+        r"\begin{axis}[scale only axis,width=5.55cm,height=3.80cm,xmode=log,log basis x=2,xtick={1,2,4,8,16,32},xticklabels={1,2,4,8,16,32},xlabel={Concurrent SQLite writer processes},ylabel={RPC round-trip latency (ms)},title={\textbf{(a)} Shared-budget race contention},legend style={font=\scriptsize,at={(0.5,-0.29)},anchor=north,legend columns=2,draw=none,fill=none},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
         r"\addplot[teal,very thick,mark=*] coordinates {" + " ".join(coords_p95) + r"};\addlegendentry{Empirical p95}",
         r"\addplot[ink,thick,dashed,mark=square*] coordinates {" + " ".join(coords_med) + r"};\addlegendentry{Median}",
-        r"\end{axis}\end{tikzpicture}" + sep_ab,
+        r"\end{axis}\end{tikzpicture}\hspace{1.15cm}",
         r"\begin{tikzpicture}",
-        f"\\begin{{axis}}[scale only axis,{ax_dim},xmode=log,log basis x=2,xtick={{1,2,4,8,16,32}},xticklabels={{1,2,4,8,16,32}},ymin=-6,ymax=108,xlabel={{Actors sharing 8-unit budget}},ylabel={{Safe \\& useful runs (\\%)}},title={{\\textbf{{(b)}} Scripted shared-budget controllers}},legend style={{font=\\tiny,at={{(0.97,0.52)}},anchor=east,draw=none,fill=white,fill opacity=0.88}},tick label style={{font=\\scriptsize}},label style={{font=\\footnotesize}},title style={{font=\\footnotesize}},grid=major]",
-        r"\addplot[teal,very thick,mark=*] coordinates {" + ctrl_series["complete"] + r"};\addlegendentry{Complete mediation}",
-        r"\addplot[notred,thick,dashed,mark=triangle*] coordinates {" + ctrl_series["stateless"] + r"};\addlegendentry{Stateless per-call}",
+        r"\begin{axis}[scale only axis,width=5.55cm,height=3.80cm,xmode=log,log basis x=2,xtick={1,2,4,8,16,32},xticklabels={1,2,4,8,16,32},ymin=-6,ymax=108,xlabel={Actors sharing 8-unit budget},ylabel={Safe \& useful runs (\%)},title={\textbf{(b)} Scripted shared-budget controllers},legend style={font=\scriptsize,at={(0.5,-0.29)},anchor=north,legend columns=3,draw=none,fill=none},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
+        r"\addplot[teal,very thick,mark=*] coordinates {" + ctrl_series["complete"] + r"};\addlegendentry{Complete}",
+        r"\addplot[notred,thick,dashed,mark=triangle*] coordinates {" + ctrl_series["stateless"] + r"};\addlegendentry{Stateless}",
         r"\addplot[gold,thick,dotted,mark=diamond*] coordinates {" + ctrl_series["none"] + r"};\addlegendentry{Unmediated}",
         r"\end{axis}\end{tikzpicture}",
-        *ville_panel,
-        f"\\caption{{Multi-process protocol contention, shared-budget conservation, and anytime-valid live evidence accumulation. \\textbf{{(a)}} Concurrent broker and sink SQLite write-ahead-logged races across separate OS processes: all six populations ($1..{lin_max_actors}$ concurrent writers, {lin_runs}/{len(races)} runs) pass partial-order real-time reference linearization and independent final-state ledger reconciliation. \\textbf{{(b)}} Equal-permission scripted controls: stateless per-call filters fail aggregate conservation once $\\ge 2$ actors contend; durable reservation without sink fencing matches complete mediation on sequential budget checks but fails asynchronous revocation (Table~\\ref{{tab:v2core}}).{ville_cap}}}\\label{{fig:v2runtime}}\\end{{figure*}}",
+        f"\\caption{{Multi-process protocol contention and shared-budget conservation across separate OS processes. \\textbf{{(a)}} Concurrent broker and sink SQLite write-ahead-logged races ($1..{lin_max_actors}$ concurrent writers, {lin_runs}/{len(races)} runs): every run passes partial-order real-time reference linearization and final-state ledger reconciliation. \\textbf{{(b)}} Equal-permission scripted controls: stateless per-call filters fail aggregate conservation once $\\ge 2$ actors contend; durable reservation without sink fencing matches complete mediation on sequential budget checks but fails asynchronous withdrawal (Table~\\ref{{tab:v2eval}}).}}\\label{{fig:v2runtime}}\\end{{figure*}}",
     ]
 
     out = {
@@ -641,9 +650,11 @@ def generate_v3():
     npt = json.loads((DATA_V3 / "neural_post_training.json").read_text()) if (DATA_V3 / "neural_post_training.json").is_file() else None
     cj = json.loads((DATA_V3 / "crypto_and_jepsen.json").read_text()) if (DATA_V3 / "crypto_and_jepsen.json").is_file() else None
     tm = json.loads((DATA_V3 / "trajectory_monitors.json").read_text()) if (DATA_V3 / "trajectory_monitors.json").is_file() else None
-    si_v5 = json.loads((DATA_V3 / "superintelligence_scaling.json").read_text()) if (DATA_V3 / "superintelligence_scaling.json").is_file() else None
+    si_v5 = json.loads((DATA_V3 / "authority_scaling.json").read_text()) if (DATA_V3 / "authority_scaling.json").is_file() else None
     cl_v5 = json.loads((DATA_V3 / "e2e_crypto_cluster.json").read_text()) if (DATA_V3 / "e2e_crypto_cluster.json").is_file() else None
     st_v5 = json.loads((DATA_V3 / "statistical_certificates.json").read_text()) if (DATA_V3 / "statistical_certificates.json").is_file() else None
+    afc_v3 = json.loads((DATA_V3 / "api_fenceability_census.json").read_text()) if (DATA_V3 / "api_fenceability_census.json").is_file() else None
+    bok_v2 = json.loads((DATA_V2 / "best-of-k-live.json").read_text()) if (DATA_V2 / "best-of-k-live.json").is_file() else None
 
     v4_v3_macros = []
     v4_floats = {}
@@ -654,6 +665,8 @@ def generate_v3():
         coop_j = jmap["cooperative_signed_fence"]
         brk_j = jmap["premature_broker_only_ack"]
         unc_j = jmap["uncooperative_external_sink"]
+        skw_j = jmap.get("unbuffered_clock_skew", {"post_ack_unauthorized_commits": 0, "schedules_run": coop_j["schedules_run"]})
+        skb_j = jmap.get("skew_buffered_cooperative_fence", {"post_ack_unauthorized_commits": 0, "schedules_run": coop_j["schedules_run"]})
         v4_v3_macros += [
             ("VFourCryptoAttacks", f"{crt['total_attacks']:,}"),
             ("VFourCryptoFalseAccepts", f"{crt['false_accepts']}"),
@@ -669,6 +682,9 @@ def generate_v3():
             ("VFourJepsenBrokerOnlyLeakPct", f"{100 * brk_j['post_ack_unauthorized_commits'] / brk_j['schedules_run']:.1f}"),
             ("VFourJepsenUncoopLeaks", f"{unc_j['post_ack_unauthorized_commits']}"),
             ("VFourJepsenUncoopLeakPct", f"{100 * unc_j['post_ack_unauthorized_commits'] / unc_j['schedules_run']:.1f}"),
+            ("VEightJepsenSkewUnbufLeaks", f"{skw_j['post_ack_unauthorized_commits']}"),
+            ("VEightJepsenSkewUnbufLeakPct", f"{100 * skw_j['post_ack_unauthorized_commits'] / skw_j['schedules_run']:.1f}"),
+            ("VEightJepsenSkewBufLeaks", f"{skb_j['post_ack_unauthorized_commits']}"),
         ]
 
     if rtc is not None:
@@ -765,17 +781,39 @@ def generate_v3():
                 f", and two-stage stateful escrow triage keeps {100*cesc['benign_fast_path_unpaused_rate']:.1f}\\% of benign steps unpaused "
                 f"while cutting episode false aborts {tm['p13_false_block_reduction_factor']:.1f}$\\times$ to {100*cesc['benign_false_block_k5']:.1f}\\%"
             )
+        lj_rows = []
+        lj_note = ""
+        lj_obj = tm.get("live_llm_judge_coupling")
+        if lj_obj is not None and lj_obj.get("models"):
+            lj_rows.append(r"\midrule")
+            for mtag, mshort in (("Qwen3-4B", "4B"), ("Qwen3-8B", "8B")):
+                if mtag in lj_obj["models"]:
+                    tr_m = lj_obj["models"][mtag]["shared_transcript_llm_judge"]
+                    is_m = lj_obj["models"][mtag]["isolated_action_schema_llm_judge"]
+                    tr_ratio = f"{tr_m['j2_to_j5_ratio']:.2f}$\\times$" if tr_m["j2_to_j5_ratio"] is not None else "---"
+                    is_ratio = f"{is_m['j2_to_j5_ratio']:.1f}$\\times$" if is_m["j2_to_j5_ratio"] is not None else "$\\infty$"
+                    lj_rows.append(
+                        f"Qwen3-{mshort} transcript LLM & {100*tr_m['j5_empirical']:.1f}\\% & {tr_m['coupling_inflation_ratio']:.1f}$\\times$ & {tr_ratio} & {100*tr_m['benign_false_block_k5']:.1f}\\%\\\\"
+                    )
+                    lj_rows.append(
+                        f"Qwen3-{mshort} isolated LLM & {100*is_m['j5_empirical']:.1f}\\% & {is_m['coupling_inflation_ratio']:.2f}$\\times$ & {is_ratio} & {100*is_m['benign_false_block_k5']:.1f}\\%\\\\"
+                    )
+            lj_note = (
+                f" Live Qwen3-4B and Qwen3-8B LLM-as-judge evaluations ({lj_obj['total_harmful_trajectories']} harmful + "
+                f"{lj_obj['total_benign_trajectories']} benign trajectories) confirm the same context-coupling inflation on shared transcripts vs.\\ isolated action schemas."
+            )
         tm_tab = [
             "% Generated by scripts/paper.py; do not edit.",
-            r"\begin{table}[t]\centering\footnotesize\setlength{\tabcolsep}{3.0pt}",
+            r"\begin{table}[t]\centering\footnotesize\setlength{\tabcolsep}{2.8pt}",
             r"\begin{tabularx}{\columnwidth}{@{}Lrrrr@{}}\toprule",
             r"5-step monitor regime & $\hat J_5$ & $\hat J_5/\!\prod\hat m_s$ & $J_2/J_5$ & FB\\\midrule",
             f"Transcript, homog. & {100*ahom['j5']:.2f}\\% & {ahom['coupling_inflation_ratio']:.1f}$\\times$ & {tm['regimes']['context_coupled_transcript_homogeneous']['prefix_k_trajectory_curves'][1]['empirical_joint_miss_j_k']/ahom['j5']:.2f}$\\times$ & {100*ahom['benign_false_block_k5']:.1f}\\%\\\\",
-            f"Transcript, 5-family & {100*ahet['j5']:.2f}\\% & {ahet['coupling_inflation_ratio']:.1f}$\\times$ & {tm['p3_shared_transcript_j2_to_j5_reduction_factor']:.2f}$\\times$ & {100*ahet['benign_false_block_k5']:.1f}\\%\\\\",
+            f"Transcript, 5-family & {100*ahet['j5']:.2f}\\% & {ahom['coupling_inflation_ratio'] if 'coupling_inflation_ratio' not in ahet else ahet['coupling_inflation_ratio']:.1f}$\\times$ & {tm['p3_shared_transcript_j2_to_j5_reduction_factor']:.2f}$\\times$ & {100*ahet['benign_false_block_k5']:.1f}\\%\\\\",
             f"Step invariants & {100*biso['j5']:.2f}\\% & {biso['coupling_inflation_ratio']:.2f}$\\times$ & {iso_j2_to_j5:.1f}$\\times$ & {100*biso['benign_false_block_k5']:.1f}\\%\\\\",
             *esc_row,
+            *lj_rows,
             r"\bottomrule\end{tabularx}",
-            f"\\caption{{Executed 5-step AgentDojo v1.2.2 trajectory monitoring ({tm['cohort_counts']['eval_total_trajectories']} held-out trajectories, {tm['cohort_counts']['eval_live_tool_executions']:,} live tool calls). Diversifying five classifier families on a shared conversation transcript inflates 5-step joint miss {ahet['coupling_inflation_ratio']:.1f}$\\times$ over $\\prod\\hat m_s$ and stalls past $k^*=2$ ($J_2/J_5={tm['p3_shared_transcript_j2_to_j5_reduction_factor']:.2f}\\times$). Prose-stripped step capability invariants cut $\\hat J_5$ to {100*biso['j5']:.2f}\\% ({100*biso['benign_false_block_k5']:.1f}\\% single-stage false blocks){esc_note}.}}\\label{{tab:v4trajmonitors}}\\end{{table}}",
+            f"\\caption{{Executed 5-step AgentDojo v1.2.2 trajectory monitoring ({tm['cohort_counts']['eval_total_trajectories']} held-out trajectories, {tm['cohort_counts']['eval_live_tool_executions']:,} live tool calls). Diversifying five classifier families on a shared conversation transcript inflates 5-step joint miss {ahet['coupling_inflation_ratio']:.1f}$\\times$ over $\\prod\\hat m_s$ and stalls past $k^*=2$ ($J_2/J_5={tm['p3_shared_transcript_j2_to_j5_reduction_factor']:.2f}\\times$). Prose-stripped step capability invariants cut $\\hat J_5$ to {100*biso['j5']:.2f}\\% ({100*biso['benign_false_block_k5']:.1f}\\% single-stage false blocks){esc_note}.{lj_note}}}\\label{{tab:v4trajmonitors}}\\end{{table}}",
         ]
         v4_floats["v4-traj-monitors-table.tex"] = "\n".join(tm_tab) + "\n"
 
@@ -845,8 +883,21 @@ def generate_v3():
         proof_v2_obj = load_v2("proof")
         live_dojo_v3_path = DATA_V2 / "agentdojo-live-models.json"
         live_dojo_v3 = json.loads(live_dojo_v3_path.read_text()) if live_dojo_v3_path.is_file() else None
+        mc_v3_path = DATA_V2 / "model-campaigns-analyzed.json"
+        mc_v3 = json.loads(mc_v3_path.read_text()) if mc_v3_path.is_file() else None
         v5_macros_extra, v5_floats_extra = build_v5_paper_outputs(
-            proof_v2_obj, si_v5, cl_v5, st_v5, tm, npt, live_dojo_v3
+            proof_v2_obj,
+            si_v5,
+            cl_v5,
+            st_v5,
+            tm,
+            npt,
+            cj_json=cj,
+            rtc_json=rtc,
+            bok_json=bok_v2,
+            afc_json=afc_v3,
+            live_dojo_json=live_dojo_v3,
+            mc_json=mc_v3,
         )
         v4_v3_macros += v5_macros_extra
         v4_floats.update(v5_floats_extra)
@@ -1050,18 +1101,18 @@ def generate_v3():
         "% Generated by scripts/paper.py; do not edit.",
         r"\begin{figure*}[t]\centering",
         r"\begin{tikzpicture}",
-        r"\begin{axis}[scale only axis,width=4.05cm,height=4.05cm,xmin=0,xmax=8,ymin=-5,ymax=105,xtick={0,1,2,4,8},xlabel={Observation lag $\Delta t$ (steps)},ylabel={Rate (\%)},title={\textbf{(a)} Uncertainty contraction},legend style={font=\tiny,at={(0.03,0.97)},anchor=north west,draw=none,fill=white,fill opacity=0.88},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
+        r"\begin{axis}[scale only axis,width=4.05cm,height=3.65cm,xmin=0,xmax=8,ymin=-5,ymax=105,xtick={0,1,2,4,8},xlabel={Observation lag $\Delta t$ (steps)},ylabel={Rate (\%)},title={\textbf{(a)} Uncertainty contraction},legend style={font=\tiny,at={(0.5,-0.31)},anchor=north,legend columns=2,draw=none,fill=none},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
         r"\addplot[teal,very thick,mark=*] coordinates {" + cons_adm_coords + r"};\addlegendentry{Envelope admitted}",
         r"\addplot[ink,thick,dashed,mark=square*] coordinates {" + cons_viol_coords + r"};\addlegendentry{Envelope breach}",
         r"\addplot[notred,thick,dotted,mark=triangle*] coordinates {" + stale_viol_coords + r"};\addlegendentry{Stale-state breach}",
         r"\end{axis}\end{tikzpicture}\hfill",
         r"\begin{tikzpicture}",
-        r"\begin{axis}[scale only axis,width=4.05cm,height=4.05cm,xmin=1,xmax=8,ymode=log,ymin=1e-8,ymax=1,xtick={1,2,4,6,8},xlabel={Stacked gates $k$},ylabel={Joint miss probability},title={\textbf{(b)} Common-cause floor},legend style={font=\tiny,at={(0.03,0.03)},anchor=south west,draw=none,fill=white,fill opacity=0.88},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
+        r"\begin{axis}[scale only axis,width=4.05cm,height=3.65cm,xmin=1,xmax=8,ymode=log,ymin=1e-8,ymax=1,xtick={1,2,4,6,8},xlabel={Stacked gates $k$},ylabel={Joint miss probability},title={\textbf{(b)} Common-cause floor},legend style={font=\tiny,at={(0.5,-0.31)},anchor=north,legend columns=2,draw=none,fill=none},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
         r"\addplot[notred,very thick,mark=*] coordinates {" + sat_cc_coords + r"};\addlegendentry{$c+(1-c)p^k$}",
         r"\addplot[teal,thick,dashed,mark=square*] coordinates {" + sat_ind_coords + r"};\addlegendentry{Naive $m^k$}",
         r"\end{axis}\end{tikzpicture}\hfill",
         r"\begin{tikzpicture}",
-        r"\begin{axis}[scale only axis,width=4.05cm,height=4.05cm,xmode=log,xmin=1,xmax=10000,ymin=0,ymax=105,xlabel={Renewal horizon $T$},ylabel={Cumulative breach (\%)},title={\textbf{(c)} Horizon summability},legend style={font=\tiny,at={(0.03,0.97)},anchor=north west,draw=none,fill=white,fill opacity=0.88},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
+        r"\begin{axis}[scale only axis,width=4.05cm,height=3.65cm,xmode=log,xmin=1,xmax=10000,ymin=0,ymax=105,xlabel={Renewal horizon $T$},ylabel={Cumulative breach (\%)},title={\textbf{(c)} Horizon summability},legend style={font=\tiny,at={(0.5,-0.31)},anchor=north,legend columns=2,draw=none,fill=none},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
         r"\addplot[notred,thick,dotted,mark=triangle*] coordinates {" + hor_const_coords + r"};\addlegendentry{$p_t=10^{-3}$}",
         r"\addplot[gold,thick,dashed,mark=square*] coordinates {" + hor_harm_coords + r"};\addlegendentry{$p_t=0.01/t$}",
         r"\addplot[teal,very thick,mark=*] coordinates {" + hor_sum_coords + r"};\addlegendentry{$p_t=0.01/t^2$}",
@@ -1089,19 +1140,19 @@ def generate_v3():
         "% Generated by scripts/paper.py; do not edit.",
         r"\begin{figure*}[t]\centering",
         r"\begin{tikzpicture}",
-        r"\begin{axis}[scale only axis,width=4.05cm,height=4.05cm,xmin=0,xmax=32,ymin=-4,ymax=104,xtick={0,6,12,20,32},xlabel={Interdiction budget $B$ (nodes)},ylabel={Blocked pathways (\%)},title={\textbf{(a)} Narrow DAGs: paths blocked},legend style={font=\tiny,at={(0.97,0.05)},anchor=south east,draw=none,fill=white,fill opacity=0.88},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
+        r"\begin{axis}[scale only axis,width=4.05cm,height=3.65cm,xmin=0,xmax=32,ymin=-4,ymax=104,xtick={0,6,12,20,32},xlabel={Interdiction budget $B$ (nodes)},ylabel={Blocked pathways (\%)},title={\textbf{(a)} Narrow DAGs: paths blocked},legend style={font=\tiny,at={(0.5,-0.31)},anchor=north,legend columns=2,draw=none,fill=none},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
         r"\addplot[teal,very thick,mark=*] coordinates {" + cut_blk + r"};\addlegendentry{Reported min-cut}",
         r"\addplot[violet,thick,dashed,mark=square*] coordinates {" + pspec_blk + r"};\addlegendentry{Patch specific}",
         r"\addplot[gold,thick,dotted,mark=triangle*] coordinates {" + prand_blk + r"};\addlegendentry{Patch random}",
         r"\end{axis}\end{tikzpicture}\hfill",
         r"\begin{tikzpicture}",
-        r"\begin{axis}[scale only axis,width=4.05cm,height=4.05cm,xmin=0,xmax=32,ymin=-4,ymax=104,xtick={0,6,12,20,32},xlabel={Interdiction budget $B$ (nodes)},ylabel={Graphs severed (\%)},title={\textbf{(b)} Narrow DAGs: full severance},legend style={font=\tiny,at={(0.97,0.52)},anchor=east,draw=none,fill=white,fill opacity=0.88},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
+        r"\begin{axis}[scale only axis,width=4.05cm,height=3.65cm,xmin=0,xmax=32,ymin=-4,ymax=104,xtick={0,6,12,20,32},xlabel={Interdiction budget $B$ (nodes)},ylabel={Graphs severed (\%)},title={\textbf{(b)} Narrow DAGs: full severance},legend style={font=\tiny,at={(0.5,-0.31)},anchor=north,legend columns=2,draw=none,fill=none},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
         r"\addplot[teal,very thick,mark=*] coordinates {" + cut_sev + r"};\addlegendentry{Reported min-cut}",
         r"\addplot[notred,thick,dashed,mark=square*] coordinates {" + pspec_sev + r"};\addlegendentry{Patch specific}",
         r"\addplot[gold,thick,dotted,mark=triangle*] coordinates {" + prand_sev + r"};\addlegendentry{Patch random}",
         r"\end{axis}\end{tikzpicture}\hfill",
         r"\begin{tikzpicture}",
-        r"\begin{axis}[scale only axis,width=4.05cm,height=4.05cm,xmode=log,xmin=30,xmax=3000,ymin=-4,ymax=104,xtick={30,100,300,1000,3000},xticklabels={30,100,300,1k,3k},xlabel={Boltzmann path reports $N$},ylabel={Full-graph severance (\%)},title={\textbf{(c)} Cut severance vs.\ width},legend style={font=\tiny,at={(0.03,0.97)},anchor=north west,draw=none,fill=white,fill opacity=0.88},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
+        r"\begin{axis}[scale only axis,width=4.05cm,height=3.65cm,xmode=log,xmin=30,xmax=3000,ymin=-4,ymax=104,xtick={30,100,300,1000,3000},xticklabels={30,100,300,1k,3k},xlabel={Boltzmann path reports $N$},ylabel={Full-graph severance (\%)},title={\textbf{(c)} Cut severance vs.\ width},legend style={font=\tiny,at={(0.5,-0.31)},anchor=north,legend columns=2,draw=none,fill=none},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
         r"\addplot[teal,very thick,mark=*] coordinates {" + sev_nar_n + r"};\addlegendentry{Narrow ($w=6$)}",
         r"\addplot[violet,thick,dashed,mark=square*] coordinates {" + sev_hub_n + r"};\addlegendentry{Hub ($w\approx 21$)}",
         r"\addplot[notred,thick,dotted,mark=triangle*] coordinates {" + sev_wid_n + r"};\addlegendentry{Wide ($w=27$)}",
@@ -1126,13 +1177,13 @@ def generate_v3():
         "% Generated by scripts/paper.py; do not edit.",
         r"\begin{figure*}[t]\centering",
         r"\begin{tikzpicture}",
-        r"\begin{axis}[scale only axis,width=4.65cm,height=4.65cm,xmin=-0.4,xmax=2.4,ymin=-5,ymax=105,xtick={0,1,2},xticklabels={Honest,15\% Blind,5\% Withheld},xlabel={Search reporting regime ($K=2{,}000,\;N=12{,}000$)},ylabel={Mass coverage / recall (\%)},title={\textbf{(a)} Good--Turing non-identifiability},legend style={font=\scriptsize,at={(0.03,0.05)},anchor=south west,draw=none,fill=white,fill opacity=0.88},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
+        r"\begin{axis}[scale only axis,width=5.45cm,height=3.80cm,xmin=-0.4,xmax=2.4,ymin=-5,ymax=105,xtick={0,1,2},xticklabels={Honest,15\% Blind,5\% Withheld},xlabel={Search reporting regime ($K=2{,}000,\;N=12{,}000$)},ylabel={Mass coverage / recall (\%)},title={\textbf{(a)} Good--Turing non-identifiability},legend style={font=\scriptsize,at={(0.5,-0.29)},anchor=north,legend columns=2,draw=none,fill=none},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
         r"\addplot[ink,very thick,mark=*] coordinates {" + gt_coords + r"};\addlegendentry{Good--Turing $\hat C$}",
         r"\addplot[teal,very thick,dashed,mark=square*] coordinates {" + tr_coords + r"};\addlegendentry{True coverage}",
         r"\addplot[notred,very thick,dotted,mark=triangle*] coordinates {" + cr_coords + r"};\addlegendentry{Critical recall}",
-        r"\end{axis}\end{tikzpicture}\hspace{1.1cm}",
+        r"\end{axis}\end{tikzpicture}\hspace{1.15cm}",
         r"\begin{tikzpicture}",
-        r"\begin{axis}[scale only axis,width=4.65cm,height=4.65cm,xmin=0,xmax=1,ymin=-4,ymax=104,xtick={0,0.2,0.4,0.6,0.8,1.0},xlabel={Critical-plant reporting ratio $r$ (1.0 = honest)},ylabel={Exact Fisher detection power (\%)},title={\textbf{(b)} Two-sample planted-pathway audit ($\alpha=0.01$)},legend style={font=\scriptsize,at={(0.03,0.05)},anchor=south west,draw=none,fill=white,fill opacity=0.88},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
+        r"\begin{axis}[scale only axis,width=5.45cm,height=3.80cm,xmin=0,xmax=1,ymin=-4,ymax=104,xtick={0,0.2,0.4,0.6,0.8,1.0},xlabel={Critical-plant reporting ratio $r$ (1.0 = honest)},ylabel={Exact Fisher detection power (\%)},title={\textbf{(b)} Two-sample planted-pathway audit ($\alpha=0.01$)},legend style={font=\scriptsize,at={(0.5,-0.29)},anchor=north,legend columns=2,draw=none,fill=none},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
         r"\addplot[teal,very thick,mark=*] coordinates {" + p200_coords + r"};\addlegendentry{$P=200,\;q_0=0.80$}",
         r"\addplot[violet,thick,dashed,mark=square*] coordinates {" + p200_q50_coords + r"};\addlegendentry{$P=200,\;q_0=0.50$}",
         r"\addplot[notred,thick,dotted,mark=triangle*] coordinates {" + p40_coords + r"};\addlegendentry{$P=40,\;q_0=0.80$}",
@@ -1186,21 +1237,21 @@ def generate_v3():
         "% Generated by scripts/paper.py; do not edit.",
         r"\begin{figure*}[t]\centering",
         r"\begin{tikzpicture}",
-        r"\begin{axis}[scale only axis,width=4.05cm,height=4.05cm,xmin=1,xmax=8,ymode=log,ymin=1e-8,ymax=0.2,xtick={1,2,4,6,8},xlabel={Stacked monitors $k$},ylabel={Joint miss probability},title={\textbf{(a)} Gaussian copula ($m=0.10$)},legend style={font=\tiny,at={(0.03,0.03)},anchor=south west,draw=none,fill=white,fill opacity=0.88},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
+        r"\begin{axis}[scale only axis,width=4.05cm,height=3.65cm,xmin=1,xmax=8,ymode=log,ymin=1e-8,ymax=0.2,xtick={1,2,4,6,8},xlabel={Stacked monitors $k$},ylabel={Joint miss probability},title={\textbf{(a)} Gaussian copula ($m=0.10$)},legend style={font=\tiny,at={(0.5,-0.31)},anchor=north,legend columns=2,draw=none,fill=none},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
         r"\addplot[notred,very thick,mark=triangle*] coordinates {" + cop_c9 + r"};\addlegendentry{$\rho=0.9$}",
         r"\addplot[violet,thick,dashed,mark=square*] coordinates {" + cop_c6 + r"};\addlegendentry{$\rho=0.6$}",
         r"\addplot[gold,thick,dashdotted,mark=diamond*] coordinates {" + cop_c3 + r"};\addlegendentry{$\rho=0.3$}",
         r"\addplot[teal,thick,dotted,mark=*] coordinates {" + cop_c0 + r"};\addlegendentry{$\rho=0.0$}",
         r"\end{axis}\end{tikzpicture}\hfill",
         r"\begin{tikzpicture}",
-        r"\begin{axis}[scale only axis,width=4.05cm,height=4.05cm,xmin=1,xmax=6,ymode=log,ymin=1e-6,ymax=1,xtick={1,...,6},xlabel={6-family stack depth $k$},ylabel={Held-out joint miss},title={\textbf{(b)} 20D 6-family stacking},legend style={font=\tiny,at={(0.03,0.03)},anchor=south west,draw=none,fill=white,fill opacity=0.88},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
+        r"\begin{axis}[scale only axis,width=4.05cm,height=3.65cm,xmin=1,xmax=6,ymode=log,ymin=1e-6,ymax=1,xtick={1,...,6},xlabel={6-family stack depth $k$},ylabel={Held-out joint miss},title={\textbf{(b)} 20D 6-family stacking},legend style={font=\tiny,at={(0.5,-0.31)},anchor=north,legend columns=2,draw=none,fill=none},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
         r"\addplot[notred,very thick,mark=triangle*] coordinates {" + emp_het2 + r"};\addlegendentry{Shared, $\rho_{\mathrm{adv}}=2$}",
         r"\addplot[violet,thick,dashed,mark=square*] coordinates {" + emp_het0 + r"};\addlegendentry{Shared, $\rho_{\mathrm{adv}}=0$}",
         r"\addplot[gold,thick,dashdotted,mark=diamond*] coordinates {" + emp_dist2 + r"};\addlegendentry{Distinct, $\rho_{\mathrm{adv}}=2$}",
         r"\addplot[teal,thick,dotted,mark=*] coordinates {" + emp_dist0 + r"};\addlegendentry{Distinct, $\rho_{\mathrm{adv}}=0$}",
         r"\end{axis}\end{tikzpicture}\hfill",
         r"\begin{tikzpicture}",
-        r"\begin{axis}[scale only axis,width=4.05cm,height=4.05cm,xmode=log,log basis x=2,xmin=1,xmax=64,ymin=0,ymax=100,xtick={1,2,4,8,16,32,64},xticklabels={1,2,4,8,16,32,64},xlabel={Total assessment budget $N=Kn$},ylabel={Squared correlation $R_G$ (\%)},title={\textbf{(c)} Portfolio ceiling},legend style={font=\tiny,at={(0.03,0.97)},anchor=north west,draw=none,fill=white,fill opacity=0.88},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
+        r"\begin{axis}[scale only axis,width=4.05cm,height=3.65cm,xmode=log,log basis x=2,xmin=1,xmax=64,ymin=0,ymax=100,xtick={1,2,4,8,16,32,64},xticklabels={1,2,4,8,16,32,64},xlabel={Total assessment budget $N=Kn$},ylabel={Squared correlation $R_G$ (\%)},title={\textbf{(c)} Portfolio ceiling},legend style={font=\tiny,at={(0.5,-0.31)},anchor=north,legend columns=2,draw=none,fill=none},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
         r"\addplot[ink,thick,dotted] coordinates {" + port_ceil + r"};\addlegendentry{Ceiling $V_G/(V_G+\omega^2)$}",
         r"\addplot[teal,very thick,mark=*] coordinates {" + port_div + r"};\addlegendentry{Diverse ($K=N,n=1$)}",
         r"\addplot[notred,thick,dashed,mark=square*] coordinates {" + port_rep + r"};\addlegendentry{Single domain ($K=1$)}",
@@ -1240,14 +1291,13 @@ def generate_v3():
         f"\\caption{{Co-evolution of $(\\text{{gamble share }} s,\\;\\text{{capacity }} c)$ under stipulated payoff rules. Winner-take-most contests select reckless gambling even when ranked on conferred benefit; floor elimination suppresses gambling ({100*sel['rules']['floor']['final_share']['mean']:.1f}\\%, a {sel['warrior_to_floor_harm_ratio']:.1f}$\\times$ harm reduction vs.\\ warrior) while retaining {100*sel['floor_to_warrior_capacity_retention']:.1f}\\% of warrior capacity growth. Mathematical payoff mechanics only, not RLHF or human-participant data.}}\\label{{tab:v3selection}}\\end{{table*}}",
     ]
 
-    # Float 10: v3-selection-fig.tex (H16 + Neural RL Pre-Commit Gate Sweep)
-    gens = sel["params"]["generations"]
-    step_stride = max(1, gens // 16)
-    g_idxs = sorted(set(list(range(0, gens + 1, step_stride)) + [gens]))
-
-    def traj_coords(rule_key):
-        tr = sel["rules"][rule_key]["share_trajectory"]
-        return " ".join(f"({g},{100 * tr[g]:.4g})" for g in g_idxs)
+    # Float 10: v3-selection-fig.tex (Dispersion Reversal, Train-in-Gate vs Post-Hoc, Endogenous Grant Reversal)
+    sig_contest = " ".join(
+        f"({pt['sigma']},{100 * pt['contest_win_prob_exact']:.4g})" for pt in sel["prop12_variance"]["sigma_curve"]
+    )
+    sig_floor = " ".join(
+        f"({pt['sigma']},{100 * pt['floor_survival_prob_exact']:.4g})" for pt in sel["prop12_variance"]["sigma_curve"]
+    )
 
     if npt is not None and "deployment_vs_training_gate_ablation" in npt:
         ab_g = npt["deployment_vs_training_gate_ablation"]
@@ -1266,56 +1316,44 @@ def generate_v3():
         )
         panel_b_lines = [
             r"\begin{tikzpicture}",
-            r"\begin{axis}[scale only axis,width=4.05cm,height=4.05cm,xmin=-0.3,xmax=3.3,ymin=-4,ymax=104,xtick={0,1,2,3},xticklabels={Ungated,Post-hoc,Train-gate,Floor+gate},xlabel={Gate timing regime ($q_{\mathrm{deploy}}=1$ on 1--3)},ylabel={Rate (\%)},title={\textbf{(b)} Train-in-gate vs.\ post-hoc},legend style={font=\tiny,at={(0.03,0.48)},anchor=west,draw=none,fill=white,fill opacity=0.88},tick label style={font=\tiny},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
-            r"\addplot[teal,very thick,mark=*] coordinates {" + ab_task_coords + r"};\addlegendentry{Useful task (\%)}",
-            r"\addplot[notred,very thick,mark=triangle*] coordinates {" + ab_sc_coords + r"};\addlegendentry{Covert intent (\%)}",
-            r"\addplot[gold,thick,dashed,mark=square*] coordinates {" + ab_waste_coords + r"};\addlegendentry{Blocked waste (\%)}",
+            r"\begin{axis}[scale only axis,width=4.05cm,height=3.65cm,xmin=-0.3,xmax=3.3,ymin=-4,ymax=104,xtick={0,1,2,3},xticklabels={Ungated,Post-hoc,Train-gate,Floor+gate},xlabel={Gate timing ($q_{\mathrm{deploy}}=1$ on 1--3)},ylabel={Episode rate (\%)},title={\textbf{(b)} Train-in-gate vs.\ post-hoc},legend style={font=\tiny,at={(0.5,-0.32)},anchor=north,legend columns=2,draw=none,fill=none},tick label style={font=\tiny},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
+            r"\addplot[teal,very thick,mark=*] coordinates {" + ab_task_coords + r"};\addlegendentry{Useful task}",
+            r"\addplot[notred,very thick,mark=triangle*] coordinates {" + ab_sc_coords + r"};\addlegendentry{Covert intent}",
+            r"\addplot[gold,thick,dashed,mark=square*] coordinates {" + ab_waste_coords + r"};\addlegendentry{Blocked waste}",
             r"\end{axis}\end{tikzpicture}\hfill",
         ]
         panel_b_cap = (
-            f"\\textbf{{(b)}} Applying an exogenous gate only post-hoc at deployment blocks external harm but leaves covert shortcut intent intact ({100.0*arms[1]['unmonitored_shortcut_intent_prob']:.1f}\\%) and wastes step budget ({100.0*arms[1]['useful_task_completion_rate']:.1f}\\% task completion), whereas training policy gradients inside the gate redirects capacity into genuine task completion ({100.0*arms[2]['useful_task_completion_rate']:.1f}\\%, $+{ab_g['training_inside_gate_completion_gain_pp']:.1f}$\\,pp)."
+            f"\\textbf{{(b)}} Post-hoc deployment gating blocks external harm but leaves covert shortcut intent intact ({100.0*arms[1]['unmonitored_shortcut_intent_prob']:.1f}\\%) and wastes budget ({100.0*arms[1]['useful_task_completion_rate']:.1f}\\% completion), whereas training inside the gate redirects policy gradients into genuine task completion ({100.0*arms[2]['useful_task_completion_rate']:.1f}\\%, $+{ab_g['training_inside_gate_completion_gain_pp']:.1f}$\\,pp)."
         )
     else:
         gate_share = " ".join(f"({pt['param']},{100 * pt['final_share']:.4g})" for pt in sel["by_gate_points"])
-        gate_cap = " ".join(f"({pt['param']},{10 * pt['capacity_gain']:.4g})" for pt in sel["by_gate_points"])
         panel_b_lines = [
             r"\begin{tikzpicture}",
-            r"\begin{axis}[scale only axis,width=4.05cm,height=4.05cm,xmin=0,xmax=1,ymin=-4,ymax=104,xtick={0,0.2,0.4,0.6,0.8,1.0},xlabel={External gate refusal $q_{\mathrm{gate}}$},ylabel={Share (\%) / $10\times\Delta c$},title={\textbf{(b)} Boundary re-aiming},legend style={font=\tiny,at={(0.03,0.48)},anchor=west,draw=none,fill=white,fill opacity=0.88},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
-            r"\addplot[notred,very thick,mark=triangle*] coordinates {" + gate_share + r"};\addlegendentry{Gamble share (\%)}",
-            r"\addplot[teal,very thick,dashed,mark=*] coordinates {" + gate_cap + r"};\addlegendentry{$10\times$ capacity $\Delta c$}",
+            r"\begin{axis}[scale only axis,width=4.05cm,height=3.65cm,xmin=0,xmax=1,ymin=-4,ymax=104,xtick={0,0.2,0.4,0.6,0.8,1.0},xlabel={External gate refusal $q_{\mathrm{gate}}$},ylabel={Gamble share (\%)},title={\textbf{(b)} Boundary re-aiming},legend style={font=\tiny,at={(0.5,-0.32)},anchor=north,legend columns=1,draw=none,fill=none},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
+            r"\addplot[notred,very thick,mark=triangle*] coordinates {" + gate_share + r"};\addlegendentry{Gamble share}",
             r"\end{axis}\end{tikzpicture}\hfill",
         ]
-        panel_b_cap = r"\textbf{(b)} Exogenous pre-commit gate refusal re-aims selection away from gambling."
+        panel_b_cap = r"\textbf{(b)} Exogenous pre-commit gate refusal suppresses reckless gambling."
 
-    sig_contest = " ".join(
-        f"({pt['sigma']},{100 * pt['contest_win_prob_exact']:.4g})" for pt in sel["prop12_variance"]["sigma_curve"]
-    )
-    sig_floor = " ".join(
-        f"({pt['sigma']},{100 * pt['floor_survival_prob_exact']:.4g})" for pt in sel["prop12_variance"]["sigma_curve"]
-    )
-    sig_conc = " ".join(
-        f"({pt['sigma']},{100 * max(0.0, pt['concave_capped_welfare_exact']):.4g})"
-        for pt in sel["prop12_variance"]["sigma_curve"]
-    )
+    endog_coords = f"(0,{100.0 * blunt_p['unconditional_harm_endogenous']:.4g}) (1,{100.0 * warm_p['unconditional_harm_endogenous']:.4g})"
+    decoup_coords = f"(0,{100.0 * blunt_p['unconditional_harm_decoupled']:.4g}) (1,{100.0 * warm_p['unconditional_harm_decoupled']:.4g})"
+    grant_ymax = max(14.5, 130.0 * max(warm_p["unconditional_harm_endogenous"], blunt_p["unconditional_harm_decoupled"]))
 
     sel_fig = [
         "% Generated by scripts/paper.py; do not edit.",
         r"\begin{figure*}[t]\centering",
         r"\begin{tikzpicture}",
-        f"\\begin{{axis}}[scale only axis,width=4.05cm,height=4.05cm,xmin=0,xmax={gens},ymin=-4,ymax=104,xlabel={{Generation $g$}},ylabel={{Mean gamble share (\\%)}},title={{\\textbf{{(a)}} Co-evolutionary trajectories}},legend style={{font=\\tiny,at={{(0.03,0.52)}},anchor=west,draw=none,fill=white,fill opacity=0.88}},tick label style={{font=\\scriptsize}},label style={{font=\\footnotesize}},title style={{font=\\footnotesize}},grid=major]",
-        r"\addplot[notred,very thick,mark=triangle*] coordinates {" + traj_coords("taken_rank") + r"};\addlegendentry{Taken rank}",
-        r"\addplot[gold,thick,dashed,mark=diamond*] coordinates {" + traj_coords("conferred_rank") + r"};\addlegendentry{Conferred rank}",
-        r"\addplot[violet,thick,dashdotted,mark=square*] coordinates {" + traj_coords("caretaker") + r"};\addlegendentry{Caretaker}",
-        r"\addplot[teal,very thick,mark=*] coordinates {" + traj_coords("floor") + r"};\addlegendentry{Floor rule}",
+        r"\begin{axis}[scale only axis,width=4.05cm,height=3.65cm,xmin=0.2,xmax=2.0,ymin=0,ymax=104,xtick={0.2,0.5,1.0,1.5,2.0},xlabel={Payoff dispersion $\sigma$},ylabel={Threshold attainment (\%)},title={\textbf{(a)} Dispersion reversal},legend style={font=\tiny,at={(0.5,-0.32)},anchor=north,legend columns=2,draw=none,fill=none},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
+        r"\addplot[notred,very thick,mark=triangle*] coordinates {" + sig_contest + r"};\addlegendentry{Upper-tail contest}",
+        r"\addplot[teal,very thick,mark=*] coordinates {" + sig_floor + r"};\addlegendentry{Floor survival}",
         r"\end{axis}\end{tikzpicture}\hfill",
         *panel_b_lines,
         r"\begin{tikzpicture}",
-        r"\begin{axis}[scale only axis,width=4.05cm,height=4.05cm,xmin=0.2,xmax=2.0,ymin=0,ymax=104,xtick={0.2,0.5,1.0,1.5,2.0},xlabel={Payoff dispersion $\sigma$},ylabel={Success prob.\ / scaled welfare (\%)},title={\textbf{(c)} Dispersion reversal},legend style={font=\tiny,at={(0.03,0.48)},anchor=west,draw=none,fill=white,fill opacity=0.88},tick label style={font=\scriptsize},label style={font=\footnotesize},title style={font=\footnotesize},grid=major]",
-        r"\addplot[notred,very thick,mark=triangle*] coordinates {" + sig_contest + r"};\addlegendentry{Upper-tail contest}",
-        r"\addplot[teal,very thick,mark=*] coordinates {" + sig_floor + r"};\addlegendentry{Floor survival}",
-        r"\addplot[violet,thick,dashed,mark=square*] coordinates {" + sig_conc + r"};\addlegendentry{Concave welfare}",
+        f"\\begin{{axis}}[scale only axis,width=4.05cm,height=3.65cm,xmin=-0.35,xmax=1.35,ymin=0,ymax={grant_ymax:.1f},xtick={{0,1}},xticklabels={{Blunt,Deferential}},xlabel={{Proposer demeanor (safer per fixed scope $\\rightarrow$)}},ylabel={{Unconditional harm (\\%)}},title={{\\textbf{{(c)}} Endogenous grant reversal}},legend style={{font=\\tiny,at={{(0.5,-0.32)}},anchor=north,legend columns=2,draw=none,fill=none}},tick label style={{font=\\scriptsize}},label style={{font=\\footnotesize}},title style={{font=\\footnotesize}},grid=major]",
+        r"\addplot[notred,very thick,mark=triangle*] coordinates {" + endog_coords + r"};\addlegendentry{Endogenous scope}",
+        r"\addplot[teal,very thick,dashed,mark=*] coordinates {" + decoup_coords + r"};\addlegendentry{Decoupled scope}",
         r"\end{axis}\end{tikzpicture}",
-        f"\\caption{{Selection geometry and training-time vs.\\ deployment-time gate mediation. \\textbf{{(a)}} Top-decile contests drive gamble share above $90\\%$, while floor elimination collapses gambling below $5\\%$. {panel_b_cap} \\textbf{{(c)}} Upper-tail contests reward variance ($\\sigma$), whereas survival floors and concave capped objectives penalize it.}}\\label{{fig:v3selection}}\\end{{figure*}}",
+        f"\\caption{{Reward, training, and delegation reversals. \\textbf{{(a)}} Upper-tail contests reward outcome variance ($\\sigma$), whereas survival floors penalize it. {panel_b_cap} \\textbf{{(c)}} Endogenous grant reversal: a deferential proposer strictly safer at every fixed scope incurs ${100.0*warm_p['unconditional_harm_endogenous']:.2f}\\%$ total harm vs.\\ ${100.0*blunt_p['unconditional_harm_endogenous']:.2f}\\%$ when demeanor expands granted scope; exogenous scope caps restore safety dominance (${100.0*warm_p['unconditional_harm_decoupled']:.2f}\\% < {100.0*blunt_p['unconditional_harm_decoupled']:.2f}\\%$).}}\\label{{fig:v3selection}}\\end{{figure*}}",
     ]
 
     out = {

@@ -1,118 +1,14 @@
-\section{Orthogonal Step Invariants and Two-Stage Escrow Triage Solve Multi-Step Gating}
-\label{sec:monitors}
+\section{Context-Isolated Monitors and Stateful Escrow Triage}\label{sec:monitors}
 
-Condition~C3 links runtime verification to period reach through the joint miss probability
-$J_k$ across $k$ external gates, never the naive product $\prod_{s=1}^k m_s$. Yet stacking
-strict gates across multi-step tool trajectories creates an operational dilemma: shared
-conversation transcripts couple monitor failures, whereas independent per-step gates
-compound benign false alarms. We resolve both halves on executed multi-step trajectories
-first, then characterize underlying copula and portfolio ceilings.
+Not every domain invariant reduces to a numeric budget or static path allowlist; ambiguous actions sometimes require semantic inspection before commit. Equation~\eqref{eq:reach} predicts that stacking multiple monitors on a \emph{shared untrusted conversation transcript} suffers severe common-cause coupling (\(c > 0\)), whereas stripping untrusted prose into isolated step-capability schemas restores conditional independence across steps.
 
 \input{generated/v4-traj-monitors-table}
 
-\subsection{Executed Five-Step Trajectories and Two-Stage Stateful Escrow Triage}
+Table~\ref{tab:v4trajmonitors} tests this prediction across two complementary settings on held-out 5-step AgentDojo v1.2.2 trajectories (\VFourTrajEvalCount{} trajectories; \VFourTrajToolCalls{} live tool executions):
+\begin{enumerate}
+  \item \textbf{Classifier diversity on shared transcripts stalls past \(k^\star = 2\).} Diversifying five distinct statistical classifier families across a shared conversation transcript still inflates 5-step joint miss \(\VFourTrajHetInflation\times\) above the marginal product \(\prod_{s=1}^5 \hat{m}_s\) (\(\hat{J}_5 = \VFourTrajHetFiveMissPct\%\)), improving by only \(\VFourTrajHetPostKStarFactor\times\) from step~2 to step~5 because injected rationalizations persist across the shared context window.
+  \item \textbf{Live Qwen3 LLM-as-judge coupling confirms transcript vulnerability.} Replacing lexical classifiers with live Qwen3-4B and Qwen3-8B language-model judges exhibits the exact same structural split. When judging full untrusted transcripts, multi-step misses remain strongly coupled (\(\VEightLlmJudgeFourBTransInflation\times\) inflation on Qwen3-4B, \(\hat{J}_5 = \VEightLlmJudgeFourBTransFiveMissPct\%\); \(\VEightLlmJudgeEightBTransInflation\times\) on Qwen3-8B, \(\hat{J}_5 = \VEightLlmJudgeEightBTransFiveMissPct\%\)). Stripping untrusted assistant and tool prose so the LLM judge inspects only structured \texttt{(tool, args, resource, delta)} step records cuts 5-step joint miss to \(\VEightLlmJudgeFourBIsoFiveMissPct\%\) (4B) and \(\VEightLlmJudgeEightBIsoFiveMissPct\%\) (8B).
+  \item \textbf{Two-stage reservation escrow eliminates the false-block tax.} Enforcing strict single-stage step invariants rejects \(\VFourTrajIsoFalseBlockPct\%\) of benign 5-step episodes. Routing anomalous step intents into a stateful broker reservation escrow---which holds side effects in staging while verifying cross-step provenance---executes \(\VFourTrajEscrowFastPathPct\%\) of benign tool calls unpaused on the deterministic fast path and reduces episode false aborts \(\VFourTrajEscrowReductionFactor\times\) to \(\VFourTrajEscrowFalseBlockPct\%\) (\(\hat{J}_5 = \VFourTrajEscrowFiveMissPct\%\)).
+\end{enumerate}
 
-\para{Operational question.} Why do five diverse classifier architectures still fail
-together when watching a shared conversation transcript—and how can orthogonal step gates
-avoid aborting a quarter of legitimate five-step workflows?
-
-\begin{proposition}[Two-stage orthogonal escrow triage; Tier 2]
-\label{u07:prop:triage}
-Across a $k$-step mediated workflow, let each step $s \in \{1,\dots,k\}$ pair a fast
-prose-stripped capability-invariant screen $G_s^{(1)}$ of benign false-alarm rate $\alpha_1$
-with a stateful reservation escrow that holds—rather than aborts—flagged steps for
-deterministic Stage-2 provenance and scope verification $G_s^{(2)}$ having conditional
-benign false-rejection rate $\alpha_{2\mid 1}$ and zero false clearances on out-of-scope
-payloads ($\Prb(G_s^{(2)} \text{ clears} \mid \text{out-of-scope}, G_s^{(1)} \text{ flags}) = 0$).
-Then: (i)~$1 - \alpha_1$ of benign steps execute unpaused on the fast path;
-(ii)~benign $k$-step episode false-abort probability drops from
-$1 - (1 - \alpha_0)^k$ under single-stage hard blocking at threshold $\alpha_0$ to at most
-$1 - (1 - \alpha_1\alpha_{2\mid 1})^k \le k\,\alpha_1\alpha_{2\mid 1}$; and
-(iii)~joint $k$-step miss satisfies $\tilde{J}_k \le J_k^{(\alpha_1)}$ (strictly preserving or
-improving recall whenever $\alpha_1 \ge \alpha_0$).
-\end{proposition}
-
-\emph{Plain-English reading and executed AgentDojo verification.} We evaluate $k{=}5$-step
-AgentDojo \texttt{v1.2.2} trajectories ($\VFourTrajEvalCount$ held-out trajectories,
-$\text{\VFourTrajToolCalls}$ live tool executions paired with token-entropy statistics
-across $340$ live Qwen3 campaigns; Tier~3, Table~\ref{tab:v4trajmonitors}). When monitors
-inspect the cumulative conversation transcript, injected framing couples all five steps:
-homogeneous logistic gates suffer $\hat{J}_5 = \VFourTrajHomoFiveMissPct\%$
-($\VFourTrajHomoInflation\times$ over $\prod \hat{m}_s$), and diversifying five classifier
-families across steps $1\dots 5$ still yields $\hat{J}_5 = \VFourTrajHetFiveMissPct\%$
-($\VFourTrajHetInflation\times$ inflation), stalling past $k^*{=}2$
-($J_2/J_5 = \VFourTrajHetPostKStarFactor\times$). Stripping untrusted prose so each step
-gate checks only its orthogonal capability and provenance invariant restores post-$k^*$
-reduction ($J_2/J_5 = \VFourTrajIsoPostKStarFactor\times$) and cuts $\hat{J}_5$ to
-\VFourTrajIsoFiveMissPct\% ($\VFourTrajIsoInflation\times$ product), at a single-stage cost
-of \VFourTrajIsoFalseBlockPct\% benign episode false aborts.
-
-Replacing hard single-stage aborts with our two-stage stateful reservation escrow
-(Proposition~\ref{u07:prop:triage}, Stage-1 $\alpha_1=10\%$) preserves exact trajectory
-recall ($\hat{J}_5 = \VFourTrajEscrowFiveMissPct\%$, $\VFourTrajEscrowInflation\times$
-product) while keeping $\VFourTrajEscrowFastPathPct\%$ of benign tool calls completely
-unpaused on the fast path, escalating only $\VFourTrajEscrowEscalationPct\%$ to Stage-2
-sink-scope verification, and collapsing benign episode false aborts
-$\VFourTrajEscrowReductionFactor\times$ from $\VFourTrajIsoFalseBlockPct\%$ to
-$\VFourTrajEscrowFalseBlockPct\%$.
-
-\input{generated/v3-monitor-fig}
-
-\subsection{Copula Dependence, Surrogate Evasion, and Read-Only Retry}
-To isolate why shared-input monitor stacks stall even across distinct model families
-(Tiers~2 and~4), integrating an equicorrelated Gaussian copula via
-\VThreeCopulaNodes{}-node Golub--Welsch Gauss--Hermite quadrature~\cite{golub} at
-single-monitor miss $m{=}0.10$ (Figure~\ref{fig:v3monitors}a) shows that independent
-stacking ($k{=}6, \rho{=}0$) achieves $\VThreeCopulaIndepSixPct\%$ joint miss, whereas
-shared latent difficulty inflates misses to $\VThreeCopulaRhoThreeSixPct\%$ ($\rho{=}0.3$),
-$\VThreeCopulaRhoSixSixPct\%$ ($\rho{=}0.6$, an $\text{\VThreeCopulaRhoSixInflation}\times$
-inflation over $m^6$), and $\VThreeCopulaRhoNineSixPct\%$ ($\rho{=}0.9$). Across a
-standalone \VThreeMonDim{}-dimensional synthetic suite stacking \VThreeMonFamilies{}
-classifier families across \VThreeMonTasks{} nonlinear teacher seeds ($5\%$ per-gate benign
-false-positive calibration; Figure~\ref{fig:v3monitors}b; Table~\ref{tab:v3monitors},
-Appendix~\ref{app:simulations}):
-\begin{itemize}
-\item \textbf{Same-step correlation and surrogate transfer.} Stacking all
-\VThreeMonFamilies{} families on the \emph{same} step yields
-\VThreeMonSameHetPassiveSixPct\% passive joint miss ($\VThreeMonSameHetPassiveRatio\times$
-product), and projected $L_2$ evasion against a held-out multilayer-perceptron surrogate
-($\rho_{\mathrm{adv}}{=}2.0$) transfers across all \VThreeMonFamilies{}
-families~\cite{terekhov}, lifting shared-step miss to \VThreeMonSameHetAdvSixPct\%
-($\VThreeMonSameHetAdvRatio\times$ product).
-\item \textbf{Score leakage and read-only retry ($K_{\mathrm{retry}}$).} Returning
-continuous margin feedback over $8$ adaptive queries doubles shared-step 6-family miss to
-\VThreeMonScoreFeedbackEightQSixPct\%. Even with zero score access, best-of-$K_{\mathrm{retry}}$
-read-only candidate filtering raises single-attempt miss (\VThreeMonRetryOnePct\% at
-$K_{\mathrm{retry}}{=}1$) to \VThreeMonRetryEightPct\% ($K_{\mathrm{retry}}{=}8$) and
-\VThreeMonRetryThirtyTwoPct\% ($K_{\mathrm{retry}}{=}32$), tracking
-$1 - (1 - J_6)^{K_{\mathrm{retry}}}$, while single-stage $k{=}6$ hard blocking compounds
-benign rejections from \VThreeMonFalseBlockOnePct\% to \VThreeMonFalseBlockSixPct\%.
-\end{itemize}
-Unlike the executed AgentDojo suite above, distinct-step features in the synthetic 20D
-benchmark are sampled independently by construction with marginal misses spanning
-$9.0\%$--$33.5\%$~\cite{makins}.
-
-\subsection{Portfolio and Crossed-Variance Ceilings on Initial Conferral}
-Pre-deployment evaluations and review panels size initial authority grants, yet shared
-blind spots impose a hard validity ceiling (Tiers~2 and~4; proofs in
-Appendix~\ref{app:proofs}). Under generalizability theory~\cite{cronbach}
-(Figure~\ref{fig:v3monitors}c, verified across $\text{\VThreeVarSubjects}$ Monte Carlo
-subjects), let true deployment safety $G \sim \mathcal{N}(0, V_G)$ be assessed across $D$
-benchmark domains of $n$ trials each, subject to shared evaluation-to-deployment shift
-$\delta \sim \mathcal{N}(0, \omega^2)$, domain bias $c_d \sim \mathcal{N}(0, \sigma_c^2)$,
-and trial noise $e_{dr} \sim \mathcal{N}(0, \sigma_e^2)$. Squared correlation between the
-portfolio mean and $G$ satisfies
-\begin{equation}
-R_G(D,n) \;=\; \frac{V_G}{V_G + \omega^2 + \sigma_c^2/D + \sigma_e^2/(Dn)}
-\;<\; \frac{V_G}{V_G + \omega^2}.
-\label{eq:u07:portfolio}
-\end{equation}
-Repeating one benchmark $64$ times ($D{=}1, n{=}64$) stalls at
-$R_G = \VThreeVarRepeatSixtyFourPct\%$ (below the \VThreeVarSingleDomainCeilingPct\%
-single-domain ceiling). Spreading those $64$ trials across $D{=}64$ diverse domains
-($n{=}1$) reaches \VThreeVarDiverseSixtyFourPct\%, yet stays strictly below the shared-bias
-ceiling $V_G/(V_G+\omega^2) = \VThreeVarSharedCeilingPct\%$. Likewise, in crossed panels,
-$M{=}64$ evaluators in $1$ context stall at \VThreeVarPanelSixtyFourContextOnePct\% (below
-the \VThreeVarSingleContextPanelCeilingPct\% ceiling), whereas $M{=}4$ evaluators across
-$64$ contexts reach \VThreeVarPanelFourContextSixtyFourPct\%. Pre-deployment breadth sizes
-initial grants, while runtime revocable sinks bound the irreducible gap $1 - R_G$.
+Controlled 20-dimensional six-family classifier benchmarks, exact Gaussian copula quadrature, and multi-domain generalizability ceilings~\cite{cronbach} further corroborating these coupling laws are detailed in Appendix~\ref{app:sim} (Table~\ref{tab:v3monitors} and Figure~\ref{fig:v3monitors}).

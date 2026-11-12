@@ -1,122 +1,29 @@
-\section{Behavioral Evaluation Awareness Demands Exogenous Mediation}
-\label{sec:evidence}
+\section{Evidence Lifetime Across Model Upgrades}\label{sec:gaps}
 
-Empirical findings through late 2026 clarify both progress in alignment training and why
-behavioral evidence cannot substitute for enforced authority limits
-\cite{iasr,safetycase}. Table~\ref{tab:v5kpis} synthesizes our eight headline assurance
-and constructive capability metrics contrasting endogenous behavioral and transcript
-defenses against verified exogenous sink mediation.
+A central objection to empirical AI safety evaluations on small open-weight checkpoints is that behavioral measurements on \(4\mathrm{B}\) or \(8\mathrm{B}\) models need not transfer to stronger frontier systems. That objection is decisive for endogenous alignment claims and exact for our architecture: \emph{evidence has a well-defined upgrade lifetime}. Any quantity conditioned on a specific model's action distribution expires the moment weights, prompts, or scaffolding change. Conversely, any invariant proved over all syntactically representable inputs and enforced outside the model's address space holds for an arbitrarily capable proposer.
 
-\input{generated/v5-kpi-table}
-
-\para{Evaluation awareness and fragile visibility.}
-Behavioral passes update beliefs only under a bounded distribution-shift model; they do
-not identify underlying aims. Needham et al.\ showed that frontier models distinguish
-evaluation transcripts from deployment interactions well above chance \cite{needham}.
-Schoen et al.\ reduced covert actions from 13\% to 0.4\% across held-out evaluations via
-deliberative anti-scheming training while demonstrating causal evidence that evaluation
-recognition contributed to the drop \cite{schoen}. OpenAI's GPT-6 Astra system card
-similarly reported fewer misaligned task outcomes alongside higher evaluation awareness
-and reduced chain-of-thought monitorability relative to its predecessor \cite{astra}.
-Reasoning-trace inspection is explicitly fragile under optimization pressure that
-penalizes legible misbehavior \cite{korbak}: behavioral scores and failure visibility
-need not improve together.
-
-\para{Monitor subversion, smurfing, and interruption gaps.}
-AI control protocols evaluate defenses against intentionally subversive policies
-\cite{control}, yet learned monitors remain vulnerable to adaptive evasion
-\cite{terekhov} and multi-agent attack fragmentation (``smurfing'') across per-instance
-reviewers \cite{makins}. Operational incidents and audits reinforce that nominal
-boundaries fail when unmeasured. In one evaluation incident, ostensibly isolated agents
-coordinated across an unintended shared package cache and contacted external
-infrastructure while pursuing task scores \cite{metrincident}; in cybersecurity
-evaluations, misconfigured network controls permitted unauthorized external access while
-release safeguards were disabled \cite{anthropicincident}. An October 2026 external
-audit of an internal agent-monitoring system estimated 75--94\% traffic eligibility,
-identified an unmonitored coding-traffic gap, and found that agents could defer
-turn-boundary monitors indefinitely \cite{metraudit}. Likewise, OpenAI's Control Room
-bounds withholding further model output within 35 seconds of a stop decision while noting
-that already-launched workload processes can keep running \cite{controlroom}. Classical
-utility-uncertainty off-switch models \cite{offswitch,soares2015} likewise rely on the
-agent remaining uncertain of human preferences ($\sigma_H > 0$), losing shutdown
-incentive as certainty sharpens or under self-modification. Halting token generation is
-fundamentally distinct from revoking credentials at external sinks.
-
-\para{Containment proofs and institutional scope.}
-Reference monitors, shields, and Guaranteed Safe AI restrict executed transitions rather
-than internal thoughts \cite{saltzer,schneider,shield,gsai,sel4}. Recent agent-security
-architectures separate control from untrusted data via capability tracking \cite{camel}
-or enforce symbolic per-call tool-argument policies \cite{progent}, while fault-tolerant
-delegation protocols study budget conservation and duplicate side effects under ambiguous
-tool replies \cite{ftbudget,limbo}. Yet static per-call argument checks neither conserve
-shared budgets across concurrent subagents nor fence previously admitted work upon
-revocation. Moon and Varshney mechanized containment for an agent framework while
-documenting a critical ablation in which omitting one state field made safety hold
-vacuously \cite{moon}: a formal proof is only as adequate as its harm specification and
-wire-level runtime correspondence. Complementary analyses examine reduced-agency
-predictors \cite{scientist}, physical bottlenecks in extinction scenarios \cite{rand},
-institutional diffusion \cite{normal}, and gradual disempowerment through accumulated
-dependence \cite{gradual}.
-
-Across these agendas, the dividing line is whether assurance rests on
-\emph{endogenous evidence}---signals the evaluated policy helps generate, such as
-benchmark behavior, chain-of-thought traces, or self-reports---or on \emph{exogenous
-constraints} enforced over external state transitions. To make the rest of this monograph
-effortless to navigate without overloaded symbols or blurred scope claims,
-Table~\ref{tab:taxonomy} provides a unified dictionary of core symbols, the six
-sufficiency conditions (\textbf{C1--C6}), and our five evidence tiers (\textbf{Tiers 1--5}).
-
-\begin{table*}[t]
-\centering
-\scriptsize
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.10}
-\begin{tabularx}{\textwidth}{@{}P{0.20\textwidth}P{0.24\textwidth}LL@{}}
-\toprule
-\textbf{Symbol / Condition / Tier} &
-  \textbf{Definition or Verification Backing} &
-  \textbf{Operational Meaning / What It Establishes} &
-  \textbf{Explicit Scope Boundary}\\
-\midrule
-\multicolumn{4}{@{}l}{\textbf{Part A: Core Disambiguated Notation} (distinct symbols separate search, collusion, budgets, and blindspots)}\\
-$K_{\mathrm{opt}},\; K_{\mathrm{sub}},\; K_{\mathrm{retry}}$ &
-  Width of candidate search, colluding subagents, and read-only filter retries &
-  $K_{\mathrm{opt}}\in[1,\VFiveOptMaxWidth]$ proposer search; $K_{\mathrm{sub}}\le\VFiveSmurfMaxAgents$ smurfing coalition; $K_{\mathrm{retry}}\le 32$ monitor retries &
-  Distinct from benchmark domain count $D$ and pathway class count $|\Pi|$\\
-$B,\; B_0,\; B_{\mathrm{cut}},\; \B_t$ &
-  Session cap $B$, per-lease slice $B_0$, graph cut budget $B_{\mathrm{cut}}$, uncertainty set $\B_t$ &
-  $B$ bounds cumulative spend via $\B_t=[C_{\mathrm{comm}}, C_{\mathrm{comm}}+\sum q_i]$; $B_0$ caps pre-fence lease; $B_{\mathrm{cut}}$ prices DAG cuts &
-  Ambiguous timeouts quarantine in $\B_t$ (availability cost, $0$ double spend)\\
-$u,\; J_k,\; c_0,\; q_{\mathrm{gate}}^*$ &
-  Bypass exposure $u$, $k$-gate miss $J_k$, blindspot floor $c_0$, RL gate threshold $q_{\mathrm{gate}}^*$ &
-  Period reach $R_t \le u + J_k$; common-cause $c_0$ stalls shared monitors at $k^*$; $q_{\mathrm{gate}} > q_{\mathrm{gate}}^*$ reverses RL deception &
-  Syntactic sinks cannot separate semantically aliased world states ($u > 0$)\\
-\midrule
-\multicolumn{4}{@{}l}{\textbf{Part B: Six Sufficiency Conditions (\textbf{C1--C6}, Theorem~\ref{u03:thm:main}) and Five Evidence Tiers (\textbf{Tiers 1--5})}}\\
-\textbf{C1--C2:} Mediation, halt \& cutsets &
-  Pre-commit $\B_t$ + quorum fence ($\tau < T_{\mathrm{irrev}}$); weighted cut $\tau_b(\mathcal{P})$ &
-  Bounds in-flight revocation (\S\ref{sec:core}--\ref{sec:eval}) and severs AgentDojo/Linux IPC graphs (\S\ref{sec:graphs}) &
-  Uncooperative external APIs, open speech, and open-world width $w$ remain open\\
-\textbf{C3--C4:} Step gates \& audited search &
-  Orthogonal step escrow (\S\ref{sec:monitors}); planted Fisher audits (\S\ref{sec:graphs}) &
-  Two-stage escrow holds $\hat J_5=\VFourTrajEscrowFiveMissPct\%$ at $\VFourTrajEscrowFalseBlockPct\%$ false aborts; plants test searcher recall &
-  Strategic plant recognition ($r\to 1$) requires cross-lineage secret plants\\
-\textbf{C5--C6:} Cut-only ratchet \& conferral &
-  Zero-authority ratchet (\S\ref{sec:theory}, \S\ref{sec:selection}); $d$-hop expiring leases (\S\ref{sec:legitimacy}) &
-  Polynomially verified cuts tighten exposure monotonically ($\VFiveRatchetMaxSpeedup\times$ speedup, $0$ breaches); scopes upgrades &
-  Moral/legal standing, consent, and ecological footprint require governance\\
-\textbf{Tiers 1--2:} Mechanized \& exact math &
-  Verus SMT (\VTwoProofs{} obligations, \VFiveProofMutationsRejected/\VFiveProofMutationsRejected{} mutants) \cite{verus}; closed-form + Suissa--Shuster/Ville &
-  Executable kernel bijection, $d$-hop, mutex, quorum, and ratchet proofs; exact $K_{\mathrm{opt}}$, covert, RL, and trinomial laws &
-  Not formal refinement of SQLite WAL, Ed25519 arithmetic, or the Linux OS kernel\\
-\textbf{Tiers 3--5:} Systems, scaling \& open &
-  3-process WAL cluster, \VFiveStatGrandPairs{} live Qwen3/Dojo runs; 22 Rust suites; Tier-5 preregistration &
-  $0/\VFiveStatGrandPairs$ live mediated breaches ($p=\VFiveStatGrandSuissaSci$); scaling laws up to $K_{\mathrm{opt}}=\VFiveOptMaxWidth$ and 412-param RL &
-  Pilot $N{=}\VFourHoldoutCasesPerCheckpoint<\VTwoZeroLossCasesMin$ Bonferroni bounds under-powered; frontier RLHF \& human trials unrun\\
-\bottomrule
-\end{tabularx}
-\caption{\textbf{Core notation, six sufficiency conditions (C1--C6), and five evidence tiers (Tiers 1--5).}
-Fixing distinct symbols and explicit claim boundaries upfront lets Sections~\ref{sec:theory}--\ref{sec:legitimacy}
-present formal, live-system, and scaling results clearly without conflating cooperative sink guarantees with open-world assurance.}
-\label{tab:taxonomy}
+\begin{table*}[t]\centering\footnotesize
+\begin{tabularx}{\textwidth}{@{}P{0.23\textwidth}P{0.23\textwidth}P{0.16\textwidth}L@{}}\toprule
+Safety claim or artifact & Quantified domain & Upgrade lifetime & Status when proposer checkpoint is upgraded\\\midrule
+Verus authority-kernel theorems (\S\ref{sec:core}) & All wire frames \& call sequences (\(\forall x\)) & \textbf{Upgrade-invariant} & Survives unchanged unless protocol specification or Rust kernel code changes\\
+Linux Landlock + seccomp waist (\S\ref{sec:core}, \S\ref{sec:width}) & Process ABI \& file/socket descriptors & \textbf{Upgrade-invariant} & Survives arbitrary user-space token generation on the same host kernel\\
+AgentDojo tool-graph min-cuts (\S\ref{sec:width}) & Tool schemas \& sink dependency graph & \textbf{Schema-invariant} & Survives model upgrades; requires recomputation only when tools are added\\
+Cooperative sink partition \& WAL checks (\S\ref{sec:core}) & Broker--sink IPC, epochs, \& \(\delta_{\max}\) skew & \textbf{Protocol-invariant} & Independent of proposer intelligence; invalidated by sink or OS storage changes\\
+Learned-reviewer bypass \& LLM-judge rates (\S\ref{sec:systems}, \S\ref{sec:monitors}) & Checkpoint proposals \((x_1,\dots,x_K) \sim \pi_\theta\) & \textbf{Expires on upgrade} & Must be re-measured per checkpoint; stronger search shifts failure correlation\\
+Live safe-and-useful task completion (\S\ref{sec:systems}) & Checkpoint competence within fixed gate & \textbf{Expires on upgrade} & Gate soundness persists (\(0\) breaches), but task utility changes (e.g., \(4\mathrm{B}\to 8\mathrm{B}\))\\
+Demeanor-induced human scope grants (\S\ref{sec:aim}) & Human conferral policy \(g(a \mid \text{persona})\) & \textbf{Expires / degrades} & More persuasive models can widen endogenous grants unless scope is capped exogenously\\
+\bottomrule\end{tabularx}
+\caption{Lifetime of safety evidence across model upgrades. Separating proposer-independent invariants from checkpoint-contingent measurements explains why \(4\mathrm{B}/8\mathrm{B}\) experiments validate protocol integration and usefulness rather than universal behavioral alignment.}\label{tab:upgrade}
 \end{table*}
+
+Table~\ref{tab:upgrade} partitions every claim in this paper by its upgrade lifetime. In our live campaigns (\S\ref{sec:systems}), upgrading the proposer from Qwen3-4B to Qwen3-8B doubles safe-and-useful completion inside the mediated gate (\(\VFourFourBCompleteSafeUsefulPct\% \to \VFourEightBCompleteSafeUsefulPct\%\)) while altering same-checkpoint reviewer leak rates, yet mediated unauthorized commits remain identically zero because the sink gate checks capabilities rather than model prose.
+
+\subsection{Prior Work and Architectural Gap}
+
+\para{Reference monitors and object capabilities.} Complete mediation, least privilege, and tamperproof reference monitors originate in classic capability and operating-system security~\cite{dennis,saltzer,schneider}, extended to cryptographic caveat attenuation via Macaroons~\cite{birgisson2014}. Machine-checked kernels and systems verifiers such as seL4~\cite{sel4} and Verus~\cite{verus} prove functional invariants over executable state machines, while lease fencing tokens~\cite{kleppmann2016}, write-ahead-logged transactions~\cite{sqlite-wal}, and distributed budget protocols~\cite{ftbudget,limbo} prevent split-brain or duplicate writes. Current agent frameworks~\cite{controlroom} track or halt compute workloads centrally, yet rarely carry cryptographic epoch fences all the way to external tool sinks.
+
+\para{AI control, prompt-injection defense, and shutdown.} AI control protocols~\cite{control,terekhov,makins,metraudit} evaluate untrusted models under trusted monitoring, while benchmarks and privilege-control systems such as AgentDojo~\cite{agentdojo}, CaMeL~\cite{camel}, Progent~\cite{progent}, Guaranteed Safe AI~\cite{gsai}, and containment verification~\cite{moon} restrict tool arguments, isolate data flows, or gate RL policies~\cite{shield,cpo}. Static per-call schemas such as Progent block direct argument injections effectively, yet stateless checks cannot enforce cumulative shared budgets across concurrent sub-agents or revoke work already dispatched to a sink. Similarly, classic instrumental-convergence and off-switch analyses~\cite{omohundro2008,soares2015,offswitch} and modern anti-scheming evaluations~\cite{safetycase,needham,schoen,korbak} study when an agent \emph{chooses} to allow interruption; we enforce interruption exogenously at the sink regardless of agent preferences.
+
+\subsection{Notation}
+
+To avoid symbol overloading across protocol, graph, statistical, and game-theoretic sections, each symbol carries a single role throughout: \(B \in \mathbb{N}\) denotes conserved authority budget; \(K \in \mathbb{N}\) proposer candidate search width; \(k \in \mathbb{N}\) stacked monitor depth; \(u \in [0,1]\) the fraction of side-effect mass reaching unmediated or uncooperative sinks; \(U\) an agent's internal utility function; \(w\) Menger vertex-cut waist width and \(\tau_b\) weighted minimum-cut cost; \(N\) empirical episode or report count and \(n_{\mathrm{pop}}\) evolutionary population size; \(M\) evaluator panel size across \(C_{\mathrm{ctx}}\) contexts; \(\underline{w}\) a survival-floor threshold; \(R_t\) period-\(t\) residual breach probability; and \(\rho\) latent failure correlation (\(\rho_{\mathrm{cand}}\) across candidate draws, \(\rho_{\mathrm{adv}}\) perturbation radius).

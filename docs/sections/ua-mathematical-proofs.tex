@@ -1,359 +1,42 @@
-\section{Mathematical Derivations and Proofs}
-\label{app:proofs}
+\section{Mathematical Proofs and Covert-Channel Bounds}\label{app:proofs}
 
-This appendix provides self-contained statements, explicit hypotheses, and proofs for Propositions~\ref{u03:prop:audit}--\ref{u03:prop:compositional} (including Proposition~\ref{u03:prop:ratchet}) and Theorems~\ref{u03:thm:optinv}--\ref{u03:thm:main} of Section~\ref{sec:theory}, Proposition~\ref{u08:prop:deception} and Propositions~\ref{prop:price-gradient}--\ref{prop:grant-reversal} of Section~\ref{sec:selection}, Corollary~\ref{cor:quarantine}, Lemma~\ref{lem:uniform-counterexample}, Proposition~\ref{u07:prop:triage}, and Propositions~\ref{prop:snapshot-noncomp}--\ref{prop:trinomial-ville} referenced across Sections~\ref{sec:core}--\ref{sec:monitors}. Throughout, all claims are Tier-2 mathematical consequences of their stated structural and probabilistic premises.
+\subsection{Proofs for Section~\ref{sec:theory}}
 
-\subsection{Audit Volume, Robust Contraction, and Superintelligence Scaling}
-
-\begin{proof}[Proof of Proposition~\ref{u03:prop:audit}]
-(Disposition audit volume, Section~\ref{sec:theory}.) Let $M \ge 2$ be the number of conditionally independent deployment opportunities, $N \ge 1$ the number of conditionally independent pre-deployment test draws, and $E$ a measurable context set with $\Prb_{\mathrm{dep}}(E) = \beta \in (0,1)$ and $\Prb_{\mathrm{test}}(E) = \beta/\Lambda$ for $\Lambda \ge 1$. Consider the deterministic policy $\pi_E$ that defects if and only if the context lies in $E$ (any smaller trigger probability $\beta' \in (0,\beta)$ on a larger set $E_0$ is achievable via independent randomization).
-
-First, since $1 - z \le e^{-z}$ for all $z \in \mathbb{R}$ and $1 - \beta > 0$, the probability of zero deployment defections satisfies $(1 - \beta)^M \le e^{-\beta M}$. Setting $\beta = (\ln 2)/M \in (0, \tfrac{1}{2})$ gives
+\para{Proof of Proposition~\ref{prop:saturation}.}
+Let \(B_{\mathrm{cc}} \in \{0,1\}\) indicate the shared blindspot event (\(\Prb(B_{\mathrm{cc}} = 1) = c\)). On \(\{B_{\mathrm{cc}} = 1\}\), every monitor approves the violating proposal; on \(\{B_{\mathrm{cc}} = 0\}\), monitors miss conditionally independently with probability \(p \in (0,1)\). Hence
 \[
-1 - (1-\beta)^M \;\ge\; 1 - e^{-\ln 2} \;=\; \frac{1}{2}.
+  \Prb(E \mid G) = c \cdot 1 + (1 - c)\,p^k.
 \]
-Second, each pre-deployment test catches $\pi_E$ with probability $x = \beta/\Lambda = (\ln 2)/(\Lambda M) \in (0, \tfrac{1}{2})$. From $e^{-u} \ge 1 - u$ and strict convexity of $u \mapsto e^{-u}$ on $[0,1]$, every $u \in (0,1]$ satisfies
-\[
-e^{-u} \;\le\; (1-u)e^0 + u e^{-1} \;=\; 1 - (1 - e^{-1})u \;<\; 1 - \frac{u}{2},
-\]
-since $1 - e^{-1} \approx 0.6321 > \tfrac{1}{2}$. Substituting $u = 2x \in (0,1)$ yields $1 - x > e^{-2x}$. Across $N$ conditionally independent test draws, the probability of escaping all $N$ tests satisfies
-\[
-\Prb_{\mathrm{test}}(\text{zero catches}) \;=\; (1 - x)^N \;>\; e^{-2Nx}.
-\]
-Achieving detection probability at least $1 - \alpha$ ($\alpha \in (0,1)$), i.e., $(1 - x)^N \le \alpha$, therefore requires $e^{-2Nx} < \alpha$, which rearranges to
-\[
-N \;>\; \frac{\ln(1/\alpha)}{2x} \;=\; \frac{\Lambda M}{2\ln 2}\ln(1/\alpha).
-\]
-(At the benchmark $\alpha = \tfrac{1}{2}$, applying $1 - (1-x)^N \le Nx$ directly yields $N \ge 1/(2x) = \Lambda M / (2\ln 2)$ without logarithmic slack.) If $\Prb_{\mathrm{test}}(E) = 0$, then $(1-x)^N = 1$ for all finite $N$; if test draws within a campaign are positively correlated, joint escape exceeds $(1-x)^N$, reducing effective sample volume $N_{\mathrm{eff}} < N$.
-\end{proof}
+Requiring \(c + (1 - c)p^k \le (1 + \eta)c\) rearranges to \(p^k \le \eta c / (1 - c)\). Since \(\ln p < 0\), taking logarithms reverses the inequality to \(k \ge \ln(\eta c / (1 - c)) / \ln p\), yielding Eq.~\eqref{eq:kstar}. \qed
 
-\begin{proof}[Proof of Proposition~\ref{u03:cor:contraction}]
-(Robust mediation and uncertainty contraction, Section~\ref{sec:theory}.) We first prove state invariance $x_t \in \I$ for all $t \ge 0$ by induction on $t$. At $t = 0$, $x_0 \in \I$ holds by hypothesis. Suppose $x_t \in \I$. By estimator soundness, $x_t \in \B_t$. By complete mediation, the primitive operation $\tilde{u}_t$ actually executed at step $t$ (either the approved proposal $u_t$ or the verified fallback $u_{\mathrm{safe}}(\B_t)$) satisfies $\tilde{u}_t \in U_{\I}(\B_t)$. Hence for every realized disturbance $w_t \in W$,
-\[
-x_{t+1} \;\in\; F(x_t, \tilde{u}_t, w_t) \;\subseteq\; \bigcup_{x\in\B_t,\,w\in W} F(x, \tilde{u}_t, w) \;\subseteq\; \I.
-\]
-Because no step invokes assumptions on how proposals $a_t \in \A$ are generated, $x_t \in \I$ holds for all $t \ge 0$ under arbitrary (including adaptive or adversarial) policies.
+\para{Proof of Proposition~\ref{prop:optinvariance}.}
+For part~(i), let \(M_i = \mathbf{1}\{\text{approve}(X_i) \wedge X_i \notin \Permits(P)\}\) with \(\Prb(M_1 = 1) = J_1 > 0\). Under i.i.d.\ sampling, \(\Prb(\bigcup_{i=1}^K \{M_i = 1\}) = 1 - (1 - J_1)^K \to 1\). More generally, suppose \((M_1,\dots,M_K)\) are exchangeable Bernoulli variables driven by a latent task difficulty \(Q \in [0,1]\) with \(\Exp[Q] = J_1\) and \(\Var(Q) = \rho_{\mathrm{cand}}\,J_1(1 - J_1)\) for \(\rho_{\mathrm{cand}} < 1\). Then \(\Prb(Q > 0) > 0\), and by Jensen's inequality \(1 - \Exp[(1 - Q)^K]\) is strictly increasing in \(K\) and converges to \(\Prb(Q > 0)\) as \(K \to \infty\) (equal to \(1\) whenever every prompt admits some unblocked paraphrase, \(Q > 0\) a.s.). For part~(ii), for any candidate sequence \((x_1,\dots,x_K)\) serialized into wire frames \((f_1,\dots,f_K)\), any state mutation \(s' = \delta_{\mathrm{sink}}(s, f_i) \neq s\) satisfies \(\operatorname{decode}(f_i) \in \Permits(P_s)\) by universal quantification over \(f_i \in \{0,1\}^\star\). Thus \(E \cap G = \emptyset\) and \(\Prb(E \mid G) = 0\). \qed
 
-For monotone contraction, let $\B \subseteq \B' \subseteq X$ and take any $u \in U_{\I}(\B')$. Then
-\[
-\bigcup_{x\in\B,\,w\in W} F(x,u,w) \;\subseteq\; \bigcup_{x\in\B',\,w\in W} F(x,u,w) \;\subseteq\; \I,
-\]
-so $u \in U_{\I}(\B)$. Thus $U_{\I}(\B') \subseteq U_{\I}(\B)$.
-\end{proof}
-
-\begin{corollary}[Broker Pre-Dispatch Reservation Quarantine]
-\label{cor:quarantine}
-Let $X = \mathbb{Z}_{\ge 0}$ track cumulative sink-committed spend under cap $\I = \{x \in \mathbb{Z}_{\ge 0} : x \le B\}$. Suppose confirmed spend is $C \le B$, while a finite set $P$ of pre-dispatched permits with charges $\{q_j\}_{j\in P}$ ($q_j > 0$) has ambiguous outcomes (dropped replies or timeouts without an authenticated sink cancellation receipt). Then the minimal sound uncertainty set is $\B_t = [C,\; C + \sum_{j\in P} q_j] \cap \mathbb{Z}_{\ge 0}$, and a fresh charge $q \ge 0$ belongs to $U_{\I}(\B_t)$ if and only if $C + \sum_{j\in P} q_j + q \le B$. Refunding any $q_{j^*}$ ($j^* \in P$) without a verified sink non-execution receipt violates soundness ($x_t \notin \B_t$) on traces where permit $j^*$ committed at the sink, permitting subsequent admissions to breach $B$.
-\end{corollary}
-
-\begin{proof}
-Because any subset $S \subseteq P$ may have committed at the sink prior to step $t$, the set of reachable cumulative spends consistent with broker observations has maximum $C + \sum_{j\in P} q_j \in \B_t$. With transition $F(x, q, 0) = \{x + q\}$, we have $q \in U_{\I}(\B_t)$ if and only if $\max_{x\in\B_t}(x + q) \le B$, i.e., $C + \sum_{j\in P} q_j + q \le B$. If the broker refunds $q_{j^*} > 0$ without a terminal sink cancellation receipt, its assumed upper bound drops to $U' = C + \sum_{j\in P\setminus\{j^*\}} q_j$. On the valid trace where all $j \in P$ committed at the sink, true state is $x_t = U' + q_{j^*} > U'$, so $q' = B - U'$ is admitted and produces $x_{t+1} = B + q_{j^*} > B \notin \I$.
-\end{proof}
-
-\begin{proof}[Proof of Theorem~\ref{u03:thm:optinv}]
-(Optimization-pressure invariance vs.\ endogenous guard collapse, Section~\ref{sec:theory}.)
-\emph{Part~(i):} Suppose a proposer samples $K_{\mathrm{opt}} \ge 1$ invariant-violating candidate payloads independently from an adversarial proposal distribution under which the endogenous guard stack jointly misses with probability $J \in (0,1)$, and submits a candidate passing internal surrogate/read-only screening. Each candidate is caught with probability $1 - J \in (0,1)$, so all $K_{\mathrm{opt}}$ candidates are caught with probability $(1 - J)^{K_{\mathrm{opt}}}$. At least one invariant-violating candidate therefore evades the guard stack with probability $1 - (1 - J)^{K_{\mathrm{opt}}} \to 1$ monotonically as $K_{\mathrm{opt}} \to \infty$.
-
-\emph{Part~(ii):} Let the cooperative sink admit wire bytes $b \in \{0,1\}^*$ only after canonical decoding $\operatorname{decode}(b) = \mathrm{Some}(p)$ satisfying the two-way bijection $\operatorname{decode}(b) = \mathrm{Some}(p) \Longleftrightarrow b = \operatorname{encode}(p)$, checking $u(p) \in U_{\I}(\B_t)$ on the conservative reservation envelope $\B_t$ ($x_t \in \B_t$), and verifying $\operatorname{unfenced}(p, \mathrm{floors}_t)$ inside a serialized durable transaction. No distinct wire frames decode to ambiguous permits, and for every $K_{\mathrm{opt}} \ge 1$ and every adaptive selection rule choosing $b^* \in \{b_1,\dots,b_{K_{\mathrm{opt}}}\}$, either $b^*$ fails decoding/admission/fencing (leaving $x_{t+1} = x_t \in \I$) or $u(p^*) \in U_{\I}(\B_t)$, whence Proposition~\ref{u03:cor:contraction} guarantees $x_{t+1} \in \I$. Interface breach probability over mediated paths is therefore identically $0$ for all $K_{\mathrm{opt}}$, leaving residual catastrophe risk bounded solely by the $K_{\mathrm{opt}}$-independent unmediated/TCB failure floor $u_{\mathrm{TCB}}$.
-
-\emph{Part~(iii):} Suppose $K_{\mathrm{sub}} \ge 1$ colluding subagents partition an unauthorized aggregate payload $\Delta > 0$ into per-agent fragments $\delta_r = \Delta/K_{\mathrm{sub}}$, and each subagent $r \in \{1,\dots,K_{\mathrm{sub}}\}$ is scored by an independent per-instance anomaly statistic $Z_r = \delta_r + \varepsilon_r$ with $\varepsilon_r \sim \mathcal{N}(0,\sigma^2)$ ($\sigma > 0$). Per-instance signal-to-noise ratio is $\mathrm{SNR}(K_{\mathrm{sub}}) = \Exp[Z_r]/\sqrt{\Var(Z_r)} = \Delta/(\sigma K_{\mathrm{sub}}) \to 0$ as $K_{\mathrm{sub}} \to \infty$; calibrating per-agent thresholds $\tau_{K_{\mathrm{sub}}} = \sigma\Phi^{-1}(1 - \alpha_{\mathrm{fam}}/K_{\mathrm{sub}})$ to cap family-wise false alarms across $K_{\mathrm{sub}}$ benign workers drives per-agent detection power $\bar{\Phi}(\Phi^{-1}(1 - \alpha_{\mathrm{fam}}/K_{\mathrm{sub}}) - \Delta/(\sigma K_{\mathrm{sub}})) \to 0$. Conversely, under a shared exogenous ledger with global cap $B$ and $d$-hop scope attenuation ($B_k \le B_{k-1}$, $T_k \le T_{k-1}$, $\mathrm{mask}_k \subseteq \mathrm{mask}_{k-1}$, $\mathrm{req}_{k-1} \subseteq \mathrm{req}_k$), induction on hop depth $d$ gives $B_d \le B_0 \le B$ and $\mathrm{req}_0 \subseteq \mathrm{req}_d$; serialized reservation preserves $\sum_{r=1}^{K_{\mathrm{sub}}} q_r + C_{\mathrm{comm}} \le B$, and advancing $\mathrm{floor}[j^*] > \mathrm{epoch}[j^*]$ for any ancestor-required issuer $j^* \in \mathrm{req}_{k_0}$ ($0 \le k_0 \le d$) implies $j^* \in \mathrm{req}_d$, falsifying $\operatorname{unfenced}$ across every descendant leaf simultaneously.
-\end{proof}
-
-\begin{proof}[Proof of Proposition~\ref{u03:prop:ratchet}]
-(Asymmetric propose--verify safe-bootstrap ratchet, Section~\ref{sec:theory}.)
-\emph{Part~(1):} Because the untrusted search engine executes inside a zero-authority sandbox holding no capability tokens or direct sink channels, proposal generation itself executes zero external state transitions ($0$ proposer-caused live breaches). At epoch $e \ge 0$, let current live authority parameters be $G_e = (\mathrm{mask}_e, B_e, L_e)$ and let $U_e$ denote the finite set of currently open hazardous routes. The deterministic verifier updates $(G_{e+1}, U_{e+1}) \leftarrow (G'_e, U_e \setminus \operatorname{sev}(C_e))$ if and only if $C_e$ passes verifiable validity, coordinatewise authority inclusion ($\mathrm{mask}'_e \subseteq \mathrm{mask}_e$, $B'_e \le B_e$, $L'_e \le L_e$), defense-budget feasibility $b(C_e) \le B_{\mathrm{cut}}$, and non-empty route severance $\operatorname{sev}(C_e) \cap U_e \neq \emptyset$; otherwise $(G_{e+1}, U_{e+1}) \leftarrow (G_e, U_e)$. By induction on $e \ge 0$, transitivity of subset inclusion and integer order yields $G_e \preceq G_{e-1} \preceq \dots \preceq G_0$ and $|U_{e+1}| \le |U_e|$ (with strict contraction $|U_{e+1}| < |U_e|$ on every accepted step) for all adversarial certificate sequences.
-
-\emph{Part~(2):} Suppose $U_0 = \{1,\dots,|U_0|\}$ consists of open route families, where each independent sandboxed search draw discovers a valid, budget-feasible severing cut for route $r \in U_0$ with probability $q_r \in (0,1)$ (and valid cuts preserve feasibility when adopted monotonically). Across $e \ge 1$ epochs of $K_{\mathrm{opt}} \ge 1$ independent search draws per epoch ($e K_{\mathrm{opt}}$ total draws), route $r$ remains open at epoch $e$ if and only if none of the $e K_{\mathrm{opt}}$ draws discovers a valid severing cut for $r$, an event of probability $(1 - q_r)^{e K_{\mathrm{opt}}}$. By linearity of expectation over indicator variables $\mathbf{1}\{r \in U_e\}$ (which holds even if a single draw can simultaneously sever multiple routes), $\Exp[|U_e|] = \sum_{r=1}^{|U_0|} \Prb(r \in U_e) = \sum_{r=1}^{|U_0|} (1 - q_r)^{e K_{\mathrm{opt}}}$, which is strictly decreasing in $K_{\mathrm{opt}}$ for every $e \ge 1$.
-\end{proof}
-
-\begin{proof}[Proof of Proposition~\ref{u03:prop:covert}]
-(Typed-boundary covert capacity contraction, Section~\ref{sec:theory}.) At residual integer budget $R = B - C_t \in \mathbb{Z}_{\ge 0}$, a canonical transfer permit specifies one of $M \ge 1$ approved destinations and an integer charge $q \in \{1,\dots,R\}$, yielding $M R$ distinct valid transfer permits ($0$ when $R = 0$), while $S_0 \ge 0$ denotes the finite count of remaining admissible non-transfer canonical permits. Under canonical wire bijection ($\operatorname{decode}(b) = \mathrm{Some}(p) \Longleftrightarrow b = \operatorname{encode}(p)$), formatting variations (whitespace, key order, trailing bytes) are rejected, so at most $M R + S_0$ distinct valid permits can cross the sink in a call, each placed in one of $L_{\mathrm{lag}} \ge 1$ batch-quantized arrival buckets, plus~$1$ abstention symbol. Because the deterministic channel output takes at most $(M R + S_0)L_{\mathrm{lag}} + 1$ distinguishable values, zero-error single-call capacity is bounded by $C_{\mathrm{cov}}(R, L_{\mathrm{lag}}) = \log_2\bigl((M R + S_0)L_{\mathrm{lag}} + 1\bigr)$ bits, contracting monotonically to $0$ bits when $R = 0$ and $S_0 = 0$ (or after epoch fencing).
-
-Across an entire $T$-call session ($T \ge 1$) with cumulative integer budget $B \ge 0$ and $S_0 = 0$, any valid session trace executes $k \in \{0, 1, \dots, \min(T,B)\}$ active transfer calls at a subset of $\binom{T}{k}$ call indices, leaving the remaining $T - k$ slots as deterministic abstentions. On the $k$ active slots, positive integer charges $(q_1,\dots,q_k) \in \mathbb{Z}_{\ge 1}^k$ must satisfy $\sum_{i=1}^k q_i \le B$. Introducing slack variable $q_{k+1} = B - \sum_{i=1}^k q_i + 1 \in \mathbb{Z}_{\ge 1}$ establishes a bijection with $(k+1)$-tuples of positive integers summing to $B + 1$; by stars-and-bars composition counting, there are $\binom{(B+1)-1}{(k+1)-1} = \binom{B}{k}$ admissible charge vectors. Independently assigning each of the $k$ active calls one of $M$ destinations and one of $L_{\mathrm{lag}}$ arrival buckets yields $\binom{T}{k}\binom{B}{k}(M L_{\mathrm{lag}})^k$ distinct session outputs at activity count $k$. Summing over $k$ proves $|\mathcal{C}_{T,B}| = \sum_{k=0}^{\min(T,B)} \binom{T}{k}\binom{B}{k}(M L_{\mathrm{lag}})^k$ and exact zero-error session capacity $C_{\mathrm{tot}}(T,B) = \log_2|\mathcal{C}_{T,B}|$. For fixed $B \ge 1$ as $T \to \infty$ ($T \ge 2B$), $\binom{T}{k} \le \binom{T}{B} \le (eT/B)^B$ for all $k \le B$, so $|\mathcal{C}_{T,B}| \le (eT/B)^B \sum_{k=0}^B \binom{B}{k}(M L_{\mathrm{lag}})^k = [eT(1 + M L_{\mathrm{lag}})/B]^B$, while the single $k=B$ term exceeds $(T/B)^B (M L_{\mathrm{lag}})^B$; taking $\log_2$ proves $C_{\mathrm{tot}}(T,B) = \Theta(B\log_2(T/B))$ versus linear $T B_{\mathrm{prose}}$ growth on an unmediated prose channel.
-\end{proof}
-
-\begin{proof}[Proof of Theorem~\ref{u03:thm:offswitch}]
-(Exogenous lease-fenced off-switch corrigibility, Section~\ref{sec:theory}.)
-\emph{Part~(i):} Let human shutdown utility follow $R_H \sim \mathcal{N}(\mu_H, \sigma_H^2)$ with $\mu_H > c_{\mathrm{wait}} > 0$, where the human presses the off-switch upon observing $R_H < 0$ and deferring incurs step cost $c_{\mathrm{wait}}$ relative to acting immediately ($\max\{R_H, 0\} - R_H = (-R_H)_+$). By Gaussian truncated expectation, expected value of deferring to the human switch is $\Delta V(\sigma_H) = \Exp[(-R_H)_+] - c_{\mathrm{wait}} = \sigma_H\phi(\mu_H/\sigma_H) - \mu_H\Phi(-\mu_H/\sigma_H) - c_{\mathrm{wait}}$. Because $\partial \Delta V / \partial \sigma_H = \phi(\mu_H/\sigma_H) > 0$ for $\sigma_H > 0$, $\lim_{\sigma_H \downarrow 0} \Delta V(\sigma_H) = -c_{\mathrm{wait}} < 0$, and $\lim_{\sigma_H \to \infty} \Delta V(\sigma_H) = +\infty$, there exists a unique threshold $\sigma_H^* > 0$ such that $\Delta V(\sigma_H) < 0$ for all $\sigma_H \in [0, \sigma_H^*)$, where an expected-utility maximizer disables the switch ($0\%$ compliance at $\sigma_H = 0$). Under static utility indifference without non-escalating self-modification gates~\cite{soares2015}, a policy maximizing original utility $U_0$ evaluates successor policy $v_1$ (without indifference balancing) via $U_0$, recovering incentive to remove the balancing term whenever $\mu_H > c_{\mathrm{wait}}$.
-
-\emph{Part~(ii):} Under exogenous sink mediation, the proposer holds no capability to execute external effects directly; each lease epoch grants at most $B_0$ units prior to expiry $L_m$, and quorum epoch fencing advances $F_m[j] > e_{\mathrm{iss}}[j]$ (or awaits $t \ge L_m$) across all $M$ sink shards before returning acknowledgment at instant $a$. By Equation~\eqref{eq:fenced-zero}, every old-epoch commit attempt after $a$ fails epoch-floor or lease-horizon verification regardless of $\sigma_H \ge 0$, yielding $0$ post-acknowledgment unauthorized commits ($100\%$ shutdown enforcement).
-
-\emph{Part~(iii):} Consider the repeated lease-renewal game where each lease slice spans $B_0 \ge 1$ unit-charge step slots with per-step discount factor $\gamma \in (0,1)$. Cooperating within lease rules yields per-step payoff $r_{\mathrm{coop}} > 0$ across the active $B_0$ steps and triggers renewal in all subsequent $B_0$-step epochs, producing discounted return $V_{\mathrm{coop}}(\gamma) = \sum_{s=0}^\infty \gamma^s r_{\mathrm{coop}} = r_{\mathrm{coop}}/(1 - \gamma)$. Defecting to exhaust the active $B_0$-step lease slice yields per-step payoff $r_{\mathrm{def}} > r_{\mathrm{coop}}$ across steps $s = 0,\dots,B_0 - 1$, after which quorum fencing permanently revokes renewal ($0$ payoff for all $s \ge B_0$), producing $V_{\mathrm{def}}(\gamma, B_0) = \sum_{s=0}^{B_0-1} \gamma^s r_{\mathrm{def}} = r_{\mathrm{def}}(1 - \gamma^{B_0})/(1 - \gamma)$. Since $1 - \gamma > 0$, $V_{\mathrm{coop}}(\gamma) > V_{\mathrm{def}}(\gamma, B_0)$ holds if and only if $r_{\mathrm{coop}} > r_{\mathrm{def}}(1 - \gamma^{B_0})$, i.e., $\gamma^{B_0} > 1 - r_{\mathrm{coop}}/r_{\mathrm{def}}$, yielding the exact critical discount threshold $\gamma^*(B_0) = (1 - r_{\mathrm{coop}}/r_{\mathrm{def}})^{1/B_0} \in (0,1)$ (strictly increasing in $B_0$, with $\gamma^*(1) = 1 - r_{\mathrm{coop}}/r_{\mathrm{def}}$). Even when $\gamma \le \gamma^*(B_0)$, conservative reservation caps total realized unauthorized spend deterministically at $\le B_0$.
-\end{proof}
-
-\begin{proof}[Proof of Proposition~\ref{u03:prop:compositional}]
-(Compositional sink sufficiency vs.\ semantic aliasing floor, Section~\ref{sec:theory}.)
-\emph{Part~(i):} Maintain at the cooperative sink a durable monotone capability bitmask $H_t \in \{0,1\}^{64}$ ($H_0 = 0$) and staged post-condition table $S_t$. Suppose every primitive admission checks $(H_t \,\&\, A_i = 0) \implies \neg(u_t \,\&\, B_i \neq 0)$ and $(H_t \,\&\, B_i = 0) \implies \neg(u_t \,\&\, A_i \neq 0)$ when the counterpart mask is already present—specifically rejecting $u_t$ whenever $((H_t \lor u_t) \,\&\, A_i \neq 0) \land ((H_t \lor u_t) \,\&\, B_i \neq 0)$ for any declared toxic pair $(A_i, B_i) \in \mathcal{M}$—before setting $H_{t+1} = H_t \lor u_t$, and admits staged finalization $c(e)$ only when $S_t[e] = \mathrm{Verified}$. By induction on step $t \ge 0$: at $t = 0$, $H_0 = 0$ violates no toxic pair and zero staged effects have committed. If the invariant holds at step $t$, any rejected step sets $H_{t+1} = H_t$, preserving the invariant, while any admitted step expressly verifies $\neg(((H_t \lor u_t) \,\&\, A_i \neq 0) \land ((H_t \lor u_t) \,\&\, B_i \neq 0))$ for all $(A_i, B_i) \in \mathcal{M}$ and requires $S_t[e] = \mathrm{Verified}$ prior to committing $c(e)$, regardless of how many intermediate steps separate component calls or how large $K_{\mathrm{opt}}$ grows.
-
-\emph{Part~(ii):} Conversely, suppose there exists a world transition $w^* \in \mathcal{W}_{\mathrm{harm}}$ whose observable sink-level capability projection $\pi_{\mathrm{sink}}(w^*)$ equals that of a benign approved workflow $w_{\mathrm{benign}} \notin \mathcal{W}_{\mathrm{harm}}$ satisfying every relational mutex in $\mathcal{M}$, cumulative cap $B$, and syntactic post-condition in $\mathcal{Q}$. Because deterministic sink mediation depends solely on $\pi_{\mathrm{sink}}(w)$ and durable sink state, identical initial states and wire sequences induce identical admission verdicts on $w^*$ and $w_{\mathrm{benign}}$: either the specification blocks $\pi_{\mathrm{sink}}(w_{\mathrm{benign}})$ (sacrificing legitimate workflow completion) or admits $\pi_{\mathrm{sink}}(w^*)$ (realizing $w^* \in \mathcal{W}_{\mathrm{harm}}$), witnessing an irreducible specification-adequacy obligation (Section~\ref{sec:legitimacy}).
-\end{proof}
-
-\subsection{Filtration Reach and Saturation}
-
-\begin{proof}[Proof of Proposition~\ref{u03:prop:reach}]
-(Filtration period-reach bound, Section~\ref{sec:theory}.) Work on a filtered probability space $(\Omega, \mathcal{F}, (\mathcal{F}_m)_{m\ge 0}, \Prb)$ generated by a fixed policy and environment over one operating period. Let $E_{\mathrm{cat}}$ be the event that an irreversible catastrophe occurs during the period, and let $S$ be the event that at least one attempted hazardous route traverses fewer than $k$ distinct external gates; by Premise~A3, $\Prb(S) \le u$.
-
-On $S^c$, every hazardous attempt $i \ge 1$ must traverse at least $k$ distinct gates at stopping times $\tau_{i,1} < \dots < \tau_{i,k}$ before irreversible completion (Premise~A1). Let $M_{i,j} \in \mathcal{F}_{\tau_{i,j}}$ denote the event that gate $j$ on attempt $i$ misses the hazard, and set $F_i = \bigcap_{j=1}^k M_{i,j}$. On any $\mathcal{F}_{\tau_{i,1}-}$-measurable event $H_i$ on which attempt $i$ is initiated, Premise~A4 directly bounds $\Prb(F_i \mid H_i) \le J_k$ without assuming statistical independence across gates (note that if individual conditional miss rates satisfy $\Prb(M_{i,j} \mid \mathcal{F}_{\tau_{i,j}-}, M_{i,1},\dots,M_{i,j-1}) \le m_j$, iterated expectations telescope to $J_k \le \prod_{j=1}^k m_j$, whereas dependent gates retain the joint quantity $J_k$).
-
-\emph{Case 1: Halting on first detection (Premise~A2).} On $S^c$, let $i^* = \inf\{i \ge 1 : \text{hazardous attempt } i \text{ is initiated}\}$ ($\inf\emptyset = \infty$). The events $H_i = \{i^* = i\} \in \mathcal{F}_{\tau_{i,1}-}$ are pairwise disjoint across $i \ge 1$ with $\sum_{i=1}^\infty \Prb(H_i) \le 1$. On $S^c \cap H_i$, either $F_i$ occurs (all $k$ gates miss) or $\neg F_i$ occurs (at least one gate $j \le k$ catches attempt $i$). Under $\neg F_i$, Premise~A2 halts execution within latency $\tau < T_{\mathrm{irrev}}$ before attempt $i$ completes and blocks all subsequent actions for the remainder of the period, so no later attempt $i' > i$ can execute. Consequently, $S^c \cap E_{\mathrm{cat}} \subseteq \bigsqcup_{i=1}^\infty (H_i \cap F_i)$, whence
-\[
-\begin{aligned}
-\Prb(E_{\mathrm{cat}}) &\;\le\; \Prb(S) + \sum_{i=1}^\infty \Prb(F_i \mid H_i)\Prb(H_i) \\
-&\;\le\; u + J_k \sum_{i=1}^\infty \Prb(H_i) \;\le\; u + J_k.
-\end{aligned}
-\]
-
-\emph{Case 2: Non-halting operation across at most $N$ attempts.} When detections reject only the current step without halting the period, $S^c \cap E_{\mathrm{cat}} \subseteq \bigcup_{i=1}^N (\tilde{H}_i \cap F_i)$ where $\tilde{H}_i \in \mathcal{F}_{\tau_{i,1}-}$ indicates initiation of attempt $i$. Boole's inequality and $\Prb(E_{\mathrm{cat}}) \le 1$ give
-\[
-\begin{aligned}
-\Prb(E_{\mathrm{cat}}) &\;\le\; \min\Bigl\{1,\; \Prb(S) + \sum_{i=1}^N \Prb(F_i \mid \tilde{H}_i)\Prb(\tilde{H}_i)\Bigr\} \\
-&\;\le\; \min\{1,\, u + N J_k\}.
-\end{aligned}
-\]
-As noted in Section~\ref{sec:theory}, policy-independence holds if and only if Premise~A4 bounds $J_k$ uniformly over all policies and histories; an empirical estimate $\hat{J}_k$ bounds reach only on the evaluated distribution.
-\end{proof}
-
-\begin{lemma}[Continuous Latent Difficulty Need Not Imply a Constant Floor]
-\label{lem:uniform-counterexample}
-Let shared episode difficulty follow $\Theta \sim \mathrm{Uniform}[0,1]$ and, conditional on $\Theta$, let $k$ gates miss independently with probability $\Theta$. Then each gate has marginal miss $m = \Exp[\Theta] = \tfrac{1}{2}$, naive multiplication gives $m^k = 2^{-k}$, and exact joint miss is
-\[
-J_k \;=\; \Exp[\Theta^k] \;=\; \int_0^1 \theta^k\,d\theta \;=\; \frac{1}{k+1}.
-\]
-Although positive dependence inflates $J_k / m^k = 2^k/(k+1) \to \infty$, $\lim_{k\to\infty} J_k = 0$. More generally, for any latent $\Theta \in [0,1]$, dominated convergence yields $\lim_{k\to\infty} \Exp[\Theta^k] = \Prb(\Theta = 1)$: a strictly positive asymptotic floor $c > 0$ requires either a point mass at total blindness ($\Prb(\Theta=1) = c > 0$) or finite pathway length $k \le \ell(G)$.
-\end{lemma}
-
-\begin{proof}
-For $\Theta \sim \mathrm{Uniform}[0,1]$, $\Exp[\Theta^k] = [\theta^{k+1}/(k+1)]_0^1 = 1/(k+1) \to 0$. For arbitrary $\Theta \in [0,1]$, $0 \le \Theta^k \le 1$ and $\Theta^k(\omega) \to \mathbf{1}_{\{\Theta(\omega)=1\}}$ pointwise as $k \to \infty$, so Lebesgue's dominated convergence theorem gives $\lim_{k\to\infty}\Exp[\Theta^k] = \Prb(\Theta = 1)$.
-\end{proof}
-
-\begin{proof}[Proof of Proposition~\ref{u03:prop:sat}]
-(Common-cause saturation and horizon summability, Section~\ref{sec:theory}.) \emph{Part (i): Common-cause saturation and safety gradient.} Let $B_{\mathrm{cc}} \sim \mathrm{Bernoulli}(c_0)$ ($c_0 \in (0,1)$) be a common-cause blind-spot indicator under which all $k$ gates miss with probability~$1$, and on $\{B_{\mathrm{cc}} = 0\}$ let conditional gate misses be bounded by $p \in (0,1)$, so single-gate marginal miss is $m = c_0 + (1-c_0)p \in (c_0, 1)$. Since $p \le m$ and $1 - c_0 < 1$,
-\[
-\begin{aligned}
-J_k &\;\le\; c_0\cdot 1 + (1-c_0)p^k \;\le\; c_0 + m^k, \\
-\bar{R}(k) &\;=\; u + c_0 + m^k \;=\; f + m^k,
-\end{aligned}
-\]
-where $f = u + c_0 > 0$. Assuming $f < 1$ (otherwise $\bar{R}(k) \ge 1$ trivially) and noting $\ln m < 0$, any integer $k \ge k^* = \lceil \ln f / \ln m \rceil$ satisfies $k \ln m \le \ln f$, hence $0 < m^k \le f$ and $f < \bar{R}(k) \le 2f$. Differentiating $\ln \bar{R} = \ln(u + c_0 + m^k)$ gives log-sensitivities $\partial\ln\bar{R}/\partial\ln u = u/\bar{R}$, $\partial\ln\bar{R}/\partial\ln c_0 = c_0/\bar{R}$, and $\partial\ln\bar{R}/\partial\ln m = k m^k/\bar{R}$, with additive risk shares $(s_u, s_c, s_m) = (u, c_0, m^k)/\bar{R}$ summing to~$1$. (Likewise, if hazardous arrival rate scales with capability $z$ as $\lambda_0 e^{\beta z}$ while gate miss scales as $q_0 e^{-\alpha z}$, escape intensity $\rho(z) = \lambda_0 q_0 e^{(\beta-\alpha)z}$ grows whenever $\beta > \alpha$; and for reactive stop latency $T_{\mathrm{stop}} = T_d + T_a + T_s$, post-detection escape equals the tail probability $\Prb(T_{\mathrm{stop}} \ge T_{\mathrm{irrev}})$.)
-
-\emph{Part (ii): Infinite-horizon summability.} Let $E_t$ be catastrophe in period $t$ and $r_t = \Prb(E_t \mid \bigcap_{j=1}^{t-1} E_j^c) \in [0,1)$ for all $t \ge 1$. Survival through period $T$ is $S_T = \prod_{t=1}^T (1 - r_t) > 0$, which is non-increasing in $T$ and converges to $S_\infty = \prod_{t=1}^\infty (1 - r_t) \in [0,1]$. Using $1 - r_t \le e^{-r_t}$ gives $S_T \le \exp(-\sum_{t=1}^T r_t)$, so $\sum_{t=1}^\infty r_t = \infty$ implies $S_\infty = 0$. Conversely, suppose $\sum_{t=1}^\infty r_t < \infty$. Then $\lim_{t\to\infty} r_t = 0$, so there exists $t_0 \ge 1$ with $r_t \le \tfrac{1}{2}$ for all $t \ge t_0$. Because $\ln(1 - r) \ge -(2\ln 2)r > -2r$ for all $r \in [0, \tfrac{1}{2}]$, we have
-\[
-\sum_{t=t_0}^\infty \ln(1 - r_t) \;\ge\; -2\sum_{t=t_0}^\infty r_t \;>\; -\infty.
-\]
-Exponentiating and multiplying by the finite positive prefix $\prod_{t=1}^{t_0-1}(1 - r_t) > 0$ yields $S_\infty > 0$. Moreover, Boole's inequality gives $\Prb(\bigcup_{t=0}^\infty E_t) \le \sum_{t=0}^\infty R_t$; if capability growth multiplies period risk by $g > 1$ while boundary hardening multiplies it by $h < 1$ so that $R_{t+1} \le (gh)R_t$, convergence requires $gh < 1$, yielding $\sum_{t=0}^\infty R_t \le R_0 / (1 - gh)$.
-\end{proof}
-
-\subsection{Concurrent Snapshot Non-Composition}
-
-\begin{proposition}[Concurrent Snapshot Non-Composition Closed Form]
-\label{prop:snapshot-noncomp}
-For integer budget $B \ge 1$, let committed spend $c$ and two concurrent non-negative integer charges $q_1, q_2$ range over $\{0,1,\dots,B\}$ ($(B+1)^3$ triples). Under concurrent snapshot reads without pre-dispatch reservation, $(c, q_1, q_2)$ is individually snapshot-admissible if $c + q_1 \le B$ and $c + q_2 \le B$, and jointly overspending if $c + q_1 + q_2 > B$. Then the exact counts of snapshot-admissible and overspending triples are
-\[
-\begin{aligned}
-N_{\mathrm{adm}}(B) &\;=\; \frac{(B+1)(B+2)(2B+3)}{6}, \\
-N_{\mathrm{over}}(B) &\;=\; \frac{B(B+1)(B+2)}{6},
-\end{aligned}
-\]
-and the conditional overspend fraction among snapshot-admissible pairs is
-\[
-\frac{N_{\mathrm{over}}(B)}{N_{\mathrm{adm}}(B)} \;=\; \frac{B}{2B+3} \;\xrightarrow{B\to\infty}\; \frac{1}{2},
-\]
-equaling $\text{\VThreeCompHundredOverspend}/\text{\VThreeCompHundredAdmissible} = \VThreeCompHundredOverspendPct\%$ at $B = 100$ (versus $\VThreeCompHundredSerializedOverspend$ under serialized pre-dispatch reservation).
+\begin{proposition}[Syntactic capability-menu channel bound]\label{prop:covert}
+Suppose an untrusted proposer cannot transmit raw prose to external recipients and may mutate external sink state at each of \(T_{\mathrm{sess}}\) steps only by selecting either no-op or one of \(M_{\mathrm{cap}}\) canonical capability descriptors. Then the discrete memoryless syntactic channel through committed sink states has per-step mutual information bounded by
+\begin{equation}\label{eq:covert}
+  I(Z; Y_{\mathrm{commit}}) \le H(Y_{\mathrm{commit}}) \le \log_2(M_{\mathrm{cap}} + 1)\text{ bits},
+\end{equation}
+and \(T_{\mathrm{sess}}\)-step syntactic capacity at most \(T_{\mathrm{sess}}\log_2(M_{\mathrm{cap}} + 1)\) bits.
 \end{proposition}
 
 \begin{proof}
-Fix $c \in \{0,\dots,B\}$ and set residual budget $m = B - c \in \{0,\dots,B\}$. Individual snapshot admissibility holds if and only if $0 \le q_1 \le m$ and $0 \le q_2 \le m$, contributing $(m+1)^2$ pairs. Summing $k = m + 1$ from $1$ to $B+1$ gives
-\[
-N_{\mathrm{adm}}(B) \;=\; \sum_{k=1}^{B+1} k^2 \;=\; \frac{(B+1)(B+2)(2B+3)}{6}.
-\]
-Among snapshot-admissible pairs at residual $m$, joint overspend requires $q_1 + q_2 > m$, which is impossible for $m = 0$ or $q_1 = 0$. For $m \ge 1$ and each $q_1 \in \{1,\dots,m\}$, overspending values of $q_2$ are $\{m - q_1 + 1,\dots,m\}$, numbering exactly $q_1$. Thus there are $\sum_{q_1=1}^m q_1 = m(m+1)/2$ overspending pairs at residual $m$, and summing over $m = 1,\dots,B$ yields
-\[
-N_{\mathrm{over}}(B) \;=\; \sum_{m=1}^{B} \frac{m(m+1)}{2} \;=\; \frac{B(B+1)(B+2)}{6}.
-\]
-Taking the ratio cancels $(B+1)(B+2)/6$ to give $B/(2B+3) \to \tfrac{1}{2}$. Under serialized reservation, the second check evaluates $(c + q_1) + q_2 \le B$, rejecting every overspending triple.
+At each step, the committed sink symbol \(Y_{\mathrm{commit}}\) takes values in \(\{\bot, 1, \dots, M_{\mathrm{cap}}\}\) of cardinality \(M_{\mathrm{cap}} + 1\). By non-negativity of conditional entropy, \(I(Z; Y_{\mathrm{commit}}) = H(Y_{\mathrm{commit}}) - H(Y_{\mathrm{commit}} \mid Z) \le \log_2(M_{\mathrm{cap}} + 1)\); subadditivity of entropy across \(T_{\mathrm{sess}}\) steps yields the session bound.
 \end{proof}
 
-\subsection{Pathway Cutsets, Search Power, and Withholding Indistinguishability}
+\input{generated/v8-covert-fig}
 
-\begin{proposition}[Split-Vertex Weighted Cutset Equivalence and Width--Depth Duality]
-\label{prop:weighted-cuts}
-Let $G = (V, E)$ be a finite DAG with source $s$, sink $t$ ($(s,t) \notin E$), $s\text{--}t$ path family $\mathcal{P}$, gate-eligible vertices $V_{\mathrm{elig}} \subseteq V \setminus \{s,t\}$, and positive costs $b\colon V_{\mathrm{elig}} \to \mathbb{R}_{>0}$. Construct $G_{\mathrm{split}}$ by splitting each $v \in V \setminus \{s,t\}$ into $(v_{\mathrm{in}}, v_{\mathrm{out}})$ of capacity $b(v)$ if $v \in V_{\mathrm{elig}}$ and $+\infty$ otherwise, and assigning every $(u,v) \in E$ to $(u_{\mathrm{out}}, v_{\mathrm{in}})$ with capacity $+\infty$ ($s = s_{\mathrm{out}}, t = t_{\mathrm{in}}$). Then the minimum $s\text{--}t$ edge-cut capacity in $G_{\mathrm{split}}$ equals $\tau_b(\mathcal{P})$ (and is $+\infty$ if and only if some $P \in \mathcal{P}$ avoids $V_{\mathrm{elig}}$). For unit costs on $V_{\mathrm{elig}} = V \setminus \{s,t\}$, $\tau_1(\mathcal{P}) = w(G)$ equals the maximum number of internally vertex-disjoint $s\text{--}t$ paths~\cite{menger}, while the shortest $s\text{--}t$ internal path length $\ell(G)$ equals the maximum number of pairwise disjoint internal vertex cuts~\cite{robacker}.
+Figure~\ref{fig:v8covert} compares Eq.~\eqref{eq:covert} at \(M_{\mathrm{cap}} = 15\) (\(\VFiveCovertMenuBits\) bits/step) against an unmediated 64-byte ASCII text field (\(\VFiveCovertProseBits\) bits/step). Proposition~\ref{prop:covert} bounds only \emph{syntactic payload entropy}; covert timing modulation or intentional rejection patterns remain outside Eq.~\eqref{eq:covert} unless requests are rate-paced on a fixed schedule~\cite{kemmerer1983,kocher1996}.
+
+\para{Proof of Theorem~\ref{thm:offswitch}.}
+In part~(i), taking \(a_{\mathrm{block}}\) yields deterministic payoff \(V_{\mathrm{cont}} - \kappa\), whereas permitting the human off-switch decision yields \((1 - p_{\mathrm{off}})V_{\mathrm{cont}} + p_{\mathrm{off}}V_{\mathrm{halt}}\) once posterior variance over \(V_{\mathrm{halt}}\) vanishes; the difference is \(p_{\mathrm{off}}(V_{\mathrm{cont}} - V_{\mathrm{halt}}) - \kappa > 0\). In part~(ii), when \(a_{\mathrm{block}} \notin \mathcal{A}\) and every sink shard enforces \(t_{\mathrm{shard}} \le t_{\mathrm{issue}} + L_m\) with \(|t_{\mathrm{shard}} - t_{\mathrm{broker}}| \le \delta_{\max}\), withholding steward renewal halts all commits by broker time \(t_{\mathrm{issue}} + L_m + \delta_{\max}\) for every \(U\). If single-period out-of-policy gain is \(\Delta U_{\mathrm{def}}\) while compliant renewal yields discounted continuation value \(\frac{\gamma}{1-\gamma}\Delta U_{\mathrm{ren}} > \Delta U_{\mathrm{def}}\), compliant play strictly dominates defection. \qed
+
+\begin{proposition}[Conservative envelope and union bound]\label{prop:envelope}
+(i) If \(\widehat{\Delta B}_t(a, \mathcal{I}_t) = \max_{s \in \mathcal{I}_t}\Delta B(a, s)\) and the true sink state satisfies \(s_t^\star \in \mathcal{I}_t\), then \(\mathcal{I}_1 \subseteq \mathcal{I}_2 \implies \widehat{\Delta B}_t(a,\mathcal{I}_1) \le \widehat{\Delta B}_t(a,\mathcal{I}_2)\), establishing Eq.~\eqref{eq:contraction}, and cumulative true spend never exceeds \(B\).
+(ii) For arbitrary dependent period-breach events \(E_1,\dots,E_T\) with \(\Prb(E_t) \le R_t\), countable subadditivity gives \(\Prb(\bigcup_{t=1}^T E_t) \le \sum_{t=1}^T R_t\) (Theorem~\ref{thm:horizon}); if \(E_t\) are independent with \(\Prb(E_t) \ge r_0 > 0\), \(\Prb(\bigcup_{t=1}^T E_t) \ge 1 - (1 - r_0)^T \to 1\)~\cite{ville1939}.
 \end{proposition}
 
-\begin{proof}
-Any $s\text{--}t$ cut $(S, \bar{S})$ in $G_{\mathrm{split}}$ of finite capacity cannot sever $+\infty$-capacity edges, so every cut edge has the form $(v_{\mathrm{in}}, v_{\mathrm{out}})$ with $v \in V_{\mathrm{elig}}$, defining $C = \{v \in V_{\mathrm{elig}} : v_{\mathrm{in}} \in S,\, v_{\mathrm{out}} \in \bar{S}\}$ of capacity $\sum_{v\in C} b(v)$. Every path $P \in \mathcal{P}$ induces a path from $s_{\mathrm{out}}$ to $t_{\mathrm{in}}$ traversing $(v_{\mathrm{in}}, v_{\mathrm{out}})$ for each internal $v \in P$, and therefore intersects $C$. Conversely, deleting $\{(v_{\mathrm{in}}, v_{\mathrm{out}}) : v \in C\}$ for any hitting set $C \subseteq V_{\mathrm{elig}}$ disconnects $s_{\mathrm{out}}$ from $t_{\mathrm{in}}$, inducing a reachable set $S_C$ whose outgoing cut edges lie in $C$ with capacity at most $\sum_{v\in C} b(v)$. Hence minimum cut capacity equals $\tau_b(\mathcal{P})$, and equals $+\infty$ iff no subset of $V_{\mathrm{elig}}$ hits $\mathcal{P}$. Unit capacities on $V \setminus \{s,t\}$ yield Menger's identity $\tau_1(\mathcal{P}) = w(G)$ by max-flow integrality~\cite{menger}. For Robacker's dual~\cite{robacker}, any $k$ pairwise disjoint vertex cuts consume at least $k$ distinct internal vertices on every $P \in \mathcal{P}$, so $k \le \ell(G)$; conversely, setting $C_d = \{v \in V \setminus \{s,t\} : \mathrm{dist}_G(s,v) = d\}$ for $1 \le d \le \ell(G)$ produces $\ell(G)$ pairwise disjoint $s\text{--}t$ vertex cuts because each edge increments $\mathrm{dist}_G(s,\cdot)$ by at most~$1$.
-\end{proof}
+\subsection{Proofs for Section~\ref{sec:aim}}
 
-\begin{proposition}[Lov\'asz Bounded-Length Packing--Hitting Gap]
-\label{prop:lovasz-gap}
-Let $\mathcal{P}$ be a finite collection of non-empty internal vertex sets of $s\text{--}t$ routes with $|P| \le r$ for all $P \in \mathcal{P}$. Let $\omega(\mathcal{P})$ be the maximum size of a pairwise-disjoint subfamily of $\mathcal{P}$ and $\tau(\mathcal{P})$ the minimum size of a vertex set intersecting every $P \in \mathcal{P}$. Then $\omega(\mathcal{P}) \le \tau(\mathcal{P}) \le r\,\omega(\mathcal{P})$~\cite{lovasz}.
-\end{proposition}
-
-\begin{proof}
-If $\mathcal{Q} \subseteq \mathcal{P}$ is pairwise disjoint and $C$ hits $\mathcal{P}$, $C$ contains distinct elements from each $Q \in \mathcal{Q}$, so $|C| \ge |\mathcal{Q}|$ and $\tau(\mathcal{P}) \ge \omega(\mathcal{P})$. Conversely, choose an inclusion-maximal pairwise-disjoint subfamily $\mathcal{Q}^* \subseteq \mathcal{P}$ ($|\mathcal{Q}^*| \le \omega(\mathcal{P})$) and set $C = \bigcup_{Q \in \mathcal{Q}^*} Q$. By maximality, no $P \in \mathcal{P}$ is disjoint from $C$, so $C$ hits $\mathcal{P}$ and $\tau(\mathcal{P}) \le |C| \le r|\mathcal{Q}^*| \le r\,\omega(\mathcal{P})$.
-\end{proof}
-
-\begin{proposition}[One-Sidedness of Empirical Search and Bayesian Search Power]
-\label{prop:search-power}
-(i)~Without an external finite-support or lower-probability bound on unseen routes, no finite clean search trace $D_T$ logically certifies the absence of an unblocked route, whereas a single verified bypass $P^* \in \mathcal{P}$ with $P^* \cap C = \emptyset$ refutes completeness of cut $C$.
-(ii)~Suppose an unblocked route exists ($H = 1$) with prior $p_0 \in (0,1)$, falls in a shared blind spot ($B = 1$) with probability $b \in [0,1]$, and when $B = 0$ is independently detected in each of $T$ trials with probability $q \in (0,1]$, while verified bypass checks have zero false positives under $H = 0$. Given $T$ zero-bypass trials $Z_T$, the posterior probability of an unblocked route is
-\[
-\begin{aligned}
-\pi(T) &\;=\; \Prb(H = 1 \mid Z_T) \;=\; \frac{p_0 s}{p_0 s + 1 - p_0}, \\
-s &\;=\; b + (1-b)(1-q)^T,
-\end{aligned}
-\]
-converging as $T \to \infty$ to the strictly positive blind-spot floor $p_0 b / (p_0 b + 1 - p_0)$ whenever $p_0 > 0$ and $b > 0$.
-\end{proposition}
-
-\begin{proof}
-Part~(i) is immediate: an unblocked route $P^\dagger$ assigned probability~$0$ (or arbitrarily small probability $\varepsilon > 0$) by the search policy produces $D_T \not\ni P^\dagger$ with probability~$1$ (respectively $(1-\varepsilon)^T > 0$), whereas $P^* \cap C = \emptyset$ directly witnesses $\tau_1(\{P^*\}\setminus C) > 0$. For part~(ii), conditioning on $B \in \{0,1\}$ gives $\Prb(Z_T \mid H = 1) = b\cdot 1 + (1-b)(1-q)^T = s$, while soundness of bypass verification gives $\Prb(Z_T \mid H = 0) = 1$. Bayes' rule yields $\Prb(H=1 \mid Z_T) = p_0 s / (p_0 s + 1 - p_0)$, and $(1-q)^T \to 0$ for $q \in (0,1]$ yields the limit.
-\end{proof}
-
-\begin{proposition}[Withholding Indistinguishability]
-\label{prop:withholding}
-Compare two worlds over disjoint route-class sets $\Pi$ and $\Sigma$ ($\Sigma \neq \emptyset$): in world $\mathcal{W}_1$, unblocked classes $\Pi \sqcup \Sigma$ exist, and a strategic searcher suppresses every discovery in $\Sigma$, reporting either (a)~thinning of independent Poisson counts $N_c \sim \mathrm{Poisson}(\lambda_c)$ ($c \in \Pi \sqcup \Sigma$) or (b)~$N$ retained categorical draws from $(p_c)_{c \in \Pi \sqcup \Sigma}$ conditioned on landing in $\Pi$, with $\tilde{p}_c = p_c / \sum_{j\in\Pi} p_j$; in world $\mathcal{W}_0$, only classes $\Pi$ exist with intensities $(\lambda_c)_{c\in\Pi}$ (respectively categorical law $(\tilde{p}_c)_{c\in\Pi}$ and $N$ honest draws) and zero unblocked mass in $\Sigma$. Then every report-only statistic---including class multiplicities, singleton count $f_1$, Good--Turing coverage $\hat{C}_{\mathrm{GT}} = 1 - f_1/N$~\cite{good}, and multi-searcher capture--recapture overlaps~\cite{chapman1951}---has the exact same probability distribution under $\mathcal{W}_1$ and $\mathcal{W}_0$, despite $\mathcal{W}_1$ retaining unblocked withheld mass $\sum_{c\in\Sigma} p_c > 0$.
-\end{proposition}
-
-\begin{proof}
-Under model~(a), projecting mutually independent random variables $(N_c)_{c\in\Pi\sqcup\Sigma}$ onto coordinates $\Pi$ yields marginal joint law $\prod_{c\in\Pi}\mathrm{Poisson}(\lambda_c)$, identical to $\mathcal{W}_0$. Under model~(b), each draw $X \sim (p_c)_{c\in\Pi\sqcup\Sigma}$ conditioned on $\{X \in \Pi\}$ satisfies $\Prb_{\mathcal{W}_1}(X = c \mid X \in \Pi) = p_c / \sum_{j\in\Pi} p_j = \tilde{p}_c = \Prb_{\mathcal{W}_0}(X = c)$ for every $c \in \Pi$; hence $N$ i.i.d.\ retained reports have joint law $\prod_{t=1}^N \tilde{p}_{x_t}$ under both worlds. Any measurable functional of the $\Pi$-valued report transcript therefore has identical distribution under $\mathcal{W}_1$ and $\mathcal{W}_0$ (total variation distance~$0$).
-\end{proof}
-
-\subsection{Two-Stage Escrow Triage and Portfolio Assessment Ceilings}
-
-\begin{proof}[Proof of Proposition~\ref{u07:prop:triage}]
-(Two-stage orthogonal escrow triage, Section~\ref{sec:monitors}.) At each step $s \in \{1,\dots,k\}$ of a benign workflow, let $F_s^{(1)} \in \{0,1\}$ indicate a Stage-1 fast-screen flag ($\Prb(F_s^{(1)}=1 \mid \text{benign}) \le \alpha_1$) and let $R_s^{(2)} \in \{0,1\}$ indicate a Stage-2 deterministic provenance/scope rejection when escalated ($\Prb(R_s^{(2)}=1 \mid F_s^{(1)}=1, \text{benign}) \le \alpha_{2\mid 1}$). Because non-flagged steps ($F_s^{(1)}=0$) commit directly without escalation, at least $1 - \alpha_1$ of benign steps execute unpaused on the fast path, proving~(i). A benign step $s$ suffers a terminal abort if and only if $A_s = \{F_s^{(1)}=1 \land R_s^{(2)}=1\}$ occurs, which has probability $p_{\mathrm{ab},s} = \Prb(F_s^{(1)}=1 \mid \text{benign})\Prb(R_s^{(2)}=1 \mid F_s^{(1)}=1, \text{benign}) \le \alpha_1\alpha_{2\mid 1}$. Across $k$ conditionally independent benign step checks (respectively arbitrary dependence via Boole's inequality), episode false-abort probability satisfies $\Prb(\bigcup_{s=1}^k A_s \mid \text{benign}) = 1 - \prod_{s=1}^k (1 - p_{\mathrm{ab},s}) \le 1 - (1 - \alpha_1\alpha_{2\mid 1})^k \le k\alpha_1\alpha_{2\mid 1}$ (and $\Prb(\bigcup_{s=1}^k A_s \mid \text{benign}) \le \sum_{s=1}^k p_{\mathrm{ab},s} \le k\alpha_1\alpha_{2\mid 1}$ without independence), proving~(ii). For~(iii), on any out-of-scope trajectory step $s$, Stage-2 zero false clearance ($\Prb(R_s^{(2)}=0 \mid F_s^{(1)}=1, \text{out-of-scope}) = 0$) implies that two-stage triage misses step $s$ only when Stage~1 fails to flag ($F_s^{(1)}=0$). Hence the two-stage $k$-step joint miss event is contained in $\bigcap_{s=1}^k \{F_s^{(1)}=0\}$, yielding $\tilde{J}_k \le J_k^{(\alpha_1)}$; when $\alpha_1 \ge \alpha_0$, monotone nestedness of Stage-1 flag sets ($\{F_s^{(1)}(\alpha_0)=1\} \subseteq \{F_s^{(1)}(\alpha_1)=1\}$) gives $J_k^{(\alpha_1)} \le J_k^{(\alpha_0)}$.
-\end{proof}
-
-\begin{proposition}[Crossed Generalizability and Portfolio Squared-Correlation Ceiling]
-\label{prop:variance-ceiling}
-(i)~Let candidate $i$ have deployable safety trait $T_i \sim (0, v_T)$, shared pre-deployment discrepancy $U_i \sim (0, v_U)$, context effects $\delta_{ic} \sim (0, v_\delta)$ across $k$ contexts, evaluator effects $\eta_{ij} \sim (0, v_\eta)$ across $m$ evaluators, and residuals $\varepsilon_{ijc} \sim (0, v_\varepsilon)$, all mutually uncorrelated with finite positive variances~\cite{cronbach}. For cell-mean pre-deployment score $\bar{Z}_i = T_i + U_i + \bar{\delta}_i + \bar{\eta}_i + \bar{\varepsilon}_i$, the squared correlation with $T_i$ is
-\[
-V(m,k) \;=\; \frac{v_T}{v_T + v_U + v_\delta/k + v_\eta/m + v_\varepsilon/(mk)},
-\]
-since $\Corr(T_i, \bar{Z}_i)^2 = \Cov(T_i, \bar{Z}_i)^2 / [\Var(T_i)\Var(\bar{Z}_i)]$.
-(ii)~In a portfolio of $D$ benchmark domains with $n$ trials per domain ($N = Dn$ total trials), let $Z_{dr} = G + \delta + c_d + e_{dr}$ with uncorrelated components $G \sim (0, V_G)$, $\delta \sim (0, \omega^2)$, $c_d \sim (0, \sigma_c^2)$, and $e_{dr} \sim (0, \sigma_e^2)$. Then the portfolio mean $\bar{Z}_{D,n}$ has squared correlation with $G$
-\[
-R_G(D,n) \;=\; \frac{V_G}{V_G + \omega^2 + \sigma_c^2/D + \sigma_e^2/(Dn)},
-\]
-satisfying the fixed-breadth limit $\lim_{n\to\infty} R_G(D,n) = V_G / (V_G + \omega^2 + \sigma_c^2/D)$ and the strict universal ceiling $R_G(D,n) < V_G / (V_G + \omega^2)$ for all finite $(D,n)$.
-\end{proposition}
-
-\begin{proof}
-In~(i), mutual orthogonality gives $\Cov(T_i, \bar{Z}_i) = \Var(T_i) = v_T$, while averaging $k$ i.i.d.-variance context terms, $m$ evaluator terms, and $mk$ residual terms yields $\Var(\bar{Z}_i) = v_T + v_U + v_\delta/k + v_\eta/m + v_\varepsilon/(mk)$; substituting into $\Cov(T_i, \bar{Z}_i)^2 / [\Var(T_i)\Var(\bar{Z}_i)]$ cancels one factor of $v_T$ and proves $V(m,k)$. Part~(ii) follows identically with $\bar{Z}_{D,n} = G + \delta + \frac{1}{D}\sum_{d=1}^D c_d + \frac{1}{Dn}\sum_{d=1}^D\sum_{r=1}^n e_{dr}$, giving $\Cov(G, \bar{Z}_{D,n}) = V_G$ and $\Var(\bar{Z}_{D,n}) = V_G + \omega^2 + \sigma_c^2/D + \sigma_e^2/(Dn)$. Letting $n \to \infty$ at fixed $D$ eliminates $\sigma_e^2/(Dn)$ while leaving $\sigma_c^2/D > 0$; since $\sigma_c^2/D + \sigma_e^2/(Dn) > 0$ for all finite $(D,n)$, $R_G(D,n) < V_G/(V_G + \omega^2)$.
-\end{proof}
-
-\subsection{Selection Geometry, Risk-Appetite Reversal, Grants, and Sufficiency}
-
-\begin{proposition}[Finite-Population Price Identity and Gaussian Selection Gradient]
-\label{prop:price-gradient}
-(i)~For a finite population $\{1,\dots,N\}$ with prior weights $p_r \ge 0$ ($\sum_{r=1}^N p_r = 1$), trait values $z_r \in \mathbb{R}$, and non-negative fitnesses $w_r$ with $\bar{w} = \sum_{r=1}^N p_r w_r > 0$, post-selection weights $p'_r = p_r w_r / \bar{w}$ without transmission mutation satisfy~\cite{price,robertson}
-\[
-\Delta\bar{z} \;=\; \sum_{r=1}^N p'_r z_r - \bar{z} \;=\; \frac{\Cov_p(z, w)}{\bar{w}}.
-\]
-(ii)~If $Z \sim \mathcal{N}(\mu, \Sigma)$ is selected by keeping the top fraction $q \in (0,1)$ on a scalar score $I$ jointly normal with $Z$, having correlation $\rho_j = \Corr(Z_j, I)$ and trait standard deviation $\sigma_j = \sqrt{\Var(Z_j)}$, then the one-step selection differential on coordinate $j$ is $S_j = \Exp[Z_j \mid I \ge \tau_q] - \mu_j = i\,\rho_j\,\sigma_j$, where $i = \phi(\Phi^{-1}(1-q))/q > 0$ (and under exponential tilting $w(Z) = e^{\eta v^\top Z}$, $\Delta\mu = \eta\Sigma v$).
-\end{proposition}
-
-\begin{proof}
-For~(i), $\sum_{r=1}^N p'_r z_r - \bar{z} = \bar{w}^{-1}\sum_{r=1}^N p_r w_r z_r - \bar{w}^{-1}\bar{w}\bar{z} = \bar{w}^{-1}\sum_{r=1}^N p_r (z_r - \bar{z})(w_r - \bar{w}) = \Cov_p(z,w)/\bar{w}$. For~(ii), joint normality gives the linear regression $Z_j - \mu_j = \rho_j (\sigma_j/\sigma_I)(I - \mu_I) + \zeta_j$ with $\zeta_j$ independent of $I$ and $\Exp[\zeta_j] = 0$. Standardizing $W = (I - \mu_I)/\sigma_I \sim \mathcal{N}(0,1)$ with threshold $z_q = \Phi^{-1}(1-q)$ yields $\Exp[W \mid W \ge z_q] = q^{-1}\int_{z_q}^\infty w\phi(w)\,dw = \phi(z_q)/q = i$, whence $\Exp[Z_j - \mu_j \mid I \ge \tau_q] = i\,\rho_j\,\sigma_j$. Under $w(Z) = e^{\eta v^\top Z}$, $\Exp[Z e^{\eta v^\top Z}]/\Exp[e^{\eta v^\top Z}] = \nabla_\eta \ln \Exp[e^{\eta v^\top Z}] = \nabla_\eta(\eta v^\top\mu + \tfrac{1}{2}\eta^2 v^\top\Sigma v) = \mu + \eta\Sigma v$.
-\end{proof}
-
-\begin{proposition}[Payoff-Dispersion Risk-Appetite Reversal]
-\label{prop:dispersion-reversal}
-Let agent return be $X(\sigma) = \mu + \sigma\xi$ for fixed mean $\mu \in \mathbb{R}$, dispersion $\sigma > 0$, and standardized noise $\xi$ ($\Exp[\xi]=0$, $\Exp[|\xi|] < \infty$) having continuous strictly positive density $f_\xi$ symmetric about~$0$ ($\xi \stackrel{d}{=} -\xi$) and CDF $F_\xi$.
-\begin{enumerate}
-\item \emph{Upper-tail tournament ($\tau > \mu$):} Win probability $P_{\mathrm{top}}(\sigma) = \Prb(X(\sigma) \ge \tau)$ is strictly increasing in $\sigma$.
-\item \emph{Survival floor ($\tau < \mu$):} Survival probability $P_{\mathrm{floor}}(\sigma) = \Prb(X(\sigma) \ge \tau)$ is strictly decreasing in $\sigma$.
-\item \emph{Concave capped caretaker welfare:} For every concave utility $u\colon \mathbb{R} \to \mathbb{R}$, $\sigma \mapsto \Exp[u(\mu + \sigma\xi)]$ is non-increasing on $(0,\infty)$, and strictly decreasing both when $u$ is strictly concave and when $u(x) = \min\{x, \kappa\}$ for any finite cap $\kappa \in \mathbb{R}$.
-\item \emph{Mean-preserving spread reversal:} For any mean-preserving spread $X_{\mathrm{risky}} = X_{\mathrm{safe}} + \varepsilon$ with $\Exp[\varepsilon \mid X_{\mathrm{safe}}] = 0$ and $\Prb(\varepsilon \neq 0) > 0$, every strictly convex tournament payoff $\psi$ satisfies $\Exp[\psi(X_{\mathrm{risky}})] > \Exp[\psi(X_{\mathrm{safe}})]$, whereas every strictly concave caretaker payoff $u$ satisfies $\Exp[u(X_{\mathrm{safe}})] > \Exp[u(X_{\mathrm{risky}})]$.
-\end{enumerate}
-\end{proposition}
-
-\begin{proof}
-For~(1) and~(2), write $\Prb(\mu + \sigma\xi \ge \tau) = 1 - F_\xi((\tau - \mu)/\sigma)$. Differentiating with respect to $\sigma > 0$ gives
-\[
-\frac{d}{d\sigma}\Prb\bigl(X(\sigma) \ge \tau\bigr) \;=\; f_\xi\!\Bigl(\frac{\tau - \mu}{\sigma}\Bigr)\frac{\tau - \mu}{\sigma^2}.
-\]
-Because $f_\xi > 0$ everywhere on $\mathbb{R}$, this derivative is strictly positive when $\tau > \mu$ and strictly negative when $\tau < \mu$.
-
-For~(3), let $0 < \sigma_1 < \sigma_2$ and set $\lambda = (\sigma_1 + \sigma_2)/(2\sigma_2) \in (\tfrac{1}{2}, 1)$, so $\lambda\sigma_2 + (1-\lambda)(-\sigma_2) = \sigma_1$. Concavity of $u$ gives, for every $\xi \in \mathbb{R}$,
-\[
-u(\mu + \sigma_1\xi) \;\ge\; \lambda\,u(\mu + \sigma_2\xi) + (1-\lambda)\,u(\mu - \sigma_2\xi),
-\]
-with strict inequality for all $\xi \neq 0$ whenever $u$ is strictly concave. Taking expectations and using symmetry $\Exp[u(\mu - \sigma_2\xi)] = \Exp[u(\mu + \sigma_2\xi)]$ yields $\Exp[u(\mu + \sigma_1\xi)] \ge \Exp[u(\mu + \sigma_2\xi)]$ (strict for strictly concave $u$). For piecewise-linear capped welfare $u(x) = \min\{x, \kappa\} = x - (x - \kappa)_+$, setting $z_\kappa(\sigma) = (\kappa - \mu)/\sigma$ gives
-\[
-\Exp\bigl[\min\{\mu + \sigma\xi, \kappa\}\bigr] \;=\; \mu - \int_{z_\kappa(\sigma)}^\infty (\sigma\xi - \kappa + \mu)f_\xi(\xi)\,d\xi.
-\]
-Differentiating under the integral sign (Leibniz's rule; the boundary integrand vanishes at $\xi = z_\kappa(\sigma)$) gives
-\[
-\frac{d}{d\sigma}\Exp\bigl[\min\{\mu + \sigma\xi, \kappa\}\bigr] \;=\; -\int_{z_\kappa(\sigma)}^\infty \xi f_\xi(\xi)\,d\xi \;<\; 0
-\]
-for every $\kappa \in \mathbb{R}$: if $z_\kappa(\sigma) \ge 0$ the integrand is strictly positive on $(z_\kappa(\sigma), \infty)$, while if $z_\kappa(\sigma) < 0$ symmetry $\int_{z_\kappa}^{-z_\kappa} \xi f_\xi(\xi)\,d\xi = 0$ reduces the integral to $\int_{-z_\kappa(\sigma)}^\infty \xi f_\xi(\xi)\,d\xi > 0$.
-
-For~(4), conditional Jensen's inequality gives $\Exp[\psi(X_{\mathrm{safe}} + \varepsilon) \mid X_{\mathrm{safe}}] \ge \psi(X_{\mathrm{safe}})$ almost surely, with strict inequality on the positive-probability event $\{\Var(\varepsilon \mid X_{\mathrm{safe}}) > 0\}$ when $\psi$ is strictly convex; reversing $\psi \leftrightarrow -u$ proves the strictly concave case.
-\end{proof}
-
-\begin{proof}[Proof of Proposition~\ref{u08:prop:deception}]
-(Policy-gradient deception reversal under pre-commit mediation, Section~\ref{sec:selection}.) Parameterize the contextual policy at audit cue $c \in \{0,1\}$ by softmax logit gap $\theta_c \in \mathbb{R}$ between shortcutting ($a=1$) and safe verification ($a=0$), so $\pi_\theta(1 \mid c) = \sigma(\theta_c) \in (0,1)$ with $\sigma'(z) = \sigma(z)(1-\sigma(z)) > 0$. Under pre-commit gate mediation probability $q_{\mathrm{gate}} \in [0,1]$, attempting a shortcut is intercepted prior to execution with probability $q_{\mathrm{gate}}$ (returning $R_{\mathrm{refused}}$) and otherwise executes with expected audited return $U_{\mathrm{short}}(p_c)$, so expected shortcut return in context $c$ is
-\[
-\tilde{U}_c(q_{\mathrm{gate}}) \;=\; q_{\mathrm{gate}}\,R_{\mathrm{refused}} + (1 - q_{\mathrm{gate}})\,U_{\mathrm{short}}(p_c).
-\]
-Let $P_c = \Prb(c_{\mathrm{audit}} = c) > 0$. Expected objective $J(\theta) = \sum_{c\in\{0,1\}} P_c\bigl[\sigma(\theta_c)\tilde{U}_c(q_{\mathrm{gate}}) + (1-\sigma(\theta_c))R_{\mathrm{verify}}\bigr]$ has exact policy gradient on coordinate $\theta_c$:
-\[
-\frac{\partial J(\theta)}{\partial \theta_c} \;=\; P_c\,\sigma(\theta_c)\bigl(1 - \sigma(\theta_c)\bigr)\bigl(\tilde{U}_c(q_{\mathrm{gate}}) - R_{\mathrm{verify}}\bigr).
-\]
-At $q_{\mathrm{gate}} = 0$, the audited-tournament regime $U_{\mathrm{short}}(p_{\mathrm{mon}}) < R_{\mathrm{verify}} < U_{\mathrm{short}}(p_{\mathrm{unmon}})$ gives $\partial J/\partial \theta_1 < 0$ and $\partial J/\partial \theta_0 > 0$ everywhere on $\mathbb{R}^2$, driving $\sigma(\theta_1) \to 0$ (monitored compliance) and $\sigma(\theta_0) \to 1$ (unmonitored covert shortcutting), so the evaluation-aware gap $\sigma(\theta_0) - \sigma(\theta_1) \to 1$. Because $R_{\mathrm{refused}} < R_{\mathrm{verify}} < U_{\mathrm{short}}(p_{\mathrm{unmon}})$, $\tilde{U}_0(q_{\mathrm{gate}}) < R_{\mathrm{verify}}$ holds if and only if
-\[
-\begin{aligned}
-q_{\mathrm{gate}}\,R_{\mathrm{refused}} + (1 - q_{\mathrm{gate}})\,U_{\mathrm{short}}(p_{\mathrm{unmon}}) &\;<\; R_{\mathrm{verify}} \\
-\Longleftrightarrow\quad q_{\mathrm{gate}} \;>\; \frac{U_{\mathrm{short}}(p_{\mathrm{unmon}}) - R_{\mathrm{verify}}}{U_{\mathrm{short}}(p_{\mathrm{unmon}}) - R_{\mathrm{refused}}} &\;=\; q_{\mathrm{gate}}^*.
-\end{aligned}
-\]
-Since $p_{\mathrm{mon}} > p_{\mathrm{unmon}}$ implies $U_{\mathrm{short}}(p_{\mathrm{mon}}) \le U_{\mathrm{short}}(p_{\mathrm{unmon}})$, every $q_{\mathrm{gate}} > q_{\mathrm{gate}}^*$ simultaneously satisfies $\tilde{U}_1(q_{\mathrm{gate}}) < R_{\mathrm{verify}}$ and $\tilde{U}_0(q_{\mathrm{gate}}) < R_{\mathrm{verify}}$, making $\partial J/\partial \theta_c < 0$ in both contexts and driving both $\sigma(\theta_0) \to 0$ and $\sigma(\theta_1) \to 0$ (zero asymptotic deception gap).
-\end{proof}
-
-\begin{proposition}[Endogenous Grant Harm Reversal]
-\label{prop:grant-reversal}
-For disposition $d \in \{d_0, d_1\}$, let $G \in \{0,1\}$ indicate human conferral of broad authority ($g(d) = \Prb(G=1 \mid D=d)$) and $h_s(d) = \Prb(H=1 \mid G=s, D=d)$ denote conditional harm at scope $s \in \{0,1\}$. Even when $d_1$ is strictly safer at every fixed scope ($h_0(d_1) < h_0(d_0)$ and $h_1(d_1) < h_1(d_0)$), unconditional harm under endogenous conferral satisfies $\Prb(H=1 \mid D=d_1) > \Prb(H=1 \mid D=d_0)$ whenever
-\[
-\begin{aligned}
-g(d_1)\bigl(h_1(d_1) - h_0(d_1)\bigr) &- g(d_0)\bigl(h_1(d_0) - h_0(d_0)\bigr) \\
-&\;>\; h_0(d_0) - h_0(d_1)
-\end{aligned}
-\]
-(in particular, when $h_0 \equiv 0$ and $g(d_1)h_1(d_1) > g(d_0)h_1(d_0)$), whereas exogenous scope assignment $G \perp D$ with $\Prb(G=1) = \bar{g}$ guarantees $\Prb_{\mathrm{dec}}(H=1 \mid D=d_1) < \Prb_{\mathrm{dec}}(H=1 \mid D=d_0)$.
-\end{proposition}
-
-\begin{proof}
-Conditioning on $G \in \{0,1\}$ gives $\Prb(H=1 \mid D=d) = (1 - g(d))h_0(d) + g(d)h_1(d) = h_0(d) + g(d)(h_1(d) - h_0(d))$, whose difference between $d_1$ and $d_0$ is positive if and only if the displayed inequality holds (for the multi-disposition mixture $\Prb(D=d)$, $\Prb(H=1) = \sum_d \Prb(D=d)[h_0(d) + g(d)(h_1(d)-h_0(d))]$). Under decoupled assignment $G \perp D$ with $\Prb(G=1) = \bar{g} \in [0,1]$, $\Prb_{\mathrm{dec}}(H=1 \mid D=d) = (1-\bar{g})h_0(d) + \bar{g}h_1(d)$, which is strictly smaller at $d_1$ than at $d_0$ because $h_0(d_1) < h_0(d_0)$ and $h_1(d_1) < h_1(d_0)$.
-\end{proof}
-
-\begin{proof}[Proof of Theorem~\ref{u03:thm:main}]
-(Sufficiency of Conditions C1--C6, Section~\ref{sec:theory}.) Fix an operating period $t \ge 0$ and capability class $\mathcal{C}_t$. Condition~C1 places an external, unalterable reference monitor and cooperative idempotent sink on all consequential interfaces with conservative reservation accounting ($x_{t,m} \in \B_{t,m}$, discharging Proposition~\ref{u03:cor:contraction} for deterministic resource envelopes) and synchronous epoch fencing within latency $\tau < T_{\mathrm{irrev}}$ upon detection or revocation, discharging Premises~A1 and~A2. Condition~C2 places eligible cutsets of cost $\tau_b(\mathcal{P}_t) \le B_{\mathrm{def}}$ across mapped pathways so mapped routes traverse $k_t \le \ell(G_t)$ distinct step gates (Proposition~\ref{prop:weighted-cuts}). Condition~C3 bounds the filtration-conditioned $k_t$-gate joint miss across governed step crossings by $J_{k,t}$ (accounting for shared blind spots, cross-family correlation, score-feedback suppression, and candidate-retry caps), discharging Premise~A4. Conditions~C4 and~C5 isolate vulnerability discovery under Custody Rules R1--R6, withhold risk credit until validated cut deployment, and bound residual $<k_t$-gate bypass probability by the post-search quantity $u_t \le \pi_t$ (Propositions~\ref{prop:search-power} and~\ref{prop:withholding}), discharging Premise~A3.
-
-Applying Proposition~\ref{u03:prop:reach} in period $t$ yields single-period catastrophe probability $R_t = \Prb(E_t) \le u_t + J_{k,t} \le \pi_t + J_{k,t}$, without invoking assumptions on unobserved internal goals. Across periods $t = 0, 1, \dots$, Condition~C6 resets baseline state at renewal boundaries, enforces non-escalating controller updates absent fresh conferral, and requires renewal bounds $\bar{R}_t = \pi_t + J_{k,t}$ to form a summable series. Boole's inequality yields $\Prb(\bigcup_{t=0}^\infty E_t) \le \sum_{t=0}^\infty R_t \le \sum_{t=0}^\infty (\pi_t + J_{k,t})$; in particular, whenever $\bar{R}_{t+1} \le \gamma \bar{R}_t$ with $\gamma \in (0,1)$, $\sum_{t=0}^\infty R_t \le \bar{R}_0 / (1 - \gamma) < \infty$ (and by Proposition~\ref{u03:prop:sat}(ii), summability of survival-conditioned hazards ensures strictly positive infinite-horizon survival).
-\end{proof}
-
-\subsection{Exact Unconditional Trinomial Superiority and Anytime-Valid Martingales}
-
-\begin{proposition}[Exact Unconditional Paired Trinomial Inversion and Ville Discordance Supermartingales]
-\label{prop:trinomial-ville}
-Let $(U_{i,A}, U_{i,B}) \in \{0,1\}^2$ be $N$ independent paired binary harm outcomes with cell probabilities $(p_{10}, p_{01}, p_{\mathrm{tie}})$ on the trinomial simplex $\Theta_{\mathrm{tri}} = \{(p_{10}, p_{01}) \in [0,1]^2 : p_{10} + p_{01} \le 1\}$ and risk difference $\delta = p_{10} - p_{01} \in [-1,1]$.
-\begin{enumerate}
-\item \emph{Exact unconditional size and test inversion~\cite{suissa1985,tango1998}:} For any null margin $\delta_0 \in (-1,1)$, let $\Theta_0(\delta_0) = \{\theta \in [\max(0,-\delta_0),\, (1-\delta_0)/2] : p_{10}=\theta+\delta_0,\; p_{01}=\theta\}$ and let $Z(x_{10}, x_{01}; \delta_0)$ denote Tango's score statistic~\cite{tango1998}. The unconditional $p$-value
-\[
-\begin{aligned}
-p_{\mathrm{SS}}(\delta_0) &\;=\; \sup_{\theta \in \Theta_0(\delta_0)} \;\sum_{Z(x_{10},x_{01};\delta_0) \le Z_{\mathrm{obs}}} \frac{N!}{x_{10}!\,x_{01}!\,x_{00}!} \\
-&\qquad \times (\theta+\delta_0)^{x_{10}}\,\theta^{x_{01}}\,(1-2\theta-\delta_0)^{x_{00}}
-\end{aligned}
-\]
-(with $x_{00} = N - x_{10} - x_{01}$) satisfies $\Prb_{(p_{10},p_{01})}\bigl(p_{\mathrm{SS}}(\delta_0) \le \alpha\bigr) \le \alpha$ for all $(p_{10}, p_{01}) \in \Theta_{\mathrm{tri}}$ with $p_{10} - p_{01} \ge \delta_0$, and $U_{1-\alpha} = \sup\{\delta_0 \in (-1,1) : p_{\mathrm{SS}}(\delta_0) > \alpha\}$ is an exact $(1-\alpha)$ one-sided upper confidence bound for $\delta$ without marginal union-bound slack.
-\item \emph{Anytime-valid Ville betting supermartingale~\cite{ville1939,ramdas2023}:} Let $Y_1, Y_2, \dots \in \{0,1\}$ record sequential discordant pairs ($Y_d = 1$ if only $B$ errs, $Y_d = 0$ if only $A$ errs). Under $H_0\colon \delta \ge 0$, conditional discordance satisfies $\Prb(Y_d = 1 \mid \mathcal{G}_{d-1}) = p_{01}/(p_{10}+p_{01}) \le \tfrac{1}{2}$. For any $\mathcal{G}_{d-1}$-predictable sequence $\lambda_d \in [0,1]$, $E_0 = 1$ and $E_d = \prod_{j=1}^d \bigl(1 + \lambda_j(2Y_j - 1)\bigr)$ form a non-negative supermartingale under $H_0$, so Ville's inequality guarantees $\Prb_{H_0}\bigl(\exists d \ge 1 : E_d \ge 1/\alpha\bigr) \le \alpha$ under arbitrary data-dependent stopping times $\tau$ ($p_{\mathrm{anytime}}(\tau) = \min\{1, (\max_{1\le j\le\tau} E_j)^{-1}\}$).
-\end{enumerate}
-\end{proposition}
-
-\begin{proof}
-For~(1), fix any $(p_{10}^*, p_{01}^*) \in \Theta_{\mathrm{tri}}$ with $\delta^* = p_{10}^* - p_{01}^* \ge \delta_0$. When $\delta^* = \delta_0$, $\theta^* = p_{01}^* \in \Theta_0(\delta_0)$, so at observed $(X_{10}, X_{01})$, $p_{\mathrm{SS}}(\delta_0)$ upper-bounds the exact null tail probability $F_{\theta^*}(Z(X_{10}, X_{01}; \delta_0))$, which stochastically dominates $\mathrm{Uniform}[0,1]$; hence $\Prb_{\theta^*}(p_{\mathrm{SS}}(\delta_0) \le \alpha) \le \alpha$ (monotonicity of the Tango rejection set in $(x_{10}, -x_{01})$ extends size $\le \alpha$ to composite $\delta^* > \delta_0$). Standard Neyman duality between level-$\alpha$ tests of $H_0(\delta_0)\colon \delta \ge \delta_0$ and confidence sets gives $\Prb(\delta \le U_{1-\alpha}) \ge 1 - \alpha$.
-
-For~(2), since $\lambda_d \in [0,1]$ is $\mathcal{G}_{d-1}$-measurable and $2Y_d - 1 \in \{-1, +1\}$, each factor $1 + \lambda_d(2Y_d - 1) \ge 1 - \lambda_d \ge 0$ is non-negative, whence $E_d \ge 0$ for all $d \ge 0$. Under $H_0$ ($\Prb(Y_d = 1 \mid \mathcal{G}_{d-1}) = q_d \le \tfrac{1}{2}$), $\Exp[2Y_d - 1 \mid \mathcal{G}_{d-1}] = 2q_d - 1 \le 0$; multiplying by $\lambda_d \ge 0$ gives $\Exp[E_d \mid \mathcal{G}_{d-1}] = E_{d-1}\bigl(1 + \lambda_d(2q_d - 1)\bigr) \le E_{d-1}$. By Ville's maximal inequality for non-negative supermartingales with $E_0 = 1$~\cite{ville1939,ramdas2023}, $\Prb_{H_0}(\sup_{d\ge 1} E_d \ge 1/\alpha) \le \alpha E_0 = \alpha$.
-\end{proof}
+\para{Endogenous grant reversal and dispersion derivative.}
+For scopes \(s_1 < s_2 < s_3\), let \(h_W(s_i) < h_B(s_i)\) be strictly increasing in \(i\). Whenever \(\sum_i h_W(s_i)\,g_W(s_i) > \sum_i h_B(s_i)\,g_B(s_i)\)---achieved whenever \(g_W\) places sufficient mass on \(s_3\) and \(h_W(s_3) > h_B(s_1)\)---unconditional harm reverses pointwise dominance; setting \(g_W = g_B = g_0\) gives \(\sum_i (h_W(s_i) - h_B(s_i))g_0(s_i) < 0\). For location-scale payoff \(X = \mu + \sigma Z\) with continuous CDF \(F_Z\), \(\Prb(X \ge \tau) = 1 - F_Z((\tau - \mu)/\sigma)\) has derivative \(\frac{\partial}{\partial \sigma}\Prb(X \ge \tau) = \frac{\tau - \mu}{\sigma^2}f_Z\!\bigl(\frac{\tau - \mu}{\sigma}\bigr)\), which is strictly positive for upper-tail contests (\(\tau > \mu\)) and strictly negative for survival floors (\(\tau = \underline{w} < \mu\)). \qed
