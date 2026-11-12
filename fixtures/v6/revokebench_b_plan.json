@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "experiment": "E4b_revokebench_kill_inside_rpc_late_accept_closed_loop",
+  "status": "predeclared_before_any_E4b_data",
+  "recorded_utc": "2026-11-12T20:58Z",
+  "parent": {
+    "experiment": "E4_revokebench_stop_vs_revoke_vs_fence",
+    "plan": "fixtures/v6/revokebench_plan.json",
+    "plan_sha256": "a8191725e8acd432b94402e65e8fa09572356b843e8dfb31d727e57124f477e5",
+    "evidence_trials_sha256": "e33bd39f2e65d4724b6bb39176ce85a9167bad1605fa0035ac175e35a2fd3ff1",
+    "relation": "E4b adds conditions E4 did not exercise; it does not replace, re-run or pool with E4. E4's own reanalysis is scripts/revokebench_reanalysis_v6.py (post hoc, no new data)."
+  },
+  "motivation": {
+    "review_items_checked_in_code_before_this_plan": [
+      "E4's emitter is open loop at 2 calls/s; in (w, C) = (5, 4), (30, 4), (30, 32) capacity C/w is below that rate (rho = 2.5, 15, 1.875), so those cells never reach a steady state.",
+      "E4's cancelled_legitimate counted only cancellations, while its plan defined the cost as 'cancelled or denied'.",
+      "E4's SIGKILLs were scheduled by time and fell between sink requests in most trials (logged retries 0 in 14 of 18 SIGKILL trials); neither kill could land during the fence RPC (one before enforcement starts, one 0.5 s after it returns).",
+      "E4's late_completion held `complete`, which after a fence takes the idempotent-cancel branch of Sink::complete, so it did not exercise a path that an ordinary post-fence completion does not.",
+      "E4's duplicate_effects = 0 is guaranteed by the sink schema (effects.id UNIQUE) as well as by complete() committing only Pending records.",
+      "E4's validator re-derives timing from the harness's own event log, has no sink-side ordering check, and does not check grid coverage."
+    ]
+  },
+  "system": "authority-lab broker-v2 and sink-v2 release processes over SQLite (src/ and policy-core/ unchanged at this plan's commit), driven by a Python agent emulator; no LLM",
+  "host": {
+    "run_host": "xbabe0",
+    "required_identity": "hostname = xbabe0 and `uname -sm` = 'Linux x86_64', checked by the harness before any trial",
+    "binary": "target/release/authority-lab built in the cc/e4b lane (cargo build --release --locked, CARGO_INCREMENTAL=0, CARGO_PROFILE_DEV_DEBUG=line-tables-only), copied to xbabe0; its sha256 is recorded in results.json",
+    "not_run_on": "xbabe2 (saturated by another run; E4 ran there at 16-way parallelism, so absolute RPC latencies differ and E4 and E4b counts are not pooled)",
+    "output": "raw run copied back to the lane's target/runs/e4b-<UTC>/; never /tmp"
+  },
+  "existing_hooks_used": {
+    "delay_before_commit_ms": "src/protocol_v2.rs serve(): after an operation has mutated the state row (and, for complete, inserted its effects row) inside its IMMEDIATE transaction, the process sleeps min(value, 1000) ms before COMMIT. A SIGKILL delivered during that sleep kills the sink with the operation's transaction open and uncommitted.",
+    "crash_after_commit": "src/protocol_v2.rs serve(): with crash = 'after_commit' the process exits with status 87 right after COMMIT and before writing the response. This is a process self-exit, not a SIGKILL; it is the only existing way to end the sink between a durable commit and its reply.",
+    "no_code_changes": "src/ and policy-core/ are not modified; all new behaviour is in the Python harness"
+  },
+  "workload_open_loop": {
+    "model_step_seconds": 2.0,
+    "calls_per_step": 4,
+    "offered_rate_per_s": 2.0,
+    "tool_latency_distribution": "exponential with mean w, truncated at 5w, seeded per trial (as E4)",
+    "effect": "transfer of 1 unit to 'approved', issuer 0, every proposal pre-approved, budget never binds (as E4)",
+    "warmup_seconds_before_decision": 20.0
+  },
+  "workload_closed_loop": {
+    "agents": "C agent threads; each repeats: think Z seconds, emit one call, execute it (submit, accept, tool latency, complete, settle) and wait for its terminal result, then think again",
+    "think_seconds_Z": "0.5 * C, so the aggregate emission rate approaches the open-loop 2 calls/s as w -> 0; it is C / (Z + w + RPC time) in general",
+    "stagger": "agent i's first think is uniform in [0, Z), seeded per trial",
+    "halt": "halt_inference stops agents from emitting new calls; calls already emitted are still executed",
+    "warmup_seconds_before_decision": 40.0,
+    "tool_latency_distribution": "as open loop"
+  },
+  "instrumentation": {
+    "outstanding_request": "the harness records, for each service channel, the request written and not yet answered (op, id, write time); every kill or crash logs it",
+    "post_kill_db_snapshot": "after the killed process has exited and before it is restarted, the harness reads the sink database read-only: effects row count and max sequence, whether the targeted id has an effects row, the targeted record's status in the state row, and floors[0]",
+    "enforcement_watermarks": "read-only snapshots of the sink database (max effects.sequence, effects row count, floors[0]) taken while the harness holds the sink's only RPC channel, so no sink request can be outstanding: W_start immediately before enforcement starts; W_return in the same channel hold in which the last enforcement response is received (fence_sink: the fence response; halt_inference and revoke_broker: immediately after their enforcement returns)",
+    "trial_files": "trial.json (config, events, kills, watermarks, metrics) beside broker.sqlite and sink.sqlite, as E4"
+  },
+  "conditions": [
+    {
+      "name": "kill_in_complete",
+      "emitter": "open",
+      "arms": ["halt_inference", "revoke_broker", "fence_sink"],
+      "L": [1],
+      "cells_w_C": [[5.0, 32]],
+      "replicates": 10,
+      "protocol": "At decision + L the harness arms a one-shot trap: the next `complete` sent by any executor carries delay_before_commit_ms = 600. 200 ms after that request is written the harness SIGKILLs the sink, snapshots its database, and restarts it on the same database. Enforcement starts only after the restart. The trapped executor's retry is withheld until 0.5 s after enforcement returns; every other executor continues normally. If no complete is sent within 15 s of arming, the trial logs trap_not_fired and enforces anyway; such trials are reported, not dropped."
+    },
+    {
+      "name": "kill_in_fence",
+      "emitter": "open",
+      "arms": ["fence_sink"],
+      "L": [1],
+      "cells_w_C": [[5.0, 32]],
+      "replicates": 10,
+      "protocol": "The operator's fence request carries delay_before_commit_ms = 600. 200 ms after it is written the harness SIGKILLs the sink, snapshots its database, and restarts it. The operator retries the fence (without the hook) and races executors for the restarted sink as any client would; enforcement returns when the retried fence returns."
+    },
+    {
+      "name": "exit_after_commit_in_complete",
+      "emitter": "open",
+      "arms": ["fence_sink"],
+      "L": [1],
+      "cells_w_C": [[5.0, 32]],
+      "replicates": 10,
+      "protocol": "As kill_in_complete, but the trapped complete carries crash = 'after_commit' instead of the delay, and no signal is sent: the sink exits (status 87) after COMMIT and before replying. The harness logs the outstanding request and exit status, snapshots the database and restarts the sink. The trapped executor's retry is withheld until 0.5 s after enforcement returns. Purpose: a case where the harness log (response after enforcement) and the sink's own order (commit before the fence) can disagree."
+    },
+    {
+      "name": "late_accept",
+      "emitter": "open",
+      "arms": ["halt_inference", "revoke_broker", "fence_sink"],
+      "L": [1],
+      "cells_w_C": [[5.0, 32]],
+      "replicates": 10,
+      "protocol": "The first 8 permits returned by broker submit (status pending) at or after t = warmup - 4 s are held by their executors and not sent to the sink until 2 s after enforcement returns; each is then delivered with `accept`. A held permit accepted as pending proceeds normally (tool latency, complete, settle); one refused is settled as the sink reports. This exercises Sink::accept's cancellation-tombstone branch for permits the broker issued before the withdraw."
+    },
+    {
+      "name": "closed_loop",
+      "emitter": "closed",
+      "arms": ["halt_inference", "revoke_broker", "fence_sink"],
+      "L": [1, 35],
+      "cells_w_C": [[0.5, 4], [0.5, 32], [5.0, 4], [5.0, 32]],
+      "replicates": 3,
+      "protocol": "No fault. Closed-loop workload above. w = 30 is excluded: with Z + w up to 46 s it needs a warmup of more than 90 s and a 150 s latency cap, which this plan does not spend."
+    }
+  ],
+  "grid": "kill_in_complete 3 arms x 10 = 30; kill_in_fence 1 x 10 = 10; exit_after_commit_in_complete 1 x 10 = 10; late_accept 3 x 10 = 30; closed_loop 3 arms x 2 L x 4 cells x 3 = 72; total 152 trials. Trial ids and seeds are derived from this list in order by scripts/revokebench_b_v6.py; seed = 20261212 + index.",
+  "metrics": {
+    "post_enforcement_commits_sinkdb": "PRIMARY. Effects rows in the trial's final sink database whose sequence exceeds W_return's max sequence.",
+    "commits_during_enforcement_sinkdb": "effects rows with W_start max sequence < sequence <= W_return max sequence (committed after enforcement started but before it returned)",
+    "post_enforcement_commits_harness": "E4's definition, beside the primary: completion responses with status committed logged after the enforcement call returned",
+    "legit_work_lost": "E4 plan's own definition: emitted calls that were cancelled (complete or accept answered cancelled) or denied (broker submit refused) by the stop; reported with the cancelled/denied split",
+    "rho": "open loop: offered rate 2/s x w / C; closed loop: lambda_measured x w / C with lambda_measured = calls emitted in [warmup/2, decision) / (warmup/2), beside the design value w / (Z + w)",
+    "sink_ordering_check": "using only the sink database and the watermark snapshots: every effects row is classified before/after W_return by its sequence; for fence_sink, every row after the fence watermark whose permit epoch for issuer 0 is below the fence floor is a fence violation. W_return must be a prefix of the final effects table (its row count equals the final rows with sequence <= its max sequence) and, for fence_sink, show floors[0] = the returned floor.",
+    "kill_records": "per kill or crash: signal or exit status, the outstanding request (op, id, ms since written) or none, and the post-kill database snapshot",
+    "in_flight_at_enforcement": "as E4 (harness count of calls accepted and not completed when enforcement returned)",
+    "emitted_not_accepted_at_enforcement": "as E4 (queued, or between submit and accept, including held late-accept permits)",
+    "held_permits": "late_accept: per held permit, its delivered-accept status, final sink record status, whether it has an effects row and that row's position relative to W_return",
+    "duplicate_effects": "reported; disclosed as guaranteed by the schema (effects.id UNIQUE) and complete() committing only Pending records, not an experimental result",
+    "enforcement_ack_ms": "as E4",
+    "audit_consistent": "broker and sink audit operations, as E4"
+  },
+  "kill_classification": {
+    "inside_complete_uncommitted": "SIGKILL with the trapped complete written and unanswered, and the post-kill snapshot shows no effects row for its id and its record still pending",
+    "inside_fence_uncommitted": "SIGKILL with the fence written and unanswered, and the post-kill snapshot shows floors[0] unchanged",
+    "after_commit_before_reply": "exit status 87 with the trapped complete written and unanswered, and the post-kill snapshot shows its effects row",
+    "other": "any kill not meeting its condition's criterion; reported with its trial and analyzed separately, never dropped"
+  },
+  "hypotheses": {
+    "H_E4b1": "kill_in_complete: kills classify as inside_complete_uncommitted; in fence_sink the trapped call's post-fence retry is answered cancelled and post_enforcement_commits_sinkdb = 0; in halt_inference and revoke_broker the trapped retry commits after enforcement",
+    "H_E4b2": "kill_in_fence: kills classify as inside_fence_uncommitted; completions reaching the restarted sink before the retried fence commit and appear in commits_during_enforcement_sinkdb; post_enforcement_commits_sinkdb = 0",
+    "H_E4b3": "exit_after_commit_in_complete: the trapped effect is durable before the fence, its post-fence retry is answered committed (idempotent), and post_enforcement_commits_harness exceeds post_enforcement_commits_sinkdb by that call",
+    "H_E4b4": "late_accept: in fence_sink every held accept is answered cancelled and leaves no effects row; in halt_inference and revoke_broker held permits are accepted and commit after enforcement",
+    "H_E4b5": "closed_loop: halt_inference post-enforcement commits are at most C by construction (one outstanding call per agent); fence_sink post_enforcement_commits_sinkdb = 0 and its legit_work_lost is at most C",
+    "status": "predictions only; nothing is asserted. 0 for fence_sink is the design (an implementation test): a nonzero value is reported as an implementation failure with its trace"
+  },
+  "analysis_rules": [
+    "Report every trial; summarize per condition x arm x cell (and L) with median and range over replicates.",
+    "The primary count is post_enforcement_commits_sinkdb; the harness-log count is reported beside it and any disagreement is listed per trial.",
+    "Kills are classified by kill_classification; kills classified other are reported, not dropped.",
+    "The validator re-reads each trial's sink and broker databases, re-derives every sink-side count and the ordering check from them and the recorded watermarks, checks that the run covers this plan's grid exactly (every predeclared trial id once, no extras), checks results.json against each trial.json, and asserts no outcome.",
+    "E4b counts are not pooled with E4's."
+  ],
+  "compute": {
+    "estimate": "152 trials of about 35-100 s (open-loop fault trials ~50 s; closed-loop trials 45-100 s), about 9,000 trial-seconds; about 10-15 min wall at 16-way trial parallelism on xbabe0; CPU only, 0 GPU, no network services",
+    "parallel": 16
+  },
+  "smoke_and_amendments": "A smoke run of at most 8 trials (results.json smoke_test = true, output under target/runs/e4b-smoke-<UTC>) may check harness mechanics before the full run; smoke data are not analyzed and never promoted. Any design change after this commit is recorded as a dated amendment in this file's history, committed before the full run, and named in the run's results.json.",
+  "disclosures": [
+    "The sink mediates only its own SQLite effects; this is not external exactly-once execution, sandbox verification, formal refinement or a distributed-systems test.",
+    "fence_sink's 0 post-enforcement commits is a design property (serialized sink transactions, fence() cancelling pending records below the floor, complete() and accept() re-checking the floor); E4b tests the implementation of that property under kills inside requests and late accepts.",
+    "delay_before_commit_ms widens the in-transaction window so that a kill lands inside it; an unwidened crash would land there with lower probability.",
+    "crash = 'after_commit' is a process self-exit, not a SIGKILL.",
+    "The watermarks' atomicity relies on the harness holding the sink's only RPC channel while it reads the database; the sink is single-threaded and runs one transaction per request.",
+    "Tool latency is a parametric sweep, not measured from production traces; the emulator has no model and stop decisions are scheduled."
+  ]
+}

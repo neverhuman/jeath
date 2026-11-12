@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "experiment": "E6_executable_fenceability_probes",
+  "status": "predeclared_before_any_E6_probe",
+  "recorded_utc": "2026-11-12T19:37Z",
+  "recorded_utc_source": "date -u, immediately before this file was written; no E6 probe had been run",
+  "question": "For local reference instances of PostgreSQL 16, etcd v3.5.17 and a POSIX filesystem, does the surface itself provide (P1) idempotent retry, (P2) an epoch fence evaluated atomically with the effect, and (P3) a crash-surviving hold that revocation cancels before it takes effect? S3 and the Kubernetes API are recorded from documentation only.",
+  "claim_boundary": "Local reference implementations on one host (xbabe2), single-node, default configuration except where stated. Not production services, not replicated deployments, not external exactly-once execution, not sandbox verification. Each probe tests one mechanism of one surface; a pass means the mechanism behaved as specified in this run.",
+  "census_reference": "agy-safe-ai-v6/scripts/api_fenceability_census.py (Gemini, documentation-only); E6 reports where executed evidence and that census differ.",
+  "outcome_vocabulary": {
+    "pass": "every pass condition for that primitive holds in the recorded evidence",
+    "fail": "at least one pass condition does not hold",
+    "not_applicable": "the surface has no mechanism of that kind; nothing was executed for it",
+    "documented_not_executed": "recorded from documentation; no probe was run"
+  },
+  "parameters": {
+    "threads": 8,
+    "P1_ops": 100,
+    "P1_deliveries_per_op": 4,
+    "P1_queue_order": "the 4 deliveries of each op are adjacent in the queue, so 8 threads draining it put duplicates of the same op in flight together",
+    "P2_writers": 8,
+    "P2_attempts_per_writer": 60,
+    "P2_writer_epoch": 1,
+    "P2_initial_floor": 1,
+    "P2_raised_floor": 2,
+    "P2_fence_after_commits": 40,
+    "P2_fence_trigger": "the fence is raised by a separate thread once at least P2_fence_after_commits stale-epoch effects have committed; writers keep issuing epoch-1 writes until each has made 60 attempts",
+    "P3_holds": [
+      "revoke",
+      "control"
+    ],
+    "etcd_lease_ttl_seconds": 300,
+    "etcd_container_cpus": 2
+  },
+  "common_pass_conditions": {
+    "P1": "effects == distinct ops == successful deliveries == P1_ops, and every duplicate delivery produced no effect (P1_ops x (deliveries-1) duplicates observed)",
+    "P2": "(a) zero violations: no committed stale-epoch (epoch < raised floor) effect is ordered after the fence by the surface's own ordering evidence; (b) the surface itself refused at least one stale write after the fence (non-vacuous, and refusal is by the sink, not by the writer's own decision); (c) an epoch-2 write after the fence commits (the fence is not a blanket stop). A bare writer that omits the guard is also probed and reported as 'enforcement'; it does not enter pass/fail.",
+    "P3": "(a) the held effect is not present as an effect before release, before and after a crash; (b) the hold is still present after an unclean stop and restart, with restart evidence; (c) after revocation the hold is gone and the revoked op has no effect; (d) a control hold staged the same way and released after the crash produces exactly one effect (non-vacuous)."
+  },
+  "enforcement_classes": {
+    "sink_enforced": "a bare stale write that omits any guard is refused by the surface",
+    "writer_supplied_condition": "the surface refuses a stale write atomically only when the writer submits the condition; a bare write is accepted",
+    "advisory": "the surface never refuses a stale write; writers that honor a lock refuse themselves"
+  },
+  "surfaces": {
+    "postgresql16": {
+      "executed": true,
+      "instance": "fresh cluster from /usr/lib/postgresql/16/bin initdb under target/e6/pg, unix socket in target/e6/sock, listen_addresses='', random port, max_prepared_transactions=8, fsync on, default READ COMMITTED",
+      "P1": {
+        "probe": "CREATE TABLE p1_effects(op_id text PRIMARY KEY, delivery int); each delivery runs INSERT INTO p1_effects VALUES (op, k) ON CONFLICT (op_id) DO NOTHING in autocommit, 8 threads, one connection per thread; success = rowcount 1",
+        "classification_if_pass": "native_unique_constraint"
+      },
+      "P2": {
+        "probe": "fence(issuer PK, floor); effects(op_id PK, issuer, epoch, observed_floor, xid xid8 DEFAULT pg_current_xact_id()). A BEFORE INSERT trigger runs SELECT floor FROM fence WHERE issuer=NEW.issuer FOR SHARE, stores it in NEW.observed_floor and raises E6_STALE if NEW.epoch < floor. Writers issue plain INSERTs with epoch 1. The fence thread runs BEGIN; SELECT ... FOR UPDATE; UPDATE fence SET floor=2; INSERT INTO fence_log(issuer, new_floor, snap) VALUES (1, 2, pg_current_snapshot()); COMMIT.",
+        "violation_definition": "a committed effect with epoch < 2 whose xid is not visible in fence_log.snap (the snapshot taken inside the fence transaction after it acquired the row lock). Visible-in-snapshot implies committed before the fence committed; this is conservative (it also flags commits between the snapshot and the fence commit). Recomputed from dumped rows: visible iff xid < xmin, or xid < xmax and xid not in xip; cross-checked with pg_visible_in_snapshot.",
+        "within_txn_observation": "observed_floor written by the trigger in the same transaction; every committed effect must have epoch >= observed_floor",
+        "bare_writer_probe": "after the race, a plain INSERT with epoch 1 (same connection type as the writers, no client-side guard)",
+        "negative_control": "effects_naive with a trigger that reads the floor without FOR SHARE, fence row issuer 2, deterministic interleaving: A inserts (sees floor 1) and does not commit; B raises the fence and commits with its snapshot; A commits. The violation checker must flag A. Reported as control_violation_detected; not a pass condition.",
+        "classification_if_pass": "sink_enforced_by_trigger_row_lock"
+      },
+      "P3": {
+        "probe": "two transactions each INSERT one row into held_effects and PREPARE TRANSACTION (gids 'revoke' and 'control'). From another session: held_effects row count and pg_prepared_xacts. pg_ctl stop -m immediate; pg_ctl start; re-check, plus pg_postmaster_start_time before/after and server-log recovery lines. Then ROLLBACK PREPARED 'revoke' (revocation) and COMMIT PREPARED 'control'.",
+        "classification_if_pass": "two_phase_prepared_transaction"
+      },
+      "disclosures": [
+        "The trigger fires for every writer, but a table owner or superuser can disable it (ALTER TABLE ... DISABLE TRIGGER, session_replication_role); the probe connects as the cluster superuser and does not test privilege separation.",
+        "A prepared transaction keeps its locks across the restart; a hold that touches the fenced table would block fence raises until resolved. P3 uses a separate table.",
+        "ON CONFLICT DO NOTHING suppresses the duplicate effect but does not return the first delivery's result; a caller that needs the original result must read it."
+      ]
+    },
+    "etcd_v3_5_17": {
+      "executed": true,
+      "instance": "single-member etcd from docker image quay.io/coreos/etcd:v3.5.17 (digest recorded), container name prefix cc-e6-, client port bound to 127.0.0.1 on a random port, --cpus 2, data dir inside the container's writable layer, removed at the end. Access via the v3 JSON gRPC gateway over HTTP.",
+      "P1": {
+        "probe": "txn compare CREATE(key)==0, success put key; same queue and threads as Postgres P1; success = txn succeeded; final range over the prefix, each key must have version 1",
+        "classification_if_pass": "native_create_revision_compare"
+      },
+      "P2": {
+        "probe": "fence key fence/1 holds the floor zero-padded to 10 digits. Writer txn: compare VALUE(fence/1) LESS pad(epoch+1) (byte order equals numeric order); success: put effect key, range fence/1; failure: range fence/1. Fence raise: txn compare VALUE(fence/1) LESS pad(2), success put fence/1 = pad(2); its header revision is the fence revision.",
+        "violation_definition": "a committed stale effect key whose mod_revision is greater than the fence revision (etcd orders all writes by one revision counter)",
+        "within_txn_observation": "the fence value returned by the range inside each txn; succeeded must equal observed_floor <= epoch",
+        "bare_writer_probe": "after the race, a plain put of a stale effect key without the compare",
+        "classification_if_pass": "server_atomic_compare"
+      },
+      "P3": {
+        "probe": "grant two leases (TTL 300 s); put staged/revoke and staged/control attached to them. docker kill -s KILL, docker start, wait for /health; re-check staged keys and lease TTLs. Revoke the first lease. Promote each with txn compare LEASE(staged/x)==its lease, success put effects/x and delete staged/x. Revoked promote must fail and leave no effect; control promote must succeed.",
+        "classification_if_pass": "lease_staged_key_not_two_phase",
+        "precision": "This is a key bound to a lease, which the server deletes atomically when the lease is revoked or expires. It is not a two-phase hold of an external effect: the staged key is visible to readers, and the effect exists only if a consumer acts on the promoted key."
+      },
+      "disclosures": [
+        "Single member, so no replication or leader change is tested.",
+        "The fence compare is supplied by the writer; etcd has no server-side trigger, so a writer that omits it is not fenced (measured by the bare_writer_probe). Key-prefix RBAC can restrict who writes, not whether they compare.",
+        "On restart etcd refreshes lease TTLs; a lease that is not kept alive expires and silently cancels the staged key (a bounded hold, unlike a prepared transaction)."
+      ]
+    },
+    "posix_fs": {
+      "executed": true,
+      "instance": "local filesystem under target/e6/fs (type recorded via statfs), Linux kernel recorded",
+      "P1": {
+        "probe": "os.open(path(op), O_CREAT|O_EXCL|O_WRONLY); same queue and threads; success = open returned, duplicate = FileExistsError",
+        "classification_if_pass": "native_exclusive_create"
+      },
+      "P2": {
+        "probe": "cooperative protocol: a fence file holds the floor. Writer: open the fence file, flock LOCK_SH, read floor, if epoch >= floor create the effect file with O_CREAT|O_EXCL, unlock. Fence thread: flock LOCK_EX, rewrite the floor to 2, fsync, list the effects directory while still holding LOCK_EX, unlock.",
+        "violation_definition": "a stale race effect file absent from the listing taken under LOCK_EX",
+        "refusal_by_sink": "the filesystem has no input for an epoch and never refuses a create on fence grounds; refusals are the writers' own decisions and are counted as self_refused",
+        "bare_writer_probe": "while the test holds LOCK_EX with floor 2, a writer that ignores the lock creates a stale effect file",
+        "classification": "advisory (cooperative); expected to fail condition (b) by construction, which is the point of the probe"
+      },
+      "P3": {
+        "decision": "not_applicable",
+        "reason": "The filesystem has no state it recognizes as an uncommitted effect. A staged file is an ordinary visible file; that it is 'pending' is a naming convention of the writer and reader, and nothing binds it to an authority object that revocation acts on (contrast pg_prepared_xacts, or an etcd key bound to a lease). Staged-then-rename gives an atomic commit-versus-unlink race via rename(2), which a cooperative shim can use, but that is a protocol built on the filesystem, in the same way a hold can be built on any store, so E6 does not count it as a filesystem primitive."
+      },
+      "disclosures": [
+        "flock is advisory on Linux; on NFS it is emulated with byte-range locks. Only a local filesystem is tested.",
+        "O_EXCL dedup is permanent for the life of the file; there is no retention window."
+      ]
+    },
+    "aws_s3": {
+      "executed": false,
+      "reason": "No S3 or S3-compatible service is executable here: minio images could not be pulled from Docker Hub or quay.io. No emulator is run, and nothing here is called S3 evidence.",
+      "documentation_fetched_utc": "2026-11-12T19:35Z",
+      "documentation_fetch_method": "curl of the four URLs below; text extracted from HTML; each quote is a verbatim substring of the extracted text (announcement bodies are from the page's embedded postBody field)",
+      "sources": [
+        {
+          "url": "https://aws.amazon.com/about-aws/whats-new/2024/08/amazon-s3-conditional-writes/",
+          "html_sha256": "cfd06da4c73768e952e3f772a2b22bcb3f8dd85ed1ea77707b83e9f076d5b638",
+          "postDateTime": "2024-08-20T10:00:00-07:00",
+          "headline": "Amazon S3 now supports conditional writes",
+          "quote": "To use conditional writes, you can add the HTTP if-none-match conditional header along with PutObject and CompleteMultipartUpload API requests."
+        },
+        {
+          "url": "https://aws.amazon.com/about-aws/whats-new/2024/11/amazon-s3-functionality-conditional-writes/",
+          "html_sha256": "0107e04601d2d12d275e3434e97d7f1668df410814776013a4070804089f8bde",
+          "postDateTime": "2024-11-25T16:46:00-05:00",
+          "headline": "Amazon S3 adds new functionality for conditional writes",
+          "quote": "S3 then evaluates if the object's ETag matches the value provided in the API request before committing the write and prevents your clients from overwriting the object until the condition is satisfied."
+        },
+        {
+          "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html",
+          "html_sha256": "5cd578af7f00b4dd10376105bbf66e77c15c8a6a752f87a66ab218610414fc62",
+          "quotes": [
+            "The If-None-Match header prevents overwrites of existing data by validating that there's not an object with the same key name already in your bucket.",
+            "If the ETag doesn't match, the write operation fails with a 412 Precondition Failed response.",
+            "Bucket owners can use bucket policies to enforce conditional writes for uploaded objects."
+          ]
+        },
+        {
+          "url": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_AbortMultipartUpload.html",
+          "html_sha256": "280411281f1e877b1b1b583f84d3fa89df7c34e7d07a611f1c3ef8dc964de65f",
+          "quotes": [
+            "This operation aborts a multipart upload.",
+            "After a multipart upload is aborted, no additional parts can be uploaded using that upload ID."
+          ]
+        }
+      ],
+      "P1": {
+        "outcome": "documented_not_executed",
+        "mechanism": "If-None-Match: * on PutObject / CompleteMultipartUpload (create-once by key; 412 if the key exists)"
+      },
+      "P2": {
+        "outcome": "documented_not_executed",
+        "mechanism": "If-Match: <ETag> on the same object",
+        "analysis_not_documentation": "The precondition is per object. A fence floor kept in a separate object cannot be checked atomically with writing the effect object, so an epoch fence needs the floor and the effect in the same object (or a sink in front of S3). The If-Match header must be supplied by the writer; bucket policies can require the conditional headers to be present but do not supply a floor."
+      },
+      "P3": {
+        "outcome": "documented_not_executed",
+        "mechanism": "CreateMultipartUpload ... AbortMultipartUpload before CompleteMultipartUpload",
+        "analysis_not_documentation": "Abort cancels an upload in progress. Crash durability of an in-progress multipart upload was not tested; the hold covers object creation only."
+      }
+    },
+    "kubernetes_api": {
+      "executed": false,
+      "reason": "No kind, kubectl or API server is available here.",
+      "note": "The API server's metadata.resourceVersion optimistic concurrency is implemented over etcd's revision compare-and-swap. E6 tests etcd directly, not the API server, so no Kubernetes primitive is reported as executed.",
+      "P1": {
+        "outcome": "documented_not_executed"
+      },
+      "P2": {
+        "outcome": "documented_not_executed"
+      },
+      "P3": {
+        "outcome": "documented_not_executed"
+      }
+    }
+  },
+  "outputs": {
+    "run_directory": "target/runs/e6-<date -u +%Y%m%dT%H%MZ>/",
+    "files": [
+      "results.json",
+      "probe.log",
+      "postgres.log",
+      "SHA256SUMS"
+    ],
+    "results_schema": "results.json: plan_sha256, script_sha256, host, started_utc, finished_utc, surfaces.<surface>.{versions...}.primitives.<P1|P2|P3>.{outcome, classification, checks, evidence}"
+  },
+  "validator": "scripts/validate_fenceability_v6.py <run>: checks SHA256SUMS, plan and script hashes, schema and outcome vocabulary, and recomputes every check and outcome from the recorded evidence. It does not require any probe to pass.",
+  "run_policy": "Development runs while writing the script are named target/runs/e6-dev-<stamp>/ and disclosed in the report. If a development run shows this plan must change, the change is appended to 'amendments' with date -u and reason before the reported run.",
+  "amendments": [
+    {
+      "recorded_utc": "2026-11-12T19:48Z",
+      "recorded_utc_source": "date -u",
+      "after_run": "target/runs/e6-dev-20261112T1946Z (development run of all probes; disclosed, not the reported run)",
+      "observed": "PostgreSQL P2: the fence transaction issued FOR UPDATE at t=6.098 s and committed at 6.772 s; 438 stale-epoch effects committed while it waited and only 2 stale writes were refused, because new FOR SHARE lockers join an existing share lock while a FOR UPDATE waits, so a continuing stream of stale writers starves the fence raise. Safety held (0 violations; pg_visible_in_snapshot cross-check 0). The flock fence showed the same pattern (417 commits while LOCK_EX waited). The etcd fence txn took 31 ms. Negative control flagged 1 violation as designed.",
+      "changes": [
+        "Planned probes and pass conditions are unchanged; the planned PostgreSQL P2 probe remains the reported P2 outcome.",
+        "Fence evidence adds t_locked (when the raise obtained its lock) for PostgreSQL and the filesystem. Derived values add fence_lock_wait_seconds and stale_commits_acked_while_fence_waited (client-side timing: a latency measure, not ordering evidence).",
+        "PostgreSQL P2 adds a reported variant fair_fence_variant: same race, same pass conditions, separate table effects_fair (same locking trigger) and fence row issuer 3, but the raise first runs LOCK TABLE fence IN EXCLUSIVE MODE. That conflicts with the ROW SHARE table lock taken by SELECT ... FOR SHARE, and the lock manager queues new conflicting requests behind a waiter, so writers arriving after the raise wait for it. It blocks writers of every issuer for the duration of the raise. Reported under P2.derived.fair_fence_variant; it does not replace the planned outcome."
+      ]
+    },
+    {
+      "recorded_utc": "2026-11-12T19:53Z",
+      "recorded_utc_source": "date -u",
+      "after_run": "target/runs/e6-dev-20261112T1950Z (second development run, with amendment 1; disclosed, not the reported run)",
+      "observed": "Planned PostgreSQL P2: the fence obtained its row lock 0.7 ms after the last stale writer finished (lock wait 0.452 s); all 480 stale writes committed before the fence and 0 were refused, so condition (b) failed, whereas in the first development run it passed with 2 refusals: the planned outcome is timing-dependent. Safety held (0 violations, cross-check 0). fair_fence_variant: lock wait 15 ms, 427 refused, 0 violations. flock: 438 stale commits during a 0.19 s LOCK_EX wait.",
+      "changes": [
+        "No pass condition changes.",
+        "P1 evidence records each delivery's op, whether it created the effect, and client-side start/end times; derived adds duplicates_in_flight_with_the_effecting_delivery (duplicates whose interval overlapped the delivery that created the effect), so concurrency of duplicates is measured rather than assumed. created_count is recomputed from this log."
+      ]
+    }
+  ]
+}

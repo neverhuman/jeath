@@ -1,0 +1,1328 @@
+2026-11-12 19:53:34.125 UTC [2546312] LOG:  starting PostgreSQL 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit
+2026-11-12 19:53:34.611 UTC [2546312] LOG:  listening on Unix socket "/home/ubuntu/jeath/.agent/worktrees/cc-iina-tier1/target/e6/sock/.s.PGSQL.49859"
+2026-11-12 19:53:35.180 UTC [2547092] LOG:  database system was shut down at 2026-11-12 19:53:21 UTC
+2026-11-12 19:53:35.532 UTC [2546312] LOG:  database system is ready to accept connections
+2026-11-12 19:53:50.123 UTC [2553047] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:50.123 UTC [2553047] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:50.123 UTC [2553047] STATEMENT:  INSERT INTO effects(op_id, issuer, epoch) VALUES ('bare-1', 1, 1) RETURNING observed_floor
+2026-11-12 19:53:51.177 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.177 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.177 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-006', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.177 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.177 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.177 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-006', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.177 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.177 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.177 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-006', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.177 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.177 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.177 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-006', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.177 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.177 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.177 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-006', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.177 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.177 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.177 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-006', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.177 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.177 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.177 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-006', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.178 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.178 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.178 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-006', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.178 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.178 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.178 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-007', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.178 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.178 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.178 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-008', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.178 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.178 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.178 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-007', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.178 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.178 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.178 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-007', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.178 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.178 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.178 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-007', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.179 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.179 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.179 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-007', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.179 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.179 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.179 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-009', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.179 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.179 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.179 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-007', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.179 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.179 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.179 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-010', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.179 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.179 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.179 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-008', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.179 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.179 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.179 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-007', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.179 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.179 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.179 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-008', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.179 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.179 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.179 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-007', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.180 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.180 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.180 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-011', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.180 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.180 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.180 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-009', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.180 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.180 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.180 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-009', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.180 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.180 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.180 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-008', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.180 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.180 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.180 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-012', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.180 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.180 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.180 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-010', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.181 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.181 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.181 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-009', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.181 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.181 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.181 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-008', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.181 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.181 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.181 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-008', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.181 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.181 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.181 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-010', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.181 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.181 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.181 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-008', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.181 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.181 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.181 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-008', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.181 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.181 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.181 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-009', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.181 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.181 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.181 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-011', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.181 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.181 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.181 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-011', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.181 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.181 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.181 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-012', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.181 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.181 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.181 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-010', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.181 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.181 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.181 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-009', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.181 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.181 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.181 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-009', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.181 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.181 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.181 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-009', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.182 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.182 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.182 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-013', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.182 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.182 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.182 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-012', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.182 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.182 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.182 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-013', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.182 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.182 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.182 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-010', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.182 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.182 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.182 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-014', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.182 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.182 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.182 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-010', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.182 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.182 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.182 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-014', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.182 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.182 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.182 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-013', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.182 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.182 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.182 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-010', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.182 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.182 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.182 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-011', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.182 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.182 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.182 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-011', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.182 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.182 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.182 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-011', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.182 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.182 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.182 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-011', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.182 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.182 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.182 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-014', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.183 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.183 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.183 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-010', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.183 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.183 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.183 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-012', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.183 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.183 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.183 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-012', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.183 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.183 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.183 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-015', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.183 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.183 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.183 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-015', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.183 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.183 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.183 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-012', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.183 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.183 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.183 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-011', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.183 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.183 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.183 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-013', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.183 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.183 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.183 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-016', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.183 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.183 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.183 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-016', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.183 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.183 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.183 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-013', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.183 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.183 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.183 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-012', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.183 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.183 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.183 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-015', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.184 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.184 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.184 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-013', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.184 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.184 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.184 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-017', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.184 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.184 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.184 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-014', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.184 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.184 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.184 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-012', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.184 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.184 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.184 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-013', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.184 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.184 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.184 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-014', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.184 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.184 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.184 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-016', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.184 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.184 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.184 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-017', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.184 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.184 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.184 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-013', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.184 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.184 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.184 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-018', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.184 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.184 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.184 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-017', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.184 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.184 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.184 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-015', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.184 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.184 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.184 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-014', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.184 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.184 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.184 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-014', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.185 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.185 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.185 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-015', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.185 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.185 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.185 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-015', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.185 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.185 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.185 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-019', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.185 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.185 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.185 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-020', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.185 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.185 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.185 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-015', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.185 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.185 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.185 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-014', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.185 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.185 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.185 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-016', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.185 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.185 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.185 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-018', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.185 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.185 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.185 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-015', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.185 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.185 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.185 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-017', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.185 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.185 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.185 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-018', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.185 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.185 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.185 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-016', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.186 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.186 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.186 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-016', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.186 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.186 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.186 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-016', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.186 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.186 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.186 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-021', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.186 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.186 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.186 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-018', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.186 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.186 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.186 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-017', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.186 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.186 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.186 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-017', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.186 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.186 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.186 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-019', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.186 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.186 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.186 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-018', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.186 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.186 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.186 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-016', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.186 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.186 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.186 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-019', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.187 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.187 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.187 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-022', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.187 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.187 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.187 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-019', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.187 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.187 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.187 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-017', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.187 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.187 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.187 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-018', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.187 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.187 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.187 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-017', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.187 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.187 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.187 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-023', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.187 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.187 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.187 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-019', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.187 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.187 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.187 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-020', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.187 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.187 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.187 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-018', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.187 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.187 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.187 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-018', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.187 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.187 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.187 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-024', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.187 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.187 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.187 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-020', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.187 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.187 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.187 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-019', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.188 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.188 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.188 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-020', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.188 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.188 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.188 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-019', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.188 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.188 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.188 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-025', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.188 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.188 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.188 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-021', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.188 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.188 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.188 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-026', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.188 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.188 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.188 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-021', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.188 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.188 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.188 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-019', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.188 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.188 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.188 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-020', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.188 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.188 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.188 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-021', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.188 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.188 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.188 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-020', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.189 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.189 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.189 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-022', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.189 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.189 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.189 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-027', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.189 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.189 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.189 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-021', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.189 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.189 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.189 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-020', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.189 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.189 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.189 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-022', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.189 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.189 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.189 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-023', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.189 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.189 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.189 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-020', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.189 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.189 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.189 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-022', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.189 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.189 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.189 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-021', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.189 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.189 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.189 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-023', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.189 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.189 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.189 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-024', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.190 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.190 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.190 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-022', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.190 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.190 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.190 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-028', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.190 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.190 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.190 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-021', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.190 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.190 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.190 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-029', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.190 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.190 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.190 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-023', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.190 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.190 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.190 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-022', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.190 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.190 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.190 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-022', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.190 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.190 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.190 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-025', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.190 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.190 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.190 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-024', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.191 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.191 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.191 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-024', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.191 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.191 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.191 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-021', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.191 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.191 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.191 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-023', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.192 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.192 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.192 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-030', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.192 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.192 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.192 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-023', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.192 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.192 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.192 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-031', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.192 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.192 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.192 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-025', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.192 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.192 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.192 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-023', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.193 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.193 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.193 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-024', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.193 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.193 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.193 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-032', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.193 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.193 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.193 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-024', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.193 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.193 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.193 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-026', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.193 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.193 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.193 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-024', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.193 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.193 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.193 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-027', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.193 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.193 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.193 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-022', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.193 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.193 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.193 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-025', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.193 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.193 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.193 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-033', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.193 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.193 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.193 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-026', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.194 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.194 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.194 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-025', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.194 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.194 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.194 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-028', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.194 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.194 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.194 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-025', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.194 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.194 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.194 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-026', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.194 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.194 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.194 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-025', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.194 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.194 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.194 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-034', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.194 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.194 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.194 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-023', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.194 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.194 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.194 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-026', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.194 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.194 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.194 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-027', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.194 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.194 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.194 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-029', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.194 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.194 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.194 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-026', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.194 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.194 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.194 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-027', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.195 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.195 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.195 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-027', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.195 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.195 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.195 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-026', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.195 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.195 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.195 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-028', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.195 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.195 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.195 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-024', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.195 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.195 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.195 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-028', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.195 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.195 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.195 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-035', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.195 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.195 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.195 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-029', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.195 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.195 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.195 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-028', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.195 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.195 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.195 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-030', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.195 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.195 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.195 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-030', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.195 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.195 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.195 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-029', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.195 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.195 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.195 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-027', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.195 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.195 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.195 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-031', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.195 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.195 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.195 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-029', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.196 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.196 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.196 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-030', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.196 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.196 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.196 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-036', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.196 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.196 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.196 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-025', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.196 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.196 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.196 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-027', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.196 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.196 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.196 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-032', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.196 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.196 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.196 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-031', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.196 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.196 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.196 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-030', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.196 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.196 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.196 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-037', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.196 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.196 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.196 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-032', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.196 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.196 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.196 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-033', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.196 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.196 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.196 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-031', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.196 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.196 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.196 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-031', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.197 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.197 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.197 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-028', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.197 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.197 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.197 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-028', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.197 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.197 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.197 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-038', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.197 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.197 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.197 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-032', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.197 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.197 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.197 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-034', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.197 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.197 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.197 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-029', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.197 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.197 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.197 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-033', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.197 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.197 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.197 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-039', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.197 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.197 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.197 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-026', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.197 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.197 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.197 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-033', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.197 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.197 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.197 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-032', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.197 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.197 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.197 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-029', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.197 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.197 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.197 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-035', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.198 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.198 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.198 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-036', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.198 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.198 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.198 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-033', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.198 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.198 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.198 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-027', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.198 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.198 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.198 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-030', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.198 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.198 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.198 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-040', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.198 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.198 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.198 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-034', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.198 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.198 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.198 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-030', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.198 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.198 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.198 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-034', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.198 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.198 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.198 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-035', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.198 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.198 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.198 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-037', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.198 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.198 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.198 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-028', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.198 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.198 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.198 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-036', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.198 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.198 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.198 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-034', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.199 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.199 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.199 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-037', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.199 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.199 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.199 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-031', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.200 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.200 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.200 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-029', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.200 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.200 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.200 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-041', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.200 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.200 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.200 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-038', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.200 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.200 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.200 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-038', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.200 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.200 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.200 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-032', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.200 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.200 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.200 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-039', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.201 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.201 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.201 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-030', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.201 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.201 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.201 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-035', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.201 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.201 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.201 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-035', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.201 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.201 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.201 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-033', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.201 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.201 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.201 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-039', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.201 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.201 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.201 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-040', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.201 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.201 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.201 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-036', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.201 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.201 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.201 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-036', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.201 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.201 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.201 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-042', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.201 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.201 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.201 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-040', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.201 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.201 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.201 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-031', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.201 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.201 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.201 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-031', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.201 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.201 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.201 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-041', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.201 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.201 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.201 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-037', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.202 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.202 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.202 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-041', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.202 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.202 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.202 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-037', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.202 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.202 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.202 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-043', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.202 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.202 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.202 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-042', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.202 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.202 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.202 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-042', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.202 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.202 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.202 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-034', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.202 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.202 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.202 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-032', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.202 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.202 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.202 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-038', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.202 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.202 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.202 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-038', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.202 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.202 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.202 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-032', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.202 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.202 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.202 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-043', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.202 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.202 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.202 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-039', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.203 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.203 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.203 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-044', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.203 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.203 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.203 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-043', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.203 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.203 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.203 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-035', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.203 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.203 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.203 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-039', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.203 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.203 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.203 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-040', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.203 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.203 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.203 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-033', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.203 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.203 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.203 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-036', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.203 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.203 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.203 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-033', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.203 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.203 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.203 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-041', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.203 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.203 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.203 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-044', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.203 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.203 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.203 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-044', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.203 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.203 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.203 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-045', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.204 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.204 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.204 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-037', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.204 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.204 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.204 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-034', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.204 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.204 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.204 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-042', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.204 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.204 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.204 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-045', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.204 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.204 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.204 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-045', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.204 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.204 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.204 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-034', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.204 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.204 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.204 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-035', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.204 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.204 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.204 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-046', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.204 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.204 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.204 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-046', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.204 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.204 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.204 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-038', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.204 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.204 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.204 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-035', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.204 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.204 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.204 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-036', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.204 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.204 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.204 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-043', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.205 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.205 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.205 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-039', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.205 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.205 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.205 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-040', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.205 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.205 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.205 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-047', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.205 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.205 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.205 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-037', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.205 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.205 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.205 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-040', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.205 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.205 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.205 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-047', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.205 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.205 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.205 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-041', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.205 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.205 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.205 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-048', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.205 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.205 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.205 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-048', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.205 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.205 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.205 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-041', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.205 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.205 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.205 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-044', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.206 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.206 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.206 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-042', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.206 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.206 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.206 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-038', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.206 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.206 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.206 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-036', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.206 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.206 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.206 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-049', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.206 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.206 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.206 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-043', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.206 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.206 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.206 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-042', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.206 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.206 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.206 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-050', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.207 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.207 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.207 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-039', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.207 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.207 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.207 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-051', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.207 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.207 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.207 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-045', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.207 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.207 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.207 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-037', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.207 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.207 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.207 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-040', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.208 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.208 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.208 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-046', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.208 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.208 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.208 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-052', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.208 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.208 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.208 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-049', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.208 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.208 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.208 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-038', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.208 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.208 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.208 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-044', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.208 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.208 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.208 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-053', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.209 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.209 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.209 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-047', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.209 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.209 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.209 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-050', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.209 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.209 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.209 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-043', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.209 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.209 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.209 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-045', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.209 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.209 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.209 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-054', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.209 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.209 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.209 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-041', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.209 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.209 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.209 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-046', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.209 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.209 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.209 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-048', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.210 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.210 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.210 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-039', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.210 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.210 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.210 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-042', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.210 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.210 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.210 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-046', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.210 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.210 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.210 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-055', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.210 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.210 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.210 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-044', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.210 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.210 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.210 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-047', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.210 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.210 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.210 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-051', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.210 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.210 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.210 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-040', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.210 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.210 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.210 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-048', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.211 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.211 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.211 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-049', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.211 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.211 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.211 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-045', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.211 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.211 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.211 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-050', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.211 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.211 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.211 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-052', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.211 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.211 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.211 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-043', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.211 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.211 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.211 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-047', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.211 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.211 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.211 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-056', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.211 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.211 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.211 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-049', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.211 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.211 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.211 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-041', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.211 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.211 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.211 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-051', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.211 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.211 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.211 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-052', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.212 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.212 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.212 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-050', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.212 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.212 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.212 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-042', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.212 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.212 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.212 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-053', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.212 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.212 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.212 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-051', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.212 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.212 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.212 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-048', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.212 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.212 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.212 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-046', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.212 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.212 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.212 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-044', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.212 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.212 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.212 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-057', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.212 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.212 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.212 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-053', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.212 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.212 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.212 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-052', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.212 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.212 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.212 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-058', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.212 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.212 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.212 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-054', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.212 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.212 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.212 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-043', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.212 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.212 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.212 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-054', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.212 UTC [2553265] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.212 UTC [2553265] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.212 UTC [2553265] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-4-059', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.213 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.213 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.213 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-053', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.213 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.213 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.213 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-045', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.213 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.213 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.213 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-049', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.213 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.213 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.213 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-050', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.213 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.213 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.213 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-054', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.213 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.213 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.213 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-046', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.213 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.213 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.213 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-044', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.213 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.213 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.213 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-047', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.213 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.213 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.213 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-055', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.214 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.214 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.214 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-055', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.214 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.214 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.214 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-055', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.214 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.214 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.214 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-047', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.214 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.214 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.214 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-056', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.214 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.214 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.214 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-048', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.214 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.214 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.214 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-056', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.214 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.214 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.214 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-056', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.214 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.214 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.214 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-057', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.214 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.214 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.214 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-048', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.214 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.214 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.214 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-049', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.214 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.214 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.214 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-057', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.215 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.215 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.215 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-045', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.215 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.215 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.215 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-057', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.215 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.215 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.215 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-051', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.215 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.215 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.215 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-058', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.215 UTC [2553268] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.215 UTC [2553268] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.215 UTC [2553268] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-5-059', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.215 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.215 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.215 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-049', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.216 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.216 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.216 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-058', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.216 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.216 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.216 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-050', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.216 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.216 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.216 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-058', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.216 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.216 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.216 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-052', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.216 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.216 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.216 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-050', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.216 UTC [2553262] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.216 UTC [2553262] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.216 UTC [2553262] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-3-059', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.216 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.216 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.216 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-046', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.216 UTC [2553272] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.216 UTC [2553272] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.216 UTC [2553272] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-6-059', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.216 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.216 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.216 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-051', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.216 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.216 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.216 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-053', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.217 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.217 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.217 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-052', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.217 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.217 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.217 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-053', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.217 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.217 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.217 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-047', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.217 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.217 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.217 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-051', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.217 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.217 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.217 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-054', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.218 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.218 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.218 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-054', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.218 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.218 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.218 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-048', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.218 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.218 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.218 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-052', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.218 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.218 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.218 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-055', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.218 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.218 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.218 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-053', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.218 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.218 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.218 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-049', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.218 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.218 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.218 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-056', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.218 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.218 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.218 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-054', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.218 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.218 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.218 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-050', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.218 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.218 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.218 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-055', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.219 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.219 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.219 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-055', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.219 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.219 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.219 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-057', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.219 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.219 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.219 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-058', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.219 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.219 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.219 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-056', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.219 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.219 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.219 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-056', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.219 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.219 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.219 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-051', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.219 UTC [2553255] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.219 UTC [2553255] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.219 UTC [2553255] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-0-059', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.219 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.219 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.219 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-057', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.220 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.220 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.220 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-057', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.220 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.220 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.220 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-058', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.220 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.220 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.220 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-052', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.220 UTC [2553258] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.220 UTC [2553258] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.220 UTC [2553258] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-1-059', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.220 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.220 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.220 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-058', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.220 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.220 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.220 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-053', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.221 UTC [2553260] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.221 UTC [2553260] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.221 UTC [2553260] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-2-059', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.221 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.221 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.221 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-054', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.221 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.221 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.221 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-055', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.222 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.222 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.222 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-056', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.222 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.222 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.222 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-057', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.222 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.222 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.222 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-058', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.222 UTC [2553273] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.222 UTC [2553273] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.222 UTC [2553273] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('race-7-059', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.314 UTC [2553989] ERROR:  E6_STALE epoch 1 < floor 2
+2026-11-12 19:53:51.314 UTC [2553989] CONTEXT:  PL/pgSQL function fence_guard() line 7 at RAISE
+2026-11-12 19:53:51.314 UTC [2553989] STATEMENT:  INSERT INTO effects_fair(op_id, issuer, epoch) VALUES ('bare-1', 3, 1) RETURNING observed_floor
+2026-11-12 19:53:51.567 UTC [2546312] LOG:  received immediate shutdown request
+2026-11-12 19:53:51.735 UTC [2546312] LOG:  database system is shut down
+2026-11-12 19:53:52.058 UTC [2554343] LOG:  starting PostgreSQL 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit
+2026-11-12 19:53:52.223 UTC [2554343] LOG:  listening on Unix socket "/home/ubuntu/jeath/.agent/worktrees/cc-iina-tier1/target/e6/sock/.s.PGSQL.49859"
+2026-11-12 19:53:52.901 UTC [2554814] LOG:  database system was interrupted; last known up at 2026-11-12 19:53:35 UTC
+2026-11-12 19:53:58.039 UTC [2554814] LOG:  database system was not properly shut down; automatic recovery in progress
+2026-11-12 19:53:58.063 UTC [2554814] LOG:  redo starts at 0/14EF6C8
+2026-11-12 19:53:58.106 UTC [2554814] LOG:  invalid record length at 0/157B880: expected at least 24, got 0
+2026-11-12 19:53:58.107 UTC [2554814] LOG:  redo done at 0/157B788 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.04 s
+2026-11-12 19:53:58.193 UTC [2554814] LOG:  recovering prepared transaction 1823 from shared memory
+2026-11-12 19:53:58.194 UTC [2554814] LOG:  recovering prepared transaction 1824 from shared memory
+2026-11-12 19:53:58.207 UTC [2554808] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-11-12 19:53:58.435 UTC [2554808] LOG:  2 two-phase state files were written for long-running prepared transactions
+2026-11-12 19:53:58.455 UTC [2554808] LOG:  checkpoint complete: wrote 108 buffers (2.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.055 s, sync=0.064 s, total=0.260 s; sync files=71, longest=0.017 s, average=0.001 s; distance=560 kB, estimate=560 kB; lsn=0/157B880, redo lsn=0/157B880
+2026-11-12 19:53:58.487 UTC [2554343] LOG:  database system is ready to accept connections
+2026-11-12 19:53:58.648 UTC [2554343] LOG:  received fast shutdown request
+2026-11-12 19:53:58.682 UTC [2554343] LOG:  aborting any active transactions
+2026-11-12 19:53:58.688 UTC [2554343] LOG:  background worker "logical replication launcher" (PID 2557518) exited with exit code 1
+2026-11-12 19:53:58.698 UTC [2554808] LOG:  shutting down
+2026-11-12 19:53:58.729 UTC [2554808] LOG:  checkpoint starting: shutdown immediate
+2026-11-12 19:53:59.051 UTC [2554808] LOG:  checkpoint complete: wrote 10 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.058 s, sync=0.046 s, total=0.353 s; sync files=5, longest=0.011 s, average=0.010 s; distance=0 kB, estimate=504 kB; lsn=0/157B958, redo lsn=0/157B958
+2026-11-12 19:53:59.066 UTC [2554343] LOG:  database system is shut down

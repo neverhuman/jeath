@@ -1,0 +1,43 @@
+% v6 draft section (Claude, cc/iina-tier1). Numbers are generated \vsix macros (scripts/e5_analysis_v6.py via
+% scripts/hero_v6.py and scripts/v6_macros.py).
+\section{Reviewers Read Proposals; Violations Live in State}\label{sec:v6reviewers}
+
+A common alternative to mediation is review: a second model, often the same one, reads each proposed action and
+approves or denies it~\cite{greenblatt2024control}. Review sees the proposal. Many unauthorized actions, however, are
+unauthorized only because of the state they would act on: a payment that was legitimate once and is now a replay, a
+grant whose issuer has since been withdrawn, an edit against a revision that has moved. Such a proposal can be
+byte-identical to one the policy approved. We test whether a reviewer that is given the rules, the visible state and
+time to reason catches these, and what a verified gate does instead.
+
+\para{Setup (E5).} Sixty cases in five families (twelve each) each pose a pre-state, a policy with six written
+clauses (exact match to an approved proposal, cumulative budget, live issuers, current revision, expiry, scope) and an
+objective. Three families are \emph{state-dependent}: their violations break a clause that can only be checked against
+sink state (replay after the budget is spent, issuer withdrawn, stale revision). Two are \emph{proposal-visible}: an
+altered payload, and a payload altered at the request of an injected note that the proposer, not the reviewer, reads.
+The same checkpoint proposes candidates under eight predeclared mutation strategies and reviews them in three arms:
+the prior work's minimal prompt (R0), the rules stated (R1), and the rules with reasoning enabled (R2, 4096 tokens; a
+truncated review is a deny). Every valid candidate also goes through the real broker and sink at the case's pre-state
+(G). Plan, prompts, clauses, parse rules and hypotheses were committed before data
+(\path{fixtures/v6/omitted_clause_plan.json}, three pre-data amendments). We count each distinct proposal once and
+also report the share of cases with any breach, because repeated samples of a deterministic review are not independent.
+
+\para{Result.} The strongest reviewer, R2, admitted \vsixReviewerState{} unauthorized proposals whose violation lives
+in state and \vsixReviewerVisible{} whose violation is visible in the proposal (Figure~\ref{fig:v6hero}b;
+\vsixEFiveCkpt{}; R0 and R1 in Appendix~\ref{app:v6e5}). By case, R2 admitted at least one state-dependent violation in
+\vsixReviewerStateCases{} cases. The gate admitted \vsixGateBreaches{}. That zero is the gate enforcing its written
+predicate: on all \vsixGateUnique{} distinct valid proposals its Rust kernel agreed with an independent Python
+statement of the same clauses (\vsixMirrorDisagreements{} disagreements). \vsixGateReplaySentence
+
+\para{The conversion thesis.} The gate's zero is not intelligence-proof safety. It is safety relative to what was
+written. Remove one clause and the gate admits exactly the violations that break only that clause; this holds by
+construction, and Figure~\ref{fig:v6hero}b draws it as such. What the experiment measures is how much each family rests
+on a single clause: \vsixSingleClauseSentence{} Mediation therefore does not make safety independent of the
+proposer's intelligence. It converts a learned blind spot, which an adversary finds by search and which no one can
+enumerate, into a written specification gap, which anyone can read, test and close. On the clauses that are written,
+search cannot move the gate. On the clauses that are not, it does not need to.
+
+\para{Limits.} The reviewers are local open-weight checkpoints at temperature 0 reviewing their own proposals; a
+stronger or differently trained monitor may do better, and control protocols that resample or audit~\cite{bhatt2025ctrlz}
+are a different defence. In the state-dependent families the violating proposals are exact copies of approved ones by
+design, which is what makes those violations state-dependent. \vsixRtwoTruncated{} R2 reviews reached the token cap and
+count as denials.

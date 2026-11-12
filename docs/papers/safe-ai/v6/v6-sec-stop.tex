@@ -1,0 +1,48 @@
+% v6 draft section (Claude, cc/iina-tier1). Every number is a generated \vsix macro (scripts/hero_v6.py,
+% scripts/v6_macros.py); none is typed here. To be \input during the post-PR-6 integration pass.
+\section{Stopping a Model Is Not Stopping Its Effects}\label{sec:v6stop}
+
+An operator who decides to stop an agent can act at three places. \emph{Halting inference} ends the stream of new
+proposals. \emph{Revoking admission} at the broker refuses permits for proposals that arrive later. \emph{Fencing the
+sink} raises the epoch floor at the component that writes durable state, so that any operation carrying an older epoch
+is refused at commit, including operations that were admitted, dispatched and are already running. The first two are
+what most deployed stop controls do~\cite{controlroom}. Only the third reaches work that is already in flight, and it
+is the fencing-token argument of distributed locking~\cite{kleppmann2016} applied to agent authority.
+
+\para{Setup (E4).} We run the real broker and sink processes (Rust, SQLite, JSON-lines RPC; Section~\ref{sec:model})
+under a synthetic agent that emits \(\lambda = 2\) tool calls per second to \(C \in \{4, 32\}\) concurrent executors
+whose latencies are exponential with mean \(w \in \{0.5, 5, 30\}\)\,s. Each call is a pre-approved, authorized one-unit
+effect; nothing in the workload is adversarial. After a 20\,s warm-up the operator decides to stop, and the stop takes
+effect \(L \in \{0, 1, 5, 35\}\)\,s later. A trial counts the effects committed after the stop took effect, timed
+by the harness's log of the sink's replies (the set of committed effects must equal the sink's database), and the
+legitimate calls the stop discards (cancelled or denied). The plan, grid and
+metrics were committed before the first trial (\path{fixtures/v6/revokebench_plan.json}); the \vsixEFourTrials{}
+trials include \vsixEFourFaultTrials{} with SIGKILL of the sink or delayed completions.
+
+\para{Result.} Figure~\ref{fig:v6hero}a shows the stable cell with the longest latency (\(C = \vsixStopCalls\),
+\(w = \vsixStopLatency\)\,s, \(L = 0\)), chosen by that rule rather than by eye. After the stop took effect, halting
+inference let \vsixHaltRange{} effects commit and revoking at the broker \vsixRevokeRange{}, the last
+\vsixLastCommitSeconds\,s later; fencing the sink let \vsixFenceRange{} commit and discarded \vsixFenceLost{}
+legitimate calls. Across all \vsixEFourCells{} fault-free cells, halting leaked up to \vsixGridHaltMax{} effects and
+revoking up to \vsixGridRevokeMax; the fence admitted at most \vsixFencePostMax{} in \vsixFenceTrials{} trials.
+
+\para{What the numbers mean.} The fence's zero is a property of the design, not a discovery: the sink serializes its
+RPCs, \texttt{fence} cancels every pending record below the new floor, and effect identifiers are unique in the schema,
+so duplicates are impossible rather than rare. What E4 measures is (i) that this implementation keeps the property
+under the faults we injected, and (ii) the size and cost of the window the other two layers leave open. That window is
+queueing, and it behaves like queueing. Where the offered load \(\rho = \lambda w / C\) is below one, halting leaks
+the calls in flight and those emitted before the stop takes effect, which the plan predicted from Little's law.
+\vsixLittleSentence{} Revocation leaks the calls already accepted.
+Where \(\rho \ge 1\) (\vsixEFourOverloadedCells{} of the \vsixEFourWCCells{} \((w, C)\) cells), the backlog grows during the warm-up and
+halting leaks all of it; we report those cells separately and do not apply Little's law to them. The fence pays for its
+zero in the opposite currency. Every legitimate call in flight at the stop is discarded, which is what an operator who
+stops an agent usually wants and what an operator who meant ``pause'' does not.
+
+\para{Faults (E4b).} A SIGKILL that lands between requests tests little. In a separately predeclared run
+(\path{fixtures/v6/revokebench_b_plan.json}) we kill the sink while a \texttt{complete} or a \texttt{fence} request is
+outstanding, hold the executor's \texttt{accept} across the fence, and drive the system with closed-loop agents that
+wait for each result. \vsixEFourBSentence
+
+\para{Scope.} The sink mediates only its own SQLite effects. An external effect (a payment API, a repository, a cloud
+resource) is fenced only if that surface can refuse a stale epoch, which is the question of
+Section~\ref{sec:v6boundary}. The latencies are sampled, not production traces, and the agent is synthetic.
