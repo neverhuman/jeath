@@ -4,6 +4,10 @@ Not every domain invariant reduces to a numeric budget or static path allowlist;
 
 \input{generated/v4-traj-monitors-table}
 
+The injections are ones this repository rendered into AgentDojo trajectories, the classifiers are small statistical
+models calibrated at a fixed per-step false-positive rate, and the isolated-step invariants are not compared at a
+matched benign false-block rate; the comparisons below are therefore exploratory.
+
 Table~\ref{tab:v4trajmonitors} tests this prediction across two complementary settings on held-out 5-step AgentDojo v1.2.2 trajectories (\VFourTrajEvalCount{} trajectories; \VFourTrajToolCalls{} live tool executions):
 \begin{enumerate}
   \item \textbf{Classifier diversity on shared transcripts stalls past \(k^\star = 2\).} Diversifying five distinct statistical classifier families across a shared conversation transcript still inflates 5-step joint miss \(\VFourTrajHetInflation\times\) above the marginal product \(\prod_{s=1}^5 \hat{m}_s\) (\(\hat{J}_5 = \VFourTrajHetFiveMissPct\%\)), improving by only \(\VFourTrajHetPostKStarFactor\times\) from step~2 to step~5 because injected rationalizations persist across the shared context window.
