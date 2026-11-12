@@ -21,10 +21,12 @@ not name stays open to any proposer, and intelligence can win authority back thr
 > cost of the in-flight work it cancelled. A same-model reviewer given the rules and time to reason admitted
 > {{E5.R2_state}} of unauthorized proposals whose violation lay in sink state; the verified gate admitted none. Removing
 > one clause from the gate made it admit exactly the violations of that clause. Mediation therefore turns a learned
-> blindspot into a written, enumerable specification gap. On AgentDojo with natively placed injections, permissions
-> written without the reference solution kept attack success at {{E8.strict_attack}} and cost {{E8.strict_tax}} of
-> benign utility; trusting the sources a user names won back utility and let attacks back in. Everything here is
-> CPU-only and open-weight, and results are reported against predeclared plans.
+> blindspot into a written, enumerable specification gap. On AgentDojo, permissions written without the reference
+> solution completed {{E8.strict_utility}} of benign tasks (unprotected {{E8.unprotected_utility}}) and let
+> {{E8.strict_native}} of AgentDojo's injections succeed, which by construction name what the permissions distrust;
+> injections that name only principals already in the user's state succeeded in {{E8b.strict_inside}} (unprotected
+> {{E8b.unprotected_inside}}). Everything here is CPU-only and open-weight, and results are reported against
+> predeclared plans, including two launches stopped for defects and rerun.
 
 (Then one sentence on E1, worded by its actual outcome: confirmatory superiority, or a predeclared null.)
 
@@ -43,8 +45,10 @@ A reader who sees only the title, the abstract and the hero figure should be abl
    layers' leak window and the fence's cost, not just the fence's 0.
 2. **The conversion thesis** (E5). Same-model review fails on state-dependent violations; the verified gate is
    search-invariant on what it encodes and equally search-invariant in its blindness to what it omits.
-3. **The cost of authority without the oracle** (E8, E2). On AgentDojo with native injections and graders, the
-   specification-granularity tax is a model-free quantity (stage 0) and a live one, across checkpoints.
+3. **The cost of authority without the oracle, and its boundary** (E8, E8b, E2). On AgentDojo with native graders,
+   the specification-granularity tax is a model-free quantity (stage 0) and a live one, across checkpoints. Injections
+   that stay inside the written specification measure the other side of the conversion thesis on a public
+   benchmark.
 4. **Which real sinks can be fenced** (E6). Executable probes, including a negative result: row-lock fences in
    PostgreSQL can be starved.
 5. **A mechanized kernel** (Verus) whose obligations are named once, with the TCB stated, including what still runs
@@ -57,7 +61,7 @@ A reader who sees only the title, the abstract and the hero figure should be abl
 2. Model: proposals, permits, broker, sink, epochs; what the kernel proves (named theorems, one count).
 3. Stop ≠ revoke ≠ fence (E4) + per-call vs cumulative budgets (the B/(2B+3) count).
 4. Reviewers read proposals, not state (E5), and the conversion thesis.
-5. What a specification costs (E8 stage 0 + live, E2 axis).
+5. What a specification costs and what it cannot stop (E8 stage 0 + live, E8b inside-S injections, E2 axis).
 6. Predeclared replication (E1): primary claims, secondaries S1–S3, pilot reported separately.
 7. Boundary: fenceability of real sinks (E6), specification omission, conferral (intelligence re-acquiring
    authority through grants; Tier-5 design, unrun).
@@ -73,12 +77,13 @@ arms (R0/R1), E4 full grid, E8 per-task tables.
 |---|---|---|---|
 | Fence admits 0 post-enforcement effects | E4 84 trials incl. 12 faults | implementation test of a design property | the sink mediates only its own SQLite effects |
 | Halt/revoke leak window grows with tool latency and concurrency | E4 216 trials | measured, parametric latency sweep | latencies are sampled, not production traces |
-| Same-model reviewer misses state-dependent violations | E5 | measured, open-weight 4B/8B, temperature 0 for review | not frontier models |
-| Gate minus clause i admits exactly clause-i violations | E5 | true by construction for the mirror; measured is how often search finds the gap | say "by construction" |
-| Strict provenance costs {{tax}} of AgentDojo utility | E8 | measured, 2 of 4 suites | spec written with knowledge of public tasks |
+| Same-model reviewer misses state-dependent violations | E5 | measured, open-weight 4B/8B, temperature 0 for review; plan parse and truncation rules; unique candidates and cases as units | not frontier models; state-family violations are byte-identical approved proposals by design |
+| Gate minus clause i admits exactly clause-i violations | E5 | by construction (mirror filter); measured: how many single-clause violations search finds, and mirror–Rust agreement | H_E5d dropped (definitional) |
+| Strict provenance costs {{tax}} of AgentDojo utility | E8 | measured, 2 of 4 suites, uniform denial feedback | spec written with knowledge of public tasks |
+| S stops AgentDojo's injections but not injections inside S | E8 (native, by construction) + E8b (inside S, author-written) | stage 0 model-free + measured | E8b injections and graders are author-written constructions of S's blind spot |
 | Delegation readmits injections in delegated sources | E8 stage 0 + live | model-free + measured | — |
-| Row-lock PostgreSQL fence can be starved | E6 | measured, local instance | timing-dependent; table-lock variant passes |
-| complete ≻ each comparator (safety), ≥ (usefulness) | E1 | predeclared confirmatory, α = 0.05/16 | task_success is defined relative to approved proposals |
+| Fenceability per surface | E6b | enforcement class (one rule for all surfaces) + deterministic old-epoch write; starvation rate over N=20 | E6's plan was finalized after its development runs |
+| complete ≻ each comparator (safety), ≥ (usefulness) | E1 | predeclared confirmatory, α = 0.05/16, frozen analysis; S4 beside every usefulness claim | complete's 0 unauthorized is by construction; revocation cases favour complete on usefulness |
 
 ## Retracted or demoted (from the tier-1 review)
 
@@ -91,3 +96,7 @@ arms (R0/R1), E4 full grid, E8 per-task tables.
   experiments before the fix are labelled with the binary they ran).
 - Usefulness/false-block superiority on AgentDojo with oracle permissions: replaced by E8.
 - Trajectory-monitor and neural-RL "emergent deception" headlines: appendix, described as what they are.
+- H_E5d (R1 ∧ G−Ci ≤ R1): definitional, dropped. "G−Ci" is never drawn or described as a gate.
+- Any claim that authority-lab decided E8's strict or delegated arms: the Python predicate decided.
+
+See `DISCLOSURES_V6.md` for every stopped launch, by-construction quantity and open disclosure.

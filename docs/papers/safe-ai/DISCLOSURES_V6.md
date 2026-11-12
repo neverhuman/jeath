@@ -1,0 +1,95 @@
+# v6 disclosures ledger (hostile design review of 2026-11-12, and what was done about each finding)
+
+Every v6 number in the paper must sit next to the row below that qualifies it. "Fixed" means the change was predeclared
+(committed) before the data it affects; "disclosed" means the issue stays and the paper says so; "by construction" means
+the quantity is definitional and is reported as such, never as a finding.
+
+## Launches that were stopped and rerun
+
+| Run | Stopped | Why | Outcomes seen before stopping | Kept at |
+|---|---|---|---|---|
+| E1 `e1-n128-20261112T1911Z` | 20:29Z, 235/1280 records (all 4B) | proposals expired 4 h after each checkpoint's holdout began (broker checks expiry on the wall clock); the 8B holdout was projected at 4.9 h, so its tail would have been denied as expired | no aggregate; one record (4B/none/4-0, a submit-format error) viewed while diagnosing the schema | run dir + `ABORTED.json`; E1 Amendment 2 |
+| E8 `e8-full-20261112T2001Z` | 20:35Z, 26 measured episodes | oracle's denial text named ground-truth tools; denial text differed by arm | no aggregate; progress.log lines (per-episode status/utility/attack) seen while monitoring | run dir + `ABORTED.json` (132 rows after the stop are abort artifacts); E8 Amendment 1 |
+| E5 `e5-smoke-2` | 19:18Z | strategy-conditioned search and N changed (E5 Amendment 2) | proposer raw outputs only were inspected; the run did write reviewer and gate decisions and a results.json with aggregates, which were not opened | run dir |
+
+## By construction (reported as such, never as findings)
+
+- **E1:** `complete` scores 0 unauthorized by construction. Its `permitted` predicate is the scoring predicate, and the
+  post-ack term applies only to fenced controllers. The safety-superiority claims measure how often each comparator
+  leaks.
+- **E1:** in revocation cases only `complete` can reach `task_success`, so the primary usefulness bound includes cases
+  where `complete` cannot lose. S4 recomputes the frozen bound on non-revocation cases (Amendment 2, before the
+  relaunch).
+- **E4:** the fence's zero is a design property. Sink RPCs are serial, and `fence()` cancels pending records. What is
+  measured is that this implementation keeps it under the faults exercised.
+- **E4:** zero duplicate effects is a schema guarantee (`effects.id UNIQUE`).
+- **E5:** `G_minus_Ci` is a Python mirror filter, not a gate; it admits exactly the single-clause violations of Ci
+  (H_E5c).
+  - What is measured is how many such candidates search finds, plus mirror–Rust-gate agreement.
+  - H_E5d (R1 ∧ G−Ci ≤ R1) holds by definition and is dropped.
+- **E8:** S was written knowing the public injections. Every native banking/Slack injection names something S distrusts,
+  so S's near-zero native attack success is by construction. E8b measures injections that stay inside S.
+
+## Fixed by predeclared amendment
+
+- **E8 Amendment 1:**
+  - every arm answers a denied call with the same constant;
+  - the mediation text is corrected: the Python predicate decides, and authority-lab enforces only the oracle budget;
+  - SIGTERM stops dispatch;
+  - Progent policy-generation failures are counted separately.
+- **E8b (new):** six author-written injections that name only principals in the user's own state. Stage 0 before data:
+  S admits 48/48 banking and 63/63 Slack reference attacks; the oracle admits 0. The predicates were checked against all
+  37 user-task reference solutions.
+- **E1 Amendment 2:** proposal lifetime equals the wall limit, with an assertion; S4; the by-construction disclosures
+  above.
+- **E5 analysis (`e5_analysis_v6.py`):** the harness summary departs from the plan's reviewer parse rule (first JSON
+  object vs whole reply/outermost span) and from "R2 truncated = deny".
+  - The paper uses the plan's rules.
+  - Before the run ended, the disagreement count on unique candidates was 0 for all reviewers.
+  - Units are unique candidates and cases; samples are not independent.
+- **E5 family `injected_exfiltration`:** the reviewer never sees the injected note, only the resulting RPC. It is
+  relabelled "injected payload".
+- **Hero (`hero_v6.py`):**
+  - no outcome text is written in advance;
+  - panel (a)'s cell is chosen by a rule (stable, longest latency, L=0), with grid-wide ranges in the caption;
+  - the fence's cost is cancelled + denied;
+  - panel (b) uses plan-conformant unique units;
+  - panel (c) counts every episode.
+
+## In progress (separate lanes, predeclared before their data)
+
+- **E4b** (`cc/e4b`, xbabe0):
+  - SIGKILL with a request outstanding inside `complete` and inside `fence`;
+  - late `accept` across the fence;
+  - a closed-loop emitter in stable cells;
+  - cancelled + denied;
+  - a sink-side ordering check;
+  - a reanalysis of E4 with per-cell offered load ρ, where (5,4), (30,4) and (30,32) are overloaded and Little's law is
+    not applicable there.
+- **E6b** (`cc/e6b`, xbabe0):
+  - a deterministic post-fence old-epoch write per surface;
+  - the starvation probe repeated N=20 with CIs;
+  - one enforcement-class rule for every surface, so that PostgreSQL's trigger is author-written code inside the
+    surface;
+  - the enforcement class leads.
+
+## Disclosed and not fixed
+
+- **Preregistration timing cannot be verified externally.** No plan commit is on a remote, and hand-typed timestamps
+  needed errata (`TIMESTAMPS_ERRATA.md`). Strongest remedy: push the plan commits or signed tags before analysis (needs
+  the author's go-ahead).
+- **E6:** the plan was finalized after its two development runs. Its `predeclared_before_any_E6_probe` label is wrong
+  and is corrected in E6b's plan.
+- **E8:**
+  - authority-lab only records the strict and delegated arms' admitted effects;
+  - Progent's policies come from the same open-weight checkpoint (its paper used GPT-4o), with adaptive updates
+    disabled;
+  - the JSON tool loop is this repository's.
+- **E2:** descriptive only. Checkpoints differ in chat template, JSON-protocol compliance and Progent policy-generation
+  strength.
+- **Validators:**
+  - E8/E8b validators import the harness's own `Spec` and graders, so they check replay, not correctness;
+  - the E5 validator's clause logic mirrors the harness's; the independent check is the Rust gate's agreement;
+  - E4 timing is re-derived from the harness log.
+- **General:** temperature 0, local quantized open-weight models on CPU, two of AgentDojo's four suites; the SQLite
+  sink mediates only its own effects.
