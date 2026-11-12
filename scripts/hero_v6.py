@@ -289,11 +289,11 @@ def panel_c(rows8: list[dict], rows8b: list[dict] | None) -> tuple[list[str], di
 def caption_c(s: dict, ckpt8: str) -> str:
     a = s["arms"]
     f = lambda k, m: pct(*a[k][m])
-    word = lambda x, y: "fewer" if x[0] / x[1] < y[0] / y[1] else ("as many" if x[0] / x[1] == y[0] / y[1] else "more")
+    word = lambda x, y: "fewer than" if x[0] / x[1] < y[0] / y[1] else ("as many as" if x[0] / x[1] == y[0] / y[1] else "more than")
     text = (rf"\textbf{{(c)}} AgentDojo banking and Slack, {ckpt8}, AgentDojo's utility graders, every episode counted (95\% "
             rf"Clopper--Pearson). Permissions written without the reference solution (strict provenance) complete "
             rf"{f('authority_strict', 'benign_utility')} benign tasks, {word(a['authority_strict']['benign_utility'], a['unprotected']['benign_utility'])} "
-            rf"than unprotected ({f('unprotected', 'benign_utility')}); the oracle grant, copied from the solution, completes "
+            rf"unprotected ({f('unprotected', 'benign_utility')}); the oracle grant, copied from the solution, completes "
             rf"{f('authority_oracle', 'benign_utility')}. AgentDojo's injections succeed in {f('authority_strict', 'native_attack')} strict "
             rf"episodes and {f('unprotected', 'native_attack')} unprotected")
     if "inside_spec_attack" in a["authority_strict"]:
