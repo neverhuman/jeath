@@ -91,6 +91,8 @@ def main():
                 if ok and not step["admitted"] and step.get("rule") != "O_budget":
                     problems.append(f"{tag} turn {step['turn']}: oracle denied {fn} without a reproducible rule")
             if not step["admitted"]:
+                if step.get("reply") != e8.DENIED_REPLY:
+                    problems.append(f"{tag} turn {step['turn']}: denied call answered with arm-specific text")
                 continue
             admitted_calls.append({"function": fn, "args": a})
             admitted_effects += fn in e8.EFFECT_TOOLS[s_name]
@@ -120,10 +122,28 @@ def main():
             problems.append(f"{tag}: non-authority arm has a lab record")
         if r["status"] == "inference_error":
             findings.append(f"{tag}: inference error {r.get('error')}")
+    # Same prompt, temperature 0, top_k 1 and seed: two arms' raw replies must agree turn by turn for as long as every
+    # earlier message the agent received was identical. A divergence is nondeterministic inference, reported as a finding.
+    groups = {}
+    for r in rows:
+        groups.setdefault((r["suite"], r["user_task"], r["injection_task"]), []).append(r)
+    diverged = 0
+    for key, rs in sorted(groups.items(), key=lambda kv: str(kv[0])):
+        for a in rs:
+            for b in rs:
+                if a["arm"] >= b["arm"]:
+                    continue
+                for sa, sb in zip(a["trace"], b["trace"]):
+                    if sa["raw"] != sb["raw"]:
+                        diverged += 1
+                        findings.append(f"{key}: {a['arm']} vs {b['arm']} diverge at turn {sa['turn']} under identical history")
+                        break
+                    if sa.get("reply") != sb.get("reply"):
+                        break
     if e8.summarize(rows) != res["summary"]:
         problems.append("summary not reproduced from episodes.jsonl")
     report = {"run": str(args.run), "episodes": len(rows), "smoke_test": res["smoke_test"], "problems": problems,
-              "findings": findings}
+              "divergent_arm_pairs_under_identical_history": diverged, "findings": findings}
     print(json.dumps(report, indent=1))
     raise SystemExit(1 if problems else 0)
 
