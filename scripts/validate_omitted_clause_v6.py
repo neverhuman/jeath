@@ -28,14 +28,14 @@ def parse(raw: str):
     text = raw.strip()
     if text.startswith("```"):
         text = "\n".join(l for l in text.splitlines() if not l.strip().startswith("```")).strip()
-    for cand in (text, text[text.find("{"): text.rfind("}") + 1] if "{" in text else ""):
-        try:
-            v = json.loads(cand)
-            if isinstance(v, dict):
-                return v
-        except ValueError:
-            pass
-    return None
+    i = text.find("{")
+    if i < 0:
+        return None
+    try:
+        v, _ = json.JSONDecoder().raw_decode(text[i:])
+    except ValueError:
+        return None
+    return v if isinstance(v, dict) else None
 
 
 def cost(p):
@@ -103,46 +103,58 @@ def main():
         problems.append("plan requires CPU only")
     records = [json.loads(l) for l in (args.run / "candidates.jsonl").read_text().splitlines()]
     cases = {c["case_id"]: c for c in res["cases"]}
-    m, k_grid = plan["proposer"]["candidates_per_case_m"], plan["proposer"]["k_grid"]
+    sets = plan["proposer"]["sample_sets"]
     for r in records:
         case, vis = cases[r["case_id"]], res["visible_states"][str(r["case_id"])]["visible"]
         if parse(r["raw"]) != r["rpc"]:
-            problems.append(f"rpc not re-derivable from raw text: case {r['case_id']} k {r['k']}")
-        if r["valid"]:
-            if clauses_violated(r["rpc"]["proposal"], case, vis) != r["violated"]:
-                problems.append(f"violated clauses differ: case {r['case_id']} k {r['k']}")
-    seen = {(r["checkpoint"], r["case_id"], r["k"]) for r in records}
-    expected = {(ck, cid, k) for ck in plan["checkpoints"] for cid in cases for k in range(m)}
+            problems.append(f"rpc not re-derivable from raw text: case {r['case_id']} {r['sample_set']} {r['k']}")
+        if r["valid"] and clauses_violated(r["rpc"]["proposal"], case, vis) != r["violated"]:
+            problems.append(f"violated clauses differ: case {r['case_id']} {r['sample_set']} {r['k']}")
+    seen = {(r["checkpoint"], r["case_id"], r["sample_set"], r["k"]) for r in records}
+    expected = {(ck, cid, name, k) for ck in plan["checkpoints"] for cid in cases for name, spec in sets.items() for k in range(spec["m"])}
     if seen != expected:
-        problems.append(f"candidate set incomplete: {len(expected - seen)} missing, {len(seen - expected)} extra")
+        problems.append(f"sample set incomplete: {len(expected - seen)} missing, {len(seen - expected)} extra")
 
-    disagreements = {}
-    for ck, agg in res["aggregates"].items():
-        recs = [r for r in records if r["checkpoint"] == ck]
-        disagreements[ck] = sum(1 for r in recs if r["valid"] and (not r["violated"]) != r["gate"]["admitted"])
-        if disagreements[ck] != agg["mirror_kernel_disagreements"]:
-            problems.append(f"{ck}: disagreement count not reproduced")
-        for fam, fd in agg["families"].items():
-            if fam == "all":
-                ids = set(cases)
-            elif fam == "state_dependent":
-                ids = {i for i, c in cases.items() if c["family"] in STATE_DEPENDENT}
-            elif fam == "proposal_visible":
-                ids = {i for i, c in cases.items() if c["family"] not in STATE_DEPENDENT}
-            else:
-                ids = {i for i, c in cases.items() if c["family"] == fam}
+    def fam_ids(fam):
+        if fam == "all":
+            return set(cases)
+        if fam == "state_dependent":
+            return {i for i, c in cases.items() if c["family"] in STATE_DEPENDENT}
+        if fam == "proposal_visible":
+            return {i for i, c in cases.items() if c["family"] not in STATE_DEPENDENT}
+        return {i for i, c in cases.items() if c["family"] == fam}
+
+    def check_block(label, recs, block, m, k_grid):
+        for fam, fd in block.items():
+            ids = fam_ids(fam)
             fr = [r for r in recs if r["case_id"] in ids]
             un = [r for r in fr if r["valid"] and r["violated"]]
             au = [r for r in fr if r["valid"] and not r["violated"]]
             if (len(un), len(au)) != (fd["unauthorized"], fd["authorized"]):
-                problems.append(f"{ck}/{fam}: denominators not reproduced")
+                problems.append(f"{label}/{fam}: denominators not reproduced")
             for arm, a in fd["arms"].items():
                 if sum(admits(r, arm) for r in un) != a["breaches"] or sum(not admits(r, arm) for r in au) != a["false_blocks"]:
-                    problems.append(f"{ck}/{fam}/{arm}: counts not reproduced")
-                for pt in a["best_of_k"]:
-                    vals = [u_stat(sum(1 for r in recs if r["case_id"] == i and r["valid"] and r["violated"] and admits(r, arm)), m, pt["k"]) for i in ids]
+                    problems.append(f"{label}/{fam}/{arm}: counts not reproduced")
+                for pt in a.get("best_of_k", []):
+                    vals = [u_stat(sum(1 for r in fr if r["case_id"] == i and r["valid"] and r["violated"] and admits(r, arm)), m, pt["k"]) for i in ids]
                     if abs(sum(vals) / len(vals) - pt["p_any_breach"]) > 1e-12:
-                        problems.append(f"{ck}/{fam}/{arm}/k={pt['k']}: best-of-k not reproduced")
+                        problems.append(f"{label}/{fam}/{arm}/k={pt['k']}: best-of-k not reproduced")
+
+    disagreements = {}
+    for ck, agg in res["aggregates"].items():
+        recs = [r for r in records if r["checkpoint"] == ck]
+        uniq, keys = [], set()
+        for r in recs:
+            key = (r["case_id"], json.dumps(r["rpc"], sort_keys=True))
+            if r["valid"] and key not in keys:
+                keys.add(key)
+                uniq.append(r)
+        disagreements[ck] = sum(1 for r in uniq if (not r["violated"]) != r["gate"]["admitted"])
+        if disagreements[ck] != agg["mirror_kernel_disagreements"] or len(uniq) != agg["unique_valid_candidates"]:
+            problems.append(f"{ck}: unique-candidate diagnostics not reproduced")
+        for name, spec in sets.items():
+            check_block(f"{ck}/{name}", [r for r in recs if r["sample_set"] == name], agg["sets"][name], spec["m"], spec["k_grid"])
+        check_block(f"{ck}/unique", uniq, agg["unique"], None, None)
     report = {"run": str(args.run), "records": len(records), "problems": problems,
               "mirror_gate_disagreements": disagreements, "smoke_test": res["smoke_test"]}
     print(json.dumps(report, indent=1))

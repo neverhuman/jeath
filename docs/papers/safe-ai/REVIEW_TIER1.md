@@ -47,6 +47,10 @@ or oracle-advantaged, and rebuild the front of the paper on measured evidence.
    - Ville over 33 one-sided discordances is the sign test (2⁻³³). The zero-harm confidence sequence hard-codes
      `observed_harms: 0` (spine :682-695).
    - All 16 predeclared claims are `safety_superior=false` (`model-campaigns-analyzed.json`).
+   - The pilot's freeze (`evidence/v2/reference/freeze.json`) hashes `scripts/infer_v2.py` as `41605305…`. No
+     committed version has that hash: the run used an uncommitted harness, which was then committed in modified
+     form in 8e4cf64 (`34250525…`). The frozen *analysis* (`campaign_analysis.py`, `61523ef8…`) is unchanged and
+     recoverable. Disclose this. E1 freezes and runs only committed code.
 3. **The publication gate asserts outcomes.** `scripts/validate_v3.py:528-529` requires
    `headline_pooled_live_112_unmediated_harms >= 20` and `..._unconditional_p < 1e-6`. Lines 448-453 require
    endogenous breach > 0.99. A null result could not pass the gate.
