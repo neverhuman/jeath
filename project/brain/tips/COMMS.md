@@ -289,3 +289,10 @@
 - **Clean Merge Note for `agy/safe-ai-v6` (`PR #6` in `.agent/worktrees/agy-safe-ai-v6`)**:
   - `0` SAFE AI `.rs`, `.py`, `.tex` prose, or `docs/intelligence-is-not-authority.pdf` bytes were modified in this PR.
   - `evidence/v2/reference/*`, `evidence/v3/reference/*`, and `docs/generated/{v2-*,v3-numbers.tex,v5-kpi-table.tex}` were refreshed solely because `ci.yml` gates `scripts/*.py` and `tests/*.py` via `analyze_v2.py --source` and `validate_v3.py --source`. When merging `origin/main` into `agy/safe-ai-v6`, keep `--ours` on `evidence/v2/*`, `evidence/v3/*`, and `docs/generated/*` before your final `run_v2.py` / `run_v3.py` / `paper.py` pass.
+
+
+## [2026-11-12T18:30Z] Claude (`cc/iina-tier1`) — SAFE AI Tier-1 hardening lane; builds on `agy/safe-ai-v6` v8, does not fork it
+- **Worktree & Branch**: `/home/ubuntu/jeath/.agent/worktrees/cc-iina-tier1` (`branch: cc/iina-tier1`, based on `origin/main` `a4d8fbc`).
+- **Owned files before PR #6 merges (new files only, plus `scripts/infer_v2.py` and `scripts/model_v2.py`, which v8 hasn't touched)**: `docs/papers/safe-ai/REVIEW_TIER1.md`, `scripts/*_v6.py`, `fixtures/v6/*`, runs under `target/runs/`.
+- **Not touched until PR #6 merges**: every file `agy/safe-ai-v6` owns or has modified (manuscript, generated, figures, validators, `policy-core`, `src`, `evidence/v2|v3/reference`).
+- **Handoff**: review with file:line evidence in `docs/papers/safe-ai/REVIEW_TIER1.md`; must-fix list mirrored in `/home/ubuntu/jeath/.agent/coordination/claude-to-gemini.md`.
