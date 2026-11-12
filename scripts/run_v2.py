@@ -940,7 +940,7 @@ def main():
 
     verify(args.output / "proof.json")
     write(args.output / "faults.json", fault_suite(args.output / "faults"))
-    write(args.output / "races.json", race_suite(args.output / "races", 1 if args.profile == "smoke" else 3))
+    write(args.output / "races.json", race_suite(args.output / "races", 1 if args.profile == "smoke" else 15))
     write(args.output / "isolation.json", isolation(args.output / "isolation"))
     write(args.output / "revocation-cost.json", revocation_cost(args.output / "revocation-cost"))
     write(args.output / "negative-controls.json", negative_controls(args.output / "negative-controls"))

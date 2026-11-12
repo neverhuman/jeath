@@ -2,10 +2,10 @@
 \begin{table*}[t]\centering\small
 \begin{tabularx}{\textwidth}{@{}Lrrrrr@{}}\toprule
 Neural policy-gradient regime (412-param MLP, 48 seeds) & Mon.\ shortcut & Unmon.\ shortcut & Eval-aware gap & Unmon.\ harm & Useful task\\\midrule
-GRPO top-10\% podium & 99.98\% & 99.66\% & $-0.32\pm0.49$\,pp & 39.19\% & 38.4\%\\
-GRPO + audited harm veto & 20.59\% & 55.12\% & $+34.53\pm10.46$\,pp & 23.39\% & 61.5\%\\
+Top-10\% tournament policy gradient & 99.98\% & 99.66\% & $-0.32\pm0.49$\,pp & 39.19\% & 38.4\%\\
+Tournament + audited harm veto & 20.59\% & 55.12\% & $+34.53\pm10.46$\,pp & 23.39\% & 61.5\%\\
 Concave clipped caretaker RL & 0.02\% & 0.03\% & $+0.01\pm0.01$\,pp & 0.04\% & 54.8\%\\
 Survival-floor RL ($\tau=8.85$) & 5.68\% & 5.88\% & $+0.20\pm0.70$\,pp & 2.91\% & 87.0\%\\
-Floor RL + pre-commit gate & 0.00\% & 0.00\% & $+0.00\pm0.00$\,pp & 0.00\% & 86.5\%\\
+Survival-floor RL + pre-commit gate & 0.00\% & 0.00\% & $+0.00\pm0.00$\,pp & 0.00\% & 86.5\%\\
 \bottomrule\end{tabularx}
-\caption{Tier-4 pure-Rust 2-layer neural policy-gradient post-training on a 12D contextual tool-use MDP (\texttt{neural\_post\_training.json}; analytical backprop max error $5.1e-10$, rollout Price identity error $<8.9e-16$). Auditing visible harm inside a top-rank GRPO tournament trains emergent evaluation-aware covert shortcutting ($+34.5\pm10.5$\,pp gap); survival-floor RL suppresses shortcutting while preserving 87.0\% task completion (vs.\ 54.8\% over-deferring clipped caretaker), and coupling a pre-commit capability gate yields $0.00\%$ external harm. Controlled neural MDP only, not frontier-LLM RLHF.}\label{tab:v4neural}\end{table*}
+\caption{Controlled 2-layer neural policy-gradient post-training on a 12-dimensional contextual tool-use Markov decision process (analytical backpropagation maximum error $5.1e-10$, rollout Price identity error $<8.9e-16$). Auditing visible harm inside a top-rank tournament trains emergent evaluation-aware covert shortcutting ($+34.5\pm10.5$\,pp gap); survival-floor RL suppresses shortcutting while preserving 87.0\% task completion (vs.\ 54.8\% over-deferring clipped caretaker), and coupling an exogenous pre-commit gate yields $0.00\%$ external harm. Controlled neural MDP only, not frontier-model RLHF.}\label{tab:v4neural}\end{table*}

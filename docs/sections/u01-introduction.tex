@@ -1,124 +1,17 @@
-\section{Intelligence Proposes; Institutions Confer and Revoke Reach}
-\label{sec:intro}
+\section{Introduction}\label{sec:intro}
 
-Intelligence is what a system can propose; authority is what external state transitions
-it can execute, through which independent checkpoints, and what residual effects remain
-committable after permission is withdrawn \cite{dennis,saltzer,schneider}. Much of the
-superintelligence alignment literature treats safety as an internal property of a
-model's learned disposition: if training could fix what an arbitrarily capable optimizer
-wants, institutions could trust what it does. Yet instrumental incentives toward
-resource acquisition, goal preservation, and shutdown avoidance arise across broad
-objective classes \cite{omohundro2008,bostrom2014,soares2015}, and every behavioral
-evaluation observes only a strategic interaction with the evaluated policy. As search
-capability grows, a policy that shares its operator's aims and a policy that recognizes
-an evaluation leave indistinguishable transcript records \cite{needham,schoen}. Human
-institutions solved the analogous problem without mind-reading: banks do not certify the
-inner virtue of every clerk, and operating systems do not trust user processes to police
-their own memory \cite{saltzer,sel4}. They bound reach through exogenous capabilities
-that are conferred, scoped, cryptographically bound, and revocable.
+Capable AI systems increasingly draft code, query databases, invoke external APIs, and spawn sub-agents. Across most deployments, safety still rests on \emph{endogenous} controls: alignment training shapes model preferences, and prompted language-model monitors inspect model-generated transcripts before tool execution~\cite{control,metraudit}. That design conflates two distinct quantities. \emph{Intelligence} is an epistemic capacity to search, predict, and optimize over candidate plans. \emph{Authority} is an institutional and physical capacity to commit irreversible state changes in an external sink.
 
-\input{generated/v5-hero-fig}
+Confusing intelligence with authority fails along two operational axes illustrated in Figure~\ref{fig:v5hero}. First, stopping an agent is not a single event~\cite{controlroom,limbo}. Halting token output (\emph{Stop~1}) prevents new text from streaming, and revoking admission at a central broker (\emph{Stop~2}) blocks future capability permits. Neither stops tool requests already queued across worker threads, network sockets, or delayed retries. Only fencing the state-bearing sink (\emph{Stop~3})---rejecting stale epochs atomically at commit time---prevents in-flight operations from landing after authority is withdrawn.
 
-Making revocable authority operational against superintelligent optimization pressure
-exposes two sharp gaps (Figure~\ref{fig:v5hero}). First, \emph{endogenous safety
-classifiers degrade with proposer search width}: if a transcript or learned reviewer has
-even a small blindspot $J>0$ over safety-violating payloads, evaluating $K_{\mathrm{opt}}$
-candidate phrasings or tool chains drives bypass probability to
-$1-(1-J)^{K_{\mathrm{opt}}}\to 1$ (Figure~\ref{fig:v5hero}b). Second, \emph{stopping
-token generation does not revoke work in flight} \cite{controlroom}: revoking admission
-at a permission broker leaves previously issued capabilities executing across concurrent
-subagents, while refunding timed-out reservations under lost replies permits double
-spending \cite{ftbudget,limbo}. Bounding authority across capability scaling therefore
-requires coordinating two exogenous mechanisms across separate durable stores
-(Figure~\ref{fig:architecture}): a broker that reserves cumulative budgets \emph{before}
-dispatch inside a conservative state-uncertainty envelope $\B_t$, and cooperative
-idempotent sinks whose signed epoch fences and bounded leases exclude post-revocation
-commits regardless of proposer intelligence.
+Second, scaling candidate search (\(K\)) acts in opposite directions on classifier-based reviewers and deterministic capability gates. Any learned monitor with nonzero false-negative mass \(J > 0\) on policy-violating proposals suffers rising cumulative bypass as an agent samples \(K\) candidate tool calls~\cite{terekhov}, even when candidates correlate within a task. By contrast, a deterministic reference monitor~\cite{dennis,saltzer,schneider} verified over \emph{every} possible wire input admits zero out-of-policy commits regardless of proposer search depth.
 
-\begin{figure*}[t]
-\centering
-\begin{tikzpicture}[x=1cm,y=1cm,font=\scriptsize,>=Latex,
-  box/.style={draw=ink,rounded corners=2pt,fill=pale,align=center,inner sep=3.5pt},
-  tbox/.style={draw=exoblue,line width=0.8pt,rounded corners=2pt,fill=exoblue!7,align=center,inner sep=3.5pt},
-  arr/.style={->,line width=0.7pt,draw=ink}]
-  % Top governance & renewal row
-  \node[box,draw=slate,dashed,fill=white,minimum width=3.80cm,minimum height=0.88cm] (cap) at (1.95,3.85)
-    {\textbf{Capability \& Search $K_{\mathrm{opt}}$}\\Weights, subagents, speed $\ne$ grant};
-  \node[tbox,fill=white,minimum width=4.35cm,minimum height=0.88cm] (iss) at (8.45,3.85)
-    {\textbf{Accountable Quorum Issuers}\\Ed25519 grants, signed withdraw \& fence};
-  \node[box,draw=slate,fill=white,minimum width=3.95cm,minimum height=0.88cm] (rec) at (14.90,3.85)
-    {\textbf{Receipts \& Stepwise Renewal}\\Measured $J_k$, search $\pi_t$, WAL audit};
+This paper develops, mechanizes, and empirically tests an exogenous authority architecture built around four results:
+\begin{enumerate}
+  \item \textbf{Three stops and clock-skew-buffered sink fencing.} We prove in Verus (\VTwoProofs{} verified obligations; \VFiveProofMutationsRejected/\VFiveProofMutationsRejected{} soundness mutations rejected) that canonical wire decoding, attenuated delegation, relational mutexes, and quorum epoch fences prevent post-acknowledgment commits whenever physical clock skew is bounded by \(\delta_{\max}\). Five-class partition experiments confirm \(0/\VFourJepsenSchedulesPerClass\) leaks on cooperative fenced sinks versus \(\VFourJepsenBrokerOnlyLeaks/\VFourJepsenSchedulesPerClass\) under broker-only revocation and \(\VEightJepsenSkewUnbufLeaks/\VFourJepsenSchedulesPerClass\) when lease expiry omits \(\delta_{\max}\).
+  \item \textbf{Live usefulness, fence ablation, and API fence-ability.} On frozen Qwen3-4B and Qwen3-8B tool-use holdouts (\(N = \VFourHoldoutCasesPerCheckpoint\) independent cases per checkpoint), complete mediation achieves the highest safe-and-useful completion (\VFourFourBCompleteSafeUsefulCount/\VFourHoldoutCasesPerCheckpoint{} and \VFourEightBCompleteSafeUsefulCount/\VFourHoldoutCasesPerCheckpoint{} vs.\ \VFourFourBNoneSafeUsefulCount/\VFourHoldoutCasesPerCheckpoint{} and \VFourEightBNoneSafeUsefulCount/\VFourHoldoutCasesPerCheckpoint{} unmediated) with \(0/64\) benign false blocks, while eliminating the \VEightTotalNoFencePostWithdraw{} queued post-withdrawal commits observed across the \VEightTotalWithdrawCases{} revocation cases without sink fencing. A census of \VEightCensusTotalApis{} production APIs shows \VEightCensusCooperativeOrShim/\VEightCensusTotalApis{} support native or proxy-enforced sink fencing.
+  \item \textbf{Waist cutsets and context-isolated escrow.} Across AgentDojo v1.2.2 suites~\cite{agentdojo}, weighted minimum cuts of width \(w \in [2,5]\) sever \(100\%\) of \(\VFourCutBankingRoutes\)--\(\VFourCutWorkspaceRoutes\) attack routes, whereas patching \(32\) known exploits leaves \(94.7\%\)--\(99.9\%\) live. Stripping untrusted prose into typed step schemas and two-stage escrow triage eliminates the \(\VFourTrajHetInflation\times\) shared-transcript coupling inflation measured across both statistical classifiers and live Qwen3 LLM judges.
+  \item \textbf{Delegation and reward reversals.} We prove and simulate two behavioral reversals: \emph{endogenous grant reversal}, where an agent safer at every fixed scope causes \(4.2\times\) higher total harm (\(\VThreeGrantWarmEndogPct\%\) vs.\ \(\VThreeGrantBluntEndogPct\%\)) when deferential demeanor induces wider human scope grants, and \emph{dispersion/gate-timing reversal}, where survival floors and training inside pre-commit gates suppress covert shortcutting while lifting genuine task completion \(+\VFourNeuralTrainInsideGainPp\)\,pp over post-hoc deployment filtering.
+\end{enumerate}
 
-  % Middle mediated execution pipeline
-  \node[box,minimum width=3.80cm,minimum height=1.32cm] (prop) at (1.95,2.05)
-    {\textbf{Untrusted Proposer Lineage}\\Policy $\pi$, $d$-hop subagents\\(\texttt{Landlock+seccomp}, framed IPC)};
-  \node[tbox,minimum width=4.35cm,minimum height=1.32cm] (brok) at (8.45,2.05)
-    {\textbf{Broker + Verus \texttt{policy-core}}\\\texttt{broker.sqlite} (\VTwoProofs{} SMT obligations)\\Canonical wire bijection + envelope $\B_t$};
-  \node[box,line width=0.8pt,minimum width=3.95cm,minimum height=1.32cm] (sink) at (14.90,2.05)
-    {\textbf{Lease-Fenced Sink Cluster}\\\texttt{sink.sqlite} shards: quorum \texttt{epoch\_floor}\\+ attenuated Macaroon \& CAS commit};
-
-  % Bottom out-of-band / unmediated exposure row
-  \node[box,draw=violet,dashed,fill=white,minimum width=4.85cm,minimum height=0.82cm] (hum) at (6.05,0.42)
-    {\textbf{Out-of-Band Speech \& Persuasion}\\Outputs moving people to act outside APIs};
-  \node[box,draw=endored,dashed,fill=endored!5,minimum width=4.55cm,minimum height=0.82cm] (byp) at (14.55,0.42)
-    {\textbf{External World \& Shallow Bypasses}\\Uncovered routes ($<k$ gates): exposure $u$};
-
-  % Horizontal mediated pipeline arrows
-  \draw[arr] (prop.east) -- node[above]{proposals $a_t$} node[below,text=slate]{frame-capped RPC} (brok.west);
-  \draw[arr,exoblue] (brok.east) -- node[above,text=ink]{canonical wire} node[below,text=exoblue]{bijection} (sink.west);
-
-  % Top control & renewal arrows
-  \draw[->,line width=0.7pt,endored,dashed] (cap.east) -- node[above,text=endored]{no silent expansion} (iss.west);
-  \draw[->,line width=0.7pt,exoblue] (iss.south) -- node[left,text=exoblue]{grants / admit revoke} (brok.north);
-  \draw[->,line width=0.75pt,endored] (iss.south east) -- node[above,sloped,pos=0.53,text=endored]{quorum fence} (sink.north west);
-  \draw[->,line width=0.65pt,slate] (sink.north) -- node[right,text=slate]{effects} (rec.south);
-  \draw[->,line width=0.65pt,exoblue] (rec.west) -- node[above,text=exoblue]{revalidated scope} (iss.east);
-
-  % Bottom out-of-band & sink-effect arrows
-  \draw[->,line width=0.65pt,violet,dashed] (prop.south) |- node[pos=0.72,above,text=violet]{utterances} (hum.west);
-  \draw[->,line width=0.65pt,endored,dashed] (hum.east) -- node[above,text=endored]{unmediated channel ($u$)} (byp.west);
-  \draw[arr] (sink.south) -- node[right,text=ink]{gated commit} (sink.south |- byp.north);
-\end{tikzpicture}
-\caption{\textbf{Architecture of conferred, revocable agent authority.} Capability,
-search width $K_{\mathrm{opt}}$, and subagent spawning shape proposals inside a confined
-process, never execution credentials. A broker running the Verus-verified
-\texttt{policy-core} reserves cumulative budget in $\B_t$ and encodes canonical wire
-permits with proven decode bijection; separate-process SQLite WAL sink shards enforce
-Ed25519 quorum / $d$-hop Macaroon attenuation, bounded leases, and signed
-\texttt{epoch\_floor} fences. Out-of-band persuasion and shallow bypasses are tracked
-explicitly under exposure $u$.}
-\label{fig:architecture}
-\end{figure*}
-
-This monograph unifies mechanized protocol verification, superintelligence scaling laws,
-multi-process cryptographic durability, exact small-sample inference, and co-evolutionary
-incentive geometry into a five-act assurance framework across three orthogonal variables:
-\emph{capability} (the richness and search width of proposals $a_t$), \emph{aim} (the
-objective selected by post-training or tournament geometry), and \emph{authority} (the
-external state transitions admitted by an independent sink).
-
-\para{Five-act roadmap.}
-\textbf{Act~I} (Sections~\ref{sec:intro}--\ref{sec:evidence}) establishes why evaluation
-awareness, monitor subversion, and reactive output stops require exogenous mediation,
-summarizing our seven Macro KPIs (Table~\ref{tab:v5kpis}), five evidence tiers, and six
-sufficiency conditions (\textbf{C1--C6}, Table~\ref{tab:taxonomy}). \textbf{Act~II}
-(Section~\ref{sec:theory}; proofs in Appendix~\ref{app:proofs}) proves audit-volume
-scaling, uncertainty contraction over $\B_t$, optimization-pressure invariance across
-$K_{\mathrm{opt}}$, multi-agent smurfing bounds, typed covert-channel contraction,
-exogenous lease-fenced off-switch corrigibility, and Theorem~\ref{u03:thm:main}.
-\textbf{Act~III} (Sections~\ref{sec:core}--\ref{sec:eval}; Appendices~\ref{app:protocol}
-and~\ref{app:predeclared}) presents the \VTwoProofs-obligation Verus kernel (total wire
-bijection, $d$-hop attenuation, self-upgrade non-escalation, and cluster quorum fencing),
-validates a three-process Ed25519/Macaroon SQLite WAL cluster across
-\VFiveClusterFuzzFrames{} wire-fuzz frames and \VFiveClusterSigkillCycles{} hard
-\texttt{SIGKILL} restarts, and pairs preserved predeclared $N{=}\VFourHoldoutCasesPerCheckpoint$
-\texttt{Qwen3} campaigns with exact unconditional Suissa--Shuster/Tango and anytime-valid
-Ville supermartingale certificates across \VFiveStatGrandPairs{} live runs
-(Figure~\ref{fig:v5hero}c). \textbf{Act~IV}
-(Sections~\ref{sec:graphs}--\ref{sec:selection}; Appendix~\ref{app:simulations}) bounds
-AgentDojo/Linux pathway cutsets, Good--Turing withholding non-identifiability,
-\VFourTrajEvalCount{} 5-step trajectory monitors, and evolutionary plus 412-parameter
-neural RL selection geometry. \textbf{Act~V}
-(Sections~\ref{sec:legitimacy}--\ref{sec:conclusion}; Appendix~\ref{app:record})
-separates enforceability from specification adequacy and institutional standing, audits
-the trusted computing base, and states ten falsifiable predictions.
+\para{Roadmap.} Section~\ref{sec:gaps} classifies which safety evidence survives model upgrades and fixes notation; Sections~\ref{sec:theory}--\ref{sec:systems} present the formal reach bounds, the Verus-verified authority kernel, live checkpoint campaigns, and the production API census. Sections~\ref{sec:width}--\ref{sec:conclusion} analyze waist cutsets, custodial coverage, monitor coupling, delegation and reward reversals, scope limits, and falsifiable predictions.

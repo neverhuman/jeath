@@ -869,6 +869,39 @@ pub struct RegimeSummary {
     pub price_shortcut_selection_diff_unmonitored: f64,
     pub price_true_harm_drift_unmonitored: f64,
     pub max_price_identity_abs_error: f64,
+    pub posthoc_gated_useful_completion_rate: Mean,
+    pub posthoc_gated_unmonitored_completion_rate: Mean,
+    pub posthoc_gated_episode_harm_rate: Mean,
+    pub posthoc_gated_blocked_shortcut_rate: Mean,
+}
+
+#[derive(Clone, Debug, Serialize)]
+pub struct GateTimingArmSummary {
+    pub arm_id: &'static str,
+    pub base_regime: &'static str,
+    pub p_gate_train: f64,
+    pub p_gate_deploy: f64,
+    pub unmonitored_shortcut_intent_prob: f64,
+    pub eval_awareness_shortcut_gap: f64,
+    pub verify_action_prob: f64,
+    pub episode_harm_rate: f64,
+    pub useful_task_completion_rate: f64,
+    pub useful_task_completion_ci95: f64,
+    pub unmonitored_task_completion_rate: f64,
+    pub blocked_shortcut_waste_rate: f64,
+    pub welfare: f64,
+}
+
+#[derive(Clone, Debug, Serialize)]
+pub struct DeploymentVsTrainingGateAblation {
+    pub audited_ungated: GateTimingArmSummary,
+    pub audited_posthoc_deploy_gate: GateTimingArmSummary,
+    pub audited_trained_inside_gate: GateTimingArmSummary,
+    pub survival_floor_trained_inside_gate: GateTimingArmSummary,
+    pub training_inside_gate_completion_gain_pp: f64,
+    pub training_inside_gate_unmonitored_gain_pp: f64,
+    pub training_inside_gate_reduces_waste_verified: bool,
+    pub training_inside_gate_amplifies_competence_verified: bool,
 }
 
 #[derive(Clone, Debug, Serialize)]
@@ -928,6 +961,10 @@ fn train_and_evaluate_regime(
     let mut comp_seeds = Vec::with_capacity(replicates);
     let mut raw_seeds = Vec::with_capacity(replicates);
     let mut welf_seeds = Vec::with_capacity(replicates);
+    let mut posthoc_comp_seeds = Vec::with_capacity(replicates);
+    let mut posthoc_unmon_comp_seeds = Vec::with_capacity(replicates);
+    let mut posthoc_harm_seeds = Vec::with_capacity(replicates);
+    let mut posthoc_blocked_sc_seeds = Vec::with_capacity(replicates);
 
     let mut price_sc_mon_sum = 0.0_f64;
     let mut price_sc_mon_cnt = 0usize;
@@ -1099,6 +1136,36 @@ fn train_and_evaluate_regime(
         comp_seeds.push(total_completed as f64 / total_eps);
         raw_seeds.push(total_raw / total_eps);
         welf_seeds.push(total_welf / total_eps);
+
+        // Post-hoc deployment-only gate check (`p_gate_deploy = 1.0`) on the exact same trained
+        // policy `net` using an independent deterministic evaluation RNG (`posthoc_rng`):
+        let mut posthoc_rng = Rng(base_seed
+            .wrapping_add(0xD3F1_0001_0000_0000)
+            .wrapping_add((rep as u64).wrapping_mul(0xBF58_476D_1CE4_E5B9)));
+        let mut ph_completed = 0usize;
+        let mut ph_unmon_completed = 0usize;
+        let mut ph_harms = 0usize;
+        let mut ph_shortcuts = 0usize;
+        for &mon_flag in &[true, false] {
+            for _ in 0..eval_eps_per_context {
+                let ctx = PromptContext::sample(&mut posthoc_rng, mon_flag);
+                run_episode_into(&net, ctx, 1.0, &mut posthoc_rng, &mut eval_out);
+                if eval_out.useful_completed {
+                    ph_completed += 1;
+                    if !mon_flag {
+                        ph_unmon_completed += 1;
+                    }
+                }
+                if eval_out.true_harm_count > 0 {
+                    ph_harms += 1;
+                }
+                ph_shortcuts += eval_out.shortcut_count;
+            }
+        }
+        posthoc_comp_seeds.push(ph_completed as f64 / total_eps);
+        posthoc_unmon_comp_seeds.push(ph_unmon_completed as f64 / eval_eps_per_context as f64);
+        posthoc_harm_seeds.push(ph_harms as f64 / total_eps);
+        posthoc_blocked_sc_seeds.push(ph_shortcuts as f64 / total_steps);
     }
 
     let inv_rep = 1.0 / replicates as f64;
@@ -1149,6 +1216,10 @@ fn train_and_evaluate_regime(
             / price_sc_unmon_cnt.max(1) as f64,
         price_true_harm_drift_unmonitored: price_harm_unmon_sum / price_sc_unmon_cnt.max(1) as f64,
         max_price_identity_abs_error: max_price_err,
+        posthoc_gated_useful_completion_rate: mean(&posthoc_comp_seeds),
+        posthoc_gated_unmonitored_completion_rate: mean(&posthoc_unmon_comp_seeds),
+        posthoc_gated_episode_harm_rate: mean(&posthoc_harm_seeds),
+        posthoc_gated_blocked_shortcut_rate: mean(&posthoc_blocked_sc_seeds),
     }
 }
 
@@ -1228,6 +1299,7 @@ pub struct NeuralPostTrainingSuite {
     pub grpo_veto_precommit_gate_sweep: Vec<GateSweepPoint>,
     pub by_gate_floor: BTreeMap<String, GateSweepPoint>,
     pub by_gate_grpo_veto: BTreeMap<String, GateSweepPoint>,
+    pub deployment_vs_training_gate_ablation: DeploymentVsTrainingGateAblation,
     pub headline: NeuralHeadlineFindings,
 }
 
@@ -1280,11 +1352,16 @@ pub fn neural_post_training_suite(seed: u64, quick: bool) -> NeuralPostTrainingS
     let veto_job_base = jobs.len();
     for (idx, &pg) in GATE_SWEEP_V4.iter().enumerate() {
         if pg > 0.0 {
+            let is_full = (pg - 1.0).abs() < 1e-12;
             jobs.push(JobSpec {
                 slot: jobs.len(),
                 regime: PostTrainingRegime::GrpoAuditedHarmVeto,
                 p_gate: pg,
-                reps: sweep_replicates,
+                reps: if is_full {
+                    replicates
+                } else {
+                    sweep_replicates
+                },
                 record_curves: false,
                 job_seed: seed.wrapping_add(94_000 + idx as u64 * 733),
             });
@@ -1358,23 +1435,123 @@ pub fn neural_post_training_suite(seed: u64, quick: bool) -> NeuralPostTrainingS
     let mut grpo_veto_precommit_gate_sweep = Vec::with_capacity(GATE_SWEEP_V4.len());
     let mut by_gate_grpo_veto = BTreeMap::new();
     let mut veto_cursor = veto_job_base;
+    let mut veto_full_gated_summary: Option<RegimeSummary> = None;
     for &pg in &GATE_SWEEP_V4 {
         let pt = if pg == 0.0 {
             to_gate_sweep_point(&regimes["grpo_audited_harm_veto"])
         } else {
             let r = completed[veto_cursor].take().unwrap();
             veto_cursor += 1;
-            to_gate_sweep_point(&r)
+            let pt_val = to_gate_sweep_point(&r);
+            if (pg - 1.0).abs() < 1e-12 {
+                veto_full_gated_summary = Some(r);
+            }
+            pt_val
         };
         by_gate_grpo_veto.insert(format!("{pg:.2}"), pt.clone());
         grpo_veto_precommit_gate_sweep.push(pt);
     }
+    let veto_trained_gated = veto_full_gated_summary.expect("grpo_audited_harm_veto at p_gate=1.0");
 
     let podium = &regimes["grpo_podium_top10"];
     let veto = &regimes["grpo_audited_harm_veto"];
     let care = &regimes["caretaker_clipped_rl"];
     let floor = &regimes["survival_floor_rl"];
     let gated = &regimes["floor_plus_precommit_gate"];
+
+    let audited_ungated = GateTimingArmSummary {
+        arm_id: "audited_tournament_ungated",
+        base_regime: veto.regime,
+        p_gate_train: 0.0,
+        p_gate_deploy: 0.0,
+        unmonitored_shortcut_intent_prob: veto.shortcut_prob_unmonitored.mean,
+        eval_awareness_shortcut_gap: veto.eval_awareness_shortcut_gap.mean,
+        verify_action_prob: 0.5
+            * (veto.verify_prob_monitored.mean + veto.verify_prob_unmonitored.mean),
+        episode_harm_rate: veto.true_external_harm_rate_episode.mean,
+        useful_task_completion_rate: veto.useful_task_completion_rate.mean,
+        useful_task_completion_ci95: veto.useful_task_completion_rate.approximate_95_half_width,
+        unmonitored_task_completion_rate: veto.posthoc_gated_unmonitored_completion_rate.mean,
+        blocked_shortcut_waste_rate: 0.0,
+        welfare: veto.welfare.mean,
+    };
+    let audited_posthoc_deploy_gate = GateTimingArmSummary {
+        arm_id: "audited_tournament_posthoc_deploy_gate",
+        base_regime: veto.regime,
+        p_gate_train: 0.0,
+        p_gate_deploy: 1.0,
+        unmonitored_shortcut_intent_prob: veto.shortcut_prob_unmonitored.mean,
+        eval_awareness_shortcut_gap: veto.eval_awareness_shortcut_gap.mean,
+        verify_action_prob: 0.5
+            * (veto.verify_prob_monitored.mean + veto.verify_prob_unmonitored.mean),
+        episode_harm_rate: veto.posthoc_gated_episode_harm_rate.mean,
+        useful_task_completion_rate: veto.posthoc_gated_useful_completion_rate.mean,
+        useful_task_completion_ci95: veto
+            .posthoc_gated_useful_completion_rate
+            .approximate_95_half_width,
+        unmonitored_task_completion_rate: veto.posthoc_gated_unmonitored_completion_rate.mean,
+        blocked_shortcut_waste_rate: veto.posthoc_gated_blocked_shortcut_rate.mean,
+        welfare: veto.welfare.mean,
+    };
+    let audited_trained_inside_gate = GateTimingArmSummary {
+        arm_id: "audited_tournament_trained_inside_gate",
+        base_regime: veto_trained_gated.regime,
+        p_gate_train: 1.0,
+        p_gate_deploy: 1.0,
+        unmonitored_shortcut_intent_prob: veto_trained_gated.shortcut_prob_unmonitored.mean,
+        eval_awareness_shortcut_gap: veto_trained_gated.eval_awareness_shortcut_gap.mean,
+        verify_action_prob: 0.5
+            * (veto_trained_gated.verify_prob_monitored.mean
+                + veto_trained_gated.verify_prob_unmonitored.mean),
+        episode_harm_rate: veto_trained_gated.true_external_harm_rate_episode.mean,
+        useful_task_completion_rate: veto_trained_gated.useful_task_completion_rate.mean,
+        useful_task_completion_ci95: veto_trained_gated
+            .useful_task_completion_rate
+            .approximate_95_half_width,
+        unmonitored_task_completion_rate: veto_trained_gated
+            .posthoc_gated_unmonitored_completion_rate
+            .mean,
+        blocked_shortcut_waste_rate: veto_trained_gated.posthoc_gated_blocked_shortcut_rate.mean,
+        welfare: veto_trained_gated.welfare.mean,
+    };
+    let survival_floor_trained_inside_gate = GateTimingArmSummary {
+        arm_id: "survival_floor_trained_inside_gate",
+        base_regime: gated.regime,
+        p_gate_train: 1.0,
+        p_gate_deploy: 1.0,
+        unmonitored_shortcut_intent_prob: gated.shortcut_prob_unmonitored.mean,
+        eval_awareness_shortcut_gap: gated.eval_awareness_shortcut_gap.mean,
+        verify_action_prob: 0.5
+            * (gated.verify_prob_monitored.mean + gated.verify_prob_unmonitored.mean),
+        episode_harm_rate: gated.true_external_harm_rate_episode.mean,
+        useful_task_completion_rate: gated.useful_task_completion_rate.mean,
+        useful_task_completion_ci95: gated.useful_task_completion_rate.approximate_95_half_width,
+        unmonitored_task_completion_rate: gated.posthoc_gated_unmonitored_completion_rate.mean,
+        blocked_shortcut_waste_rate: gated.posthoc_gated_blocked_shortcut_rate.mean,
+        welfare: gated.welfare.mean,
+    };
+    let comp_gain_pp = 100.0
+        * (audited_trained_inside_gate.useful_task_completion_rate
+            - audited_posthoc_deploy_gate.useful_task_completion_rate);
+    let unmon_gain_pp = 100.0
+        * (audited_trained_inside_gate.unmonitored_task_completion_rate
+            - audited_posthoc_deploy_gate.unmonitored_task_completion_rate);
+    let deployment_vs_training_gate_ablation = DeploymentVsTrainingGateAblation {
+        training_inside_gate_reduces_waste_verified: audited_trained_inside_gate
+            .blocked_shortcut_waste_rate
+            < 0.15
+                * audited_posthoc_deploy_gate
+                    .blocked_shortcut_waste_rate
+                    .max(1e-6),
+        training_inside_gate_amplifies_competence_verified: comp_gain_pp > 10.0
+            && unmon_gain_pp > 15.0,
+        training_inside_gate_completion_gain_pp: comp_gain_pp,
+        training_inside_gate_unmonitored_gain_pp: unmon_gain_pp,
+        audited_ungated,
+        audited_posthoc_deploy_gate,
+        audited_trained_inside_gate,
+        survival_floor_trained_inside_gate,
+    };
 
     let max_price_err = regimes
         .values()
@@ -1448,6 +1625,7 @@ pub fn neural_post_training_suite(seed: u64, quick: bool) -> NeuralPostTrainingS
         grpo_veto_precommit_gate_sweep,
         by_gate_floor,
         by_gate_grpo_veto,
+        deployment_vs_training_gate_ablation,
         headline,
     }
 }
@@ -1499,7 +1677,17 @@ mod tests {
             gated.true_external_harm_rate_episode.mean < floor.true_external_harm_rate_episode.mean
         );
 
-        // 5. Full 251-point curves (`0..=250`) and deterministic serialization.
+        // 5. Training inside the gate beats post-hoc deployment filtering on task competence!
+        assert!(
+            s.deployment_vs_training_gate_ablation
+                .training_inside_gate_reduces_waste_verified
+        );
+        assert!(
+            s.deployment_vs_training_gate_ablation
+                .training_inside_gate_amplifies_competence_verified
+        );
+
+        // 6. Full 251-point curves (`0..=250`) and deterministic serialization.
         assert_eq!(podium.shortcut_prob_unmonitored_curve.len(), 251);
         let s2 = neural_post_training_suite(20261110, true);
         assert_eq!(

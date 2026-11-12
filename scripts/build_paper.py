@@ -103,6 +103,44 @@ def minds():
     print(f"built human paper, supplement and combined copy in {output}; pages {counts}")
 
 
+PRIVATE_HOST_RE = re.compile(r"\b(?:xbabe\w*|neverhuman-lan)\b")
+FORBIDDEN_GLOBAL_RE = re.compile(
+    r"\.(?:json|jsonl|sqlite|rs|py|sh|tex|gguf|toml|lock)\b"
+    r"|\b(?:xbabe\w*|neverhuman-lan|authority-lab|confine-v2|broker-v2|sink-v2|sink-v5(?:-shard)?"
+    r"|policy-core|Exec[A-Z]\w*|DiscoveryLedger|SplitMix64|RegQDA|KNN15|MLP2L|Final\(2\)"
+    r"|PR#1|12b5579|68783a0)\b"
+    r"|make\s+required"
+)
+SNAKE_CASE_RE = re.compile(r"\b[A-Za-z0-9]+_[A-Za-z0-9_]+\b")
+
+
+def check_general_audience_cleanliness(pdf):
+    if shutil.which("pdftotext") is None:
+        return
+    raw_text = subprocess.check_output(["pdftotext", str(pdf), "-"], text=True, errors="replace")
+    bad_hosts = [m.group(0) for m in PRIVATE_HOST_RE.finditer(raw_text)]
+    if bad_hosts:
+        raise SystemExit(
+            f"General-audience cleanliness check failed: private hostnames in PDF: {list(dict.fromkeys(bad_hosts))}"
+        )
+    unwrapped = re.sub(r"([/._~-])\n(\S)", r"\1\2", raw_text)
+    for _ in range(4):
+        unwrapped = re.sub(r"(https?://\S+)\n(\S*(?:/|\.html|\.pdf)\S*)", r"\1\2", unwrapped)
+    without_urls = re.sub(r"https?://\S+", " ", unwrapped)
+    bad_global = [m.group(0) for m in FORBIDDEN_GLOBAL_RE.finditer(without_urls)]
+    if bad_global:
+        uniq = list(dict.fromkeys(bad_global))[:12]
+        raise SystemExit(
+            f"General-audience cleanliness check failed: forbidden internal/file tokens in PDF: {uniq}"
+        )
+    bad_snake = [m.group(0) for m in SNAKE_CASE_RE.finditer(without_urls)]
+    if bad_snake:
+        uniq = list(dict.fromkeys(bad_snake))[:12]
+        raise SystemExit(
+            f"General-audience cleanliness check failed: snake_case code tokens in PDF: {uniq}"
+        )
+
+
 def safe_ai():
     output = ROOT / "target/paper-build"
     output.mkdir(parents=True, exist_ok=True)
@@ -136,8 +174,9 @@ def safe_ai():
         raise SystemExit(
             f"Citations out of sequential [1]-[N] order (key, assigned_num, expected_num): {bad[:8]}"
         )
+    check_general_audience_cleanliness(pdf)
     shutil.copy2(pdf, ROOT / "docs/intelligence-is-not-authority.pdf")
-    print("built docs/intelligence-is-not-authority.pdf; all citations [1..N], references, fonts, and hboxes verified")
+    print("built docs/intelligence-is-not-authority.pdf; all citations [1..N], references, fonts, hboxes, and general-audience cleanliness verified")
 
 
 if __name__ == "__main__":

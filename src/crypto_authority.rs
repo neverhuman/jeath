@@ -817,6 +817,12 @@ impl ExtPoint {
         self.add(self)
     }
 
+    /// Returns true iff `[8]P` is the neutral element `(0, 1)`, rejecting all 8 torsion points.
+    fn is_small_order(self) -> bool {
+        let p8 = self.double().double().double();
+        ct_eq_32(&p8.to_bytes(), &Self::identity().to_bytes())
+    }
+
     fn scalar_mul(self, scalar_le: &[u8; 32]) -> Self {
         let mut win = [Self::identity(); 16];
         win[1] = self;
@@ -1107,6 +1113,9 @@ pub fn ed25519_verify(public_key: &[u8; 32], message: &[u8], signature: &[u8; 64
     let Some(r_point) = ExtPoint::from_bytes(&r_bytes) else {
         return false;
     };
+    if a_point.is_small_order() || r_point.is_small_order() {
+        return false;
+    }
 
     let mut k_hasher = Sha512::new();
     k_hasher.update(&r_bytes);

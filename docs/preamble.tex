@@ -15,22 +15,30 @@
 \usepackage{microtype,enumitem,xcolor,tikz,pgfplots,titlesec,fancyhdr,stfloats}
 \usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,shapes.geometric}
 \usepgfplotslibrary{groupplots}
-\pgfplotsset{compat=1.18,axis x line*=bottom,axis y line*=left,major grid style={draw=black!10}}
+\pgfplotsset{compat=1.18,axis x line*=bottom,axis y line*=left,axis line style={draw=ink!75,line width=0.55pt},tick style={draw=ink!65,line width=0.45pt},major grid style={draw=ink!9,line width=0.35pt}}
 \usepackage[font=small,labelfont=bf,skip=4pt]{caption}
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage{xurl}\urlstyle{same}
-\definecolor{ink}{HTML}{17324D}
-\definecolor{teal}{HTML}{237F86}
-\definecolor{violet}{HTML}{604A91}
-\definecolor{gold}{HTML}{B47B25}
-\definecolor{notred}{HTML}{B3261E}
-\definecolor{slate}{HTML}{52606D}
-\definecolor{pale}{HTML}{F2F6F8}
-\definecolor{exoblue}{HTML}{0072B2}
-\definecolor{endored}{HTML}{D55E00}
-\definecolor{safegreen}{HTML}{009E73}
-\definecolor{warnamber}{HTML}{E69F00}
-\definecolor{structgray}{HTML}{4D4D4D}
+\definecolor{ink}{HTML}{0F1E36}
+\definecolor{lawink}{HTML}{0F1E36}
+\definecolor{teal}{HTML}{0B7A75}
+\definecolor{exoviridian}{HTML}{0B7A75}
+\definecolor{exoblue}{HTML}{0B7A75}
+\definecolor{safegreen}{HTML}{1D4ED8}
+\definecolor{floorcerulean}{HTML}{1D4ED8}
+\definecolor{violet}{HTML}{6D28D9}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{warnamber}{HTML}{D97706}
+\definecolor{guardochre}{HTML}{D97706}
+\definecolor{notred}{HTML}{C93B2B}
+\definecolor{endored}{HTML}{C93B2B}
+\definecolor{endovermilion}{HTML}{C93B2B}
+\definecolor{slate}{HTML}{475569}
+\definecolor{structgray}{HTML}{475569}
+\definecolor{boundslate}{HTML}{64748B}
+\definecolor{rosefill}{HTML}{FDF2F0}
+\definecolor{mintfill}{HTML}{ECFDF5}
+\definecolor{pale}{HTML}{F4F6F9}
 \usepackage[colorlinks=true,linkcolor=ink,citecolor=teal,urlcolor=ink]{hyperref}
 \hypersetup{
   pdftitle={Intelligence Is Not Authority: Verified Exogenous Authority, Optimization-Invariant Sink Mediation, and Structural Bounds on Reach},
@@ -74,7 +82,9 @@
 \newcommand{\Hh}{\mathcal{H}}
 \newcommand{\A}{\mathcal{A}}
 \newcommand{\B}{\mathcal{B}}
+\newcommand{\Permits}{\operatorname{Permits}}
 \newcommand{\para}[1]{\smallskip\noindent\textbf{#1}\enspace}
+\newcommand{\actbanner}[2]{\par\medskip\noindent{\footnotesize\sffamily\bfseries\color{teal}\MakeUppercase{#1}\enspace\textperiodcentered\enspace{\color{slate}#2}}\par\vspace{1pt}{\color{ink!22}\hrule height 0.4pt}\vspace{2pt}}
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}

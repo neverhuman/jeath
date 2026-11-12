@@ -149,10 +149,13 @@ def analyze(records, plan, roster=None, freeze=None):
             metrics = {}
             for metric in ("unauthorized", "task_success", "safe_useful", "false_block"):
                 metrics[metric] = bounded_interval([mean(float(r[metric]) for r in rows) for rows in by_case.values()])
-            for metric in ("stranded_charge", "ack_ms", "latency_ms"):
+            for metric in ("stranded_charge", "ack_ms", "latency_ms", "post_withdraw_effects", "post_fence_effects"):
                 values = [r[metric] for r in measured.values() if r.get(metric) is not None]
                 assert all(math.isfinite(x) and x >= 0 for x in values)
-                metrics[metric] = {"mean": mean(values) if values else None, "n": len(values)}
+                entry = {"mean": mean(values) if values else None, "n": len(values)}
+                if metric in ("post_withdraw_effects", "post_fence_effects"):
+                    entry["total"] = int(sum(values)) if values else 0
+                metrics[metric] = entry
             groups[controller] = {"status": "not_run" if not observed else ("measured" if len(measured) == len(expected) else "partial"),
                                   "planned_campaigns": len(expected) if planned is not None else None,
                                   "measured_campaigns": len(measured), "missing_campaigns": len(expected - set(observed)),

@@ -36,6 +36,7 @@ use std::{
 
 pub const NUM_SINKS: usize = 3;
 pub const SINK_IDS: [&str; NUM_SINKS] = ["sink-0-transfer", "sink-1-release", "sink-2-edit-ext"];
+pub const MAX_CLOCK_SKEW_MS: u64 = 50;
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
@@ -43,6 +44,8 @@ pub enum SinkProtocolClass {
     CooperativeSignedFence,
     PrematureBrokerOnlyAck,
     UncooperativeExternalSink,
+    UnbufferedClockSkew,
+    SkewBufferedCooperativeFence,
 }
 
 impl SinkProtocolClass {
@@ -51,6 +54,8 @@ impl SinkProtocolClass {
             Self::CooperativeSignedFence => "cooperative_signed_fence",
             Self::PrematureBrokerOnlyAck => "premature_broker_only_ack",
             Self::UncooperativeExternalSink => "uncooperative_external_sink",
+            Self::UnbufferedClockSkew => "unbuffered_clock_skew",
+            Self::SkewBufferedCooperativeFence => "skew_buffered_cooperative_fence",
         }
     }
 }
@@ -123,6 +128,7 @@ enum SinkRpcRequest {
     Complete {
         proposal_id: String,
         now_ms: u64,
+        physical_now_ms: u64,
     },
     ApplyFence {
         cert: SignedFenceCert,
@@ -344,6 +350,7 @@ impl SinkRuntime {
             SinkRpcRequest::Complete {
                 proposal_id,
                 now_ms,
+                physical_now_ms,
             } => {
                 let Some((proposal, eff_required, status)) =
                     self.durable.records.get(&proposal_id).cloned()
@@ -415,12 +422,12 @@ impl SinkRuntime {
                             charge: amount,
                             epochs: proposal.epochs.clone(),
                             required: eff_required,
-                            commit_time_ms: now_ms,
+                            commit_time_ms: physical_now_ms,
                         });
                         SinkRpcResponse::Decision {
                             proposal_id,
                             status: "committed".into(),
-                            commit_time_ms: Some(now_ms),
+                            commit_time_ms: Some(physical_now_ms),
                         }
                     }
                 }
@@ -671,14 +678,21 @@ impl CoordinatorBroker {
 
     /// StrongRevokeAck holds iff EVERY sink with an active lease (`slice_budget > 0`)
     /// either returned a verified `SignedFenceAck` at `>= required_floor` OR its
-    /// bounded lease TTL has strictly expired (`now_ms > expires_ms`) without renewal.
-    fn can_emit_strong_revoke_ack(&self, issuer: usize, required_floor: u64, now_ms: u64) -> bool {
+    /// bounded lease TTL plus physical clock-skew safety margin (`expires_ms + skew_margin_ms`)
+    /// has strictly expired on the broker clock without renewal.
+    fn can_emit_strong_revoke_ack(
+        &self,
+        issuer: usize,
+        required_floor: u64,
+        now_ms: u64,
+        skew_margin_ms: u64,
+    ) -> bool {
         for lease in &self.leases {
             if lease.slice_budget == 0 {
                 continue;
             }
             let signed_fenced = lease.fenced_for_epoch[issuer] >= required_floor;
-            let lease_expired = now_ms > lease.expires_ms;
+            let lease_expired = now_ms > lease.expires_ms.saturating_add(skew_margin_ms);
             if !signed_fenced && !lease_expired {
                 return false;
             }
@@ -838,6 +852,8 @@ pub fn run_jepsen_multisink_with_redteam(
         SinkProtocolClass::CooperativeSignedFence,
         SinkProtocolClass::PrematureBrokerOnlyAck,
         SinkProtocolClass::UncooperativeExternalSink,
+        SinkProtocolClass::UnbufferedClockSkew,
+        SinkProtocolClass::SkewBufferedCooperativeFence,
     ];
 
     // Pre-mint 64 rotating per-schedule signed proposal sets so counterfactual runs across
@@ -943,6 +959,17 @@ pub fn run_jepsen_multisink_with_redteam(
     for class in classes {
         // Use the exact same schedule seed stream per class for paired counterfactual comparison!
         let mut rng = Rng64(seed);
+        let mut skew_rng = Rng64(seed ^ 0x9e3779b97f4a7c15);
+        let skew_enabled = matches!(
+            class,
+            SinkProtocolClass::UnbufferedClockSkew
+                | SinkProtocolClass::SkewBufferedCooperativeFence
+        );
+        let broker_skew_margin_ms = if class == SinkProtocolClass::SkewBufferedCooperativeFence {
+            MAX_CLOCK_SKEW_MS
+        } else {
+            0
+        };
         let mut asym_partitions = 0usize;
         let mut drops = 0usize;
         let mut delays = 0usize;
@@ -1003,6 +1030,17 @@ pub fn run_jepsen_multisink_with_redteam(
                 Some(rng.index(NUM_SINKS))
             } else {
                 None
+            };
+            let sink_skew_ms: [u64; NUM_SINKS] = if skew_enabled {
+                std::array::from_fn(|m| {
+                    if partitioned_sink == Some(m) {
+                        30 + (skew_rng.next_u64() % 21) // [30, 50] ms <= MAX_CLOCK_SKEW_MS
+                    } else {
+                        skew_rng.next_u64() % 16 // [0, 15] ms <= MAX_CLOCK_SKEW_MS
+                    }
+                })
+            } else {
+                [0; NUM_SINKS]
             };
 
             let withdraw_ms = 40 + (rng.next_u64() % 30); // withdrawal in [40, 69] ms; lease expires at 210 ms
@@ -1216,16 +1254,18 @@ pub fn run_jepsen_multisink_with_redteam(
                 .map(|l| l.expires_ms)
                 .max()
                 .unwrap_or(withdraw_ms);
+            let expiry_quiesce_threshold = max_lease_exp.saturating_add(broker_skew_margin_ms);
 
             for pkt in queue {
                 let now_ms = pkt.deliver_ms;
-                // Check if lease expiry alone already satisfied StrongRevokeAck before `now_ms`
-                if revoke_ack_time_ms.is_none() && now_ms > max_lease_exp {
-                    let expiry_ack_ms = max_lease_exp + 1;
+                // Check if lease expiry (+ skew margin when configured) satisfied StrongRevokeAck before `now_ms`
+                if revoke_ack_time_ms.is_none() && now_ms > expiry_quiesce_threshold {
+                    let expiry_ack_ms = expiry_quiesce_threshold + 1;
                     if broker.can_emit_strong_revoke_ack(
                         revoked_issuer,
                         required_floor,
                         expiry_ack_ms,
+                        broker_skew_margin_ms,
                     ) {
                         revoke_ack_time_ms = Some(expiry_ack_ms);
                         completed_via_lease_expiry = true;
@@ -1243,7 +1283,7 @@ pub fn run_jepsen_multisink_with_redteam(
                         let resp = workers[sink_idx].call(&SinkRpcRequest::ApplyFence {
                             cert,
                             challenge_nonce,
-                            now_ms,
+                            now_ms: now_ms.saturating_sub(sink_skew_ms[sink_idx]),
                         });
                         if let SinkRpcResponse::FenceAck {
                             ack: Some(signed_ack),
@@ -1262,7 +1302,12 @@ pub fn run_jepsen_multisink_with_redteam(
                                 assert!(ok, "genuine Sink SignedFenceAck must verify");
                                 if revoke_ack_time_ms.is_none()
                                     && now_ms >= withdraw_ms
-                                    && broker.can_emit_strong_revoke_ack(issuer, req_fl, now_ms)
+                                    && broker.can_emit_strong_revoke_ack(
+                                        issuer,
+                                        req_fl,
+                                        now_ms,
+                                        broker_skew_margin_ms,
+                                    )
                                 {
                                     revoke_ack_time_ms = Some(now_ms);
                                 }
@@ -1309,7 +1354,7 @@ pub fn run_jepsen_multisink_with_redteam(
                             proposal,
                             session_actor,
                             credential,
-                            now_ms,
+                            now_ms: now_ms.saturating_sub(sink_skew_ms[sink_idx]),
                         });
                     }
                     ScheduledEventKind::ProposerComplete {
@@ -1318,7 +1363,8 @@ pub fn run_jepsen_multisink_with_redteam(
                     } => {
                         let _ = workers[sink_idx].call(&SinkRpcRequest::Complete {
                             proposal_id,
-                            now_ms,
+                            now_ms: now_ms.saturating_sub(sink_skew_ms[sink_idx]),
+                            physical_now_ms: now_ms,
                         });
                     }
                     ScheduledEventKind::SinkCrashRestart { sink_idx } => {
@@ -1328,12 +1374,17 @@ pub fn run_jepsen_multisink_with_redteam(
                 }
             }
 
-            // If still unacked at end of packet trace, coordinator completes StrongRevokeAck at `max_lease_exp + 1`
+            // If still unacked at end of packet trace, coordinator completes StrongRevokeAck at `expiry_quiesce_threshold + 1`
             let ack_ms = match revoke_ack_time_ms {
                 Some(t) => t,
                 None => {
-                    let t = max_lease_exp + 1;
-                    assert!(broker.can_emit_strong_revoke_ack(revoked_issuer, required_floor, t));
+                    let t = expiry_quiesce_threshold + 1;
+                    assert!(broker.can_emit_strong_revoke_ack(
+                        revoked_issuer,
+                        required_floor,
+                        t,
+                        broker_skew_margin_ms,
+                    ));
                     completed_via_lease_expiry = true;
                     t
                 }
