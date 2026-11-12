@@ -433,6 +433,53 @@ A.~Y. {Kim} and A.~{Escobedo-Land}.
 \newblock {OkCupid profile data for introductory statistics and data science courses}.
 \newblock \emph{Journal of Statistics Education}, 23\penalty0 (2):\penalty0 1--25, 2015.
 \newblock \doi{10.1080/10691898.2015.11889737}.
+
+\bibitem[{Eagly} and {Karau}(2002)]{eagly2002}
+A.~H. {Eagly} and S.~J. {Karau}.
+\newblock {Role congruity theory of prejudice toward female leaders}.
+\newblock \emph{Psychological Review}, 109\penalty0 (3):\penalty0 573--598, 2002.
+\newblock \doi{10.1037/0033-295X.109.3.573}.
+
+\bibitem[{Rudman} and {Glick}(2001)]{rudman2001}
+L.~A. {Rudman} and P.~{Glick}.
+\newblock {Prescriptive gender stereotypes and backlash toward agentic women}.
+\newblock \emph{Journal of Social Issues}, 57\penalty0 (4):\penalty0 743--762, 2001.
+\newblock \doi{10.1111/0022-4537.00239}.
+
+\bibitem[{Kanze} et~al.(2018){Kanze}, {Huang}, {Conley}, and {Higgins}]{kanze2018}
+D.~{Kanze}, L.~{Huang}, M.~A. {Conley}, and E.~T. {Higgins}.
+\newblock {We ask men to win and women not to lose: closing the gender gap in startup funding}.
+\newblock \emph{Academy of Management Journal}, 61\penalty0 (2):\penalty0 586--614, 2018.
+\newblock \doi{10.5465/amj.2016.1215}.
+
+\bibitem[{Brooks} et~al.(2014){Brooks}, {Huang}, {Kearney}, and {Murray}]{brooks2014}
+A.~W. {Brooks}, L.~{Huang}, S.~W. {Kearney}, and F.~E. {Murray}.
+\newblock {Investors prefer entrepreneurial ventures pitched by attractive men}.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 111\penalty0 (12):\penalty0 4427--4432, 2014.
+\newblock \doi{10.1073/pnas.1321202111}.
+
+\bibitem[{Anderson} et~al.(2012){Anderson}, {Brion}, {Moore}, and {Kennedy}]{anderson2012}
+C.~{Anderson}, S.~{Brion}, D.~A. {Moore}, and J.~A. {Kennedy}.
+\newblock {A status-enhancement account of overconfidence}.
+\newblock \emph{Journal of Personality and Social Psychology}, 103\penalty0 (4):\penalty0 718--735, 2012.
+\newblock \doi{10.1037/a0029395}.
+
+\bibitem[{Willer}(2009)]{willer2009}
+R.~{Willer}.
+\newblock {Groups reward individual sacrifice: the status solution to the collective action problem}.
+\newblock \emph{American Sociological Review}, 74\penalty0 (1):\penalty0 23--43, 2009.
+\newblock \doi{10.1177/000312240907400102}.
+
+\bibitem[{Rogers} et~al.(2023){Rogers}, {Chicas}, {Kelly}, {Kubin}, {Christian}, {Kachanoff}, {Berger}, {Puryear}, {McAdams}, and {Gray}]{rogers2023}
+B.~A. {Rogers}, H.~{Chicas}, J.~M. {Kelly}, et~al.
+\newblock {Seeing your life story as a Hero's Journey increases meaning in life}.
+\newblock \emph{Journal of Personality and Social Psychology}, 125\penalty0 (4):\penalty0 752--778, 2023.
+\newblock \doi{10.1037/pspa0000341}.
+
+\bibitem[{Campbell}(1949)]{campbell1949}
+J.~{Campbell}.
+\newblock \emph{{The Hero with a Thousand Faces}}.
+\newblock Pantheon Books, New York, 1949.
 """
 
 
@@ -3891,6 +3938,125 @@ def numbers(data):
         "PboETwentyThreeDivW": format_rate(e23_b["part_iii_unilateral_divorce_flip"]["married_woman_unilateral_closed_form"]),
     })
 
+    # v16 Outlier Confidence vs. Gross Arrogance, Audience Priors, Alpha Asymmetry & Proposition 24 (E24) macros
+    cab_b = speed["confidence_and_backlash"]
+    awd_b = cab_b["agency_x_warmth_dyadic"]
+    m2f_b = awd_b["male_chooser_to_female_target"]
+    f2m_b = awd_b["female_chooser_to_male_target"]
+    aam_b = cab_b["audience_age_modulation"]
+    arm_b = cab_b["audience_race_modulation"]
+    st_b = cab_b["status_threat"]
+    aee_b = pov["alpha_executive_and_ethnicity"]
+    ex_b = aee_b["executives_ages_30_54"]
+    eth_b = aee_b["ambition_by_ethnicity_ages_25_49"]
+    iap_b = osyn["influence_and_prestige"]
+    kip_b = iap_b["kowal_175_countries"]
+    sip_b = iap_b["sccs_coalition_leadership"]
+    oip_b = iap_b["okcupid_heros_journey_and_execs"]
+    e24_b = osyn["proposition_24_e24"]
+
+    ex_f_b = ex_b["by_sex"]["Female"]["executive_founder_owner"]
+    ex_m_b = ex_b["by_sex"]["Male"]["executive_founder_owner"]
+    nx_f_b = ex_b["by_sex"]["Female"]["non_executive_pool"]
+    nx_m_b = ex_b["by_sex"]["Male"]["non_executive_pool"]
+    ex_c_b = ex_b["contrasts"]
+
+    values.update({
+        "PboWarmOutlierYesW": format_rate(m2f_b["warm_outlier_agency"]["yes_share"]),
+        "PboWarmOutlierYesM": format_rate(f2m_b["warm_outlier_agency"]["yes_share"]),
+        "PboColdArrogantYesW": format_rate(m2f_b["cold_arrogant_high_agency"]["yes_share"]),
+        "PboColdArrogantYesM": format_rate(f2m_b["cold_arrogant_high_agency"]["yes_share"]),
+        "PboWarmHumbleYesW": format_rate(m2f_b["warm_humble_low_agency"]["yes_share"]),
+        "PboWarmHumbleYesM": format_rate(f2m_b["warm_humble_low_agency"]["yes_share"]),
+        "PboColdDropPPW": f"{m2f_b['coldness_backlash_drop_pp']:.1f}",
+        "PboColdDropPPM": f"{f2m_b['coldness_backlash_drop_pp']:.1f}",
+        "PboColdBacklashRatio": f"{awd_b['female_to_male_coldness_backlash_ratio']:.2f}",
+        "PboWarmHumbleRatioW": f"{m2f_b['warm_outlier_to_humble_low_ratio']:.1f}",
+        "PboWarmHumbleRatioM": f"{f2m_b['warm_outlier_to_humble_low_ratio']:.1f}",
+        "PboOverclaimSlopeYoung": f"{aam_b['age_le_24']['coefficients']['target_overclaim']['slope_pp']:+.1f}",
+        "PboOverclaimSlopeMid": f"{aam_b['age_25_28']['coefficients']['target_overclaim']['slope_pp']:+.1f}",
+        "PboOverclaimSlopeMature": f"{aam_b['age_ge_29']['coefficients']['target_overclaim']['slope_pp']:+.1f}",
+        "PboOverclaimAgeSurge": f"{aam_b['mature_to_young_overclaim_penalty_ratio']:.1f}",
+        "PboAmbSlopeYoung": f"{aam_b['age_le_24']['coefficients']['amb']['slope_pp']:+.1f}",
+        "PboAmbSlopeMature": f"{aam_b['age_ge_29']['coefficients']['amb']['slope_pp']:+.1f}",
+        "PboRaceWhiteOverclaim": f"{arm_b['white_euro']['coefficients']['target_overclaim']['slope_pp']:+.1f}",
+        "PboRaceWhiteAmb": f"{arm_b['white_euro']['coefficients']['amb']['slope_pp']:+.1f}",
+        "PboRaceAsianAmb": f"{arm_b['asian']['coefficients']['amb']['slope_pp']:+.1f}",
+        "PboRaceAsianFun": f"{arm_b['asian']['coefficients']['fun']['slope_pp']:+.1f}",
+        "PboRaceBlackAmb": f"{arm_b['black']['coefficients']['amb']['slope_pp']:+.1f}",
+        "PboRaceBlackSinc": f"{arm_b['black']['coefficients']['sinc']['slope_pp']:+.1f}",
+        "PboRaceLatinoAmb": f"{arm_b['latino']['coefficients']['amb']['slope_pp']:+.1f}",
+        "PboOutsmartWomanOnManPP": f"{st_b['male_chooser_evaluating_woman']['coefficients']['target_outsmarts_chooser']['slope_pp']:+.1f}",
+        "PboOutsmartManOnWomanPP": f"{st_b['female_chooser_evaluating_man']['coefficients']['target_outsmarts_chooser']['slope_pp']:+.1f}",
+        "PboInsecureMenAmbPP": f"{st_b['male_chooser_strata']['ambition_insecure_men_le7']['coefficients']['amb']['slope_pp']:+.1f}",
+        "PboExecWomenN": f"{ex_f_b['n']:,}",
+        "PboExecMenN": f"{ex_m_b['n']:,}",
+        "PboExecTotalN": f"{ex_f_b['n'] + ex_m_b['n']:,}",
+        "PboNonExecPoolN": f"{nx_f_b['n'] + nx_m_b['n']:,}",
+        "PboExecDivW": format_rate(ex_f_b["divorced"]["share"]),
+        "PboExecDivM": format_rate(ex_m_b["divorced"]["share"]),
+        "PboNonExecDivW": format_rate(nx_f_b["divorced"]["share"]),
+        "PboNonExecDivM": format_rate(nx_m_b["divorced"]["share"]),
+        "PboExecDivGapPP": f"{ex_c_b['female_minus_male_exec_divorced_pp']:+.1f}",
+        "PboExecDivRatio": f"{ex_c_b['female_to_male_exec_divorced_ratio']:.2f}",
+        "PboExecMinusNonExecDivW": f"{ex_c_b['female_exec_minus_nonexec_divorced_pp']:+.1f}",
+        "PboExecChildlessW": format_rate(ex_f_b["childless"]["share"]),
+        "PboNonExecChildlessW": format_rate(nx_f_b["childless"]["share"]),
+        "PboExecMinusNonExecChildlessW": f"{ex_c_b['female_exec_minus_nonexec_childless_pp']:+.1f}",
+        "PboExecMinusNonExecChildlessM": f"{ex_c_b['male_exec_minus_nonexec_childless_pp']:+.1f}",
+        "PboExecVeryAmbW": format_rate(ex_f_b["very_ambitious_all"]["share"]),
+        "PboExecVeryAmbM": format_rate(ex_m_b["very_ambitious_all"]["share"]),
+        "PboExecAmbGapPP": f"{ex_c_b['female_minus_male_exec_very_ambitious_pp']:+.1f}",
+        "PboEthAmbBlackM": format_rate(eth_b["Black"]["Male"]["share"]),
+        "PboEthAmbBlackW": format_rate(eth_b["Black"]["Female"]["share"]),
+        "PboEthAmbMixedM": format_rate(eth_b["Mixed Race"]["Male"]["share"]),
+        "PboEthAmbMixedW": format_rate(eth_b["Mixed Race"]["Female"]["share"]),
+        "PboEthAmbMidEastM": format_rate(eth_b["Middle Eastern"]["Male"]["share"]),
+        "PboEthAmbMidEastW": format_rate(eth_b["Middle Eastern"]["Female"]["share"]),
+        "PboEthAmbIndianM": format_rate(eth_b["Indian"]["Male"]["share"]),
+        "PboEthAmbIndianW": format_rate(eth_b["Indian"]["Female"]["share"]),
+        "PboEthAmbHispM": format_rate(eth_b["Hispanic"]["Male"]["share"]),
+        "PboEthAmbHispW": format_rate(eth_b["Hispanic"]["Female"]["share"]),
+        "PboEthAmbWhiteM": format_rate(eth_b["Caucasian"]["Male"]["share"]),
+        "PboEthAmbWhiteW": format_rate(eth_b["Caucasian"]["Female"]["share"]),
+        "PboEthAmbAsianM": format_rate(eth_b["Asian"]["Male"]["share"]),
+        "PboEthAmbAsianW": format_rate(eth_b["Asian"]["Female"]["share"]),
+        "PboKowPrestigeN": f"{kip_b['archetypes_by_sex']['men']['n_total'] + kip_b['archetypes_by_sex']['women']['n_total']:,}",
+        "PboKowWarmPartM": format_rate(kip_b["archetypes_by_sex"]["men"]["warm_outlier_confidence"]["partnered_share"]),
+        "PboKowHumblePartM": format_rate(kip_b["archetypes_by_sex"]["men"]["warm_humble_low_agency"]["partnered_share"]),
+        "PboKowColdPartM": format_rate(kip_b["archetypes_by_sex"]["men"]["cold_arrogant_high_claim"]["partnered_share"]),
+        "PboKowWarmOverHumblePP": f"{kip_b['archetypes_by_sex']['men']['warm_outlier_minus_humble_partnered_pp']:+.1f}",
+        "PboKowWarmKindGainM": f"{kip_b['archetypes_by_sex']['men']['warm_outlier_minus_cold_mate_kind']:+.2f}",
+        "PboKowWarmKindGainW": f"{kip_b['archetypes_by_sex']['women']['warm_outlier_minus_cold_mate_kind']:+.2f}",
+        "PboKowWarmPrqcGainM": f"{kip_b['archetypes_by_sex']['men']['warm_outlier_minus_cold_prqc']:+.2f}",
+        "PboKowWarmPrqcGainW": f"{kip_b['archetypes_by_sex']['women']['warm_outlier_minus_cold_prqc']:+.2f}",
+        "PboKowOutEarnPrqcDropW": f"{kip_b['relative_resource_asymmetry']['women']['out_earns_prqc_diff']:+.2f}",
+        "PboKowOutEarnCommDropW": f"{kip_b['relative_resource_asymmetry']['women']['out_earns_commitment_diff']:+.2f}",
+        "PboKowPhdSingleGapW": f"{kip_b['edu_class_singlehood_ages_30_55']['women']['phd_minus_hs_single_pp']:+.1f}",
+        "PboKowPhdSingleGapM": f"{kip_b['edu_class_singlehood_ages_30_55']['men']['phd_minus_hs_single_pp']:+.1f}",
+        "PboSccsAllN": str(sip_b["regimes"]["all_sccs"]["n_societies"]),
+        "PboSccsEgalN": str(sip_b["regimes"]["egalitarian_sccs270_eq1"]["n_societies"]),
+        "PboSccsStratN": str(sip_b["regimes"]["class_stratified_sccs270_ge2"]["n_societies"]),
+        "PboSccsEgalCheckedPct": format_rate(sip_b["regimes"]["egalitarian_sccs270_eq1"]["checked_leaders_share"]),
+        "PboSccsEgalPersuadePct": format_rate(sip_b["regimes"]["egalitarian_sccs270_eq1"]["persuasion_or_consultation_share"]),
+        "PboSccsStratPersuadePct": format_rate(sip_b["regimes"]["class_stratified_sccs270_ge2"]["persuasion_or_consultation_share"]),
+        "PboSccsEgalPurePersuadePct": format_rate(sip_b["regimes"]["egalitarian_sccs270_eq1"]["pure_persuasion_share"]),
+        "PboSccsStratPurePersuadePct": format_rate(sip_b["regimes"]["class_stratified_sccs270_ge2"]["pure_persuasion_share"]),
+        "PboSccsEgalRespectPct": format_rate(sip_b["regimes"]["egalitarian_sccs270_eq1"]["obeyed_by_respect_share"]),
+        "PboSccsEgalForcePct": format_rate(sip_b["regimes"]["egalitarian_sccs270_eq1"]["backed_by_force_share"]),
+        "PboSccsRespectForceRatio": f"{sip_b['egalitarian_respect_to_force_ratio']:.2f}",
+        "PboSccsStratForcePct": format_rate(sip_b["regimes"]["class_stratified_sccs270_ge2"]["backed_by_force_share"]),
+        "PboSccsEgalWithdrawPct": format_rate(sip_b["regimes"]["egalitarian_sccs270_eq1"]["silent_followership_withdrawal_share"]),
+        "PboSccsAllWithdrawPct": format_rate(sip_b["regimes"]["all_sccs"]["silent_followership_withdrawal_share"]),
+        "PboOkcHeroTriadN": f"{oip_b['heros_journey_triad']['n']:,}",
+        "PboOkcHeroTriadPct": format_rate(oip_b["heros_journey_triad"]["share"]),
+        "PboOkcHeroTriadK": f"{oip_b['heros_journey_triad']['mean_prompts_filled_k']:.2f}",
+        "PboOkcPassiveK": f"{oip_b['passive_unfilled']['mean_prompts_filled_k']:.2f}",
+        "PboOkcHeroKRatio": f"{oip_b['triad_to_passive_k_ratio']:.2f}",
+        "PboETwentyFourMaxDiff": f"{e24_b['max_abs_diff']:.3f}",
+        "PboETwentyFourHeroRatio": f"{e24_b['part_iv_heros_journey_vs_self_aggrandizing']['standing_ratio']:.1f}",
+    })
+
     for name in values:
         assert name.isalpha(), f"LaTeX macro name must be alphabetic: {name}"
     return "".join(f"\\newcommand{{\\{name}}}{{{value}}}\n" for name, value in values.items())
@@ -4383,8 +4549,358 @@ def macro_kpi_table(data):
             rf"\textbf{{94\%}} of U.S.\ birth drop sits in non-marriage; male pairing is positive on income (${gss_m['pairing'][0]:+.3f}$), schooling ($+{gss_all['schooling']['men']['pairing'][0]:.3f}$), \& \texttt{{WORDSUM}} (\textbf{{${gss_v['pairing'][0]:+.3f}$}})",
             rf"Within-marriage births invert all four (${gss_m['number'][0]:+.3f}$ to ${gss_all['schooling']['men']['number'][0]:+.3f}$); height fertility null ($r\!=\!{lid['height']['reproduction_all']['re_mean_r']:+.3f}$; Props.~\ref{{prop:episodes}},~\ref{{prop:waiting}})",
         ),
+        (
+            r"\textbf{9. Prestige vs.\ Arrogance \& Alpha Bind}",
+            "What separates outlier confidence from gross arrogance across audiences, alpha sexes, and coalition calls?",
+            r"8,378 dates + 89.2k Kowal + 16,075 POV CEOs + 186 SCCS + 59.9k \texttt{OkCupid}",
+            rf"Warm outlier agency wins \textbf{{{100*speed['confidence_and_backlash']['agency_x_warmth_dyadic']['male_chooser_to_female_target']['warm_outlier_agency']['yes_share']:.1f}\%/{100*speed['confidence_and_backlash']['agency_x_warmth_dyadic']['female_chooser_to_male_target']['warm_outlier_agency']['yes_share']:.1f}\%}} vs.\ \textbf{{{100*speed['confidence_and_backlash']['agency_x_warmth_dyadic']['male_chooser_to_female_target']['warm_humble_low_agency']['yes_share']:.1f}\%/{100*speed['confidence_and_backlash']['agency_x_warmth_dyadic']['female_chooser_to_male_target']['warm_humble_low_agency']['yes_share']:.1f}\%}} humble; 29+ boast penalty surges \textbf{{{speed['confidence_and_backlash']['audience_age_modulation']['mature_to_young_overclaim_penalty_ratio']:.1f}$\times$}}; SCCS bands \textbf{{100\% checked \& {100*osyn['influence_and_prestige']['sccs_coalition_leadership']['regimes']['egalitarian_sccs270_eq1']['persuasion_or_consultation_share']:.1f}\% persuasive}}",
+            rf"Women face \textbf{{{speed['confidence_and_backlash']['agency_x_warmth_dyadic']['female_to_male_coldness_backlash_ratio']:.2f}$\times$}} coldness drop, \textbf{{{speed['confidence_and_backlash']['status_threat']['male_chooser_evaluating_woman']['coefficients']['target_outsmarts_chooser']['slope_pp']:+.1f}\,pp}} male outsmarting threat, \& \textbf{{{100*pov['alpha_executive_and_ethnicity']['executives_ages_30_54']['by_sex']['Female']['executive_founder_owner']['divorced']['share']:.1f}\% vs.\ {100*pov['alpha_executive_and_ethnicity']['executives_ages_30_54']['by_sex']['Male']['executive_founder_owner']['divorced']['share']:.1f}\%}} CEO divorce (Props.~\ref{{prop:despot}},~\ref{{prop:staging}},~\ref{{prop:prestige}})",
+        ),
     ]
     return "\n".join(" & ".join(r) + r"\\" for r in rows) + "\n"
+
+
+def influence_regimes_table(data):
+    cab = data["speed_dating"]["confidence_and_backlash"]
+    awd = cab["agency_x_warmth_dyadic"]
+    aam = cab["audience_age_modulation"]
+    arm = cab["audience_race_modulation"]
+    st = cab["status_threat"]
+    ex = data["pov"]["alpha_executive_and_ethnicity"]["executives_ages_30_54"]
+    eth = data["pov"]["alpha_executive_and_ethnicity"]["ambition_by_ethnicity_ages_25_49"]
+    iap = data["open_synthesis"]["influence_and_prestige"]
+    kip = iap["kowal_175_countries"]
+    sip = iap["sccs_coalition_leadership"]
+    oip = iap["okcupid_heros_journey_and_execs"]
+    e24 = data["open_synthesis"]["proposition_24_e24"]
+
+    eg = sip["regimes"]["egalitarian_sccs270_eq1"]
+    strat = sip["regimes"]["class_stratified_sccs270_ge2"]
+    ex_f = ex["by_sex"]["Female"]["executive_founder_owner"]
+    ex_m = ex["by_sex"]["Male"]["executive_founder_owner"]
+    ex_c = ex["contrasts"]
+
+    rows = [
+        (
+            r"\textbf{1. Romantic Courtship \& Pair Bonding}\newline{\scriptsize[Tier 1: 8,378 dates; 89.2k Kowal; 59.9k \texttt{OkCupid}; Tier 2: Fisman et al.\ 2006]}",
+            rf"Warm outlier agency ($\ge 8$ agency \& sincerity) wins \textbf{{{100*awd['male_chooser_to_female_target']['warm_outlier_agency']['yes_share']:.1f}\% W / {100*awd['female_chooser_to_male_target']['warm_outlier_agency']['yes_share']:.1f}\% M}} ``Yes'' (\textbf{{{awd['male_chooser_to_female_target']['warm_outlier_to_humble_low_ratio']:.1f}--{awd['female_chooser_to_male_target']['warm_outlier_to_humble_low_ratio']:.1f}$\times$}} humble low-agency) \& lifts global male partnering \textbf{{{kip['archetypes_by_sex']['men']['warm_outlier_minus_humble_partnered_pp']:+.1f}\,pp}}.",
+            rf"Cold high-agency drops ``Yes'' \textbf{{$-{awd['male_chooser_to_female_target']['coldness_backlash_drop_pp']:.1f}$ W / $-{awd['female_chooser_to_male_target']['coldness_backlash_drop_pp']:.1f}$ M\,pp}}; global cold high-claim loses \textbf{{{kip['archetypes_by_sex']['men']['warm_outlier_minus_cold_mate_kind']:+.2f}/+{kip['archetypes_by_sex']['women']['warm_outlier_minus_cold_mate_kind']:.2f}}} partner kindness \& \textbf{{{kip['archetypes_by_sex']['men']['warm_outlier_minus_cold_prqc']:+.2f}/+{kip['archetypes_by_sex']['women']['warm_outlier_minus_cold_prqc']:.2f}}} PRQC.",
+            rf"Unbacked overclaiming penalty surges \textbf{{{aam['mature_to_young_overclaim_penalty_ratio']:.1f}$\times$}} from $\le 24$ (${aam['age_le_24']['coefficients']['target_overclaim']['slope_pp']:+.1f}$\,pp/pt, null) to $29+$ (\textbf{{${aam['age_ge_29']['coefficients']['target_overclaim']['slope_pp']:+.1f}$\,pp/pt}}); White juries penalize boasting (${arm['white_euro']['coefficients']['target_overclaim']['slope_pp']:+.1f}$), Asian reward fun ($+{arm['asian']['coefficients']['fun']['slope_pp']:.1f}$), Black accept ambition ($+{arm['black']['coefficients']['amb']['slope_pp']:.1f}$).",
+            rf"Outsmarting man costs women \textbf{{${st['male_chooser_evaluating_woman']['coefficients']['target_outsmarts_chooser']['slope_pp']:+.1f}$\,pp}} (man$>$woman ${st['female_chooser_evaluating_man']['coefficients']['target_outsmarts_chooser']['slope_pp']:+.1f}$\,pp, null); \texttt{{OkCupid}} Hero Triad (quest + candor + co-adventure) reaches \textbf{{$K={oip['heros_journey_triad']['mean_prompts_filled_k']:.2f}/10$}} prompts vs.\ {oip['passive_unfilled']['mean_prompts_filled_k']:.2f}.",
+        ),
+        (
+            r"\textbf{2. Band \& Team Leadership}\newline{\scriptsize[Tier 1: 186 SCCS societies; Tier 2: Boehm 1999; Henrich \& Gil-White 2001; Willer 2009]}",
+            rf"Egalitarian bands ($n={eg['n_societies']}$) obey informal leaders by \textbf{{earned respect ({100*eg['obeyed_by_respect_share']:.1f}\% vs.\ {100*eg['backed_by_force_share']:.1f}\% force, {sip['egalitarian_respect_to_force_ratio']:.2f}$\times$)}} via demonstrated multi-domain skill and generous sharing.",
+            rf"Domineering/arrogant claimants face \textbf{{{100*eg['checked_leaders_share']:.1f}\% institutional/peer checks}} and \textbf{{{100*eg['silent_followership_withdrawal_share']:.1f}\% removal via silent followership walkout}} ({100*sip['regimes']['all_sccs']['silent_followership_withdrawal_share']:.1f}\% across all SCCS).",
+            rf"Regime shift: egalitarian bands require \textbf{{{100*eg['persuasion_or_consultation_share']:.1f}\% persuasion/consultation}} ({100*eg['pure_persuasion_share']:.1f}\% pure persuasion), whereas class-stratified hierarchies ($n={strat['n_societies']}$) flip to \textbf{{{100*strat['backed_by_force_share']:.1f}\% coercive force}}.",
+            r"Female public political voice operates in \textbf{49.1\%--57.5\%} of coded SCCS regimes; legitimacy requires visible skin-in-the-game sacrifice ($\eta_h h>0$; Willer 2009) rather than command.",
+        ),
+        (
+            r"\textbf{3. Executive / CEO \& Household Culture}\newline{\scriptsize[Tier 1: 16,075 POV CEOs vs.\ 551k non-execs; GSS; Kowal; Tier 2: Folke \& Rickne 2020; Bertrand et al.\ 2015; Bursztyn et al.\ 2017]}",
+            rf"Male executives convert prestige/income into marriage entry (GSS $+0.023$/$+0.046\,\SD$; POV CEOs $-1.0$\,pp lower childlessness than non-exec men) and openly badge ``Very Ambitious'' (\textbf{{{100*ex_m['very_ambitious_all']['share']:.1f}\%}}).",
+            rf"Cold zero-sum dominance triggers \textbf{{{awd['female_to_male_coldness_backlash_ratio']:.2f}$\times$ steeper female warmth backlash}} (Role Congruity tax $\tau_f>0$; Eagly \& Karau 2002; Rudman \& Glick 2001); out-resourcing mates drops union PRQC \textbf{{${kip['relative_resource_asymmetry']['women']['out_earns_prqc_diff']:+.2f}$}}.",
+            rf"Open ``Very Ambitious'' badging spans \textbf{{$\sim\!2\times$ across 9 POV ethnicities}} (Black \textbf{{{100*eth['Black']['Male']['share']:.1f}\%/{100*eth['Black']['Female']['share']:.1f}\%}}, Mixed {100*eth['Mixed Race']['Male']['share']:.1f}\%/{100*eth['Mixed Race']['Female']['share']:.1f}\% vs.\ White {100*eth['Caucasian']['Male']['share']:.1f}\%/{100*eth['Caucasian']['Female']['share']:.1f}\%, Asian {100*eth['Asian']['Male']['share']:.1f}\%/{100*eth['Asian']['Female']['share']:.1f}\%).",
+            rf"Female CEOs/founders ($n={ex_f['n']:,}$) show \textbf{{{100*ex_f['divorced']['share']:.1f}\% vs.\ {100*ex_m['divorced']['share']:.1f}\% M}} divorced share (\textbf{{{ex_c['female_to_male_exec_divorced_ratio']:.2f}$\times$}}; Folke \& Rickne 2020) \& \textbf{{${ex_c['female_minus_male_exec_very_ambitious_pp']:+.1f}$\,pp}} ambition modulation; dual-signal $h\to 1$ + caliber match recovers \textbf{{{e24['part_iii_alpha_double_bind_escape']['alpha_female_dual_signal_high_caliber_pool']['closed_form']:.2f}}} standing (\texttt{{E24}}).",
+        ),
+        (
+            r"\textbf{4. Political Persuasion \& Venture Capital}\newline{\scriptsize[Tier 1: Prop.\ 24 (\texttt{E24}); Tier 2: Kanze et al.\ 2018; Brooks et al.\ 2014; Anderson et al.\ 2012; Rogers et al.\ 2023]}",
+            rf"Promotion-framed shared vision ($h\to 1$) backed by multi-domain execution proof ($K\gg 1$) achieves \textbf{{{e24['part_iv_heros_journey_vs_self_aggrandizing']['standing_ratio']:.1f}$\times$}} the coalition standing of self-aggrandizing pitches in \texttt{{E24}}.",
+            r"Unbacked pitch overconfidence ($\delta>0$) wins thin first-glance contests ($m=1$: $+0.71$ in \texttt{E24}; Anderson et al.\ 2012; Brooks et al.\ 2014) but collapses under due-diligence audit ($m=20$: $-1.05$).",
+            r"Institutional due diligence ($m_g\uparrow$) and egalitarian/high-humility norms ($\kappa_g\uparrow$) shift optimal assertion $c^*(m_g,\kappa_g)$ from hype toward verified milestones and shared upside ($1-k^*q$).",
+            r"VCs ask men promotion (``win'') and women prevention (``not lose'') questions, cutting funding; pivoting answers to \textbf{promotion-oriented mission vision lifts funding $2\times$--$7\times$} (Kanze et al.\ 2018; Rogers et al.\ 2023).",
+        ),
+    ]
+    return "\n".join(" & ".join(r) + r"\\\addlinespace[2.5pt]" for r in rows) + "\n"
+
+
+def confidence_influence_plot(data):
+    cab = data["speed_dating"]["confidence_and_backlash"]
+    awd = cab["agency_x_warmth_dyadic"]
+    aam = cab["audience_age_modulation"]
+    arm = cab["audience_race_modulation"]
+    st = cab["status_threat"]
+    ex = data["pov"]["alpha_executive_and_ethnicity"]["executives_ages_30_54"]
+    eth = data["pov"]["alpha_executive_and_ethnicity"]["ambition_by_ethnicity_ages_25_49"]
+    iap = data["open_synthesis"]["influence_and_prestige"]
+    kip = iap["kowal_175_countries"]
+    sip = iap["sccs_coalition_leadership"]
+    oip = iap["okcupid_heros_journey_and_execs"]
+    e24 = data["open_synthesis"]["proposition_24_e24"]
+
+    fig = plt.figure(figsize=(7.24, 5.26))
+    outer = fig.add_gridspec(2, 3, width_ratios=[1.08, 1.14, 1.08], height_ratios=[1.0, 1.02], wspace=0.35, hspace=0.47)
+    fig.subplots_adjust(left=0.078, right=0.988, bottom=0.092, top=0.930)
+
+    # Panel A: Outlier Confidence vs. Cold Arrogance & Warm Passivity (Columbia N=8,378)
+    ax_a = fig.add_subplot(outer[0, 0])
+    arch_specs = [
+        ("warm_outlier_agency", "Warm outlier\n(agency & sinc \u22658)"),
+        ("cold_arrogant_high_agency", "Cold / arrogant\n(agency \u22658, sinc \u22646)"),
+        ("warm_humble_low_agency", "Warm humble\n(agency \u22646, sinc \u22658)"),
+        ("low_agency_low_warmth", "Low agency &\nwarmth (\u22646)"),
+    ]
+    ya = np.arange(len(arch_specs))
+    w_yes = [100.0 * awd["male_chooser_to_female_target"][k]["yes_share"] for k, _ in arch_specs]
+    m_yes = [100.0 * awd["female_chooser_to_male_target"][k]["yes_share"] for k, _ in arch_specs]
+    bh = 0.34
+    ax_a.barh(ya - bh / 2, w_yes, height=bh, color=WOMEN, alpha=0.88, label="Female target")
+    ax_a.barh(ya + bh / 2, m_yes, height=bh, color=MEN, alpha=0.88, label="Male target")
+    for yi, wv, mv in zip(ya, w_yes, m_yes):
+        ax_a.text(wv + 1.3, yi - bh / 2, f"{wv:.1f}%", va="center", ha="left", fontsize=5.3, color=WOMEN, fontweight="bold")
+        ax_a.text(mv + 1.3, yi + bh / 2, f"{mv:.1f}%", va="center", ha="left", fontsize=5.3, color=MEN, fontweight="bold")
+    ax_a.set_yticks(ya, [lbl for _, lbl in arch_specs], fontsize=5.8)
+    ax_a.invert_yaxis()
+    ax_a.set_xlim(0, 91)
+    ax_a.set_xticks([0, 25, 50, 75])
+    ax_a.grid(False)
+    ax_a.grid(axis="x", color=GRID, lw=0.5)
+    ax_a.legend(loc="lower right", bbox_to_anchor=(1.0, 0.25), fontsize=5.3, handlelength=1.1, labelspacing=0.18)
+    ax_a.text(
+        89.5, 3.38,
+        f"Cold drop: W \u2212{awd['male_chooser_to_female_target']['coldness_backlash_drop_pp']:.0f} vs M \u2212{awd['female_chooser_to_male_target']['coldness_backlash_drop_pp']:.0f} pp\n({awd['female_to_male_coldness_backlash_ratio']:.2f}\u00d7 backlash)",
+        fontsize=4.8, color=INK, ha="right", va="bottom", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.14", fc=BAND, ec="none", alpha=0.92),
+    )
+    panel(ax_a, "A", "Confidence vs. arrogance (8.4k dates)", xlabel="Live 'Yes' rate (%)", fontsize=7.5, pad=4)
+
+    # Panel B: Audience Age & Ethnic Priors (Columbia Overclaim + POV 805k Ethnic Ambition)
+    b_gs = outer[0, 1].subgridspec(2, 1, height_ratios=[1.0, 1.12], hspace=0.50)
+    ax_b1 = fig.add_subplot(b_gs[0, 0])
+    ax_b2 = fig.add_subplot(b_gs[1, 0])
+
+    age_keys = [("age_le_24", "\u226424"), ("age_25_28", "25\u201328"), ("age_ge_29", "29+")]
+    xb = np.arange(len(age_keys))
+    ax_b1.axhline(0, color=MUTED, lw=0.65, ls=":")
+    for ck, clbl, col, mk, off in (
+        ("target_overclaim", "Overclaim (self\u2212jury)", VIOLET, "s", -0.07),
+        ("amb", "Actual ambition", AQUA, "o", 0.07),
+    ):
+        sl = [aam[ak]["coefficients"][ck]["slope_pp"] for ak, _ in age_keys]
+        se = [aam[ak]["coefficients"][ck]["se_pp"] for ak, _ in age_keys]
+        ax_b1.errorbar(
+            xb + off, sl, yerr=[1.96 * s for s in se], color=col, fmt=f"-{mk}",
+            ms=3.4, lw=1.15, elinewidth=0.85, capsize=1.6, label=clbl,
+        )
+    ax_b1.set_xticks(xb, [al for _, al in age_keys], fontsize=6.0)
+    ax_b1.set_xlim(-0.35, 2.38)
+    ax_b1.set_ylim(-5.8, 2.2)
+    ax_b1.set_yticks([-4, -2, 0, 2])
+    ax_b1.set_ylabel("pp / pt", fontsize=5.8, labelpad=2.0)
+    ax_b1.legend(loc="upper left", fontsize=4.9, handlelength=1.2, labelspacing=0.12)
+    ax_b1.text(
+        1.52, -5.42,
+        f"{aam['mature_to_young_overclaim_penalty_ratio']:.1f}\u00d7 boast penalty\nat chooser age 29+",
+        fontsize=4.75, color=VIOLET, ha="right", va="bottom", fontweight="bold", linespacing=1.0,
+    )
+    panel(ax_b1, "B", "Audience age & ethnic priors", fontsize=7.5, pad=4)
+
+    eth_order = [("Black", "Black"), ("Mixed Race", "Mixed"), ("Middle Eastern", "Mid. East"), ("Hispanic", "Hispanic"), ("Caucasian", "White"), ("Asian", "Asian")]
+    ye = np.arange(len(eth_order))
+    for yi, (ek, _) in enumerate(eth_order):
+        wf = 100.0 * eth[ek]["Female"]["share"]
+        wm = 100.0 * eth[ek]["Male"]["share"]
+        ax_b2.plot([wf, wm], [yi, yi], color=MUTED, lw=0.85, zorder=2)
+        ax_b2.scatter([wf], [yi], color=WOMEN, marker="D", s=11, zorder=4)
+        ax_b2.scatter([wm], [yi], color=MEN, marker="o", s=12, zorder=4)
+    ax_b2.set_yticks(ye, [el for _, el in eth_order], fontsize=5.6)
+    ax_b2.invert_yaxis()
+    ax_b2.set_xlim(16, 56)
+    ax_b2.set_xticks([20, 35, 50])
+    ax_b2.grid(False)
+    ax_b2.grid(axis="x", color=GRID, lw=0.5)
+    ax_b2.set_xlabel("'Very Ambitious' badge (%, POV 805k)", fontsize=5.7, labelpad=2.0)
+    ax_b2.text(
+        55.2, 4.95,
+        f"Dates: Black {arm['black']['coefficients']['amb']['slope_pp']:+.1f} amb;\nWhite {arm['white_euro']['coefficients']['target_overclaim']['slope_pp']:+.1f} boast;\nAsian +{arm['asian']['coefficients']['fun']['slope_pp']:.1f} fun",
+        fontsize=4.55, color=INK2, ha="right", va="bottom", linespacing=0.98,
+        bbox=dict(boxstyle="round,pad=0.12", fc="white", ec="none", alpha=0.88),
+    )
+
+    # Panel C: Global 175-Country Prestige Replication (Kowal N=89,182)
+    c_gs = outer[0, 2].subgridspec(2, 1, height_ratios=[1.0, 1.08], hspace=0.50)
+    ax_c1 = fig.add_subplot(c_gs[0, 0])
+    ax_c2 = fig.add_subplot(c_gs[1, 0])
+    k_arch = [
+        ("warm_outlier_confidence", "Warm outlier"),
+        ("cold_arrogant_high_claim", "Cold high-claim"),
+        ("warm_humble_low_agency", "Warm humble"),
+    ]
+    xc = np.arange(len(k_arch))
+    m_part = [100.0 * kip["archetypes_by_sex"]["men"][k]["partnered_share"] for k, _ in k_arch]
+    w_part = [100.0 * kip["archetypes_by_sex"]["women"][k]["partnered_share"] for k, _ in k_arch]
+    bw_c = 0.33
+    ax_c1.bar(xc - bw_c / 2, w_part, width=bw_c, color=WOMEN, alpha=0.88, label="Women")
+    ax_c1.bar(xc + bw_c / 2, m_part, width=bw_c, color=MEN, alpha=0.88, label="Men")
+    ax_c1.set_xticks(xc, [lbl for _, lbl in k_arch], fontsize=5.4)
+    ax_c1.set_ylim(36, 74)
+    ax_c1.set_yticks([40, 55, 70])
+    ax_c1.set_ylabel("Partnered (%)", fontsize=5.8, labelpad=2.0)
+    ax_c1.text(
+        1.98, 69.5,
+        f"+{kip['archetypes_by_sex']['men']['warm_outlier_minus_humble_partnered_pp']:.1f} pp M\nvs. humble",
+        fontsize=4.8, color=MEN, ha="right", va="top", fontweight="bold", linespacing=1.0,
+    )
+    panel(ax_c1, "C", "175-country replication (89.2k)", fontsize=7.5, pad=4)
+
+    yc = np.arange(len(k_arch))
+    w_mk = [kip["archetypes_by_sex"]["women"][k]["mate_kind_mean"] for k, _ in k_arch]
+    m_mk = [kip["archetypes_by_sex"]["men"][k]["mate_kind_mean"] for k, _ in k_arch]
+    for yi, wv, mv in zip(yc, w_mk, m_mk):
+        ax_c2.plot([wv, mv], [yi, yi], color=MUTED, lw=0.85)
+        ax_c2.scatter([wv], [yi], color=WOMEN, marker="D", s=13, zorder=4)
+        ax_c2.scatter([mv], [yi], color=MEN, marker="o", s=14, zorder=4)
+    ax_c2.set_yticks(yc, [lbl for _, lbl in k_arch], fontsize=5.5)
+    ax_c2.invert_yaxis()
+    ax_c2.set_xlim(7.6, 9.7)
+    ax_c2.set_xticks([7.8, 8.6, 9.4])
+    ax_c2.grid(False)
+    ax_c2.grid(axis="x", color=GRID, lw=0.5)
+    ax_c2.set_xlabel("Partner kindness (1\u201311 scale)", fontsize=5.7, labelpad=2.0)
+    ax_c2.text(
+        9.66, 0.98,
+        f"+{kip['archetypes_by_sex']['men']['warm_outlier_minus_cold_mate_kind']:.2f} kind & +{kip['archetypes_by_sex']['men']['warm_outlier_minus_cold_prqc']:.2f} PRQC\nW>M earn: {kip['relative_resource_asymmetry']['women']['out_earns_prqc_diff']:+.2f} PRQC",
+        fontsize=4.65, color=INK, ha="right", va="center", linespacing=1.0,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+
+    # Panel D: Alpha Male vs. Alpha Female & CEO Double Bind
+    d_gs = outer[1, 0].subgridspec(2, 1, height_ratios=[0.95, 1.12], hspace=0.52)
+    ax_d1 = fig.add_subplot(d_gs[0, 0])
+    ax_d2 = fig.add_subplot(d_gs[1, 0])
+
+    ax_d1.axvline(0, color=MUTED, lw=0.7, ls=":")
+    st_rows = [
+        ("male_chooser_evaluating_woman", "Woman > Man\n(outsmarts)", WOMEN, "D"),
+        ("female_chooser_evaluating_man", "Man > Woman\n(outsmarts)", MEN, "o"),
+    ]
+    for yi, (sk, slbl, col, mk) in enumerate(st_rows):
+        c_d = st[sk]["coefficients"]["target_outsmarts_chooser"]
+        v, lo, hi = c_d["slope_pp"], c_d["ci_95_pp"][0], c_d["ci_95_pp"][1]
+        ax_d1.errorbar([v], [yi], xerr=[[v - lo], [hi - v]], color=col, fmt=mk, ms=4.2, elinewidth=1.0, capsize=2.0)
+        ax_d1.text(v + (0.9 if v >= 0 else -0.9), yi - 0.24, f"{v:+.1f} pp", fontsize=5.2, color=col, ha="left" if v >= 0 else "right", fontweight="bold")
+    ax_d1.set_yticks([0, 1], [r[1] for r in st_rows], fontsize=5.6)
+    ax_d1.invert_yaxis()
+    ax_d1.set_xlim(-12.2, 6.2)
+    ax_d1.set_xticks([-10, -5, 0, 5])
+    ax_d1.set_ylim(1.48, -0.52)
+    ax_d1.grid(False)
+    ax_d1.grid(axis="x", color=GRID, lw=0.5)
+    ax_d1.set_xlabel("Status-threat 'Yes' shift (pp)", fontsize=5.7, labelpad=1.8)
+    panel(ax_d1, "D", "Alpha female & CEO double bind", fontsize=7.5, pad=4)
+
+    ex_f = ex["by_sex"]["Female"]["executive_founder_owner"]
+    ex_m = ex["by_sex"]["Male"]["executive_founder_owner"]
+    nx_f = ex["by_sex"]["Female"]["non_executive_pool"]
+    nx_m = ex["by_sex"]["Male"]["non_executive_pool"]
+    yd = np.array([0, 1])
+    w_div = [100.0 * ex_f["divorced"]["share"], 100.0 * nx_f["divorced"]["share"]]
+    m_div = [100.0 * ex_m["divorced"]["share"], 100.0 * nx_m["divorced"]["share"]]
+    bh_d = 0.34
+    ax_d2.barh(yd - bh_d / 2, w_div, height=bh_d, color=WOMEN, alpha=0.88, label="Women")
+    ax_d2.barh(yd + bh_d / 2, m_div, height=bh_d, color=MEN, alpha=0.88, label="Men")
+    for yi, wv, mv in zip(yd, w_div, m_div):
+        ax_d2.text(wv + 0.9, yi - bh_d / 2, f"{wv:.1f}%", va="center", ha="left", fontsize=5.2, color=WOMEN, fontweight="bold")
+        ax_d2.text(mv + 0.9, yi + bh_d / 2, f"{mv:.1f}%", va="center", ha="left", fontsize=5.2, color=MEN, fontweight="bold")
+    ax_d2.set_yticks(yd, ["CEOs / Founders\n(16.1k)", "Non-exec pool\n(551k)"], fontsize=5.6)
+    ax_d2.invert_yaxis()
+    ax_d2.set_xlim(0, 44)
+    ax_d2.set_xticks([0, 15, 30])
+    ax_d2.grid(False)
+    ax_d2.grid(axis="x", color=GRID, lw=0.5)
+    ax_d2.set_xlabel("Divorced share (%, POV ages 30\u201354)", fontsize=5.7, labelpad=2.0)
+    ax_d2.text(
+        43.3, 1.38,
+        f"{ex['contrasts']['female_to_male_exec_divorced_ratio']:.2f}\u00d7 CEO divorce;\n{ex['contrasts']['female_minus_male_exec_very_ambitious_pp']:+.1f} pp W badge",
+        fontsize=4.7, color=INK, ha="right", va="bottom", linespacing=1.0,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+
+    # Panel E: 186-Society Ethnographic Leveling & Persuasion Law (SCCS)
+    ax_e = fig.add_subplot(outer[1, 1])
+    eg_s = sip["regimes"]["egalitarian_sccs270_eq1"]
+    st_s = sip["regimes"]["class_stratified_sccs270_ge2"]
+    sccs_metrics = [
+        ("checked_leaders_share", "Leaders checked\nby community"),
+        ("persuasion_or_consultation_share", "Persuasion /\nconsultation"),
+        ("silent_followership_withdrawal_share", "Deposed by\nsilent walkout"),
+        ("obeyed_by_respect_share", "Obeyed by respect\n(vs. force)"),
+    ]
+    ye_s = np.arange(len(sccs_metrics))
+    eg_vals = [100.0 * eg_s[k] for k, _ in sccs_metrics]
+    st_vals = [100.0 * st_s[k] for k, _ in sccs_metrics]
+    bh_e = 0.34
+    ax_e.barh(ye_s - bh_e / 2, eg_vals, height=bh_e, color=AQUA, alpha=0.90, label=f"Egalitarian (n={eg_s['n_societies']})")
+    ax_e.barh(ye_s + bh_e / 2, st_vals, height=bh_e, color=GOLD, alpha=0.85, label=f"Stratified (n={st_s['n_societies']})")
+    for yi, ev, sv in zip(ye_s, eg_vals, st_vals):
+        ax_e.text(ev + 1.3, yi - bh_e / 2, f"{ev:.1f}%", va="center", ha="left", fontsize=5.1, color=AQUA, fontweight="bold")
+        ax_e.text(sv + 1.3, yi + bh_e / 2, f"{sv:.1f}%", va="center", ha="left", fontsize=5.0, color=INK2)
+    ax_e.set_yticks(ye_s, [lbl for _, lbl in sccs_metrics], fontsize=5.6)
+    ax_e.invert_yaxis()
+    ax_e.set_xlim(0, 118)
+    ax_e.set_xticks([0, 50, 100])
+    ax_e.grid(False)
+    ax_e.grid(axis="x", color=GRID, lw=0.5)
+    ax_e.legend(loc="lower right", bbox_to_anchor=(1.0, 0.20), fontsize=5.0, handlelength=1.1, labelspacing=0.15)
+    ax_e.text(
+        116.5, 3.44,
+        f"Force flips {100*eg_s['backed_by_force_share']:.1f}% \u2192 {100*st_s['backed_by_force_share']:.1f}%",
+        fontsize=4.7, color=INK, ha="right", va="bottom", fontweight="bold",
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+    panel(ax_e, "E", "186-society coalition law (SCCS)", xlabel="Share of coded societies (%)", fontsize=7.5, pad=4)
+
+    # Panel F: Proposition 24 Saddle, Hero's-Journey Call & Alpha Female Escape (E24 + OkCupid)
+    ax_f = fig.add_subplot(outer[1, 2])
+    deltas = np.linspace(-1.25, 2.35, 160)
+
+    def _w_curve(m_obs, kappa=0.28, h_val=0.8, tau_s=0.0, gamma_s=0.0, b_eval=1.8, b_true=1.8, r_b=0.35, p0=0.72, eta_h=0.20):
+        rho = (m_obs * r_b) / (1.0 + (m_obs - 1.0) * r_b)
+        sig_m = 1.0 / math.sqrt(m_obs)
+        zz = deltas / sig_m
+        phi_z = np.exp(-0.5 * zz * zz) / math.sqrt(2.0 * math.pi)
+        Phi_z = np.array([0.5 * (1.0 + math.erf( float(zv) / math.sqrt(2.0) )) for zv in zz])
+        e_pos = deltas * Phi_z + sig_m * phi_z
+        p_base = p0 + eta_h * h_val - tau_s * (b_true + deltas)
+        eb = b_true + (1.0 - rho) * deltas
+        return eb * (p_base - kappa * rho * e_pos) + kappa * (rho ** 2) * (sig_m ** 2) * Phi_z - gamma_s * max(b_true - b_eval, 0.0)
+
+    ax_f.axvline(0.0, color=MUTED, lw=0.7, ls=":")
+    ax_f.plot(deltas, _w_curve(1, h_val=0.8), color=GOLD, lw=1.2, ls="--", label="Stranger glance (m=1)")
+    ax_f.plot(deltas, _w_curve(20, h_val=0.8), color=AQUA, lw=1.65, label="Mature jury (m=20)")
+    ax_f.plot(
+        deltas,
+        _w_curve(8, kappa=0.26, h_val=0.35, tau_s=0.09, gamma_s=0.55, b_eval=0.8),
+        color=WOMEN, lw=1.25, ls="-.", label="Alpha W (insecure pool)",
+    )
+    # Overlay Monte Carlo E24 verification points
+    p1 = e24["part_i_experience_graded_arrogance"]
+    for sub_k, col, mk in (("m_1", GOLD, "o"), ("m_20", AQUA, "s")):
+        pts_d = [p1[sub_k][pk]["delta"] for pk in ("playing_small_m1_0", "calibrated_outlier_0_0", "mild_overclaim_p1_0", "gross_arrogance_p2_2")]
+        pts_mc = [p1[sub_k][pk]["monte_carlo"] for pk in ("playing_small_m1_0", "calibrated_outlier_0_0", "mild_overclaim_p1_0", "gross_arrogance_p2_2")]
+        ax_f.scatter(pts_d, pts_mc, color=col, marker=mk, s=13, edgecolor="white", lw=0.4, zorder=5)
+
+    esc_mc = e24["part_iii_alpha_double_bind_escape"]["alpha_female_dual_signal_high_caliber_pool"]["monte_carlo"]
+    ax_f.scatter([0.0], [esc_mc], color=WOMEN, marker="D", s=26, edgecolor="white", lw=0.6, zorder=6)
+    ax_f.annotate(
+        f"W escape\n({esc_mc:.2f})",
+        xy=(0.0, esc_mc), xytext=(-1.18, 1.98),
+        fontsize=4.8, color=WOMEN, fontweight="bold", linespacing=0.98,
+        arrowprops=dict(arrowstyle="->", color=WOMEN, lw=0.65),
+    )
+    ax_f.text(
+        2.30, 0.14,
+        f"Hero Triad (OkCupid):\nK={oip['heros_journey_triad']['mean_prompts_filled_k']:.2f} vs {oip['passive_unfilled']['mean_prompts_filled_k']:.2f} ({oip['triad_to_passive_k_ratio']:.2f}\u00d7)\nE24 |\u0394|\u2264{e24['max_abs_diff']:.3f}",
+        fontsize=4.55, color=INK, ha="right", va="bottom", linespacing=1.0,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+    ax_f.set_xlim(-1.30, 2.42)
+    ax_f.set_ylim(0.05, 2.58)
+    ax_f.set_xticks([-1, 0, 1, 2])
+    ax_f.set_yticks([0.5, 1.5, 2.5])
+    ax_f.legend(loc="upper right", fontsize=4.75, handlelength=1.25, labelspacing=0.12)
+    panel(ax_f, "F", "Prop. 24 saddle & Hero's call", xlabel="Claim shift \u03b4 = c \u2212 b (SD)", ylabel="Standing E[W]", fontsize=7.5, pad=4)
+
+    return pdf(fig)
 
 
 def generate(data):
@@ -4394,9 +4910,11 @@ def generate(data):
     holo_tbl = holoface_table(data)
     macro_tbl = macro_kpi_table(data)
     prim_sec_tbl = primary_secondary_table(data)
+    inf_reg_tbl = influence_regimes_table(data)
     gen_tex = {
         "performance-macro-kpi-table.tex": macro_tbl,
         "performance-primary-secondary-table.tex": prim_sec_tbl,
+        "performance-influence-regimes-table.tex": inf_reg_tbl,
         "performance-pov-responses.tex": responses,
         "performance-pov-sensitivity.tex": sensitivity,
         "performance-hon-sensitivity.tex": rating_table(hon["ratings"]),
@@ -4421,6 +4939,7 @@ def generate(data):
         "performance-fig-world-synthesis.pdf": world_synthesis_plot(data),
         "performance-fig-love-bond.pdf": love_bond_plot(data),
         "performance-fig-primary-secondary-dynamics.pdf": primary_secondary_dynamics_plot(data),
+        "performance-fig-confidence-influence.pdf": confidence_influence_plot(data),
         "performance-fig-hon-architecture.pdf": hon_architecture_plot(data),
         "performance-fig-holoface-ceiling.pdf": holoface_ceiling_plot(data),
         "performance-fig-face-drivers.pdf": face_drivers_plot(data),

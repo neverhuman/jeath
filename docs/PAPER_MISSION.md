@@ -87,7 +87,7 @@ When engaging active scientific debates (e.g., ancient demographic bottlenecks, 
 Advocacy hides nulls; world-class science **builds load-bearing walls out of them**. When `50+` distinct model architectures hit the same out-of-sample ceiling, when a strongly preferred cue yields zero net reproductive differential, or when a celebrated biomarker meta-analyzes to $z \approx 0$, feature that boundary prominently in both graphics and text: showing *where an instrument stops* proves the theory has teeth. Always close with **pre-committed decisive falsifiers**.
 
 ### 3.4 The Macro-KPI Concept Rollup Law
-Never leave readers juggling 60 disconnected raw decimals across heterogeneous scales. Roll primary multi-dataset estimands into **5–8 named, human-grokkable Macro KPIs** in one canonical Executive Scorecard Table (`Table I`), each stating the conceptual question, datasets and combined $N$, primary measured contrast, boundary or null check, and formal theorem/proposition link.
+Never leave readers juggling 60 disconnected raw decimals across heterogeneous scales. Roll primary multi-dataset estimands into **5–10 named, human-grokkable Macro KPIs** in one canonical Executive Scorecard Table (`Table I`), each stating the conceptual question, datasets and combined $N$, primary measured contrast, boundary or null check, and formal theorem/proposition link.
 
 ---
 
@@ -149,7 +149,7 @@ Define a compact, high-contrast, color-vision-deficiency-safe (Okabe–Ito-deriv
 
 ### 6.2 Ban on Prose-Wall Tables
 - Never place `\scriptsize` multi-paragraph literature summaries inside main-text `table*` boxes; prose disguised as a table fragments reading flow and clogs double-column float placement.
-- Format all tables with 3-rule `booktabs` (`\toprule`, `\midrule`, `\bottomrule`), **zero vertical lines**, explicit units and denominators in column headers, true minus signs (`−0.042`, never hyphen `-0.042`), and aligned decimals. Keep `3–5` decisive numerical tables in the Main Paper; house exhaustive wave ledgers and sensitivity matrices in the Technical Appendix.
+- Format all tables with 3-rule `booktabs` (`\toprule`, `\midrule`, `\bottomrule`), **zero vertical lines**, explicit units and denominators in column headers, true minus signs (`−0.042`, never hyphen `-0.042`), and aligned decimals. Keep `3–7` decisive numerical tables in the Main Paper; house exhaustive wave ledgers and sensitivity matrices in the Technical Appendix.
 
 ---
 
@@ -159,7 +159,7 @@ Define a compact, high-contrast, color-vision-deficiency-safe (Okabe–Ito-deriv
 2. **Macro-Bound Quantitative Integrity**: Bind every empirical statistic in prose and tables to generated LaTeX macros from validated reference JSONs. Never hand-type or hand-edit numbers in `.tex` tables.
 3. **Appearance-Ordered `[1]–[N]` Citations**: Number references strictly in order of first appearance (`[1], [2], [3], ...` starting in paragraph 1 of Section I). Include **only** works actually cited in the manuscript or appendix, with verified authors, venues, years, and DOIs.
 4. **Canonical Back-Matter Sequence**:
-   `Main Sections I–VI` $\to$ `Acknowledgments & Disclosure` $\to$ `Data & Code Availability` $\to$ `Sequential References [1]–[N]` $\to$ `Author Biographies` $\to$ `\clearpage` $\to$ `Self-Contained Technical Appendices A–D` $\to$ `\clearpage`.
+   `Main Sections I–VII` $\to$ `Acknowledgments & Disclosure` $\to$ `Data & Code Availability` $\to$ `Sequential References [1]–[N]` $\to$ `Author Biographies` $\to$ `\clearpage` $\to$ `Self-Contained Technical Appendices A–D` $\to$ `\clearpage`.
 
 ---
 
@@ -200,7 +200,7 @@ Before any release or push, the manuscript must pass all **14 Charter Gates**:
 - [ ] **G5 (Unified 1:1 Graphics)**: 100% of Main Figures rendered by a single programmatic script at exact column widths (`0` legacy draft mismatches).
 - [ ] **G6 (Semantic Palette)**: Every color invariant in meaning across all figures; monochrome redundancy verified.
 - [ ] **G7 (Float Proximity)**: Every main figure and table lands within `0–1` pages of its first callout; `0` floats strand after Appendix D.
-- [ ] **G8 (Numerical Tables & Macro-KPI Rollup)**: Zero prose-wall essay tables in Main Text; `Table I` rolls multi-dataset estimands into `5–8` named Macro KPIs; all `booktabs` tables carry explicit $N$s, units, and CIs.
+- [ ] **G8 (Numerical Tables & Macro-KPI Rollup)**: Zero prose-wall essay tables in Main Text; `Table I` rolls multi-dataset estimands into `5–10` named Macro KPIs; all `booktabs` tables carry explicit $N$s, units, and CIs.
 - [ ] **G9 (Sequential Bibliography)**: Citations run `[1], [2], ..., [N]` in appearance order from Page 1; `0` unresolved `[?]` keys; `0` uncited bloat entries.
 - [ ] **G10 (Clean Micro-Typography)**: `0` authored `Overfull \hbox` or `Overfull \vbox` warnings; `0` missing font glyphs; all narrow-column equations wrapped cleanly.
 - [ ] **G11 (Privacy & License Hygiene)**: Human composites obey strict minimum aggregation floors ($N \ge 50$); third-party datasets obey exact license terms.

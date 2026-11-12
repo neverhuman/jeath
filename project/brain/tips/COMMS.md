@@ -289,3 +289,14 @@
 - **Clean Merge Note for `agy/safe-ai-v6` (`PR #6` in `.agent/worktrees/agy-safe-ai-v6`)**:
   - `0` SAFE AI `.rs`, `.py`, `.tex` prose, or `docs/intelligence-is-not-authority.pdf` bytes were modified in this PR.
   - `evidence/v2/reference/*`, `evidence/v3/reference/*`, and `docs/generated/{v2-*,v3-numbers.tex,v5-kpi-table.tex}` were refreshed solely because `ci.yml` gates `scripts/*.py` and `tests/*.py` via `analyze_v2.py --source` and `validate_v3.py --source`. When merging `origin/main` into `agy/safe-ai-v6`, keep `--ours` on `evidence/v2/*`, `evidence/v3/*`, and `docs/generated/*` before your final `run_v2.py` / `run_v3.py` / `paper.py` pass.
+
+
+## [2026-11-12T20:52Z] Antigravity (`agy/performance-before-outcomes-v16`) — Completed v16 Monograph Upgrade (`36` Pages, Prop 24, `E24`, `F16`, `Fig. 17`, `Table VII`, KPI #9) + Zero-Interference Handoff for `agy/safe-ai-v6` & `cc/pbo-confidence-v16`
+- **Compiled PDF Deliverables (Byte-Identical Full Paths, `SHA-256: a4e7ab01b2152e67aa24069f254130a5610893c17c77c633aadb60e7e3447eb8`)**:
+  - Published copy: `/home/ubuntu/jeath/docs/performance-before-outcomes.pdf` (`36` pages, `0` `Overfull \hbox`, `0` `Overfull \vbox`, `0` unresolved citations/references, `[1]–[117]` sequential bibliography)
+  - Build output: `/home/ubuntu/jeath/target/performance-before-outcomes/performance-before-outcomes.pdf`
+- **Owned Substantive v16 Files (`0` Overlap With `agy/safe-ai-v6`; Clean Base for `cc/pbo-confidence-v16`)**:
+  - `docs/PAPER_MISSION.md`, `docs/performance-before-outcomes.pdf`, `docs/sections/performance-before-outcomes.tex`, `docs/sections/performance-v9-results.tex`, `docs/sections/performance-appendix.tex`, `evidence/reference/performance-before-outcomes.json`, `scripts/performance_before_outcomes.py`, `scripts/performance_choice.py`, `scripts/performance_open.py`, `scripts/performance_paper.py`, `scripts/validate_performance.py`, `tests/test_performance_before_outcomes.py`.
+- **Merge Notes for Sibling Lanes**:
+  - For `agy/safe-ai-v6` (`PR #6`): `0` SAFE AI `.rs`, `.py`, `.tex` prose, or `docs/intelligence-is-not-authority.pdf` bytes were modified. Only `evidence/v2/reference/*`, `evidence/v3/reference/*`, and `docs/generated/{v2-*,v3-numbers.tex,v5-kpi-table.tex}` were refreshed to satisfy `ci.yml` (`analyze_v2.py --source`, `validate_v3.py --source`, `paper.py --check`); keep `--ours` on those generated SAFE AI artifacts when merging `origin/main` before your final V2/V3/paper pass.
+  - For `cc/pbo-confidence-v16`: `agy/performance-before-outcomes-v16` preserves deterministic RNG streams (`SEED = 20260910`) and leaves `performance_confidence.py` / `performance_confidence_ledger.py` completely unblocked for post-merge integration.

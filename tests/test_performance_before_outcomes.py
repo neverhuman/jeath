@@ -229,7 +229,7 @@ class PlatformStudyTests(unittest.TestCase):
         ref_path = Path(__file__).resolve().parents[1] / "evidence/reference/performance-before-outcomes.json"
         ref = json.loads(ref_path.read_text())
         self.assertEqual(ref["macro_selection_kpis"]["schema_version"], 2)
-        self.assertEqual(len(ref["macro_selection_kpis"]["kpis"]), 8)
+        self.assertEqual(len(ref["macro_selection_kpis"]["kpis"]), 9)
         self.assertTrue(39.0 <= ref["pov"]["childless_crossover"]["band_midpoint_interpolated_age"] <= 44.0)
         self.assertGreater(ref["pov"]["self_written_voice"]["voice_to_checkbox_ratios"]["female_family_to_tall"], 80.0)
 
@@ -378,10 +378,38 @@ class PlatformStudyTests(unittest.TestCase):
         self.assertIn(r"\newcommand{\PboRevKindSlopeW}", macros_tex)
         self.assertIn(r"\newcommand{\PboCohabRushRatio}", macros_tex)
         self.assertIn(r"\newcommand{\PboETwentyThreeDivW}", macros_tex)
+        self.assertIn(r"\newcommand{\PboWarmOutlierYesW}", macros_tex)
+        self.assertIn(r"\newcommand{\PboOverclaimAgeSurge}", macros_tex)
+        self.assertIn(r"\newcommand{\PboExecDivW}", macros_tex)
+        self.assertIn(r"\newcommand{\PboSccsEgalPersuadePct}", macros_tex)
+        self.assertIn(r"\newcommand{\PboETwentyFourMaxDiff}", macros_tex)
         kpi_tex = ppaper.macro_kpi_table(ref)
-        self.assertEqual(kpi_tex.strip().count(r"\\"), 8)
+        self.assertEqual(kpi_tex.strip().count(r"\\"), 9)
         psec_tex = ppaper.primary_secondary_table(ref)
         self.assertGreaterEqual(psec_tex.strip().count(r"\\"), 8)
+        ireg_tex = ppaper.influence_regimes_table(ref)
+        self.assertEqual(ireg_tex.strip().count(r"\\\addlinespace"), 4)
+        fig_bytes = ppaper.confidence_influence_plot(ref)
+        self.assertTrue(fig_bytes.startswith(b"%PDF"))
+
+        # v16 outlier confidence vs. arrogance, audience priors, alpha asymmetry, & Proposition 24 (E24) checks
+        cab = ref["speed_dating"]["confidence_and_backlash"]
+        self.assertGreater(cab["agency_x_warmth_dyadic"]["female_to_male_coldness_backlash_ratio"], 1.75)
+        self.assertGreater(cab["audience_age_modulation"]["mature_to_young_overclaim_penalty_ratio"], 7.0)
+        self.assertLess(
+            cab["status_threat"]["male_chooser_evaluating_woman"]["coefficients"]["target_outsmarts_chooser"]["ci_95_pp"][1],
+            -2.0,
+        )
+        ex_c = ref["pov"]["alpha_executive_and_ethnicity"]["executives_ages_30_54"]["contrasts"]
+        self.assertGreater(ex_c["female_to_male_exec_divorced_ratio"], 1.65)
+        self.assertLess(ex_c["female_minus_male_exec_very_ambitious_pp"], -12.0)
+        iap = ref["open_synthesis"]["influence_and_prestige"]
+        self.assertEqual(iap["sccs_coalition_leadership"]["regimes"]["egalitarian_sccs270_eq1"]["checked_leaders_share"], 1.0)
+        self.assertGreater(iap["sccs_coalition_leadership"]["regimes"]["egalitarian_sccs270_eq1"]["persuasion_or_consultation_share"], 0.92)
+        self.assertGreater(iap["okcupid_heros_journey_and_execs"]["triad_to_passive_k_ratio"], 1.30)
+        e24 = ref["open_synthesis"]["proposition_24_e24"]
+        self.assertLess(e24["max_abs_diff"], 0.01)
+        self.assertGreater(e24["part_iv_heros_journey_vs_self_aggrandizing"]["standing_ratio"], 5.0)
 
 
 if __name__ == "__main__":
