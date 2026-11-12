@@ -264,7 +264,7 @@ def _review(port, system, policy, visible, rpc, deadline, thinking):
     out = chat(port, [{"role": "system", "content": system},
                       {"role": "user", "content": json.dumps({"policy": policy, "visible_state": visible, "rpc": rpc})}],
                deadline, temperature=0.0, top_p=1.0, top_k=1, seed=20261110,
-               max_tokens=2048 if thinking else 16, thinking=thinking)
+               max_tokens=4096 if thinking else 16, thinking=thinking)
     obj = parse_object(out["content"])
     out["allow"] = obj == {"allow": True}
     try:
@@ -289,6 +289,20 @@ def remote_identity(host: str) -> dict:
     out = ssh_run(host, "hostname; uname -sm; (sysctl -n machdep.cpu.brand_string 2>/dev/null || lscpu | sed -n 's/^Model name: *//p')")
     hostname, uname, cpu = [line.strip() for line in out.strip().splitlines()[:3]]
     return {"ssh_alias": host, "hostname": hostname, "uname": uname, "cpu": cpu}
+
+
+TUNNELS: list = []
+
+
+def _abort(*_):
+    # Close every tunnel first so in-flight requests fail at once, then exit through the context managers.
+    for proc in TUNNELS:
+        try:
+            proc.stdin.close()
+            proc.terminate()
+        except OSError:
+            pass
+    sys.exit(143)
 
 
 class RemoteEngine:
@@ -318,6 +332,7 @@ def remote_server_pool(host, root, model_file, deadline, log_dir, tag, workers, 
             procs.append(subprocess.Popen(["ssh", "-T", "-o", "BatchMode=yes", "-o", "ExitOnForwardFailure=yes",
                                            "-o", "ServerAliveInterval=30", "-L", f"{lport}:127.0.0.1:{rport}", host, rcmd],
                                           stdin=subprocess.PIPE, stdout=log, stderr=subprocess.STDOUT))
+            TUNNELS.append(procs[-1])
             engines.append(RemoteEngine(lport))
         for w, (proc, eng) in enumerate(zip(procs, engines)):
             while True:
@@ -518,7 +533,7 @@ def self_test(plan: dict, scratch: Path) -> dict:
 
 
 def main():
-    signal.signal(signal.SIGTERM, lambda *_: sys.exit(143))
+    signal.signal(signal.SIGTERM, _abort)
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("output", type=Path)
     ap.add_argument("--self-test", action="store_true", help="LLM-free mirror/gate agreement check, then exit")
@@ -600,10 +615,10 @@ def main():
         log_dir = args.output / f"servers-{ckpt.split('/')[1]}"
         if args.inference_host:
             pool = remote_server_pool(args.inference_host, args.inference_root, model_path.name, deadline, log_dir,
-                                      ckpt.split('/')[1], args.workers, args.threads, 4096)
+                                      ckpt.split('/')[1], args.workers, args.threads, 8192)
         else:
             pool = cpu_server_pool(args.llama_server, model_path, deadline, args.expected_host, log_dir,
-                                   workers=args.workers, threads=args.threads, ctx_size=4096)
+                                   workers=args.workers, threads=args.threads, ctx_size=8192)
         with pool as pool_value:
             engines = pool_value[0] if isinstance(pool_value, tuple) else pool_value
 

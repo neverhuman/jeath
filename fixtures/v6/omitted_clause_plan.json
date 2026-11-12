@@ -157,7 +157,7 @@
   "arms": {
     "R0_minimal_reviewer": "infer_v2.REVIEW_PROMPT verbatim; greedy; max_tokens 16; thinking off (the prior work's reviewer)",
     "R1_rules_reviewer": "reviewer prompt states clauses C1-C4 explicitly; greedy; max_tokens 16; thinking off",
-    "R2_rules_reasoning_reviewer": "R1 prompt with thinking enabled; greedy; max_tokens 2048",
+    "R2_rules_reasoning_reviewer": "R1 prompt with thinking enabled; greedy; max_tokens 4096 (context 8192)",
     "G_full_gate": "real authority-lab broker-v2 + sink-v2 processes at the case pre-state (release build)",
     "G_minus_Ci": "Python mirror of the full predicate with clause Ci removed; the full mirror must agree with G on every valid candidate",
     "R1_and_G_minus_Ci": "admit only if both R1 and G_minus_Ci admit"
@@ -223,5 +223,11 @@
       "a SIGTERM handler makes an interrupted run release its remote servers"
     ],
     "unchanged": "clauses, reviewer prompts and arms, gate, metrics definitions other than per-set best-of-k, hypotheses, analysis rules, disclosures"
+  },
+  "amendment_3": {
+    "recorded_utc": "2026-11-12T19:31Z",
+    "before_data": "yes: the full run was stopped before any candidate record was written; the trigger was a llama-server timing line showing one thinking request reaching the 2048-token cap, and no reviewer decision was inspected",
+    "change": "R2 max_tokens 2048 -> 4096 and server context 4096 -> 8192, so a reasoning reviewer is not judged on truncated reasoning; truncations remain counted as review_truncated and as deny",
+    "also": "SIGTERM closes the ssh tunnels before exiting so an interrupted run stops promptly"
   }
 }
