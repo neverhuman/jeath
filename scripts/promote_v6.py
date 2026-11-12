@@ -25,6 +25,7 @@ DEST = ROOT / "evidence/v6/reference"
 VENV_PY = ROOT / "target/benchmark-venv/bin/python"
 VALIDATORS = {
     "e4": [sys.executable, "scripts/validate_revokebench_v6.py"],
+    "e4b": [sys.executable, "scripts/validate_revokebench_b_v6.py"],
     "e5": [sys.executable, "scripts/validate_omitted_clause_v6.py"],
     "e6": [sys.executable, "scripts/validate_fenceability_v6.py"],
     "e8": [str(VENV_PY), "scripts/validate_agentdojo_fair_v6.py"],
@@ -53,6 +54,20 @@ def validate(kind: str, path: Path, extra: tuple[str, ...] = ()) -> str:
     if r.returncode != 0:
         raise SystemExit(f"validator failed on {path}:\n{r.stdout[-3000:]}\n{r.stderr[-2000:]}")
     return r.stdout
+
+
+def promote_e4b(run: Path, out: Path) -> None:
+    """trial.json plus its two databases' extract (validate_revokebench_b_v6.extract), the form that validator reads."""
+    from validate_revokebench_b_v6 import extract
+    res = json.loads((run / "results.json").read_text())
+    with (out / "trials.jsonl").open("w") as f:
+        for row in res["trials"]:
+            d = run / "trials" / row["config"]["trial_id"]
+            tr = json.loads((d / "trial.json").read_text())
+            tr["db_extract"] = extract(d)
+            f.write(json.dumps(tr, sort_keys=True) + "\n")
+    for fn in ("results.json", "validator.json"):
+        shutil.copy2(run / fn, out / fn)
 
 
 def promote_e4(run: Path, out: Path) -> None:
@@ -98,7 +113,7 @@ def main():
     # E5's gate databases are temporary in the harness; the replay re-creates every distinct valid proposal's gate
     # decision and its report is kept with the evidence, because the paper cites it.
     report = validate(kind, run, ("--replay-gate",) if kind == "e5" else ())
-    name = {"e4": "e4-revokebench", "e5": "e5-omitted-clause", "e6": "e6-fenceability", "e8": "e8-agentdojo-fair",
+    name = {"e4": "e4-revokebench", "e4b": "e4b-revokebench-faults", "e5": "e5-omitted-clause", "e6": "e6-fenceability", "e8": "e8-agentdojo-fair",
             "e8b": "e8b-inside-spec", "e1": "e1-n128"}.get(kind) or f"e2-{kind.split(':', 1)[1]}"
     out = DEST / name
     if out.exists():
@@ -106,6 +121,8 @@ def main():
     out.mkdir(parents=True)
     if kind == "e4":
         promote_e4(run, out)
+    elif kind == "e4b":
+        promote_e4b(run, out)
     elif kind == "e1":
         promote_e1(run, out)
     else:

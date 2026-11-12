@@ -63,16 +63,27 @@ the quantity is definitional and is reported as such, never as a finding.
   - panel (b) uses plan-conformant unique units;
   - panel (c) counts every episode.
 
+## Fault rerun and reanalysis (E4b)
+
+- **E4b (done; plan `3b31425` at 20:58:42Z, before any harness code or data; run `e4b-20261112T210608Z` on xbabe0,
+  152/152 predeclared trials, validator 0 problems; promoted as `e4b-revokebench-faults`):**
+  - SIGKILL with the request outstanding inside `complete` and inside `fence`; late `accept` across the fence; closed-loop
+    agents; a crash after commit and before the reply (exit hook, not SIGKILL; added in the plan);
+  - post-stop commits are read from the sink database at the enforcement watermark, not from the harness log;
+  - 8-trial smoke run before the reported run, not analysed. Kill and late-accept conditions use one cell, (5, 32), L=1;
+    the closed loop excludes w=30.
+- **E4 cost metric corrected (post hoc, after E4 data):** the promoted `cancelled_legitimate` counted cancellations only,
+  and `denied_after_enforcement` missed 66 denials made while the enforcement call ran. The plan defines the cost as
+  "cancelled or denied by the stop"; hero panel (a) now uses cancelled + all denials (`revokebench_reanalysis_v6.per_trial`).
+- **E4 Little's law (post hoc):** the plan's prediction is compared only in stable cells (ρ < 1). The measured/predicted
+  ratio is reported with its range (generated), not described as "≈ λw".
+- **E4 timing source:** E4's post-stop counts are timed from the harness log (the set of committed effects is checked
+  against the sink DB). E4b shows the harness log can count a commit made before the stop as after it when the sink dies
+  between commit and reply (10/10 such trials); E4's fault trials could in principle include that case. E4 and E4b
+  counts are not pooled.
+
 ## In progress (separate lanes, predeclared before their data)
 
-- **E4b** (`cc/e4b`, xbabe0):
-  - SIGKILL with a request outstanding inside `complete` and inside `fence`;
-  - late `accept` across the fence;
-  - a closed-loop emitter in stable cells;
-  - cancelled + denied;
-  - a sink-side ordering check;
-  - a reanalysis of E4 with per-cell offered load ρ, where (5,4), (30,4) and (30,32) are overloaded and Little's law is
-    not applicable there.
 - **E6b** (`cc/e6b`, xbabe0):
   - a deterministic post-fence old-epoch write per surface;
   - the starvation probe repeated N=20 with CIs;

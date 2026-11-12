@@ -22,7 +22,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from hero_v6 import CONTROLLERS, FAMILY_LABEL, STATE, VISIBLE, load_e4, load_rows, rho  # noqa: E402
 
 EVIDENCE = ROOT / "evidence/v6/reference"
-SOURCES = {"e4": "e4-revokebench", "e5": "e5-omitted-clause", "e6": "e6-fenceability", "e8": "e8-agentdojo-fair",
+SOURCES = {"e4": "e4-revokebench", "e4b": "e4b-revokebench-faults", "e5": "e5-omitted-clause", "e6": "e6-fenceability", "e8": "e8-agentdojo-fair",
            "e8b": "e8b-inside-spec", "e1": "e1-n128"}
 CTRL_LABEL = {k: label for k, label, *_ in CONTROLLERS}
 SURFACE_LABEL = {"postgresql16": "PostgreSQL 16", "etcd_v3_5_17": "etcd v3.5.17", "posix_fs": "POSIX filesystem",
@@ -62,11 +62,64 @@ def e4_macros(args) -> dict:
     trials, _ = load_e4(src(args, "e4"))
     nofault = [t["config"] for t in trials if t["config"]["fault"] == "none"]
     wc = {(c["w"], c["C"]) for c in nofault}
+    from revokebench_reanalysis_v6 import per_trial
+    little = [r for r in map(per_trial, trials) if r["little_law_plan"]]
+    ratio = sorted(r["post_decision_commits"] / r["little_law_plan"] for r in little)
+    med = (ratio[(len(ratio) - 1) // 2] + ratio[len(ratio) // 2]) / 2
+    worst = max(little, key=lambda r: r["post_decision_commits"] / r["little_law_plan"])
+    sentence = (rf"Over the {len(little)} halting trials in stable cells, the commits after the decision were {med:.2f} times "
+                rf"the plan's prediction \(\hat\lambda(L + w)\) at the median (range {ratio[0]:.2f}--{ratio[-1]:.2f}); the largest "
+                rf"ratio is at \(L + w = {worst['L'] + worst['w']:g}\)\,s")
+    burst = trials[0]["config"]["workload"]["calls_per_step"]
+    sentence += (rf", where RPC time and the emitter's bursts of {burst} calls are not small against the window." if
+                 worst["L"] + worst["w"] <= 1 else ".")
     return {"vsixEFourTrials": len(trials),
             "vsixEFourFaultTrials": sum(t["config"]["fault"] != "none" for t in trials),
             "vsixEFourCells": len({(c["w"], c["C"], c["L"]) for c in nofault}),
             "vsixEFourWCCells": len(wc),
-            "vsixEFourOverloadedCells": len({(c["w"], c["C"]) for c in nofault if rho(c) >= 1})}
+            "vsixEFourOverloadedCells": len({(c["w"], c["C"]) for c in nofault if rho(c) >= 1}),
+            "vsixLittleSentence": sentence}
+
+
+def e4b_macros(args) -> dict:
+    d = src(args, "e4b")
+    rows = [json.loads(l) for l in (d / "trials.jsonl").read_text().splitlines() if l.strip()]
+    val = json.loads((d / "validator.json").read_text())
+    g: dict = {}
+    for r in rows:
+        g.setdefault((r["config"]["condition"], r["config"]["arm"]), []).append(r["metrics"])
+    post = lambda k: [m["post_enforcement_commits_sinkdb"] for m in g[k]]
+    rg = lambda xs: f"{min(xs)}" if min(xs) == max(xs) else f"{min(xs)}--{max(xs)}"
+    kc = lambda a: ("kill_in_complete", a)
+    fence_trap = sum(m["trapped_final_status"] == "cancelled" for m in g[kc("fence_sink")])
+    other = g[kc("halt_inference")] + g[kc("revoke_broker")]
+    other_after = sum(m["trapped_final_status"] == "committed" for m in other)
+    held = lambda a: [h for m in g[("late_accept", a)] for h in m["held_permits"]]
+    committed_after = lambda hs: sum(h["sink_record_status"] == "committed" and h["effect_after_watermark"] for h in hs)
+    hf, ho = held("fence_sink"), held("halt_inference") + held("revoke_broker")
+    cl = g[("closed_loop", "halt_inference")] + g[("closed_loop", "revoke_broker")]
+    eq = sum(m["post_enforcement_commits_sinkdb"] == m["in_flight_at_enforcement"] for m in cl)
+    clf = g[("closed_loop", "fence_sink")]
+    viol = sum(len(m["fence_order_violations"]) for ms in g.values() for m in ms)
+    dis = val["sinkdb_vs_harness_post_enforcement_disagreements"]
+    dis_conds = sorted({next(r["config"]["condition"] for r in rows if r["config"]["trial_id"] == x["trial"]) for x in dis})
+    bad_kills = val["kills_not_meeting_criterion"]
+    s = (rf"In E4b ({len(rows)} predeclared trials; "
+         + ("every kill was confirmed to land with its request outstanding" if not bad_kills else f"{len(bad_kills)} kills missed the predeclared criterion")
+         + rf"), the post-stop count is read from the sink's database. With the sink killed inside an outstanding \texttt{{complete}}, "
+         rf"the fenced arm committed {rg(post(kc('fence_sink')))} effects after the stop and the interrupted operation ended cancelled "
+         rf"in {fence_trap} of {len(g[kc('fence_sink')])} trials; under halting and revoking it was retried and committed after the "
+         rf"stop in {other_after} of {len(other)}, with {rg(post(kc('halt_inference')))} and {rg(post(kc('revoke_broker')))} "
+         rf"post-stop commits. Killed inside an outstanding \texttt{{fence}}, the fenced arm committed "
+         rf"{rg(post(('kill_in_fence', 'fence_sink')))}. Of {len(hf)} accepts held across the fence, {committed_after(hf)} produced an "
+         rf"effect; of {len(ho)} held across a halt or a revocation, {committed_after(ho)} did. With closed-loop agents that wait for "
+         rf"each result, halting and revoking let through exactly the calls in flight at the stop in {eq} of {len(cl)} trials, and "
+         rf"the fence committed {rg([m['post_enforcement_commits_sinkdb'] for m in clf])} while discarding "
+         rf"{rg([m['legit_work_lost'] for m in clf])} calls. The sink's ordering check found {viol} violations.")
+    if dis:
+        s += (rf" In {len(dis)} trials ({', '.join(c.replace('_', ' ') for c in dis_conds)}) the harness log counted a post-stop "
+              r"commit that the database shows was made before the stop, which is why E4b counts from the database.")
+    return {"vsixEFourBSentence": s}
 
 
 # ------------------------------------------------------------------ E5
@@ -265,7 +318,8 @@ def e6_table(args) -> str:
 
 # ------------------------------------------------------------------ assembly
 
-PENDING = {"e4": ["vsixEFourTrials", "vsixEFourFaultTrials", "vsixEFourCells", "vsixEFourWCCells", "vsixEFourOverloadedCells"],
+PENDING = {"e4": ["vsixEFourTrials", "vsixEFourFaultTrials", "vsixEFourCells", "vsixEFourWCCells", "vsixEFourOverloadedCells",
+                  "vsixLittleSentence"],
            "e5": ["vsixEFiveCkpt", "vsixReviewerStateCases", "vsixSingleClauseSentence", "vsixRtwoTruncated", "vsixGateReplaySentence"],
            "e8": ["vsixEEightCkpt", "vsixEEightEpisodes", "vsixEEightProgentSentence"] +
                  [f"vsixStage{n}{k}" for n in ("Strict", "Delegated", "Oracle") for k in ("User", "Attack")],
@@ -273,8 +327,9 @@ PENDING = {"e4": ["vsixEFourTrials", "vsixEFourFaultTrials", "vsixEFourCells", "
            "e6": ["vsixESixPgSentence", "vsixESixPgFairSentence", "vsixESixFsSentence"],
            "e2": ["vsixETwoCkpts", "vsixETwoSentence"],
            "e1": ["vsixEOneCampaigns", "vsixEOneOutcomeSentence", "vsixEOneSFourSentence"],
-           # Filled when the E4b / E6b reports land (their evidence formats are set by their own plans).
-           "e4b": ["vsixEFourBSentence"], "e6b": ["vsixESixBSentence", "vsixESixBStarvationN"]}
+           "e4b": ["vsixEFourBSentence"],
+           # Filled when the E6b report lands (its evidence format is set by its own plan).
+           "e6b": ["vsixESixBSentence", "vsixESixBStarvationN"]}
 
 
 def main():
@@ -288,7 +343,7 @@ def main():
     if (args.draft or args.sources) and args.out.resolve().is_relative_to((ROOT / "docs").resolve()):
         raise SystemExit("draft or --source output may not be written under docs/")
     macros, missing, tables = {}, [], {}
-    for name, fn in (("e4", e4_macros), ("e5", e5_macros), ("e6", e6_macros), ("e8", e8_macros), ("e8b", e8b_macros),
+    for name, fn in (("e4", e4_macros), ("e4b", e4b_macros), ("e5", e5_macros), ("e6", e6_macros), ("e8", e8_macros), ("e8b", e8b_macros),
                      ("e2", e2_macros)):
         try:
             macros |= fn(args)
@@ -303,7 +358,7 @@ def main():
         tables["v6-e6-table.tex"] = e6_table(args)
     except Missing:
         missing.append("e6")
-    missing = list(dict.fromkeys(missing + ["e4b", "e6b"]))
+    missing = list(dict.fromkeys(missing + ["e6b"]))
     ckpts = {short(args.ckpt)} if "vsixEFiveCkpt" in macros else set()
     for k in ("vsixEEightCkpt",):
         if k in macros:

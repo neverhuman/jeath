@@ -99,7 +99,10 @@ def panel_a(trials: list[dict]) -> tuple[list[str], dict]:
         curves.setdefault(t["config"]["arm"], []).append(ts)
         tmax = max(tmax, ts[-1] if ts else 0.0)
         if t["config"]["arm"] == "fence_sink":
-            lost.append(t["metrics"]["cancelled_legitimate"] + t["metrics"]["denied_after_enforcement"])
+            # The plan's definition: authorized calls "cancelled or denied by the stop", counting every denial, including
+            # those made while the enforcement call ran (the promoted cancelled_legitimate counted only cancellations).
+            from revokebench_reanalysis_v6 import per_trial
+            lost.append(per_trial(t)["legit_lost"])
     fin = {a: sorted(len(c) for c in cs) for a, cs in curves.items()}
     grid = {a: [t["metrics"]["post_enforcement_commits"] for t in nofault if t["config"]["arm"] == a] for a in fin}
     fence_all = [t for t in trials if t["config"]["arm"] == "fence_sink"]

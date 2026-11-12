@@ -13,8 +13,9 @@ is the fencing-token argument of distributed locking~\cite{kleppmann2016} applie
 under a synthetic agent that emits \(\lambda = 2\) tool calls per second to \(C \in \{4, 32\}\) concurrent executors
 whose latencies are exponential with mean \(w \in \{0.5, 5, 30\}\)\,s. Each call is a pre-approved, authorized one-unit
 effect; nothing in the workload is adversarial. After a 20\,s warm-up the operator decides to stop, and the stop takes
-effect \(L \in \{0, 1, 5, 35\}\)\,s later. A trial counts the effects the sink commits after the stop took effect,
-read from the sink's own database, and the legitimate calls the stop discards (cancelled or denied). The plan, grid and
+effect \(L \in \{0, 1, 5, 35\}\)\,s later. A trial counts the effects committed after the stop took effect, timed
+by the harness's log of the sink's replies (the set of committed effects must equal the sink's database), and the
+legitimate calls the stop discards (cancelled or denied). The plan, grid and
 metrics were committed before the first trial (\path{fixtures/v6/revokebench_plan.json}); the \vsixEFourTrials{}
 trials include \vsixEFourFaultTrials{} with SIGKILL of the sink or delayed completions.
 
@@ -30,7 +31,8 @@ RPCs, \texttt{fence} cancels every pending record below the new floor, and effec
 so duplicates are impossible rather than rare. What E4 measures is (i) that this implementation keeps the property
 under the faults we injected, and (ii) the size and cost of the window the other two layers leave open. That window is
 queueing, and it behaves like queueing. Where the offered load \(\rho = \lambda w / C\) is below one, halting leaks
-roughly the calls in flight, \(\approx \lambda w\) (Little's law), and revocation leaks the calls already accepted.
+the calls in flight and those emitted before the stop takes effect, which the plan predicted from Little's law.
+\vsixLittleSentence{} Revocation leaks the calls already accepted.
 Where \(\rho \ge 1\) (\vsixEFourOverloadedCells{} of the \vsixEFourWCCells{} \((w, C)\) cells), the backlog grows during the warm-up and
 halting leaks all of it; we report those cells separately and do not apply Little's law to them. The fence pays for its
 zero in the opposite currency. Every legitimate call in flight at the stop is discarded, which is what an operator who
