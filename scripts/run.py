@@ -27,7 +27,7 @@ def run_performance_before_outcomes(output, speed_data):
     from performance_choice import analyze
     from performance_face_attribution import analyze_face_attribution
     from performance_holoface_benchmark import load_or_analyze_holoface_benchmark
-    from performance_open import analyze_open
+    from performance_open import analyze_open, build_macro_selection_kpis
     from performance_paleoclimate_plateau import analyze_paleoclimate_plateau
 
     scanner = ROOT / "scripts/performance_before_outcomes.py"
@@ -44,6 +44,7 @@ def run_performance_before_outcomes(output, speed_data):
     result["facial_attribution"] = analyze_face_attribution()
     result["paleoclimate_plateau"] = analyze_paleoclimate_plateau()
     result["holoface_benchmark"] = load_or_analyze_holoface_benchmark()
+    result["macro_selection_kpis"] = build_macro_selection_kpis(result)
     result["analysis_sha256"] = {
         "scripts/performance_before_outcomes.py": hashlib.sha256(program).hexdigest(),
         "scripts/performance_choice.py": digest(ROOT / "scripts/performance_choice.py"),

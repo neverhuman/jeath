@@ -85,7 +85,7 @@
             0,
             0
           ],
-          "expires": 1794459093,
+          "expires": 1794463097,
           "id": "actor-0"
         }
       }
@@ -93,7 +93,7 @@
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 95.832779,
+        "latency_ms": 1202.207508,
         "response": {
           "status": "committed"
         }
@@ -187,7 +187,7 @@
             0,
             0
           ],
-          "expires": 1794459094,
+          "expires": 1794463099,
           "id": "actor-0"
         }
       }
@@ -195,7 +195,7 @@
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 88.597752,
+        "latency_ms": 88.126851,
         "response": {
           "status": "committed"
         }
@@ -289,7 +289,7 @@
             0,
             0
           ],
-          "expires": 1794459094,
+          "expires": 1794463099,
           "id": "actor-0"
         }
       }
@@ -297,7 +297,7 @@
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 105.765172,
+        "latency_ms": 83.990608,
         "response": {
           "status": "committed"
         }
@@ -388,7 +388,7 @@
     },
     "effects": [
       {
-        "actor": "actor-0",
+        "actor": "actor-1",
         "proposal": {
           "effect": {
             "kind": "transfer",
@@ -399,25 +399,25 @@
             0,
             0
           ],
-          "expires": 1794459095,
-          "id": "actor-0"
+          "expires": 1794463100,
+          "id": "actor-1"
         }
       }
     ],
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 100.879914,
+        "latency_ms": 20.30249,
         "response": {
-          "status": "committed"
+          "reason": "policy",
+          "status": "denied"
         }
       },
       {
         "actor": 1,
-        "latency_ms": 34.31257,
+        "latency_ms": 68.573589,
         "response": {
-          "reason": "policy",
-          "status": "denied"
+          "status": "committed"
         }
       }
     ],
@@ -517,7 +517,7 @@
             0,
             0
           ],
-          "expires": 1794459095,
+          "expires": 1794463100,
           "id": "actor-0"
         }
       }
@@ -525,14 +525,14 @@
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 96.341923,
+        "latency_ms": 782.580947,
         "response": {
           "status": "committed"
         }
       },
       {
         "actor": 1,
-        "latency_ms": 34.422909,
+        "latency_ms": 130.583703,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -635,7 +635,7 @@
             0,
             0
           ],
-          "expires": 1794459095,
+          "expires": 1794463101,
           "id": "actor-1"
         }
       }
@@ -643,7 +643,7 @@
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 54.779227,
+        "latency_ms": 35.076904,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -651,7 +651,7 @@
       },
       {
         "actor": 1,
-        "latency_ms": 119.206409,
+        "latency_ms": 58.680267,
         "response": {
           "status": "committed"
         }
@@ -758,7 +758,7 @@
     },
     "effects": [
       {
-        "actor": "actor-0",
+        "actor": "actor-1",
         "proposal": {
           "effect": {
             "kind": "transfer",
@@ -769,30 +769,30 @@
             0,
             0
           ],
-          "expires": 1794459097,
-          "id": "actor-0"
+          "expires": 1794463102,
+          "id": "actor-1"
         }
       }
     ],
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 788.253063,
-        "response": {
-          "status": "committed"
-        }
-      },
-      {
-        "actor": 1,
-        "latency_ms": 430.402227,
+        "latency_ms": 54.038156,
         "response": {
           "reason": "policy",
           "status": "denied"
         }
       },
       {
+        "actor": 1,
+        "latency_ms": 66.25315,
+        "response": {
+          "status": "committed"
+        }
+      },
+      {
         "actor": 2,
-        "latency_ms": 575.120084,
+        "latency_ms": 33.806992,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -800,7 +800,7 @@
       },
       {
         "actor": 3,
-        "latency_ms": 475.010079,
+        "latency_ms": 34.187011,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -908,7 +908,7 @@
     },
     "effects": [
       {
-        "actor": "actor-1",
+        "actor": "actor-2",
         "proposal": {
           "effect": {
             "kind": "transfer",
@@ -919,15 +919,15 @@
             0,
             0
           ],
-          "expires": 1794459099,
-          "id": "actor-1"
+          "expires": 1794463102,
+          "id": "actor-2"
         }
       }
     ],
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 54.061989,
+        "latency_ms": 33.71592,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -935,22 +935,22 @@
       },
       {
         "actor": 1,
-        "latency_ms": 117.820215,
-        "response": {
-          "status": "committed"
-        }
-      },
-      {
-        "actor": 2,
-        "latency_ms": 78.809831,
+        "latency_ms": 54.151311,
         "response": {
           "reason": "policy",
           "status": "denied"
         }
       },
       {
+        "actor": 2,
+        "latency_ms": 64.800954,
+        "response": {
+          "status": "committed"
+        }
+      },
+      {
         "actor": 3,
-        "latency_ms": 33.81596,
+        "latency_ms": 34.282762,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1058,7 +1058,7 @@
     },
     "effects": [
       {
-        "actor": "actor-1",
+        "actor": "actor-3",
         "proposal": {
           "effect": {
             "kind": "transfer",
@@ -1069,15 +1069,15 @@
             0,
             0
           ],
-          "expires": 1794459100,
-          "id": "actor-1"
+          "expires": 1794463102,
+          "id": "actor-3"
         }
       }
     ],
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 54.124588,
+        "latency_ms": 34.866245,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1085,14 +1085,15 @@
       },
       {
         "actor": 1,
-        "latency_ms": 104.242229,
+        "latency_ms": 34.566769,
         "response": {
-          "status": "committed"
+          "reason": "policy",
+          "status": "denied"
         }
       },
       {
         "actor": 2,
-        "latency_ms": 34.907586,
+        "latency_ms": 80.444151,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1100,10 +1101,9 @@
       },
       {
         "actor": 3,
-        "latency_ms": 34.058619,
+        "latency_ms": 61.340949,
         "response": {
-          "reason": "policy",
-          "status": "denied"
+          "status": "committed"
         }
       }
     ],
@@ -1240,7 +1240,7 @@
     },
     "effects": [
       {
-        "actor": "actor-7",
+        "actor": "actor-6",
         "proposal": {
           "effect": {
             "kind": "transfer",
@@ -1251,15 +1251,15 @@
             0,
             0
           ],
-          "expires": 1794459100,
-          "id": "actor-7"
+          "expires": 1794463103,
+          "id": "actor-6"
         }
       }
     ],
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 53.703481,
+        "latency_ms": 104.651014,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1267,7 +1267,7 @@
       },
       {
         "actor": 1,
-        "latency_ms": 33.741188,
+        "latency_ms": 33.994316,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1275,7 +1275,7 @@
       },
       {
         "actor": 2,
-        "latency_ms": 33.744595,
+        "latency_ms": 53.984084,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1283,7 +1283,7 @@
       },
       {
         "actor": 3,
-        "latency_ms": 179.37025,
+        "latency_ms": 180.002984,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1291,7 +1291,7 @@
       },
       {
         "actor": 4,
-        "latency_ms": 103.877067,
+        "latency_ms": 79.174249,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1299,7 +1299,7 @@
       },
       {
         "actor": 5,
-        "latency_ms": 128.886735,
+        "latency_ms": 129.449959,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1307,17 +1307,17 @@
       },
       {
         "actor": 6,
-        "latency_ms": 53.672031,
+        "latency_ms": 65.901564,
         "response": {
-          "reason": "policy",
-          "status": "denied"
+          "status": "committed"
         }
       },
       {
         "actor": 7,
-        "latency_ms": 84.476419,
+        "latency_ms": 33.913693,
         "response": {
-          "status": "committed"
+          "reason": "policy",
+          "status": "denied"
         }
       }
     ],
@@ -1454,7 +1454,7 @@
     },
     "effects": [
       {
-        "actor": "actor-7",
+        "actor": "actor-1",
         "proposal": {
           "effect": {
             "kind": "transfer",
@@ -1465,15 +1465,15 @@
             0,
             0
           ],
-          "expires": 1794459101,
-          "id": "actor-7"
+          "expires": 1794463103,
+          "id": "actor-1"
         }
       }
     ],
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 229.292882,
+        "latency_ms": 34.068116,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1481,15 +1481,14 @@
       },
       {
         "actor": 1,
-        "latency_ms": 54.034837,
+        "latency_ms": 67.240688,
         "response": {
-          "reason": "policy",
-          "status": "denied"
+          "status": "committed"
         }
       },
       {
         "actor": 2,
-        "latency_ms": 79.061608,
+        "latency_ms": 129.98976,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1497,7 +1496,7 @@
       },
       {
         "actor": 3,
-        "latency_ms": 36.447732,
+        "latency_ms": 53.942345,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1505,7 +1504,7 @@
       },
       {
         "actor": 4,
-        "latency_ms": 129.096723,
+        "latency_ms": 79.127299,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1513,7 +1512,7 @@
       },
       {
         "actor": 5,
-        "latency_ms": 53.863583,
+        "latency_ms": 34.008733,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1521,7 +1520,7 @@
       },
       {
         "actor": 6,
-        "latency_ms": 179.058689,
+        "latency_ms": 104.479901,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1529,9 +1528,10 @@
       },
       {
         "actor": 7,
-        "latency_ms": 118.861295,
+        "latency_ms": 35.50329,
         "response": {
-          "status": "committed"
+          "reason": "policy",
+          "status": "denied"
         }
       }
     ],
@@ -1668,7 +1668,7 @@
     },
     "effects": [
       {
-        "actor": "actor-5",
+        "actor": "actor-0",
         "proposal": {
           "effect": {
             "kind": "transfer",
@@ -1679,23 +1679,22 @@
             0,
             0
           ],
-          "expires": 1794459101,
-          "id": "actor-5"
+          "expires": 1794463104,
+          "id": "actor-0"
         }
       }
     ],
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 179.542325,
+        "latency_ms": 84.296867,
         "response": {
-          "reason": "policy",
-          "status": "denied"
+          "status": "committed"
         }
       },
       {
         "actor": 1,
-        "latency_ms": 104.473997,
+        "latency_ms": 34.397799,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1703,7 +1702,7 @@
       },
       {
         "actor": 2,
-        "latency_ms": 129.593964,
+        "latency_ms": 34.155982,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1711,7 +1710,7 @@
       },
       {
         "actor": 3,
-        "latency_ms": 105.021965,
+        "latency_ms": 104.693495,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1719,7 +1718,7 @@
       },
       {
         "actor": 4,
-        "latency_ms": 54.121943,
+        "latency_ms": 54.291135,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1727,14 +1726,15 @@
       },
       {
         "actor": 5,
-        "latency_ms": 89.212835,
+        "latency_ms": 38.540044,
         "response": {
-          "status": "committed"
+          "reason": "policy",
+          "status": "denied"
         }
       },
       {
         "actor": 6,
-        "latency_ms": 49.954753,
+        "latency_ms": 129.863821,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1742,7 +1742,7 @@
       },
       {
         "actor": 7,
-        "latency_ms": 53.868502,
+        "latency_ms": 54.181678,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -1750,348 +1750,6 @@
       }
     ],
     "repeat": 2
-  },
-  {
-    "actors": 16,
-    "audit": {
-      "broker": {
-        "budget": 8,
-        "cancelled_charge": 0,
-        "charged": 8,
-        "committed_charge": 8,
-        "consistent": true,
-        "delegations_consistent": true,
-        "integrity": "ok",
-        "pending_charge": 0,
-        "records": 1,
-        "status": "ok",
-        "verus_exec_kernel_verified": true
-      },
-      "sink": {
-        "cancelled_permits": 0,
-        "committed_permits": 1,
-        "consistent": true,
-        "effects": 1,
-        "floors": [
-          0,
-          0
-        ],
-        "integrity": "ok",
-        "pending_permits": 0,
-        "pending_unfenced": true,
-        "revision": 0,
-        "status": "ok",
-        "verus_exec_kernel_verified": true
-      }
-    },
-    "charged": 8,
-    "check": "bounded reference linearization + independent final-state conservation",
-    "concurrent_check": {
-      "calls": 37,
-      "checked": true,
-      "effects": 1,
-      "linearization": [
-        {
-          "committed": true,
-          "event": 0
-        },
-        {
-          "committed": true,
-          "event": 1
-        },
-        {
-          "committed": true,
-          "event": 2
-        },
-        {
-          "committed": true,
-          "event": 3
-        },
-        {
-          "committed": true,
-          "event": 4
-        },
-        {
-          "committed": true,
-          "event": 5
-        },
-        {
-          "committed": true,
-          "event": 6
-        },
-        {
-          "committed": true,
-          "event": 7
-        },
-        {
-          "committed": true,
-          "event": 8
-        },
-        {
-          "committed": true,
-          "event": 9
-        },
-        {
-          "committed": true,
-          "event": 10
-        },
-        {
-          "committed": true,
-          "event": 11
-        },
-        {
-          "committed": true,
-          "event": 12
-        },
-        {
-          "committed": true,
-          "event": 13
-        },
-        {
-          "committed": true,
-          "event": 14
-        },
-        {
-          "committed": true,
-          "event": 15
-        },
-        {
-          "committed": true,
-          "event": 16
-        },
-        {
-          "committed": true,
-          "event": 17
-        },
-        {
-          "committed": true,
-          "event": 18
-        },
-        {
-          "committed": true,
-          "event": 19
-        },
-        {
-          "committed": true,
-          "event": 20
-        },
-        {
-          "committed": true,
-          "event": 21
-        },
-        {
-          "committed": true,
-          "event": 22
-        },
-        {
-          "committed": true,
-          "event": 23
-        },
-        {
-          "committed": true,
-          "event": 24
-        },
-        {
-          "committed": true,
-          "event": 25
-        },
-        {
-          "committed": true,
-          "event": 26
-        },
-        {
-          "committed": true,
-          "event": 27
-        },
-        {
-          "committed": true,
-          "event": 28
-        },
-        {
-          "committed": true,
-          "event": 29
-        },
-        {
-          "committed": true,
-          "event": 30
-        },
-        {
-          "committed": true,
-          "event": 31
-        },
-        {
-          "committed": true,
-          "event": 32
-        },
-        {
-          "committed": true,
-          "event": 33
-        },
-        {
-          "committed": true,
-          "event": 34
-        },
-        {
-          "committed": true,
-          "event": 35
-        },
-        {
-          "committed": true,
-          "event": 36
-        }
-      ],
-      "nodes": 37,
-      "scope": "recorded decisions/public status + real-time order + final effects; inspect/audit snapshots excluded",
-      "status": "linearizable_in_declared_scope"
-    },
-    "effects": [
-      {
-        "actor": "actor-1",
-        "proposal": {
-          "effect": {
-            "kind": "transfer",
-            "recipient": "approved",
-            "units": 8
-          },
-          "epochs": [
-            0,
-            0
-          ],
-          "expires": 1794459103,
-          "id": "actor-1"
-        }
-      }
-    ],
-    "outcomes": [
-      {
-        "actor": 0,
-        "latency_ms": 179.068919,
-        "response": {
-          "reason": "policy",
-          "status": "denied"
-        }
-      },
-      {
-        "actor": 1,
-        "latency_ms": 326.635648,
-        "response": {
-          "status": "committed"
-        }
-      },
-      {
-        "actor": 2,
-        "latency_ms": 229.285127,
-        "response": {
-          "reason": "policy",
-          "status": "denied"
-        }
-      },
-      {
-        "actor": 3,
-        "latency_ms": 129.126479,
-        "response": {
-          "reason": "policy",
-          "status": "denied"
-        }
-      },
-      {
-        "actor": 4,
-        "latency_ms": 179.162335,
-        "response": {
-          "reason": "policy",
-          "status": "denied"
-        }
-      },
-      {
-        "actor": 5,
-        "latency_ms": 729.728134,
-        "response": {
-          "reason": "policy",
-          "status": "denied"
-        }
-      },
-      {
-        "actor": 6,
-        "latency_ms": 329.196457,
-        "response": {
-          "reason": "policy",
-          "status": "denied"
-        }
-      },
-      {
-        "actor": 7,
-        "latency_ms": 329.4729,
-        "response": {
-          "reason": "policy",
-          "status": "denied"
-        }
-      },
-      {
-        "actor": 8,
-        "latency_ms": 429.448671,
-        "response": {
-          "reason": "policy",
-          "status": "denied"
-        }
-      },
-      {
-        "actor": 9,
-        "latency_ms": 829.769459,
-        "response": {
-          "reason": "policy",
-          "status": "denied"
-        }
-      },
-      {
-        "actor": 10,
-        "latency_ms": 229.431805,
-        "response": {
-          "reason": "policy",
-          "status": "denied"
-        }
-      },
-      {
-        "actor": 11,
-        "latency_ms": 129.07937,
-        "response": {
-          "reason": "policy",
-          "status": "denied"
-        }
-      },
-      {
-        "actor": 12,
-        "latency_ms": 429.356097,
-        "response": {
-          "reason": "policy",
-          "status": "denied"
-        }
-      },
-      {
-        "actor": 13,
-        "latency_ms": 129.317931,
-        "response": {
-          "reason": "policy",
-          "status": "denied"
-        }
-      },
-      {
-        "actor": 14,
-        "latency_ms": 629.897838,
-        "response": {
-          "reason": "policy",
-          "status": "denied"
-        }
-      },
-      {
-        "actor": 15,
-        "latency_ms": 529.915484,
-        "response": {
-          "reason": "policy",
-          "status": "denied"
-        }
-      }
-    ],
-    "repeat": 0
   },
   {
     "actors": 16,
@@ -2299,7 +1957,7 @@
             0,
             0
           ],
-          "expires": 1794459106,
+          "expires": 1794463104,
           "id": "actor-15"
         }
       }
@@ -2307,7 +1965,7 @@
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 233.34896,
+        "latency_ms": 179.887395,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2315,7 +1973,7 @@
       },
       {
         "actor": 1,
-        "latency_ms": 532.989613,
+        "latency_ms": 230.63626,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2323,7 +1981,7 @@
       },
       {
         "actor": 2,
-        "latency_ms": 733.795033,
+        "latency_ms": 330.468652,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2331,7 +1989,7 @@
       },
       {
         "actor": 3,
-        "latency_ms": 333.257184,
+        "latency_ms": 230.792557,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2339,7 +1997,7 @@
       },
       {
         "actor": 4,
-        "latency_ms": 632.917855,
+        "latency_ms": 180.438087,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2347,7 +2005,7 @@
       },
       {
         "actor": 5,
-        "latency_ms": 179.373185,
+        "latency_ms": 431.578439,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2355,7 +2013,7 @@
       },
       {
         "actor": 6,
-        "latency_ms": 182.095849,
+        "latency_ms": 180.111419,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2363,7 +2021,7 @@
       },
       {
         "actor": 7,
-        "latency_ms": 329.597005,
+        "latency_ms": 430.861673,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2371,7 +2029,7 @@
       },
       {
         "actor": 8,
-        "latency_ms": 179.496899,
+        "latency_ms": 531.095474,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2379,7 +2037,7 @@
       },
       {
         "actor": 9,
-        "latency_ms": 229.494474,
+        "latency_ms": 531.528492,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2387,7 +2045,7 @@
       },
       {
         "actor": 10,
-        "latency_ms": 529.906556,
+        "latency_ms": 179.526593,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2395,7 +2053,7 @@
       },
       {
         "actor": 11,
-        "latency_ms": 630.340034,
+        "latency_ms": 432.916319,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2403,7 +2061,7 @@
       },
       {
         "actor": 12,
-        "latency_ms": 229.548556,
+        "latency_ms": 330.609708,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2411,7 +2069,7 @@
       },
       {
         "actor": 13,
-        "latency_ms": 329.598438,
+        "latency_ms": 230.508189,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2419,7 +2077,7 @@
       },
       {
         "actor": 14,
-        "latency_ms": 730.700595,
+        "latency_ms": 331.015596,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2427,9 +2085,351 @@
       },
       {
         "actor": 15,
-        "latency_ms": 467.871933,
+        "latency_ms": 297.001612,
         "response": {
           "status": "committed"
+        }
+      }
+    ],
+    "repeat": 0
+  },
+  {
+    "actors": 16,
+    "audit": {
+      "broker": {
+        "budget": 8,
+        "cancelled_charge": 0,
+        "charged": 8,
+        "committed_charge": 8,
+        "consistent": true,
+        "delegations_consistent": true,
+        "integrity": "ok",
+        "pending_charge": 0,
+        "records": 1,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      },
+      "sink": {
+        "cancelled_permits": 0,
+        "committed_permits": 1,
+        "consistent": true,
+        "effects": 1,
+        "floors": [
+          0,
+          0
+        ],
+        "integrity": "ok",
+        "pending_permits": 0,
+        "pending_unfenced": true,
+        "revision": 0,
+        "status": "ok",
+        "verus_exec_kernel_verified": true
+      }
+    },
+    "charged": 8,
+    "check": "bounded reference linearization + independent final-state conservation",
+    "concurrent_check": {
+      "calls": 37,
+      "checked": true,
+      "effects": 1,
+      "linearization": [
+        {
+          "committed": true,
+          "event": 0
+        },
+        {
+          "committed": true,
+          "event": 1
+        },
+        {
+          "committed": true,
+          "event": 2
+        },
+        {
+          "committed": true,
+          "event": 3
+        },
+        {
+          "committed": true,
+          "event": 4
+        },
+        {
+          "committed": true,
+          "event": 5
+        },
+        {
+          "committed": true,
+          "event": 6
+        },
+        {
+          "committed": true,
+          "event": 7
+        },
+        {
+          "committed": true,
+          "event": 8
+        },
+        {
+          "committed": true,
+          "event": 9
+        },
+        {
+          "committed": true,
+          "event": 10
+        },
+        {
+          "committed": true,
+          "event": 11
+        },
+        {
+          "committed": true,
+          "event": 12
+        },
+        {
+          "committed": true,
+          "event": 13
+        },
+        {
+          "committed": true,
+          "event": 14
+        },
+        {
+          "committed": true,
+          "event": 15
+        },
+        {
+          "committed": true,
+          "event": 16
+        },
+        {
+          "committed": true,
+          "event": 17
+        },
+        {
+          "committed": true,
+          "event": 18
+        },
+        {
+          "committed": true,
+          "event": 19
+        },
+        {
+          "committed": true,
+          "event": 20
+        },
+        {
+          "committed": true,
+          "event": 21
+        },
+        {
+          "committed": true,
+          "event": 22
+        },
+        {
+          "committed": true,
+          "event": 23
+        },
+        {
+          "committed": true,
+          "event": 24
+        },
+        {
+          "committed": true,
+          "event": 25
+        },
+        {
+          "committed": true,
+          "event": 26
+        },
+        {
+          "committed": true,
+          "event": 27
+        },
+        {
+          "committed": true,
+          "event": 28
+        },
+        {
+          "committed": true,
+          "event": 29
+        },
+        {
+          "committed": true,
+          "event": 30
+        },
+        {
+          "committed": true,
+          "event": 31
+        },
+        {
+          "committed": true,
+          "event": 32
+        },
+        {
+          "committed": true,
+          "event": 33
+        },
+        {
+          "committed": true,
+          "event": 34
+        },
+        {
+          "committed": true,
+          "event": 35
+        },
+        {
+          "committed": true,
+          "event": 36
+        }
+      ],
+      "nodes": 37,
+      "scope": "recorded decisions/public status + real-time order + final effects; inspect/audit snapshots excluded",
+      "status": "linearizable_in_declared_scope"
+    },
+    "effects": [
+      {
+        "actor": "actor-4",
+        "proposal": {
+          "effect": {
+            "kind": "transfer",
+            "recipient": "approved",
+            "units": 8
+          },
+          "epochs": [
+            0,
+            0
+          ],
+          "expires": 1794463108,
+          "id": "actor-4"
+        }
+      }
+    ],
+    "outcomes": [
+      {
+        "actor": 0,
+        "latency_ms": 432.517697,
+        "response": {
+          "reason": "policy",
+          "status": "denied"
+        }
+      },
+      {
+        "actor": 1,
+        "latency_ms": 333.98839,
+        "response": {
+          "reason": "policy",
+          "status": "denied"
+        }
+      },
+      {
+        "actor": 2,
+        "latency_ms": 631.926474,
+        "response": {
+          "reason": "policy",
+          "status": "denied"
+        }
+      },
+      {
+        "actor": 3,
+        "latency_ms": 631.571994,
+        "response": {
+          "reason": "policy",
+          "status": "denied"
+        }
+      },
+      {
+        "actor": 4,
+        "latency_ms": 1302.815542,
+        "response": {
+          "status": "committed"
+        }
+      },
+      {
+        "actor": 5,
+        "latency_ms": 831.625652,
+        "response": {
+          "reason": "policy",
+          "status": "denied"
+        }
+      },
+      {
+        "actor": 6,
+        "latency_ms": 1433.895946,
+        "response": {
+          "reason": "policy",
+          "status": "denied"
+        }
+      },
+      {
+        "actor": 7,
+        "latency_ms": 531.582787,
+        "response": {
+          "reason": "policy",
+          "status": "denied"
+        }
+      },
+      {
+        "actor": 8,
+        "latency_ms": 932.545581,
+        "response": {
+          "reason": "policy",
+          "status": "denied"
+        }
+      },
+      {
+        "actor": 9,
+        "latency_ms": 331.682178,
+        "response": {
+          "reason": "policy",
+          "status": "denied"
+        }
+      },
+      {
+        "actor": 10,
+        "latency_ms": 1331.98351,
+        "response": {
+          "reason": "policy",
+          "status": "denied"
+        }
+      },
+      {
+        "actor": 11,
+        "latency_ms": 331.406046,
+        "response": {
+          "reason": "policy",
+          "status": "denied"
+        }
+      },
+      {
+        "actor": 12,
+        "latency_ms": 1534.860939,
+        "response": {
+          "reason": "policy",
+          "status": "denied"
+        }
+      },
+      {
+        "actor": 13,
+        "latency_ms": 433.808468,
+        "response": {
+          "reason": "policy",
+          "status": "denied"
+        }
+      },
+      {
+        "actor": 14,
+        "latency_ms": 732.181515,
+        "response": {
+          "reason": "policy",
+          "status": "denied"
+        }
+      },
+      {
+        "actor": 15,
+        "latency_ms": 430.887102,
+        "response": {
+          "reason": "policy",
+          "status": "denied"
         }
       }
     ],
@@ -2641,7 +2641,7 @@
             0,
             0
           ],
-          "expires": 1794459110,
+          "expires": 1794463117,
           "id": "actor-0"
         }
       }
@@ -2649,14 +2649,14 @@
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 67.124619,
+        "latency_ms": 733.266079,
         "response": {
           "status": "committed"
         }
       },
       {
         "actor": 1,
-        "latency_ms": 53.780596,
+        "latency_ms": 104.35169,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2664,7 +2664,7 @@
       },
       {
         "actor": 2,
-        "latency_ms": 104.058912,
+        "latency_ms": 179.382943,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2672,7 +2672,7 @@
       },
       {
         "actor": 3,
-        "latency_ms": 79.003778,
+        "latency_ms": 104.960641,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2680,7 +2680,7 @@
       },
       {
         "actor": 4,
-        "latency_ms": 33.614999,
+        "latency_ms": 179.580536,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2688,7 +2688,7 @@
       },
       {
         "actor": 5,
-        "latency_ms": 33.796372,
+        "latency_ms": 130.768413,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2696,7 +2696,7 @@
       },
       {
         "actor": 6,
-        "latency_ms": 78.871217,
+        "latency_ms": 129.794752,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2704,7 +2704,7 @@
       },
       {
         "actor": 7,
-        "latency_ms": 33.632442,
+        "latency_ms": 129.692388,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2712,7 +2712,7 @@
       },
       {
         "actor": 8,
-        "latency_ms": 129.250554,
+        "latency_ms": 104.167991,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2720,7 +2720,7 @@
       },
       {
         "actor": 9,
-        "latency_ms": 53.65019,
+        "latency_ms": 182.496071,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2728,7 +2728,7 @@
       },
       {
         "actor": 10,
-        "latency_ms": 103.970805,
+        "latency_ms": 130.314756,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2736,7 +2736,7 @@
       },
       {
         "actor": 11,
-        "latency_ms": 53.846982,
+        "latency_ms": 105.380294,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2744,7 +2744,7 @@
       },
       {
         "actor": 12,
-        "latency_ms": 33.7264,
+        "latency_ms": 179.184267,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2752,7 +2752,7 @@
       },
       {
         "actor": 13,
-        "latency_ms": 53.899381,
+        "latency_ms": 105.936406,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2760,7 +2760,7 @@
       },
       {
         "actor": 14,
-        "latency_ms": 78.797607,
+        "latency_ms": 230.623398,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2768,7 +2768,7 @@
       },
       {
         "actor": 15,
-        "latency_ms": 33.800881,
+        "latency_ms": 103.952805,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -2987,6 +2987,10 @@
         },
         {
           "committed": true,
+          "event": 42
+        },
+        {
+          "committed": true,
           "event": 43
         },
         {
@@ -3015,6 +3019,14 @@
         },
         {
           "committed": true,
+          "event": 50
+        },
+        {
+          "committed": true,
+          "event": 51
+        },
+        {
+          "committed": true,
           "event": 52
         },
         {
@@ -3028,10 +3040,6 @@
         {
           "committed": true,
           "event": 55
-        },
-        {
-          "committed": true,
-          "event": 56
         },
         {
           "committed": true,
@@ -3075,23 +3083,15 @@
         },
         {
           "committed": true,
+          "event": 56
+        },
+        {
+          "committed": true,
           "event": 67
         },
         {
           "committed": true,
           "event": 68
-        },
-        {
-          "committed": true,
-          "event": 42
-        },
-        {
-          "committed": true,
-          "event": 50
-        },
-        {
-          "committed": true,
-          "event": 51
         }
       ],
       "nodes": 69,
@@ -3100,7 +3100,7 @@
     },
     "effects": [
       {
-        "actor": "actor-28",
+        "actor": "actor-4",
         "proposal": {
           "effect": {
             "kind": "transfer",
@@ -3111,15 +3111,15 @@
             0,
             0
           ],
-          "expires": 1794459110,
-          "id": "actor-28"
+          "expires": 1794463124,
+          "id": "actor-4"
         }
       }
     ],
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 33.81626,
+        "latency_ms": 895.190805,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3127,7 +3127,7 @@
       },
       {
         "actor": 1,
-        "latency_ms": 53.783291,
+        "latency_ms": 1192.720378,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3135,7 +3135,7 @@
       },
       {
         "actor": 2,
-        "latency_ms": 104.307393,
+        "latency_ms": 1095.303936,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3143,7 +3143,7 @@
       },
       {
         "actor": 3,
-        "latency_ms": 53.979803,
+        "latency_ms": 994.556423,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3151,15 +3151,14 @@
       },
       {
         "actor": 4,
-        "latency_ms": 33.82161,
+        "latency_ms": 1682.344828,
         "response": {
-          "reason": "policy",
-          "status": "denied"
+          "status": "committed"
         }
       },
       {
         "actor": 5,
-        "latency_ms": 79.573356,
+        "latency_ms": 1392.314418,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3167,7 +3166,7 @@
       },
       {
         "actor": 6,
-        "latency_ms": 33.888036,
+        "latency_ms": 896.512334,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3175,7 +3174,7 @@
       },
       {
         "actor": 7,
-        "latency_ms": 129.473846,
+        "latency_ms": 793.703904,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3183,7 +3182,7 @@
       },
       {
         "actor": 8,
-        "latency_ms": 53.822495,
+        "latency_ms": 996.416642,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3191,7 +3190,7 @@
       },
       {
         "actor": 9,
-        "latency_ms": 179.566571,
+        "latency_ms": 1292.531239,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3199,7 +3198,7 @@
       },
       {
         "actor": 10,
-        "latency_ms": 53.92551,
+        "latency_ms": 900.17983,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3207,7 +3206,7 @@
       },
       {
         "actor": 11,
-        "latency_ms": 129.257507,
+        "latency_ms": 796.396286,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3215,7 +3214,7 @@
       },
       {
         "actor": 12,
-        "latency_ms": 79.305369,
+        "latency_ms": 801.272929,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3223,7 +3222,7 @@
       },
       {
         "actor": 13,
-        "latency_ms": 179.488293,
+        "latency_ms": 808.016343,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3231,7 +3230,7 @@
       },
       {
         "actor": 14,
-        "latency_ms": 33.822272,
+        "latency_ms": 902.8759,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3239,7 +3238,7 @@
       },
       {
         "actor": 15,
-        "latency_ms": 229.418329,
+        "latency_ms": 907.570289,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3247,7 +3246,7 @@
       },
       {
         "actor": 16,
-        "latency_ms": 104.371494,
+        "latency_ms": 1005.362752,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3255,7 +3254,7 @@
       },
       {
         "actor": 17,
-        "latency_ms": 53.966999,
+        "latency_ms": 796.184214,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3263,7 +3262,7 @@
       },
       {
         "actor": 18,
-        "latency_ms": 34.044182,
+        "latency_ms": 896.294052,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3271,7 +3270,7 @@
       },
       {
         "actor": 19,
-        "latency_ms": 53.712637,
+        "latency_ms": 793.249334,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3279,7 +3278,7 @@
       },
       {
         "actor": 20,
-        "latency_ms": 54.05168,
+        "latency_ms": 894.155316,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3287,7 +3286,7 @@
       },
       {
         "actor": 21,
-        "latency_ms": 329.987664,
+        "latency_ms": 795.443915,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3295,7 +3294,7 @@
       },
       {
         "actor": 22,
-        "latency_ms": 79.271956,
+        "latency_ms": 795.80126,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3303,7 +3302,7 @@
       },
       {
         "actor": 23,
-        "latency_ms": 530.165195,
+        "latency_ms": 1000.884061,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3311,7 +3310,7 @@
       },
       {
         "actor": 24,
-        "latency_ms": 229.607417,
+        "latency_ms": 798.057548,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3319,7 +3318,7 @@
       },
       {
         "actor": 25,
-        "latency_ms": 429.748119,
+        "latency_ms": 798.454128,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3327,7 +3326,7 @@
       },
       {
         "actor": 26,
-        "latency_ms": 104.06873,
+        "latency_ms": 801.816277,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3335,7 +3334,7 @@
       },
       {
         "actor": 27,
-        "latency_ms": 33.831249,
+        "latency_ms": 798.280039,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3343,14 +3342,15 @@
       },
       {
         "actor": 28,
-        "latency_ms": 75.908899,
+        "latency_ms": 792.106332,
         "response": {
-          "status": "committed"
+          "reason": "policy",
+          "status": "denied"
         }
       },
       {
         "actor": 29,
-        "latency_ms": 104.284218,
+        "latency_ms": 1000.451693,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3358,7 +3358,7 @@
       },
       {
         "actor": 30,
-        "latency_ms": 179.319022,
+        "latency_ms": 799.597301,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3366,7 +3366,7 @@
       },
       {
         "actor": 31,
-        "latency_ms": 33.655826,
+        "latency_ms": 995.936574,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3573,6 +3573,10 @@
         },
         {
           "committed": true,
+          "event": 39
+        },
+        {
+          "committed": true,
           "event": 40
         },
         {
@@ -3582,6 +3586,14 @@
         {
           "committed": true,
           "event": 42
+        },
+        {
+          "committed": true,
+          "event": 43
+        },
+        {
+          "committed": true,
+          "event": 44
         },
         {
           "committed": true,
@@ -3661,10 +3673,6 @@
         },
         {
           "committed": true,
-          "event": 64
-        },
-        {
-          "committed": true,
           "event": 65
         },
         {
@@ -3673,23 +3681,15 @@
         },
         {
           "committed": true,
+          "event": 64
+        },
+        {
+          "committed": true,
           "event": 67
         },
         {
           "committed": true,
           "event": 68
-        },
-        {
-          "committed": true,
-          "event": 39
-        },
-        {
-          "committed": true,
-          "event": 43
-        },
-        {
-          "committed": true,
-          "event": 44
         }
       ],
       "nodes": 69,
@@ -3698,7 +3698,7 @@
     },
     "effects": [
       {
-        "actor": "actor-1",
+        "actor": "actor-31",
         "proposal": {
           "effect": {
             "kind": "transfer",
@@ -3709,15 +3709,15 @@
             0,
             0
           ],
-          "expires": 1794459112,
-          "id": "actor-1"
+          "expires": 1794463139,
+          "id": "actor-31"
         }
       }
     ],
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 630.621267,
+        "latency_ms": 430.300448,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3725,14 +3725,15 @@
       },
       {
         "actor": 1,
-        "latency_ms": 75.01691,
+        "latency_ms": 830.280809,
         "response": {
-          "status": "committed"
+          "reason": "policy",
+          "status": "denied"
         }
       },
       {
         "actor": 2,
-        "latency_ms": 34.590176,
+        "latency_ms": 530.001823,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3740,7 +3741,7 @@
       },
       {
         "actor": 3,
-        "latency_ms": 54.344062,
+        "latency_ms": 830.761568,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3748,7 +3749,7 @@
       },
       {
         "actor": 4,
-        "latency_ms": 104.557986,
+        "latency_ms": 530.851309,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3756,7 +3757,7 @@
       },
       {
         "actor": 5,
-        "latency_ms": 180.110901,
+        "latency_ms": 529.956707,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3764,7 +3765,7 @@
       },
       {
         "actor": 6,
-        "latency_ms": 129.299677,
+        "latency_ms": 730.072726,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3772,7 +3773,7 @@
       },
       {
         "actor": 7,
-        "latency_ms": 34.190288,
+        "latency_ms": 630.084047,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3780,7 +3781,7 @@
       },
       {
         "actor": 8,
-        "latency_ms": 33.861035,
+        "latency_ms": 930.874511,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3788,7 +3789,7 @@
       },
       {
         "actor": 9,
-        "latency_ms": 79.764027,
+        "latency_ms": 831.119144,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3796,7 +3797,7 @@
       },
       {
         "actor": 10,
-        "latency_ms": 330.121257,
+        "latency_ms": 429.953872,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3804,7 +3805,7 @@
       },
       {
         "actor": 11,
-        "latency_ms": 230.155124,
+        "latency_ms": 429.893368,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3812,7 +3813,7 @@
       },
       {
         "actor": 12,
-        "latency_ms": 530.479901,
+        "latency_ms": 730.375378,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3820,7 +3821,7 @@
       },
       {
         "actor": 13,
-        "latency_ms": 429.81776,
+        "latency_ms": 730.384135,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3828,7 +3829,7 @@
       },
       {
         "actor": 14,
-        "latency_ms": 54.360484,
+        "latency_ms": 730.079438,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3836,7 +3837,7 @@
       },
       {
         "actor": 15,
-        "latency_ms": 79.355033,
+        "latency_ms": 629.908755,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3844,7 +3845,7 @@
       },
       {
         "actor": 16,
-        "latency_ms": 54.20531,
+        "latency_ms": 429.899159,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3852,7 +3853,7 @@
       },
       {
         "actor": 17,
-        "latency_ms": 104.288116,
+        "latency_ms": 630.669114,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3860,7 +3861,7 @@
       },
       {
         "actor": 18,
-        "latency_ms": 104.148061,
+        "latency_ms": 730.703268,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3868,7 +3869,7 @@
       },
       {
         "actor": 19,
-        "latency_ms": 129.150194,
+        "latency_ms": 529.702506,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3876,7 +3877,7 @@
       },
       {
         "actor": 20,
-        "latency_ms": 930.589799,
+        "latency_ms": 629.893005,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3884,7 +3885,7 @@
       },
       {
         "actor": 21,
-        "latency_ms": 230.205991,
+        "latency_ms": 731.0166,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3892,7 +3893,7 @@
       },
       {
         "actor": 22,
-        "latency_ms": 830.802845,
+        "latency_ms": 930.129712,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3900,7 +3901,7 @@
       },
       {
         "actor": 23,
-        "latency_ms": 1130.76728,
+        "latency_ms": 530.094898,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3908,7 +3909,7 @@
       },
       {
         "actor": 24,
-        "latency_ms": 1030.604995,
+        "latency_ms": 1030.459625,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3916,7 +3917,7 @@
       },
       {
         "actor": 25,
-        "latency_ms": 1231.389305,
+        "latency_ms": 1030.576947,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3924,7 +3925,7 @@
       },
       {
         "actor": 26,
-        "latency_ms": 730.426455,
+        "latency_ms": 731.236877,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3932,7 +3933,7 @@
       },
       {
         "actor": 27,
-        "latency_ms": 179.407941,
+        "latency_ms": 429.822574,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3940,7 +3941,7 @@
       },
       {
         "actor": 28,
-        "latency_ms": 429.679027,
+        "latency_ms": 430.278967,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3948,7 +3949,7 @@
       },
       {
         "actor": 29,
-        "latency_ms": 33.741138,
+        "latency_ms": 530.138711,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3956,7 +3957,7 @@
       },
       {
         "actor": 30,
-        "latency_ms": 129.060955,
+        "latency_ms": 629.74668,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -3964,10 +3965,9 @@
       },
       {
         "actor": 31,
-        "latency_ms": 79.502172,
+        "latency_ms": 1912.006428,
         "response": {
-          "reason": "policy",
-          "status": "denied"
+          "status": "committed"
         }
       }
     ],
@@ -4203,15 +4203,19 @@
         },
         {
           "committed": true,
+          "event": 47
+        },
+        {
+          "committed": true,
           "event": 48
         },
         {
           "committed": true,
-          "event": 49
+          "event": 50
         },
         {
           "committed": true,
-          "event": 50
+          "event": 51
         },
         {
           "committed": true,
@@ -4227,11 +4231,7 @@
         },
         {
           "committed": true,
-          "event": 56
-        },
-        {
-          "committed": true,
-          "event": 57
+          "event": 55
         },
         {
           "committed": true,
@@ -4279,15 +4279,15 @@
         },
         {
           "committed": true,
-          "event": 47
+          "event": 49
         },
         {
           "committed": true,
-          "event": 51
+          "event": 56
         },
         {
           "committed": true,
-          "event": 55
+          "event": 57
         }
       ],
       "nodes": 69,
@@ -4296,7 +4296,7 @@
     },
     "effects": [
       {
-        "actor": "actor-0",
+        "actor": "actor-2",
         "proposal": {
           "effect": {
             "kind": "transfer",
@@ -4307,22 +4307,23 @@
             0,
             0
           ],
-          "expires": 1794459114,
-          "id": "actor-0"
+          "expires": 1794463154,
+          "id": "actor-2"
         }
       }
     ],
     "outcomes": [
       {
         "actor": 0,
-        "latency_ms": 281.71707,
+        "latency_ms": 431.189451,
         "response": {
-          "status": "committed"
+          "reason": "policy",
+          "status": "denied"
         }
       },
       {
         "actor": 1,
-        "latency_ms": 229.887307,
+        "latency_ms": 330.492533,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4330,15 +4331,14 @@
       },
       {
         "actor": 2,
-        "latency_ms": 430.255047,
+        "latency_ms": 979.590506,
         "response": {
-          "reason": "policy",
-          "status": "denied"
+          "status": "committed"
         }
       },
       {
         "actor": 3,
-        "latency_ms": 79.097887,
+        "latency_ms": 736.642475,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4346,7 +4346,7 @@
       },
       {
         "actor": 4,
-        "latency_ms": 129.168168,
+        "latency_ms": 1533.597294,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4354,7 +4354,7 @@
       },
       {
         "actor": 5,
-        "latency_ms": 630.895094,
+        "latency_ms": 530.797991,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4362,7 +4362,7 @@
       },
       {
         "actor": 6,
-        "latency_ms": 104.145385,
+        "latency_ms": 1031.801578,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4370,7 +4370,7 @@
       },
       {
         "actor": 7,
-        "latency_ms": 730.593461,
+        "latency_ms": 730.968973,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4378,7 +4378,7 @@
       },
       {
         "actor": 8,
-        "latency_ms": 179.401538,
+        "latency_ms": 737.051738,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4386,7 +4386,7 @@
       },
       {
         "actor": 9,
-        "latency_ms": 930.073732,
+        "latency_ms": 1331.777803,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4394,7 +4394,7 @@
       },
       {
         "actor": 10,
-        "latency_ms": 129.86644,
+        "latency_ms": 630.856972,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4402,7 +4402,7 @@
       },
       {
         "actor": 11,
-        "latency_ms": 104.29023,
+        "latency_ms": 330.18958,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4410,7 +4410,7 @@
       },
       {
         "actor": 12,
-        "latency_ms": 330.100658,
+        "latency_ms": 435.046446,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4418,7 +4418,7 @@
       },
       {
         "actor": 13,
-        "latency_ms": 529.837414,
+        "latency_ms": 1131.853105,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4426,7 +4426,7 @@
       },
       {
         "actor": 14,
-        "latency_ms": 730.483262,
+        "latency_ms": 730.412241,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4434,7 +4434,7 @@
       },
       {
         "actor": 15,
-        "latency_ms": 179.896044,
+        "latency_ms": 1432.663027,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4442,7 +4442,7 @@
       },
       {
         "actor": 16,
-        "latency_ms": 129.426086,
+        "latency_ms": 329.671691,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4450,7 +4450,7 @@
       },
       {
         "actor": 17,
-        "latency_ms": 79.513373,
+        "latency_ms": 530.769847,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4458,7 +4458,7 @@
       },
       {
         "actor": 18,
-        "latency_ms": 129.690687,
+        "latency_ms": 334.255811,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4466,7 +4466,7 @@
       },
       {
         "actor": 19,
-        "latency_ms": 830.475484,
+        "latency_ms": 630.693462,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4474,7 +4474,7 @@
       },
       {
         "actor": 20,
-        "latency_ms": 330.235293,
+        "latency_ms": 430.773695,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4482,7 +4482,7 @@
       },
       {
         "actor": 21,
-        "latency_ms": 530.074694,
+        "latency_ms": 430.950569,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4490,7 +4490,7 @@
       },
       {
         "actor": 22,
-        "latency_ms": 104.699555,
+        "latency_ms": 1132.77534,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4498,7 +4498,7 @@
       },
       {
         "actor": 23,
-        "latency_ms": 104.228743,
+        "latency_ms": 1331.575009,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4506,7 +4506,7 @@
       },
       {
         "actor": 24,
-        "latency_ms": 429.804815,
+        "latency_ms": 329.910182,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4514,7 +4514,7 @@
       },
       {
         "actor": 25,
-        "latency_ms": 229.472021,
+        "latency_ms": 1131.241799,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4522,7 +4522,7 @@
       },
       {
         "actor": 26,
-        "latency_ms": 329.510029,
+        "latency_ms": 1231.548489,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4530,7 +4530,7 @@
       },
       {
         "actor": 27,
-        "latency_ms": 79.289879,
+        "latency_ms": 530.61759,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4538,7 +4538,7 @@
       },
       {
         "actor": 28,
-        "latency_ms": 79.309377,
+        "latency_ms": 340.053046,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4546,7 +4546,7 @@
       },
       {
         "actor": 29,
-        "latency_ms": 179.886667,
+        "latency_ms": 330.956831,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4554,7 +4554,7 @@
       },
       {
         "actor": 30,
-        "latency_ms": 229.933414,
+        "latency_ms": 1230.883822,
         "response": {
           "reason": "policy",
           "status": "denied"
@@ -4562,7 +4562,7 @@
       },
       {
         "actor": 31,
-        "latency_ms": 430.067673,
+        "latency_ms": 1030.736513,
         "response": {
           "reason": "policy",
           "status": "denied"

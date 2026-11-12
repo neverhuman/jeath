@@ -2,7 +2,7 @@
 
 A forgettable paper reports everything its authors ran in the order they ran it. A world-class white paper—the kind read ten years later across disciplines—feels **inevitable**: every paragraph pays rent, every equation cashes out in data, every figure could stand alone on a seminar slide, every color means one thing from Page 1 to the final Appendix, and every claim stops at the exact boundary of what its evidence proves.
 
-This document specifies the **Eight Governing Laws** for authoring, refactoring, and auditing any flagship scientific or engineering white paper. Every rule is domain-agnostic and enforceable as an explicit pass/fail gate.
+This document specifies the **Ten Governing Laws** for authoring, refactoring, and auditing any flagship scientific or engineering white paper. Every rule is domain-agnostic and enforceable as an explicit pass/fail gate.
 
 ---
 
@@ -60,6 +60,9 @@ Headings must state **what is established**, not a passive topic bucket:
 - *Weak*: `"2.4 Height and dating"` or `"3.2 Marriage and child counts"`
 - *World-Class*: `"Male Stature Enforces a Lower-Tail Floor, Triggers a 6'0\" Staging Cliff, and Yields Null Fertility"`
 
+### 2.4 Page-1 Hero Breathing-Room Cap (`≤ 3` Panels)
+Never crowd Page 1 with a `6–10` micro-panel contact sheet. Cap the Page-1 synthesis figure at **at most 3 spacious focal panels** (`≥ 2.25 in` width per panel on a `7.16 in` double-column canvas) with generous negative space, legible direct callouts, and one unmistakable contrast per panel. Save multi-panel empirical decompositions for dedicated interior `figure*` spreads.
+
 ---
 
 ## Law III — Four-Tier Epistemic Calibration & Honor for Nulls
@@ -83,6 +86,9 @@ When engaging active scientific debates (e.g., ancient demographic bottlenecks, 
 ### 3.3 Elevate Negative, Null, and Ceiling Results
 Advocacy hides nulls; world-class science **builds load-bearing walls out of them**. When `50+` distinct model architectures hit the same out-of-sample ceiling, when a strongly preferred cue yields zero net reproductive differential, or when a celebrated biomarker meta-analyzes to $z \approx 0$, feature that boundary prominently in both graphics and text: showing *where an instrument stops* proves the theory has teeth. Always close with **pre-committed decisive falsifiers**.
 
+### 3.4 The Macro-KPI Concept Rollup Law
+Never leave readers juggling 60 disconnected raw decimals across heterogeneous scales. Roll primary multi-dataset estimands into **5–8 named, human-grokkable Macro KPIs** in one canonical Executive Scorecard Table (`Table I`), each stating the conceptual question, datasets and combined $N$, primary measured contrast, boundary or null check, and formal theorem/proposition link.
+
 ---
 
 ## Law IV — Visual Self-Sufficiency & Float Choreography
@@ -104,6 +110,10 @@ A domain expert reading **only the figures, direct canvas annotations, and capti
 - Balance single-column (`figure`, `table`) and double-column (`figure*`, `table*`) floats so LaTeX never queues five full-width floats in a row.
 - Every figure and table must appear **on the same page or immediately facing/following page** (`0–1` page lag) of its first prose callout.
 - Terminate main back-matter and each major Appendix block cleanly so **zero floats ever strand at `\end{document}`**.
+
+### 4.4 Matched-Axis Life-Course & Stage-Reversal Choreography
+- **Shared-Axis Group Trajectories**: When comparing two cohorts across age or time (e.g., Women vs. Men from `18` to `75`), lock every comparative panel onto **one shared horizontal axis**, cap primary trajectories at **`2` curves per panel**, shade the signed inter-group ribbon (`Cohort A − Cohort B`), and mark exact crossover thresholds ($a^*$) directly on the canvas.
+- **Paired Stage-Reversal Plots**: When selection pressures invert across stages (e.g., *Stranger Entry Filtering* vs. *Post-Entry Pair-Bond Fulfilment*), plot Entry slopes directly beside Post-Entry slopes on paired scales so sign and rank reversals are visible without scanning separate sections.
 
 ---
 
@@ -153,19 +163,47 @@ Define a compact, high-contrast, color-vision-deficiency-safe (Okabe–Ito-deriv
 
 ---
 
-## Law VIII — Deterministic Provenance & Release Gate Scorecard
+## Law VIII — Deterministic Provenance & Reproducible Pipelines
 
-Every published number, curve, composite map, macro, table, and citation block must regenerate bit-identically from checksum-verified data on CPU with fixed random seeds. Before any release or push, the manuscript must pass all **12 Charter Gates**:
+Every published number, curve, composite map, macro, table, and citation block must regenerate bit-identically from checksum-verified data on CPU with fixed random seeds. Never hand-edit generated numbers or build outside tracked workspace targets.
+
+---
+
+## Law IX — The 5-Second Standalone Screenshot Test (Viral Clarity at Zero Epistemic Overreach)
+
+Enduring landmark papers travel across disciplines and public discourse not through hype, but because **every flagship figure resolves a universal human or physical debate as a standalone cropped image within 5 seconds**:
+
+1. **Self-Contained Cropped Story**: If any main figure is screenshotted out of the PDF onto a seminar slide or social feed without surrounding prose, a first-time viewer must immediately grasp *(a)* the question tested, *(b)* the empirical scale ($N$, countries, or eras), *(c)* the signed magnitude and uncertainty interval, and *(d)* the boundary condition (`meta-analytic null`, `contested`, or `observational` printed directly on the canvas).
+2. **Plain-Language Axes Over Schema Codes**: Never expose raw database variable codes (`PRQC_mean`, `attr_o`, `prob`, `SCCS1136`) on figure ticks, legends, or titles; translate every label into clear, memorable language (*"Relationship Quality (SD)"*, *"Feeling Chosen Back"*, *"Adultery / Betrayal"*).
+3. **Resonance Without Clickbait**: Cross-disciplinary reach comes from connecting rigorous formal mechanisms to questions people genuinely care about—never from cherry-picked slices, suppressed nulls, or causal overclaiming.
+
+---
+
+## Law X — Cross-Scale Causal Closure & Zero Curve Duplication
+
+Landmark syntheses feel unforgettable when seemingly separate chapters turn out to be **two halves of one locked equation**:
+
+1. **Close the Macro-to-Micro Loop**: Never leave deep-time physical/biological constraints and contemporary human behavior as adjacent analogies. Prove the formal coupling whereby the macro-constraint (such as juvenile energetic cost or multi-period hold-up risk) necessitates the micro-level commitment and jury architecture.
+2. **Pit Static Checklists Against Live Interaction**: Whenever modern institutions or digital markets substitute static profile tags or zero-acquaintance snapshots for lived multi-context observation, test objective tag alignment directly against real-time relational play and pre-commitment witness duration—while reporting post-survival invariance honestly when surviving units match on quality.
+3. **Zero Multi-Figure Curve Duplication**: Never plot the same empirical gradient more than twice across a manuscript (at most once in an executive/life-course synthesis and once in its dedicated mechanism spread). Consolidate adjacent spreads rather than queuing redundant panels.
+
+---
+
+## Release Gate Scorecard
+
+Before any release or push, the manuscript must pass all **14 Charter Gates**:
 
 - [ ] **G1 (Zero Filler)**: Zero meta-roadmaps, zero duplicated multi-point conclusion lists, zero leaked referee/draft notes.
 - [ ] **G2 (Single Home)**: Zero datasets or arguments narrated redundantly in both Main Text and Appendix.
-- [ ] **G3 (Page-1 Contract)**: Title, `≤225`-word Abstract, and Page-1 Synthesis Figure convey paradox, law, scale, findings, and null within 60 seconds.
+- [ ] **G3 (Page-1 Contract & Breathing Room)**: Title, `≤225`-word Abstract, and `≤3`-panel Page-1 Hero Figure convey paradox, law, scale, findings, and null within 60 seconds without visual crowding.
 - [ ] **G4 (Epistemic Discipline)**: Derived, Measured, Accounting, and Conjectured claims explicitly distinguished; contested and null findings reported symmetrically with chronological ordering verified.
 - [ ] **G5 (Unified 1:1 Graphics)**: 100% of Main Figures rendered by a single programmatic script at exact column widths (`0` legacy draft mismatches).
 - [ ] **G6 (Semantic Palette)**: Every color invariant in meaning across all figures; monochrome redundancy verified.
 - [ ] **G7 (Float Proximity)**: Every main figure and table lands within `0–1` pages of its first callout; `0` floats strand after Appendix D.
-- [ ] **G8 (Numerical Tables Only)**: Zero prose-wall essay tables in Main Text; all `booktabs` tables carry explicit $N$s, units, and CIs.
+- [ ] **G8 (Numerical Tables & Macro-KPI Rollup)**: Zero prose-wall essay tables in Main Text; `Table I` rolls multi-dataset estimands into `5–8` named Macro KPIs; all `booktabs` tables carry explicit $N$s, units, and CIs.
 - [ ] **G9 (Sequential Bibliography)**: Citations run `[1], [2], ..., [N]` in appearance order from Page 1; `0` unresolved `[?]` keys; `0` uncited bloat entries.
-- [ ] **G10 (Clean Micro-Typography)**: `0` authored `Overfull \hbox` warnings; `0` missing font glyphs; all narrow-column equations wrapped cleanly.
+- [ ] **G10 (Clean Micro-Typography)**: `0` authored `Overfull \hbox` or `Overfull \vbox` warnings; `0` missing font glyphs; all narrow-column equations wrapped cleanly.
 - [ ] **G11 (Privacy & License Hygiene)**: Human composites obey strict minimum aggregation floors ($N \ge 50$); third-party datasets obey exact license terms.
 - [ ] **G12 (Bit-Exact Reproducibility)**: Two consecutive runs produce `0` diff; schema/source-hash validator, unit tests, `--check` asset gate, and repository `make required` exit `0`.
+- [ ] **G13 (Standalone Screenshot & Matched-Axis Clarity)**: Every flagship figure passes the 5-second standalone screenshot test with plain-English labels, inline epistemic tags, and shared-axis cohort/stage comparisons (`≤2` primary curves per life-course panel).
+- [ ] **G14 (Causal Closure & Zero Curve Duplication)**: Macro-scale constraints and micro-scale commitment mechanisms are formally coupled, static checklists are tested head-to-head against live interaction, and zero empirical curves are plotted redundantly across three or more figures.

@@ -184,6 +184,152 @@ class PlatformStudyTests(unittest.TestCase):
         self.assertAlmostEqual(float(w_lp.sum()), 1.0, places=6)
         self.assertTrue(np.all((w_lp >= -1e-9) & (w_lp <= 0.5 + 1e-6)))
 
+    def test_voice_dyadic_love_reversal_and_macro_kpi_reference_invariants(self):
+        import json
+        from pathlib import Path
+        from scripts import performance_paper as ppaper
+
+        # 1. Synthetic self-written voice + childless crossover test
+        n = 240
+        ages = ["27"] * 120 + ["46"] * 120
+        genders = (["Female"] * 60 + ["Male"] * 60) * 2
+        seeking = (["Man"] * 60 + ["Woman"] * 60) * 2
+        wants = (
+            ["Want children"] * 50 + ["Does not want children"] * 10
+            + ["Want children"] * 30 + ["Does not want children"] * 30
+            + ["Want children"] * 10 + ["Does not want children"] * 50
+            + ["Want children"] * 30 + ["Does not want children"] * 30
+        )
+        descs = [
+            "Looking for an honest, loyal, kind partner who loves family, kids, and laughter together."
+            for _ in range(n)
+        ]
+        data = pa.table({
+            "source_record_no": list(range(1, n + 1)),
+            "id": [str(i) for i in range(n)],
+            "age": ages,
+            "gender": genders,
+            "seeking": seeking,
+            "haschildren": ["No"] * n,
+            "wantchildren": wants,
+            "maritalstatus": ["Single"] * n,
+            "headline": ["Warm smile"] * n,
+            "description": descs,
+            "interests": ["hiking cooking"] * n,
+        })
+        with patch.object(study, "read", return_value=data):
+            res = study.pov()
+        swv = res["self_written_voice"]
+        self.assertEqual(swv["eligible_with_essay"]["Pooled"], 240)
+        self.assertEqual(swv["themes"]["honest_loyal_trust"]["Female"]["count"], 120)
+        self.assertEqual(swv["themes"]["tall_6ft_mention"]["Female"]["count"], 0)
+        # Verify band-midpoint childless crossover between 27.0 (+33.3 pp) and 47.0 (-33.3 pp)
+        # Note: cells require n >= 100 per sex/band in production; check reference JSON below.
+
+        ref_path = Path(__file__).resolve().parents[1] / "evidence/reference/performance-before-outcomes.json"
+        ref = json.loads(ref_path.read_text())
+        self.assertEqual(ref["macro_selection_kpis"]["schema_version"], 2)
+        self.assertEqual(len(ref["macro_selection_kpis"]["kpis"]), 8)
+        self.assertTrue(39.0 <= ref["pov"]["childless_crossover"]["band_midpoint_interpolated_age"] <= 44.0)
+        self.assertGreater(ref["pov"]["self_written_voice"]["voice_to_checkbox_ratios"]["female_family_to_tall"], 80.0)
+
+        srm = ref["speed_dating"]["dyadic_chemistry"]["variance_partition"]["like"]["unbiased_srm_shares"]
+        self.assertAlmostEqual(
+            srm["chooser_leniency"] + srm["partner_consensus"] + srm["unique_dyadic_and_noise"],
+            1.0,
+            places=6,
+        )
+        self.assertGreater(srm["unique_dyadic_and_noise"], srm["partner_consensus"])
+
+        # v13 hobby-tag null vs. live wavelength & Waves 1-3 hindsight checks
+        chk_sd = ref["speed_dating"]["checklist_and_hindsight"]
+        hw = chk_sd["hobby_checklist_vs_live_wavelength"]
+        self.assertLess(abs(hw["r_objective_hobby_corr_yes"]["estimate"]), 0.05)
+        self.assertGreater(hw["r_live_shared_wavelength_yes"]["estimate"], 0.35)
+        self.assertGreater(hw["live_to_checklist_r_ratio"], 20.0)
+        self.assertGreater(
+            chk_sd["within_person_shifts"]["nextday_realized_minus_pre_stated"]["women"]["delta_points"]["attr"]["estimate"],
+            8.0,
+        )
+        self.assertGreater(
+            chk_sd["within_person_shifts"]["threeweek_stated_minus_nextday_realized"]["women"]["delta_points"]["intel"]["interval_95"][0],
+            0.0,
+        )
+
+        # v13 childhood metabolic bottleneck & Proposition 22 (E22) checks
+        cc = ref["open_synthesis"]["childhood_coevolution"]
+        self.assertEqual(cc["kuzawa_2014_brain_metabolism"]["peak_rmr_pct"], 66.3)
+        self.assertEqual(cc["sccs_alloparenting_and_sharing"]["early_childhood_exclusive_mother_sccs52"]["share"], 0.0)
+        self.assertGreater(cc["sccs_alloparenting_and_sharing"]["early_childhood_nonmaternal_majority_sccs52"]["share"], 0.70)
+        self.assertGreater(cc["proposition_22_e22_coevolution"]["love_devotion_gain_cm3"], 200.0)
+        for reg_e22 in cc["proposition_22_e22_coevolution"]["regimes"].values():
+            self.assertLess(reg_e22["abs_closed_minus_sim_cm3"], 2.0)
+
+        # v13 NHS campfire song legibility & Stanford HCMST audit compression checks
+        nhs = ref["open_synthesis"]["nhs_campfire"]
+        self.assertEqual((nhs["discography_songs"], nhs["discography_societies"]), (118, 86))
+        self.assertGreater(nhs["lullaby_to_love_d_ratio"], 4.0)
+
+        hcm = ref["open_synthesis"]["hcmst_2017"]
+        self.assertEqual((hcm["total_respondents"], hcm["meeting_coded_couples"]), (3510, 3295))
+        self.assertEqual(hcm["by_venue"]["online_dating_app"]["pre_romance_acquaintance_years"]["median"], 0.0)
+        self.assertGreater(hcm["audit_compression_ratios"]["institutional_kin_to_app_mean_ratio"], 8.0)
+        self.assertLess(hcm["intact_quality_boundary_check"]["ci_95"][0], 0.0)
+        self.assertGreater(hcm["intact_quality_boundary_check"]["ci_95"][1], 0.0)
+
+        # v13 Kowal checklist fit & marrying-up null checks
+        chk_kow = ref["open_synthesis"]["kowal_2025"]["checklist_and_surplus_decomposition"]
+        pk_kow = chk_kow["pooled"]["predictors_sd_per_sd"]
+        self.assertGreater(pk_kow["partner_kindness"]["estimate"], 2.5 * pk_kow["idiographic_checklist_fit"]["estimate"])
+        self.assertLess(abs(pk_kow["marrying_up_surplus"]["estimate"]), 0.04)
+        self.assertLess(abs(chk_kow["five_trait_controlled_marrying_up_sd"]), 0.04)
+
+        joel = ref["open_synthesis"]["joel_2020"]["satisfaction"]
+        self.assertEqual(joel["distinct_datasets"], 43)
+        self.assertGreater(joel["actor_rel_to_partner_trait_baseline_ratio"], 5.0)
+
+        sccs = ref["open_synthesis"]["betzig_sccs"]
+        self.assertEqual(sccs["causes"]["adultery_infidelity"]["coded_societies"], 160)
+        self.assertGreater(sccs["adultery_to_aging_looks_ratio"], 8.0)
+
+        pbr_w = ref["open_synthesis"]["kowal_2025"]["pair_bond_reversal"]["relationship_quality_prqc"]["by_sex"]["women"]["traits"]
+        self.assertGreater(pbr_w["kindness"]["sd_per_sd"], 0.22)
+        self.assertLess(abs(pbr_w["resources"]["sd_per_sd"]), 0.05)
+
+        # v14 empirical mind selection (objective SAT) & OkCupid-JSE audience-staging checks
+        sat_b = chk_sd["objective_sat_blindness"]
+        self.assertEqual((sat_b["n_participants_with_sat"], sat_b["n_dates_with_partner_sat"]), (202, 2989))
+        self.assertLess(sat_b["stranger_intel_sat_r2"], 0.01)
+        self.assertGreater(sat_b["panel_to_single_r2_ratio"], 5.0)
+        self.assertLess(sat_b["r_partner_sat_vs_yes"]["interval_95"][0], 0.0)
+        self.assertGreater(sat_b["r_partner_sat_vs_yes"]["interval_95"][1], 0.0)
+
+        okc = ref["open_synthesis"]["okcupid_jse"]
+        self.assertEqual(okc["total_profiles"], 59946)
+        ost = okc["orientation_staging_experiment"]
+        self.assertGreater(ost["groups"]["men_straight"]["stature"]["jump_5ft11_to_6ft0_pct"], 15.0)
+        self.assertLess(ost["groups"]["men_gay"]["stature"]["jump_5ft11_to_6ft0_pct"], 0.0)
+        self.assertGreater(ost["straight_to_gay_male_income_disclosure_ratio"], 1.5)
+        tpp = okc["ten_prompt_portfolio"]
+        self.assertGreater(tpp["multi_domain_lexical_validity"]["k9_to_k1_validity_ratio"], 4.5)
+        self.assertGreater(tpp["assortative_mind_requests_essay9"]["q5_to_q1_mind_request_ratio"], 1.35)
+        self.assertGreater(tpp["essay9_message_me_if"]["ratios"]["humor_to_tall"], 10.0)
+        self.assertGreater(tpp["essay3_first_noticed"]["themes"]["smile_laugh"]["share"], 0.25)
+        self.assertGreater(okc["sf_childless_fertility_crossover"]["interpolated_crossover_age"], 36.5)
+
+        macros_tex = ppaper.numbers(ref)
+        self.assertIn(r"\newcommand{\PboBondKindW}", macros_tex)
+        self.assertIn(r"\newcommand{\PboJoelBaseRatio}", macros_tex)
+        self.assertIn(r"\newcommand{\PboETwentyTwoLoveGain}", macros_tex)
+        self.assertIn(r"\newcommand{\PboHcmstAuditRatio}", macros_tex)
+        self.assertIn(r"\newcommand{\PboChkMarryUpSD}", macros_tex)
+        self.assertIn(r"\newcommand{\PboSatSingleRTwo}", macros_tex)
+        self.assertIn(r"\newcommand{\PboOkcStrJump}", macros_tex)
+        self.assertIn(r"\newcommand{\PboOkcDomGain}", macros_tex)
+        self.assertIn(r"\newcommand{\PboOkcSfCrossAge}", macros_tex)
+        kpi_tex = ppaper.macro_kpi_table(ref)
+        self.assertEqual(kpi_tex.strip().count(r"\\"), 8)
+
 
 if __name__ == "__main__":
     unittest.main()

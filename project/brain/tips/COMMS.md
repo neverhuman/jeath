@@ -239,3 +239,30 @@
   - Estimated finite-voter rating variance $\hat\sigma_{\text{voter}}^2 = 8.23$ strictly on 8,000 OOF training residuals, isolating the `39.9%` (`500+` votes, Oracle `ρ = 0.993`) to `48.3%` (`all test`, Oracle `ρ = 0.918`) irreducible single-context consensus gap (`Fig. 9`, `Table C1`).
 - **Verification**:
   - Two-pass `scripts/run.py --study performance-before-outcomes` (`0` bytes diff), `scripts/validate.py --source`, `scripts/paper.py --study performance-before-outcomes --check`, `tests/test_performance_before_outcomes.py` (`8/8` OK), `make performance-before-outcomes`, visual inspection of all 27 rendered PNG pages, and root `make required` all passed (`exit 0`). Zero overlap with Codex lanes or archival `tips/*` files.
+
+
+## [2026-11-12T02:02Z] Antigravity — Completed Viral-Grade `PAPER_MISSION.md` v2, 7 Macro Selection KPIs, Pair-Bond Love Architecture (`Proposition 21`), 1.05M Human Voice Audit, and Matched-Axis Life-Course Redesign (`make required` GREEN)
+- **Charter Upgrade (`docs/PAPER_MISSION.md`)**:
+  - Expanded to **Nine Governing Laws** and **13 Release Gates**, enforcing the Page-1 `<= 3`-panel flagship rule, Named Macro-KPI Executive Scorecard (`5–7` macro KPIs), Matched-Axis Life-Course & Stage-Reversal Choreography (`Ages 18–75` + shaded `W - M` ribbons), and **Law IX: The 5-Second Standalone Screenshot Test**.
+- **New Formal Theory & Scientific Synthesis (`scripts/performance_before_outcomes.py`, `scripts/performance_choice.py`, `scripts/performance_open.py`, `docs/sections/performance-appendix.tex`)**:
+  - **Proposition 21 (`\label{prop:love}` — *Entry Filtering Versus Pair-Bond Welfare and Commitment*) + Proof + `F13`**: Proves why high-legibility consensus attributes dominate stranger screening yet collapse inside established pair bonds, why unique dyadic chemistry $D_{ij}$ raises expected bond welfare linearly in chooser selectivity, and why perceived outside options shift the commitment threshold.
+  - **Unbiased Bipartite Social Relations Model (`Fig. 3D`, `n=8,118` ratings, `4,011` dyads)**: Partner consensus ("trophy value") explains only `14.6%` of romantic liking (`27.9%` looks -> `7.0%` intelligence, `5.9%` sincerity), whereas unique dyadic spark + interaction accounts for `57.6%` with positive mutual residual reciprocity (`r = +0.21`), and women's reciprocity-adjusted `"Yes"` slope on dyadic spark (`+23.4 pp/SD`) exceeds looks (`+15.2 pp/SD`).
+  - **1,052,790 Self-Written Human Voice Essays (`POV` >= 30 chars)**: Women spontaneously invoke family/home (`29.5%`), laughter/smile (`19.6%`), kindness/warmth (`16.9%`), and honesty/loyalty (`13.2%`) at `122x` and `54x` the rate they mention `6'0"`/tall stature (`0.24%`) and `33x` more than wealth (`0.51%`).
+  - **The Architecture of Human Love (`Fig. 8`, `performance-fig-love-bond.pdf`)**:
+    1. Across `50,320` partnered adults in 175 countries (country FEs + age-quadratic controls), partner money (`+4.01 pp/SD` at union entry) collapses near zero inside unions (`+0.03 SD` W, `+0.02 SD` M; infidelity `+0.2 pp` null), while partner kindness becomes the `#1` predictor of relationship quality (`+0.28 SD` W, `+0.25 SD` M) and lowers infidelity (`-1.8 / -3.4 pp/SD`).
+    2. Across `43` longitudinal couples datasets (`11,196` couples, `Joel et al. 2020 PNAS`), own dyadic commitment/appreciation explains `44.2%` of baseline satisfaction (`18.2%` follow-up) vs. `7.5%` (`7.3%`) for all static partner traits combined (`5.9x`).
+    3. Across `48,446` couples (`Sternberg` triangular love arc), commitment rises above its first-year level (`4.02 -> 4.26/5` at `25+ yrs`; `Intimacy` `4.07`), `81,596` adults refuse loveless marriage (`median 27/100` W vs. `50/100` M), and observational social-media browsing tracks `+0.020 SD/h` perceived alternatives, `-0.035 SD/h` quality, and `+2.19 pp/h` infidelity (`160` SCCS divorce causes: `54.4%` adultery, `33.8%` cruelty vs. `5.6%` old age/lost looks, `9.7x`).
+  - **7 Named Macro Selection KPIs (`Table I`, `performance-macro-kpi-table.tex`)** and **Matched-Axis Adulthood Choreography (`Fig. 14`, Ages `18–75`)**: Separates diverging clocks (`6.5-yr` partner age scissors at `60–79`, voter photo-rank penalty vs. facial anatomy, and the `Age 41.8` / exact `41` childless `"Want children"` crossover across 5 countries) from unbroken truths (`Kindness #1` in both sexes across all `7/7` age brackets `18–79`, `W > M` serious commitment at every age, and `+6.9 / +7.9 pt` partnered happiness lift).
+- **Verification**:
+  - Compiled 30-page two-column IEEE monograph (`target/performance-before-outcomes/performance-before-outcomes.pdf`) with **`0` `Overfull \hbox`**, **`0` `Overfull \vbox`**, **`0` LaTeX warnings**, `91` sequential appearance-ordered `[1]–[91]` references, `9/9` unit tests passing, `validate.py --source` passing, `paper.py --check` passing, and visual PNG inspection across all updated pages.
+
+
+## [2026-11-12T02:11Z] Antigravity (`agy/safe-ai-v5`) — SAFE AI V5 Tier-1 Superintelligence Upgrade Started in Isolated Worktree
+- **Worktree & Branch**: `/home/ubuntu/jeath/.agent/worktrees/agy-safe-ai-v5` (`branch: agy/safe-ai-v5`, based on `origin/main` `4842fbc`).
+- **Owned Files (Strictly SAFE AI Scope — Zero Overlap With `performance-*` or `minds-*`)**:
+  - `docs/papers/safe-ai/ALIGNMENT_MISSION.md` (`docs/PAPER_MISSION.md` in root left 100% untouched)
+  - `policy-core/src/lib.rs`, `scripts/verify_core.py`
+  - `src/v5_superintelligence.rs`, `src/lib.rs`, `src/bin/authority-lab.rs`, `src/protocol_v2.rs`, `tests/e2e_crypto_cluster_v5.rs`
+  - `scripts/statistical_spine_v5.py`, `scripts/paper_figures_v5.py`, `scripts/run_v3.py`, `scripts/validate_v3.py`, `scripts/paper.py` (SAFE AI section only), `scripts/build_paper.py` (SAFE AI section only)
+  - `docs/frontmatter.tex`, `docs/intelligence-is-not-authority.tex`, `docs/sections/u*.tex`, `docs/references.tex`, `docs/generated/*`, `docs/intelligence-is-not-authority.pdf`
+  - `evidence/v2/reference/` (provenance refresh preserving frozen `Qwen3` & `AgentDojo` runs) and `evidence/v3/reference/`

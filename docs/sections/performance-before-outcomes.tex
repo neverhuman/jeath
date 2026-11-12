@@ -6,6 +6,7 @@
 \let\proof\relax
 \let\endproof\relax
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{icomma}
 \usepackage{microtype}
 \usepackage{graphicx}
 \usepackage[table]{xcolor}
@@ -33,12 +34,17 @@
 \renewcommand{\textfraction}{0.06}
 \renewcommand{\floatpagefraction}{0.75}
 \setcounter{topnumber}{3}
-\setcounter{dbltopnumber}{3}
+\setcounter{dbltopnumber}{4}
 \setcounter{bottomnumber}{2}
-\setcounter{totalnumber}{5}
+\setcounter{totalnumber}{6}
 \setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
 \setlength{\dbltextfloatsep}{8pt plus 2pt minus 2pt}
 \setlength{\floatsep}{6pt plus 2pt minus 2pt}
+\makeatletter
+\setlength{\@dblfpsep}{7pt plus 2fil}
+\setlength{\@dblfptop}{0pt plus 1fil}
+\setlength{\@dblfpbot}{0pt plus 1fil}
+\makeatother
 \newcolumntype{L}{>{\RaggedRight\arraybackslash}X}
 \newcolumntype{P}[1]{>{\RaggedRight\arraybackslash}p{#1}}
 \newcolumntype{C}{>{\centering\arraybackslash}X}
@@ -75,25 +81,25 @@
 
 \markboth{PREPRINT --- IEEE TRANSACTIONS FORMAT, NOVEMBER 2026}{TAYLOR AND BEILHARZ: PERFORMANCE BEFORE OUTCOMES}
 
-\title{Performance Before Outcomes: How Multi-Context Juries Aim Selection at General Ability---and What Single-Context Platforms Change}
+\title{Performance Before Outcomes: How Multi-Context Juries Selected for Mind and Devotion---and What Single-Context Platforms Change}
 
 \author{Jepson~Taylor and Erin~Beilharz%
-\thanks{Manuscript dated November 11, 2026 (preprint). J.~Taylor is with VEOX Inc.\ and New York University. E.~Beilharz is with Lufthansa Systems and Navon.}}
+\thanks{Manuscript dated November 12, 2026 (preprint). J.~Taylor is with VEOX Inc.\ and New York University. E.~Beilharz is with Lufthansa Systems and Navon.}}
 
 \IEEEaftertitletext{%
-\vspace{-1.0em}%
+\vspace{-0.9em}%
 \begin{center}
 \refstepcounter{figure}%
-\includegraphics[width=0.96\textwidth]{performance-fig1-main.pdf}\par\vspace{3pt}
-\parbox{0.985\textwidth}{\footnotesize Fig.~\thefigure.\quad \textbf{The multi-context jury framework in eight panels.} \textbf{(A)}~Hominin endocranial volume across \FosN{} crania~\cite{du2018,will2021,gingerich2022}, marking the 1.5--0.7\,Ma stasis plateau ($\sim\!\PboPlateauMeanCC\ccm$) that precedes late-plateau cooling (1.12\,Ma~\cite{margari2023}) and the contested 0.93--0.81\,Ma bottleneck~\cite{hu2023,deng2025} before 1.0--0.78\,Ma cooking~\cite{berna2012,zohar2022} and late \Homo{} divergence~\cite{berger2015,kubo2013}. \textbf{(B)}~Spearman--Brown agreement in \SdN{} speed daters~\cite{fisman2006} versus the single-context ceiling $R^2_{\infty,1}=\PboTwoWaySingleAsym$ (Proposition~\ref{prop:twoway}). \textbf{(C)}~Shared national mate-budget culture across \PboKowalCountryN{} countries ($n=\PboKowalBudgetN$, $r=\PboKowalRelCorr$~\cite{kowal2025}). \textbf{(D)}~$K$-domain generalist aim versus specialist evaluation (Corollary~\ref{cor:generalist}, Proposition~\ref{prop:division}). \textbf{(E)}~Male height percentile versus attraction percentile ($N=\PboWhyteMenN$~\cite{whyte2021}), $6'0''$ platform heap, and null fertility~\cite{lidborg2022}. \textbf{(F)}~Within-gender HON beauty percentiles across \PboHonEligible{} profiles (\PboHonFemaleSteeperCountries/\PboHonCountriesStrictAge{} countries steeper for women). \textbf{(G)}~POV childless ``Want children'' midlife crossover versus higher female relationship commitment (\PboPovEligible{} profiles). \textbf{(H)}~U.S.\ adults aged 25--39 never married (\VgNevOld\%$\to$\VgNevNew\%, $n=\VgBirthN$~\cite{gss2024}).\label{fig:main}}
+\includegraphics[width=0.985\textwidth]{performance-fig1-main.pdf}\par\vspace{3pt}
+\parbox{0.985\textwidth}{\footnotesize Fig.~\thefigure.\quad \textbf{Campfire brain release, the entry-to-bond love reversal, and life-course devotion across deep time and modern markets.} \textbf{(A)}~Endocranial volume across \FosN{} dated crania~\cite{du2018,will2021,gingerich2022} synchronized with the 57-core \texttt{LR04} benthic $\delta^{18}\mathrm{O}$ paleoclimate stack~\cite{lisiecki2005}: the 1.50--0.70\,Ma stasis ceiling ($\sim\!\PboPlateauMeanCC\ccm$) began $\PboGapCoolingKyr$--$\PboGapTektiteKyr\,\mathrm{kyr}$ before 1.12\,Ma MIS~34 cooling~\cite{margari2023}, the contested 930--813\,ka coalescent bottleneck~\cite{hu2023,deng2025}, and 789\,ka impact ejecta~\cite{jourdan2019}, before 1.0--0.78\,Ma cooking~\cite{berna2012,zohar2022} and biparental/alloparental care (age-4.5 brain peak \PboChildPeakRmr{} RMR~\cite{kuzawa2014}; \PboSccsChildSoloMomPct{} solo-mother care across 136 societies~\cite{isler2012,hrdy2009}) preceded a $+50\%/\mathrm{Myr}$ surge while insular dwarfs confirmed the caloric floor~\cite{berger2015,kubo2013}. \textbf{(B)}~Stage reversal across 175 countries~\cite{kowal2025}, \PboJoelDatasetsN{} longitudinal couples studies~\cite{joel2020}, and Stanford \texttt{HCMST} ($\PboHcmstAuditRatio\times$ app witness compression~\cite{rosenfeld2019}): money ($\PboDoorMoneyM\,\mathrm{pp}/\SD$ in men) and looks ($\PboDoorLooksM/\PboDoorLooksW\,\mathrm{pp}$) govern union entry ($N=\PboDoorN$; $\PboIrreducibleGapFiveHundred$ photo blindness; $r=\PboHobbyObjR$ 17-hobby tag null), whereas inside unions ($N=\PboBondPrqcN$) money vanishes ($\PboBondMoneyW/\PboBondMoneyM\,\SD$), ``marrying up'' is null ($\PboChkMarryUpSD\,\SD$), and kindness ($\PboChkKindSD\,\SD$, $\PboChkKindFitRatio\times$ checklist fit~\cite{conroybeam2016}) plus perceived commitment ($\PboJoelRelBaseRTwo$ vs.\ $\PboJoelTraitBaseRTwo$ trait $R^2$) carry love. \textbf{(C)}~Across \PboPovEligible{} profiles, serious commitment stays unbroken $\text{Women}>\text{Men}$ at every age while childless ``Want children'' crosses near age $\PboPovCrossAge$, alongside the $\VgMarrShare\%$ U.S.\ non-marriage birth-decline share ($n=\VgBirthN$, observational accounting~\cite{gss2024}).\label{fig:main}}
 \end{center}
-\vspace{0.5em}}
+\vspace{0.45em}}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-Hominin brain volume roughly tripled over three million years despite steep metabolic cost and slow per-generation change ($\sim\!10^{-4}\SD$). Synchronizing three open cranial compilations with the 57-core \texttt{LR04} benthic $\delta^{18}\mathrm{O}$ paleoclimate record shows that the 1.5--0.7\,Ma endocranial stasis plateau ($\sim\!\PboPlateauMeanCC\ccm$) began $\sim\!\PboGapCoolingKyr$--$\PboGapTektiteKyr\,\mathrm{kyr}$ before 1.12\,Ma European glacial depopulation, the contested 930--813\,ka coalescent bottleneck, and the 789\,ka Australasian impact, consistent with an energetic ceiling relaxed near 1.0--0.78\,Ma controlled fire and cooking. Because provisioning and cooperation unfold years after union formation, we derive twenty propositions decomposing what pre-outcome observation \emph{reveals}, what partners \emph{deliver}, and how life stages \emph{allocate} reproduction. Across \SdRows{} speed dates, strangers weight legible looks over unreadable intelligence and sincerity, stalling at a single-context ceiling ($R^2_{\infty,1}=\PboTwoWaySingleAsym$) that multi-context camp juries break ($R^2_{8,8}=\PboTwoWayEightEight$). Male stature percentiles plateau near the 72nd percentile ($\beta_2=\PboWhyteQuadBeta$), heap $\PboHeightSixZeroRatio\times$ at $6'0''$ before plunging $-\PboHeightCliffDrop$ at $6'1''$, and show null meta-analytic fertility ($r=+\PboLidborgHeightRepR$). Across \PboCombinedRecords{} platform records, our 43-wave \texttt{HoloFace-L1} ensemble reaches Test MAE $\PboHoloFullTestMAE$ ($\rho=\PboHoloFullSpearman$; zero-metadata \texttt{HoloFace-Pure} $\rho=\PboHoloPureSpearman$, $\PboShapAnatomyTotal$ anatomical/photometric Shapley share) with regionally invariant 106-landmark facial beauty drivers ($r=\PboFaceWorldCorrW/\PboFaceWorldCorrM$), yet leaves $\PboIrreducibleGapFiveHundred$--$\PboIrreducibleGapAll$ of infinite-voter consensus unexplained. Meanwhile, childless ``Want children'' flips by midlife across five countries while female commitment stays higher, and $\VgMarrShare\%$ of recent U.S.\ young-adult birth decline sits in non-marriage.
+Hominin brain volume tripled over three million years despite an age-4.5 peak consuming \PboChildPeakRmr{} of resting energy. Synchronizing \FosN{} crania with the 57-core \texttt{LR04} $\delta^{18}\mathrm{O}$ stack shows 1.50--0.70\,Ma stasis ($\sim\!\PboPlateauMeanCC\ccm$) preceded 1.12\,Ma cooling, the contested 930--813\,ka bottleneck, and 789\,ka impact ejecta by $\PboGapCoolingKyr$--$\PboGapTektiteKyr\,\mathrm{kyr}$, before 1.0--0.78\,Ma cooking and pair-bond care (\PboSccsChildSoloMomPct{} solo-mother care; $\PboETwentyTwoLoveGain\ccm$ Lande gain) preceded a $+50\%/\mathrm{Myr}$ surge; blind listeners decode lullabies $\PboNhsLullabyLoveRatio\times$ better than love songs. Across twenty-two propositions and fifteen datasets, multi-context juries separate what encounters \emph{reveal} from what partners \emph{deliver}. Across \SdRows{} speed dates, hobby tags ($r=\PboHobbyObjR$) and partner SAT ($r=\PboSatYesR$; \PboSatSingleRTwo{} $R^2$) fail while live play succeeds ($r=\PboHobbyLiveR$; \PboDyadUniqueShare{} dyadic spark; $R^2_{\infty,1}=\PboTwoWaySingleAsym$ vs.\ $R^2_{8,8}=\PboTwoWayEightEight$), nine essay domains lift validity $\PboOkcDomGain\times$, intelligence rebounds $\PboHindIntelSnapW$ points weeks later, and apps compress acquaintance $\PboHcmstAuditRatio\times$ ($N=\PboHcmstN$). Across \PboThreePlatformRecords{} profiles, \texttt{HoloFace-L1} reaches MAE $\PboHoloFullTestMAE$ ($\rho=\PboHoloFullSpearman$) leaving $\PboIrreducibleGapFiveHundred$--$\PboIrreducibleGapAll$ of consensus invisible, straight men surge $\PboOkcStrJump$ at $6'0''$ vs.\ gay men ($\PboOkcGayJump$), and essays invoke family, humor, and kindness $12\times$--$\PboVoiceFamilyTallRatio\times$ over $6'0''$. Across 175 countries and \PboJoelDatasetsN{} longitudinal studies, money aids entry then vanishes in unions, kindness ($\PboChkKindSD\,\SD$) beats checklist fit $\PboChkKindFitRatio\times$, ``marrying up'' is null ($\PboChkMarryUpSD\,\SD$), childless fertility desire flips near ages $\PboOkcSfCrossAge$--$\PboPovCrossAge$ beneath unbroken female commitment, and $\VgMarrShare\%$ of U.S.\ birth decline sits in non-marriage.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -103,9 +109,9 @@ Human brain evolution, paleoclimate, Mid-Pleistocene Transition, mate choice, ge
 \input{performance-v9-results.tex}
 
 \section*{Acknowledgments and Data Availability}
-{\small\noindent No external funding was received, and the authors declare no competing financial interests. Reproducible CPU analysis scripts, deterministic Monte Carlo simulations, SHA-256 reference manifests, and figure generators are maintained in the project repository (\nolinkurl{scripts/run.py}, \nolinkurl{scripts/validate.py}, and \nolinkurl{scripts/paper.py} with \texttt{--study performance-before-outcomes}). Open datasets analyzed include the public-domain Lisiecki \& Raymo \texttt{LR04} benthic $\delta^{18}\mathrm{O}$ stack~\cite{lisiecki2005}, the Gingerich~\cite{gingerich2022}, Will et al.~\cite{will2021}, and Du et al.~\cite{du2018} hominin endocranial compilations, the Columbia speed-dating dataset~\cite{fisman2006}, \texttt{D-PLACE} releases of the Standard Cross-Cultural Sample, Ethnographic Atlas, and Binford hunter-gatherer files~\cite{kirby2016,murdock1969,binford2001}, Australian mate-choice microdata~\cite{whyte2021}, 53-country mate-allocation budgets~\cite{kowal2025}, cross-national survey archives~\cite{walter2020}, stature/strength meta-analytic tables~\cite{lidborg2022}, MHC meta-analytic summaries~\cite{havlicek2020,winternitz2017}, and the General Social Survey cumulative release (1972--2024)~\cite{gss2024}. Platform statistical aggregates enforce cell suppression ($n\ge\PboMinCell$) and super-resolved facial composites average $n\ge 75$ aligned portraits per cell with zero individual-image disclosure. Large-language-model tooling assisted code refactoring, literature auditing, and manuscript typesetting; every equation, simulation, and empirical table was verified programmatically against primary source files.\par}
+{\small\noindent No external funding was received, and the authors declare no competing financial interests. Reproducible CPU analysis scripts, deterministic Monte Carlo simulations, SHA-256 reference manifests, and figure generators are maintained in the project repository (\nolinkurl{scripts/run.py}, \nolinkurl{scripts/validate.py}, and \nolinkurl{scripts/paper.py} with \texttt{--study performance-before-outcomes}). Open datasets analyzed include the public-domain Lisiecki \& Raymo \texttt{LR04} benthic $\delta^{18}\mathrm{O}$ stack~\cite{lisiecki2005}, the Gingerich~\cite{gingerich2022}, Will et al.~\cite{will2021}, and Du et al.~\cite{du2018} hominin endocranial compilations, the Columbia speed-dating dataset~\cite{fisman2006}, Harvard Music Lab \texttt{Natural History of Song} discography, naive-listener, and ethnographic corpora~\cite{mehr2019}, Stanford \texttt{How Couples Meet and Stay Together} (\texttt{HCMST} 2017) public microdata~\cite{rosenfeld2019}, the San Francisco \texttt{OkCupid} teaching and research release (\texttt{OkCupid-JSE}, 2021 privacy-revised edition)~\cite{kim2015}, \texttt{D-PLACE} releases of the Standard Cross-Cultural Sample (including alloparenting and conjugal dissolution codings~\cite{betzig1989}), Ethnographic Atlas, and Binford hunter-gatherer files~\cite{kirby2016,murdock1969,binford2001}, Australian mate-choice microdata~\cite{whyte2021}, 175-country mate-allocation, pair-bond, and triangular-love microdata~\cite{kowal2025}, 43-dataset longitudinal couples machine-learning meta-analyses~\cite{joel2020}, cross-national survey archives~\cite{walter2020}, stature/strength meta-analytic tables~\cite{lidborg2022}, MHC meta-analytic summaries~\cite{havlicek2020,winternitz2017}, and the General Social Survey cumulative release (1972--2024)~\cite{gss2024}. Platform statistical aggregates enforce cell suppression ($n\ge\PboMinCell$) and super-resolved facial composites average $n\ge 75$ aligned portraits per cell with zero individual-image disclosure. Large-language-model tooling assisted code refactoring, literature auditing, and manuscript typesetting; every equation, simulation, and empirical table was verified programmatically against primary source files.\par}
 
-\IEEEtriggeratref{62}
+\IEEEtriggeratref{77}
 {\footnotesize\setlength{\bibsep}{0.5pt plus 0.3pt}%
 \input{performance-references.tex}}
 
