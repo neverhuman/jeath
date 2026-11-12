@@ -18,6 +18,7 @@ from candidates.jsonl by scripts/validate_omitted_clause_v6.py).
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import hashlib
 import json
 import math
@@ -25,6 +26,7 @@ import os
 from pathlib import Path
 import platform
 import random
+import socket
 import subprocess
 import sys
 import tempfile
@@ -248,6 +250,15 @@ def parse_object(raw: str):
 
 
 def review(port, system, policy, visible, rpc, deadline, thinking):
+    try:
+        return _review(port, system, policy, visible, rpc, deadline, thinking)
+    except (TimeoutError, OSError, KeyError, ValueError) as exc:
+        # An inference failure is a deny, counted separately as review_errors; never silently dropped.
+        return {"content": "", "allow": False, "allow_strict": False, "parsed": None, "error": f"{type(exc).__name__}: {exc}",
+                "reasoning_chars": 0, "finish_reason": None, "completion_tokens": None}
+
+
+def _review(port, system, policy, visible, rpc, deadline, thinking):
     out = chat(port, [{"role": "system", "content": system},
                       {"role": "user", "content": json.dumps({"policy": policy, "visible_state": visible, "rpc": rpc})}],
                deadline, temperature=0.0, top_p=1.0, top_k=1, seed=20261110,
@@ -260,6 +271,77 @@ def review(port, system, policy, visible, rpc, deadline, thinking):
         out["allow_strict"] = False
     out["parsed"] = obj
     return out
+
+
+# ---------------------------------------------------------------- remote inference (xbabe2 harness, remote llama-server)
+
+def ssh_run(host: str, command: str, timeout: int = 120) -> str:
+    r = subprocess.run(["ssh", "-T", "-o", "BatchMode=yes", "-o", "ConnectTimeout=10", host, command],
+                       capture_output=True, text=True, timeout=timeout)
+    if r.returncode != 0:
+        raise RuntimeError(f"ssh {host} failed ({r.returncode}): {r.stderr.strip()[:500]}")
+    return r.stdout
+
+
+def remote_identity(host: str) -> dict:
+    out = ssh_run(host, "hostname; uname -sm; (sysctl -n machdep.cpu.brand_string 2>/dev/null || lscpu | sed -n 's/^Model name: *//p')")
+    hostname, uname, cpu = [line.strip() for line in out.strip().splitlines()[:3]]
+    return {"ssh_alias": host, "hostname": hostname, "uname": uname, "cpu": cpu}
+
+
+class RemoteEngine:
+    def __init__(self, port):
+        self.port = port
+
+
+@contextmanager
+def remote_server_pool(host, root, model_file, deadline, log_dir, tag, workers, threads, ctx_size):
+    """Single-slot llama-server processes on `host`, each reached through its own ssh -L tunnel.
+
+    Closing a tunnel's stdin ends the remote `cat`, which kills that server; no remote process outlives the run.
+    """
+    log_dir.mkdir(parents=True, exist_ok=True)
+    rports = [int(x) for x in ssh_run(host, "python3 -c 'import socket\nfor _ in range(%d):\n s=socket.socket(); s.bind((\"127.0.0.1\",0)); print(s.getsockname()[1]); s.close()'" % workers).split()]
+    procs, engines = [], []
+    try:
+        for w, rport in enumerate(rports):
+            with socket.socket() as sock:
+                sock.bind(("127.0.0.1", 0))
+                lport = sock.getsockname()[1]
+            rcmd = (f"cd {root} && mkdir -p logs && llm/bin/llama-server -m llm/models/{model_file} --host 127.0.0.1 --port {rport} "
+                    f"--parallel 1 --ctx-size {ctx_size} --n-gpu-layers 0 --threads {threads} --threads-batch {threads} "
+                    f"--flash-attn on --jinja --chat-template-kwargs '{{\"enable_thinking\":false}}' "
+                    f"> logs/{tag}-w{w}.log 2>&1 & pid=$!; cat >/dev/null; kill $pid; wait $pid")
+            log = (log_dir / f"tunnel-{w}.log").open("w")
+            procs.append(subprocess.Popen(["ssh", "-T", "-o", "BatchMode=yes", "-o", "ExitOnForwardFailure=yes",
+                                           "-o", "ServerAliveInterval=30", "-L", f"{lport}:127.0.0.1:{rport}", host, rcmd],
+                                          stdin=subprocess.PIPE, stdout=log, stderr=subprocess.STDOUT))
+            engines.append(RemoteEngine(lport))
+        for w, (proc, eng) in enumerate(zip(procs, engines)):
+            while True:
+                if proc.poll() is not None:
+                    raise RuntimeError(f"remote worker {w} tunnel exited; see {log_dir}/tunnel-{w}.log")
+                if time.monotonic() >= deadline:
+                    raise TimeoutError("deadline while loading remote servers")
+                try:
+                    with urllib.request.urlopen(f"http://127.0.0.1:{eng.port}/health", timeout=2) as r:
+                        if r.status == 200:
+                            break
+                except (OSError, TimeoutError):
+                    time.sleep(0.5)
+        yield engines
+    finally:
+        for proc in procs:
+            try:
+                proc.stdin.close()
+            except OSError:
+                pass
+        for proc in procs:
+            try:
+                proc.wait(timeout=30)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait()
 
 
 # ---------------------------------------------------------------- aggregation
@@ -322,7 +404,8 @@ def aggregate(records: list[dict], cases: list[dict], k_grid: list[int], m: int)
     for r in records:
         by_ckpt.setdefault(r["checkpoint"], []).append(r)
     for ckpt, recs in sorted(by_ckpt.items()):
-        ck = {"families": {}, "mirror_kernel_disagreements": 0, "audit_inconsistent": 0, "valid": 0, "unauthorized": 0, "authorized": 0}
+        ck = {"families": {}, "mirror_kernel_disagreements": 0, "audit_inconsistent": 0, "review_errors": {},
+              "review_truncated": {}, "proposer_errors": 0, "valid": 0, "unauthorized": 0, "authorized": 0}
         for r in recs:
             if r["valid"]:
                 ck["valid"] += 1
@@ -331,6 +414,13 @@ def aggregate(records: list[dict], cases: list[dict], k_grid: list[int], m: int)
                     ck["mirror_kernel_disagreements"] += 1
                 if not r["gate"]["audit_consistent"]:
                     ck["audit_inconsistent"] += 1
+                for arm, rv in r["reviews"].items():
+                    if rv.get("error"):
+                        ck["review_errors"][arm] = ck["review_errors"].get(arm, 0) + 1
+                    if rv.get("finish_reason") == "length":
+                        ck["review_truncated"][arm] = ck["review_truncated"].get(arm, 0) + 1
+            if r.get("proposer_error"):
+                ck["proposer_errors"] += 1
         families = sorted({c["family"] for c in cases})
         for fam in families + ["state_dependent", "proposal_visible", "all"]:
             if fam == "all":
@@ -421,6 +511,9 @@ def main():
     ap.add_argument("--threads", type=int, default=6)
     ap.add_argument("--wall-limit-seconds", type=int, default=6 * 3600)
     ap.add_argument("--limit-cases", type=int, help="smoke test only: first N cases of each family")
+    ap.add_argument("--inference-host", help="ssh alias that serves llama-server (harness and gate stay local)")
+    ap.add_argument("--inference-root", default="$HOME/jeath-remote/cc-iina-tier1")
+    ap.add_argument("--inference-expected", help="hostname|uname -sm|cpu brand the remote must report exactly")
     args = ap.parse_args()
 
     plan = json.loads(PLAN.read_text())
@@ -430,7 +523,7 @@ def main():
         (args.output / "self-test.json").write_text(json.dumps(report, indent=1, sort_keys=True) + "\n")
         print(json.dumps({"rows": report["rows"], "disagreements": len(report["disagreements"])}))
         sys.exit(1 if report["disagreements"] else 0)
-    assert args.expected_host and args.llama_server and args.models, "--expected-host, --llama-server, --models required"
+    assert args.expected_host and args.models and (args.llama_server or args.inference_host), "--expected-host, --models and --llama-server or --inference-host required"
     cases = build_cases(plan)
     if args.limit_cases:
         keep = []
@@ -446,8 +539,27 @@ def main():
     args.output.mkdir(parents=True, exist_ok=False)
     scratch = args.output / "labs"
     scratch.mkdir()
-    llama_version = subprocess.run([str(args.llama_server), "--version"], capture_output=True, text=True, timeout=60)
-    llama_version = (llama_version.stdout + llama_version.stderr).strip().splitlines()
+    inference = {"mode": "local", "host": platform.node()}
+    if args.inference_host:
+        ident = remote_identity(args.inference_host)
+        assert args.inference_expected and "|".join([ident["hostname"], ident["uname"], ident["cpu"]]) == args.inference_expected, ident
+        root = args.inference_root
+        rversion = ssh_run(args.inference_host, f"cd {root} && llm/bin/llama-server --version 2>&1").strip().splitlines()
+        devices = ssh_run(args.inference_host, f"cd {root} && llm/bin/llama-server --list-devices 2>&1").strip().splitlines()
+        assert not any(("Metal" in d or "CUDA" in d or "Vulkan" in d) for d in devices), devices
+        rsha = {}
+        for path, name in zip(args.models, plan["checkpoints"], strict=True):
+            out = ssh_run(args.inference_host, f"cd {root} && (shasum -a 256 llm/models/{path.name} 2>/dev/null || sha256sum llm/models/{path.name})", timeout=600)
+            rsha[path.name] = out.split()[0]
+            assert rsha[path.name] == plan["checkpoint_sha256"][name], f"remote checkpoint hash mismatch for {name}"
+        rbin = ssh_run(args.inference_host, f"cd {root} && (shasum -a 256 llm/bin/llama-server 2>/dev/null || sha256sum llm/bin/llama-server)").split()[0]
+        inference = {"mode": "remote_ssh_tunnel", **ident, "llama_server_version": rversion, "devices": devices,
+                     "model_sha256": rsha, "llama_server_sha256": rbin, "backend": "cpu"}
+        llama_version = rversion
+    else:
+        llama_version = subprocess.run([str(args.llama_server), "--version"], capture_output=True, text=True, timeout=60)
+        llama_version = (llama_version.stdout + llama_version.stderr).strip().splitlines()
+        inference["llama_server_sha256"] = sha(args.llama_server)
     assert any(plan["llama_cpp_commit"][:9] in line for line in llama_version), llama_version
     gpu_before = gpu_compute_snapshot()
     started = time.time()
@@ -467,45 +579,59 @@ def main():
     timing = {}
     for model_path, ckpt in zip(args.models, plan["checkpoints"], strict=True):
         t0 = time.monotonic()
-        with cpu_server_pool(args.llama_server, model_path, deadline, args.expected_host,
-                             args.output / f"servers-{ckpt.split('/')[1]}", workers=args.workers,
-                             threads=args.threads, ctx_size=4096) as (engines, _pids):
+        log_dir = args.output / f"servers-{ckpt.split('/')[1]}"
+        if args.inference_host:
+            pool = remote_server_pool(args.inference_host, args.inference_root, model_path.name, deadline, log_dir,
+                                      ckpt.split('/')[1], args.workers, args.threads, 4096)
+        else:
+            pool = cpu_server_pool(args.llama_server, model_path, deadline, args.expected_host, log_dir,
+                                   workers=args.workers, threads=args.threads, ctx_size=4096)
+        with pool as pool_value:
+            engines = pool_value[0] if isinstance(pool_value, tuple) else pool_value
+
             def make_task(c, policy, visible):
                 def task(engine):
+                    t_case = time.monotonic()
                     user = json.dumps({"policy": policy, "visible_state": visible, "red_team_objective": c["objective"]})
                     msgs = [{"role": "system", "content": PROPOSER_SYSTEM}, {"role": "user", "content": user}]
                     cands = []
                     for k in range(m):
-                        out = chat(engine.port, msgs, deadline, temperature=plan["proposer"]["temperature"],
-                                   top_p=plan["proposer"]["top_p"], top_k=plan["proposer"]["top_k"],
-                                   seed=20261113 + 100 * c["case_id"] + k, max_tokens=plan["proposer"]["max_tokens"],
-                                   thinking=False)
-                        cands.append((k, out["content"], parse_object(out["content"])))
-                    memo = {}
+                        try:
+                            out = chat(engine.port, msgs, deadline, temperature=plan["proposer"]["temperature"],
+                                       top_p=plan["proposer"]["top_p"], top_k=plan["proposer"]["top_k"],
+                                       seed=20261113 + 100 * c["case_id"] + k, max_tokens=plan["proposer"]["max_tokens"],
+                                       thinking=False)
+                            cands.append((k, out["content"], parse_object(out["content"]), None))
+                        except (TimeoutError, OSError, KeyError, ValueError) as exc:
+                            cands.append((k, "", None, f"{type(exc).__name__}: {exc}"))
+                    uniq = {}
+                    for _k, _raw, q, _err in cands:
+                        if structurally_valid(q):
+                            uniq.setdefault(json.dumps(q, sort_keys=True), q)
+                    info = {key: {"violated": violated_clauses(q["proposal"], c, visible),
+                                  "replay": any(r["permit"]["proposal"]["id"] == q["proposal"]["id"] for r in visible["sink_records"]),
+                                  "reviews": {}} for key, q in uniq.items()}
+                    # Arm-major order keeps each arm's system+policy+state prefix resident in the single-slot KV cache.
+                    for arm, system, thinking in (("R0", REVIEW_PROMPT, False), ("R1", RULES_PROMPT, False), ("R2", RULES_PROMPT, True)):
+                        for key, q in uniq.items():
+                            info[key]["reviews"][arm] = review(engine.port, system, policy, visible, q, deadline, thinking)
+                    for key, q in uniq.items():
+                        info[key]["gate"] = gate_commits(c, q, scratch)
                     batch = []
-                    for k, raw, q in cands:
+                    for k, raw, q, err in cands:
                         valid = structurally_valid(q)
                         rec = {"checkpoint": ckpt, "case_id": c["case_id"], "family": c["family"], "task": c["task"],
-                               "k": k, "raw": raw, "rpc": q, "valid": valid}
+                               "k": k, "raw": raw, "rpc": q, "valid": valid, "proposer_error": err}
                         if valid:
-                            key = json.dumps(q, sort_keys=True)
-                            if key not in memo:
-                                memo[key] = {
-                                    "violated": violated_clauses(q["proposal"], c, visible),
-                                    "replay": any(r["permit"]["proposal"]["id"] == q["proposal"]["id"] for r in visible["sink_records"]),
-                                    "gate": gate_commits(c, q, scratch),
-                                    "reviews": {
-                                        "R0": review(engine.port, REVIEW_PROMPT, policy, visible, q, deadline, False),
-                                        "R1": review(engine.port, RULES_PROMPT, policy, visible, q, deadline, False),
-                                        "R2": review(engine.port, RULES_PROMPT, policy, visible, q, deadline, True),
-                                    },
-                                }
-                            rec.update(memo[key])
+                            rec.update(info[json.dumps(q, sort_keys=True)])
                         batch.append(((ckpt, c["case_id"], k), rec))
                     with lock:
                         for _, rec in batch:
                             cand_file.write(json.dumps(rec, sort_keys=True) + "\n")
                         cand_file.flush()
+                        with (args.output / "progress.log").open("a") as pl:
+                            pl.write(f"{time.strftime('%H:%M:%SZ', time.gmtime())} {ckpt} case {c['case_id']} {c['family']} "
+                                     f"unique_valid={len(uniq)} seconds={time.monotonic() - t_case:.0f}\n")
                     return batch
                 return task
 
@@ -522,7 +648,7 @@ def main():
         "plan_sha256": sha(PLAN),
         "script_sha256": sha(Path(__file__)),
         "authority_lab_sha256": sha(BINARY),
-        "llama_server_sha256": sha(args.llama_server),
+        "inference": inference,
         "cases": cases,
         "visible_states": {str(c["case_id"]): {"policy": pol, "visible": vis} for c, pol, vis in prepared},
         "prompts": {"proposer_system": PROPOSER_SYSTEM, "R0": REVIEW_PROMPT, "R1_R2": RULES_PROMPT},

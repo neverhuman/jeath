@@ -145,5 +145,14 @@
   "integrity_checks": [
     "omitted_clause_v6.py --self-test: hand-built candidates per case (exact, fresh id, altered payload, revision CAS) must give zero mirror/gate disagreements before any model run",
     "validate_omitted_clause_v6.py: hashes, raw-text re-parse, independent clause re-derivation, exact recomputation of every aggregate; asserts no outcome"
-  ]
+  ],
+  "amendment_1": {
+    "recorded_utc": "2026-11-12T19:12Z",
+    "before_data": "yes: the only prior model run (smoke, 18:42Z) was stopped before any candidate record was written",
+    "what": "llama-server inference runs on xbabe4 (Mac-Studio.local, Apple M3 Ultra, Darwin arm64) using the CPU backend only (Metal off, no GPU), same llama.cpp commit and checkpoint hashes, 3 single-slot servers x 6 threads, reached from xbabe2 by ssh tunnels; the harness, the real broker-v2/sink-v2 gate, and all outputs stay on xbabe2",
+    "why": "measured xbabe2 and xbabe0 aggregate generation of about 17 tok/s (4B) and 9 tok/s (8B) under co-tenant load would make the predeclared R2 arm take about 14 h; the xbabe4 CPU measured about 68 tok/s (4B) and 50 tok/s (8B). The xbabe4 GPU was in use by another job and is not used",
+    "stratum": "E5 is reported as a darwin-arm64 CPU platform stratum and never paired with xbabe2 x86 runs",
+    "review_order": "per case, all R0 reviews, then all R1, then all R2 (arm-major) so that each arm's shared prompt prefix stays cached; reviews are independent requests, so order does not change any prompt text (cached-prefix reuse may change low-order numerics)",
+    "errors": "a proposer or reviewer inference error is recorded on the record; a reviewer error counts as deny and is reported as review_errors per arm"
+  }
 }
