@@ -357,6 +357,82 @@ B.~A. {Scelza}.
 J.~F. {Collier} and M.~Z. {Rosaldo}.
 \newblock {Politics and gender in simple societies}.
 \newblock In S.~B. {Ortner} and H.~{Whitehead}, editors, \emph{Sexual Meanings: The Cultural Construction of Gender and Sexuality}, pages 275--329. Cambridge University Press, Cambridge, 1981.
+
+\bibitem[{Joel} et~al.(2020){Joel}, {Eastwick}, {Allison}, {Arriaga}, {Baker}, {Bar-Kalifa}, {Bergeron}, {Birnbaum}, {Brock}, {Brumbaugh}, et~al.]{joel2020}
+S.~{Joel}, P.~W. {Eastwick}, C.~J. {Allison}, et~al.
+\newblock {Machine learning uncovers the most robust self-report predictors of relationship quality across 43 longitudinal couples studies}.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 117\penalty0 (32):\penalty0 19061--19071, 2020.
+\newblock \doi{10.1073/pnas.1917036117}.
+
+\bibitem[{Eastwick} and {Hunt}(2014)]{eastwick2014}
+P.~W. {Eastwick} and L.~L. {Hunt}.
+\newblock {Relational mate value: consensus and uniqueness in romantic evaluations}.
+\newblock \emph{Journal of Personality and Social Psychology}, 106\penalty0 (5):\penalty0 728--751, 2014.
+\newblock \doi{10.1037/a0035884}.
+
+\bibitem[{Sternberg}(1986)]{sternberg1986}
+R.~J. {Sternberg}.
+\newblock {A triangular theory of love}.
+\newblock \emph{Psychological Review}, 93\penalty0 (2):\penalty0 119--135, 1986.
+\newblock \doi{10.1037/0033-295X.93.2.119}.
+
+\bibitem[{Frank}(1988)]{frank1988}
+R.~H. {Frank}.
+\newblock \emph{{Passions Within Reason: The Strategic Role of the Emotions}}.
+\newblock W.~W. Norton, New York, 1988.
+
+\bibitem[{Rusbult} et~al.(1998){Rusbult}, {Martz}, and {Agnew}]{rusbult1998}
+C.~E. {Rusbult}, J.~M. {Martz}, and C.~R. {Agnew}.
+\newblock {The Investment Model Scale: measuring commitment level, satisfaction level, quality of alternatives, and investment size}.
+\newblock \emph{Personal Relationships}, 5\penalty0 (4):\penalty0 357--387, 1998.
+\newblock \doi{10.1111/j.1475-6811.1998.tb00177.x}.
+
+\bibitem[{Betzig}(1989)]{betzig1989}
+L.~{Betzig}.
+\newblock {Causes of conjugal dissolution: a cross-cultural study}.
+\newblock \emph{Current Anthropology}, 30\penalty0 (5):\penalty0 654--676, 1989.
+\newblock \doi{10.1086/203798}.
+
+\bibitem[{Jankowiak} and {Fischer}(1992)]{jankowiak1992}
+W.~R. {Jankowiak} and E.~F. {Fischer}.
+\newblock {A cross-cultural perspective on romantic love}.
+\newblock \emph{Ethnology}, 31\penalty0 (2):\penalty0 149--155, 1992.
+\newblock \doi{10.2307/3773618}.
+
+\bibitem[{Isler} and {van Schaik}(2012)]{isler2012}
+K.~{Isler} and C.~P. {van Schaik}.
+\newblock {Allomaternal care, life history and brain size evolution in mammals}.
+\newblock \emph{Current Anthropology}, 53\penalty0 (S6):\penalty0 S453--S465, 2012.
+\newblock \doi{10.1086/667623}.
+
+\bibitem[{Hrdy}(2009)]{hrdy2009}
+S.~B. {Hrdy}.
+\newblock \emph{{Mothers and Others: The Evolutionary Origins of Mutual Understanding}}.
+\newblock Harvard University Press, Cambridge, MA, 2009.
+
+\bibitem[{Mehr} et~al.(2019){Mehr}, {Singh}, {Knox}, {Ketter}, {Pickens-Jones}, {Atwood}, {Lucas}, {Jacoby}, {Egner}, {Hopkins}, et~al.]{mehr2019}
+S.~A. {Mehr}, M.~{Singh}, D.~{Knox}, et~al.
+\newblock {Universality and diversity in human song}.
+\newblock \emph{Science}, 366\penalty0 (6468):\penalty0 eaax0868, 2019.
+\newblock \doi{10.1126/science.aax0868}.
+
+\bibitem[{Conroy-Beam} et~al.(2016){Conroy-Beam}, {Goetz}, and {Buss}]{conroybeam2016}
+D.~{Conroy-Beam}, C.~D. {Goetz}, and D.~M. {Buss}.
+\newblock {What predicts romantic relationship satisfaction and mate retention intensity? Mate preference fulfillment or mate value discrepancies?}
+\newblock \emph{Evolution and Human Behavior}, 37\penalty0 (6):\penalty0 440--448, 2016.
+\newblock \doi{10.1016/j.evolhumbehav.2016.04.003}.
+
+\bibitem[{Finkel} et~al.(2012){Finkel}, {Eastwick}, {Karney}, {Reis}, and {Sprecher}]{finkel2012}
+E.~J. {Finkel}, P.~W. {Eastwick}, B.~R. {Karney}, H.~T. {Reis}, and S.~{Sprecher}.
+\newblock {Online dating: a critical analysis from the perspective of psychological science}.
+\newblock \emph{Psychological Science in the Public Interest}, 13\penalty0 (1):\penalty0 3--66, 2012.
+\newblock \doi{10.1177/1529100612436522}.
+
+\bibitem[{Kim} and {Escobedo-Land}(2015)]{kim2015}
+A.~Y. {Kim} and A.~{Escobedo-Land}.
+\newblock {OkCupid profile data for introductory statistics and data science courses}.
+\newblock \emph{Journal of Statistics Education}, 23\penalty0 (2):\penalty0 1--25, 2015.
+\newblock \doi{10.1080/10691898.2015.11889737}.
 """
 
 
@@ -425,191 +501,192 @@ def fossil_step_curve(fossils, x):
 
 
 # ---------------------------------------------------------------------------
-# 1. PAGE-1 FLAGSHIP 8-PANEL VISUAL SYNTHESIS (performance-fig1-main.pdf)
+# 1. PAGE-1 FLAGSHIP 3-PANEL VISUAL SYNTHESIS (performance-fig1-main.pdf)
 # ---------------------------------------------------------------------------
 def fig1_main_plot(data):
     osyn = data["open_synthesis"]
     v9 = osyn["v9_anchors"]
     fossils = v9["fossils"]
-    whyte = osyn["whyte_2021"]
     kowal = osyn["kowal_2025"]
-    tw = osyn["two_way_jury"]
-    hon_beauty = data["hon"]["beauty_by_age"]
+    joel = osyn["joel_2020"]
+    pp = data["paleoclimate_plateau"]
     pov = data["pov"]
+    cc = osyn["childhood_coevolution"]
+    hcm = osyn["hcmst_2017"]
+    chk_hw = data["speed_dating"]["checklist_and_hindsight"]["hobby_checklist_vs_live_wavelength"]
+    chk_kow = kowal["checklist_and_surplus_decomposition"]["pooled"]["predictors_sd_per_sd"]
+    pvc_gap = 100.0 * data["holoface_benchmark"]["psychometric_voter_ceiling"]["tiers"]["votes_500_plus"]["irreducible_single_context_gap_full"]
 
-    fig = plt.figure(figsize=(7.24, 3.74))
-    outer = fig.add_gridspec(2, 1, height_ratios=[1.28, 1.0], hspace=0.50)
-    top = outer[0].subgridspec(1, 3, width_ratios=[1.42, 1.05, 1.15], wspace=0.32)
-    bot = outer[1].subgridspec(1, 5, wspace=0.52)
+    fig = plt.figure(figsize=(7.22, 2.88))
+    outer = fig.add_gridspec(1, 3, width_ratios=[1.22, 1.15, 1.08], wspace=0.33)
+    fig.subplots_adjust(left=0.068, right=0.992, bottom=0.155, top=0.885)
 
-    # Panel A: 3.2 Myr Hominin Brain Expansion + Marked 1.5-0.7 Ma Plateau
-    ax = fig.add_subplot(top[0, 0])
-    bp = fossils["bps"]
-    ax.axvspan(3.35, bp[0], color=BAND, zorder=0, lw=0)
-    ax.axvspan(bp[1], bp[2], color="#EAE6DC", zorder=0, lw=0)
-    ax.axvspan(0.93, 0.813, color=VIOLET, alpha=0.11, zorder=1, lw=0)
-    ax.axvline(1.12, color=MEN, lw=0.75, ls=":", alpha=0.85, zorder=2)
+    # Panel A: 800-kyr Brain Ceiling (~908 cm^3), Childhood 66.3% RMR Peak & Campfire-Love Release
+    a_gs = outer[0, 0].subgridspec(2, 1, height_ratios=[1.92, 1.0], hspace=0.10)
+    ax_a = fig.add_subplot(a_gs[0, 0])
+    ax_lr = fig.add_subplot(a_gs[1, 0], sharex=ax_a)
+    for ax_sub in (ax_a, ax_lr):
+        ax_sub.axvspan(1.50, 0.70, color="#ECE8DD", zorder=0, lw=0)
+        ax_sub.axvspan(0.93, 0.813, color=VIOLET, alpha=0.12, zorder=1, lw=0)
+        ax_sub.axvline(1.12, color=MEN, lw=0.75, ls=":", alpha=0.85, zorder=2)
     gstyle = {
         "aus": (GREY, "o", "Australopiths"),
         "eh": (B300, "s", "Early Homo"),
-        "mp": (B550, "D", "Mid-Pleist. Homo"),
+        "mp": (B550, "D", "Mid-Pleist."),
         "nea": (WOMEN, "^", "Neanderthals"),
-        "sap": (AQUA, "o", "Pleist. H. sapiens"),
+        "sap": (AQUA, "o", "H. sapiens"),
     }
     for k in ("aus", "eh", "mp", "sap", "nea"):
         pts = np.asarray(fossils["groups"][k], dtype=float)
         c, m, _ = gstyle[k]
-        dot(ax, pts[:, 0], pts[:, 1], c, m, s=11 if m != "D" else 9, z=4 if k == "nea" else 3)
-    xx = np.linspace(3.3, 0.01, 500)
-    ax.plot(xx, fossil_step_curve(fossils, xx), color=INK, lw=1.6, zorder=5)
-    ax.set_yscale("log")
-    ax.set_xlim(3.35, -0.25)
-    ax.set_ylim(300, 2250)
-    ax.set_yticks([400, 600, 1000, 1400, 2000])
-    ax.set_yticklabels(["400", "600", "1,000", "1,400", "2,000"])
-    ax.minorticks_off()
-    ax.set_xticks([3, 2, 1, 0])
-    panel(ax, "A", "Brains tripled in steps (1.5–0.7 Ma)", xlabel="Million years ago", ylabel="Volume (cm$^3$, log)", fontsize=7.5, pad=4)
-    ax.text(1.11, 1880, "908 cm³\nstasis", fontsize=5.2, color=INK, ha="center", va="center", fontweight="bold", linespacing=1.02)
-    ax.text(
-        1.14, 445, "1.12 Ma\ncooling", fontsize=4.8, color=MEN, ha="right", va="center", linespacing=1.0,
-        bbox=dict(boxstyle="round,pad=0.12", fc="white", ec="none", alpha=0.84),
+        dot(ax_a, pts[:, 0], pts[:, 1], c, m, s=11 if m != "D" else 9, z=4 if k == "nea" else 3)
+    xx = np.linspace(3.28, 0.01, 500)
+    ax_a.plot(xx, fossil_step_curve(fossils, xx), color=INK, lw=1.7, zorder=5)
+    ax_a.annotate(
+        "", xy=(1.12, 1660), xytext=(1.50, 1660),
+        arrowprops=dict(arrowstyle="<->", color=INK, lw=0.75),
+    )
+    ax_a.text(1.31, 1770, "380–711 kyr lead", fontsize=5.3, color=INK, ha="center", va="bottom", fontweight="bold")
+    ax_a.text(
+        1.12, 1080, "~908 cm³\nstasis", fontsize=5.4, color=INK, ha="center", va="center", fontweight="bold",
+        linespacing=1.02, bbox=dict(boxstyle="round,pad=0.12", fc="white", ec="none", alpha=0.86),
+    )
+    ax_a.text(
+        2.56, 1520,
+        f"Age 4.5: {cc['kuzawa_2014_brain_metabolism']['peak_rmr_pct']:.1f}% RMR\nSCCS: 0% solo mom",
+        fontsize=4.85, color=VIOLET, ha="center", va="center", fontweight="bold", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
     )
     for xf in (1.0, 0.78):
-        ax.plot([xf], [316], marker="^", ms=3.5, color=AQUA, zorder=6)
-    ax.text(0.90, 352, "cooking", fontsize=5.0, color=AQUA, ha="center")
-    dot(ax, [0.08], [426], VIOLET, "o", s=15, z=5)
-    ax.text(0.48, 365, "H. floresiensis", fontsize=5.2, color=INK2, ha="center")
-    ax.plot([0.285, 0.285], [465, 560], color=VIOLET, lw=1.9, zorder=5)
-    ax.text(0.66, 520, "H. naledi", fontsize=5.2, color=INK2, ha="center")
-    h_a = [Line2D([], [], marker=gstyle[k][1], ls="", ms=3.4, mfc=gstyle[k][0], mec="white", mew=0.3, label=gstyle[k][2])
-           for k in ("aus", "eh", "mp", "nea", "sap")]
-    ax.legend(handles=h_a, loc="upper left", bbox_to_anchor=(0.0, 0.99), fontsize=5.2, labelspacing=0.18, handletextpad=0.28)
+        ax_a.plot([xf], [318], marker="^", ms=4.0, color=AQUA, zorder=6)
+    ax_a.text(0.84, 540, "fire + pair-bond\n(+50%/Myr surge)", fontsize=4.95, color=AQUA, ha="center", fontweight="bold", linespacing=1.0)
+    dot(ax_a, [0.08], [426], VIOLET, "o", s=14, z=5)
+    ax_a.text(0.42, 342, "insular dwarfs", fontsize=5.0, color=INK2, ha="center")
+    ax_a.set_yscale("log")
+    ax_a.set_xlim(3.32, -0.16)
+    ax_a.set_ylim(295, 2380)
+    ax_a.set_yticks([400, 800, 1500])
+    ax_a.set_yticklabels(["400", "800", "1,500"])
+    ax_a.minorticks_off()
+    plt.setp(ax_a.get_xticklabels(), visible=False)
+    panel(ax_a, "A", "Campfire & love release (233 crania)", ylabel="cm$^3$ (log)", fontsize=7.8, pad=4)
 
-    # Panel B: Camp & Multi-Context Jury Law (Columbia + Prop 20)
-    ax = fig.add_subplot(top[0, 1])
-    kk = np.linspace(1, 36, 200)
-    curves = v9["speed_jury_curves"]
-    for key, col, mk, lab in (("attr", GOLD, "o", "Looks (4 min)"), ("intel", AQUA, "D", "Intelligence"), ("sinc", VIOLET, "^", "Sincerity")):
-        r1 = curves[key][0]
-        ax.plot(kk, kk * r1 / (1 + (kk - 1) * r1), color=col, lw=1.4, label=lab)
-        dot(ax, np.arange(1, 9), curves[key], col, mk, s=12)
-    # Single-context halo/context ceiling from Proposition 20
-    m_vals = np.array([1, 2, 4, 8, 16, 32], dtype=float)
-    r2_k1 = [tw["surface_r2"]["1"][str(int(m))] for m in m_vals]
-    ax.plot(m_vals, r2_k1, color=INK2, lw=1.1, ls=(0, (3, 2)), label="1-context $R^2_{m,1}$")
-    ax.set_xscale("log")
-    ax.set_xlim(0.9, 36)
-    ax.set_xticks([1, 2, 4, 8, 16, 32])
-    ax.set_xticklabels(["1", "2", "4", "8", "16", "32"])
-    ax.minorticks_off()
-    ax.set_ylim(0, 0.95)
-    ax.set_yticks([0, 0.4, 0.8])
-    panel(ax, "B", "Juries & contexts read minds", xlabel="Observers ($m$)", ylabel="Agreement / validity", fontsize=7.6, pad=4)
-    ax.legend(loc="lower right", fontsize=5.4, labelspacing=0.2, handlelength=1.5)
+    lr = pp["lr04_plot_series"]
+    ax_lr.fill_between(lr["envelope_age_ma"], lr["envelope_p10"], lr["envelope_p90"], color=B300, alpha=0.22, lw=0)
+    ax_lr.plot(lr["age_ma"], lr["d18o_permil"], color=MEN, lw=0.6, alpha=0.82)
+    ax_lr.plot(lr["envelope_age_ma"], lr["envelope_mean"], color=INK, lw=1.05)
+    ax_lr.set_ylim(2.85, 5.25)
+    ax_lr.set_yticks([3.2, 4.6])
+    ax_lr.set_xticks([3, 2, 1, 0])
+    ax_lr.grid(axis="y", color=GRID, lw=0.5)
+    ax_lr.set_xlabel("Million years ago (Ma)", labelpad=3.0)
+    ax_lr.set_ylabel("$\\delta^{18}$O (\u2030)", fontsize=6.4, labelpad=2.5)
+    ax_lr.text(1.15, 4.86, "MIS 34", fontsize=5.0, color=MEN, ha="right", fontweight="bold")
+    ax_lr.text(0.76, 3.16, "Ne~1,280\ncontested", fontsize=4.8, color=VIOLET, ha="right", linespacing=0.98)
 
-    # Panel C: Global Stated Priorities & Shared Culture (Whyte + Kowal)
-    ax = fig.add_subplot(top[0, 2])
-    c_map = kowal["cross_country_53"]["country_means"]
-    m_rel = [v["men"]["religion"] for v in c_map.values()]
-    w_rel = [v["women"]["religion"] for v in c_map.values()]
-    m_knd = [v["men"]["kindness"] for v in c_map.values()]
-    w_knd = [v["women"]["kindness"] for v in c_map.values()]
-    ax.plot([0.8, 9.2], [0.8, 9.2], color=MUTED, lw=0.7, ls=(0, (2, 2)), zorder=1)
-    dot(ax, m_rel, w_rel, VIOLET, "o", s=13, alpha=0.82, label="Religion ($r=.94$)")
-    dot(ax, m_knd, w_knd, AQUA, "D", s=12, alpha=0.82, label="Kindness ($r=.94$)")
-    ax.set_xlim(0.8, 9.2)
-    ax.set_ylim(0.8, 9.2)
-    ax.set_xticks([2, 4, 6, 8])
-    ax.set_yticks([2, 4, 6, 8])
-    panel(ax, "C", "Shared culture (53 countries)", xlabel="Men's budget (of 30)", ylabel="Women's budget", fontsize=7.6, pad=4)
-    ax.legend(loc="lower right", fontsize=5.5, handletextpad=0.3, labelspacing=0.22)
-    ax.text(1.15, 8.35, "53 countries:\nlooks M>W 53/53\nresources W>M 51/53", fontsize=5.3, color=INK2, va="top", linespacing=1.08)
+    # Panel B: Front-Door Filtering vs. Pair-Bond Love Reversal (90.5k + 47.9k + HCMST)
+    b_gs = outer[0, 1].subgridspec(2, 1, height_ratios=[1.0, 1.08], hspace=0.40)
+    ax_b1 = fig.add_subplot(b_gs[0, 0])
+    ax_b2 = fig.add_subplot(b_gs[1, 0])
+    traits_b = [("resources", "Money"), ("looks", "Looks"), ("kindness", "Kindness")]
+    yb = np.arange(len(traits_b))
+    ax_b1.axvline(0, color=MUTED, lw=0.7)
+    for (s_k, s_lbl, col, mk), off in zip((("women", "Women", WOMEN, "D"), ("men", "Men", MEN, "o")), (-0.14, 0.14)):
+        vals = [kowal["partnering_slopes"]["by_sex"][s_k][tk]["pp_per_sd"] for tk, _ in traits_b]
+        los = [kowal["partnering_slopes"]["by_sex"][s_k][tk]["ci_95"][0] for tk, _ in traits_b]
+        his = [kowal["partnering_slopes"]["by_sex"][s_k][tk]["ci_95"][1] for tk, _ in traits_b]
+        ax_b1.errorbar(
+            vals, yb + off, xerr=[[v - l for v, l in zip(vals, los)], [h - v for v, h in zip(vals, his)]],
+            color=col, fmt=mk, ms=3.8, elinewidth=0.95, capsize=1.8, label=s_lbl,
+        )
+    ax_b1.grid(False)
+    ax_b1.grid(axis="x", color=GRID, lw=0.5)
+    ax_b1.set_yticks(yb, [t[1] for t in traits_b], fontsize=6.4)
+    ax_b1.invert_yaxis()
+    ax_b1.set_xlim(-1.4, 6.2)
+    ax_b1.set_xticks([0, 2, 4, 6])
+    n_door_k = kowal["partnering_slopes"]["n"] / 1000.0
+    ax_b1.set_xlabel(f"1. Union entry slope (pp / SD, {n_door_k:.1f}k)", fontsize=6.3, labelpad=1.8)
+    panel(ax_b1, "B", "Entry vs. pair-bond reversal", fontsize=7.8, pad=4)
+    aud_r = hcm["audit_compression_ratios"]["institutional_kin_to_app_mean_ratio"]
+    hob_r = chk_hw["r_objective_hobby_corr_yes"]["estimate"]
+    ax_b1.text(
+        6.08, 1.85,
+        f"{pvc_gap:.0f}% photo blind\nApp audit \u00f7{aud_r:.1f}\nHobby r={hob_r:+.2f}",
+        fontsize=4.85, color=INK2, ha="right", va="center", linespacing=1.0,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
 
-    # Panel D: Breadth Aims Selection at Generality
-    ax = fig.add_subplot(bot[0, 0])
-    kd = sorted(int(k) for k in v9["polymath"]["aim_common"])
-    ax.plot([1, 20], [1, 20], color=INK, lw=1.5)
-    dot(ax, kd, [v9["polymath"]["aim_common"][str(k)] for k in kd], INK, "o", s=13)
-    kd_div = sorted(int(k) for k in v9["polymath"]["aim_division"])
-    y_div = [v9["polymath"]["aim_division"][str(k)] for k in kd_div]
-    ax.plot(kd_div, y_div, color=GREY, lw=1.3)
-    dot(ax, kd_div, y_div, GREY, "D", s=10)
-    ax.set_xlim(0, 21)
-    ax.set_ylim(0, 21)
-    ax.set_xticks([1, 10, 20])
-    ax.set_yticks([0, 10, 20])
-    panel(ax, "D", "Breadth \u2192 general", xlabel="Domains $K$", ylabel="General / specialty", fontsize=7.1, pad=4)
-    ax.text(11.5, 16.5, "common", fontsize=5.5, color=INK, ha="right")
-    ax.text(19.8, 6.8, "specialist", fontsize=5.5, color=INK2, ha="right")
+    ax_b2.axvline(0, color=MUTED, lw=0.7)
+    prqc_s = kowal["pair_bond_reversal"]["relationship_quality_prqc"]["by_sex"]
+    for (s_k, s_lbl, col, mk), off in zip((("women", "Women", WOMEN, "D"), ("men", "Men", MEN, "o")), (-0.14, 0.14)):
+        vals = [prqc_s[s_k]["traits"][tk]["sd_per_sd"] for tk, _ in traits_b]
+        los = [prqc_s[s_k]["traits"][tk]["ci_95"][0] for tk, _ in traits_b]
+        his = [prqc_s[s_k]["traits"][tk]["ci_95"][1] for tk, _ in traits_b]
+        ax_b2.errorbar(
+            vals, yb + off, xerr=[[v - l for v, l in zip(vals, los)], [h - v for v, h in zip(vals, his)]],
+            color=col, fmt=mk, ms=3.8, elinewidth=0.95, capsize=1.8, label=s_lbl,
+        )
+    ax_b2.grid(False)
+    ax_b2.grid(axis="x", color=GRID, lw=0.5)
+    ax_b2.set_yticks(yb, [t[1] for t in traits_b], fontsize=6.4)
+    ax_b2.invert_yaxis()
+    ax_b2.set_xlim(-0.04, 0.37)
+    ax_b2.set_xticks([0.0, 0.15, 0.30])
+    n_bond_k = kowal["pair_bond_reversal"]["relationship_quality_prqc"]["n"] / 1000.0
+    ax_b2.set_xlabel(f"2. Bond quality (SD / SD, {n_bond_k:.1f}k couples)", fontsize=6.3, labelpad=2.5)
+    ax_b2.legend(loc="lower left", fontsize=5.4, handletextpad=0.25, labelspacing=0.15)
+    j_rel = joel["satisfaction"]["models"]["ActorRelBaseline"]["unweighted_mean_r2_pct"]
+    j_trt = joel["satisfaction"]["models"]["PartnerTraitBaseline"]["unweighted_mean_r2_pct"]
+    k_fit_r = chk_kow["partner_kindness"]["estimate"] / chk_kow["idiographic_checklist_fit"]["estimate"]
+    ax_b2.text(
+        0.362, -0.15,
+        f"Money & marry-up \u2248 0;\nKindness {k_fit_r:.1f}\u00d7 checklist;\ndyadic {j_rel:.0f}% vs {j_trt:.1f}% R\u00b2",
+        fontsize=4.85, color=INK, ha="right", va="top", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.12", fc="white", ec="none", alpha=0.88),
+    )
 
-    # Panel E: Male Height Percentile vs Attraction Percentile (Curvilinear Floor + Plateau)
-    ax = fig.add_subplot(bot[0, 1])
-    br = [b for b in whyte["height_vs_attraction"]["Men"]["by_bracket"] if b["n"] >= 25]
-    hx = [b["height_percentile"] for b in br]
-    ay = [b["mean_attraction_percentile"] for b in br]
-    lo = [b["attraction_percentile_ci_95"][0] for b in br]
-    hi = [b["attraction_percentile_ci_95"][1] for b in br]
-    ax.axhline(50, color=MUTED, lw=0.65, ls=(0, (2, 2)))
-    ax.fill_between(hx, lo, hi, color=MEN, alpha=0.16, lw=0)
-    ax.plot(hx, ay, color=MEN, lw=1.55, marker="o", ms=3.3)
-    ax.set_xlim(-2, 102)
-    ax.set_ylim(30, 60)
-    ax.set_xticks([0, 50, 100])
-    ax.set_yticks([35, 50, 60])
-    panel(ax, "E", "Height: floor & dip", xlabel="Male height pct.", ylabel="Attraction pct.", fontsize=7.2, pad=4)
-    cliff_pct = abs(pov["height_percentiles"]["by_sex"]["Male"]["cliff_5ft11_6ft0_6ft1"]["drop_6ft0_to_6ft1_pct"])
-    ax.text(4, 33.0, f"6'0\" cliff: -{cliff_pct:.0f}%\nREP r = +.015 (null)", fontsize=5.2, color=INK2, linespacing=1.08)
-
-    # Panel F: 6.68M HON Beauty Percentile by Age
-    ax = fig.add_subplot(bot[0, 2])
-    ages = list(range(18, 76))
-    ax.axhline(50, color=MUTED, lw=0.65, ls=(0, (2, 2)))
-    for sex, lab, col, mk in SERIES:
-        ys = [100 * hon_beauty[str(a)][sex]["all"]["mean_percentile"] if hon_beauty[str(a)][sex]["all"] else math.nan for a in ages]
-        ax.plot(ages, ys, color=col, lw=1.5, marker=mk, markevery=12, ms=2.8, label=lab)
-    ax.set_xlim(17, 76)
-    ax.set_ylim(0, 82)
-    ax.set_xticks([20, 45, 70])
-    ax.set_yticks([0, 40, 80])
-    panel(ax, "F", "6.68M HON ranks", xlabel="Age", ylabel="Beauty pct.", fontsize=7.2, pad=4)
-    st_age = data["hon"]["cross_national"]["summary_strict_age_contrast"]
-    ax.text(20, 8, f"F>M drop in\n{st_age['female_steeper_drop_countries']}/{st_age['countries']} countries", fontsize=5.2, color=INK2, linespacing=1.06)
-
-    # Panel G: 1.14M POV Commitment vs Childbearing Horizon
-    ax = fig.add_subplot(bot[0, 3])
+    # Panel C: Age-41 Horizon Crossover vs. Unbroken Devotion & 94% Pairing Gate
+    ax_c = fig.add_subplot(outer[0, 2])
     wins = ("18-24", "25-29", "30-39", "40-49", "50-59", "60-69")
-    wx = [21, 27, 34.5, 44.5, 54.5, 64.5]
-    for sex, lab, col, _ in SERIES:
-        y_ser = [100 * pov["market_and_commitment"][w]["by_sex"][sex]["serious_commitment"]["share"] for w in wins]
-        ax.plot(wx, y_ser, color=col, lw=1.5, ls="-")
-    bands_x = [21, 27, 34.5, 44.5, 54.5]
-    bands_k = ("20-24", "25-29", "30-34", "45-49", "55-59")
-    for sex, lab, col, _ in SERIES:
-        y_w = [100 * pov["bands"][bk][sex]["without_children"]["shares"]["want"] for bk in bands_k]
-        ax.plot(bands_x, y_w, color=col, lw=1.25, ls=(0, (2, 1.5)))
-    ax.set_xlim(18, 68)
-    ax.set_ylim(0, 92)
-    ax.set_xticks([20, 45, 65])
-    ax.set_yticks([0, 40, 80])
-    panel(ax, "G", "1.14M POV horizons", xlabel="Age", ylabel="Share (%)", fontsize=7.1, pad=4)
-    ax.text(20, 82, "serious (W>M)", fontsize=5.1, color=INK)
-    ax.text(42.5, 25, "want kids\ncrosses", fontsize=5.0, color=INK2, linespacing=1.02)
+    wx = np.array([21.0, 27.0, 34.5, 44.5, 54.5, 64.5])
+    w_ser = np.array([100.0 * pov["market_and_commitment"][w]["by_sex"]["Female"]["serious_commitment"]["share"] for w in wins])
+    m_ser = np.array([100.0 * pov["market_and_commitment"][w]["by_sex"]["Male"]["serious_commitment"]["share"] for w in wins])
+    ax_c.fill_between(wx, m_ser, w_ser, color=WOMEN, alpha=0.13, lw=0)
+    ax_c.plot(wx, w_ser, color=WOMEN, lw=1.6, marker="D", ms=3.1, label="Women")
+    ax_c.plot(wx, m_ser, color=MEN, lw=1.6, marker="o", ms=3.1, label="Men")
 
-    # Panel H: The Pairing Gate Is Closing (GSS Never Married 25-39)
-    ax = fig.add_subplot(bot[0, 4])
-    vb = v9["village_births_periods"]
-    pers = list(vb.keys())
-    yv = [100 * vb[p]["never_married"] for p in pers]
-    ax.plot(range(len(pers)), yv, color=INK, lw=1.55)
-    dot(ax, range(len(pers)), yv, INK, "o", s=14)
-    ax.set_xlim(-0.3, len(pers) - 0.7)
-    ax.set_ylim(0, 62)
-    ax.set_xticks([0, 2, 4])
-    ax.set_xticklabels(["'72", "'00", "'24"])
-    ax.set_yticks([0, 30, 60])
-    panel(ax, "H", "The gate narrows", xlabel="U.S. period", ylabel="Never married (%)", fontsize=7.1, pad=4)
-    ax.text(0.15, 51, f"{yv[0]:.0f}% \u2192 {yv[-1]:.0f}%\n(ages 25-39)", fontsize=5.2, color=INK2, linespacing=1.06)
+    p_bands = [
+        (lo, hi) for lo, hi in data["cohorts"]["pov_bands"]
+        if hi <= 69
+        and pov["bands"][f"{lo}-{hi}"]["Female"]["without_children"]
+        and pov["bands"][f"{lo}-{hi}"]["Male"]["without_children"]
+    ]
+    bx = np.array([0.5 * (lo + hi) for lo, hi in p_bands])
+    bk = [f"{lo}-{hi}" for lo, hi in p_bands]
+    w_k = np.array([100.0 * pov["bands"][b]["Female"]["without_children"]["shares"]["want"] for b in bk])
+    m_k = np.array([100.0 * pov["bands"][b]["Male"]["without_children"]["shares"]["want"] for b in bk])
+    ax_c.fill_between(bx, m_k, w_k, where=(w_k >= m_k), interpolate=True, color=WOMEN, alpha=0.12, lw=0)
+    ax_c.fill_between(bx, m_k, w_k, where=(m_k >= w_k), interpolate=True, color=MEN, alpha=0.14, lw=0)
+    ax_c.plot(bx, w_k, color=WOMEN, lw=1.35, ls=(0, (3, 1.8)))
+    ax_c.plot(bx, m_k, color=MEN, lw=1.35, ls=(0, (3, 1.8)))
+
+    x_cross = pov["childless_crossover"]["band_midpoint_interpolated_age"]
+    ax_c.axvline(x_cross, color=VIOLET, lw=0.85, ls=":", zorder=2)
+    ax_c.scatter([x_cross], [np.interp(x_cross, bx, w_k)], s=22, facecolor=VIOLET, edgecolor="white", lw=0.5, zorder=6)
+    ax_c.text(20.0, 84.5, "Serious commitment: W > M always", fontsize=5.4, color=INK, fontweight="bold")
+    ax_c.text(x_cross + 1.3, 39.5, f"Age ~{x_cross:.0f}\nwant-kids\ncrossover", fontsize=5.2, color=VIOLET, fontweight="bold", linespacing=1.02)
+    ax_c.text(
+        19.5, 4.5, "U.S. birth drop: 94% = non-marriage\n(observational; ~2.7 ideal unchanged)",
+        fontsize=4.95, color=INK2, linespacing=1.04,
+        bbox=dict(boxstyle="round,pad=0.15", fc=BAND, ec="none", alpha=0.92),
+    )
+    ax_c.set_xlim(18, 69)
+    ax_c.set_ylim(0, 93)
+    ax_c.set_xticks([20, 35, 50, 65])
+    ax_c.set_yticks([0, 30, 60, 90])
+    panel(ax_c, "C", "Horizons vs. devotion (1.14M)", xlabel="Age (years)", ylabel="Share of profiles (%)", fontsize=7.8, pad=4)
+    ax_c.legend(loc="center right", bbox_to_anchor=(1.0, 0.62), fontsize=5.6, handlelength=1.4, labelspacing=0.18)
 
     return pdf(fig)
 
@@ -627,24 +704,26 @@ def _load_fossils_v9():
 
 
 # ---------------------------------------------------------------------------
-# 1B. DEEP-TIME FOSSILS, LR04 PALEOCLIMATE & 1.5-0.7 Ma PLATEAU AUDIT (Fig. 2)
+# 1B. DEEP-TIME FOSSILS, LR04 PALEOCLIMATE, CHILDHOOD & NHS CAMPFIRE (Fig. 2)
 # ---------------------------------------------------------------------------
 def fossils_paleoclimate_plot(data):
     pp = data["paleoclimate_plateau"]
-    fossils = data["open_synthesis"]["v9_anchors"]["fossils"]
+    osyn = data["open_synthesis"]
+    fossils = osyn["v9_anchors"]["fossils"]
+    cc = osyn["childhood_coevolution"]
+    nhs = osyn["nhs_campfire"]
     e13 = _v9_json("e13_fossils")
     gi_rows, will_rows = _load_fossils_v9()
 
-    fig = plt.figure(figsize=(7.24, 5.35))
-    outer = fig.add_gridspec(2, 2, width_ratios=[1.36, 1.0], height_ratios=[1.42, 1.0], wspace=0.33, hspace=0.44)
-    fig.subplots_adjust(left=0.082, right=0.985, bottom=0.095, top=0.925)
+    fig = plt.figure(figsize=(7.24, 5.48))
+    outer = fig.add_gridspec(2, 3, width_ratios=[1.22, 1.04, 1.08], height_ratios=[1.34, 1.0], wspace=0.35, hspace=0.47)
+    fig.subplots_adjust(left=0.076, right=0.988, bottom=0.095, top=0.930)
 
     # Panel A: 2-tier synchronized Cranial Stasis-Step + LR04 Benthic d18O Stack
     a_gs = outer[0, 0].subgridspec(2, 1, height_ratios=[1.75, 1.0], hspace=0.08)
     ax_top = fig.add_subplot(a_gs[0, 0])
     ax_lr = fig.add_subplot(a_gs[1, 0], sharex=ax_top)
 
-    bp = fossils["bps"]
     for a in (ax_top, ax_lr):
         a.axvspan(1.50, 0.70, color="#ECE8DD", zorder=0, lw=0)
         a.axvspan(0.93, 0.813, color=VIOLET, alpha=0.12, zorder=1, lw=0)
@@ -653,40 +732,39 @@ def fossils_paleoclimate_plot(data):
 
     gi_age = np.array([g[2] for g in gi_rows], dtype=float)
     gi_ecv = np.array([g[3] for g in gi_rows], dtype=float)
-    ax_top.scatter(gi_age, gi_ecv, s=8, facecolor=GREY, edgecolor="none", alpha=0.32, zorder=2)
+    ax_top.scatter(gi_age, gi_ecv, s=7, facecolor=GREY, edgecolor="none", alpha=0.32, zorder=2)
 
     gstyle = {
         "aus": (GREY, "o", "Australopiths"),
         "eh": (B300, "s", "Early Homo"),
-        "mp": (B550, "D", "Mid-Pleist. Homo"),
+        "mp": (B550, "D", "Mid-Pleist."),
         "nea": (WOMEN, "^", "Neanderthals"),
-        "sap": (AQUA, "o", "Pleist. H. sapiens"),
+        "sap": (AQUA, "o", "H. sapiens"),
     }
     for k in ("aus", "eh", "mp", "sap", "nea"):
         pts = np.asarray(fossils["groups"][k], dtype=float)
         c, m, lbl = gstyle[k]
-        dot(ax_top, pts[:, 0], pts[:, 1], c, m, s=11 if m != "D" else 9, z=4, label=lbl)
+        dot(ax_top, pts[:, 0], pts[:, 1], c, m, s=10 if m != "D" else 8, z=4, label=lbl)
 
     xx = np.linspace(3.25, 0.01, 600)
     lin_y = np.exp(np.log(gi_ecv).mean() + e13["slope_specimen"] * (-xx + gi_age.mean()))
-    ax_top.plot(xx, lin_y, color=MUTED, lw=1.0, ls=(0, (3, 2)), zorder=3, label="Constant log-linear")
-    ax_top.plot(xx, fossil_step_curve(fossils, xx), color=INK, lw=1.7, zorder=5, label="Stasis\u2013step fit")
+    ax_top.plot(xx, lin_y, color=MUTED, lw=0.95, ls=(0, (3, 2)), zorder=3, label="Log-linear")
+    ax_top.plot(xx, fossil_step_curve(fossils, xx), color=INK, lw=1.65, zorder=5, label="Stasis\u2013step")
 
-    # Onset-to-crisis lag bracket inside 1.50-0.70 Ma window
     ax_top.annotate(
         "", xy=(1.12, 1650), xytext=(1.50, 1650),
-        arrowprops=dict(arrowstyle="<->", color=INK, lw=0.8),
+        arrowprops=dict(arrowstyle="<->", color=INK, lw=0.75),
     )
-    ax_top.text(1.31, 1760, "380\u2013711 kyr lag\nafter stasis onset", fontsize=5.3, color=INK, ha="center", va="bottom", fontweight="bold", linespacing=1.02)
+    ax_top.text(1.31, 1770, "380\u2013711 kyr lag", fontsize=4.9, color=INK, ha="center", va="bottom", fontweight="bold")
     ax_top.text(
-        1.27, 1130, "~908 cm\u00b3\nplateau", fontsize=5.3, color=INK, ha="center", va="center", fontweight="bold", linespacing=1.02,
-        bbox=dict(boxstyle="round,pad=0.14", fc="white", ec="none", alpha=0.86),
+        1.27, 1130, "~908 cm\u00b3\nplateau", fontsize=4.9, color=INK, ha="center", va="center", fontweight="bold", linespacing=1.0,
+        bbox=dict(boxstyle="round,pad=0.12", fc="white", ec="none", alpha=0.86),
     )
     for xf in (1.0, 0.78):
-        ax_top.plot([xf], [315], marker="^", ms=3.8, color=AQUA, zorder=6)
+        ax_top.plot([xf], [315], marker="^", ms=3.5, color=AQUA, zorder=6)
     ax_top.text(
-        0.89, 395, "fire & cooking", fontsize=5.0, color=AQUA, ha="center", fontweight="bold",
-        bbox=dict(boxstyle="round,pad=0.10", fc="white", ec="none", alpha=0.82),
+        0.89, 395, "fire & cooking", fontsize=4.7, color=AQUA, ha="center", fontweight="bold",
+        bbox=dict(boxstyle="round,pad=0.08", fc="white", ec="none", alpha=0.82),
     )
 
     ax_top.set_yscale("log")
@@ -695,27 +773,26 @@ def fossils_paleoclimate_plot(data):
     ax_top.set_yticklabels(["400", "600", "1,000", "1,500", "2,000"])
     ax_top.minorticks_off()
     plt.setp(ax_top.get_xticklabels(), visible=False)
-    panel(ax_top, "A", "Endocranial stasis\u2013step vs. LR04 paleoclimate", ylabel="Volume (cm$^3$)")
-    ax_top.legend(loc="upper left", fontsize=5.1, ncol=2, columnspacing=0.6, labelspacing=0.16, handletextpad=0.25)
+    panel(ax_top, "A", "Stasis\u2013step vs. LR04 stack", ylabel="cm$^3$ (log)", fontsize=7.6)
+    ax_top.legend(loc="upper left", fontsize=4.6, ncol=2, columnspacing=0.45, labelspacing=0.14, handletextpad=0.20)
 
-    # Synchronized LR04 benthic d18O stack
     lr = pp["lr04_plot_series"]
     lr_age = np.asarray(lr["age_ma"], dtype=float)
     lr_d18 = np.asarray(lr["d18o_permil"], dtype=float)
     env_age = np.asarray(lr["envelope_age_ma"], dtype=float)
     ax_lr.fill_between(env_age, lr["envelope_p10"], lr["envelope_p90"], color=B300, alpha=0.22, lw=0)
-    ax_lr.plot(lr_age, lr_d18, color=MEN, lw=0.65, alpha=0.88, zorder=3)
-    ax_lr.plot(env_age, lr["envelope_mean"], color=INK, lw=1.1, zorder=4)
+    ax_lr.plot(lr_age, lr_d18, color=MEN, lw=0.6, alpha=0.88, zorder=3)
+    ax_lr.plot(env_age, lr["envelope_mean"], color=INK, lw=1.05, zorder=4)
     ax_lr.set_xlim(3.32, -0.06)
     ax_lr.set_ylim(2.85, 5.25)
     ax_lr.set_yticks([3.2, 4.0, 4.8])
-    ax_lr.set_xticks([3.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.0])
+    ax_lr.set_xticks([3, 2, 1, 0])
     ax_lr.grid(axis="y", color=GRID, lw=0.5)
-    ax_lr.set_xlabel("Million years ago (Ma)", labelpad=3.0)
-    ax_lr.set_ylabel("LR04 $\\delta^{18}$O (\u2030)", fontsize=6.6, labelpad=3.0)
-    ax_lr.text(2.15, 4.80, "41-kyr mild cycles\n(0.80\u2030 swing)", fontsize=5.0, color=INK2, ha="center", linespacing=1.02)
-    ax_lr.text(1.13, 4.92, "MIS 34", fontsize=5.0, color=MEN, ha="right", fontweight="bold")
-    ax_lr.text(0.35, 4.95, "100-kyr MPT\n(1.21\u2030)", fontsize=5.0, color=INK, ha="center", linespacing=1.02)
+    ax_lr.set_xlabel("Million years ago (Ma)", labelpad=2.5)
+    ax_lr.set_ylabel("LR04 $\\delta^{18}$O (\u2030)", fontsize=6.2, labelpad=2.5)
+    ax_lr.text(2.25, 4.82, "41-kyr", fontsize=4.7, color=INK2, ha="center")
+    ax_lr.text(1.13, 4.92, "MIS 34", fontsize=4.7, color=MEN, ha="right", fontweight="bold")
+    ax_lr.text(0.35, 4.95, "100-kyr MPT", fontsize=4.7, color=INK, ha="center")
 
     # Panel B: 10-Event Chronological & Epistemic Tier Timeline
     ax_b = fig.add_subplot(outer[0, 1])
@@ -734,56 +811,108 @@ def fossils_paleoclimate_plot(data):
         "energetic_release": "^",
     }
     ev_labels = {
-        "mpt_intensification": "MPT 41\u2192100 kyr shift",
+        "mpt_intensification": "MPT 41\u2192100 kyr",
         "mis34_europe_cooling": "MIS 34 Eur. depop.",
-        "bosumtwi_impact": "Bosumtwi crater (10.5 km)",
-        "wonderwerk_fire": "Wonderwerk fire (~1.0 Ma)",
+        "bosumtwi_impact": "Bosumtwi (10.5 km)",
+        "wonderwerk_fire": "Wonderwerk fire",
         "fitcoal_bottleneck": "Ne\u22481,280 (contested)",
-        "pantasma_impact": "Pantasma crater (14 km)",
-        "oldest_toba_tuff": "Oldest Toba eruption",
-        "australasian_tektite_impact": "Bolaven tektites (~789 ka)",
-        "gby_cooking": "GBY fish cooking (~780 ka)",
-        "matuyama_brunhes": "Matuyama\u2013Brunhes rev.",
+        "pantasma_impact": "Pantasma (14 km)",
+        "oldest_toba_tuff": "Oldest Toba",
+        "australasian_tektite_impact": "Bolaven tektites",
+        "gby_cooking": "GBY fish cooking",
+        "matuyama_brunhes": "Matuyama\u2013Brunhes",
     }
     evs = pp["candidate_events"]
     for idx_e, ev in enumerate(evs):
         tc = tier_col[ev["tier"]]
         mk = tier_mk[ev["tier"]]
         w_lo, w_hi = ev["window_ma"]
-        ax_b.plot([w_hi, w_lo], [idx_e, idx_e], color=tc, lw=2.3, solid_capstyle="round", alpha=0.80, zorder=3)
-        dot(ax_b, [ev["point_ma"]], [idx_e], tc, mk, s=18, z=4)
-    ax_b.set_yticks(range(len(evs)), [ev_labels.get(e["id"], e["short_label"]) for e in evs], fontsize=5.8)
+        ax_b.plot([w_hi, w_lo], [idx_e, idx_e], color=tc, lw=2.1, solid_capstyle="round", alpha=0.80, zorder=3)
+        dot(ax_b, [ev["point_ma"]], [idx_e], tc, mk, s=15, z=4)
+    ax_b.set_yticks(range(len(evs)), [ev_labels.get(e["id"], e["short_label"]) for e in evs], fontsize=5.2)
     ax_b.invert_yaxis()
     ax_b.set_xlim(1.62, 0.58)
     ax_b.grid(False)
     ax_b.grid(axis="x", color=GRID, lw=0.55)
-    panel(ax_b, "B", "Plateau crisis & release audit", xlabel="Age window (Ma; dashed = 1.50 Ma onset)")
+    panel(ax_b, "B", "Plateau crisis & release audit", xlabel="Age window (Ma)", fontsize=7.6)
     du_sl = pp["du2018_age_uncertainty_mc"]["slopes"]
     s_pre = du_sl["phase_II_2.0_1.5"]["median_slope_ln_per_myr"]
     s_plt = du_sl["phase_III_1.5_0.7"]["median_slope_ln_per_myr"]
     ax_b.text(
-        1.60, 8.85,
-        f"Du 2018 rate:\n{s_pre:.2f}\u2192{s_plt:.2f} ln/Myr\n(\u221258% slowdown)",
-        fontsize=5.1, color=INK, va="bottom", ha="left",
-        bbox=dict(boxstyle="round,pad=0.2", fc="white", ec=GRID, lw=0.5, alpha=0.92),
+        1.60, 8.95,
+        f"Du 2018: {s_pre:.2f}\u2192{s_plt:.2f}\n(\u221258% slowdown)",
+        fontsize=4.7, color=INK, va="bottom", ha="left",
+        bbox=dict(boxstyle="round,pad=0.16", fc="white", ec=GRID, lw=0.45, alpha=0.92),
     )
     leg_b = [
-        Line2D([], [], color=MEN, marker="s", lw=1.6, ms=3.5, label="Measured climate"),
-        Line2D([], [], color=VIOLET, marker="D", lw=1.6, ms=3.5, label="Contested genomic"),
-        Line2D([], [], color=GOLD, marker="o", lw=1.6, ms=3.5, label="Unlinked impact/volc."),
-        Line2D([], [], color=AQUA, marker="^", lw=1.6, ms=3.5, label="Fire / cooking"),
+        Line2D([], [], color=MEN, marker="s", lw=1.4, ms=3.0, label="Climate"),
+        Line2D([], [], color=VIOLET, marker="D", lw=1.4, ms=3.0, label="Contested Ne"),
+        Line2D([], [], color=GOLD, marker="o", lw=1.4, ms=3.0, label="Unlinked impact"),
+        Line2D([], [], color=AQUA, marker="^", lw=1.4, ms=3.0, label="Fire / cooking"),
     ]
     ax_b.legend(
-        handles=leg_b, loc="upper left", bbox_to_anchor=(0.13, 0.72), fontsize=5.0,
-        labelspacing=0.18, handlelength=1.2, frameon=True, facecolor="white", framealpha=0.88, edgecolor="none",
+        handles=leg_b, loc="upper left", bbox_to_anchor=(0.06, 0.72), fontsize=4.6,
+        labelspacing=0.14, handlelength=1.1, frameon=True, facecolor="white", framealpha=0.88, edgecolor="none",
     )
 
-    # Panel C: Three Post-0.7 Ma Parallel Regional Series (Will et al. 2021)
-    ax_c = fig.add_subplot(outer[1, 0])
+    # Panel C: Childhood 66.3% Brain Peak & Proposition 22 (E22) Pair-Bond Encephalization Ceiling
+    c_gs = outer[0, 2].subgridspec(2, 1, height_ratios=[1.0, 1.15], hspace=0.48)
+    ax_c1 = fig.add_subplot(c_gs[0, 0])
+    ax_c2 = fig.add_subplot(c_gs[1, 0])
+
+    traj = cc["kuzawa_2014_brain_metabolism"]["trajectory"]
+    t_age = [r["age_years"] for r in traj]
+    t_rmr = [r["brain_rmr_pct"] for r in traj]
+    t_der = [r["brain_der_pct"] for r in traj]
+    ax_c1.fill_between(t_age, t_der, t_rmr, color=WOMEN, alpha=0.13, lw=0)
+    ax_c1.plot(t_age, t_rmr, color=WOMEN, lw=1.55, marker="D", ms=2.8, label="% Resting (RMR)")
+    ax_c1.plot(t_age, t_der, color=MEN, lw=1.35, ls="--", marker="o", mfc="white", ms=2.7, label="% Daily (DER)")
+    ax_c1.axvline(4.5, color=VIOLET, lw=0.75, ls=":")
+    sccs_c = cc["sccs_alloparenting_and_sharing"]
+    allo_pct = 100.0 * sccs_c["early_childhood_nonmaternal_majority_sccs52"]["share"]
+    ax_c1.text(
+        5.3, 62.5,
+        f"Age 4.5: 66.3% RMR\nSCCS: 0% solo mom;\n{allo_pct:.1f}% allomaternal",
+        fontsize=4.65, color=INK, va="top", ha="left", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+    ax_c1.set_xlim(-0.5, 22.8)
+    ax_c1.set_ylim(2, 74)
+    ax_c1.set_xticks([0, 4.5, 10, 16, 22], ["0", "4.5", "10", "16", "22"])
+    ax_c1.set_xlabel("Childhood age (yr, Kuzawa 2014)", fontsize=5.9, labelpad=1.5)
+    ax_c1.set_ylabel("Brain %", fontsize=6.0)
+    panel(ax_c1, "C", "Child brain peak & love ceiling", fontsize=7.6, pad=4)
+    ax_c1.legend(loc="lower right", fontsize=4.6, labelspacing=0.12, handlelength=1.2)
+
+    e22_regs = cc["proposition_22_e22_coevolution"]["regimes"]
+    r_specs = [
+        ("solitary_ape_mother", "Solitary ape\nmother", GREY),
+        ("early_homo_allomaternal_raw", "Raw food +\nalloparents", B300),
+        ("cooking_without_pair_bond_love", "Cooking, no\npair-bond", GOLD),
+        ("late_homo_cooking_plus_pair_bond_love", "Cooking +\npair-bond love", AQUA),
+    ]
+    yc2 = np.arange(len(r_specs))
+    for i, (rk, _, rcol) in enumerate(r_specs):
+        cf_v = e22_regs[rk]["equilibrium_cm3_closed_form"]
+        sm_v = e22_regs[rk]["equilibrium_cm3_simulated"]
+        ax_c2.barh(i, cf_v, height=0.58, color=rcol, alpha=0.88, zorder=2)
+        dot(ax_c2, [sm_v], [i], INK, "D", s=12, z=4)
+        ax_c2.text(cf_v + 24, i, f"{cf_v:,.0f}", va="center", ha="left", fontsize=5.1, fontweight="bold", color=INK)
+    ax_c2.grid(False)
+    ax_c2.grid(axis="x", color=GRID, lw=0.5)
+    ax_c2.set_yticks(yc2, [r[1] for r in r_specs], fontsize=5.0)
+    ax_c2.invert_yaxis()
+    ax_c2.set_xlim(0, 1620)
+    ax_c2.set_xticks([0, 650, 1300], ["0", "650", "1,300"])
+    love_g = cc["proposition_22_e22_coevolution"]["love_devotion_gain_cm3"]
+    ax_c2.set_xlabel(f"Prop. 22 E22 equilibrium cm\u00b3 (+{love_g:.0f} love)", fontsize=5.8, labelpad=2.0)
+
+    # Panel D: Three Post-0.7 Ma Parallel Regional Series (Will et al. 2021)
+    ax_d = fig.add_subplot(outer[1, 0])
     ser_specs = [
         ("africa_to_sapiens", AQUA, "o", "Africa \u2192 H. sapiens",
          lambda w: (w["taxon"] == "Mid-Pleistocene Homo" and w["region"] == "Africa") or w["taxon"] == "Pleistocene Homo sapiens"),
-        ("europe_w_asia", WOMEN, "^", "W Eurasia \u2192 Neanderthals",
+        ("europe_w_asia", WOMEN, "^", "W Eurasia \u2192 Neand.",
          lambda w: w["region"] == "Europe/W Asia" and w["taxon"] != "Pleistocene Homo sapiens"),
         ("east_asia_archaic", MEN, "D", "E/SE Asia archaic",
          lambda w: w["taxon"] == "Mid-Pleistocene Homo" and w["region"] == "E/SE Asia"),
@@ -791,54 +920,92 @@ def fossils_paleoclimate_plot(data):
     for key, col, mk, lab, pred in ser_specs:
         wa = np.array([w["age"] for w in will_rows if pred(w)], dtype=float)
         we = np.array([w["ecv"] for w in will_rows if pred(w)], dtype=float)
-        dot(ax_c, wa, we, col, mk, s=11, alpha=0.85)
+        dot(ax_d, wa, we, col, mk, s=10, alpha=0.85)
         sl = e13["series"][key]["slope"]
         x2 = np.linspace(wa.max(), wa.min(), 50)
-        ax_c.plot(x2, np.exp(np.log(we).mean() + sl * (-x2 + wa.mean())), color=col, lw=1.6, label=f"{lab} ({sl:.2f} ln/Myr)")
-    ax_c.set_yscale("log")
-    ax_c.set_xlim(0.95, -0.02)
-    ax_c.set_ylim(780, 1980)
-    ax_c.set_yticks([800, 1000, 1200, 1500, 1800])
-    ax_c.set_yticklabels(["800", "1,000", "1,200", "1,500", "1,800"])
-    ax_c.minorticks_off()
-    panel(ax_c, "C", "Post-0.7 Ma parallel regional trajectories", xlabel="Million years ago (Ma)", ylabel="Volume (cm$^3$)")
-    ax_c.legend(loc="upper left", fontsize=5.7, labelspacing=0.20)
+        ax_d.plot(x2, np.exp(np.log(we).mean() + sl * (-x2 + wa.mean())), color=col, lw=1.55, label=f"{lab} ({sl:.2f})")
+    ax_d.set_yscale("log")
+    ax_d.set_xlim(0.95, -0.02)
+    ax_d.set_ylim(780, 1980)
+    ax_d.set_yticks([800, 1000, 1200, 1500, 1800])
+    ax_d.set_yticklabels(["800", "1,000", "1,200", "1,500", "1,800"])
+    ax_d.minorticks_off()
+    panel(ax_d, "D", "Post-0.7 Ma regional surge", xlabel="Million years ago (Ma)", ylabel="Volume (cm$^3$)", fontsize=7.6)
+    ax_d.legend(loc="upper left", fontsize=5.1, labelspacing=0.18)
 
-    # Panel D: Late Homo Coexistence of Large- and Small-Brained Lineages
-    ax_d = fig.add_subplot(outer[1, 1])
+    # Panel E: Late Homo Coexistence of Large- and Small-Brained Lineages
+    ax_e = fig.add_subplot(outer[1, 1])
     rng_d = np.random.default_rng(3)
     order_d = [("mp", "Mid-Pleist.\nHomo", B550), ("nea", "Neander-\nthals", WOMEN), ("sap", "Pleist.\nH. sapiens", AQUA)]
     for i, (gk, glab, gcol) in enumerate(order_d):
         vals = np.asarray(fossils["groups"][gk], dtype=float)[:, 1]
-        ax_d.scatter(i + rng_d.uniform(-0.17, 0.17, len(vals)), vals, s=8, facecolor=gcol, edgecolor="white", linewidth=0.3, alpha=0.82, zorder=3)
-        ax_d.plot([i - 0.26, i + 0.26], [vals.mean(), vals.mean()], color=INK, lw=1.5, zorder=4)
-        ax_d.text(i, vals.max() + 45, f"{vals.mean():,.0f}", ha="center", va="bottom", fontsize=6.2, fontweight="bold", color=INK)
-    ax_d.axhline(1349, color=MUTED, lw=0.75, ls=(0, (3, 2)), zorder=1)
-    ax_d.text(0.50, 1405, "recent mean\n1,349", ha="center", va="bottom", fontsize=5.1, color=INK2, linespacing=1.0)
-    ax_d.axhspan(465, 560, color=VIOLET, alpha=0.16, lw=0, zorder=1)
-    ax_d.text(1.0, 512, "H. naledi (465\u2013560)", ha="center", va="center", fontsize=5.6, color=VIOLET, fontweight="bold")
-    ax_d.axhline(426, color=GOLD, lw=1.1, zorder=2)
-    ax_d.text(1.0, 392, "H. floresiensis (426)", ha="center", va="top", fontsize=5.6, color=GOLD, fontweight="bold")
-    ax_d.set_xticks(range(3), [o[1] for o in order_d], fontsize=6.3)
-    ax_d.set_xlim(-0.5, 2.55)
-    ax_d.set_ylim(280, 2020)
-    ax_d.set_yticks([400, 800, 1200, 1600, 2000])
-    ax_d.set_yticklabels(["400", "800", "1,200", "1,600", "2,000"])
-    panel(ax_d, "D", "Late Homo: large & small brains", ylabel="Volume (cm$^3$)")
+        ax_e.scatter(i + rng_d.uniform(-0.17, 0.17, len(vals)), vals, s=7.5, facecolor=gcol, edgecolor="white", linewidth=0.3, alpha=0.82, zorder=3)
+        ax_e.plot([i - 0.26, i + 0.26], [vals.mean(), vals.mean()], color=INK, lw=1.45, zorder=4)
+        ax_e.text(i, vals.max() + 45, f"{vals.mean():,.0f}", ha="center", va="bottom", fontsize=5.8, fontweight="bold", color=INK)
+    ax_e.axhline(1349, color=MUTED, lw=0.75, ls=(0, (3, 2)), zorder=1)
+    ax_e.text(0.42, 1405, "recent 1,349", ha="center", va="bottom", fontsize=4.8, color=INK2)
+    ax_e.axhspan(465, 560, color=VIOLET, alpha=0.16, lw=0, zorder=1)
+    ax_e.text(1.0, 512, "H. naledi (465\u2013560)", ha="center", va="center", fontsize=5.1, color=VIOLET, fontweight="bold")
+    ax_e.axhline(426, color=GOLD, lw=1.05, zorder=2)
+    ax_e.text(1.0, 392, "H. floresiensis (426)", ha="center", va="top", fontsize=5.1, color=GOLD, fontweight="bold")
+    ax_e.set_xticks(range(3), [o[1] for o in order_d], fontsize=5.8)
+    ax_e.set_xlim(-0.5, 2.55)
+    ax_e.set_ylim(280, 2020)
+    ax_e.set_yticks([400, 800, 1200, 1600, 2000])
+    ax_e.set_yticklabels(["400", "800", "1,200", "1,600", "2,000"])
+    panel(ax_e, "E", "Late Homo & insular dwarfs", ylabel="Volume (cm$^3$)", fontsize=7.6)
+
+    # Panel F: Harvard NHS 86-Society Campfire Acoustic Legibility Gradient (Mehr et al. 2019)
+    ax_f = fig.add_subplot(outer[1, 2])
+    alg = nhs["acoustic_legibility_gradient"]
+    nhs_rows = [
+        ("lullaby", "Infant lullaby", AQUA),
+        ("dance", "Communal dance", MEN),
+        ("healing", "Ceremonial healing", B300),
+        ("love", "Romantic love song", GOLD),
+    ]
+    yf = np.arange(len(nhs_rows))
+    ax_f.axvline(0.0, color=MUTED, lw=0.75, ls=(0, (2, 2)))
+    for i, (nk, _, ncol) in enumerate(nhs_rows):
+        d_val = alg[nk]["cohen_d"]
+        d_lo, d_hi = alg[nk]["cohen_d_ci_95"]
+        au = alg[nk]["auroc"]
+        ax_f.barh(i, d_val, height=0.52, color=ncol, alpha=0.86, zorder=2)
+        ax_f.errorbar(d_val, i, xerr=[[d_val - d_lo], [d_hi - d_val]], color=INK, fmt="none", elinewidth=0.95, capsize=2.0, zorder=4)
+        ax_f.text(d_hi + 0.06, i, f"+{d_val:.2f}\n(AUC {au:.2f})", va="center", ha="left", fontsize=4.65, fontweight="bold", color=INK, linespacing=0.96)
+    ax_f.grid(False)
+    ax_f.grid(axis="x", color=GRID, lw=0.5)
+    ax_f.set_yticks(yf, [r[1] for r in nhs_rows], fontsize=5.4)
+    ax_f.invert_yaxis()
+    ax_f.set_xlim(-0.22, 3.42)
+    ax_f.set_xticks([0.0, 1.0, 2.0, 3.0])
+    d_sh = 100.0 * nhs["ethnographic_hearth_contexts"]["any_communal_dance"]["share_of_coded"]
+    ll_r = nhs["lullaby_to_love_d_ratio"]
+    ax_f.text(
+        3.35, 3.42,
+        f"Lullaby {ll_r:.1f}\u00d7 love d;\n{d_sh:.1f}% hearth dance",
+        fontsize=4.7, color=INK, ha="right", va="bottom", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+    panel(ax_f, "F", "Campfire song legibility (86 soc.)", xlabel="Blind listener Cohen's $d$ (29.4k raters)", fontsize=7.6)
 
     return pdf(fig)
 
 
 # ---------------------------------------------------------------------------
-# 2. UNIFIED SPEED-DATING & TWO-WAY JURY FIGURE (performance-fig-jury-choice.pdf)
+# 2. UNIFIED SPEED-DATING, HOBBY NULL & HINDSIGHT FIGURE (performance-fig-jury-choice.pdf)
 # ---------------------------------------------------------------------------
 def jury_choice_plot(data):
     speed = data["speed_dating"]
     tw = data["open_synthesis"]["two_way_jury"]
+    chk = speed["checklist_and_hindsight"]
+    hw = chk["hobby_checklist_vs_live_wavelength"]
+    wps = chk["within_person_shifts"]
+    fup = chk["post_event_followup_3_4_weeks"]
     e17 = _v9_json("e17_speed")
 
-    fig, axes = plt.subplots(2, 2, figsize=(7.20, 4.65))
-    fig.subplots_adjust(left=0.095, right=0.988, bottom=0.11, top=0.90, wspace=0.35, hspace=0.47)
+    fig, axes = plt.subplots(2, 3, figsize=(7.24, 4.95))
+    fig.subplots_adjust(left=0.088, right=0.988, bottom=0.105, top=0.905, wspace=0.38, hspace=0.55)
 
     # Panel A: Stated vs Revealed Choice Weights (Said -> Did as Shares of 100)
     ax = axes[0, 0]
@@ -852,92 +1019,191 @@ def jury_choice_plot(data):
             said = e17["said"][n_sex][a]
             ax.annotate(
                 "", xy=(did, y0 + dy), xytext=(said, y0 + dy),
-                arrowprops=dict(arrowstyle="-|>", color=col, lw=1.0, mutation_scale=6, shrinkA=2.0, shrinkB=2.4),
+                arrowprops=dict(arrowstyle="-|>", color=col, lw=0.95, mutation_scale=5.5, shrinkA=1.8, shrinkB=2.2),
                 zorder=2,
             )
-            ax.scatter([said], [y0 + dy], s=16 if mk == "o" else 13, marker=mk, facecolor="white", edgecolor=col, linewidth=1.0, zorder=3)
-            ax.scatter([did], [y0 + dy], s=19 if mk == "o" else 15, marker=mk, facecolor=col, edgecolor="white", linewidth=0.45, zorder=4)
+            ax.scatter([said], [y0 + dy], s=14 if mk == "o" else 11, marker=mk, facecolor="white", edgecolor=col, linewidth=0.95, zorder=3)
+            ax.scatter([did], [y0 + dy], s=17 if mk == "o" else 13, marker=mk, facecolor=col, edgecolor="white", linewidth=0.45, zorder=4)
     ax.grid(False)
     ax.grid(axis="x", color=GRID, lw=0.55)
-    ax.set_yticks(range(len(rows_a)), lbls_a[::-1], fontsize=6.3)
+    ax.set_yticks(range(len(rows_a)), lbls_a[::-1], fontsize=5.8)
     ax.set_ylim(-0.6, len(rows_a) - 0.4)
     ax.set_xlim(-2, 56)
-    panel(ax, "A", "Stated vs. revealed weights (said \u2192 did)", xlabel="Share of positive weight (%)")
+    panel(ax, "A", "Stated vs. revealed (said \u2192 did)", xlabel="Share of positive weight (%)", fontsize=7.6)
     leg_a = [
-        Line2D([], [], marker="D", ls="", ms=3.8, mfc=WOMEN, mec="white", label="Women"),
-        Line2D([], [], marker="o", ls="", ms=4.0, mfc=MEN, mec="white", label="Men"),
-        Line2D([], [], marker="o", ls="", ms=3.8, mfc="white", mec=INK2, label="Stated"),
-        Line2D([], [], marker="o", ls="", ms=4.0, mfc=INK2, mec="white", label="Revealed"),
+        Line2D([], [], marker="D", ls="", ms=3.5, mfc=WOMEN, mec="white", label="Women"),
+        Line2D([], [], marker="o", ls="", ms=3.7, mfc=MEN, mec="white", label="Men"),
+        Line2D([], [], marker="o", ls="", ms=3.5, mfc="white", mec=INK2, label="Stated"),
+        Line2D([], [], marker="o", ls="", ms=3.7, mfc=INK2, mec="white", label="Revealed"),
     ]
-    ax.legend(handles=leg_a, loc="lower right", fontsize=5.8, ncol=2, columnspacing=0.6)
+    ax.legend(handles=leg_a, loc="lower right", fontsize=5.1, ncol=2, columnspacing=0.45)
 
     # Panel B: 4-Minute Inter-Observer Agreement (r1) vs Panel Choice Slope
     ax = axes[0, 1]
     ax.axhline(0, color=MUTED, lw=0.7, zorder=1)
     r1_map = {a: e17["jury"][a]["r1"] for a in ("attr", "fun", "intel", "amb", "sinc")}
-    for n_sex, col, mk, lab in (("women", WOMEN, "D", "Women choosing"), ("men", MEN, "o", "Men choosing")):
+    for n_sex, col, mk, lab in (("women", WOMEN, "D", "Women"), ("men", MEN, "o", "Men")):
         for idx_a, a in enumerate(r1_map):
             c = e17["did"]["panel"][n_sex]["coef"][a]
-            ax.vlines(r1_map[a], c[1], c[2], color=col, lw=1.05, zorder=2)
-            dot(ax, [r1_map[a]], [c[0]], col, mk, s=20 if mk == "o" else 16, z=3, label=lab if idx_a == 0 else None)
-    for x_t, y_t, txt in ((0.385, 8.2, "Looks"), (0.265, 9.6, "Fun"), (0.155, 7.6, "Intelligence,\nambition"), (0.065, -4.8, "Sincerity")):
-        ax.text(x_t, y_t, txt, fontsize=5.9, color=INK2, ha="center", va="center", linespacing=1.04)
+            ax.vlines(r1_map[a], c[1], c[2], color=col, lw=1.0, zorder=2)
+            dot(ax, [r1_map[a]], [c[0]], col, mk, s=18 if mk == "o" else 14, z=3, label=lab if idx_a == 0 else None)
+    for x_t, y_t, txt in ((0.385, 8.2, "Looks"), (0.265, 9.6, "Fun"), (0.155, 7.6, "Intel.,\nambition"), (0.072, -4.8, "Sincerity")):
+        ax.text(x_t, y_t, txt, fontsize=5.3, color=INK2, ha="center", va="center", linespacing=1.02)
     ax.set_xlim(0.0, 0.45)
     ax.set_ylim(-7.5, 21.5)
-    panel(ax, "B", "Strangers act on 4-minute legibility", xlabel="Single-observer agreement ($r_1$)", ylabel="Yes slope per panel SD (pp)")
-    ax.legend(loc="upper left", fontsize=6.0)
+    panel(ax, "B", "4-min legibility governs choice", xlabel="Single-observer agreement ($r_1$)", ylabel="Yes slope / panel SD (pp)", fontsize=7.6)
+    ax.legend(loc="upper left", fontsize=5.5)
 
     # Panel C: Two-Way Observer x Context Validity Law (Proposition 20)
-    ax = axes[1, 0]
+    ax = axes[0, 2]
     m_grid = [1, 2, 4, 8, 16, 32, 64]
     styles = [
-        ("1", GOLD, "-", "o", "$k=1$ context (1 photo / date)"),
+        ("1", GOLD, "-", "o", "$k=1$ (1 photo/date)"),
         ("2", B300, "--", "s", "$k=2$ contexts"),
         ("4", MEN, "-.", "^", "$k=4$ contexts"),
-        ("8", AQUA, "-", "D", "$k=8$ contexts (camp)"),
+        ("8", AQUA, "-", "D", "$k=8$ (camp)"),
         ("32", VIOLET, ":", "v", "$k=32$ contexts"),
     ]
     for k_str, col, ls, mk, lab in styles:
         ys = [tw["surface_r2"][k_str][str(m)] for m in m_grid]
-        ax.plot(m_grid, ys, color=col, ls=ls, lw=1.45, marker=mk, ms=3.3, label=lab)
+        ax.plot(m_grid, ys, color=col, ls=ls, lw=1.4, marker=mk, ms=3.0, label=lab)
     ax.axhline(tw["single_context_asymptote_r2"], color=GOLD, lw=0.7, ls=(0, (2, 2)))
     ax.axhline(tw["multi_context_halo_ceiling_r2"], color=VIOLET, lw=0.7, ls=(0, (2, 2)))
     ax.set_xscale("log")
-    ax.set_xticks(m_grid, [str(m) for m in m_grid])
+    ax.set_xticks(m_grid, [str(m) for m in m_grid], fontsize=5.8)
     ax.minorticks_off()
     ax.set_ylim(0.11, 0.82)
-    panel(ax, "C", "More observers cannot cure one context (Prop. 20)", xlabel="Independent observers ($m$)", ylabel="Criterion validity $R^2_{m,k}$")
-    ax.legend(loc="lower right", fontsize=5.6, labelspacing=0.19)
+    panel(ax, "C", "More raters \u2260 more contexts (Prop. 20)", xlabel="Independent observers ($m$)", ylabel="Validity $R^2_{m,k}$", fontsize=7.6)
+    ax.legend(loc="lower right", fontsize=4.9, labelspacing=0.16)
 
-    # Panel D: Yes Rate by Partner Looks Quintile
+    # Panel D: Unique Dyadic Spark vs. Consensus Trophy Value (Unbiased Bipartite SRM)
+    ax = axes[1, 0]
+    dc = speed["dyadic_chemistry"]
+    vp = dc["variance_partition"]
+    items_d = [
+        ("attr", "Looks"),
+        ("like", "Romantic liking\n(4,011 dyads)"),
+        ("shar", "Shared interests"),
+        ("intel", "Intelligence"),
+        ("sinc", "Sincerity"),
+    ]
+    segs_d = [
+        ("partner_consensus", "Consensus", GOLD),
+        ("chooser_leniency", "Leniency", B300),
+        ("unique_dyadic_and_noise", "Unique spark", VIOLET),
+    ]
+    for i, (tk, tlab) in enumerate(items_d):
+        left = 0.0
+        sh = vp[tk]["unbiased_srm_shares"]
+        for sk, _, col in segs_d:
+            v = 100.0 * sh[sk]
+            ax.barh(i, max(v - 0.5, 0.0), left=left + 0.25, height=0.56, color=col, zorder=2)
+            if v >= 14.0:
+                ax.text(left + v / 2.0, i, f"{v:.0f}%", ha="center", va="center", fontsize=5.1, color="white" if col == VIOLET else INK, fontweight="bold")
+            left += v
+    ax.grid(False)
+    ax.set_yticks(range(len(items_d)), [x[1] for x in items_d], fontsize=5.5)
+    ax.set_ylim(-0.55, 5.10)
+    ax.invert_yaxis()
+    ax.set_xlim(0, 102)
+    ax.set_xticks([0, 25, 50, 75, 100])
+    rec_r = dc["mutual_dyadic_reciprocity_like"]["estimate"]
+    panel(ax, "D", f"Dyadic spark beats consensus (r={rec_r:+.2f})", xlabel="Unbiased SRM share (%)", pad=16, fontsize=7.6)
+    ax.legend(
+        handles=[Rectangle((0, 0), 1, 1, color=c, label=l) for _, l, c in segs_d],
+        loc="lower left", bbox_to_anchor=(0.0, 1.01), ncol=3, fontsize=4.6,
+        handlelength=0.65, handletextpad=0.22, columnspacing=0.45,
+    )
+
+    # Panel E: Objective 17-Hobby Profile Tag Null vs. Live Conversational Wavelength (7,116 Dyads)
     ax = axes[1, 1]
-    panel(ax, "D", "Yes rate across peer looks quintiles", xlabel="Partner's looks quintile among session peers", ylabel="Share saying yes", percent=True)
-    ax.set_xticks(range(1, 6), ["Bottom\n20%", "Q2", "Q3", "Q4", "Top\n20%"])
-    ax.set_ylim(0, 0.88)
-    for (sex, label, col, mk), off in zip(SERIES, (-0.09, 0.09)):
-        cells = speed["yes_by_panel_quintile"][label.lower()]["quintiles"]
-        y = [c["estimate"] for c in cells]
-        lo = [c["interval_95"][0] for c in cells]
-        hi = [c["interval_95"][1] for c in cells]
+    fe_items = [
+        ("int_corr", "17-hobby profile\ntag corr."),
+        ("sinc", "Sincerity"),
+        ("intel", "Intelligence"),
+        ("fun", "Live fun"),
+        ("shar", "Live shared\nwavelength"),
+        ("attr", "Live looks"),
+    ]
+    ye = np.arange(len(fe_items))
+    ax.axvline(0.0, color=MUTED, lw=0.75, ls=(0, (2, 2)))
+    for (sx, slb, col, mk), off in zip((("women", "Women", WOMEN, "D"), ("men", "Men", MEN, "o")), (-0.14, 0.14)):
+        cfs = hw["chooser_fe_slopes"][sx]["coefficients_pp"]
+        ests = [cfs[k]["estimate"] for k, _ in fe_items]
+        los = [cfs[k]["interval_95"][0] for k, _ in fe_items]
+        his = [cfs[k]["interval_95"][1] for k, _ in fe_items]
         ax.errorbar(
-            [i + off for i in range(1, 6)], y,
-            yerr=[[p - l for p, l in zip(y, lo)], [h - p for p, h in zip(y, hi)]],
-            color=col, marker=mk, ms=3.8, lw=1.4, elinewidth=0.85, capsize=2, label=f"{label} choosing",
+            ests, ye + off, xerr=[[e - l for e, l in zip(ests, los)], [h - e for e, h in zip(ests, his)]],
+            color=col, fmt=mk, ms=3.5, elinewidth=0.95, capsize=1.8, label=slb,
         )
-    ax.legend(loc="upper left", fontsize=6.2)
+    ax.grid(False)
+    ax.grid(axis="x", color=GRID, lw=0.55)
+    ax.set_yticks(ye, [x[1] for x in fe_items], fontsize=5.4)
+    ax.invert_yaxis()
+    ax.set_xlim(-4.5, 25.5)
+    r_hob = hw["r_objective_hobby_corr_yes"]["estimate"]
+    r_wav = hw["r_live_shared_wavelength_yes"]["estimate"]
+    rat_hw = hw["live_to_checklist_r_ratio"]
+    ax.text(
+        24.8, 0.15,
+        f"7,116 dyads:\nHobby r={r_hob:+.3f} (null)\nPlay r={r_wav:+.3f} ({rat_hw:.1f}\u00d7)",
+        fontsize=4.75, color=INK, ha="right", va="top", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.14", fc=BAND, ec="none", alpha=0.92),
+    )
+    panel(ax, "E", "17-hobby tag null vs. live play", xlabel="Chooser-FE Yes slope (pp / SD)", fontsize=7.6)
+
+    # Panel F: Longitudinal Waves 1-3 Hindsight Awakening (24h Looks Hijack -> 3-Week Intel Snapback)
+    ax = axes[1, 2]
+    ax.axhline(0.0, color=MUTED, lw=0.75, ls=(0, (2, 2)))
+    sh_24_w = wps["nextday_realized_minus_pre_stated"]["women"]["delta_points"]
+    sh_24_m = wps["nextday_realized_minus_pre_stated"]["men"]["delta_points"]
+    sh_3w_w = wps["threeweek_stated_minus_nextday_realized"]["women"]["delta_points"]
+    sh_3w_m = wps["threeweek_stated_minus_nextday_realized"]["men"]["delta_points"]
+    cats_f = [
+        ("24h looks\njump", sh_24_w["attr"], sh_24_m["attr"]),
+        ("24h intel.\ndrop", sh_24_w["intel"], sh_24_m["intel"]),
+        ("3\u20134 wk looks\nrecede", sh_3w_w["attr"], sh_3w_m["attr"]),
+        ("3\u20134 wk intel.\nsnapback", sh_3w_w["intel"], sh_3w_m["intel"]),
+    ]
+    xf = np.arange(len(cats_f))
+    for i, (_, w_cell, m_cell) in enumerate(cats_f):
+        for cell, col, mk, off, lb in ((w_cell, WOMEN, "D", -0.14, "Women"), (m_cell, MEN, "o", 0.14, "Men")):
+            est = cell["estimate"]
+            lo, hi = cell["interval_95"]
+            ax.errorbar(
+                i + off, est, yerr=[[est - lo], [hi - est]],
+                color=col, fmt=mk, ms=3.8, elinewidth=0.95, capsize=2.0, label=lb if i == 0 else None,
+            )
+    ax.set_xticks(xf, [c[0] for c in cats_f], fontsize=5.1)
+    ax.set_xlim(-0.5, 3.5)
+    ax.set_ylim(-8.5, 15.8)
+    dt_sh = 100.0 * fup["went_on_followup_date_share_among_matched"]
+    cl_sh = 100.0 * fup["called_or_was_called_share_among_matched"]
+    ax.text(
+        3.42, 14.8,
+        f"Matches\u2192real life:\n{cl_sh:.0f}% call, {dt_sh:.0f}% date",
+        fontsize=4.75, color=INK, ha="right", va="top", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.14", fc=BAND, ec="none", alpha=0.92),
+    )
+    panel(ax, "F", "Waves 1\u20133 hindsight awakening", ylabel="\u0394 weight (pts of 100)", fontsize=7.6)
+    ax.legend(loc="lower right", fontsize=5.1)
 
     return pdf(fig)
 
 
 # ---------------------------------------------------------------------------
-# 2B. GENERALIST BREADTH, STAGED CAPACITY & ENFORCED DELIVERY (Fig. 4)
+# 2B. GENERALIST BREADTH, STAGED CAPACITY, ENFORCED DELIVERY & MIND SELECTION (Fig. 4)
 # ---------------------------------------------------------------------------
 def generalist_verify_plot(data):
     P = _v9_json("e15_polymath")
     V = _v9_json("e16_verify")
+    sat_b = data["speed_dating"]["checklist_and_hindsight"]["objective_sat_blindness"]
+    tpp = data["open_synthesis"]["okcupid_jse"]["ten_prompt_portfolio"]
+    mdv = tpp["multi_domain_lexical_validity"]
+    amr = tpp["assortative_mind_requests_essay9"]
 
-    fig, axes = plt.subplots(2, 2, figsize=(7.22, 4.65))
-    fig.subplots_adjust(left=0.088, right=0.988, bottom=0.11, top=0.90, wspace=0.33, hspace=0.47)
+    fig, axes = plt.subplots(2, 3, figsize=(7.24, 4.76))
+    fig.subplots_adjust(left=0.072, right=0.988, bottom=0.105, top=0.905, wspace=0.36, hspace=0.49)
 
     # Panel A: Breadth Buys Pre-Reproductive Time (n*(K) curves across K=1..24)
     ax = axes[0, 0]
@@ -945,84 +1211,119 @@ def generalist_verify_plot(data):
     k_styles = [("1", GREY), ("3", GOLD), ("6", B300), ("12", MEN), ("24", AQUA)]
     for k_s, col in k_styles:
         yv = P["breadth"]["curves"][k_s]
-        ax.plot(n_ev, yv, color=col, lw=1.55, label=f"$K={k_s}$")
+        ax.plot(n_ev, yv, color=col, lw=1.5, label=f"$K={k_s}$")
     ax.axhline(0.50, color=INK2, lw=0.75, ls=(0, (2, 2)))
-    ax.text(36.0, 0.445, "Target $R^* = 0.50$", fontsize=5.6, color=INK2, ha="right")
+    ax.text(36.0, 0.44, "Target $R^* = 0.50$", fontsize=5.3, color=INK2, ha="right")
     ax.set_xscale("log")
     ax.set_xticks([1, 2, 5, 10, 20, 40], ["1", "2", "5", "10", "20", "40"])
     ax.minorticks_off()
     ax.set_xlim(1, 40)
     ax.set_ylim(0, 0.86)
-    panel(ax, "A", "Breadth buys observation time (Prop. 5)", xlabel="Events observed per domain ($n$)", ylabel="General-capacity validity $R_G$")
-    ax.legend(loc="lower right", fontsize=5.7, ncol=2, columnspacing=0.6)
+    panel(ax, "A", "Breadth buys time (Prop. 5)", xlabel="Events observed per domain ($n$)", ylabel="General-capacity validity $R_G$", fontsize=7.5)
+    ax.legend(loc="lower right", fontsize=5.2, ncol=2, columnspacing=0.5, frameon=True, framealpha=0.90, facecolor="white", edgecolor="none")
 
     # Panel B: General-Capacity Expenditure Share & 1/K Gaming Dilution (Prop. 6 & Cor. 4)
     ax = axes[0, 1]
     Kc = np.linspace(2, 32, 300)
     for ratio, col, mk in (("4.0", AQUA, "o"), ("8.0", MEN, "s"), ("16.0", VIOLET, "D")):
         rr = float(ratio)
-        ax.plot(Kc, Kc / (Kc + rr), color=col, lw=1.55, label=f"$c_G/c_S = {int(rr)}$")
+        ax.plot(Kc, Kc / (Kc + rr), color=col, lw=1.5, label=f"$c_G/c_S = {int(rr)}$")
         d_exp = P["expenditure"][ratio]
-        dot(ax, [int(k) for k in d_exp], [d_exp[k]["share"][0] for k in d_exp], col, mk, s=16)
+        dot(ax, [int(k) for k in d_exp], [d_exp[k]["share"][0] for k in d_exp], col, mk, s=14)
     ax.axhline(0.50, color=MUTED, lw=0.7, ls=(0, (2, 2)))
     ax.set_xscale("log", base=2)
     ax.set_xticks([2, 4, 8, 16, 32], ["2", "4", "8", "16", "32"])
     ax.minorticks_off()
     ax.set_xlim(1.8, 35)
     ax.set_ylim(0, 0.96)
-    panel(ax, "B", "Generalist expenditure & $1/K$ anti-gaming", xlabel="Common repertoire breadth ($K$ domains)", ylabel="General-capacity budget share $\\pi_G$")
-    ax.legend(loc="lower right", fontsize=5.8)
-    ax.text(2.05, 0.84, "Single-domain show\ndiluted as $1/K$ (Cor. 4)", fontsize=5.6, color=INK2, linespacing=1.08)
+    panel(ax, "B", "Generalist share & $1/K$ anti-gaming", xlabel="Common repertoire breadth ($K$ domains)", ylabel="General-capacity share $\\pi_G$", fontsize=7.5)
+    ax.legend(loc="lower right", fontsize=5.4)
+    ax.text(2.05, 0.83, "Single-domain show\ndiluted as $1/K$ (Cor. 4)", fontsize=5.3, color=INK2, linespacing=1.06)
 
     # Panel C: Staged Tests Measure Capacity (Rb), Not Unstaged Delivery (Rp) (Prop. 15)
-    ax = axes[1, 0]
+    ax = axes[0, 2]
     vp_par = V["params"]
     vb, sig2, vp, nu, n_occ = vp_par["VB"], vp_par["sig2"], vp_par["VP"], vp_par["nu"], vp_par["n"]
     d_fine = np.linspace(0.0, 1.0, 401)
     rb_curve = [0.0 if d * n_occ <= 0 else vb / (vb + sig2 / (d * n_occ)) for d in d_fine]
     rp_curve = [0.0 if (1 - d) * n_occ <= 0 else vp / (vp + nu / ((1 - d) * n_occ)) for d in d_fine]
-    ax.plot(d_fine, rb_curve, color=AQUA, lw=1.65, label="Capacity validity $R_b(d)$")
-    ax.plot(d_fine, rp_curve, color=VIOLET, lw=1.65, label="Delivery validity $R_p(d)$")
+    ax.plot(d_fine, rb_curve, color=AQUA, lw=1.6, label="Capacity $R_b(d)$")
+    ax.plot(d_fine, rp_curve, color=VIOLET, lw=1.6, label="Delivery $R_p(d)$")
     st_rows = V["staging"]
-    dot(ax, [float(k) for k in st_rows], [v["R_b"][0] for v in st_rows.values()], AQUA, "o", s=15)
-    dot(ax, [float(k) for k in st_rows], [v["R_p"][0] for v in st_rows.values()], VIOLET, "s", s=14)
+    dot(ax, [float(k) for k in st_rows], [v["R_b"][0] for v in st_rows.values()], AQUA, "o", s=14)
+    dot(ax, [float(k) for k in st_rows], [v["R_p"][0] for v in st_rows.values()], VIOLET, "s", s=13)
     ax.set_xlim(-0.03, 1.03)
     ax.set_ylim(0, 1.02)
-    panel(ax, "C", f"Staged tests show 'can', not 'will' ($n={n_occ}$)", xlabel="Share of occasions staged ($d$)", ylabel="Assessment validity")
-    ax.legend(loc="center left", bbox_to_anchor=(0.02, 0.42), fontsize=5.8)
+    panel(ax, "C", f"Staged 'can' vs 'will' ($n={n_occ}$)", xlabel="Share of occasions staged ($d$)", ylabel="Assessment validity", fontsize=7.5)
+    ax.legend(loc="center left", bbox_to_anchor=(0.02, 0.43), fontsize=5.4)
     clean_90 = 100.0 * V["clean"]["0.9"]["exact"]
-    ax.text(0.47, 0.12, f"At $d=0.9$, 25% defaulter\nkeeps clean record {clean_90:.0f}%", fontsize=5.4, color=INK2, ha="center", linespacing=1.06)
+    ax.text(0.50, 0.11, f"At $d=0.9$, 25% defaulter\nclean {clean_90:.0f}% of time", fontsize=5.1, color=INK2, ha="center", linespacing=1.05)
 
-    # Panel D: Third-Party Enforcement Rescues Take-Off & Crowds Out Above Threshold (Prop. 16)
-    ax = axes[1, 1]
+    # Panel D: Third-Party Enforcement Rescues Take-Off & Crowds Out Above Threshold (Prop. 17)
+    ax = axes[1, 0]
     E = V["enforcement"]
     eg = np.asarray(E["grid"], dtype=float)
     bmax = E["params"]["bmax"]
-    ax.plot(eg, np.asarray(E["b"], dtype=float) / bmax, color=AQUA, lw=1.6, label="Capacity $\\bar b^*/b_{\\max}$ ($T=0.6$)")
-    ax.plot(eg, E["p"], color=VIOLET, lw=1.6, label="Voluntary commitment $\\bar p^*$")
-    ax.plot(eg, E["delivered"], color=MEN, lw=1.35, ls="--", label="Delivered share ($T=0.6$)")
+    ax.plot(eg, np.asarray(E["b"], dtype=float) / bmax, color=AQUA, lw=1.55, label="Capacity $\\bar b^*/b_{\\max}$")
+    ax.plot(eg, E["p"], color=VIOLET, lw=1.55, label="Commitment $\\bar p^*$")
+    ax.plot(eg, E["delivered"], color=MEN, lw=1.3, ls="--", label="Delivered ($T=0.6$)")
     ibm = E["ibm"]
-    dot(ax, [float(k) for k in ibm], [v["b"][0] / bmax for v in ibm.values()], AQUA, "o", s=15)
-    dot(ax, [float(k) for k in ibm], [v["p"][0] for v in ibm.values()], VIOLET, "s", s=14)
-    # Above-threshold crowding-out curve (T = 1.5)
-    T_hi = 1.5
-    deliv_hi = []
-    for e_val in eg:
-        if e_val >= 1.0:
-            p_hi = 0.0
-        else:
-            # p* = T(1-e)[e + (1-e)p*] capped at p_max=1 -> solve interior quadratic/linear from exp_verify
-            p_max_e = E["params"].get("pmax", 1.0)
-            # Use exact delivered crowding minimum anchor + smooth closed-form envelope
-            denom = 1.0 - T_hi * ((1.0 - e_val) ** 2)
-            p_hi = p_max_e if denom <= 0 else min(p_max_e, T_hi * (1.0 - e_val) * e_val / denom)
-        deliv_hi.append(e_val + (1.0 - e_val) * p_hi)
+    dot(ax, [float(k) for k in ibm], [v["b"][0] / bmax for v in ibm.values()], AQUA, "o", s=14)
+    dot(ax, [float(k) for k in ibm], [v["p"][0] for v in ibm.values()], VIOLET, "s", s=13)
     cr = E["crowding"]
-    ax.scatter([cr["at"]], [cr["min_delivered"]], s=26, facecolor="white", edgecolor=GOLD, linewidth=1.2, zorder=5, label=f"Crowding dip ($T=1.5$: {cr['min_delivered']:.2f})")
+    ax.scatter([cr["at"]], [cr["min_delivered"]], s=24, facecolor="white", edgecolor=GOLD, linewidth=1.2, zorder=5, label=f"Crowding ({cr['min_delivered']:.2f})")
     ax.set_xlim(-0.03, 1.03)
     ax.set_ylim(-0.02, 1.05)
-    panel(ax, "D", "Enforcement rescues take-off (Prop. 17)", xlabel="Enforced sharing fraction ($e$)", ylabel="Equilibrium level / share")
-    ax.legend(loc="upper left", fontsize=5.3, labelspacing=0.18)
+    panel(ax, "D", "Enforcement rescues take-off", xlabel="Enforced sharing fraction ($e$)", ylabel="Equilibrium level / share", fontsize=7.5)
+    ax.legend(loc="upper left", fontsize=5.0, labelspacing=0.16)
+
+    # Panel E: Empirical Proof of Mind Selection — 4-min SAT Blindness vs. 9-Domain Portfolio
+    ax = axes[1, 1]
+    ks = np.arange(1, 10)
+    sb_vals = [100.0 * mdv["spearman_brown_curve_k_1_to_9"][str(k)] for k in ks]
+    ax.axhline(50.0, color=MUTED, lw=0.7, ls=(0, (2, 2)))
+    ax.plot(ks, sb_vals, color=AQUA, lw=1.7, marker="o", ms=3.5, label=f"9-prompt lexical $g$ ($n={mdv['n_complete_9_domain_writers']:,}$)")
+    sat_1 = 100.0 * sat_b["stranger_intel_sat_r2"]
+    sat_p = 100.0 * sat_b["panel_intel_sat_r2"]
+    ax.axhline(sat_p, color=GOLD, lw=1.25, ls="--", label=f"10+ dates SAT $R^2$ ($k=1$: {sat_p:.1f}%)")
+    ax.scatter([1], [sat_1], color=RED, marker="s", s=26, zorder=5, label=f"1-date SAT $R^2$ ({sat_1:.2f}%)")
+    ax.set_xticks(ks)
+    ax.set_xlim(0.6, 9.4)
+    ax.set_ylim(-2, 60)
+    panel(ax, "E", "Live SAT blindness vs 9-domain voice", xlabel="Distinct written domains observed ($K$)", ylabel="Cognitive validity / $R^2$ (%)", fontsize=7.5)
+    ax.legend(loc="upper left", bbox_to_anchor=(0.0, 0.99), fontsize=4.85, labelspacing=0.18)
+    ax.text(
+        9.25, 11.5,
+        f"Partner SAT\u2192'Yes':\n$r={sat_b['r_partner_sat_vs_yes']['estimate']:+.3f}$ (null)\n9 domains: {mdv['k9_to_k1_validity_ratio']:.1f}\u00d7 gain",
+        fontsize=4.9, color=INK, ha="right", va="bottom", linespacing=1.06,
+        bbox=dict(boxstyle="round,pad=0.16", fc=BAND, ec="none", alpha=0.92),
+    )
+
+    # Panel F: Assortative Mind Requests Across Candidate Lexical Quintiles (N=44,856)
+    ax = axes[1, 2]
+    q_keys = ["Q1", "Q2", "Q3", "Q4", "Q5"]
+    qx = np.arange(1, 6)
+    mind_y = [100.0 * amr["by_lexical_quintile"][q]["ask_mind_curiosity_share"] for q in q_keys]
+    mind_lo = [100.0 * amr["by_lexical_quintile"][q]["ask_mind_wilson_ci_95"][0] for q in q_keys]
+    mind_hi = [100.0 * amr["by_lexical_quintile"][q]["ask_mind_wilson_ci_95"][1] for q in q_keys]
+    kind_y = [100.0 * amr["by_lexical_quintile"][q]["ask_kindness_sincerity_share"] for q in q_keys]
+    stat_y = [100.0 * amr["by_lexical_quintile"][q]["ask_height_money_looks_share"] for q in q_keys]
+    ax.fill_between(qx, mind_lo, mind_hi, color=VIOLET, alpha=0.15, lw=0)
+    ax.plot(qx, mind_y, color=VIOLET, lw=1.65, marker="o", ms=3.5, label="Ask for mind / wit (+40%)")
+    ax.plot(qx, kind_y, color=MEN, lw=1.5, marker="s", ms=3.2, label="Ask for kindness (+38%)")
+    ax.plot(qx, stat_y, color=GOLD, lw=1.35, ls="--", marker="^", ms=3.2, label="Ask height/money/looks")
+    ax.set_xticks(qx, q_keys)
+    ax.set_xlim(0.75, 5.25)
+    ax.set_ylim(0, 24.5)
+    panel(ax, "F", f"Assortative mind requests ($N={amr['n_users_ge3_domains_with_essay9']:,}$)", xlabel="Writer multi-domain lexical quintile", ylabel="'Message me if' share (%)", fontsize=7.5)
+    ax.legend(loc="upper left", fontsize=4.9, labelspacing=0.16)
+    p0_sh = 100.0 * tpp["prompts"]["essay0"]["share"]
+    p8_sh = 100.0 * tpp["prompts"]["essay8"]["share"]
+    ax.text(
+        5.15, 4.3,
+        f"Private admission drops\n{p0_sh:.0f}%\u2192{p8_sh:.1f}% (vulnerability)",
+        fontsize=4.8, color=INK2, ha="right", va="bottom", linespacing=1.05,
+    )
 
     return pdf(fig)
 
@@ -1134,7 +1435,7 @@ def holoface_ceiling_plot(data):
     waves = hb["waves_trajectory"]
     mhc = data["open_synthesis"]["published_benchmarks"]["havlicek_2020_mhc"]
 
-    fig, axes = plt.subplots(2, 2, figsize=(7.24, 4.85))
+    fig, axes = plt.subplots(2, 2, figsize=(7.24, 4.30))
     fig.subplots_adjust(left=0.095, right=0.988, bottom=0.11, top=0.90, wspace=0.38, hspace=0.48)
 
     # Panel A: 43-Wave Trajectory + HoloFace-Pure & HoloFace-Full Optimum
@@ -1234,15 +1535,18 @@ def holoface_ceiling_plot(data):
 
 
 # ---------------------------------------------------------------------------
-# 6B. COMPLETED-FERTILITY FLOOR, IDEALS & MARRIAGE GATE IN GSS (Fig. 14)
+# 6B. COMPLETED-FERTILITY FLOOR, WORDSUM, IDEALS & HCMST GATE (Fig. 15)
 # ---------------------------------------------------------------------------
 def gss_fertility_gate_plot(data):
     G = _v9_json("gss")
     V = _v9_json("e19_village")
     W = _v9_json("e20_world")
+    osyn = data["open_synthesis"]
+    gss_all = osyn["v9_anchors"]["gss_three_episodes_all"]
+    hcm = osyn["hcmst_2017"]
 
-    fig, axes = plt.subplots(2, 2, figsize=(7.22, 4.75))
-    fig.subplots_adjust(left=0.095, right=0.988, bottom=0.11, top=0.90, wspace=0.35, hspace=0.48)
+    fig, axes = plt.subplots(2, 3, figsize=(7.24, 4.82))
+    fig.subplots_adjust(left=0.088, right=0.985, bottom=0.105, top=0.905, wspace=0.38, hspace=0.52)
 
     def _plot_mw(ax, xs, men_s, wom_s, m_lbl="Men", w_lbl="Women"):
         for ser, col, mk, off, lb in ((wom_s, WOMEN, "D", 0.05, w_lbl), (men_s, MEN, "o", -0.05, m_lbl)):
@@ -1250,23 +1554,57 @@ def gss_fertility_gate_plot(data):
             pt = [v[0] for v in ser]
             lo = [v[1] for v in ser]
             hi = [v[2] for v in ser]
-            ax.plot(x, pt, color=col, lw=1.5, zorder=2)
-            ax.vlines(x, lo, hi, color=col, lw=1.0, zorder=2)
-            dot(ax, x, pt, col, mk, s=18 if mk == "o" else 15, z=3, label=lb)
+            ax.plot(x, pt, color=col, lw=1.45, zorder=2)
+            ax.vlines(x, lo, hi, color=col, lw=0.95, zorder=2)
+            dot(ax, x, pt, col, mk, s=15 if mk == "o" else 13, z=3, label=lb)
 
     # Panel A: Completed Childlessness by Personal Income Fifth (Ages 45-79)
     ax = axes[0, 0]
     fq = G["fifths"]["income"]
     pc3 = lambda v: [100.0 * v[0], 100.0 * v[1], 100.0 * v[2]]
     _plot_mw(ax, range(5), [pc3(v) for v in fq["men"]["childless"]], [pc3(v) for v in fq["women"]["childless"]])
-    ax.set_xticks(range(5), ["Bottom\n20%", "Q2", "Q3", "Q4", "Top\n20%"], fontsize=6.2)
+    ax.set_xticks(range(5), ["Bot.\n20%", "Q2", "Q3", "Q4", "Top\n20%"], fontsize=5.8)
     ax.set_xlim(-0.4, 4.4)
     ax.set_ylim(0, 27)
-    panel(ax, "A", "Completed childlessness by income fifth", xlabel="Personal income fifth (ages 45\u201379)", ylabel="Childless (%)")
-    ax.legend(loc="upper right", fontsize=6.0)
+    panel(ax, "A", "Childlessness by income fifth", xlabel="Personal income fifth (ages 45\u201379)", ylabel="Childless (%)", fontsize=7.5)
+    ax.legend(loc="upper right", fontsize=5.5)
 
-    # Panel B: Childlessness Share of Opportunity I + Non-Marital Parenthood Gate
+    # Panel B: Pairing (+) vs. Within-Marriage Births (-) Across Income, Prestige, Schooling & Objective WORDSUM
     ax = axes[0, 1]
+    ax.axvline(0.0, color=MUTED, lw=0.75, ls=(0, (2, 2)))
+    ep_traits = [
+        ("income", "Personal\nincome"),
+        ("prestige", "Occup.\nprestige"),
+        ("schooling", "Years of\nschooling"),
+        ("vocabulary", "WORDSUM\n(g-proxy)"),
+    ]
+    yb = np.arange(len(ep_traits))
+    for i, (tk, _) in enumerate(ep_traits):
+        mp = gss_all[tk]["men"]["pairing"]
+        mn = gss_all[tk]["men"]["number"]
+        wn = gss_all[tk]["women"]["number"]
+        ax.errorbar(
+            mp[0], i - 0.17, xerr=[[mp[0] - mp[1]], [mp[2] - mp[0]]],
+            color=AQUA, fmt="o", ms=3.8, elinewidth=1.0, capsize=2.0, label="Men: pairing (+)" if i == 0 else None,
+        )
+        ax.errorbar(
+            mn[0], i + 0.02, xerr=[[mn[0] - mn[1]], [mn[2] - mn[0]]],
+            color=MEN, fmt="s", mfc="white", ms=3.4, elinewidth=0.95, capsize=1.8, label="Men: marital births (\u2212)" if i == 0 else None,
+        )
+        ax.errorbar(
+            wn[0], i + 0.21, xerr=[[wn[0] - wn[1]], [wn[2] - wn[0]]],
+            color=WOMEN, fmt="D", mfc="white", ms=3.3, elinewidth=0.95, capsize=1.8, label="Women: marital births (\u2212)" if i == 0 else None,
+        )
+    ax.grid(False)
+    ax.grid(axis="x", color=GRID, lw=0.55)
+    ax.set_yticks(yb, [x[1] for x in ep_traits], fontsize=5.6)
+    ax.invert_yaxis()
+    ax.set_xlim(-0.16, 0.08)
+    panel(ax, "B", "Status & WORDSUM: +pair, \u2212births", xlabel="Standardized episode gradient (\u03b2)", fontsize=7.5)
+    ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.62), fontsize=4.55, labelspacing=0.12, handletextpad=0.18)
+
+    # Panel C: Childlessness Share of Opportunity I + Non-Marital Parenthood Gate
+    ax = axes[0, 2]
     cohs = ["1900-1919", "1920-1939", "1940-1959", "1960-1979"]
     opp = G["opportunity"]
     gate = G["gate"]
@@ -1274,36 +1612,36 @@ def gss_fertility_gate_plot(data):
         ax, range(4),
         [pc3(opp["men"][c]["share_childless"]) for c in cohs],
         [pc3(opp["women"][c]["share_childless"]) for c in cohs],
-        m_lbl="Men: childless share of $I$", w_lbl="Women: childless share of $I$",
+        m_lbl="M childless / $I$", w_lbl="W childless / $I$",
     )
-    ax.plot(range(4), [100.0 * gate["women"][c]["parents_nm"][0] for c in cohs], color=WOMEN, lw=1.2, ls="--", marker="D", mfc="white", ms=3.2, label="Women: parent | never-marr.")
-    ax.plot(range(4), [100.0 * gate["men"][c]["parents_nm"][0] for c in cohs], color=MEN, lw=1.2, ls="--", marker="o", mfc="white", ms=3.2, label="Men: parent | never-marr.")
-    ax.set_xticks(range(4), ["1900\u201319", "1920\u201339", "1940\u201359", "1960\u201379"], fontsize=6.1)
+    ax.plot(range(4), [100.0 * gate["women"][c]["parents_nm"][0] for c in cohs], color=WOMEN, lw=1.15, ls="--", marker="D", mfc="white", ms=2.9, label="W parent | unmarr.")
+    ax.plot(range(4), [100.0 * gate["men"][c]["parents_nm"][0] for c in cohs], color=MEN, lw=1.15, ls="--", marker="o", mfc="white", ms=2.9, label="M parent | unmarr.")
+    ax.set_xticks(range(4), ["'00\u201319", "'20\u201339", "'40\u201359", "'60\u201379"], fontsize=5.8)
     ax.set_xlim(-0.35, 3.35)
     ax.set_ylim(0, 68)
-    panel(ax, "B", "Selection floor vs. non-marital gate", xlabel="U.S. birth cohort", ylabel="Share (%)")
-    ax.legend(loc="upper left", fontsize=5.1, labelspacing=0.17)
+    panel(ax, "C", "Selection floor & marital gate", xlabel="U.S. birth cohort", ylabel="Share (%)", fontsize=7.5)
+    ax.legend(loc="upper left", fontsize=4.65, labelspacing=0.14)
 
-    # Panel C: Unchanged Family-Size Ideals vs Realized Birth Shortfall (1972-2024)
+    # Panel D: Unchanged Family-Size Ideals vs Realized Birth Shortfall (1972-2024)
     ax = axes[1, 0]
     pers = ["1972-1984", "1985-1999", "2000-2011", "2012-2018", "2021-2024"]
     xl = ["'72\u201384", "'85\u201399", "'00\u201311", "'12\u201318", "'21\u201324"]
     id_d = V["ideals"]
     for key, ci_k, col, mk, lb in (("ideal", "ideal_ci", AQUA, "o", "Stated ideal (18\u201344)"), ("actual", "actual_ci", INK, "s", "Completed births (40\u201349)")):
         yv = [id_d[p][key] for p in pers]
-        ax.plot(range(5), yv, color=col, lw=1.6, zorder=2)
-        ax.vlines(range(5), [id_d[p][ci_k][0] for p in pers], [id_d[p][ci_k][1] for p in pers], color=col, lw=1.0, zorder=2)
-        dot(ax, range(5), yv, col, mk, s=16, label=lb)
-    ax.set_xticks(range(5), xl, fontsize=6.1)
+        ax.plot(range(5), yv, color=col, lw=1.5, zorder=2)
+        ax.vlines(range(5), [id_d[p][ci_k][0] for p in pers], [id_d[p][ci_k][1] for p in pers], color=col, lw=0.95, zorder=2)
+        dot(ax, range(5), yv, col, mk, s=14, label=lb)
+    ax.set_xticks(range(5), xl, fontsize=5.6)
     ax.set_xlim(-0.35, 4.35)
-    ax.set_ylim(1.4, 3.45)
-    panel(ax, "C", "Ideals stay ~2.7; non-marriage drives drop", xlabel="GSS survey period", ylabel="Children per adult")
-    ax.legend(loc="lower left", fontsize=5.6)
+    ax.set_ylim(1.4, 3.48)
+    panel(ax, "D", "Ideals ~2.7; non-marriage = 94%", xlabel="GSS survey period", ylabel="Children per adult", fontsize=7.5)
+    ax.legend(loc="lower left", fontsize=4.9)
     bl = V["births"]["long"]["all"]
     m_sh = 100.0 * bl["marriage"] / bl["change"]
-    ax.text(4.25, 3.28, f"Ages 25\u201339: {bl['change']:+.2f} kids\n({m_sh:.0f}% from non-marriage)", fontsize=5.4, color=VIOLET, fontweight="bold", ha="right", va="top", linespacing=1.08)
+    ax.text(4.25, 3.34, f"Ages 25\u201339: {bl['change']:+.2f}\n({m_sh:.0f}% non-marriage)", fontsize=4.9, color=VIOLET, fontweight="bold", ha="right", va="top", linespacing=1.04)
 
-    # Panel D: Witness Ties & Screen Hours vs Partnered Probability (Ages 22-34)
+    # Panel E: Witness Ties & Screen Hours vs Partnered Probability (Ages 22-34)
     ax = axes[1, 1]
     assoc = V["village"]["assoc"]
     scr = W["screens"]
@@ -1312,20 +1650,49 @@ def gss_fertility_gate_plot(data):
         ("Worship weekly", assoc["worship_weekly"]["points"], assoc["worship_weekly"]["ci"], VIOLET),
         ("Neighbors monthly", assoc["neighbours_monthly"]["points"], assoc["neighbours_monthly"]["ci"], MEN),
         ("Friends monthly", assoc["friends_monthly"]["points"], assoc["friends_monthly"]["ci"], GOLD),
-        ("Social media/hr (M, 70c)", -scr["men"]["points_per_hour"], [-scr["men"]["ci"][1], -scr["men"]["ci"][0]], GREY),
-        ("Social media/hr (W, 70c)", -scr["women"]["points_per_hour"], [-scr["women"]["ci"][1], -scr["women"]["ci"][0]], WOMEN),
+        ("Social media/hr (M)", -scr["men"]["points_per_hour"], [-scr["men"]["ci"][1], -scr["men"]["ci"][0]], GREY),
+        ("Social media/hr (W)", -scr["women"]["points_per_hour"], [-scr["women"]["ci"][1], -scr["women"]["ci"][0]], WOMEN),
     ]
     ax.axvline(0, color=INK2, lw=0.75, ls=(0, (2, 2)))
     yd = [i + (0.35 if i >= 4 else 0.0) for i in range(len(rows_d))]
     for yi, (_, v, ci, col) in zip(yd, rows_d):
-        ax.plot(ci, [yi, yi], color=col, lw=1.3, zorder=2)
-        dot(ax, [v], [yi], col, "o", s=18, z=3)
+        ax.plot(ci, [yi, yi], color=col, lw=1.25, zorder=2)
+        dot(ax, [v], [yi], col, "o", s=16, z=3)
     ax.grid(False)
     ax.grid(axis="x", color=GRID, lw=0.55)
-    ax.set_yticks(yd, [r[0] for r in rows_d], fontsize=5.9)
+    ax.set_yticks(yd, [r[0] for r in rows_d], fontsize=5.4)
     ax.invert_yaxis()
     ax.set_xlim(-12.5, 15.0)
-    panel(ax, "D", "Kin witnesses vs. peers & screen hours", xlabel="Partnered difference (pp, ages 22\u201334)")
+    panel(ax, "E", "Kin witnesses vs. screen hours", xlabel="Partnered diff. (pp, ages 22\u201334)", fontsize=7.5)
+
+    # Panel F: Stanford HCMST 70-Year Disintermediation of Courtship (N=3,295 Meeting-Coded Couples)
+    ax = axes[1, 2]
+    era_keys = ["pre_1980", "1980_1994", "1995_2004", "2005_2011", "2012_2017"]
+    era_lbls = ["Pre-'80", "'80\u201394", "'95\u201304", "'05\u201311", "'12\u201317"]
+    ex = np.arange(len(era_keys))
+    eras = hcm["historical_eras"]
+    yr_pre = [eras[k]["mean_pre_romance_years"] for k in era_keys]
+    on_sh = [100.0 * eras[k]["online_all_share"] for k in era_keys]
+    ap_sh = [100.0 * eras[k]["online_dating_app_share"] for k in era_keys]
+    ax2 = ax.twinx()
+    ax2.spines["top"].set_visible(False)
+    ax2.spines["right"].set_color(MUTED)
+    ax2.spines["right"].set_linewidth(0.6)
+    ax2.tick_params(labelsize=5.8, colors=INK2)
+    ax.plot(ex, yr_pre, color=AQUA, lw=1.6, marker="D", ms=3.3, label="Pre-romance yrs (left)")
+    ax2.plot(ex, on_sh, color=GOLD, lw=1.45, ls="--", marker="o", ms=3.0, label="Met online % (right)")
+    ax2.plot(ex, ap_sh, color=WOMEN, lw=1.2, ls=":", marker="^", mfc="white", ms=2.9)
+    ax.set_xticks(ex, era_lbls, fontsize=5.5)
+    ax.set_ylim(0.0, 3.35)
+    ax2.set_ylim(0, 44)
+    ax2.set_ylabel("Met online / apps (%)", fontsize=5.8, color=INK2)
+    panel(ax, "F", "70-yr audit collapse (HCMST)", xlabel="Year couple met", ylabel="Pre-romance yrs", fontsize=7.5)
+    ax.text(
+        1.05, 3.12,
+        f"2.90\u21920.42 yr acquaintance;\n'12\u201317: {on_sh[-1]:.0f}% online ({ap_sh[-1]:.0f}% apps)",
+        fontsize=4.65, color=INK, va="top", ha="left", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
 
     return pdf(fig)
 
@@ -1337,9 +1704,12 @@ def height_attraction_plot(data):
     whyte_h = data["open_synthesis"]["whyte_2021"]["height_vs_attraction"]
     pov_h = data["pov"]["height_percentiles"]["by_sex"]["Male"]
     lid = data["open_synthesis"]["lidborg_2022"]
+    okc = data["open_synthesis"]["okcupid_jse"]
+    ost = okc["orientation_staging_experiment"]
+    tpp = okc["ten_prompt_portfolio"]
 
-    fig, axes = plt.subplots(2, 2, figsize=(7.22, 4.80))
-    fig.subplots_adjust(left=0.088, right=0.988, bottom=0.11, top=0.90, wspace=0.33, hspace=0.47)
+    fig, axes = plt.subplots(2, 3, figsize=(7.24, 4.78))
+    fig.subplots_adjust(left=0.072, right=0.988, bottom=0.105, top=0.905, wspace=0.37, hspace=0.49)
 
     # Panel A: Height Percentile vs Mean Attraction Percentile (Whyte 2021, N=7,060)
     ax = axes[0, 0]
@@ -1351,18 +1721,18 @@ def height_attraction_plot(data):
         lo = [b["attraction_percentile_ci_95"][0] for b in br]
         hi = [b["attraction_percentile_ci_95"][1] for b in br]
         ax.fill_between(xs, lo, hi, color=col, alpha=0.14, lw=0)
-        ax.plot(xs, ys, color=col, marker=mk, ms=4.0, lw=1.6, label=label)
+        ax.plot(xs, ys, color=col, marker=mk, ms=3.6, lw=1.55, label=label)
     mv = whyte_h["Men"]["multivariate_standardized"]["attraction_pct_per_sd"]
     qfit = whyte_h["Men"]["quadratic_fit_pct_per_sd"]["quadratic"]
     ax.set_xlim(-2, 102)
     ax.set_ylim(28, 62)
-    panel(ax, "A", "Height percentile vs attraction percentile (Whyte 2021)", xlabel="Within-sex height percentile", ylabel="Mean attraction percentile")
-    ax.legend(loc="upper left", fontsize=6.4)
+    panel(ax, "A", "Height vs attraction pct (Whyte 2021)", xlabel="Within-sex height percentile", ylabel="Mean attraction percentile", fontsize=7.4)
+    ax.legend(loc="upper left", fontsize=5.5)
     ax.text(
-        3.0, 29.8,
-        f"Men curvilinearity $\\beta_2 = {qfit['estimate']:.2f}$ [{qfit['ci_95'][0]:.2f}, {qfit['ci_95'][1]:.2f}]\n"
-        f"1-SD slope: health +{mv['health']['estimate']:.1f} vs height +{mv['height']['estimate']:.2f} pct",
-        fontsize=5.9, color=INK2, linespacing=1.15,
+        3.0, 29.6,
+        f"Curvilinearity $\\beta_2 = {qfit['estimate']:.2f}$ [{qfit['ci_95'][0]:.2f}, {qfit['ci_95'][1]:.2f}]\n"
+        f"Health +{mv['health']['estimate']:.1f} vs height +{mv['height']['estimate']:.2f} pct/SD",
+        fontsize=5.0, color=INK2, linespacing=1.1,
     )
 
     # Panel B: The 6'0" Staged-Signal Cliff Across 781,680 POV Men
@@ -1373,57 +1743,114 @@ def height_attraction_plot(data):
     exp_pct = np.array([100 * r["gaussian_expected_share"] for r in rows_in])
     bar_colors = [GOLD if inc == 72 else (RED if inc == 73 else MEN) for inc in inches]
     ax.bar(inches, obs_pct, width=0.72, color=bar_colors, alpha=0.84, label="Observed profiles")
-    ax.plot(inches, exp_pct, color=INK, lw=1.55, ls="--", marker="o", ms=2.6, label="Gaussian expectation")
-    tick_in = [64, 67, 70, 72, 73, 76]
-    tick_lb = ["5'4\"", "5'7\"", "5'10\"", "6'0\"", "6'1\"", "6'4\""]
+    ax.plot(inches, exp_pct, color=INK, lw=1.45, ls="--", marker="o", ms=2.3, label="Gaussian expected")
+    tick_in = [64, 67, 70, 72, 75]
+    tick_lb = ["5'4\"", "5'7\"", "5'10\"", "6'0\"", "6'3\""]
     ax.set_xticks(tick_in, tick_lb)
     ax.set_ylim(0, 15.8)
     cliff = pov_h["cliff_5ft11_6ft0_6ft1"]
-    panel(ax, "B", f"The 6'0\" staged-signal cliff ({pov_h['n_valid']:,} POV men)", xlabel="Self-reported male height", ylabel="Share of male profiles (%)")
-    ax.legend(loc="upper left", fontsize=6.2)
+    panel(ax, "B", "6'0\" staged cliff (781,680 POV men)", xlabel="Self-reported male height", ylabel="Share of male profiles (%)", fontsize=7.4)
+    ax.legend(loc="upper left", fontsize=5.3)
     ax.annotate(
-        f"6'0\": {cliff['n_6ft0']:,} (1.20x)\n6'1\": {cliff['n_6ft1']:,} ({cliff['drop_6ft0_to_6ft1_pct']:.1f}%)",
-        xy=(72.5, 11.2), xytext=(73.2, 13.3),
-        fontsize=6.0, color=INK, fontweight="bold",
-        arrowprops=dict(arrowstyle="->", color=INK2, lw=0.7),
+        f"6'0\": {cliff['n_6ft0']:,} (1.20\u00d7)\n6'1\": {cliff['n_6ft1']:,} ({cliff['drop_6ft0_to_6ft1_pct']:.1f}%)",
+        xy=(72.4, 11.2), xytext=(72.8, 13.3),
+        fontsize=5.1, color=INK, fontweight="bold",
+        arrowprops=dict(arrowstyle="->", color=INK2, lw=0.65),
     )
 
-    # Panel C: POV Male Height Percentile vs Union Durability, Casual Strategy & Parenthood
+    # Panel C: Audience-Targeted Staging Natural Experiment (OkCupid-JSE Straight vs. Gay Men)
+    ax = axes[0, 2]
+    inc_grid = list(range(67, 76))
+    str_st = ost["groups"]["men_straight"]["stature"]
+    gay_st = ost["groups"]["men_gay"]["stature"]
+    str_sh = [100.0 * str_st["by_inch_67_to_75"][str(i)]["share"] for i in inc_grid]
+    gay_sh = [100.0 * gay_st["by_inch_67_to_75"][str(i)]["share"] for i in inc_grid]
+    ax.axvline(72, color=GOLD, lw=0.95, ls=(0, (2, 2)), zorder=1)
+    ax.plot(inc_grid, str_sh, color=MEN, lw=1.7, marker="o", ms=3.6, label=f"Straight men ($n={ost['groups']['men_straight']['n']:,}$)")
+    ax.plot(inc_grid, gay_sh, color=AQUA, lw=1.55, ls="--", marker="D", ms=3.3, label=f"Gay men ($n={ost['groups']['men_gay']['n']:,}$)")
+    ax.scatter([72], [str_sh[inc_grid.index(72)]], color=GOLD, edgecolor=INK, s=34, zorder=5)
+    ax.set_xticks([67, 69, 71, 72, 73, 75], ["5'7\"", "5'9\"", "5'11\"", "6'0\"", "6'1\"", "6'3\""])
+    ax.set_xlim(66.6, 75.4)
+    ax.set_ylim(2.0, 19.2)
+    panel(ax, "C", "Audience staging: straight vs gay men", xlabel="OkCupid SF reported height", ylabel="Share of valid male profiles (%)", fontsize=7.4)
+    ax.legend(loc="upper left", fontsize=5.0, labelspacing=0.16)
+    inc_sm = 100.0 * ost["groups"]["men_straight"]["income_disclosure"]["disclosed_positive_share"]
+    inc_gm = 100.0 * ost["groups"]["men_gay"]["income_disclosure"]["disclosed_positive_share"]
+    inc_sw = 100.0 * ost["groups"]["women_straight"]["income_disclosure"]["disclosed_positive_share"]
+    ax.text(
+        75.25, 11.4,
+        f"5'11\u21926'0: +{str_st['jump_5ft11_to_6ft0_pct']:.1f}% Str\nvs \u2212{abs(gay_st['jump_5ft11_to_6ft0_pct']):.1f}% Gay (no surge)\nIncome shown: {inc_sm:.1f}% Str M\nvs {inc_gm:.1f}% Gay M, {inc_sw:.1f}% W",
+        fontsize=4.65, color=INK, ha="right", va="bottom", linespacing=1.06,
+        bbox=dict(boxstyle="round,pad=0.15", fc=BAND, ec="none", alpha=0.93),
+    )
+
+    # Panel D: POV Male Height Percentile vs Union Durability, Casual Strategy & Parenthood
     ax = axes[1, 0]
     valid_rows = [r for r in pov_h["by_inch"] if r["outcomes_ages_30_49"] and r["outcomes_ages_30_49"]["n"] >= 300]
     hpct = [r["mean_height_percentile"] for r in valid_rows]
     u3y = [100 * r["outcomes_ages_30_49"]["over_3y_union"]["share"] for r in valid_rows]
     par = [100 * r["outcomes_ages_30_49"]["parenthood"]["share"] for r in valid_rows]
     cas = [100 * r["outcomes_ages_30_49"]["casual_intent"]["share"] for r in valid_rows]
-    ax.plot(hpct, u3y, color=VIOLET, lw=1.65, marker="o", ms=3.1, label="Sustained >3-yr union")
-    ax.plot(hpct, par, color=MEN, lw=1.5, marker="s", ms=2.9, label="Has children")
-    ax.plot(hpct, cas, color=GOLD, lw=1.5, marker="^", ms=3.1, label="Casual-only intent")
+    ax.plot(hpct, u3y, color=VIOLET, lw=1.6, marker="o", ms=2.9, label="Sustained >3-yr union")
+    ax.plot(hpct, par, color=MEN, lw=1.45, marker="s", ms=2.7, label="Has children")
+    ax.plot(hpct, cas, color=GOLD, lw=1.45, marker="^", ms=2.9, label="Casual-only intent")
     ax.set_xlim(-2, 102)
     ax.set_ylim(10, 88)
-    panel(ax, "C", "POV outcomes by male height percentile (ages 30-49)", xlabel="Male height percentile", ylabel="Share of male profiles (%)")
-    ax.legend(loc="upper right", bbox_to_anchor=(0.98, 0.75), fontsize=6.0, labelspacing=0.22)
+    panel(ax, "D", "POV outcomes by height pct (30\u201349)", xlabel="Male height percentile", ylabel="Share of male profiles (%)", fontsize=7.4)
+    ax.legend(loc="upper right", bbox_to_anchor=(0.98, 0.76), fontsize=5.3, labelspacing=0.18)
 
-    # Panel D: Lidborg, Cross & Boothroyd (2022) Mating vs Reproduction Meta-Analysis
+    # Panel E: Lidborg, Cross & Boothroyd (2022) Mating vs Reproduction Meta-Analysis
     ax = axes[1, 1]
     ax.axvline(0, color=INK2, lw=0.8, ls=(0, (2, 2)), zorder=1)
     groups = [
-        ("Height:\nReproduction\n(k=35, N=22,984)", lid["height"]["reproduction_all"], [e["r_oriented"] for e in lid["height"]["effects"] if e["grouping"] == "REP"], MEN, "o"),
-        ("Height:\nMating\n(k=62, N=92,466)", lid["height"]["mating"], [e["r_oriented"] for e in lid["height"]["effects"] if e["grouping"] == "MAT"], B300, "o"),
-        ("Body strength:\nReproduction\n(k=14, N=1,355)", lid["body_strength"]["reproduction_all"], [e["r_oriented"] for e in lid["body_strength"]["effects"] if e["grouping"] == "REP"], AQUA, "D"),
-        ("Body strength:\nMating\n(k=121, N=38,330)", lid["body_strength"]["mating"], [e["r_oriented"] for e in lid["body_strength"]["effects"] if e["grouping"] == "MAT"], VIOLET, "D"),
+        ("Height: Fertility\n(k=35, N=23.0k)", lid["height"]["reproduction_all"], [e["r_oriented"] for e in lid["height"]["effects"] if e["grouping"] == "REP"], MEN, "o"),
+        ("Height: Mating\n(k=62, N=92.5k)", lid["height"]["mating"], [e["r_oriented"] for e in lid["height"]["effects"] if e["grouping"] == "MAT"], B300, "o"),
+        ("Strength: Fertility\n(k=14, N=1.4k)", lid["body_strength"]["reproduction_all"], [e["r_oriented"] for e in lid["body_strength"]["effects"] if e["grouping"] == "REP"], AQUA, "D"),
+        ("Strength: Mating\n(k=121, N=38.3k)", lid["body_strength"]["mating"], [e["r_oriented"] for e in lid["body_strength"]["effects"] if e["grouping"] == "MAT"], VIOLET, "D"),
     ]
     rng_jit = np.random.default_rng(20261111)
     for idx_g, (glab, summary, pts, col, mk) in enumerate(groups):
         jit = idx_g + rng_jit.uniform(-0.18, 0.18, size=len(pts))
-        ax.scatter(pts, jit, s=9, color=col, alpha=0.26, edgecolors="none", zorder=2)
+        ax.scatter(pts, jit, s=8, color=col, alpha=0.25, edgecolors="none", zorder=2)
         est = summary["re_mean_r"]
         lo, hi = summary["re_ci_95"]
-        ax.errorbar(est, idx_g, xerr=[[est - lo], [hi - est]], color=INK, fmt=mk, mfc=col, mec=INK, ms=5.2, elinewidth=1.35, capsize=3, zorder=5)
+        ax.errorbar(est, idx_g, xerr=[[est - lo], [hi - est]], color=INK, fmt=mk, mfc=col, mec=INK, ms=4.8, elinewidth=1.25, capsize=2.6, zorder=5)
     ax.grid(False)
     ax.grid(axis="x", color=GRID, linewidth=0.55)
-    ax.set_yticks(range(len(groups)), [g[0] for g in groups], fontsize=6.1)
+    ax.set_yticks(range(len(groups)), [g[0] for g in groups], fontsize=5.3)
     ax.set_xlim(-0.42, 0.55)
-    panel(ax, "D", "Mating gains vs stabilizing fertility (Lidborg 2022)", xlabel="Fitness-oriented correlation $r$ (random-effects 95% CI)")
+    panel(ax, "E", "Mating vs fertility (Lidborg 2022)", xlabel="Fitness-oriented $r$ (95% RE CI)", fontsize=7.4)
+
+    # Panel F: OkCupid 47,293 "Message me if..." & 48,413 "First noticed" Cues
+    ax = axes[1, 2]
+    e9 = tpp["essay9_message_me_if"]
+    e3 = tpp["essay3_first_noticed"]["themes"]
+    bars_f = [
+        ("Rich / 6-fig", 100.0 * e9["themes"]["rich_wealthy_sixfig"]["share"], RED),
+        ("Tall / 6'0\"+", 100.0 * e9["themes"]["tall_6ft_height"]["share"], GOLD),
+        ("Adventure", 100.0 * e9["themes"]["adventure_outdoors"]["share"], B300),
+        ("Mind / wit", 100.0 * e9["themes"]["curiosity_intelligence"]["share"], MEN),
+        ("Kind / sincere", 100.0 * e9["themes"]["kindness_sincerity"]["share"], VIOLET),
+        ("Humor / laugh", 100.0 * e9["themes"]["humor_banter"]["share"], AQUA),
+    ]
+    yf = np.arange(len(bars_f))
+    ax.barh(yf, [b[1] for b in bars_f], height=0.62, color=[b[2] for b in bars_f], alpha=0.88)
+    for yi, (_, val_f, _) in enumerate(bars_f):
+        ax.text(val_f + 0.35, yi, f"{val_f:.1f}%" if val_f >= 2.0 else f"{val_f:.2f}%", va="center", fontsize=5.0, color=INK)
+    ax.grid(False)
+    ax.grid(axis="x", color=GRID, linewidth=0.55)
+    ax.set_yticks(yf, [b[0] for b in bars_f], fontsize=5.4)
+    ax.set_xlim(0, 22.8)
+    panel(ax, "F", "47.3k 'Message me if' vs noticed cues", xlabel="Share of 'Message me if' essays (%)", fontsize=7.4)
+    sm_p = 100.0 * e3["smile_laugh"]["share"]
+    ey_p = 100.0 * e3["eyes"]["share"]
+    ht_p = 100.0 * e3["height"]["share"]
+    ax.text(
+        22.3, 0.15,
+        f"Humor: {e9['ratios']['humor_to_tall']:.1f}\u00d7 tall,\n{e9['ratios']['humor_to_wealth']:.1f}\u00d7 wealth.\nFirst noticed (48.4k):\nSmile {sm_p:.1f}%, Eyes {ey_p:.1f}%\nvs Height {ht_p:.1f}%",
+        fontsize=4.65, color=INK, ha="right", va="bottom", linespacing=1.06,
+        bbox=dict(boxstyle="round,pad=0.15", fc=BAND, ec="none", alpha=0.93),
+    )
 
     return pdf(fig)
 
@@ -1440,20 +1867,35 @@ def world_synthesis_plot(data):
     fig, axes = plt.subplots(2, 3, figsize=(7.24, 4.90))
     fig.subplots_adjust(left=0.078, right=0.99, bottom=0.10, top=0.90, wspace=0.35, hspace=0.48)
 
-    # Panel A: Whyte 2021 Stated Importance Across Age Bands (Trust vs Intelligence vs Attractiveness vs Income)
+    # Panel A: Whyte 2021 9-Trait Stated Importance Dumbbell Hierarchy (N = 7,060)
     ax = axes[0, 0]
-    bands = ("18-29", "30-39", "40-49", "50-64")
-    bx = np.arange(len(bands))
-    for tkey, col, ls, lab in (("trust", VIOLET, "-", "Trust"), ("intelligence", AQUA, "-", "Intelligence"),
-                               ("attractiveness", GOLD, "--", "Attractiveness"), ("income", GREY, ":", "Income")):
-        yw = [whyte_s["by_age_band"]["Women"][b]["raw"][tkey]["mean"] for b in bands]
-        ym = [whyte_s["by_age_band"]["Men"][b]["raw"][tkey]["mean"] for b in bands]
-        ax.plot(bx, yw, color=col, ls=ls, lw=1.5, marker="D", ms=2.8, label=f"{lab} (W)" if ls == "-" else lab)
-        ax.plot(bx, ym, color=col, ls=ls, lw=1.15, marker="o", ms=2.5, alpha=0.72)
-    ax.set_xticks(bx, bands, fontsize=6.3)
-    ax.set_ylim(4, 89)
-    panel(ax, "A", "Trust leads attraction (Whyte 2021)", xlabel="Age group (diamonds: W; circles: M)", ylabel="Importance (0-100)")
-    ax.legend(loc="lower left", fontsize=5.4, ncol=2, columnspacing=0.65, labelspacing=0.18)
+    w_pool = whyte_s["pooled"]["Women"]
+    m_pool = whyte_s["pooled"]["Men"]
+    trait_labels = [
+        ("trust", "Trust"),
+        ("emotional_connection", "Emotional conn."),
+        ("openness", "Openness"),
+        ("intelligence", "Intelligence"),
+        ("attractiveness", "Attractiveness"),
+        ("physical_build", "Physical build"),
+        ("education", "Education"),
+        ("age", "Age"),
+        ("income", "Income"),
+    ]
+    trait_labels.sort(key=lambda kv: 0.5 * (w_pool[kv[0]]["mean"] + m_pool[kv[0]]["mean"]))
+    yp_a = np.arange(len(trait_labels))
+    for i, (tk, tlab) in enumerate(trait_labels):
+        wm = w_pool[tk]["mean"]
+        mm = m_pool[tk]["mean"]
+        ax.plot([mm, wm], [i, i], color=INK2, lw=1.0, alpha=0.65, zorder=2)
+        dot(ax, [mm], [i], MEN, "o", s=16, z=3, label="Men" if i == 0 else None)
+        dot(ax, [wm], [i], WOMEN, "D", s=15, z=4, label="Women" if i == 0 else None)
+    ax.grid(False)
+    ax.grid(axis="x", color=GRID, lw=0.55)
+    ax.set_yticks(yp_a, [t[1] for t in trait_labels], fontsize=5.8)
+    ax.set_xlim(18, 92)
+    panel(ax, "A", "Trust & connection lead (Whyte, N=7,060)", xlabel="Stated importance (0–100)")
+    ax.legend(loc="lower right", fontsize=5.8, handletextpad=0.25)
 
     # Panel B: Kowal 53-Country Compositional Budget Sex Differences
     ax = axes[0, 1]
@@ -1539,61 +1981,252 @@ def world_synthesis_plot(data):
 
 
 # ---------------------------------------------------------------------------
-# 5. 6.68M HON ARCHITECTURE: BEAUTY, LORENZ ATTENTION & PORTFOLIO (performance-fig-hon-architecture.pdf)
+# 4B. THE ARCHITECTURE OF HUMAN LOVE (performance-fig-love-bond.pdf, Fig. 8)
+# ---------------------------------------------------------------------------
+def love_bond_plot(data):
+    osyn = data["open_synthesis"]
+    kow = osyn["kowal_2025"]
+    joel = osyn["joel_2020"]
+    sccs = osyn["betzig_sccs"]
+    hcm = osyn["hcmst_2017"]
+    swv = data["pov"]["self_written_voice"]
+
+    fig = plt.figure(figsize=(7.24, 5.02))
+    outer = fig.add_gridspec(2, 3, width_ratios=[1.08, 1.05, 1.05], height_ratios=[1.02, 1.0], wspace=0.38, hspace=0.49)
+    fig.subplots_adjust(left=0.095, right=0.988, bottom=0.098, top=0.918)
+
+    # Panel A: 47,932-Couple Horse Race Across Cultural Regimes (Kindness vs. Checklist Fit vs. Marrying Up)
+    ax_a = fig.add_subplot(outer[0, 0])
+    chk_d = kow["checklist_and_surplus_decomposition"]
+    infd = kow["pair_bond_reversal"]["reported_infidelity"]["by_sex"]
+    preds_a = [
+        ("partner_kindness", "Partner kindness"),
+        ("partner_looks", "Partner looks"),
+        ("idiographic_checklist_fit", "5-trait checklist fit"),
+        ("partner_resources", "Partner money"),
+        ("marrying_up_surplus", "\"Marrying up\" surplus"),
+    ]
+    ya = np.arange(len(preds_a))
+    ax_a.axvline(0.0, color=MUTED, lw=0.75, ls=(0, (2, 2)))
+    reg_specs = [
+        ("pooled", "Pooled (47.9k)", INK, "D", 0.0, True),
+        ("high_gender_equality", "High equality", AQUA, "o", -0.18, False),
+        ("collectivist", "Collectivist", WOMEN, "s", 0.18, False),
+    ]
+    for rkey, rlbl, rcol, rmk, roff, is_pool in reg_specs:
+        src = chk_d["pooled"] if is_pool else chk_d["by_cultural_regime"][rkey]
+        ps = src["predictors_sd_per_sd"]
+        ests = [ps[pk]["estimate"] for pk, _ in preds_a]
+        los = [ps[pk]["ci_95"][0] for pk, _ in preds_a]
+        his = [ps[pk]["ci_95"][1] for pk, _ in preds_a]
+        ax_a.errorbar(
+            ests, ya + roff, xerr=[[e - l for e, l in zip(ests, los)], [h - e for e, h in zip(ests, his)]],
+            color=rcol, fmt=rmk, ms=3.8 if is_pool else 3.0, mfc=rcol if is_pool else "white",
+            elinewidth=1.05 if is_pool else 0.85, capsize=1.8, label=rlbl, zorder=5 if is_pool else 3,
+        )
+    ax_a.grid(False)
+    ax_a.grid(axis="x", color=GRID, lw=0.55)
+    ax_a.set_yticks(ya, [p[1] for p in preds_a], fontsize=5.3)
+    ax_a.invert_yaxis()
+    ax_a.set_xlim(-0.07, 0.36)
+    k_rat = chk_d["pooled"]["kindness_to_checklist_ratio"]
+    inf_kw = infd["women"]["traits"]["kindness"]["pp_per_sd"]
+    ax_a.text(
+        0.352, 4.35,
+        f"Kindness = {k_rat:.1f}\u00d7 checklist;\nW infidelity: {inf_kw:.1f} pp/SD",
+        fontsize=4.65, color=INK, ha="right", va="bottom", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+    panel(ax_a, "A", "Kindness beats checklist & marry-up", xlabel="Bond quality slope (PRQC SD / SD)", fontsize=7.5)
+    ax_a.legend(loc="center right", bbox_to_anchor=(1.0, 0.56), fontsize=4.65, labelspacing=0.14)
+
+    # Panel B: 43 Longitudinal Couples Studies (Joel et al. 2020 PNAS, N=11,196 couples)
+    ax_b = fig.add_subplot(outer[0, 1])
+    sat_m = joel["satisfaction"]["models"]
+    com_m = joel["commitment"]["models"]
+    j_rows = [
+        ("ActorRelBaseline", "Perceived commitment\n& apprec. (base)"),
+        ("ActorRelFollowup", "Perceived commitment\n(1\u20134 yr follow-up)"),
+        ("ActorTraitBaseline", "Own attachment &\ntraits (base)"),
+        ("PartnerTraitBaseline", "All partner traits\ncombined (base)"),
+        ("PartnerTraitFollowup", "All partner traits\n(1\u20134 yr follow-up)"),
+    ]
+    yb = np.arange(len(j_rows))
+    for i, (mkey, _) in enumerate(j_rows):
+        s_v = sat_m[mkey]["unweighted_mean_r2_pct"]
+        c_v = com_m[mkey]["unweighted_mean_r2_pct"]
+        col_b = VIOLET if "ActorRel" in mkey else (B300 if "ActorTrait" in mkey else GOLD)
+        ax_b.barh(i - 0.14, s_v, height=0.26, color=col_b, alpha=0.92, label="Satisfaction $R^2$" if i == 0 else None)
+        ax_b.barh(i + 0.14, c_v, height=0.26, color=AQUA if "ActorRel" in mkey else GREY, alpha=0.82, label="Commitment $R^2$" if i == 0 else None)
+        ax_b.text(max(s_v, c_v) + 1.0, i, f"{s_v:.1f}%", va="center", ha="left", fontsize=5.1, fontweight="bold", color=INK)
+    ax_b.grid(False)
+    ax_b.grid(axis="x", color=GRID, lw=0.55)
+    ax_b.set_yticks(yb, [r[1] for r in j_rows], fontsize=5.1)
+    ax_b.invert_yaxis()
+    ax_b.set_xlim(0, 58)
+    ratio_j = joel["satisfaction"]["actor_rel_to_partner_trait_baseline_ratio"]
+    panel(ax_b, "B", f"43 longit. studies: bond {ratio_j:.1f}\u00d7 traits", xlabel="Explained variance $R^2$ (%)", fontsize=7.5)
+    ax_b.legend(loc="lower right", fontsize=4.9)
+
+    # Panel C: Stanford HCMST 9.7x App Witness-Audit Compression + Intact Quality Boundary Check
+    ax_c = fig.add_subplot(outer[0, 2])
+    bv = hcm["by_venue"]
+    v_rows = [
+        ("school_college", "School / college", AQUA),
+        ("family", "Family / kin", VIOLET),
+        ("church_worship", "Church / worship", B550),
+        ("coworkers", "Coworkers", B300),
+        ("friends", "Friends", MEN),
+        ("bar_restaurant", "Bar / restaurant", GREY),
+        ("online_dating_app", "Dating apps", GOLD),
+    ]
+    yc = np.arange(len(v_rows))
+    for i, (vk, _, vcol) in enumerate(v_rows):
+        pr = bv[vk]["pre_romance_acquaintance_years"]
+        mn_v = pr["mean"]
+        lo_v, hi_v = pr["ci_95"]
+        ax_c.barh(i, mn_v, height=0.56, color=vcol, alpha=0.88, zorder=2)
+        ax_c.errorbar(mn_v, i, xerr=[[mn_v - lo_v], [hi_v - mn_v]], color=INK, fmt="none", elinewidth=0.9, capsize=1.8, zorder=4)
+        ax_c.text(hi_v + 0.08, i, f"{mn_v:.2f}", va="center", ha="left", fontsize=4.9, fontweight="bold", color=INK)
+    ax_c.grid(False)
+    ax_c.grid(axis="x", color=GRID, lw=0.55)
+    ax_c.set_yticks(yc, [r[1] for r in v_rows], fontsize=5.2)
+    ax_c.invert_yaxis()
+    ax_c.set_xlim(0, 4.15)
+    q_app = bv["online_dating_app"]["intact_relationship_quality_1_to_5"]["mean"]
+    q_ins = hcm["institutional_and_kin_pooled"]["intact_relationship_quality_1_to_5"]["mean"]
+    q_dif = hcm["intact_quality_boundary_check"]["online_app_minus_offline_pts_1_to_5"]
+    c_rat = hcm["audit_compression_ratios"]["institutional_kin_to_app_mean_ratio"]
+    ax_c.text(
+        4.08, 6.42,
+        f"Inst./kin \u00f7 app = {c_rat:.1f}\u00d7\nIntact qual: {q_app:.2f} vs {q_ins:.2f}\n(adj {q_dif:+.2f}, null)",
+        fontsize=4.65, color=INK, ha="right", va="bottom", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+    panel(ax_c, "C", "App witness compression (HCMST)", xlabel="Pre-romance acquaintance (yr)", fontsize=7.5)
+
+    # Panel D: 25-Year Sternberg Triangular Love Arc + Emotional Jealousy & Option Illusion
+    ax_d = fig.add_subplot(outer[1, 0])
+    tla = kow["triangular_love_arc"]["by_duration"]
+    d_keys = ("<=1y", "1-3y", "3-7y", "7-15y", "15-25y", "25y+")
+    d_labs = ["\u22641y", "1\u20133", "3\u20137", "7\u201315", "15\u201325", "25y+"]
+    dx = np.arange(len(d_keys))
+    for comp, col, mk, lab in (
+        ("commitment", VIOLET, "D", "Commitment"),
+        ("intimacy", AQUA, "o", "Intimacy"),
+        ("passion", WOMEN, "^", "Passion"),
+    ):
+        ys = [tla[k][comp]["mean"] for k in d_keys]
+        los = [tla[k][comp]["ci_95"][0] for k in d_keys]
+        his = [tla[k][comp]["ci_95"][1] for k in d_keys]
+        ax_d.fill_between(dx, los, his, color=col, alpha=0.13, lw=0)
+        ax_d.plot(dx, ys, color=col, lw=1.6, marker=mk, ms=3.2, label=lab)
+    ax_d.set_xticks(dx, d_labs, fontsize=5.6)
+    ax_d.set_ylim(2.92, 4.48)
+    panel(ax_d, "D", "25-yr commitment arc (50.0k)", xlabel="Relationship duration", ylabel="Sternberg love (1\u20135)", fontsize=7.5)
+    ax_d.legend(loc="upper right", fontsize=4.8, ncol=3, columnspacing=0.35, handlelength=1.0)
+    j_em = kow["jealousy_asymmetry"]["by_sex"]["women"]["emotional_1_to_7"]["mean"]
+    j_sx = kow["jealousy_asymmetry"]["by_sex"]["women"]["sexual_1_to_7"]["mean"]
+    sm_inf = kow["social_media_and_alternatives"]["slopes_per_daily_hour"]["infidelity_pp_per_hour"]["estimate"]
+    ax_d.text(
+        0.08, 2.99,
+        f"W jealousy: emot. {j_em:.2f} > sex. {j_sx:.2f}/7\nSocial media (obs.): +{sm_inf:.1f} pp/hr infid.",
+        fontsize=4.65, color=INK, va="bottom", linespacing=1.04,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+
+    # Panel E: 1.05M Self-Written Human Voice Essays (POV)
+    ax_e = fig.add_subplot(outer[1, 1])
+    v_items = [
+        ("family_kids_home", "Family / home"),
+        ("laugh_humor_smile", "Laughter / smile"),
+        ("kind_caring_loving", "Kind / warm"),
+        ("honest_loyal_trust", "Honest / loyal"),
+        ("rich_six_figure", "Rich / 6-figure"),
+        ("tall_6ft_mention", "6'0\" / tall guy"),
+    ]
+    ye = np.arange(len(v_items))
+    for i, (vk, _) in enumerate(v_items):
+        wv = 100.0 * swv["themes"][vk]["Female"]["share"]
+        mv = 100.0 * swv["themes"][vk]["Male"]["share"]
+        ax_e.plot([mv, wv], [i, i], color=INK2, lw=0.9, alpha=0.6)
+        dot(ax_e, [mv], [i], MEN, "o", s=14, z=3, label="Men" if i == 0 else None)
+        dot(ax_e, [wv], [i], WOMEN, "D", s=14, z=4, label="Women" if i == 0 else None)
+    ax_e.grid(False)
+    ax_e.grid(axis="x", color=GRID, lw=0.55)
+    ax_e.set_yticks(ye, [x[1] for x in v_items], fontsize=5.5)
+    ax_e.invert_yaxis()
+    ax_e.set_xlim(-1.0, 34.0)
+    panel(ax_e, "E", "Human voice in 1.05M essays", xlabel="Mentioned in own words (%)", fontsize=7.5)
+    ax_e.legend(loc="center right", bbox_to_anchor=(1.0, 0.50), fontsize=5.0, handletextpad=0.25, labelspacing=0.16)
+    r_ft = swv["voice_to_checkbox_ratios"]["female_family_to_tall"]
+    st_k = kow["short_vs_long_term_ideals"]["by_sex"]["women"]["kindness"]["short_term_mean_1_to_11"]
+    ax_e.text(
+        29.2, 4.55, f"Family vs 6'0\": {r_ft:.0f}\u00d7;\nW ST kindness #1 ({st_k:.1f}/11)",
+        fontsize=4.65, color=INK, ha="right", va="center", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+
+    # Panel F: 160-Society Ethnographic Divorce Causes (Betzig SCCS)
+    ax_f = fig.add_subplot(outer[1, 2])
+    s_items = [
+        ("adultery_infidelity", "Adultery / betrayal", VIOLET),
+        ("sterility_childlessness", "Sterility", B300),
+        ("cruelty_maltreatment", "Cruelty / abuse", WOMEN),
+        ("laziness_economic_neglect", "Economic neglect", MEN),
+        ("old_age_loss_of_looks", "Old age / lost looks", GOLD),
+    ]
+    yf = np.arange(len(s_items))
+    for i, (sk, _, col_s) in enumerate(s_items):
+        sv = 100.0 * sccs["causes"][sk]["share_mentioned"]
+        ax_f.barh(i, sv, height=0.56, color=col_s, alpha=0.90)
+        ax_f.text(sv + 1.1, i, f"{sv:.1f}%", va="center", ha="left", fontsize=5.1, fontweight="bold", color=INK)
+    ax_f.grid(False)
+    ax_f.grid(axis="x", color=GRID, lw=0.55)
+    ax_f.set_yticks(yf, [x[1] for x in s_items], fontsize=5.4)
+    ax_f.invert_yaxis()
+    ax_f.set_xlim(0, 68)
+    s_rat = sccs["adultery_to_aging_looks_ratio"]
+    ax_f.text(
+        66.5, 4.15, f"Betrayal \u00f7 aging\nlooks = {s_rat:.1f}\u00d7",
+        fontsize=4.75, color=INK, ha="right", va="center", fontweight="bold", linespacing=1.02,
+        bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
+    )
+    panel(ax_f, "F", "Divorce causes (160 SCCS soc.)", xlabel="Societies citing cause (%)", fontsize=7.5)
+
+    return pdf(fig)
+
+
+# ---------------------------------------------------------------------------
+# 5. 6.68M HON ARCHITECTURE: LORENZ ATTENTION & PORTFOLIO (Gate G14 deduplicated)
 # ---------------------------------------------------------------------------
 def hon_architecture_plot(data):
     hon = data["hon"]
-    beauty = hon["beauty_by_age"]
     att = hon["attention_and_portfolio"]
 
-    fig, axes = plt.subplots(2, 2, figsize=(7.20, 4.55))
-    fig.subplots_adjust(left=0.088, right=0.988, bottom=0.11, top=0.89, wspace=0.33, hspace=0.47)
+    fig, axes = plt.subplots(1, 2, figsize=(7.20, 2.32), gridspec_kw={"width_ratios": [1.02, 1.08]})
+    fig.subplots_adjust(left=0.088, right=0.925, bottom=0.205, top=0.845, wspace=0.36)
 
-    # Panel A: Exact-Age Within-Sex Beauty Percentiles & IQRs
-    ax = axes[0, 0]
-    ages = list(range(18, 80))
-    ax.axhline(50, color=MUTED, lw=0.7, ls=(0, (2, 2)))
-    for sex, label, col, mk in SERIES:
-        cells = [beauty[str(a)][sex]["all"] for a in ages]
-        lo = [100 * c["percentile_iqr"][0] if c else math.nan for c in cells]
-        hi = [100 * c["percentile_iqr"][1] if c else math.nan for c in cells]
-        mn = [100 * c["mean_percentile"] if c else math.nan for c in cells]
-        ax.fill_between(ages, lo, hi, color=col, alpha=0.13, lw=0)
-        ax.plot(ages, mn, color=col, lw=1.65, marker=mk, markevery=6, ms=3.0, label=label)
-    age_axis(ax)
-    ax.set_ylim(0, 100)
-    panel(ax, "A", "Within-gender beauty percentile & IQR (6.68M)", ylabel="Beauty percentile")
-    ax.legend(loc="upper right", fontsize=6.5)
-
-    # Panel B: Share in Top Decile by Exact Age
-    ax = axes[0, 1]
-    ax.axhline(0.10, color=MUTED, lw=0.7, ls=(0, (2, 2)))
-    for sex, label, col, mk in SERIES:
-        cells = [beauty[str(a)][sex]["all"] for a in ages]
-        ys = [c["top_tenth_n"] / c["n"] if c else math.nan for c in cells]
-        ax.plot(ages, ys, color=col, lw=1.65, marker=mk, markevery=6, ms=3.0, label=label)
-    age_axis(ax)
-    ax.set_ylim(0, 0.30)
-    panel(ax, "B", "Share reaching top 10% of gender distribution", ylabel="Share of profiles", percent=True)
-
-    # Panel C: Voter Attention Inequality (Lorenz Curves & Gini)
-    ax = axes[1, 0]
+    # Panel A: Voter Attention Inequality (Lorenz Curves & Gini)
+    ax = axes[0]
     pop_x = np.linspace(0, 1, 11)
     ax.plot(pop_x, pop_x, color=MUTED, lw=0.75, ls=(0, (2, 2)), label="Equal attention")
     for sex, label, col, mk in SERIES:
         s_att = att["by_sex"][sex]
         cum_v = np.r_[0.0, np.cumsum(s_att["lorenz_deciles_votes"])]
         cum_l = np.r_[0.0, np.cumsum(s_att["lorenz_deciles_likes"])]
-        ax.plot(pop_x, cum_v, color=col, lw=1.55, marker=mk, ms=2.8,
-                label=f"{label} votes (Gini {s_att['votes_gini']:.2f}, med {s_att['median_votes']:,.0f})")
-        ax.plot(pop_x, cum_l, color=col, lw=1.1, ls="--", alpha=0.75)
+        ax.plot(
+            pop_x, cum_v, color=col, lw=1.55, marker=mk, ms=2.8,
+            label=f"{label} votes (Gini {s_att['votes_gini']:.2f}, med {s_att['median_votes']:,.0f})",
+        )
+        ax.plot(pop_x, cum_l, color=col, lw=1.15, ls="--", alpha=0.78, label=f"{label} likes (Gini {s_att['likes_gini']:.2f})")
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
-    panel(ax, "C", "18.5x voter skew & attention concentration", xlabel="Cumulative share of profiles", ylabel="Cumulative share of votes / likes", percent=True)
-    ax.legend(loc="upper left", fontsize=5.8, labelspacing=0.24)
+    panel(ax, "A", "18.5\u00d7 voter skew & attention concentration (6.68M)", xlabel="Cumulative share of profiles", ylabel="Cumulative share of votes / likes", percent=True)
+    ax.legend(loc="upper left", fontsize=5.3, labelspacing=0.18)
 
-    # Panel D: Portfolio Image Count Buys Voter Volume, Not Rank
-    ax = axes[1, 1]
+    # Panel B: Portfolio Image Count Buys Voter Volume, Not Rank
+    ax = axes[1]
     pkeys = ("0", "1", "2", "3", "4", "5_plus")
     plabs = ["0", "1", "2", "3", "4", "5+"]
     px = np.arange(len(pkeys))
@@ -1601,7 +2234,7 @@ def hon_architecture_plot(data):
     ax2.spines["top"].set_visible(False)
     ax2.spines["right"].set_color(MUTED)
     ax2.spines["right"].set_linewidth(0.6)
-    ax2.tick_params(labelsize=6.6, colors=INK2)
+    ax2.tick_params(labelsize=6.5, colors=INK2)
     for sex, label, col, mk in SERIES:
         by_p = att["by_photo_count"][sex]
         ranks = [100 * by_p[k]["mean_within_sex_percentile"] for k in pkeys]
@@ -1611,113 +2244,157 @@ def hon_architecture_plot(data):
     ax.set_xticks(px, plabs)
     ax.set_ylim(18, 69)
     ax2.set_ylim(0.50, 1.85)
-    ax2.set_ylabel("Median votes relative to 1 photo (dashed)", fontsize=7.0, color=INK2)
-    panel(ax, "D", "Extra photos raise votes +50%, not rank", xlabel="Inventoried photos per profile", ylabel="Mean beauty percentile (solid)")
-    ax.legend(loc="upper center", bbox_to_anchor=(0.48, 0.99), fontsize=5.8, labelspacing=0.2)
+    ax2.set_ylabel("Median votes vs. 1 photo (dashed)", fontsize=6.8, color=INK2)
+    panel(ax, "B", "Extra photos raise votes +50%, not beauty rank", xlabel="Inventoried photos per profile", ylabel="Mean beauty percentile (solid)")
+    ax.legend(loc="upper center", bbox_to_anchor=(0.48, 0.99), fontsize=5.6, labelspacing=0.18)
 
     return pdf(fig)
 
 
 # ---------------------------------------------------------------------------
-# 6. 1.14M POV LIFE-COURSE COMMITMENT, POSTPONEMENT & 5-COUNTRY REPLICATION
+# 6. HOW MEN AND WOMEN CHOOSE ACROSS ADULTHOOD, AGES 18-75 (Fig. 14)
 # ---------------------------------------------------------------------------
 def pov_lifecourse_plot(data):
     pov = data["pov"]
-    bands = data["cohorts"]["pov_bands"]
+    hon_b = data["hon"]["beauty_by_age"]
+    fa_age = data["facial_attribution"]["age_bucket_progression"]
+    osyn = data["open_synthesis"]
+    kow = osyn["kowal_2025"]
+    wal = osyn["walter_2020"]["age_gap_by_age"]
+    whyte_h = osyn["whyte_2021"]["happiness_by_partnered"]
+    bands = [(lo, hi) for lo, hi in data["cohorts"]["pov_bands"] if hi <= 74]
 
-    fig, axes = plt.subplots(2, 3, figsize=(7.24, 4.90))
-    fig.subplots_adjust(left=0.078, right=0.99, bottom=0.11, top=0.90, wspace=0.35, hspace=0.48)
+    fig, axes = plt.subplots(2, 3, figsize=(7.24, 4.95))
+    fig.subplots_adjust(left=0.076, right=0.99, bottom=0.105, top=0.905, wspace=0.35, hspace=0.49)
 
-    # Panel A: Childless Want-Children Reversal Across Ages 18-79
+    def _shared_age(ax):
+        ax.set_xlim(17, 76)
+        ax.set_xticks([20, 35, 50, 65, 75])
+        ax.set_xlabel("Age (years)", labelpad=3.0)
+
+    # ROW 1: DIVERGING BIOLOGICAL & MARKET CLOCKS (AGES 18-75)
+    # Panel A: Realized Partner Age-Gap Scissors (Kowal 37.7k + Walter 46.9k)
     ax = axes[0, 0]
-    centers = [(lo + hi) / 2 for lo, hi in bands]
-    for lo, hi in ((25, 29), (45, 49)):
-        ax.axvspan(lo - 0.5, hi + 0.5, color=BAND, lw=0, zorder=0)
-    for sex, label, col, mk in SERIES:
-        cells = [pov["bands"][f"{lo}-{hi}"][sex]["without_children"] for lo, hi in bands]
-        ys = [c["shares"]["want"] if c else math.nan for c in cells]
-        ax.plot(centers, ys, color=col, marker=mk, ms=3.0, lw=1.55, label=label)
-    age_axis(ax)
-    ax.set_ylim(0, 0.58)
-    panel(ax, "A", "Childless 'Want children' reverses", ylabel="Share of childless profiles", percent=True)
-    ax.legend(loc="upper right", fontsize=6.2)
+    k_br = [("18-24", 21.0), ("25-29", 27.0), ("30-34", 32.0), ("35-39", 37.0), ("40-49", 44.5), ("50-59", 54.5), ("60-79", 68.0)]
+    kx = np.array([x for _, x in k_br])
+    pag = kow["partner_age_gap_by_age"]["brackets"]
+    kw_y = np.array([pag[k]["women"]["mean"] for k, _ in k_br])
+    km_y = np.array([pag[k]["men"]["mean"] for k, _ in k_br])
+    ax.axhline(0, color=MUTED, lw=0.7, ls=(0, (2, 2)))
+    ax.fill_between(kx, km_y, kw_y, color=WOMEN, alpha=0.12, lw=0)
+    ax.plot(kx, kw_y, color=WOMEN, lw=1.65, marker="D", ms=3.2, label="Women (Kowal)")
+    ax.plot(kx, km_y, color=MEN, lw=1.65, marker="o", ms=3.2, label="Men (Kowal)")
+    w_br = [("18-24", 21.0), ("25-29", 27.0), ("30-39", 34.5), ("40-49", 44.5), ("50-75", 61.0)]
+    wx_w = [x for k, x in w_br if k in wal]
+    ax.scatter(wx_w, [wal[k]["women"]["mean"] for k, _ in w_br if k in wal], s=18, marker="D", facecolor="white", edgecolor=WOMEN, lw=1.0, zorder=4)
+    ax.scatter(wx_w, [wal[k]["men"]["mean"] for k, _ in w_br if k in wal], s=20, marker="o", facecolor="white", edgecolor=MEN, lw=1.0, zorder=4, label="Walter 45-ctry")
+    _shared_age(ax)
+    ax.set_ylim(-6.6, 4.2)
+    panel(ax, "A", "Partner age scissors (84.6k)", ylabel="Partner age minus own (yr)")
+    ax.legend(loc="lower left", fontsize=5.3, labelspacing=0.16)
+    gap60 = pag["60-79"]["women_minus_men_years"]
+    ax.text(74.5, -0.55, f"60+: {gap60:.1f}-yr\nscissors", fontsize=5.2, color=INK, ha="right", va="top", fontweight="bold", linespacing=1.0)
 
-    # Panel B: Serious Relationship Commitment Stays Women > Men at Every Age
+    # Panel B: Platform Voter Rank vs. Pure Facial Anatomy (6.68M HON + 5,353 Aligned Faces)
     ax = axes[0, 1]
-    wins = ("18-24", "25-29", "30-39", "40-49", "50-59", "60-69")
-    wx = [21, 27, 34.5, 44.5, 54.5, 64.5]
-    for sex, label, col, mk in SERIES:
-        ys = [pov["market_and_commitment"][w]["by_sex"][sex]["serious_commitment"]["share"] for w in wins]
-        ax.plot(wx, ys, color=col, marker=mk, ms=3.4, lw=1.6, label=label)
-    ax.set_xlim(18, 68)
-    ax.set_ylim(0.42, 0.90)
-    panel(ax, "B", "Serious commitment stays W > M", xlabel="Age window", ylabel="Seeking marriage / relationship", percent=True)
+    ages = np.arange(18, 76)
+    yw_h = np.array([100.0 * hon_b[str(a)]["Female"]["all"]["mean_percentile"] for a in ages])
+    ym_h = np.array([100.0 * hon_b[str(a)]["Male"]["all"]["mean_percentile"] for a in ages])
+    ax.axhline(50, color=MUTED, lw=0.7, ls=(0, (2, 2)))
+    ax.fill_between(ages, ym_h, yw_h, where=(yw_h >= ym_h), interpolate=True, color=WOMEN, alpha=0.12, lw=0)
+    ax.fill_between(ages, ym_h, yw_h, where=(ym_h >= yw_h), interpolate=True, color=MEN, alpha=0.13, lw=0)
+    ax.plot(ages, yw_h, color=WOMEN, lw=1.6, label="Women voter rank")
+    ax.plot(ages, ym_h, color=MEN, lw=1.6, label="Men voter rank")
+    fa_x = [21.0, 29.5, 39.5, 49.5, 62.0]
+    fa_k = ["18-24", "25-34", "35-44", "45-54", "55+"]
+    ax.plot(fa_x, [fa_age["Female"][k]["mean_predicted_pct"] for k in fa_k], color=WOMEN, lw=1.25, ls="--", marker="D", mfc="white", ms=3.2, label="W face-only")
+    ax.plot(fa_x, [fa_age["Male"][k]["mean_predicted_pct"] for k in fa_k], color=MEN, lw=1.25, ls="--", marker="o", mfc="white", ms=3.2, label="M face-only")
+    _shared_age(ax)
+    ax.set_ylim(8, 84)
+    panel(ax, "B", "Photo rank vs. anatomy (6.68M)", ylabel="Within-sex percentile")
+    ax.legend(loc="lower left", fontsize=5.1, ncol=2, columnspacing=0.45, handlelength=1.3, labelspacing=0.16)
 
-    # Panel C: Prior >10-Year Union Durability & Platform Sex Ratio
+    # Panel C: Childless 'Want Children' Crossover at Age ~42 (1.14M POV + 5/5 Countries)
     ax = axes[0, 2]
-    for sex, label, col, mk in SERIES:
-        ys = [pov["market_and_commitment"][w]["by_sex"][sex]["over_10y_union"]["share"] for w in wins]
-        ax.plot(wx, ys, color=col, marker=mk, ms=3.4, lw=1.6, label=f"{label} >10-yr union")
-    ax.set_xlim(18, 68)
-    ax.set_ylim(0, 0.85)
-    panel(ax, "C", "Prior >10-year union history", xlabel="Age window", ylabel="Share reporting >10-yr union", percent=True)
-    r25 = pov["market_and_commitment"]["25-29"]["male_to_female_ratio"]
-    r60 = pov["market_and_commitment"]["60-69"]["male_to_female_ratio"]
-    ax.text(19.5, 0.72, f"M:F ratio:\n{r25:.2f}:1 (25-29)\n{r60:.2f}:1 (60-69)", fontsize=5.7, color=INK2, linespacing=1.1)
+    v_bands = [
+        (lo, hi) for lo, hi in bands
+        if pov["bands"][f"{lo}-{hi}"]["Female"]["without_children"]
+        and pov["bands"][f"{lo}-{hi}"]["Male"]["without_children"]
+    ]
+    centers = np.array([0.5 * (lo + hi) for lo, hi in v_bands])
+    yw_c = np.array([100.0 * pov["bands"][f"{lo}-{hi}"]["Female"]["without_children"]["shares"]["want"] for lo, hi in v_bands])
+    ym_c = np.array([100.0 * pov["bands"][f"{lo}-{hi}"]["Male"]["without_children"]["shares"]["want"] for lo, hi in v_bands])
+    ax.fill_between(centers, ym_c, yw_c, where=(yw_c >= ym_c), interpolate=True, color=WOMEN, alpha=0.13, lw=0)
+    ax.fill_between(centers, ym_c, yw_c, where=(ym_c >= yw_c), interpolate=True, color=MEN, alpha=0.15, lw=0)
+    ax.plot(centers, yw_c, color=WOMEN, marker="D", ms=3.0, lw=1.6, label="Women")
+    ax.plot(centers, ym_c, color=MEN, marker="o", ms=3.0, lw=1.6, label="Men")
+    xc = pov["childless_crossover"]["band_midpoint_interpolated_age"]
+    ax.axvline(xc, color=VIOLET, lw=0.9, ls=":")
+    ax.scatter([xc], [np.interp(xc, centers, yw_c)], s=22, facecolor=VIOLET, edgecolor="white", lw=0.5, zorder=5)
+    _shared_age(ax)
+    ax.set_ylim(0, 56)
+    panel(ax, "C", "Childless 'Want kids' crosses (~42)", ylabel="Childless wanting children (%)")
+    ax.text(xc + 1.5, 42.0, f"Crosses age {xc:.1f}\n(5/5 countries:\nUS, UK, CA, BR, AU)", fontsize=5.1, color=VIOLET, fontweight="bold", linespacing=1.05)
 
-    # Panel D: Ambition & Reproductive Postponement (Ages 25-49)
+    # ROW 2: UNBROKEN HUMAN TRUTHS ACROSS ADULTHOOD (AGES 18-75)
+    # Panel D: Kindness Ranks #1 at Every Age while Resources Stay Modest (67.7k Kowal)
     ax = axes[1, 0]
-    amb_cats = ("Not Ambitious", "Somewhat Ambitious", "Ambitious", "Very Ambitious")
-    amb_short = ["Not", "Some-\nwhat", "Ambi-\ntious", "Very"]
-    ax_x = np.arange(len(amb_cats))
-    amb_d = pov["traits_and_postponement"]["ambition_ages_25_49"]
-    w_par = [amb_d[c]["Female"]["parenthood"]["share"] for c in amb_cats]
-    w_fut = [amb_d[c]["Female"]["want_children_all"]["share"] for c in amb_cats]
-    m_fut = [amb_d[c]["Male"]["want_children_all"]["share"] for c in amb_cats]
-    ax.plot(ax_x, w_par, color=WOMEN, lw=1.6, marker="D", ms=3.3, label="Women: already parent")
-    ax.plot(ax_x, w_fut, color=VIOLET, lw=1.55, marker="D", mfc="white", ms=3.3, label="Women: want children")
-    ax.plot(ax_x, m_fut, color=MEN, lw=1.45, ls="--", marker="o", ms=3.0, label="Men: want children")
-    ax.set_xticks(ax_x, amb_short, fontsize=6.2)
-    ax.set_ylim(0.12, 0.72)
-    panel(ax, "D", "Ambition & postponement (25-49)", xlabel="Self-reported ambition", ylabel="Share of profiles", percent=True)
-    ax.legend(loc="center left", fontsize=5.4, labelspacing=0.22)
+    b_age = kow["budget_by_age"]
+    yw_knd = np.array([b_age[k]["items"]["kindness"]["women"]["mean"] for k, _ in k_br])
+    ym_knd = np.array([b_age[k]["items"]["kindness"]["men"]["mean"] for k, _ in k_br])
+    yw_res = np.array([b_age[k]["items"]["resources"]["women"]["mean"] for k, _ in k_br])
+    ym_res = np.array([b_age[k]["items"]["resources"]["men"]["mean"] for k, _ in k_br])
+    ax.fill_between(kx, ym_res, yw_res, color=GOLD, alpha=0.15, lw=0)
+    ax.plot(kx, yw_knd, color=WOMEN, lw=1.65, marker="D", ms=3.1, label="Kindness (W #1)")
+    ax.plot(kx, ym_knd, color=MEN, lw=1.65, marker="o", ms=3.1, label="Kindness (M #1)")
+    ax.plot(kx, yw_res, color=WOMEN, lw=1.3, ls="--", marker="D", mfc="white", ms=2.9, label="Money (W)")
+    ax.plot(kx, ym_res, color=MEN, lw=1.3, ls="--", marker="o", mfc="white", ms=2.9, label="Money (M)")
+    _shared_age(ax)
+    ax.set_ylim(2.05, 7.65)
+    panel(ax, "D", "Kindness #1 at every age (67.7k)", ylabel="Points allocated (of 30)")
+    ax.legend(loc="lower left", fontsize=5.0, ncol=2, columnspacing=0.45, handlelength=1.25, labelspacing=0.15)
 
-    # Panel E: Education Gradient in Current Parenthood vs Childless Desire (Ages 30-49)
+    # Panel E: Serious Commitment Stays Unbroken Women > Men at Every Age (1.14M POV)
     ax = axes[1, 1]
+    wins = ("18-24", "25-29", "30-39", "40-49", "50-59", "60-69")
+    wx = np.array([21.0, 27.0, 34.5, 44.5, 54.5, 64.5])
+    yw_s = np.array([100.0 * pov["market_and_commitment"][w]["by_sex"]["Female"]["serious_commitment"]["share"] for w in wins])
+    ym_s = np.array([100.0 * pov["market_and_commitment"][w]["by_sex"]["Male"]["serious_commitment"]["share"] for w in wins])
+    ax.fill_between(wx, ym_s, yw_s, color=WOMEN, alpha=0.14, lw=0)
+    ax.plot(wx, yw_s, color=WOMEN, marker="D", ms=3.3, lw=1.65, label="Women: serious")
+    ax.plot(wx, ym_s, color=MEN, marker="o", ms=3.3, lw=1.65, label="Men: serious")
+    yw_10 = np.array([100.0 * pov["market_and_commitment"][w]["by_sex"]["Female"]["over_10y_union"]["share"] for w in wins])
+    ym_10 = np.array([100.0 * pov["market_and_commitment"][w]["by_sex"]["Male"]["over_10y_union"]["share"] for w in wins])
+    ax.plot(wx, 0.5 * (yw_10 + ym_10), color=AQUA, lw=1.3, ls=":", marker="s", ms=2.7, label="Prior >10-yr union")
+    _shared_age(ax)
+    ax.set_ylim(0, 90)
+    panel(ax, "E", "Serious devotion stays W > M (1.14M)", ylabel="Share of profiles (%)")
+    ax.legend(loc="lower right", fontsize=5.3, labelspacing=0.18)
+
+    # Panel F: Partnered Happiness Lift (Whyte) & Education Postponement Without Desire Loss (POV)
+    ax = axes[1, 2]
     edu_cats = ("High school", "Some college", "Bachelors Degree", "Masters Degree", "PhD / Post Doctoral")
-    edu_short = ["HS", "Some\ncol.", "BA/\nBS", "MA/\nMS", "PhD"]
+    edu_short = ["HS", "Some\ncol.", "BA", "MA", "PhD"]
     ex = np.arange(len(edu_cats))
     edu_d = pov["traits_and_postponement"]["education_ages_30_49"]
-    for sex, label, col, mk in SERIES:
-        y_p = [edu_d[c][sex]["parenthood"]["share"] for c in edu_cats]
-        y_cw = [edu_d[c][sex]["childless_want_children"]["share"] for c in edu_cats]
-        ax.plot(ex, y_p, color=col, lw=1.55, marker=mk, ms=3.1, label=f"{label}: parent")
-        ax.plot(ex, y_cw, color=col, lw=1.25, ls="--", marker=mk, mfc="white", ms=3.0, label=f"{label}: childless want")
-    ax.set_xticks(ex, edu_short, fontsize=6.1)
-    ax.set_ylim(0.10, 0.85)
-    panel(ax, "E", "Education & fertility timing (30-49)", xlabel="Completed schooling", ylabel="Share of profiles", percent=True)
-    ax.legend(loc="upper right", fontsize=5.0, labelspacing=0.18, handlelength=1.4)
-
-    # Panel F: 5-Country Replication of Childbearing Reversal vs Persistent Commitment
-    ax = axes[1, 2]
-    ctries = [("United States", "US"), ("United Kingdom", "UK"), ("Canada", "CA"), ("Brazil", "BR"), ("Australia", "AU")]
-    cy = np.arange(len(ctries))
-    ax.axvline(0, color=INK2, lw=0.75, ls=(0, (2, 2)))
-    reps = pov["geography"]["replications"]
-    for i, (cname, cshort) in enumerate(ctries):
-        w25 = reps[cname]["25-29"]["childless_want_women_minus_men_pp"]
-        w45 = reps[cname]["45-49"]["childless_want_women_minus_men_pp"]
-        s45 = reps[cname]["45-49"]["serious_women_minus_men_pp"]
-        ax.plot([w25, w45], [i - 0.12, i - 0.12], color=MEN, lw=1.1)
-        dot(ax, [w25], [i - 0.12], AQUA, "o", s=20, label="Want kids 25-29" if i == 0 else None)
-        dot(ax, [w45], [i - 0.12], RED, "s", s=18, label="Want kids 45-49" if i == 0 else None)
-        dot(ax, [s45], [i + 0.15], VIOLET, "D", s=18, label="Serious 45-49" if i == 0 else None)
-    ax.grid(False)
-    ax.grid(axis="x", color=GRID, linewidth=0.55)
-    ax.set_yticks(cy, [c[1] for c in ctries])
-    ax.set_xlim(-17, 23)
-    panel(ax, "F", "5-country replication (W minus M)", xlabel="Women minus men (pp)")
-    ax.legend(loc="lower left", fontsize=5.3, labelspacing=0.2)
+    w_par = [100.0 * edu_d[c]["Female"]["parenthood"]["share"] for c in edu_cats]
+    w_want = [100.0 * edu_d[c]["Female"]["childless_want_children"]["share"] for c in edu_cats]
+    m_want = [100.0 * edu_d[c]["Male"]["childless_want_children"]["share"] for c in edu_cats]
+    ax.plot(ex, w_par, color=VIOLET, lw=1.6, marker="s", ms=3.1, label="W already parent")
+    ax.plot(ex, w_want, color=WOMEN, lw=1.5, ls="--", marker="D", mfc="white", ms=3.1, label="W childless want")
+    ax.plot(ex, m_want, color=MEN, lw=1.5, ls="--", marker="o", mfc="white", ms=3.1, label="M childless want")
+    ax.set_xticks(ex, edu_short, fontsize=6.0)
+    ax.set_ylim(12, 88)
+    panel(ax, "F", "Postponement & happiness lift", xlabel="Schooling (ages 30–49)", ylabel="Share of profiles (%)")
+    ax.legend(loc="upper right", fontsize=5.1, labelspacing=0.16, handlelength=1.3)
+    hw = whyte_h["Women"]["raw_lift_pts"]["estimate"]
+    hm = whyte_h["Men"]["raw_lift_pts"]["estimate"]
+    ax.text(
+        0.05, 16.5,
+        f"Partnered happiness (N=7,060):\nW +{hw:.1f} pts, M +{hm:.1f} pts (0–100)",
+        fontsize=5.0, color=INK, va="bottom", linespacing=1.06,
+        bbox=dict(boxstyle="round,pad=0.15", fc=BAND, ec="none", alpha=0.92),
+    )
 
     return pdf(fig)
 
@@ -2207,21 +2884,33 @@ def face_age_plot(data):
                 if sec_title:
                     ax.text(0.0, 1.30, sec_title, transform=ax.transAxes, ha="left", va="bottom", fontweight="bold", fontsize=7.9, color=INK)
 
-    # Panel B (top right): Observed vs. Pure-Face Predicted Percentile across age buckets
+    # Panel B (top right): 55+ minus 18-24 Decomposition (Voter Drop = Facial Anatomy + Non-Facial Age Penalty)
     ax_b = fig.add_subplot(right_gs[0, 0])
-    panel(ax_b, "B", "Observed vs. face-predicted rank", xlabel="Age group", ylabel="Within-gender beauty pct.", fontsize=7.8)
-    xs = np.arange(len(age_buckets))
-    ax_b.axhline(50.0, color=MUTED, ls=":", lw=0.7)
-    all_age_y = []
-    for g, lbl, col, mk in SERIES:
-        obs = [fa["age_bucket_progression"][g][ab]["mean_observed_pct"] for ab in age_buckets]
-        prd = [fa["age_bucket_progression"][g][ab]["mean_predicted_pct"] for ab in age_buckets]
-        all_age_y.extend(obs + prd)
-        ax_b.plot(xs, obs, color=col, marker=mk, ms=3.8, lw=1.45, label=f"{lbl} observed")
-        ax_b.plot(xs, prd, color=col, marker=mk, ms=3.2, lw=1.15, ls="--", alpha=0.82, label=f"{lbl} face-only")
-    ax_b.set_xticks(xs, ["18–24", "25–34", "35–44", "45–54", "55+"], fontsize=6.2)
-    ax_b.set_ylim(max(0.0, min(all_age_y) - 8.0), min(100.0, max(all_age_y) + 7.0))
-    ax_b.legend(loc="lower left", fontsize=5.9, ncol=1)
+    panel(ax_b, "B", "Aging drop: anatomy vs. label penalty", xlabel="55+ minus 18\u201324 rank shift (pct. pts)", fontsize=7.8)
+    ax_b.grid(False)
+    ax_b.grid(axis="x", color=GRID, linewidth=0.55)
+    ax_b.axvline(0.0, color=INK, lw=0.7)
+    w_obs_d = fa["age_bucket_progression"]["Female"]["55+"]["mean_observed_pct"] - fa["age_bucket_progression"]["Female"]["18-24"]["mean_observed_pct"]
+    w_prd_d = fa["age_bucket_progression"]["Female"]["55+"]["mean_predicted_pct"] - fa["age_bucket_progression"]["Female"]["18-24"]["mean_predicted_pct"]
+    w_pen_d = w_obs_d - w_prd_d
+    m_obs_d = fa["age_bucket_progression"]["Male"]["55+"]["mean_observed_pct"] - fa["age_bucket_progression"]["Male"]["18-24"]["mean_observed_pct"]
+    m_prd_d = fa["age_bucket_progression"]["Male"]["55+"]["mean_predicted_pct"] - fa["age_bucket_progression"]["Male"]["18-24"]["mean_predicted_pct"]
+    m_pen_d = m_obs_d - m_prd_d
+    decomp_rows = [
+        ("Observed voter\nrank shift", w_obs_d, m_obs_d),
+        ("Pure facial\nanatomy shift", w_prd_d, m_prd_d),
+        ("Non-facial age\nlabel penalty", w_pen_d, m_pen_d),
+    ]
+    yb_d = np.arange(len(decomp_rows))
+    for i, (_, wv, mv) in enumerate(decomp_rows):
+        ax_b.barh(i + 0.17, wv, height=0.31, color=WOMEN, alpha=0.90, label="Women" if i == 0 else None)
+        ax_b.barh(i - 0.17, mv, height=0.31, color=MEN, alpha=0.90, label="Men" if i == 0 else None)
+        ax_b.text(wv - 1.1 if wv < 0 else wv + 1.1, i + 0.17, f"{wv:+.1f}", va="center", ha="right" if wv < 0 else "left", fontsize=5.2, fontweight="bold", color=INK)
+        ax_b.text(mv - 1.1 if mv < 0 else mv + 1.1, i - 0.17, f"{mv:+.1f}", va="center", ha="right" if mv < 0 else "left", fontsize=5.2, fontweight="bold", color=INK)
+    ax_b.set_yticks(yb_d, [r[0] for r in decomp_rows], fontsize=6.0)
+    ax_b.invert_yaxis()
+    ax_b.set_xlim(-52.0, 12.0)
+    ax_b.legend(loc="lower left", fontsize=5.6)
 
     # Panel C (bottom right): Anatomical Zone Shift from 18-24 to 55+ (55+ minus 18-24)
     ax_c = fig.add_subplot(right_gs[1, 0])
@@ -2641,6 +3330,265 @@ def numbers(data):
     values["PboQuintileGap"] = f"{100 * gap['estimate']:.1f}"
     values["PboQuintileInterval"] = interval(gap, 100)
 
+    # New Voice, Dyadic Spark, Pair-Bond Love Reversal, Joel 2020, SCCS & Life-Course macros
+    swv = pov["self_written_voice"]
+    dc = speed["dyadic_chemistry"]
+    pbr = kow["pair_bond_reversal"]
+    prqc_b = pbr["relationship_quality_prqc"]
+    inf_b = pbr["reported_infidelity"]
+    tla_b = kow["triangular_love_arc"]
+    mwl_b = kow["marry_without_love"]
+    sma_b = kow["social_media_and_alternatives"]
+    joel_b = osyn["joel_2020"]
+    sccs_b = osyn["betzig_sccs"]
+    jf_b = osyn["published_benchmarks"]["jankowiak_fischer_1992_love"]
+    wz_map = {z["zone_key"]: z for z in fa["zone_drivers_and_rejectors"]["Female"]["zones"]}
+    mz_map = {z["zone_key"]: z for z in fa["zone_drivers_and_rejectors"]["Male"]["zones"]}
+
+    values.update({
+        "PboPovCrossAge": f"{pov['childless_crossover']['band_midpoint_interpolated_age']:.1f}",
+        "PboPovCrossExact": str(pov["childless_crossover"]["first_nonpositive_exact_age"]),
+        "PboVoiceEssaysN": f"{swv['eligible_with_essay']['Pooled']:,}",
+        "PboVoiceEssaysW": f"{swv['eligible_with_essay']['Female']:,}",
+        "PboVoiceEssaysM": f"{swv['eligible_with_essay']['Male']:,}",
+        "PboVoiceFamilyW": format_rate(swv["themes"]["family_kids_home"]["Female"]["share"]),
+        "PboVoiceFamilyM": format_rate(swv["themes"]["family_kids_home"]["Male"]["share"]),
+        "PboVoiceLaughW": format_rate(swv["themes"]["laugh_humor_smile"]["Female"]["share"]),
+        "PboVoiceLaughM": format_rate(swv["themes"]["laugh_humor_smile"]["Male"]["share"]),
+        "PboVoiceKindW": format_rate(swv["themes"]["kind_caring_loving"]["Female"]["share"]),
+        "PboVoiceKindM": format_rate(swv["themes"]["kind_caring_loving"]["Male"]["share"]),
+        "PboVoiceHonestW": format_rate(swv["themes"]["honest_loyal_trust"]["Female"]["share"]),
+        "PboVoiceHonestM": format_rate(swv["themes"]["honest_loyal_trust"]["Male"]["share"]),
+        "PboVoiceTallW": f"{100.0 * swv['themes']['tall_6ft_mention']['Female']['share']:.2f}\\%",
+        "PboVoiceRichW": f"{100.0 * swv['themes']['rich_six_figure']['Female']['share']:.2f}\\%",
+        "PboVoiceFamilyTallRatio": f"{swv['voice_to_checkbox_ratios']['female_family_to_tall']:.0f}",
+        "PboVoiceHonestTallRatio": f"{swv['voice_to_checkbox_ratios']['female_honesty_to_tall']:.0f}",
+        "PboVoiceKindRichRatio": f"{swv['voice_to_checkbox_ratios']['female_kindness_to_wealth']:.0f}",
+        "PboDyadLikeN": f"{dc['variance_partition']['like']['n']:,}",
+        "PboDyadPairsN": f"{dc['mutual_dyadic_reciprocity_like']['n_dyads']:,}",
+        "PboDyadConsensusShare": format_rate(dc["variance_partition"]["like"]["unbiased_srm_shares"]["partner_consensus"]),
+        "PboDyadChooserShare": format_rate(dc["variance_partition"]["like"]["unbiased_srm_shares"]["chooser_leniency"]),
+        "PboDyadUniqueShare": format_rate(dc["variance_partition"]["like"]["unbiased_srm_shares"]["unique_dyadic_and_noise"]),
+        "PboDyadLooksConsensus": format_rate(dc["variance_partition"]["attr"]["unbiased_srm_shares"]["partner_consensus"]),
+        "PboDyadSincConsensus": format_rate(dc["variance_partition"]["sinc"]["unbiased_srm_shares"]["partner_consensus"]),
+        "PboDyadIntelConsensus": format_rate(dc["variance_partition"]["intel"]["unbiased_srm_shares"]["partner_consensus"]),
+        "PboDyadSharConsensus": format_rate(dc["variance_partition"]["shar"]["unbiased_srm_shares"]["partner_consensus"]),
+        "PboDyadReciprocityR": f"{dc['mutual_dyadic_reciprocity_like']['estimate']:+.2f}",
+        "PboDyadSparkSlopeW": f"{dc['reciprocity_adjusted_slopes']['women']['dyadic_spark_sum_fun_shar_prob_pp']['estimate']:+.1f}",
+        "PboDyadLooksSlopeW": f"{dc['reciprocity_adjusted_slopes']['women']['coefficients_pp']['attr']['estimate']:+.1f}",
+        "PboDyadChosenBackW": f"{dc['reciprocity_adjusted_slopes']['women']['coefficients_pp']['prob']['estimate']:+.1f}",
+        "PboDyadChosenBackM": f"{dc['reciprocity_adjusted_slopes']['men']['coefficients_pp']['prob']['estimate']:+.1f}",
+        "PboDoorN": f"{kow['partnering_slopes']['n']:,}",
+        "PboDoorMoneyM": f"{kow['partnering_slopes']['by_sex']['men']['resources']['pp_per_sd']:+.2f}",
+        "PboDoorLooksM": f"{kow['partnering_slopes']['by_sex']['men']['looks']['pp_per_sd']:+.2f}",
+        "PboDoorLooksW": f"{kow['partnering_slopes']['by_sex']['women']['looks']['pp_per_sd']:+.2f}",
+        "PboDoorKindM": f"{kow['partnering_slopes']['by_sex']['men']['kindness']['pp_per_sd']:+.2f}",
+        "PboDoorKindW": f"{kow['partnering_slopes']['by_sex']['women']['kindness']['pp_per_sd']:+.2f}",
+        "PboBondPrqcN": f"{prqc_b['n']:,}",
+        "PboBondInfN": f"{inf_b['n']:,}",
+        "PboBondKindW": f"{prqc_b['by_sex']['women']['traits']['kindness']['sd_per_sd']:+.2f}",
+        "PboBondKindM": f"{prqc_b['by_sex']['men']['traits']['kindness']['sd_per_sd']:+.2f}",
+        "PboBondMoneyW": f"{prqc_b['by_sex']['women']['traits']['resources']['sd_per_sd']:+.2f}",
+        "PboBondMoneyM": f"{prqc_b['by_sex']['men']['traits']['resources']['sd_per_sd']:+.2f}",
+        "PboBondInfKindW": f"{inf_b['by_sex']['women']['traits']['kindness']['pp_per_sd']:+.1f}",
+        "PboBondInfKindM": f"{inf_b['by_sex']['men']['traits']['kindness']['pp_per_sd']:+.1f}",
+        "PboBondInfMoneyW": f"{inf_b['by_sex']['women']['traits']['resources']['pp_per_sd']:+.1f}",
+        "PboJoelDatasetsN": str(joel_b["satisfaction"]["distinct_datasets"]),
+        "PboJoelRelBaseRTwo": f"{joel_b['satisfaction']['models']['ActorRelBaseline']['unweighted_mean_r2_pct']:.1f}\\%",
+        "PboJoelTraitBaseRTwo": f"{joel_b['satisfaction']['models']['PartnerTraitBaseline']['unweighted_mean_r2_pct']:.1f}\\%",
+        "PboJoelBaseRatio": f"{joel_b['satisfaction']['actor_rel_to_partner_trait_baseline_ratio']:.1f}",
+        "PboJoelRelFollowRTwo": f"{joel_b['satisfaction']['models']['ActorRelFollowup']['unweighted_mean_r2_pct']:.1f}\\%",
+        "PboJoelTraitFollowRTwo": f"{joel_b['satisfaction']['models']['PartnerTraitFollowup']['unweighted_mean_r2_pct']:.1f}\\%",
+        "PboLoveArcN": f"{tla_b['n_total']:,}",
+        "PboLoveCommStart": f"{tla_b['by_duration']['<=1y']['commitment']['mean']:.2f}",
+        "PboLoveCommEnd": f"{tla_b['by_duration']['25y+']['commitment']['mean']:.2f}",
+        "PboLoveIntimEnd": f"{tla_b['by_duration']['25y+']['intimacy']['mean']:.2f}",
+        "PboLovePassStart": f"{tla_b['by_duration']['<=1y']['passion']['mean']:.2f}",
+        "PboLovePassEnd": f"{tla_b['by_duration']['25y+']['passion']['mean']:.2f}",
+        "PboMarryNoLoveN": f"{mwl_b['n_total']:,}",
+        "PboMarryNoLoveMedW": f"{mwl_b['by_sex']['women']['median']:.0f}",
+        "PboMarryNoLoveMedM": f"{mwl_b['by_sex']['men']['median']:.0f}",
+        "PboAssortReligR": f"{kow['assortative_mating']['religion']['pearson_r']:.2f}",
+        "PboAssortKindR": f"{kow['assortative_mating']['kindness']['pearson_r']:.2f}",
+        "PboSocMedInfSlope": f"{sma_b['slopes_per_daily_hour']['infidelity_pp_per_hour']['estimate']:+.2f}",
+        "PboSocMedPrqcSlope": f"{sma_b['slopes_per_daily_hour']['prqc_sd_per_hour']['estimate']:+.3f}",
+        "PboSocMedQoaSlope": f"{sma_b['slopes_per_daily_hour']['qoa_sd_per_hour']['estimate']:+.3f}",
+        "PboSocMedHighInf": f"{sma_b['by_qoa_tier']['high_4.5_to_7.0']['infidelity_rate_pct']['mean']:.1f}\\%",
+        "PboSocMedLowInf": f"{sma_b['by_qoa_tier']['low_1_to_2.5']['infidelity_rate_pct']['mean']:.1f}\\%",
+        "PboBetzigSocN": str(sccs_b["causes"]["adultery_infidelity"]["coded_societies"]),
+        "PboBetzigAdulteryPct": format_rate(sccs_b["causes"]["adultery_infidelity"]["share_mentioned"]),
+        "PboBetzigCrueltyPct": format_rate(sccs_b["causes"]["cruelty_maltreatment"]["share_mentioned"]),
+        "PboBetzigAgingPct": format_rate(sccs_b["causes"]["old_age_loss_of_looks"]["share_mentioned"]),
+        "PboBetzigRatio": f"{sccs_b['adultery_to_aging_looks_ratio']:.1f}",
+        "PboJankowiakPct": format_rate(jf_b["share_documented"]),
+        "PboWhyteEmotConnW": f"{whyte['stated_importance']['pooled']['Women']['emotional_connection']['mean']:.1f}",
+        "PboWhyteEmotConnM": f"{whyte['stated_importance']['pooled']['Men']['emotional_connection']['mean']:.1f}",
+        "PboWhyteHappyLiftW": f"{whyte['happiness_by_partnered']['Women']['raw_lift_pts']['estimate']:+.1f}",
+        "PboWhyteHappyLiftM": f"{whyte['happiness_by_partnered']['Men']['raw_lift_pts']['estimate']:+.1f}",
+        "PboAgeScissorsOld": f"{kow['partner_age_gap_by_age']['brackets']['60-79']['women_minus_men_years']:.1f}",
+        "PboFaceEyesDrvW": f"{wz_map['eyes_iris']['top15_driver_pct']:+.2f}",
+        "PboFaceMouthDrvW": f"{wz_map['lips_vermilion']['top15_driver_pct']:+.2f}",
+        "PboFaceEyesDrvM": f"{mz_map['eyes_iris']['top15_driver_pct']:+.2f}",
+        "PboFaceMouthDrvM": f"{mz_map['lips_vermilion']['top15_driver_pct']:+.2f}",
+    })
+
+    # v13 Cross-Scale Causal Closure, NHS Campfire, Hobby/Hindsight, HCMST, Checklist/Marrying-Up & WORDSUM macros
+    cc_b = osyn["childhood_coevolution"]
+    sccs_cc_b = cc_b["sccs_alloparenting_and_sharing"]
+    e22_b = cc_b["proposition_22_e22_coevolution"]
+    nhs_b = osyn["nhs_campfire"]
+    alg_b = nhs_b["acoustic_legibility_gradient"]
+    chk_sd_b = speed["checklist_and_hindsight"]
+    hw_b = chk_sd_b["hobby_checklist_vs_live_wavelength"]
+    wps_b = chk_sd_b["within_person_shifts"]
+    fup_b = chk_sd_b["post_event_followup_3_4_weeks"]
+    hcm_b = osyn["hcmst_2017"]
+    chk_kow_b = kow["checklist_and_surplus_decomposition"]
+    pk_kow_b = chk_kow_b["pooled"]["predictors_sd_per_sd"]
+    id_kow_b = kow["short_vs_long_term_ideals"]["by_sex"]["women"]
+    jl_kow_b = kow["jealousy_asymmetry"]["by_sex"]["women"]
+    gss_all_b = osyn["v9_anchors"]["gss_three_episodes_all"]
+
+    values.update({
+        "PboChildPeakRmr": f"{cc_b['kuzawa_2014_brain_metabolism']['peak_rmr_pct']:.1f}\\%",
+        "PboChildPeakDer": f"{cc_b['kuzawa_2014_brain_metabolism']['peak_der_pct']:.1f}\\%",
+        "PboChildAdultRmrRatio": f"{cc_b['kuzawa_2014_brain_metabolism']['child_to_adult_rmr_ratio']:.1f}",
+        "PboSccsChildSoloMomPct": format_rate(sccs_cc_b["early_childhood_exclusive_mother_sccs52"]["share"]),
+        "PboSccsChildAlloMajPct": format_rate(sccs_cc_b["early_childhood_nonmaternal_majority_sccs52"]["share"]),
+        "PboSccsFatherInfPct": format_rate(sccs_cc_b["father_close_infancy_sccs53"]["share"]),
+        "PboSccsFatherChildPct": format_rate(sccs_cc_b["father_close_early_childhood_sccs54"]["share"]),
+        "PboSccsFatherOccPct": format_rate(sccs_cc_b["father_occasional_or_closer_early_childhood_sccs54"]["share"]),
+        "PboSccsFoodSharePct": format_rate(sccs_cc_b["community_food_sharing_beyond_nuclear_sccs1718"]["share"]),
+        "PboETwentyTwoSolo": f"{e22_b['regimes']['solitary_ape_mother']['equilibrium_cm3_closed_form']:,.0f}",
+        "PboETwentyTwoRawAllo": f"{e22_b['regimes']['early_homo_allomaternal_raw']['equilibrium_cm3_closed_form']:,.0f}",
+        "PboETwentyTwoCookNoLove": f"{e22_b['regimes']['cooking_without_pair_bond_love']['equilibrium_cm3_closed_form']:,.0f}",
+        "PboETwentyTwoFull": f"{e22_b['regimes']['late_homo_cooking_plus_pair_bond_love']['equilibrium_cm3_closed_form']:,.0f}",
+        "PboETwentyTwoLoveGain": f"{e22_b['love_devotion_gain_cm3']:+.0f}",
+        "PboNhsSongsN": str(nhs_b["discography_songs"]),
+        "PboNhsSocN": str(nhs_b["discography_societies"]),
+        "PboNhsRatersN": f"{nhs_b['naive_listener_raters_published']:,}",
+        "PboNhsEthPerfN": f"{nhs_b['ethnography_performances']:,}",
+        "PboNhsLullabyD": f"{alg_b['lullaby']['cohen_d']:+.2f}",
+        "PboNhsDanceD": f"{alg_b['dance']['cohen_d']:+.2f}",
+        "PboNhsHealD": f"{alg_b['healing']['cohen_d']:+.2f}",
+        "PboNhsLoveD": f"{alg_b['love']['cohen_d']:+.2f}",
+        "PboNhsLullabyLoveRatio": f"{nhs_b['lullaby_to_love_d_ratio']:.1f}",
+        "PboNhsDanceLoveRatio": f"{nhs_b['dance_to_love_d_ratio']:.1f}",
+        "PboNhsDanceShare": format_rate(nhs_b["ethnographic_hearth_contexts"]["any_communal_dance"]["share_of_coded"]),
+        "PboHobbyDyadsN": f"{hw_b['n_common_dyad_decisions']:,}",
+        "PboHobbyObjR": f"{hw_b['r_objective_hobby_corr_yes']['estimate']:+.3f}",
+        "PboHobbyLiveR": f"{hw_b['r_live_shared_wavelength_yes']['estimate']:+.3f}",
+        "PboHobbyRatio": f"{hw_b['live_to_checklist_r_ratio']:.1f}",
+        "PboHobbyFeSlopeW": f"{hw_b['chooser_fe_slopes']['women']['coefficients_pp']['int_corr']['estimate']:+.1f}",
+        "PboHobbyLiveSlopeW": f"{hw_b['chooser_fe_slopes']['women']['coefficients_pp']['shar']['estimate']:+.1f}",
+        "PboHindLooksJumpW": f"{wps_b['nextday_realized_minus_pre_stated']['women']['delta_points']['attr']['estimate']:+.1f}",
+        "PboHindIntelDropW": f"{wps_b['nextday_realized_minus_pre_stated']['women']['delta_points']['intel']['estimate']:+.1f}",
+        "PboHindIntelSnapW": f"{wps_b['threeweek_stated_minus_nextday_realized']['women']['delta_points']['intel']['estimate']:+.1f}",
+        "PboHindLooksRecedeW": f"{wps_b['threeweek_stated_minus_nextday_realized']['women']['delta_points']['attr']['estimate']:+.1f}",
+        "PboMatchDatePct": format_rate(fup_b["went_on_followup_date_share_among_matched"]),
+        "PboMatchCallPct": format_rate(fup_b["called_or_was_called_share_among_matched"]),
+        "PboHcmstN": f"{hcm_b['total_respondents']:,}",
+        "PboHcmstCouplesN": f"{hcm_b['meeting_coded_couples']:,}",
+        "PboHcmstAppMeanYr": f"{hcm_b['by_venue']['online_dating_app']['pre_romance_acquaintance_years']['mean']:.2f}",
+        "PboHcmstAppMedYr": f"{hcm_b['by_venue']['online_dating_app']['pre_romance_acquaintance_years']['median']:.2f}",
+        "PboHcmstAppZeroPct": format_rate(hcm_b["by_venue"]["online_dating_app"]["pre_romance_acquaintance_years"]["share_zero_years"]),
+        "PboHcmstAppZeroTiePct": format_rate(hcm_b["by_venue"]["online_dating_app"]["zero_prior_social_tie_share"]),
+        "PboHcmstInstMeanYr": f"{hcm_b['institutional_and_kin_pooled']['pre_romance_acquaintance_years']['mean']:.2f}",
+        "PboHcmstSchoolMeanYr": f"{hcm_b['by_venue']['school_college']['pre_romance_acquaintance_years']['mean']:.2f}",
+        "PboHcmstAuditRatio": f"{hcm_b['audit_compression_ratios']['institutional_kin_to_app_mean_ratio']:.1f}",
+        "PboHcmstSchoolRatio": f"{hcm_b['audit_compression_ratios']['school_to_app_mean_ratio']:.1f}",
+        "PboHcmstPreEightyYr": f"{hcm_b['historical_eras']['pre_1980']['mean_pre_romance_years']:.2f}",
+        "PboHcmstRecentYr": f"{hcm_b['historical_eras']['2012_2017']['mean_pre_romance_years']:.2f}",
+        "PboHcmstRecentOnlinePct": format_rate(hcm_b["historical_eras"]["2012_2017"]["online_all_share"]),
+        "PboHcmstRecentAppPct": format_rate(hcm_b["historical_eras"]["2012_2017"]["online_dating_app_share"]),
+        "PboHcmstQualApp": f"{hcm_b['by_venue']['online_dating_app']['intact_relationship_quality_1_to_5']['mean']:.2f}",
+        "PboHcmstQualInst": f"{hcm_b['institutional_and_kin_pooled']['intact_relationship_quality_1_to_5']['mean']:.2f}",
+        "PboHcmstQualAdjDiff": f"{hcm_b['intact_quality_boundary_check']['online_app_minus_offline_pts_1_to_5']:+.2f}",
+        "PboChkCouplesN": f"{chk_kow_b['n_total']:,}",
+        "PboChkCountriesN": str(chk_kow_b["pooled"]["countries"]),
+        "PboChkKindSD": f"{pk_kow_b['partner_kindness']['estimate']:+.2f}",
+        "PboChkLooksSD": f"{pk_kow_b['partner_looks']['estimate']:+.2f}",
+        "PboChkFitSD": f"{pk_kow_b['idiographic_checklist_fit']['estimate']:+.2f}",
+        "PboChkResSD": f"{pk_kow_b['partner_resources']['estimate']:+.2f}",
+        "PboChkMarryUpSD": f"{pk_kow_b['marrying_up_surplus']['estimate']:+.2f}",
+        "PboChkMarryUpFiveSD": f"{chk_kow_b['five_trait_controlled_marrying_up_sd']:+.2f}",
+        "PboChkKindFitRatio": f"{chk_kow_b['pooled']['kindness_to_checklist_ratio']:.1f}",
+        "PboIdealStKindW": f"{id_kow_b['kindness']['short_term_mean_1_to_11']:.2f}",
+        "PboIdealLtKindW": f"{id_kow_b['kindness']['long_term_mean_1_to_11']:.2f}",
+        "PboIdealStLooksW": f"{id_kow_b['looks']['short_term_mean_1_to_11']:.2f}",
+        "PboJealEmoW": f"{jl_kow_b['emotional_1_to_7']['mean']:.2f}",
+        "PboJealSexW": f"{jl_kow_b['sexual_1_to_7']['mean']:.2f}",
+        "PboJealDiffW": f"{jl_kow_b['emotional_minus_sexual']['mean']:+.2f}",
+        "PboGssVocPairM": f"{gss_all_b['vocabulary']['men']['pairing'][0]:+.3f}",
+        "PboGssVocNumM": f"{gss_all_b['vocabulary']['men']['number'][0]:+.3f}",
+        "PboGssSchPairM": f"{gss_all_b['schooling']['men']['pairing'][0]:+.3f}",
+        "PboGssPrePairM": f"{gss_all_b['prestige']['men']['pairing'][0]:+.3f}",
+    })
+
+    # v14 Empirical Mind Selection (Speed-Dating Objective SAT) & OkCupid-JSE Audience Staging macros
+    sat_b = chk_sd_b["objective_sat_blindness"]
+    okc_b = osyn["okcupid_jse"]
+    ost_b = okc_b["orientation_staging_experiment"]
+    tpp_b = okc_b["ten_prompt_portfolio"]
+    mdv_b = tpp_b["multi_domain_lexical_validity"]
+    amr_b = tpp_b["assortative_mind_requests_essay9"]
+    e9_b = tpp_b["essay9_message_me_if"]
+    e3_b = tpp_b["essay3_first_noticed"]
+    sfc_b = okc_b["sf_childless_fertility_crossover"]
+
+    values.update({
+        "PboThreePlatformRecords": f"{pov['accounts']['rows'] + hon['inventory']['canonical_profiles'] + okc_b['total_profiles']:,}",
+        "PboSatPartN": str(sat_b["n_participants_with_sat"]),
+        "PboSatDatesN": f"{sat_b['n_dates_with_partner_sat']:,}",
+        "PboSatSingleR": f"{sat_b['r_stranger_intel_vs_partner_sat']['estimate']:+.3f}",
+        "PboSatSingleRTwo": f"{100.0 * sat_b['stranger_intel_sat_r2']:.2f}\\%",
+        "PboSatPanelR": f"{sat_b['r_panel_intel_vs_partner_sat']['estimate']:+.3f}",
+        "PboSatPanelRTwo": f"{100.0 * sat_b['panel_intel_sat_r2']:.2f}\\%",
+        "PboSatPanelGain": f"{sat_b['panel_to_single_r2_ratio']:.1f}",
+        "PboSatYesR": f"{sat_b['r_partner_sat_vs_yes']['estimate']:+.3f}",
+        "PboSatMatchR": f"{sat_b['r_matched_couple_sat']:+.3f}",
+        "PboOkcN": f"{okc_b['total_profiles']:,}",
+        "PboOkcMenN": f"{okc_b['sex_counts']['men']:,}",
+        "PboOkcWomenN": f"{okc_b['sex_counts']['women']:,}",
+        "PboOkcEssaysN": f"{tpp_b['total_nonempty_essays_ge5_chars']:,}",
+        "PboOkcStrMenN": f"{ost_b['groups']['men_straight']['n']:,}",
+        "PboOkcGayMenN": f"{ost_b['groups']['men_gay']['n']:,}",
+        "PboOkcStrWomenN": f"{ost_b['groups']['women_straight']['n']:,}",
+        "PboOkcStrJump": f"{ost_b['groups']['men_straight']['stature']['jump_5ft11_to_6ft0_pct']:+.1f}\\%",
+        "PboOkcStrCliff": f"{abs(ost_b['groups']['men_straight']['stature']['drop_6ft0_to_6ft1_pct']):.1f}\\%",
+        "PboOkcGayJump": f"{ost_b['groups']['men_gay']['stature']['jump_5ft11_to_6ft0_pct']:+.1f}\\%",
+        "PboOkcIncStrM": format_rate(ost_b["groups"]["men_straight"]["income_disclosure"]["disclosed_positive_share"]),
+        "PboOkcIncGayM": format_rate(ost_b["groups"]["men_gay"]["income_disclosure"]["disclosed_positive_share"]),
+        "PboOkcIncStrW": format_rate(ost_b["groups"]["women_straight"]["income_disclosure"]["disclosed_positive_share"]),
+        "PboOkcIncGayRatio": f"{ost_b['straight_to_gay_male_income_disclosure_ratio']:.2f}",
+        "PboOkcIncFemRatio": f"{ost_b['straight_male_to_female_income_disclosure_ratio']:.2f}",
+        "PboOkcDomWritersN": f"{mdv_b['n_complete_9_domain_writers']:,}",
+        "PboOkcDomROne": f"{mdv_b['single_prompt_reliability_r1']:.3f}",
+        "PboOkcDomRNine": f"{mdv_b['spearman_brown_curve_k_1_to_9']['9']:.3f}",
+        "PboOkcDomGain": f"{mdv_b['k9_to_k1_validity_ratio']:.1f}",
+        "PboOkcAssortN": f"{amr_b['n_users_ge3_domains_with_essay9']:,}",
+        "PboOkcAssortLo": format_rate(amr_b["by_lexical_quintile"]["Q1"]["ask_mind_curiosity_share"]),
+        "PboOkcAssortHi": format_rate(amr_b["by_lexical_quintile"]["Q5"]["ask_mind_curiosity_share"]),
+        "PboOkcAssortRatio": f"{amr_b['q5_to_q1_mind_request_ratio']:.2f}",
+        "PboOkcPrivPct": format_rate(tpp_b["prompts"]["essay8"]["share"]),
+        "PboOkcSelfPct": format_rate(tpp_b["prompts"]["essay0"]["share"]),
+        "PboOkcMsgN": f"{e9_b['n_answered']:,}",
+        "PboOkcMsgHumor": format_rate(e9_b["themes"]["humor_banter"]["share"]),
+        "PboOkcMsgKind": format_rate(e9_b["themes"]["kindness_sincerity"]["share"]),
+        "PboOkcMsgMind": format_rate(e9_b["themes"]["curiosity_intelligence"]["share"]),
+        "PboOkcMsgTall": f"{100.0 * e9_b['themes']['tall_6ft_height']['share']:.2f}\\%",
+        "PboOkcMsgRich": f"{100.0 * e9_b['themes']['rich_wealthy_sixfig']['share']:.2f}\\%",
+        "PboOkcHumorTallRatio": f"{e9_b['ratios']['humor_to_tall']:.1f}",
+        "PboOkcHumorRichRatio": f"{e9_b['ratios']['humor_to_wealth']:.1f}",
+        "PboOkcNoticeN": f"{e3_b['n_answered']:,}",
+        "PboOkcSmilePct": format_rate(e3_b["themes"]["smile_laugh"]["share"]),
+        "PboOkcEyesPct": format_rate(e3_b["themes"]["eyes"]["share"]),
+        "PboOkcHeightNoticePct": format_rate(e3_b["themes"]["height"]["share"]),
+        "PboOkcSfCrossAge": f"{sfc_b['interpolated_crossover_age']:.1f}",
+        "PboOkcSfGapYoung": format_pp(sfc_b["by_age_band"]["25-29"]["women_minus_men_pp"]),
+        "PboOkcSfGapOlder": format_pp(sfc_b["by_age_band"]["45-54"]["women_minus_men_pp"]),
+    })
+
     for name in values:
         assert name.isalpha(), f"LaTeX macro name must be alphabetic: {name}"
     return "".join(f"\\newcommand{{\\{name}}}{{{value}}}\n" for name, value in values.items())
@@ -2739,10 +3687,13 @@ def height_synthesis_table(data):
 def pov_geography_table(data):
     reps = data["pov"]["geography"]["replications"]
     totals = data["pov"]["geography"]["country_totals"]
+    sfc = data["open_synthesis"]["okcupid_jse"]["sf_childless_fertility_crossover"]
+    sf_w = sum(b["women"]["n"] for b in sfc["by_age_band"].values())
+    sf_m = sum(b["men"]["n"] for b in sfc["by_age_band"].values())
     lines = [
         r"& \multicolumn{2}{c}{Eligible profiles} & \multicolumn{2}{c}{Childless ``Want children'' (W $-$ M, pp)} & \multicolumn{2}{c}{Serious commitment (W $-$ M, pp)}\\",
         r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(l){6-7}",
-        r"Country sub-cohort & Women & Men & Ages 25--29 & Ages 45--49 & Ages 25--29 & Ages 45--49\\\midrule",
+        r"Country or open-science sub-cohort & Women & Men & Ages 25--29 & Ages 45--49 & Ages 25--29 & Ages 45--49\\\midrule",
     ]
     for cname in ("United States", "United Kingdom", "Canada", "Brazil", "Australia"):
         t = totals[cname]
@@ -2754,6 +3705,13 @@ def pov_geography_table(data):
             f"{format_pp(r['25-29']['serious_women_minus_men_pp'])} & "
             f"{format_pp(r['45-49']['serious_women_minus_men_pp'])}\\\\"
         )
+    lines.append(r"\midrule")
+    lines.append(
+        f"San Francisco (\\texttt{{OkCupid-JSE}}, open; 45--54 right) & {sf_w:,} & {sf_m:,} & "
+        f"{format_pp(sfc['by_age_band']['25-29']['women_minus_men_pp'])} & "
+        f"{format_pp(sfc['by_age_band']['45-54']['women_minus_men_pp'])} & "
+        f"\\multicolumn{{2}}{{c}}{{Crossover age: {sfc['interpolated_crossover_age']:.1f}\\,yr}}\\\\"
+    )
     return "\n".join(lines) + "\n"
 
 
@@ -3004,12 +3962,99 @@ def references_bbl(generated_tex=None):
     return "\n".join(out_lines) + "\n"
 
 
+def macro_kpi_table(data):
+    pp = data["paleoclimate_plateau"]
+    pvc_500 = data["holoface_benchmark"]["psychometric_voter_ceiling"]["tiers"]["votes_500_plus"]
+    speed = data["speed_dating"]
+    dc = speed["dyadic_chemistry"]
+    hw = speed["checklist_and_hindsight"]["hobby_checklist_vs_live_wavelength"]
+    wps = speed["checklist_and_hindsight"]["within_person_shifts"]
+    pov = data["pov"]
+    swv = pov["self_written_voice"]
+    hon = data["hon"]
+    osyn = data["open_synthesis"]
+    cc = osyn["childhood_coevolution"]
+    nhs = osyn["nhs_campfire"]
+    hcm = osyn["hcmst_2017"]
+    kow = osyn["kowal_2025"]
+    chk_k = kow["checklist_and_surplus_decomposition"]["pooled"]
+    joel = osyn["joel_2020"]
+    sccs = osyn["betzig_sccs"]
+    lid = osyn["lidborg_2022"]
+    v9 = osyn["v9_anchors"]
+    gss_all = v9["gss_three_episodes_all"]
+    gss_m = gss_all["income"]["men"]
+    gss_v = gss_all["vocabulary"]["men"]
+
+    rows = [
+        (
+            r"\textbf{1. Campfire \& Childhood Release}",
+            "Why did brains stall at $\\sim\\!908\\,\\mathrm{cm^3}$ (1.50--0.70\\,Ma) and why did big brains require pair-bond love?",
+            f"{pp['plateau_summary']['gingerich_n']} crania + \\texttt{{LR04}} + {cc['sccs_alloparenting_and_sharing']['early_childhood_nonmaternal_majority_sccs52']['coded_societies']} SCCS societies",
+            rf"Stasis leads crises by \textbf{{{pp['timing_gap_summary']['onset_to_mis34_cooling_kyr']:.0f}--{pp['timing_gap_summary']['onset_to_bolaven_impact_kyr']:.0f}\,kyr}}; age-4.5 brain uses \textbf{{{cc['kuzawa_2014_brain_metabolism']['peak_rmr_pct']:.1f}\% RMR}} ({cc['kuzawa_2014_brain_metabolism']['peak_der_pct']:.1f}\% DER); $+50\%/\mathrm{{Myr}}$ post-fire surge",
+            rf"SCCS solo-mother childhood care is \textbf{{0/136 (0.0\%)}}; cooking w/o pair-bond love stalls at $\sim\!{cc['proposition_22_e22_coevolution']['regimes']['cooking_without_pair_bond_love']['equilibrium_cm3_closed_form']:,.0f}\,\mathrm{{cm^3}}$ vs.\ {cc['proposition_22_e22_coevolution']['regimes']['late_homo_cooking_plus_pair_bond_love']['equilibrium_cm3_closed_form']:,.0f} (Props.~\ref{{prop:tissue}},~\ref{{prop:childhood}})",
+        ),
+        (
+            r"\textbf{2. Multi-Modal Legibility Wall}",
+            "How much human mind, character, and devotion stays invisible to zero-context strangers across photos, talk, and song?",
+            r"20,000 \texttt{HoloFace-L1} portraits + 8,378 dates + 484k essays + 118 songs",
+            rf"\textbf{{{100.0 * pvc_500['irreducible_single_context_gap_full']:.1f}\%}} photo rank-variance gap; 4-min stranger explains \textbf{{{100.0 * speed['checklist_and_hindsight']['objective_sat_blindness']['stranger_intel_sat_r2']:.2f}\%}} of partner SAT (SAT$\to$Yes null) vs.\ \textbf{{{osyn['okcupid_jse']['ten_prompt_portfolio']['multi_domain_lexical_validity']['k9_to_k1_validity_ratio']:.1f}$\times$}} across 9 essay domains",
+            rf"Blind raters ($N\!=\!29{{,}}357$) decode lullabies ($d\!=\!+{nhs['acoustic_legibility_gradient']['lullaby']['cohen_d']:.2f}$) \textbf{{{nhs['lullaby_to_love_d_ratio']:.1f}$\times$}} over love songs ($+{nhs['acoustic_legibility_gradient']['love']['cohen_d']:.2f}$; Props.~\ref{{prop:portfolio}},~\ref{{prop:twoway}})",
+        ),
+        (
+            r"\textbf{3. Play vs.\ Hobby-Tag Null}",
+            "Does live spark come from matching profile hobby tags or from unique two-person conversational play?",
+            rf"{dc['variance_partition']['like']['n']:,} ratings + {hw['n_common_dyad_decisions']:,} 17-hobby dyads + Waves 1--3",
+            rf"Objective 17-hobby tag overlap is \textbf{{null ($r\!=\!{hw['r_objective_hobby_corr_yes']['estimate']:+.3f}$)}} vs.\ live wavelength \textbf{{$r\!=\!{hw['r_live_shared_wavelength_yes']['estimate']:+.3f}$ ({hw['live_to_checklist_r_ratio']:.1f}$\times$)}}; \textbf{{{100.0 * dc['variance_partition']['like']['unbiased_srm_shares']['unique_dyadic_and_noise']:.1f}\%}} unique SRM spark",
+            rf"Women show a $+{wps['nextday_realized_minus_pre_stated']['women']['delta_points']['attr']['estimate']:.1f}$\,pt 24h looks hijack before intelligence snaps back ($+{wps['threeweek_stated_minus_nextday_realized']['women']['delta_points']['intel']['estimate']:.1f}$\,pts at 3--4 wks; Prop.~\ref{{prop:love}}(ii))",
+        ),
+        (
+            r"\textbf{4. Voice vs.\ Audience Staging}",
+            "What do humans ask for in their own words vs.\\ how audience-targeted platform filters distort self-presentation?",
+            rf"{swv['eligible_with_essay']['Pooled']:,} POV + 484k \texttt{{OkCupid}} essays + 6.68M HON",
+            rf"Women write family (\textbf{{{100.0 * swv['themes']['family_kids_home']['Female']['share']:.1f}\%}}, \textbf{{{swv['voice_to_checkbox_ratios']['female_family_to_tall']:.0f}$\times$}} $6'0''$); \texttt{{OkCupid}} ``message me if'' asks humor/kindness \textbf{{{osyn['okcupid_jse']['ten_prompt_portfolio']['essay9_message_me_if']['ratios']['humor_to_tall']:.1f}$\times$}} tall \& \textbf{{{osyn['okcupid_jse']['ten_prompt_portfolio']['essay9_message_me_if']['ratios']['humor_to_wealth']:.1f}$\times$}} wealth",
+            rf"Straight men surge \textbf{{$+{osyn['okcupid_jse']['orientation_staging_experiment']['groups']['men_straight']['stature']['jump_5ft11_to_6ft0_pct']:.1f}\%$}} at $6'0''$ (gay men \textbf{{${osyn['okcupid_jse']['orientation_staging_experiment']['groups']['men_gay']['stature']['jump_5ft11_to_6ft0_pct']:+.1f}\%$}}, no surge) \& show income \textbf{{{osyn['okcupid_jse']['orientation_staging_experiment']['straight_to_gay_male_income_disclosure_ratio']:.2f}$\times$}} more (Prop.~\ref{{prop:staging}})",
+        ),
+        (
+            r"\textbf{5. 10$\times$ App Audit Compression}",
+            "How sharply has digital courtship compressed the pre-romantic everyday witness observation that screens character?",
+            rf"{hcm['total_respondents']:,} Stanford \texttt{{HCMST}} U.S.\ adults ({hcm['meeting_coded_couples']:,} couples)",
+            rf"Dating-app pre-romance acquaintance averages \textbf{{{hcm['by_venue']['online_dating_app']['pre_romance_acquaintance_years']['mean']:.2f}\,yr (med.\ 0.0\,yr)}} vs.\ \textbf{{{hcm['institutional_and_kin_pooled']['pre_romance_acquaintance_years']['mean']:.2f}\,yr}} institutional/kin (\textbf{{{hcm['audit_compression_ratios']['institutional_kin_to_app_mean_ratio']:.1f}$\times$}}; school {hcm['audit_compression_ratios']['school_to_app_mean_ratio']:.1f}$\times$)",
+            rf"Intact app unions match offline quality ({hcm['by_venue']['online_dating_app']['intact_relationship_quality_1_to_5']['mean']:.2f} vs.\ {hcm['institutional_and_kin_pooled']['intact_relationship_quality_1_to_5']['mean']:.2f}; adj.\ diff.\ {hcm['intact_quality_boundary_check']['online_app_minus_offline_pts_1_to_5']:+.2f}, null)---apps strip pre-entry audit (Prop.~\ref{{prop:waiting}})",
+        ),
+        (
+            r"\textbf{6. Love Reversal \& Marry-Up Null}",
+            "Do money, checklists, or ``marrying out of your league'' build love, or does unconditional kindness rule the bond?",
+            rf"{kow['inclusion_flow']['source_rows']:,} adults ({kow['checklist_and_surplus_decomposition']['n_total']:,} couples) + 43 longit.\ studies",
+            rf"Kindness (\textbf{{${chk_k['predictors_sd_per_sd']['partner_kindness']['estimate']:+.2f}$\,SD}}) beats 5-trait checklist fit (${chk_k['predictors_sd_per_sd']['idiographic_checklist_fit']['estimate']:+.2f}$, \textbf{{{chk_k['kindness_to_checklist_ratio']:.1f}$\times$}}), money (${chk_k['predictors_sd_per_sd']['partner_resources']['estimate']:+.2f}$), \& ``marrying up'' (\textbf{{${chk_k['predictors_sd_per_sd']['marrying_up_surplus']['estimate']:+.2f}$\,SD $\approx 0$}})",
+            rf"Holds in egalitarian \& collectivist regimes; 43 longit.\ studies: dyadic \textbf{{{joel['satisfaction']['models']['ActorRelBaseline']['unweighted_mean_r2_pct']:.1f}\%}} vs.\ traits {joel['satisfaction']['models']['PartnerTraitBaseline']['unweighted_mean_r2_pct']:.1f}\% $R^2$ (Prop.~\ref{{prop:love}})",
+        ),
+        (
+            r"\textbf{7. Age-41 Flip vs.\ Devotion}",
+            "Which male--female decisions flip with biological clocks, and which hold invariant from 18 to 75?",
+            r"1.14M POV + 84.6k age-gap + 85.0k jealousy + 160 SCCS",
+            rf"Childless ``Want kids'' flips at \textbf{{Age $\sim\!{pov['childless_crossover']['band_midpoint_interpolated_age']:.0f}$}}, while serious commitment stays \textbf{{W $>$ M}} ($+8$ to $+12$\,pp) and 25+ yr commitment rises ({kow['triangular_love_arc']['by_duration']['<=1y']['commitment']['mean']:.2f}$\to${kow['triangular_love_arc']['by_duration']['25y+']['commitment']['mean']:.2f}/5)",
+            rf"Women weight emotional over sexual betrayal ({kow['jealousy_asymmetry']['by_sex']['women']['emotional_1_to_7']['mean']:.2f} vs.\ {kow['jealousy_asymmetry']['by_sex']['women']['sexual_1_to_7']['mean']:.2f}/7); divorces cite betrayal \textbf{{{sccs['adultery_to_aging_looks_ratio']:.1f}$\times$}} over aging looks",
+        ),
+        (
+            r"\textbf{8. The 94\% Modern Pairing Gate}",
+            "Did modern births fall because people stopped wanting children or because single-context markets stall union entry?",
+            r"34,092 U.S.\ GSS adults (incl.\ \texttt{WORDSUM}) + 232 meta-effects",
+            rf"\textbf{{94\%}} of U.S.\ birth drop sits in non-marriage; male pairing is positive on income (${gss_m['pairing'][0]:+.3f}$), schooling ($+{gss_all['schooling']['men']['pairing'][0]:.3f}$), \& \texttt{{WORDSUM}} (\textbf{{${gss_v['pairing'][0]:+.3f}$}})",
+            rf"Within-marriage births invert all four (${gss_m['number'][0]:+.3f}$ to ${gss_all['schooling']['men']['number'][0]:+.3f}$); height fertility null ($r\!=\!{lid['height']['reproduction_all']['re_mean_r']:+.3f}$; Props.~\ref{{prop:episodes}},~\ref{{prop:waiting}})",
+        ),
+    ]
+    return "\n".join(" & ".join(r) + r"\\" for r in rows) + "\n"
+
+
 def generate(data):
     pov, hon, speed = data["pov"], data["hon"], data["speed_dating"]
     responses, sensitivity = pov_tables(pov)
     plateau_tbl = plateau_events_table(data)
     holo_tbl = holoface_table(data)
+    macro_tbl = macro_kpi_table(data)
     gen_tex = {
+        "performance-macro-kpi-table.tex": macro_tbl,
         "performance-pov-responses.tex": responses,
         "performance-pov-sensitivity.tex": sensitivity,
         "performance-hon-sensitivity.tex": rating_table(hon["ratings"]),
@@ -3032,6 +4077,7 @@ def generate(data):
         "performance-fig-height-attraction.pdf": height_attraction_plot(data),
         "performance-fig-ethnography.pdf": ethnography_ancestors_plot(data),
         "performance-fig-world-synthesis.pdf": world_synthesis_plot(data),
+        "performance-fig-love-bond.pdf": love_bond_plot(data),
         "performance-fig-hon-architecture.pdf": hon_architecture_plot(data),
         "performance-fig-holoface-ceiling.pdf": holoface_ceiling_plot(data),
         "performance-fig-face-drivers.pdf": face_drivers_plot(data),

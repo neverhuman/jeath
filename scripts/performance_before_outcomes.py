@@ -192,6 +192,7 @@ def pov():
         "source_record_no", "id", "age", "gender", "seeking", "haschildren",
         "wantchildren", "maritalstatus", "intent", "for", "ambition",
         "college_id", "relationshipage_id", "height", "body", "car", "state_id",
+        "headline", "description", "interests",
     ]
     table = read("POV_source_fields", columns)
     keys = table["id"]
@@ -541,6 +542,116 @@ def pov():
             }
         geography["replications"][cname] = rep
 
+    # --- Exact Childless Fertility-Intent Age Crossover ---
+    band_diffs = []
+    for lo, hi in BANDS:
+        bkey = age_band(lo, hi)
+        fc = bins[bkey]["Female"]["without_children"]
+        mc = bins[bkey]["Male"]["without_children"]
+        if fc and mc:
+            band_diffs.append((0.5 * (lo + hi), bkey, 100.0 * (fc["shares"]["want"] - mc["shares"]["want"])))
+    crossover_age_band_interp = None
+    for (m0, _, d0), (m1, _, d1) in zip(band_diffs[:-1], band_diffs[1:]):
+        if d0 > 0.0 >= d1:
+            crossover_age_band_interp = float(m0 + (0.0 - d0) * (m1 - m0) / (d1 - d0))
+            break
+
+    single_year_childless = {}
+    for exact_a in range(35, 48):
+        amask = (age_np == exact_a) & (parent_np == 0)
+        fc_a = rate_cell((answer_np[amask & is_f] == 0).sum(), (amask & is_f).sum())
+        mc_a = rate_cell((answer_np[amask & ~is_f] == 0).sum(), (amask & ~is_f).sum())
+        if fc_a and mc_a:
+            single_year_childless[str(exact_a)] = {
+                "Female": fc_a,
+                "Male": mc_a,
+                "women_minus_men_pp": float(100.0 * (fc_a["share"] - mc_a["share"])),
+            }
+    first_negative_exact_age = next(
+        (int(a) for a, row in single_year_childless.items() if row["women_minus_men_pp"] <= 0.0),
+        None,
+    )
+    childless_crossover = {
+        "band_midpoint_interpolated_age": crossover_age_band_interp,
+        "first_nonpositive_exact_age": first_negative_exact_age,
+        "exact_ages_35_47": single_year_childless,
+    }
+
+    # --- Self-Written Human Voice Essays (headline + description + interests, >=30 chars) ---
+    empty_txt = pa.array([""] * len(sub), type=pa.string())
+    txt_head = pc.fill_null(sub["headline"], "") if "headline" in sub.column_names else empty_txt
+    txt_desc = pc.fill_null(sub["description"], "") if "description" in sub.column_names else empty_txt
+    txt_intr = pc.fill_null(sub["interests"], "") if "interests" in sub.column_names else empty_txt
+    txt_trimmed = pc.utf8_trim_whitespace(pc.binary_join_element_wise(txt_head, txt_desc, txt_intr, " "))
+    has_essay = pc.greater_equal(pc.utf8_length(txt_trimmed), 30).to_numpy(zero_copy_only=False)
+    txt_lower = pc.utf8_lower(txt_trimmed)
+
+    voice_themes = (
+        ("family_kids_home", "Family, children, or home", r"\b(family|kids|children|marriage|husband|wife|home)\b"),
+        ("honest_loyal_trust", "Honesty, loyalty, or trust", r"\b(honest|honesty|loyal|loyalty|trust|trustworthy|faithful)\b"),
+        ("laugh_humor_smile", "Laughter, humor, or smile", r"\b(laugh|laughing|laughter|humor|humour|funny|smile)\b"),
+        ("kind_caring_loving", "Kindness, warmth, or caring", r"\b(kind|kindness|caring|sweet|warm|compassionate|loving|affectionate|gentle)\b"),
+        ("best_friend_soulmate", "Best friend or soulmate", r"\b(soulmate|soul mate|best friend|partner in crime|grow old)\b"),
+        ("no_games_no_drama", "No games, drama, or cheating", r"\b(no games|no drama|cheat|cheater|liar)\b"),
+        ("tall_6ft_mention", "6 ft or tall stature", r"(6\s*ft|6'0|6\s*foot|\btall\s+(man|guy|men)\b)"),
+        ("rich_six_figure", "Wealth or six-figure status", r"\b(rich|wealthy|millionaire|six figure|6 figure|generous)\b"),
+    )
+    voice_overall = {}
+    voice_by_window = {age_band(lo, hi): {} for lo, hi in LIFE_WINDOWS}
+    for tkey, tlabel, pattern in voice_themes:
+        hit = pc.fill_null(pc.match_substring_regex(txt_lower, pattern), False).to_numpy(zero_copy_only=False)
+        voice_overall[tkey] = {
+            "label": tlabel,
+            "Pooled": rate_cell(hit[has_essay].sum(), has_essay.sum()),
+            "Female": rate_cell(hit[has_essay & is_f].sum(), (has_essay & is_f).sum()),
+            "Male": rate_cell(hit[has_essay & ~is_f].sum(), (has_essay & ~is_f).sum()),
+        }
+        for lo, hi in LIFE_WINDOWS:
+            wkey = age_band(lo, hi)
+            wmask = has_essay & (age_np >= lo) & (age_np <= hi)
+            voice_by_window[wkey][tkey] = {
+                "Female": rate_cell(hit[wmask & is_f].sum(), (wmask & is_f).sum()),
+                "Male": rate_cell(hit[wmask & ~is_f].sum(), (wmask & ~is_f).sum()),
+            }
+
+    def _safe_ratio(num_cell: dict | None, den_cell: dict | None) -> float | None:
+        if num_cell and den_cell and den_cell["share"] > 0.0:
+            return float(num_cell["share"] / den_cell["share"])
+        return None
+
+    self_written_voice = {
+        "min_trimmed_chars": 30,
+        "eligible_with_essay": {
+            "Pooled": int(has_essay.sum()),
+            "Female": int((has_essay & is_f).sum()),
+            "Male": int((has_essay & ~is_f).sum()),
+        },
+        "themes": voice_overall,
+        "by_life_window": voice_by_window,
+        "voice_to_checkbox_ratios": {
+            "female_family_to_tall": _safe_ratio(
+                voice_overall["family_kids_home"]["Female"],
+                voice_overall["tall_6ft_mention"]["Female"],
+            ),
+            "female_honesty_to_tall": _safe_ratio(
+                voice_overall["honest_loyal_trust"]["Female"],
+                voice_overall["tall_6ft_mention"]["Female"],
+            ),
+            "female_kindness_to_wealth": _safe_ratio(
+                voice_overall["kind_caring_loving"]["Female"],
+                voice_overall["rich_six_figure"]["Female"],
+            ),
+            "pooled_honesty_to_tall": _safe_ratio(
+                voice_overall["honest_loyal_trust"]["Pooled"],
+                voice_overall["tall_6ft_mention"]["Pooled"],
+            ),
+            "pooled_family_to_wealth": _safe_ratio(
+                voice_overall["family_kids_home"]["Pooled"],
+                voice_overall["rich_six_figure"]["Pooled"],
+            ),
+        },
+    }
+
     return {
         "accounts": accounts, "eligible": eligible, "bands": bins, "sensitivity": sensitivity,
         "exclusions_in_order": {"age": len(table) - total(age_ok),
@@ -558,6 +669,8 @@ def pov():
         "traits_and_postponement": traits_and_postponement,
         "height_percentiles": height_percentiles,
         "geography": geography,
+        "childless_crossover": childless_crossover,
+        "self_written_voice": self_written_voice,
     }
 
 

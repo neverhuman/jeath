@@ -1,7 +1,7 @@
 % Self-contained four-part technical appendix for Performance Before Outcomes (IEEE two-column monograph).
 \twocolumn[{\noindent{\footnotesize\scshape\color{accent}Technical Appendix}\par\vspace{2pt}
 \noindent{\Large\bfseries Formal Models, Complete Proofs, Paleoclimatic Audit, and Platform Sensitivity}\par\vspace{3pt}
-\noindent{\footnotesize\color{ink2} Appendix~A: Twenty Propositions, Corollaries, and Complete Proofs \quad$\cdot$\quad Appendix~B: Numerical Verification and the 1.5--0.7\,Ma Plateau Audit \quad$\cdot$\quad Appendix~C: Digital-Platform, Stature, Facial-Attribution, and \texttt{HoloFace-L1} Audits \quad$\cdot$\quad Appendix~D: Survey Cohort Robustness and Pre-Committed Falsifiers}\par\vspace{4pt}
+\noindent{\footnotesize\color{ink2} Appendix~A: Twenty-Two Propositions, Corollaries, and Complete Proofs \quad$\cdot$\quad Appendix~B: Numerical Verification and the 1.5--0.7\,Ma Plateau Audit \quad$\cdot$\quad Appendix~C: Digital-Platform, Stature, Facial-Attribution, and \texttt{HoloFace-L1} Audits \quad$\cdot$\quad Appendix~D: Survey Cohort Robustness and Pre-Committed Falsifiers}\par\vspace{4pt}
 \noindent{\color{rulegray}\rule{\textwidth}{0.5pt}}\par\vspace{8pt}}]
 
 \appendices
@@ -296,6 +296,29 @@ R^2_{\infty,1}=\frac{\sigma_T^2}{\sigma_T^2+\sigma_H^2+\sigma_C^2}<1,\label{eq:t
 whereas multi-witness, multi-context observation ($m,k\to\infty$) eliminates both $\sigma_O^2/m$ and $\sigma_C^2/k$, reaching $\sigma_T^2/(\sigma_T^2+\sigma_H^2)$.
 \end{proposition}
 
+\begin{proposition}[Entry filtering versus pair-bond welfare]\label{prop:love}
+Let candidate $j$ carry an entry-legible vertical attribute $X_j\sim\N(0,1)$ with encounter reliability $\rho_X\in(0,1]$ and a pair-bond character trait $K_j\sim\N(0,1)$ (kindness, responsiveness, unstaged devotion) observed at entry with low reliability $\rho_{K,0}\ll\rho_X$ via noisy signals $\hat X_{j,0}=\sqrt{\rho_X}X_j+\sqrt{1-\rho_X}\eta_j$ and $\hat K_{j,0}=\sqrt{\rho_{K,0}}K_j+\sqrt{1-\rho_{K,0}}\xi_j$, while pair $(i,j)$ realizes unique dyadic chemistry $D_{ij}\sim\N(0,\sigma_D^2)$ orthogonal to $(X_j,K_j)$ and observed only upon live interaction. Suppose true long-run pair-bond welfare is
+\begin{equation}
+U_{ij}=\alpha_X X_j+\alpha_K K_j+\alpha_D D_{ij},\qquad \alpha_K,\alpha_D\gg|\alpha_X|\ge 0.\label{eq:pairwelfare}
+\end{equation}
+\begin{enumerate}
+\item[(i)] \emph{Stage-weight reversal.} Optimal Bayesian entry screening on $(\hat X_{j,0},\hat K_{j,0})$ prior to live interaction places standardized weight $w_{X,0}=\alpha_X\sqrt{\rho_X}$ versus $w_{K,0}=\alpha_K\sqrt{\rho_{K,0}}$, so entry filtering weights $X_j$ above $K_j$ whenever $\rho_{K,0}/\rho_X<(\alpha_X/\alpha_K)^2$, whereas inside established unions (repeated joint life $\rho_{K,T}\to 1$) realized bond quality has standardized slopes $\beta_{U,K}=\alpha_K\gg\beta_{U,X}=\alpha_X$.
+\item[(ii)] \emph{Consensus filtering loss.} Pre-filtering to the top $q\in(0,1)$ quantile on consensus $\hat X_{j,0}$ alone captures expected welfare gain $\alpha_X\sqrt{\rho_X}\,\varphi(\Phi^{-1}(1-q))/q$ while forfeiting all unscreened dyadic and character surplus $(\alpha_K^2+\alpha_D^2\sigma_D^2)^{1/2}$ available across excluded pairs.
+\item[(iii)] \emph{Perceived outside options and commitment.} Under investment-commitment dynamics $C_{ij,t}=U_{ij}+I_{ij,t}-\gamma\widehat{O}_{i,t}$ ($\gamma>0$), an exogenous platform shock $\Delta\widehat{O}_{i,t}>0$ that inflates perceived consensus alternatives without raising realized post-entry $U_{ij'}$ strictly lowers commitment ($\partial C_{ij,t}/\partial\widehat{O}_{i,t}=-\gamma<0$) and raises dissolution/defection hazard $\Pr(C_{ij,t}<\theta)$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proposition}[Childhood metabolic bottleneck and pair-bond encephalization ceiling]\label{prop:childhood}
+Suppose adult endocranial volume $B>B_0$ imposes peak juvenile brain metabolic expenditure $\mathcal{C}_{\mathrm{juv}}(B)=\kappa_1(B-B_0)^2$ ($\kappa_1>0$) across childhood dependence $T_J$, funded by maternal surplus $M_{\mathrm{mom}}>0$, kin/allomaternal transfers $\Delta_{\mathrm{allo}}\ge 0$, and biparental provisioning $\Delta_{\mathrm{pair}}\ge 0$ delivered whenever a partner with baseline stay utility $u_0$ and emotional pair-bond commitment $L\ge 0$ resists juvenile-period outside temptation $\widehat{O}\sim\N(\mu_O,\sigma_O^2)$ ($u_0+L\ge\widehat{O}$), so $p_{\mathrm{bond}}(L)=\Phi(z_L)$ with $z_L=(u_0+L-\mu_O)/\sigma_O$ and $M_{\mathrm{tot}}(L)=M_{\mathrm{mom}}+\Delta_{\mathrm{allo}}+p_{\mathrm{bond}}(L)\Delta_{\mathrm{pair}}$. Let juvenile feasibility cap $B_{\mathrm{cap}}(L,\kappa_1)=B_0+\sqrt{M_{\mathrm{tot}}(L)/\kappa_1}$ anchor adult log-fitness $\ln w(B)=\beta_S B-\tfrac{\lambda_V}{2}\big(B-B_{\mathrm{cap}}(L,\kappa_1)\big)^2$ ($\beta_S,\lambda_V>0$). Then the unique evolutionary Lande equilibrium is
+\begin{equation}
+B^*(L,\kappa_1)=B_0+\sqrt{\frac{M_{\mathrm{mom}}+\Delta_{\mathrm{allo}}+\Phi(z_L)\Delta_{\mathrm{pair}}}{\kappa_1}}+\frac{\beta_S}{\lambda_V}.\label{eq:childhood}
+\end{equation}
+For $\Delta_{\mathrm{pair}}>0$, equilibrium brain volume increases strictly in pair-bond commitment ($\partial B^*/\partial L>0$) and exhibits strict supermodular complementarity between dietary/cooking efficiency $\tau=\kappa_1^{-1/2}$ and commitment love $L$:
+\begin{equation}
+\frac{\partial^2 B^*}{\partial\tau\,\partial L}=\frac{\Delta_{\mathrm{pair}}\,\varphi(z_L)}{2\,\sigma_O\,\sqrt{M_{\mathrm{tot}}(L)}}>0.\label{eq:childcomp}
+\end{equation}
+\end{proposition}
+
 \subsection{Complete Proofs}\label{app:proofs}
 \noindent\textbf{Gaussian tilting lemma.} For jointly Gaussian $(A,\mathbf X)$ and $w=\exp(\mathbf h^\top\mathbf X)$, differentiating the joint moment-generating function gives $\E[Aw]/\E[w]=\E[A]+\Cov(A,\mathbf h^\top\mathbf X)$. For $x\sim\N(0,V)$ and $w=\exp(kx-\tfrac c2x^2)$, completing the square yields tilted law $\N(kV/(1+cV),V/(1+cV))$.
 
@@ -311,7 +334,9 @@ whereas multi-witness, multi-context observation ($m,k\to\infty$) eliminates bot
 
 \noindent\textbf{Propositions~\ref{prop:aim}--\ref{prop:episodes} and Corollaries~\ref{cor:cue},~\ref{cor:floor}.} Joint Gaussianity of $(A_F,A_G,Y)$ gives $S_{A_X}=i\,\Cov(A_X,Y)/\SD(Y)$ with $\Cov(A_X,Y)=h_X^2\bar\ell_XV_X$ (Proposition~\ref{prop:aim}); for $Q=T+A_Q+e$, $\Cov(A_G,Q)=0$ (Corollary~\ref{cor:cue}). In Proposition~\ref{prop:repeat}, $g(n)=\mathrm d\sqrt{R}/\mathrm dn>0$ has $\mathrm d\ln g/\mathrm dn<0$ with $g(0^+)=\infty,g(\infty)=0$, so $g(n^*)=\delta/B$ has a unique root decreasing in $\delta/B$. In Proposition~\ref{prop:despot}, $\phi(k)=\mathrm d\ln U/\mathrm dk=-q/(1-kq)+\theta[1-p(k)]/(1+k)$ is strictly decreasing on $[0,1/q)$, with $\phi(0)>0\iff\theta M^\theta/(1+M^\theta)>q$ and $\lim_{M\to\infty}\phi(k)=0$ at $k^*=(\theta-q)/[q(1+\theta)]$. In Proposition~\ref{prop:episodes}, $\E z=0$ and $\bar c_+=\E[c\mid c>0]$ give $\Cov(z,w)=\E[zc\mid c>0]/\bar c_+=\E[z\mid c>0]+\Cov(z,c\mid c>0)/\bar c_+$ and $\Var(w)=(1+I_{c>0})/p-1$; truncating below $z_q$ gives $\E[Z\mid Z>z_q]=\varphi(z_q)/(1-q)$ (Corollary~\ref{cor:floor}). \qed
 
-\noindent\textbf{Propositions~\ref{prop:delivery}--\ref{prop:twoway} and Corollaries~\ref{cor:ritual}--\ref{cor:narrow}.} With independent posterior estimates $\hat b,\hat p$, $\Cov(A_B,\hat p\hat b)=\bar p\Cov(A_B,\hat b)=\bar pR_bV_{A,B}$ and symmetrically for $S_{A_P}$; Lande dynamics $V_{A,B}(sR_b\bar p-c_B\bar b)$ and $V_{A,P}(sR_p\bar b-c_P\bar p)$ destabilize $(0,0)$ iff $s^2R_bR_p>c_Bc_P$ (Proposition~\ref{prop:delivery}). With $dn$ staged tests and $m=(1-d)n$ unstaged occasions, $F\mid q\sim\mathrm{Binomial}(m,q)$ has $\Cov(F,q)=mV_P$ and $\Var(F)=m^2V_P+m\nu$, giving Eq.~\eqref{eq:staging}, clean-record probability $(1-q)^m$, and unique interior maximizer $d^*$ of $[(1+A/d)(1+C/(1-d))]^{-1}$ in Eq.~\eqref{eq:dstar} (Proposition~\ref{prop:staging}). Replacing $\hat p$ by $e+(1-e)\hat p$ gives Eq.~\eqref{eq:enforce}; stationarity yields $\bar p^*=T(1-e)[e+(1-e)\bar p^*]$ and Eq.~\eqref{eq:enforceeq}, with $\partial\bar p^*/\partial(1-e)=0$ at $1-e=(1-\sqrt{1-T})/T$ (Proposition~\ref{prop:enforce}). Conditioning on coercion indicator $F$ gives Eq.~\eqref{eq:coercion}. In Proposition~\ref{prop:ancestors}, $\E[k^2]=(1-q)(m+(1+\alpha)m^2)$ with $m=\bar k/(1-q)$ yields $\bar k-1+V/\bar k=\bar k(1+\alpha)/(1-q)$, hence $N_e/N=(1-q)/(1+\alpha)$~\cite{kimura1963}. Setting Spearman--Brown reliability $nr_1/(1+(n-1)r_1)=R^*$ with $n=k\lambda(1-d)T$ gives Eq.~\eqref{eq:waiting} (Proposition~\ref{prop:waiting}) and Corollary~\ref{cor:ritual}; linear covariance of $Y_T=G+x\bar a_T+\bar\varepsilon_T$ gives Corollary~\ref{cor:narrow}. Finally, averaging Eq.~\eqref{eq:twowaymodel} over $m$ observers and $k$ contexts yields $\Var(\bar X_{i,m,k})=\sigma_T^2+\sigma_H^2+\sigma_C^2/k+\sigma_O^2/m+\sigma_\varepsilon^2/(mk)$ and $\Cov(T_i,\bar X_{i,m,k})=\sigma_T^2$, establishing Eqs.~\eqref{eq:twoway}--\eqref{eq:twowayceil}. \qed
+\noindent\textbf{Propositions~\ref{prop:delivery}--\ref{prop:love} and Corollaries~\ref{cor:ritual}--\ref{cor:narrow}.} With independent posterior estimates $\hat b,\hat p$, $\Cov(A_B,\hat p\hat b)=\bar p\Cov(A_B,\hat b)=\bar pR_bV_{A,B}$ and symmetrically for $S_{A_P}$; Lande dynamics $V_{A,B}(sR_b\bar p-c_B\bar b)$ and $V_{A,P}(sR_p\bar b-c_P\bar p)$ destabilize $(0,0)$ iff $s^2R_bR_p>c_Bc_P$ (Proposition~\ref{prop:delivery}). With $dn$ staged tests and $m=(1-d)n$ unstaged occasions, $F\mid q\sim\mathrm{Binomial}(m,q)$ has $\Cov(F,q)=mV_P$ and $\Var(F)=m^2V_P+m\nu$, giving Eq.~\eqref{eq:staging}, clean-record probability $(1-q)^m$, and unique interior maximizer $d^*$ of $[(1+A/d)(1+C/(1-d))]^{-1}$ in Eq.~\eqref{eq:dstar} (Proposition~\ref{prop:staging}). Replacing $\hat p$ by $e+(1-e)\hat p$ gives Eq.~\eqref{eq:enforce}; stationarity yields $\bar p^*=T(1-e)[e+(1-e)\bar p^*]$ and Eq.~\eqref{eq:enforceeq}, with $\partial\bar p^*/\partial(1-e)=0$ at $1-e=(1-\sqrt{1-T})/T$ (Proposition~\ref{prop:enforce}). Conditioning on coercion indicator $F$ gives Eq.~\eqref{eq:coercion}. In Proposition~\ref{prop:ancestors}, $\E[k^2]=(1-q)(m+(1+\alpha)m^2)$ with $m=\bar k/(1-q)$ yields $\bar k-1+V/\bar k=\bar k(1+\alpha)/(1-q)$, hence $N_e/N=(1-q)/(1+\alpha)$~\cite{kimura1963}. Setting Spearman--Brown reliability $nr_1/(1+(n-1)r_1)=R^*$ with $n=k\lambda(1-d)T$ gives Eq.~\eqref{eq:waiting} (Proposition~\ref{prop:waiting}) and Corollary~\ref{cor:ritual}; linear covariance of $Y_T=G+x\bar a_T+\bar\varepsilon_T$ gives Corollary~\ref{cor:narrow}. Averaging Eq.~\eqref{eq:twowaymodel} over $m$ observers and $k$ contexts yields $\Var(\bar X_{i,m,k})=\sigma_T^2+\sigma_H^2+\sigma_C^2/k+\sigma_O^2/m+\sigma_\varepsilon^2/(mk)$ and $\Cov(T_i,\bar X_{i,m,k})=\sigma_T^2$, establishing Eqs.~\eqref{eq:twoway}--\eqref{eq:twowayceil} (Proposition~\ref{prop:twoway}). Finally, in Proposition~\ref{prop:love}, standard normal signal extraction gives $\E[X_j\mid\hat X_{j,0}]=\sqrt{\rho_X}\hat X_{j,0}$, $\E[K_j\mid\hat K_{j,0}]=\sqrt{\rho_{K,0}}\hat K_{j,0}$, and $\E[D_{ij}\mid\hat X_{j,0},\hat K_{j,0}]=0$, so $\E[U_{ij}\mid\hat X_{j,0},\hat K_{j,0}]=\alpha_X\sqrt{\rho_X}\hat X_{j,0}+\alpha_K\sqrt{\rho_{K,0}}\hat K_{j,0}$, yielding $|w_{X,0}|>|w_{K,0}|\iff\rho_{K,0}/\rho_X<(\alpha_X/\alpha_K)^2$ while post-entry observability ($\rho_{K,T}\to 1$) restores structural slopes $(\alpha_X,\alpha_K)$ (part~(i)); truncating $\hat X_{j,0}\ge\Phi^{-1}(1-q)$ gives $\E[U_{ij}\mid\hat X_{j,0}\ge z_{1-q}]=\alpha_X\sqrt{\rho_X}\varphi(z_{1-q})/q$ by orthogonality of $(K_j,D_{ij})$ to $\hat X_{j,0}$ (part~(ii)); and differentiating $C_{ij,t}=U_{ij}+I_{ij,t}-\gamma\widehat O_{i,t}$ with respect to $\widehat O_{i,t}$ gives $-\gamma<0$, shifting $C_{ij,t}$ downward stochastically and strictly increasing $\Pr(C_{ij,t}<\theta)$ whenever $C_{ij,t}$ has positive density at $\theta$ (part~(iii)). \qed
+
+\noindent\textbf{Proposition~\ref{prop:childhood}.} Under $\widehat{O}\sim\N(\mu_O,\sigma_O^2)$, bond survival through $T_J$ has probability $\Pr(\widehat{O}\le u_0+L)=\Phi\big((u_0+L-\mu_O)/\sigma_O\big)=p_{\mathrm{bond}}(L)$. Equating $\kappa_1(B_{\mathrm{cap}}-B_0)^2=M_{\mathrm{tot}}(L)$ on $B_{\mathrm{cap}}>B_0$ gives $B_{\mathrm{cap}}(L,\kappa_1)=B_0+\tau\sqrt{M_{\mathrm{tot}}(L)}$ with $\tau=\kappa_1^{-1/2}$. For $B\sim\N(\bar B,V_P)$ under $\ln w(B)=\beta_S B-\tfrac{\lambda_V}{2}(B-B_{\mathrm{cap}})^2$, Lande's selection gradient $\partial\E[\ln w]/\partial\bar B=\beta_S-\lambda_V(\bar B-B_{\mathrm{cap}})$ has unique globally stable zero $B^*(L,\kappa_1)=B_{\mathrm{cap}}(L,\kappa_1)+\beta_S/\lambda_V$, establishing Eq.~\eqref{eq:childhood} (reducing to the solitary-mother ceiling $B_0+\sqrt{M_{\mathrm{mom}}/\kappa_1}+\beta_S/\lambda_V$ when $\Delta_{\mathrm{allo}}=\Delta_{\mathrm{pair}}=0$). Differentiating $B^*=B_0+\tau\sqrt{M_{\mathrm{tot}}(L)}+\beta_S/\lambda_V$ yields $\partial B^*/\partial L=\tau\Delta_{\mathrm{pair}}\varphi(z)/(2\sigma_O\sqrt{M_{\mathrm{tot}}(L)})>0$ for $z=(u_0+L-\mu_O)/\sigma_O$ and $\Delta_{\mathrm{pair}}>0$, and differentiating with respect to $\tau$ yields Eq.~\eqref{eq:childcomp}. \qed
 
 \setcounter{table}{0}
 \renewcommand{\thetable}{B\arabic{table}}
@@ -319,10 +344,10 @@ whereas multi-witness, multi-context observation ($m,k\to\infty$) eliminates bot
 
 \section{Simulation Verification and Paleoclimatic Audit of the \texorpdfstring{1.5--0.7\,Ma}{1.5-0.7 Ma} Plateau}\label{app:paleo}
 
-Every analytical proposition in Appendix~\ref{app:theory} was verified in Python with fixed \texttt{SeedSequence} seeds against independent Monte Carlo and individual-based evolutionary simulations (E1--E21, plus zero-shared-code audit scripts A1--A17; Table~\ref{tab:experiments}). Across all closed-form checks, simulated selection differentials, equilibrium trait means, and variance recursions agree with analytical formulas within Monte Carlo sampling precision (maximum standardized deviation $|z|=\AudZ$; exact algebraic and quadrature checks $\le\AudEq$).
+Every analytical proposition in Appendix~\ref{app:theory} was verified in Python with fixed \texttt{SeedSequence} seeds against independent Monte Carlo and individual-based evolutionary simulations (E1--E22, plus zero-shared-code audit scripts A1--A17; Table~\ref{tab:experiments}). Across all closed-form checks, simulated selection differentials, equilibrium trait means, and variance recursions agree with analytical formulas within Monte Carlo sampling precision (maximum standardized deviation $|z|=\AudZ$; exact algebraic and quadrature checks $\le\AudEq$).
 
 \begin{table}[!t]
-\caption{Summary of Numerical Verification Suite (\texttt{E1}--\texttt{E21}, \texttt{A1}--\texttt{A17}).}\label{tab:experiments}
+\caption{Summary of Numerical Verification Suite (\texttt{E1}--\texttt{E22}, \texttt{A1}--\texttt{A17}).}\label{tab:experiments}
 \scriptsize
 \setlength{\tabcolsep}{3.2pt}
 \begin{tabularx}{\columnwidth}{@{}lLL@{}}
@@ -333,7 +358,7 @@ E1--E3, E9 & Props.~\ref{prop:identity}--\ref{prop:diversity} ($10^5$--$2\times1
 E4--E6 & Props.~\ref{prop:assort}--\ref{prop:tissue}, deferred acceptance & Infinitesimal $V_A$ within \MGerr\%; Lande tissue eq.\ $\PersSim\pm\PersSD$ vs.\ \PersPred \\
 E10--E12 & Props.~\ref{prop:aim}--\ref{prop:despot} (contest aim, risk, skew) & Aim $|z|=\AimMaxZ$; optimal bout count $|z|=\RepMaxZ$; log-concavity exact \\
 E15--E16 & Props.~\ref{prop:time}--\ref{prop:division}, \ref{prop:staging}--\ref{prop:enforce} & Aim ratio within \PolyAimErr\%; staging $\le\VerMaxDiff$; IBM enforcement $\le\EnfIbmDiff$ \\
-E21, Two-way & Props.~\ref{prop:ancestors}--\ref{prop:twoway}, Cor.~\ref{cor:ritual}--\ref{cor:narrow} & Drift $N_e/N$ within \NtAncErr\%; 25,000-target two-way MC $|\Delta R^2|\le 0.003$ \\
+E21--E22, 2-way & Props.~\ref{prop:ancestors}--\ref{prop:childhood}, Cor.~\ref{cor:ritual}--\ref{cor:narrow} & Drift $N_e/N$ within \NtAncErr\%; 2-way MC $|\Delta R^2|\le 0.003$; E22 Lande $|\Delta B^*|\le 0.75\ccm$ \\
 A1--A17 & Independent re-derivations \& raw-file recounts & Quadrature $\AudQuad$; Lande $\AudEq$; raw survey/culture recounts $\AudCultures$ diff \\
 \bottomrule
 \end{tabularx}
@@ -362,16 +387,17 @@ Window & Lag After Onset & Event or Hypothesis & Evidence Tier & Supported Empir
 \section{Digital-Platform, Stature, Facial-Attribution, and \texorpdfstring{\texttt{HoloFace-L1}}{HoloFace-L1} Audits}\label{app:platforms}
 
 \subsection{\texorpdfstring{\texttt{HoloFace-L1}}{HoloFace-L1} Multimodal Architecture and Psychometric Reliability Ceiling}
-To establish the sharpest empirical bound on what static visual portraits and self-reported profile metadata reveal about human consensus ratings (Hot-or-Not benchmark: $10{,}000$ profiles, $20{,}000$ photographs, stratified $8{,}000 / 1{,}000 / 1{,}000$ train/validation/test split, zero identity leakage), we synthesized all 43 experimental waves (H1--H43, spanning 61 extracted foundation, 3D morphometric, spectral, and cortical representations) into a two-regime benchmark architecture (\texttt{HoloFace-L1}; Table~\ref{tab:holoface}):
-\begin{enumerate}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
-\item \textbf{\texttt{HoloFace-Pure} (strictly zero metadata):} Pools four orthogonal visual representation families extracted solely from aligned portrait pixels, solved via out-of-fold symmetric positive-definite Cholesky/Woodbury ridge regressions and simplex convex combination on validation MAE: (F1) 3D craniofacial reconstruction and Kendall Riemannian tangent-space shape coordinates (\texttt{1k3d68} + 106-point Delaunay log-Jacobians, zero pixel intensities); (F2) skin chromophore hemoglobin/melanin separation, intrinsic shading/albedo decomposition, and $1/f^\beta$ spectral micro-relief; (F3) changeable pose, yaw/pitch, smile curvature, eye-aperture openness, and framing geometry; and (F4) 12-space foundation and cortical foveated visual backbones (\texttt{DINOv2}, \texttt{CLIP}, \texttt{SigLIP}, \texttt{ConvNeXt}, \texttt{EVA-02}, \texttt{Swin}, \texttt{ArcFace}, \texttt{FARL}). Exact Shapley attribution across all $2^4=16$ family subsets decomposes held-out explained rank variance ($\rho^2$) additively.
-\item \textbf{\texttt{HoloFace-Full} (multimodal exact-$L_1$ + skew-unbiased $L_2$ stacker):} Combines 29 level-1 out-of-fold visual, tabular (\texttt{LightGBM}/\texttt{CatBoost} metadata interactions), and cross-modal FiLM/OT/RKHS predictors with empirical-Bayes target shrinkage on the $8{,}000$ training profiles, followed by 5-fold validation cross-validated exact-$L_1$ linear programming (\texttt{HiGHS}) for median-unbiased MAE (\PboHoloFullTestMAE) and ridge $L_2$ calibration eliminating male right-skew rating bias (\PboHoloMaleLTwoBias).
-\item \textbf{Finite-voter psychometric ceiling:} Because platform raters scored portraits on a $1$--$10$ integer scale, finite vote counts $n_i\ge 20$ introduce binomial/multinomial sampling error $\sigma_{\text{voter}}^2/n_i$ around each portrait's infinite-voter consensus truth $\theta_i$. Regressing out-of-fold squared residuals $(y_i-\hat f_{\text{oof}}(x_i))^2$ on $1/n_i$ strictly within the $8{,}000$ training profiles separates per-voter rating variance ($\hat\sigma_{\text{voter}}^2=\PboVoterSigmaSq$) from irreducible single-context consensus variance, yielding exact finite-voter Oracle Spearman and MAE bounds across every vote-depth tier (20--49, 50--199, 200+, 500+; Table~\ref{tab:holoface}).
+To bound what static portraits and profile metadata reveal about human consensus ratings (Hot-or-Not: $10{,}000$ profiles, $20{,}000$ images, stratified $8{,}000 / 1{,}000 / 1{,}000$ train/val/test split, zero identity leakage), we synthesized 43 experimental waves (H1--H43, 61 representations) into \texttt{HoloFace-L1} (Table~\ref{tab:holoface}):
+\begin{enumerate}[leftmargin=1.4em,itemsep=0.5pt,topsep=1.5pt]
+\item \textbf{\texttt{HoloFace-Pure} (zero metadata):} Pools four visual families strictly from aligned pixels via OOF Cholesky/Woodbury ridge and validation simplex weights: (F1) 3D Kendall Riemannian shape (\texttt{1k3d68} + 106-landmark Delaunay log-Jacobians, zero pixels); (F2) skin hemoglobin/melanin chromophores and $1/f^\beta$ micro-relief; (F3) pose, smile, eye aperture, and framing; and (F4) 12-space foundation/cortical backbones (\texttt{DINOv2}, \texttt{CLIP}, \texttt{SigLIP}, \texttt{ConvNeXt}, \texttt{EVA-02}, \texttt{Swin}, \texttt{ArcFace}, \texttt{FARL}), with exact $2^4=16$ Shapley $\rho^2$ attribution.
+\item \textbf{\texttt{HoloFace-Full} ($L_1 + L_2$ stacker):} Combines 29 OOF visual, tabular (\texttt{LightGBM}/\texttt{CatBoost}), and cross-modal FiLM/OT/RKHS predictors with empirical-Bayes shrinkage, 5-fold exact-$L_1$ LP (\texttt{HiGHS}, Test MAE \PboHoloFullTestMAE), and ridge $L_2$ calibration eliminating male right-skew bias ($\PboHoloMaleLTwoBias$).
+\item \textbf{Psychometric ceiling:} Regressing training OOF squared residuals $(y_i-\hat f_{\text{oof}}(x_i))^2$ on $1/n_i$ ($n_i\ge 20$) isolates per-voter rating variance ($\hat\sigma_{\text{voter}}^2=\PboVoterSigmaSq$), yielding finite-voter Oracle Spearman and MAE bounds across vote tiers (Table~\ref{tab:holoface}).
 \end{enumerate}
 
 \begin{table*}[!t]
 \caption{\texttt{HoloFace-L1} 43-Wave Multimodal Facial Benchmark, Exact 4-Family Shapley Decomposition, and Finite-Voter Psychometric Ceiling ($10{,}000$ Profiles, $20{,}000$ Portraits).}\label{tab:holoface}
 \scriptsize
+\renewcommand{\arraystretch}{0.92}
 \setlength{\tabcolsep}{4.0pt}
 \begin{tabularx}{\textwidth}{@{}llrrrrrL@{}}
 \toprule
@@ -384,7 +410,7 @@ Model / Tier & Input Regime & Val MAE $\downarrow$ & Test MAE $\downarrow$ & RMS
 \end{table*}
 
 \subsection{Platform Eligibility, Vote-Depth, and Response-Coding Sensitivity}
-Tables~\ref{tab:hon_sens}--\ref{tab:pov_sens} audit the 6.68M-row Hot-or-Not and 1.14M-row Plenty of Fish registries across vote-count thresholds ($n_{\text{votes}}\ge 1$ to $100$), image-inventory completeness, non-response coding (``Prefer Not To Say'' vs.\ explicit ``Want children''), sexual orientation, and marital-status restrictions. Both the female-steeper age-percentile gradient on HON and the midlife childless ``Want children'' crossover on POV persist across every specification.
+Tables~\ref{tab:hon_sens}--\ref{tab:pov_sens} audit the 6.68M Hot-or-Not and 1.14M Plenty of Fish registries (complemented by \PboOkcN{} \texttt{OkCupid-JSE} profiles~\cite{kim2015}) across vote thresholds ($n_{\text{votes}}\ge 1$ to $100$), image inventory, non-response coding, orientation, and marital status; both the female-steeper HON age slope and the POV childless crossover hold throughout.
 
 \begin{table*}[!t]
 \caption{HON Sensitivity Across Minimum Vote Thresholds and Image Inventory.}\label{tab:hon_sens}
@@ -411,6 +437,7 @@ Tables~\ref{tab:hon_sens}--\ref{tab:pov_sens} audit the 6.68M-row Hot-or-Not and
 \begin{table*}[!t]
 \caption{POV Crossover Robustness Across Sample Restrictions and Outcome Definitions (Ages 25--29 vs.\ 45--49).}\label{tab:pov_sens}
 \scriptsize
+\renewcommand{\arraystretch}{0.82}
 \setlength{\tabcolsep}{4.5pt}
 \begin{tabularx}{\textwidth}{@{}Lrrrrrr@{}}
 \toprule
@@ -425,21 +452,19 @@ Tables~\ref{tab:hon_sens}--\ref{tab:pov_sens} audit the 6.68M-row Hot-or-Not and
 
 \section{Survey Cohort Robustness and Pre-Committed Falsifiers}\label{app:falsifiers}
 
-Tables~\ref{tab:gssrobust} and~\ref{tab:gssgate} verify that the sex-asymmetric access differential on men's personal income ($\GssIncMAcc\SD$) versus negative family-size differentials in both sexes (General Social Survey, 1972--2024, $n=\GssN$) holds across unweighted estimation, narrower completed-fertility ages (50--74), survey-period splits, and birth cohorts (1920--1979) even as non-marital childbearing rose. Finally, Table~\ref{tab:falsifiers} pre-commits twelve discriminating empirical tests and explicit observations that would falsify or bound each link of the multi-context jury framework.
+Tables~\ref{tab:gssrobust} and~\ref{tab:gssgate} verify that the sex-asymmetric access differential on men's personal income ($\GssIncMAcc\SD$) versus negative family-size differentials in both sexes (General Social Survey, 1972--2024, $n=\GssN$) holds across unweighted estimation, narrower completed-fertility ages (50--74), survey-period splits, and birth cohorts (1920--1979) even as non-marital childbearing rose. Finally, Table~\ref{tab:falsifiers} pre-commits fourteen discriminating empirical tests and explicit observations that would falsify or bound each link of the multi-context jury framework.
 
 \begin{table*}[!t]
 \caption{Robustness of the Access--Number Selection Decomposition Across Survey Weights, Age Windows, and Periods (GSS 1972--2024).}\label{tab:gssrobust}
 \scriptsize
+\renewcommand{\arraystretch}{0.80}
 \begin{tabularx}{\textwidth}{@{}llCCC@{}}
 \toprule
 \tabinput{generated/tab_gss_robust.tex}
 \bottomrule
 \end{tabularx}
-\end{table*}
-
-\begin{table*}[!t]
+\vspace{2pt}
 \caption{The Pairing Gate Across Birth Cohorts: Never-Married Share, Non-Marital Parenthood, and Male Income Pairing Differential.}\label{tab:gssgate}
-\scriptsize
 \begin{tabularx}{\textwidth}{@{}llCCCC@{}}
 \toprule
 \tabinput{generated/tab_gss_gate.tex}
@@ -448,25 +473,28 @@ Tables~\ref{tab:gssrobust} and~\ref{tab:gssgate} verify that the sex-asymmetric 
 \end{table*}
 
 \begin{table*}[!t]
-\caption{Twelve Pre-Committed Discriminating Predictions and Explicit Falsifying Outcomes.}\label{tab:falsifiers}
+\caption{Fourteen Pre-Committed Discriminating Predictions and Explicit Falsifying Outcomes.}\label{tab:falsifiers}
 \scriptsize
-\setlength{\tabcolsep}{3.8pt}
+\renewcommand{\arraystretch}{0.80}
+\setlength{\tabcolsep}{3.5pt}
 \begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}p{0.20\textwidth}LL@{}}
 \toprule
 ID & Mechanism Link & Identifying Empirical Design & Observation That Refutes or Bounds Claim \\
 \midrule
 F1 & Energetic--information co-limitation (Prop.~\ref{prop:tissue}) & High-resolution dated fossil crania vs.\ regional archaeological fire/cooking and diet proxies & Sustained brain-volume steps precede energetic/foraging shifts or track population size alone \\
-F2 & Causal tissue coupling ($a>0$, Prop.~\ref{prop:tissue}) & Within-sibling / Mendelian-randomization designs linking endocranial volume to general cognitive factor $g$ & Within-family causal effect $a\approx 0$ (all phenotypic correlation due to stratification) \\
-F3 & Multi-domain breadth vs.\ repetition (Prop.~\ref{prop:portfolio}) & Fixed observation budget randomized across $K$ distinct tasks vs.\ $K$ repetitions of one task & Single-domain repetition predicts held-out $g$ as accurately as $K$-domain breadth \\
-F4 & Breadth taxes gaming (Cor.~\ref{cor:inflation}) & Coached single-domain inflation under $K$-domain common evaluation vs.\ specialist evaluation & Single-domain coaching shifts $K$-domain general rankings without $1/K$ dilution \\
-F5 & Division of labor relaxes generalist aim (Prop.~\ref{prop:division}) & Cross-societal comparison of embodied generalist foraging bands vs.\ niche-specialized economies & Specialist evaluation weights general factor $g$ as strongly as common-domain comparison \\
-F6 & Two-way context ceiling (Prop.~\ref{prop:twoway}) & Scaling rater count $m\to 10^3$ on one static portrait/clip vs.\ pooling $k\ge 4$ distinct unscripted contexts & Infinite single-context raters approach multi-context validity ($R^2_{\infty,1}\approx R^2_{m,k}$) \\
+F2 & Causal tissue coupling ($a>0$) & Sibling / Mendelian-randomization designs linking brain volume to $g$ & Within-family causal effect $a\approx 0$ (stratification only) \\
+F3 & Multi-domain breadth (Prop.~\ref{prop:portfolio}) & Fixed budget randomized across $K$ distinct tasks vs.\ $K$ repeats & Single-domain repetition predicts held-out $g$ as well as breadth \\
+F4 & Breadth taxes gaming (Cor.~\ref{cor:inflation}) & Coached single-domain inflation under $K$-domain vs.\ specialist choice & Single-domain coaching shifts $K$-domain ranks without $1/K$ dilution \\
+F5 & Division of labor (Prop.~\ref{prop:division}) & Embodied generalist foraging bands vs.\ niche-specialized economies & Specialist evaluation weights $g$ as strongly as common domains \\
+F6 & Two-way context ceiling (Prop.~\ref{prop:twoway}) & Scaling $m\to 10^3$ portrait raters vs.\ pooling $k\ge 4$ live contexts & Infinite single-context raters reach multi-context $R^2_{\infty,1}\approx R^2_{m,k}$ \\
 F7 & Legibility governs stranger choice (Eq.~\eqref{eq:sb}) & Randomizing encounter length (4 vs.\ 60\,min) and multi-witness panel reports before partner choice & Weights on intelligence and sincerity fail to rise as inter-rater agreement increases \\
 F8 & Staged capacity vs.\ unstaged delivery (Prop.~\ref{prop:staging}) & Comparing announced test performance vs.\ unannounced everyday conduct as predictors of later partner defaults & Announced staged assessments predict long-run reliability/default rates as well as unstaged conduct \\
 F9 & Partial enforcement crowds in/out commitment (Prop.~\ref{prop:enforce}) & Behavioral games and cross-cultural sharing norms varying third-party enforced transfer share $e\in[0,1]$ & Voluntary generosity rises monotonically at $e\to 1$ or partner-choice weights ignore $e$ \\
 F10 & Male access floor vs.\ podium (Prop.~\ref{prop:episodes}) & Decomposing male reproductive variance into childlessness ($c=0$) vs.\ father family size ($c>0$) & Selection differential on male standing sits primarily in high-parity fathers rather than pairing access \\
 F11 & Cue vs.\ trait response (Cor.~\ref{cor:cue}) & Separating preference slopes on transient life-stage cues (youth) or thresholded stature ($6'0''$) from completed fertility & Steep online/stated preference slopes translate into proportional completed-fertility differentials \\
 F12 & Witness density and union timing (Prop.~\ref{prop:waiting}) & Survival analysis of time-to-cohabitation/marriage by mutual-acquaintance and kin-witness density at first meeting & Thin witness networks show equal or faster progression to durable fertility-producing unions, net of selection \\
+F13 & Entry filtering vs.\ pair-bond welfare (Prop.~\ref{prop:love}) & Longitudinal tracking of unions formed via vertical filters vs.\ social networks, plus social-media abstinence trials & Entry consensus attributes (money, stature, photo rank) predict multi-year satisfaction as strongly as kindness \\
+F14 & Childhood metabolic \& pair-bond ceiling (Prop.~\ref{prop:childhood}) & Phylogenetic regression of adult endocranial volume on juvenile brain RMR, biparental care, and diet across mammals & Lineages cross the $\sim\!650$--$700\ccm$ juvenile ceiling under solo maternal care without pair-bond/dietary release \\
 \bottomrule
 \end{tabularx}
 \end{table*}

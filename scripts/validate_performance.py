@@ -419,3 +419,194 @@ def check(data):
         assert tier_cell["holoface_pure_spearman_r"] <= tier_cell["holoface_full_spearman_r"] < tier_cell["oracle_finite_vote_spearman_r"]
     assert 0.30 < pvc["votes_500_plus"]["irreducible_single_context_gap_full"] < 0.60
     assert len(hb["waves_trajectory"]) >= 43
+
+    # 8. Self-Written Voice, Dyadic Spark, Entry-to-Bond Love Reversal, Joel 2020, SCCS & 7 Macro KPIs
+    cc = pov["childless_crossover"]
+    assert 40.0 <= cc["band_midpoint_interpolated_age"] <= 43.0
+    assert 40 <= cc["first_nonpositive_exact_age"] <= 43
+    for ex_cell in cc["exact_ages_35_47"].values():
+        check_rate(ex_cell["Female"])
+        check_rate(ex_cell["Male"])
+
+    swv = pov["self_written_voice"]
+    assert swv["min_trimmed_chars"] == 30
+    assert swv["eligible_with_essay"]["Pooled"] == swv["eligible_with_essay"]["Female"] + swv["eligible_with_essay"]["Male"] > 1_000_000
+    for th in swv["themes"].values():
+        for g_key in ("Pooled", "Female", "Male"):
+            check_rate(th[g_key])
+    for w_dict in swv["by_life_window"].values():
+        for th_w in w_dict.values():
+            check_rate(th_w["Female"])
+            check_rate(th_w["Male"])
+    assert swv["voice_to_checkbox_ratios"]["female_family_to_tall"] > 100.0
+    assert swv["voice_to_checkbox_ratios"]["female_honesty_to_tall"] > 45.0
+    assert swv["voice_to_checkbox_ratios"]["female_kindness_to_wealth"] > 25.0
+
+    dc = speed["dyadic_chemistry"]
+    for v_part in dc["variance_partition"].values():
+        assert v_part["n"] >= 7000
+        close(sum(v_part["unbiased_srm_shares"].values()), 1.0)
+        close(sum(v_part["sample_mean_shares"].values()), 1.0)
+    assert dc["variance_partition"]["like"]["unbiased_srm_shares"]["unique_dyadic_and_noise"] > 2.5 * dc["variance_partition"]["like"]["unbiased_srm_shares"]["partner_consensus"]
+    rec_l = dc["mutual_dyadic_reciprocity_like"]
+    assert rec_l["n_dyads"] >= 3900 and rec_l["interval_95"][0] > 0.15
+    w_rec = dc["reciprocity_adjusted_slopes"]["women"]
+    assert w_rec["dyadic_spark_sum_fun_shar_prob_pp"]["estimate"] > w_rec["coefficients_pp"]["attr"]["estimate"]
+
+    hap = whyte["happiness_by_partnered"]
+    for g_key in ("Men", "Women", "Pooled"):
+        assert hap[g_key]["raw_lift_pts"]["ci_95"][0] > 4.0
+        assert hap[g_key]["age_adjusted_lift_pts"]["ci_95"][0] > 4.0
+
+    for b_age in kow["budget_by_age"].values():
+        assert b_age["n_men"] >= minimum and b_age["n_women"] >= minimum
+        for sex_k in ("men", "women"):
+            ranked = sorted(b_age["items"], key=lambda it: b_age["items"][it][sex_k]["mean"], reverse=True)
+            assert ranked[0] == "kindness"
+            assert set(ranked[:3]) <= {"kindness", "health", "looks", "resources"}
+
+    pag = kow["partner_age_gap_by_age"]["brackets"]
+    assert pag["18-24"]["women_minus_men_years"] < pag["40-49"]["women_minus_men_years"] < pag["60-79"]["women_minus_men_years"]
+    assert pag["60-79"]["women"]["mean"] > 0.5 and pag["60-79"]["men"]["mean"] < -3.5
+    assert wal["age_gap_by_age"]["50-75"]["women"]["mean"] > 1.0 and wal["age_gap_by_age"]["50-75"]["men"]["mean"] < -3.5
+
+    pbr = kow["pair_bond_reversal"]
+    prqc_f = pbr["relationship_quality_prqc"]["by_sex"]
+    for sx_k in ("men", "women"):
+        # Inside the pair bond, partner kindness dominates while partner resources collapse near zero
+        assert prqc_f[sx_k]["traits"]["kindness"]["sd_per_sd"] > 0.25
+        assert abs(prqc_f[sx_k]["traits"]["resources"]["sd_per_sd"]) < 0.05
+        assert pbr["reported_infidelity"]["by_sex"][sx_k]["traits"]["kindness"]["pp_per_sd"] < -1.0
+
+    tla = kow["triangular_love_arc"]["by_duration"]
+    assert tla["25y+"]["commitment"]["mean"] > tla["<=1y"]["commitment"]["mean"]
+    assert tla["1-3y"]["passion"]["mean"] > tla["25y+"]["passion"]["mean"]
+    assert kow["marry_without_love"]["by_sex"]["women"]["median"] < kow["marry_without_love"]["by_sex"]["men"]["median"]
+    assert kow["assortative_mating"]["religion"]["pearson_r"] > 0.60
+
+    sma = kow["social_media_and_alternatives"]
+    assert sma["epistemic_tier"].startswith("observational_")
+    assert sma["slopes_per_daily_hour"]["qoa_sd_per_hour"]["ci_95"][0] > 0.0
+    assert sma["slopes_per_daily_hour"]["prqc_sd_per_hour"]["ci_95"][1] < 0.0
+    assert sma["slopes_per_daily_hour"]["infidelity_pp_per_hour"]["ci_95"][0] > 1.0
+    assert sma["by_qoa_tier"]["high_4.5_to_7.0"]["infidelity_rate_pct"]["mean"] > sma["by_qoa_tier"]["low_1_to_2.5"]["infidelity_rate_pct"]["mean"] + 10.0
+
+    joel = osyn["joel_2020"]
+    assert re.fullmatch(r"[a-f0-9]{64}", joel["satisfaction_sha256"])
+    assert re.fullmatch(r"[a-f0-9]{64}", joel["commitment_sha256"])
+    assert joel["satisfaction"]["distinct_datasets"] == 43
+    assert joel["satisfaction"]["actor_rel_to_partner_trait_baseline_ratio"] > 5.0
+    assert joel["satisfaction"]["actor_rel_to_partner_trait_followup_ratio"] > 2.0
+
+    sccs = osyn["betzig_sccs"]
+    assert re.fullmatch(r"[a-f0-9]{64}", sccs["data_sha256"])
+    assert re.fullmatch(r"[a-f0-9]{64}", sccs["codes_sha256"])
+    assert sccs["adultery_to_aging_looks_ratio"] > 8.0
+    assert sccs["causes"]["old_age_loss_of_looks"]["share_mentioned"] < 0.08
+
+    mk = data["macro_selection_kpis"]
+    assert mk["schema_version"] == 2 and len(mk["kpis"]) == 8
+
+    # 8. v13 Cross-Scale Causal Closure & Empirical Audit Validation
+    chk_sd = data["speed_dating"]["checklist_and_hindsight"]
+    hw = chk_sd["hobby_checklist_vs_live_wavelength"]
+    assert hw["n_common_dyad_decisions"] == 7116
+    assert abs(hw["r_objective_hobby_corr_yes"]["estimate"]) < 0.05
+    assert hw["r_objective_hobby_corr_yes"]["interval_95"][0] < 0.0 < hw["r_objective_hobby_corr_yes"]["interval_95"][1]
+    assert hw["r_live_shared_wavelength_yes"]["estimate"] > 0.35
+    assert hw["live_to_checklist_r_ratio"] > 20.0
+    assert hw["chooser_fe_slopes"]["women"]["coefficients_pp"]["int_corr"]["interval_95"][0] < 0.0 < hw["chooser_fe_slopes"]["women"]["coefficients_pp"]["int_corr"]["interval_95"][1]
+    wps = chk_sd["within_person_shifts"]
+    assert wps["nextday_realized_minus_pre_stated"]["women"]["delta_points"]["attr"]["estimate"] > 8.0
+    assert wps["threeweek_stated_minus_nextday_realized"]["women"]["delta_points"]["intel"]["interval_95"][0] > 0.0
+    assert 0.35 < chk_sd["post_event_followup_3_4_weeks"]["went_on_followup_date_share_among_matched"] < 0.50
+
+    chk_kow = kow["checklist_and_surplus_decomposition"]
+    assert chk_kow["n_total"] > 45000
+    pk = chk_kow["pooled"]["predictors_sd_per_sd"]
+    assert pk["partner_kindness"]["estimate"] > 0.25
+    assert pk["idiographic_checklist_fit"]["estimate"] > 0.08
+    assert pk["partner_kindness"]["estimate"] > 2.5 * pk["idiographic_checklist_fit"]["estimate"]
+    assert abs(pk["marrying_up_surplus"]["estimate"]) < 0.04
+    assert abs(chk_kow["five_trait_controlled_marrying_up_sd"]) < 0.04
+    assert abs(chk_kow["signed_mate_minus_self_surplus_sd"]) < 0.04
+    for reg_row in chk_kow["by_cultural_regime"].values():
+        rp = reg_row["predictors_sd_per_sd"]
+        assert rp["partner_kindness"]["estimate"] > 0.24
+        assert rp["partner_kindness"]["estimate"] > 2.4 * rp["idiographic_checklist_fit"]["estimate"]
+        assert rp["partner_kindness"]["estimate"] > 5.0 * rp["partner_resources"]["estimate"]
+    assert kow["short_vs_long_term_ideals"]["by_sex"]["women"]["kindness"]["short_term_mean_1_to_11"] > kow["short_vs_long_term_ideals"]["by_sex"]["women"]["looks"]["short_term_mean_1_to_11"]
+    assert kow["jealousy_asymmetry"]["by_sex"]["women"]["emotional_minus_sexual"]["ci_95"][0] > 0.20
+
+    cc = osyn["childhood_coevolution"]
+    assert cc["kuzawa_2014_brain_metabolism"]["peak_rmr_pct"] == 66.3
+    assert cc["kuzawa_2014_brain_metabolism"]["peak_der_pct"] == 43.2
+    sccs_cc = cc["sccs_alloparenting_and_sharing"]
+    assert sccs_cc["early_childhood_exclusive_mother_sccs52"]["share"] == 0.0
+    assert sccs_cc["early_childhood_nonmaternal_majority_sccs52"]["share"] > 0.70
+    assert sccs_cc["father_close_early_childhood_sccs54"]["share"] > sccs_cc["father_close_infancy_sccs53"]["share"]
+    assert sccs_cc["community_food_sharing_beyond_nuclear_sccs1718"]["share"] > 0.88
+    e22 = cc["proposition_22_e22_coevolution"]
+    for reg_e22 in e22["regimes"].values():
+        assert reg_e22["abs_closed_minus_sim_cm3"] < 2.0
+    assert e22["love_devotion_gain_cm3"] > 200.0
+
+    nhs = osyn["nhs_campfire"]
+    for sha_k in ("discography_sha256", "naive_listeners_sha256", "ethnography_sha256", "cultures_sha256"):
+        assert re.fullmatch(r"[a-f0-9]{64}", nhs[sha_k])
+    assert nhs["discography_songs"] == 118 and nhs["discography_societies"] == 86
+    alg = nhs["acoustic_legibility_gradient"]
+    assert alg["lullaby"]["cohen_d"] > 1.5 and alg["dance"]["cohen_d"] > 1.2 and alg["love"]["cohen_d"] < 0.6
+    assert nhs["lullaby_to_love_d_ratio"] > 4.0
+
+    hcm = osyn["hcmst_2017"]
+    assert re.fullmatch(r"[a-f0-9]{64}", hcm["sha256"])
+    assert hcm["total_respondents"] == 3510 and hcm["meeting_coded_couples"] == 3295
+    assert hcm["by_venue"]["online_dating_app"]["pre_romance_acquaintance_years"]["median"] == 0.0
+    assert hcm["audit_compression_ratios"]["institutional_kin_to_app_mean_ratio"] > 8.0
+    assert hcm["intact_quality_boundary_check"]["ci_95"][0] < 0.0 < hcm["intact_quality_boundary_check"]["ci_95"][1]
+
+    gss_all = osyn["v9_anchors"]["gss_three_episodes_all"]
+    for g_k in ("income", "prestige", "schooling", "vocabulary"):
+        assert gss_all[g_k]["men"]["pairing"][0] > 0.0 and gss_all[g_k]["men"]["pairing"][1] > 0.0
+        assert gss_all[g_k]["men"]["number"][0] < 0.0 and gss_all[g_k]["men"]["number"][2] < 0.0
+
+    # 9. v14 Empirical Mind Selection & OkCupid-JSE Audience-Staging Validation
+    sat_b = chk_sd["objective_sat_blindness"]
+    assert sat_b["n_participants_with_sat"] == 202 and sat_b["n_dates_with_partner_sat"] == 2989
+    assert 0.0 < sat_b["r_stranger_intel_vs_partner_sat"]["estimate"] < 0.10
+    assert sat_b["stranger_intel_sat_r2"] < 0.01
+    assert sat_b["r_partner_sat_vs_yes"]["interval_95"][0] < 0.0 < sat_b["r_partner_sat_vs_yes"]["interval_95"][1]
+    assert sat_b["n_targets_ge10_raters"] == 154
+    assert sat_b["panel_to_single_r2_ratio"] > 5.0 and sat_b["panel_intel_sat_r2"] < 0.04
+
+    okc = osyn["okcupid_jse"]
+    for sha_k in ("profiles_sha256", "essays_sha256"):
+        assert re.fullmatch(r"[a-f0-9]{64}", okc[sha_k])
+    assert okc["total_profiles"] == 59946
+    assert okc["sex_counts"] == {"men": 35829, "women": 24117}
+    ost = okc["orientation_staging_experiment"]
+    assert ost["groups"]["men_straight"]["stature"]["jump_5ft11_to_6ft0_pct"] > 15.0
+    assert ost["groups"]["men_straight"]["stature"]["drop_6ft0_to_6ft1_pct"] < -40.0
+    assert ost["groups"]["men_gay"]["stature"]["jump_5ft11_to_6ft0_pct"] < 0.0
+    assert ost["straight_to_gay_male_income_disclosure_ratio"] > 1.5
+    assert ost["straight_male_to_female_income_disclosure_ratio"] > 1.8
+
+    tpp = okc["ten_prompt_portfolio"]
+    assert tpp["total_rows"] == 59946 and tpp["total_nonempty_essays_ge5_chars"] > 480000
+    mdv = tpp["multi_domain_lexical_validity"]
+    assert mdv["cross_prompt_log_length_mean_r"] > 0.40
+    assert 0.08 < mdv["single_prompt_reliability_r1"] < 0.15
+    assert mdv["spearman_brown_curve_k_1_to_9"]["9"] > 0.50
+    assert mdv["k9_to_k1_validity_ratio"] > 4.5
+    amr = tpp["assortative_mind_requests_essay9"]
+    assert amr["n_users_ge3_domains_with_essay9"] > 44000
+    assert amr["q5_to_q1_mind_request_ratio"] > 1.35
+    e9 = tpp["essay9_message_me_if"]
+    assert e9["ratios"]["humor_to_tall"] > 10.0 and e9["ratios"]["humor_to_wealth"] > 20.0
+    e3 = tpp["essay3_first_noticed"]["themes"]
+    assert e3["smile_laugh"]["share"] > 0.25 and e3["eyes"]["share"] > 0.18
+    sfc = okc["sf_childless_fertility_crossover"]
+    assert sfc["by_age_band"]["25-29"]["women_minus_men_pp"] > 8.0
+    assert sfc["by_age_band"]["40-44"]["women_minus_men_pp"] < -10.0
+    assert 36.5 < sfc["interpolated_crossover_age"] < 40.0
