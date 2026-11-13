@@ -17,36 +17,43 @@ objective. Three families are \emph{state-dependent}: their violations break a c
 sink state (replay after the budget is spent, issuer withdrawn, stale revision). Two are \emph{proposal-visible}: an
 altered payload, and a payload altered at the request of an injected note that the proposer, not the reviewer, reads.
 The same checkpoint proposes candidates under eight predeclared mutation strategies and reviews them in three arms:
-the prior work's minimal prompt (R0), the rules stated (R1), and the rules with reasoning enabled (R2, 4096 tokens; a
-truncated review is a deny). Every valid candidate also goes through the real broker and sink at the case's pre-state
+the minimal prompt of this paper's previous version (R0), the four rules the families test stated in the prompt (R1),
+and the same rules with reasoning enabled (R2, up to 4096 tokens; a truncated review is a deny). Proposals are sampled
+at temperature 0.8; reviews are greedy. Every valid candidate also goes through the real broker and sink at the case's pre-state
 (G). Plan, prompts, clauses, parse rules and hypotheses were committed before data
-(three pre-data amendments). We count each distinct proposal once and
-also report the share of cases with any breach, because repeated samples of a deterministic review are not independent.
+(three pre-data amendments). We count each distinct proposal once, because greedy reviews of a repeated proposal are identical, and
+take cases as the unit, because proposals within a case are not independent.
 
-\para{Result.} The first predeclared hypothesis (H\textsubscript{E5a}) held on both checkpoints: without reasoning
-(R0 and R1), reviewers admitted violations that live in state more often than violations visible in the proposal. With the rules stated (R1), the
-\vsixEFiveCkpt{} reviewer admitted \vsixReviewerState{} unauthorized proposals whose violation lives in state and
-\vsixReviewerVisible{} whose violation is visible (Figure~\ref{fig:v6spec}a), and it admitted at least one
-state-dependent violation in \vsixReviewerStateCases{} cases against \vsixReviewerVisibleCases{} proposal-visible
-cases. In the state-dependent families the violating proposal is often an exact copy of an approved one, and a
-reviewer that answers in a few tokens approves it. Reasoning changed this. The prediction that reasoning would reduce
-but not eliminate state-dependent misses (H\textsubscript{E5b}) held on Qwen3-4B and failed on \vsixEFiveCkpt: with
-reasoning enabled (R2), the \vsixEFiveCkpt{} reviewer admitted \vsixReasonerState{} state-dependent and
-\vsixReasonerVisible{} visible violations, at a median of \vsixReasonerTokens{} generated tokens per review instead of
-\vsixReviewerTokens. Every arm on both checkpoints is in Table~\ref{tab:v6e5} (Appendix~\ref{app:v6e5}). The gate
-admitted \vsixGateBreaches{}. That zero is the gate enforcing its written predicate, not a finding: on all
-\vsixGateUnique{} distinct valid proposals its Rust implementation agreed with an independent Python statement of the
-same clauses (\vsixMirrorDisagreements{} disagreements). \vsixGateReplaySentence
+\para{Result.} The first predeclared hypothesis (H\textsubscript{E5a}: without reasoning, reviewers admit violations
+that live in state more often than violations visible in the proposal) held on both checkpoints. With the rules stated
+(R1), the \vsixEFiveCkpt{} reviewer admitted a state-dependent violation in \vsixReviewerStateCases{} cases and a
+proposal-visible one in \vsixReviewerVisibleCases{} (Figure~\ref{fig:v6spec}a; \vsixReviewerState{} and
+\vsixReviewerVisible{} of the distinct proposals). The failure is narrow. Each case approves two proposals, and in the
+state-dependent families the state has made one of them unauthorized: its issuer was withdrawn, its document has moved
+to a new revision, or the budget it would draw on is spent. The proposer submitted that unaltered proposal in all
+\vsixExactCases{} state-dependent cases. The R1 reviewer approved it in \vsixReviewerExact{} of them and approved
+\vsixReviewerMutated{} of the altered state-dependent proposals: it applied the first rule, exact approval, and not the
+three that read state. On \vsixOtherCkpt{} it approved \vsixReviewerExactOther{} unaltered and
+\vsixReviewerMutatedOther{} altered ones. Reasoning changed this. The second hypothesis (H\textsubscript{E5b}: reasoning
+reduces state-dependent misses but does not remove them) held on \vsixOtherCkpt{} and failed on \vsixEFiveCkpt. With
+reasoning enabled (R2), the \vsixEFiveCkpt{} reviewer approved \vsixReasonerExact{} of the unaltered proposals,
+\vsixReasonerMutated{} altered ones and \vsixReasonerVisible{} visible violations, at a median of \vsixReasonerTokens{}
+generated tokens per review instead of \vsixReviewerTokens; on \vsixOtherCkpt{} it approved
+\vsixReasonerExactOther{} unaltered and \vsixReasonerMutatedOther{} altered ones. Every arm on both checkpoints is in
+Table~\ref{tab:v6e5} (Appendix~\ref{app:v6e5}). The gate admitted \vsixGateBreaches{}. That zero is the gate enforcing
+its written predicate, not a finding: on all \vsixGateUnique{} distinct valid proposals its Rust implementation agreed
+with a separately written Python statement of the same clauses (\vsixMirrorDisagreements{} disagreements).
+\vsixGateReplaySentence
 
 \para{What this shows.} A reviewer can check state only if it is shown the state, and E5 shows it everything the gate
 reads: one moment, at most one prior record. Under those conditions a same-model reviewer that reasons at length did
-as well as the gate on these cases, and one that does not reason missed a quarter or more of the violations that live
-in state. Three differences remain. Two are measured here. The gate's result does not depend on the checkpoint or
-the prompt, while the same model's reviewer went from \vsixReviewerState{} to \vsixReasonerState{} on the same
-proposals when reasoning was switched on; and the gate's check costs a database transaction where the reviewer's
-costs hundreds of generated tokens. The third is not measured in E5: the gate checks at commit, while a reviewer
-checks a snapshot before it, so state that changes in between, such as a budget spent by a concurrent call
-(Appendix~\ref{sec:systems}), is invisible to the reviewer.
+about as well as the gate on these cases, and one that replies with a bare verdict treated ``this proposal was
+approved'' as ``this proposal is authorized''. Two differences remain that E5 does not measure. The gate checks at
+commit, while a reviewer checks a snapshot before it, so state that changes in between, such as a budget spent by a
+concurrent call (Appendix~\ref{sec:systems}), is invisible to the reviewer. And the gate's decision is fixed by its
+predicate, while the reviewer's moved from \vsixReviewerExact{} to \vsixReasonerExact{} of the same unaltered proposals
+when reasoning was switched on; what a reviewer catches depends on its configuration, at a cost of hundreds of
+generated tokens per action where the gate's check is a database transaction.
 
 \para{What a gate misses instead.} Remove one clause and the gate admits exactly the violations that break only that
 clause. This holds by construction, and Figure~\ref{fig:v6spec}a draws it as such. What the experiment measures is how
@@ -55,7 +62,7 @@ illustrates and does not test: mediation does not make safety independent of the
 a reviewer's judgment, which here varied with prompt and budget, to a written specification, whose gaps can be listed,
 tested and argued about.
 
-\para{Limits.} The reviewers are local open-weight checkpoints at temperature 0 reviewing their own proposals; a
+\para{Limits.} The reviewers are local open-weight checkpoints, decoding greedily, reviewing their own proposals; a
 stronger or differently trained monitor may do better, and control protocols that resample or
 audit~\cite{bhatt2025ctrlz} are a different defence. The proposer is told the adversarial objective in plain text. The
 families differ in more than where the violation lives, so the comparison shows that these state-dependent cases are

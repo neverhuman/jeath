@@ -246,6 +246,30 @@ def review_tokens(path: Path, ckpt: str) -> dict:
     return {arm: median(v) for arm, v in toks.items()}
 
 
+def exact_copy_tally(e5: Path, ckpt: str) -> dict:
+    """State-dependent proposals that are byte-identical to an approved proposal in the case's policy, against the mutated
+    ones; each distinct proposal of the strategy-conditioned set once. R2 replies cut off at the token cap are denials (the
+    plan's rule). Post hoc: this split was made after the results were read (DISCLOSURES_V6.md)."""
+    res = json.loads((e5 / "results.json").read_text())
+    approved = {int(k): {json.dumps(p, sort_keys=True) for p in v["policy"]["proposals"]} for k, v in res["visible_states"].items()}
+    seen, out = set(), {k: {"R1": 0, "R2": 0, "n": 0} for k in ("exact", "mutated")}
+    for line in (e5 / "candidates.jsonl").read_text().splitlines():
+        r = json.loads(line) if line.strip() else None
+        if (not r or r["checkpoint"] != ckpt or not r["valid"] or r["sample_set"] != "strategy" or not r["violated"]
+                or r["family"] not in STATE):
+            continue
+        key = (r["case_id"], json.dumps(r["rpc"], sort_keys=True))
+        if key in seen:
+            continue
+        seen.add(key)
+        kind = "exact" if json.dumps(r["rpc"]["proposal"], sort_keys=True) in approved[r["case_id"]] else "mutated"
+        out[kind]["n"] += 1
+        for arm in ("R1", "R2"):
+            rv = r["reviews"][arm]
+            out[kind][arm] += bool(rv["allow"]) and not (arm == "R2" and rv["finish_reason"] == "length")
+    return out
+
+
 def caption_b(s: dict, integ: dict) -> str:
     ck = s["ckpt"].split("/")[-1].replace("-GGUF", "")
     sd, pv, sd2, pv2 = s["R1_state"], s["R1_visible"], s["R2_state"], s["R2_visible"]
@@ -374,12 +398,15 @@ def panel_delay(trials: list[dict], w: float, C: int) -> tuple[list[str], dict]:
     cell = [t for t in trials if t["config"]["fault"] == "none" and t["config"]["w"] == w and t["config"]["C"] == C]
     Ls = sorted({t["config"]["L"] for t in cell})
     pts = {a: {L: [] for L in Ls} for a in ARM_STYLE}
-    lams = []
+    lams, backlog0 = [], []
     for t in cell:
         p = per_trial(t)
         pts[t["config"]["arm"]][t["config"]["L"]].append(p["post_decision_commits"])
         if p["lambda_measured_plan_window"]:
             lams.append(p["lambda_measured_plan_window"])
+        if t["config"]["arm"] == "halt_inference" and t["config"]["L"] == min(Ls):
+            backlog0.append(p["backlog_at_decision"])
+    burst = cell[0]["config"]["workload"]["calls_per_step"]
     lam = sum(lams) / len(lams)
     ratios = []
     for t in trials:
@@ -395,12 +422,16 @@ def panel_delay(trials: list[dict], w: float, C: int) -> tuple[list[str], dict]:
              r"xlabel={Delay before the stop takes effect, $L$ (s)},ylabel={Effects committed after the decision},"
              r"title={\textbf{(b)} After the decision: $\lambda L$ + $\lambda w$}," + LEGEND_C + "]"]
     pred = {"halt_inference": lambda L: lam * (L + w), "fence_sink": lambda L: lam * L}
+    off = {"halt_inference": -0.2, "revoke_broker": 0.0, "fence_sink": 0.2}
+    # Predictions are marks at each delay, not lines: L is categorical here. The plan's halting prediction is solid; the
+    # fence's lambda*L reading, made after the data, is dotted.
     for arm, f in pred.items():
         col = ARM_STYLE[arm][0]
-        lines.append(rf"\addplot[{col},thin,densely dashed,forget plot] coordinates {{{' '.join(f'({i},{f(L):.2f})' for i, L in enumerate(Ls))}}};")
-    lines += [rf"\node[font=\tiny,text=ink,anchor=south east,inner sep=1pt] at (axis cs:{n - 1.15},{pred['halt_inference'](Ls[-1]):.2f}) {{$\lambda(L{{+}}w)$}};",
-              rf"\node[font=\tiny,text=ink,anchor=north west,inner sep=1pt] at (axis cs:{n - 0.85},{pred['fence_sink'](Ls[-1]):.2f}) {{$\lambda L$}};"]
-    off = {"halt_inference": -0.2, "revoke_broker": 0.0, "fence_sink": 0.2}
+        dash = "" if arm == "halt_inference" else ",dash pattern=on 0.8pt off 0.8pt"
+        lines.append(rf"\addplot[only marks,mark=-,mark size=5pt,mark options={{{col},line width=0.8pt{dash}}},forget plot] "
+                     rf"coordinates {{{' '.join(f'({i + off[arm]:.2f},{f(L):.2f})' for i, L in enumerate(Ls))}}};")
+    lines += [rf"\node[font=\tiny,text=ink,anchor=east,inner sep=1pt] at (axis cs:{n - 1 + off['halt_inference'] - 0.22},{pred['halt_inference'](Ls[-1]):.2f}) {{$\lambda(L{{+}}w)$}};",
+              rf"\node[font=\tiny,text=ink,anchor=west,inner sep=1pt] at (axis cs:{n - 1 + off['fence_sink'] + 0.22},{pred['fence_sink'](Ls[-1]):.2f}) {{$\lambda L$}};"]
     st = {"w": w, "C": C, "L": Ls, "lambda_mean": round(lam, 3), "points": {}}
     for arm, (col, mark, lbl) in ARM_STYLE.items():
         cs = []
@@ -412,17 +443,20 @@ def panel_delay(trials: list[dict], w: float, C: int) -> tuple[list[str], dict]:
         lines.append(rf"\addplot[only marks,mark={mark},mark size=1.8pt,draw={col},fill={col},error bars/.cd,y dir=both,y explicit,"
                      rf"error bar style={{{col}}}] coordinates {{{' '.join(cs)}}};\addlegendentry{{{lbl}}}")
     lines.append(r"\end{axis}\end{tikzpicture}")
-    st |= {"halt_ratio_median": round(median(ratios), 2), "halt_ratio_range": [round(min(ratios), 2), round(max(ratios), 2)],
+    st |= {"burst": burst, "burst_at_decision": set(backlog0) == {burst},
+           "halt_ratio_median": round(median(ratios), 2), "halt_ratio_range": [round(min(ratios), 2), round(max(ratios), 2)],
            "halt_trials": len(ratios)}
     return lines, st
 
 
 def caption_delay(s: dict) -> str:
     lo, hi = s["halt_ratio_range"]
-    return (rf"\textbf{{(b)}} The same cell at every delay \(L\) between the decision and enforcement (median and range). Dashed: "
-            rf"\(\lambda(L+w)\), the plan's prediction for halting, and \(\lambda L\) (post hoc), the part a fence cannot remove; "
-            rf"over all {s['halt_trials']} stable halting trials the count was {s['halt_ratio_median']:g}\(\times\) the prediction "
-            rf"(median; {lo:g}--{hi:g}). ")
+    burst = (rf" At \(L = {s['L'][0]:g}\) halting exceeds \(\lambda w\) because the decision falls just after the agent emits a "
+             rf"burst of {s['burst']} calls, which a halt cannot recall." if s["burst_at_decision"] else "")
+    return (rf"\textbf{{(b)}} The same cell at every delay \(L\) between the decision and enforcement (median and range). Solid "
+            rf"bars: \(\lambda(L+w)\), the plan's prediction for halting; dotted: \(\lambda L\), a post hoc reading of the part a "
+            rf"fence cannot remove. Over all {s['halt_trials']} stable halting trials the count was "
+            rf"{s['halt_ratio_median']:g}\(\times\) the prediction (median; {lo:g}--{hi:g})." + burst + " ")
 
 
 # ------------------------------------------------------------------ hero panel (c): E6b fenceability
@@ -494,10 +528,16 @@ def caption_fence(s: dict) -> str:
     who = ("No mechanism has all three" if not a3 else
            f"Only {series([name(m) for m in a3])} {'is' if len(a3) == 1 else 'are'} enforced by the surface, refuse"
            f"{'s' if len(a3) == 1 else ''} a forged epoch, and let{'s' if len(a3) == 1 else ''} no stale write commit after the fence")
-    return (r"\textbf{(c)} Executable probes on single-node instances (40 deterministic runs and 20 races per mechanism). Columns: "
-            r"the surface itself enforces the fence; a stale writer claiming the new epoch is refused; no stale write commits after "
-            r"the fence takes effect. Filled, in every run; open, in none; half, by a trigger we installed; dash, not measurable. "
-            + who + ". ")
+    runs = sorted({r["forged"][1] for r in s["rows"]})
+    races = sorted({r["no_stale"][1] for r in s["rows"] if r["no_stale"][1]})
+    span = lambda xs: str(xs[0]) if len(xs) == 1 else f"{xs[0]}--{xs[-1]}"
+    bound = (rf" With no stale write in {races[0]} races, the per-race failure rate is below "
+             rf"{100 * (1 - 0.05 ** (1 / races[0])):.0f}\% (one-sided 95\%)." if len(races) == 1 and a3 else "")
+    return (rf"\textbf{{(c)}} Executable probes on single-node instances ({span(runs)} deterministic runs and {span(races)} races "
+            r"per mechanism). Columns: the surface itself enforces the fence, even for a writer that omits every fence field; a "
+            r"stale writer claiming the new epoch is refused; no stale write commits after the fence takes effect, in races "
+            r"whose writers follow the mechanism's protocol. Filled, in every run; open, in none; half, by a trigger we "
+            r"installed; dash, not measurable. " + who + "." + bound + " ")
 
 
 def series(xs: list[str]) -> str:
@@ -557,6 +597,15 @@ def build_spec(args) -> dict:
             raise SystemExit("E8 results do not match the current plan fixture")
     b, sb = panel_b(an, plan5, args.ckpt)
     sb["tokens"] = review_tokens(args.e5 / "candidates.jsonl", args.ckpt)
+    sb["exact"] = exact_copy_tally(args.e5, args.ckpt)
+    # The text says the unaltered proposal was submitted in "all" state-dependent cases; fail if that stops being true.
+    n_state = len({json.loads(l)["case_id"] for l in (args.e5 / "candidates.jsonl").read_text().splitlines()
+                   if l.strip() and json.loads(l)["family"] in STATE})
+    if sb["exact"]["exact"]["n"] != n_state:
+        raise SystemExit(f"unaltered approved proposal submitted in {sb['exact']['exact']['n']} of {n_state} state cases; "
+                         "revise the 'all' wording in the abstract and Section 5")
+    other = next(c for c in an["checkpoints"] if c != args.ckpt)
+    sb["exact_other"], sb["other_ckpt"] = exact_copy_tally(args.e5, other), other
     c, sc = panel_c(rows8, rows8b)
     relabel = lambda xs: [x.replace(r"\textbf{(b)}", r"\textbf{(a)}").replace(r"\textbf{(c)}", r"\textbf{(b)}") for x in xs]
     integ = an["checkpoints"][args.ckpt]["integrity"]
@@ -615,6 +664,15 @@ def spec_macros(sb: dict, sc: dict, integ: dict) -> str:
          "vsixReviewerVisibleCases": frac((sb["R1_visible_cases"]["x"], sb["R1_visible_cases"]["n"])),
          "vsixReasonerStateCases": frac((sb["R2_state_cases"]["x"], sb["R2_state_cases"]["n"])),
          "vsixReasonerTokens": f"{sb['tokens']['R2']:g}", "vsixReviewerTokens": f"{sb['tokens']['R1']:g}",
+         "vsixExactCases": sb["exact"]["exact"]["n"],
+         "vsixReviewerExact": sb["exact"]["exact"]["R1"], "vsixReasonerExact": sb["exact"]["exact"]["R2"],
+         "vsixReviewerMutated": frac((sb["exact"]["mutated"]["R1"], sb["exact"]["mutated"]["n"])),
+         "vsixReasonerMutated": frac((sb["exact"]["mutated"]["R2"], sb["exact"]["mutated"]["n"])),
+         "vsixOtherCkpt": sb["other_ckpt"].split("/")[-1].replace("-GGUF", ""),
+         "vsixReviewerExactOther": frac((sb["exact_other"]["exact"]["R1"], sb["exact_other"]["exact"]["n"])),
+         "vsixReasonerExactOther": frac((sb["exact_other"]["exact"]["R2"], sb["exact_other"]["exact"]["n"])),
+         "vsixReviewerMutatedOther": frac((sb["exact_other"]["mutated"]["R1"], sb["exact_other"]["mutated"]["n"])),
+         "vsixReasonerMutatedOther": frac((sb["exact_other"]["mutated"]["R2"], sb["exact_other"]["mutated"]["n"])),
          "vsixGateBreaches": sb["G_breaches"], "vsixGateUnique": integ["unique_valid"],
          "vsixMirrorDisagreements": integ["mirror_gate_disagreements"],
          "vsixStrictUtility": frac(a["authority_strict"]["benign_utility"]), "vsixUnprotectedUtility": frac(a["unprotected"]["benign_utility"]),

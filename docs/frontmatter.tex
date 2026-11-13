@@ -13,22 +13,23 @@
 \begin{center}\begin{minipage}{.96\textwidth}\small
 \textbf{Abstract.}\enspace
 AI control protocols act on proposals: a monitor reads what an agent proposes, and an agent that is caught is stopped.
-Stopping the model does not stop the effects it has already dispatched. We hold an agent's authority as state, checked
-where effects commit, which separates three ways to stop an agent: halt inference, revoke admission at a broker, or
-fence the sink so that it refuses work issued before the stop. On real broker and sink processes, effects that commit
-after a stop decision grow as \(\lambda(L+w)\), for call rate \(\lambda\), enforcement delay \(L\) and tool latency
-\(w\). The fence removes the \(\lambda w\) term (\vsixHaltRange{} effects committed after a halt took effect,
-\vsixRevokeRange{} after a revocation and, by design, \vsixFenceRange{} after a fence, which discarded \vsixFenceLost{}
-legitimate calls); only faster enforcement removes \(\lambda L\). A same-model reviewer shown the rules and the state
-admitted \vsixReviewerState{} unauthorized proposals whose violation lay in state and \vsixReviewerVisible{} whose
-violation was visible; reasoning at length (a median of \vsixReasonerTokens{} tokens per review instead of
-\vsixReviewerTokens) brought the first to \vsixReasonerState. A gate is blind instead to what its specification omits.
-On AgentDojo, a specification written without the benchmark's solutions stopped its injections (\vsixStrictNative,
-against \vsixUnprotectedNative{} unprotected) but completed \vsixStrictUtility{} benign tasks against
-\vsixUnprotectedUtility, and injections written to stay inside it succeeded in \vsixStrictInside. A fence needs a sink
-that can refuse a stale epoch: of \vsixFenceMechanisms{} mechanisms on PostgreSQL, etcd and a filesystem, only
-\vsixFenceAllThree{} was enforced by the surface, refused a forged epoch and let no stale write through. All models are
-small open-weight checkpoints run locally.
+Stopping the model does not stop the effects it has already dispatched. We hold authority as state, checked where
+effects commit, and compare three stops: halting inference, revoking admission at a broker, and fencing the sink so
+that it refuses work issued before the stop. On real broker and sink processes driven by a synthetic agent,
+\vsixHaltRange{} effects committed after a halt took effect and \vsixRevokeRange{} after a revocation; after a fence
+\vsixFenceRange{} did, as designed, and \vsixFenceLost{} legitimate calls were discarded. Counted from the decision, the
+leak is about \(\lambda(L+w)\) while executors keep up (call rate \(\lambda\), enforcement delay \(L\), tool latency
+\(w\)): a fence removes \(\lambda w\), and only faster enforcement removes \(\lambda L\). Review misses violations that
+live in state. Given the rules and the state, a \vsixEFiveCkpt{} reviewer replying with a bare verdict accepted a
+proposal from the approved list that the state had since made unauthorized, in all \vsixExactCases{} cases; reviews
+that reasoned for a median of \vsixReasonerTokens{} tokens accepted \vsixReasonerExact. A written specification pays in legitimate
+work instead. On AgentDojo, one written without the benchmark's solutions admitted the reference solution of
+\vsixStageStrictUser{} tasks; with \vsixEEightCkpt{} it completed \vsixStrictUtility{} benign tasks, against
+\vsixUnprotectedUtility{} unprotected and \vsixProgentUtility{} under Progent. It was written knowing the public
+injections, which succeeded in \vsixStrictNative{} episodes (\vsixUnprotectedNative{} unprotected); injections written
+to stay inside it succeeded in \vsixStrictInside. Of \vsixFenceMechanisms{} fencing mechanisms probed on PostgreSQL,
+etcd and a filesystem, only \vsixFenceAllThree{} passed all three probes. All models are small open-weight checkpoints
+run locally.
 \end{minipage}\end{center}
 \vspace{3pt}
 \input{generated/v6-hero-fig}

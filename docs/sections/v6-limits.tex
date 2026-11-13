@@ -16,10 +16,11 @@ What is measured around each is stated where it appears: the comparators' leakag
 under the faults we injected, the size and cost of the window other layers leave, how often search finds single-clause
 violations, and what injections inside \(S\) achieve.
 
-\para{Models and scale.} All live results use local, quantized, open-weight checkpoints (\vsixCheckpointList) at
-temperature 0 on CPU. We ran no frontier model, by budget decision. Repeated samples of a temperature-0
-model are not independent, so we count unique proposals and cases. On the larger checkpoint, a reviewer that reasoned at length already closed the
-gap Section~\ref{sec:v6reviewers} reports on its small cases; we did not test larger states, other reviewers, or control
+\para{Models and scale.} All live results use local, quantized, open-weight checkpoints (\vsixCheckpointList) on CPU.
+Agents and reviewers decode greedily; only E5's proposer samples (temperature 0.8). We ran no frontier model, by budget
+decision. A greedy review of a repeated proposal repeats its verdict, so we count distinct proposals and take cases as
+the unit. On the larger checkpoint, a reviewer that reasoned at length already closed the gap
+Section~\ref{sec:v6reviewers} reports on its small cases; we did not test larger states, other reviewers, or control
 protocols that resample, defer or audit.
 
 \para{Benchmark coverage.} E8 covers two of AgentDojo's four suites and one attack template, through this repository's

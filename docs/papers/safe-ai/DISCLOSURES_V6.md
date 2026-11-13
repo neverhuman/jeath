@@ -40,6 +40,20 @@ or a reported count; each changes framing or presentation, and the paper says so
 - **E4 Little's-law summary.** The text macro summarized the plan's halting prediction over 48 trials (including 12
   with injected faults), the hero figure over 36 (fault-free). Both were seen; the text now uses the fault-free set, as
   the prediction is for the unfaulted process.
+- **E5 mechanism split (post hoc, after a hostile review).** The state-dependent proposals were split into those
+  byte-identical to a proposal in the case's approved list and those altered from one. On Qwen3-8B, R1 accepted the
+  unaltered proposal in all 36 state-dependent cases and 0/97 altered ones; R2 accepted 0 and 0/97. On Qwen3-4B, R1
+  36/36 and 42/180, R2 6/36 and 3/180. The abstract, contribution 2 and Section 5 now state this mechanism, and cases
+  are the unit. The split is computed by `exact_copy_tally` in `scripts/hero_v6.py`, which fails the build if the
+  unaltered proposal stops being present in every state-dependent case.
+- **E4 hero panel (b).** Predictions are drawn as marks per delay instead of lines across the categorical axis, the
+  post hoc lambda*L reading is dotted, and the caption explains the L = 0 halting surplus: in every halting trial of
+  the drawn cell, the decision falls 10-20 ms after the agent emits a burst of 4 calls (`backlog_at_decision` = 4),
+  which a halt cannot recall. The explanation was found by reading per-trial fields after the results were known.
+- **E6b race bound.** The paper now states that 20 clean races bound etcd RBAC revoke's per-race failure rate only
+  below 14% (one-sided 95%), and that the races use writers that follow each mechanism's protocol.
+- **E1 framing.** "Powered" was removed. At N = 128 a single lost case defeats a usefulness claim (generated loss
+  rule); E1 is presented as a strict test of the previous version's claims, not as evidence for the thesis.
 
 ## By construction (reported as such, never as findings)
 

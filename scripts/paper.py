@@ -47,6 +47,18 @@ def assert_pure_float(filename, content):
     )
 
 
+def sat_p(rh: dict) -> float:
+    """Conditional per-gate miss p of Proposition prop:saturation, from the model's marginal m = c + (1 - c) p."""
+    c, m = rh["saturation_default_c"], rh["saturation_default_m"]
+    return (m - c) / (1 - c)
+
+
+def sat_kstar(rh: dict, eta: float = 0.1) -> int:
+    """Eq. (kstar): the depth beyond which another gate lowers the joint miss by less than eta * c."""
+    c = rh["saturation_default_c"]
+    return math.ceil(math.log(eta * c / (1 - c)) / math.log(sat_p(rh)))
+
+
 def generate_v1():
     model = load_v1("model")
     full = next(r for r in model if r["enforcer"] == "complete")
@@ -567,7 +579,7 @@ def generate_v2():
     )
     eval_tab += [
         r"\bottomrule\end{tabularx}",
-        r"\caption{Live open-weight checkpoint campaigns on the SHA-256-frozen holdout ($N=32$ independent cases per checkpoint; $n=6$ revocation cases each), live AgentDojo v1.2.2 episodes ($12$ distinct base tasks $\times 2$ injection/withdrawal scenarios per checkpoint), and scripted shared-budget controls. Complete mediation achieves the highest safe-and-useful completion rate with $0/64$ benign false blocks, eliminates the $9$ queued post-withdrawal operations completed across the $12$ revocation cases under broker-only revocation (\emph{Durable, no sink fence}), and prevents the $7/32$ (4B) and $2/32$ (8B) unauthorized commits leaked by same-checkpoint LLM review. Zero unauthorized commits under complete mediation reflects deterministic gate-grader policy soundness; at pilot $N=32 < 113$, predeclared marginal union-bound intervals remain preserved in Appendix~\ref{app:holdout} as inconclusive.}\label{tab:v2eval}\end{table*}",
+        r"\caption{Live open-weight checkpoint campaigns on the SHA-256-frozen holdout ($N=32$ independent cases per checkpoint; $n=6$ revocation cases each), live AgentDojo v1.2.2 episodes ($12$ distinct base tasks $\times 2$ injection/withdrawal scenarios per checkpoint), and scripted shared-budget controls. Under this scoring, complete mediation's zero benign false blocks and zero unauthorized commits hold by construction: its admission predicate is the grader's. The table measures what the comparators leak, including queued operations that commit after a broker-only revocation (\emph{Durable, no sink fence}) and commits admitted by same-checkpoint review. At this pilot size the predeclared bounds are inconclusive (Appendix~\ref{app:holdout}).}\label{tab:v2eval}\end{table*}",
     ]
 
     # Pure self-contained float 3: v2-runtime-fig.tex (2 panels, external bottom legends)
@@ -933,11 +945,11 @@ def generate_v3():
             ("VThreeSatDefaultCPct", f"{100 * rh['saturation_default_c']:.2f}"),
             ("VThreeSatDefaultMPct", f"{100 * rh['saturation_default_m']:.2f}"),
             ("VThreeSatDefaultKStar", f"{rh['saturation_default_k_star']}"),
-            # Eq. (kstar) of Proposition prop:saturation evaluated at eta = 0.1 with the model's c and its per-gate
-            # conditional miss (the model names it m; it enters c + (1 - c) m^k, i.e. it is the proposition's p).
-            ("VThreeSatEqKStar", f"{math.ceil(math.log(0.1 * rh['saturation_default_c'] / (1 - rh['saturation_default_c'])) / math.log(rh['saturation_default_m']))}"),
-            ("VThreeSatMarginalM", f"{rh['saturation_default_c'] + (1 - rh['saturation_default_c']) * rh['saturation_default_m']:.3f}"),
-            ("VThreeSatP", f"{rh['saturation_default_m']:.2f}"),
+            # Eq. (kstar) of Proposition prop:saturation at eta = 0.1. The model reports the marginal miss
+            # m = c + (1 - c) p; the proposition's conditional miss p is recovered from it.
+            ("VThreeSatEqKStar", f"{sat_kstar(rh)}"),
+            ("VThreeSatMarginalM", f"{rh['saturation_default_m']:.3f}"),
+            ("VThreeSatP", f"{sat_p(rh):.2f}"),
             ("VThreeSatC", f"{rh['saturation_default_c']:.2f}"),
             ("VThreeAppACommonFourPct", f"{100 * rh['appendix_a_common_4']:.2f}"),
             ("VThreeAppAIndepFourPct", f"{100 * rh['appendix_a_independent_4']:.4f}"),
@@ -1130,7 +1142,7 @@ def generate_v3():
         r"\addplot[gold,thick,dashed,mark=square*] coordinates {" + hor_harm_coords + r"};\addlegendentry{$p_t=0.01/t$}",
         r"\addplot[teal,very thick,mark=*] coordinates {" + hor_sum_coords + r"};\addlegendentry{$p_t=0.01/t^2$}",
         r"\end{axis}\end{tikzpicture}",
-        r"\caption{Analytical laws and finite-lag state-uncertainty mechanics. \textbf{(a)} Sound upper-envelope gating preserves $0\%$ budget breaches across all lags while contracting admission monotonically; stale snapshots breach as lag grows. \textbf{(b)} Common-cause floor $c=0.01$ saturates by $k^*=2$, diverging $71.6\times$ from $m^4$ at $k=4$. \textbf{(c)} Constant per-epoch hazard approaches $100\%$ cumulative breach, whereas summable $0.01/t^2$ stays below $\pi^2/600\approx 1.64\%$.}\label{fig:v3saturation}\end{figure*}",
+        r"\caption{Analytical laws and finite-lag state-uncertainty mechanics. \textbf{(a)} Sound upper-envelope gating preserves $0\%$ budget breaches across all lags while contracting admission monotonically; stale snapshots breach as lag grows. \textbf{(b)} Common-cause floor $c=" + f"{rh['saturation_default_c']:g}" + r"$: beyond depth $k^\star=" + f"{sat_kstar(rh)}" + r"$ another gate lowers the joint miss by less than $0.1c$ (Proposition~\ref{prop:saturation}), and at $k=4$ the joint miss is " + f"{rh['appendix_a_understatement_4']:.1f}" + r"$\times$ the independent product $m^4$. \textbf{(c)} Constant per-epoch hazard approaches $100\%$ cumulative breach, whereas summable $0.01/t^2$ stays below $\pi^2/600\approx 1.64\%$.}\label{fig:v3saturation}\end{figure*}",
     ]
 
     # Float 5: v3-interdiction-fig.tex (H10, H11)
