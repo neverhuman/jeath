@@ -1,0 +1,1385 @@
+{
+  "bootstrap": 2000,
+  "by_sex": {
+    "Female": {
+      "cross_fitted_all_faces": {
+        "additivity_max_abs_error": 0.0,
+        "pct_mae": 21.1,
+        "spearman_r": 0.5265
+      },
+      "gcv_alpha": {
+        "published_vits16_224_grid14": 4571.9,
+        "vitb16_672_global_pool_only": 257.688,
+        "vitb16_672_grid42": 42254.8,
+        "vitb16_672_pooled_grid14": 3852.82
+      },
+      "n_faces": 2472,
+      "n_test_protocol": 383,
+      "n_train_protocol": 750,
+      "paired_bootstrap_grid42_minus": {
+        "published_vits16_224_grid14": {
+          "ci_95": [
+            -0.0385,
+            0.0411
+          ],
+          "delta_spearman": 0.0015
+        },
+        "vitb16_672_global_pool_only": {
+          "ci_95": [
+            -0.0259,
+            0.0454
+          ],
+          "delta_spearman": 0.0096
+        },
+        "vitb16_672_pooled_grid14": {
+          "ci_95": [
+            -0.0056,
+            0.0031
+          ],
+          "delta_spearman": -0.0012
+        }
+      },
+      "protocol_matched_test": {
+        "published_vits16_224_grid14": {
+          "pct_mae": 20.37,
+          "spearman_r": 0.5073
+        },
+        "vitb16_672_global_pool_only": {
+          "pct_mae": 20.45,
+          "spearman_r": 0.4992
+        },
+        "vitb16_672_grid42": {
+          "pct_mae": 20.33,
+          "spearman_r": 0.5088
+        },
+        "vitb16_672_pooled_grid14": {
+          "pct_mae": 20.32,
+          "spearman_r": 0.51
+        }
+      },
+      "published_multiblock_reference": {
+        "note": "published model adds Delaunay, SFace, gender-age and local-anatomy blocks",
+        "pct_mae": 20.53,
+        "spearman_r": 0.5569
+      },
+      "published_zone_agreement": {
+        "bot15_rank_spearman": 0.566,
+        "top15_rank_spearman": 0.497,
+        "zones": 12
+      },
+      "tail_legibility": {
+        "bot15_recovered_share": 0.3099,
+        "bottom_over_top": 1.273,
+        "top15_recovered_share": 0.2434
+      },
+      "tiers": {
+        "bot15": {
+          "abs_cell_mean_pct": 0.01799,
+          "cells_ci_excluding_zero_share": 0.8936,
+          "densest_zone": {
+            "per_cell_over_oval_mean": 1.829,
+            "zone_key": "eyes_iris"
+          },
+          "mean_actual_deviation_pct": -45.09,
+          "mean_predicted_deviation_pct": -13.972,
+          "n_faces": 225,
+          "null_abs_cell_mean_pct": 0.0003,
+          "null_map_corr_with_real": -0.0811,
+          "recovered_share_of_actual": 0.3099,
+          "reliability": {
+            "spearman_brown_full": 0.8922,
+            "split_half_r": 0.8054
+          },
+          "zones_pct": {
+            "brows": {
+              "cells": 63.77,
+              "ci_95": [
+                -1.303,
+                -0.92
+              ],
+              "estimate": -1.116,
+              "per_cell_ci_95": [
+                -0.02043,
+                -0.01442
+              ],
+              "per_cell_pct": -0.01749
+            },
+            "eyes_iris": {
+              "cells": 49.06,
+              "ci_95": [
+                -1.832,
+                -1.359
+              ],
+              "estimate": -1.607,
+              "per_cell_ci_95": [
+                -0.03734,
+                -0.0277
+              ],
+              "per_cell_pct": -0.03277
+            },
+            "forehead_glabella": {
+              "cells": 82.49,
+              "ci_95": [
+                -0.533,
+                -0.26
+              ],
+              "estimate": -0.398,
+              "per_cell_ci_95": [
+                -0.00646,
+                -0.00315
+              ],
+              "per_cell_pct": -0.00482
+            },
+            "jaw_chin": {
+              "cells": 12.64,
+              "ci_95": [
+                -0.34,
+                -0.185
+              ],
+              "estimate": -0.26,
+              "per_cell_ci_95": [
+                -0.02689,
+                -0.01467
+              ],
+              "per_cell_pct": -0.02054
+            },
+            "lateral_skin": {
+              "cells": 291.6,
+              "ci_95": [
+                -5.348,
+                -4.004
+              ],
+              "estimate": -4.705,
+              "per_cell_ci_95": [
+                -0.01834,
+                -0.01373
+              ],
+              "per_cell_pct": -0.01613
+            },
+            "lips_vermilion": {
+              "cells": 60.58,
+              "ci_95": [
+                -1.698,
+                -1.113
+              ],
+              "estimate": -1.407,
+              "per_cell_ci_95": [
+                -0.02802,
+                -0.01838
+              ],
+              "per_cell_pct": -0.02323
+            },
+            "malar_cheek": {
+              "cells": 64.96,
+              "ci_95": [
+                -1.412,
+                -0.918
+              ],
+              "estimate": -1.166,
+              "per_cell_ci_95": [
+                -0.02174,
+                -0.01413
+              ],
+              "per_cell_pct": -0.01795
+            },
+            "nasolabial": {
+              "cells": 37.23,
+              "ci_95": [
+                -0.904,
+                -0.604
+              ],
+              "estimate": -0.756,
+              "per_cell_ci_95": [
+                -0.02429,
+                -0.01622
+              ],
+              "per_cell_pct": -0.0203
+            },
+            "nose_alar_tip": {
+              "cells": 42.44,
+              "ci_95": [
+                -1.01,
+                -0.701
+              ],
+              "estimate": -0.854,
+              "per_cell_ci_95": [
+                -0.02379,
+                -0.01651
+              ],
+              "per_cell_pct": -0.02012
+            },
+            "nose_bridge": {
+              "cells": 34.26,
+              "ci_95": [
+                -0.856,
+                -0.581
+              ],
+              "estimate": -0.718,
+              "per_cell_ci_95": [
+                -0.02499,
+                -0.01696
+              ],
+              "per_cell_pct": -0.02096
+            },
+            "philtrum": {
+              "cells": 6.37,
+              "ci_95": [
+                -0.156,
+                -0.099
+              ],
+              "estimate": -0.127,
+              "per_cell_ci_95": [
+                -0.02446,
+                -0.01559
+              ],
+              "per_cell_pct": -0.02002
+            },
+            "tear_trough": {
+              "cells": 34.6,
+              "ci_95": [
+                -1.001,
+                -0.709
+              ],
+              "estimate": -0.858,
+              "per_cell_ci_95": [
+                -0.02892,
+                -0.0205
+              ],
+              "per_cell_pct": -0.02481
+            }
+          }
+        },
+        "mid": {
+          "abs_cell_mean_pct": 0.00269,
+          "cells_ci_excluding_zero_share": 0.041,
+          "densest_zone": {
+            "per_cell_over_oval_mean": 5.393,
+            "zone_key": "jaw_chin"
+          },
+          "mean_actual_deviation_pct": -1.874,
+          "mean_predicted_deviation_pct": 0.569,
+          "n_faces": 244,
+          "null_abs_cell_mean_pct": 0.00013,
+          "null_map_corr_with_real": 0.1445,
+          "recovered_share_of_actual": -0.3036,
+          "reliability": {
+            "spearman_brown_full": 0.0126,
+            "split_half_r": 0.0063
+          },
+          "zones_pct": {
+            "brows": {
+              "cells": 63.77,
+              "ci_95": [
+                -0.149,
+                0.222
+              ],
+              "estimate": 0.036,
+              "per_cell_ci_95": [
+                -0.00233,
+                0.00348
+              ],
+              "per_cell_pct": 0.00056
+            },
+            "eyes_iris": {
+              "cells": 49.06,
+              "ci_95": [
+                -0.296,
+                0.253
+              ],
+              "estimate": -0.022,
+              "per_cell_ci_95": [
+                -0.00603,
+                0.00516
+              ],
+              "per_cell_pct": -0.00045
+            },
+            "forehead_glabella": {
+              "cells": 82.49,
+              "ci_95": [
+                -0.065,
+                0.168
+              ],
+              "estimate": 0.049,
+              "per_cell_ci_95": [
+                -0.00079,
+                0.00204
+              ],
+              "per_cell_pct": 0.00059
+            },
+            "jaw_chin": {
+              "cells": 12.64,
+              "ci_95": [
+                -0.019,
+                0.122
+              ],
+              "estimate": 0.05,
+              "per_cell_ci_95": [
+                -0.0015,
+                0.00967
+              ],
+              "per_cell_pct": 0.00393
+            },
+            "lateral_skin": {
+              "cells": 291.6,
+              "ci_95": [
+                -0.271,
+                0.988
+              ],
+              "estimate": 0.339,
+              "per_cell_ci_95": [
+                -0.00093,
+                0.00339
+              ],
+              "per_cell_pct": 0.00116
+            },
+            "lips_vermilion": {
+              "cells": 60.58,
+              "ci_95": [
+                -0.222,
+                0.234
+              ],
+              "estimate": 0.003,
+              "per_cell_ci_95": [
+                -0.00367,
+                0.00386
+              ],
+              "per_cell_pct": 5e-05
+            },
+            "malar_cheek": {
+              "cells": 64.96,
+              "ci_95": [
+                -0.063,
+                0.432
+              ],
+              "estimate": 0.172,
+              "per_cell_ci_95": [
+                -0.00098,
+                0.00665
+              ],
+              "per_cell_pct": 0.00264
+            },
+            "nasolabial": {
+              "cells": 37.23,
+              "ci_95": [
+                -0.123,
+                0.135
+              ],
+              "estimate": 0.004,
+              "per_cell_ci_95": [
+                -0.00332,
+                0.00363
+              ],
+              "per_cell_pct": 0.00011
+            },
+            "nose_alar_tip": {
+              "cells": 42.44,
+              "ci_95": [
+                -0.173,
+                0.127
+              ],
+              "estimate": -0.023,
+              "per_cell_ci_95": [
+                -0.00407,
+                0.003
+              ],
+              "per_cell_pct": -0.00055
+            },
+            "nose_bridge": {
+              "cells": 34.26,
+              "ci_95": [
+                -0.188,
+                0.083
+              ],
+              "estimate": -0.053,
+              "per_cell_ci_95": [
+                -0.00549,
+                0.00244
+              ],
+              "per_cell_pct": -0.00156
+            },
+            "philtrum": {
+              "cells": 6.37,
+              "ci_95": [
+                -0.031,
+                0.02
+              ],
+              "estimate": -0.006,
+              "per_cell_ci_95": [
+                -0.00488,
+                0.0031
+              ],
+              "per_cell_pct": -0.00087
+            },
+            "tear_trough": {
+              "cells": 34.6,
+              "ci_95": [
+                -0.121,
+                0.165
+              ],
+              "estimate": 0.021,
+              "per_cell_ci_95": [
+                -0.00348,
+                0.00478
+              ],
+              "per_cell_pct": 0.00062
+            }
+          }
+        },
+        "top15": {
+          "abs_cell_mean_pct": 0.01323,
+          "cells_ci_excluding_zero_share": 0.8179,
+          "densest_zone": {
+            "per_cell_over_oval_mean": 1.886,
+            "zone_key": "eyes_iris"
+          },
+          "mean_actual_deviation_pct": 42.233,
+          "mean_predicted_deviation_pct": 10.28,
+          "n_faces": 342,
+          "null_abs_cell_mean_pct": 0.00018,
+          "null_map_corr_with_real": 0.0936,
+          "recovered_share_of_actual": 0.2434,
+          "reliability": {
+            "spearman_brown_full": 0.8833,
+            "split_half_r": 0.7909
+          },
+          "zones_pct": {
+            "brows": {
+              "cells": 63.77,
+              "ci_95": [
+                0.657,
+                0.944
+              ],
+              "estimate": 0.8,
+              "per_cell_ci_95": [
+                0.0103,
+                0.0148
+              ],
+              "per_cell_pct": 0.01255
+            },
+            "eyes_iris": {
+              "cells": 49.06,
+              "ci_95": [
+                0.993,
+                1.439
+              ],
+              "estimate": 1.219,
+              "per_cell_ci_95": [
+                0.02024,
+                0.02933
+              ],
+              "per_cell_pct": 0.02486
+            },
+            "forehead_glabella": {
+              "cells": 82.49,
+              "ci_95": [
+                0.128,
+                0.299
+              ],
+              "estimate": 0.213,
+              "per_cell_ci_95": [
+                0.00155,
+                0.00362
+              ],
+              "per_cell_pct": 0.00258
+            },
+            "jaw_chin": {
+              "cells": 12.64,
+              "ci_95": [
+                0.13,
+                0.252
+              ],
+              "estimate": 0.19,
+              "per_cell_ci_95": [
+                0.01028,
+                0.01992
+              ],
+              "per_cell_pct": 0.01506
+            },
+            "lateral_skin": {
+              "cells": 291.6,
+              "ci_95": [
+                2.971,
+                3.979
+              ],
+              "estimate": 3.48,
+              "per_cell_ci_95": [
+                0.01019,
+                0.01364
+              ],
+              "per_cell_pct": 0.01193
+            },
+            "lips_vermilion": {
+              "cells": 60.58,
+              "ci_95": [
+                0.727,
+                1.088
+              ],
+              "estimate": 0.915,
+              "per_cell_ci_95": [
+                0.012,
+                0.01796
+              ],
+              "per_cell_pct": 0.0151
+            },
+            "malar_cheek": {
+              "cells": 64.96,
+              "ci_95": [
+                0.812,
+                1.208
+              ],
+              "estimate": 1.01,
+              "per_cell_ci_95": [
+                0.0125,
+                0.0186
+              ],
+              "per_cell_pct": 0.01554
+            },
+            "nasolabial": {
+              "cells": 37.23,
+              "ci_95": [
+                0.477,
+                0.709
+              ],
+              "estimate": 0.594,
+              "per_cell_ci_95": [
+                0.01282,
+                0.01905
+              ],
+              "per_cell_pct": 0.01594
+            },
+            "nose_alar_tip": {
+              "cells": 42.44,
+              "ci_95": [
+                0.534,
+                0.782
+              ],
+              "estimate": 0.656,
+              "per_cell_ci_95": [
+                0.01259,
+                0.01841
+              ],
+              "per_cell_pct": 0.01545
+            },
+            "nose_bridge": {
+              "cells": 34.26,
+              "ci_95": [
+                0.381,
+                0.579
+              ],
+              "estimate": 0.482,
+              "per_cell_ci_95": [
+                0.01112,
+                0.01691
+              ],
+              "per_cell_pct": 0.01407
+            },
+            "philtrum": {
+              "cells": 6.37,
+              "ci_95": [
+                0.067,
+                0.109
+              ],
+              "estimate": 0.087,
+              "per_cell_ci_95": [
+                0.01057,
+                0.01706
+              ],
+              "per_cell_pct": 0.01374
+            },
+            "tear_trough": {
+              "cells": 34.6,
+              "ci_95": [
+                0.53,
+                0.739
+              ],
+              "estimate": 0.634,
+              "per_cell_ci_95": [
+                0.01531,
+                0.02136
+              ],
+              "per_cell_pct": 0.01832
+            }
+          }
+        }
+      }
+    },
+    "Male": {
+      "cross_fitted_all_faces": {
+        "additivity_max_abs_error": 0.0,
+        "pct_mae": 24.97,
+        "spearman_r": 0.2555
+      },
+      "gcv_alpha": {
+        "published_vits16_224_grid14": 3752.9,
+        "vitb16_672_global_pool_only": 665.996,
+        "vitb16_672_grid42": 60607.4,
+        "vitb16_672_pooled_grid14": 5582.64
+      },
+      "n_faces": 2881,
+      "n_test_protocol": 616,
+      "n_train_protocol": 750,
+      "paired_bootstrap_grid42_minus": {
+        "published_vits16_224_grid14": {
+          "ci_95": [
+            -0.0459,
+            0.0458
+          ],
+          "delta_spearman": -0.0001
+        },
+        "vitb16_672_global_pool_only": {
+          "ci_95": [
+            -0.0243,
+            0.0425
+          ],
+          "delta_spearman": 0.0096
+        },
+        "vitb16_672_pooled_grid14": {
+          "ci_95": [
+            -0.004,
+            0.006
+          ],
+          "delta_spearman": 0.0009
+        }
+      },
+      "protocol_matched_test": {
+        "published_vits16_224_grid14": {
+          "pct_mae": 23.96,
+          "spearman_r": 0.2804
+        },
+        "vitb16_672_global_pool_only": {
+          "pct_mae": 24.18,
+          "spearman_r": 0.2707
+        },
+        "vitb16_672_grid42": {
+          "pct_mae": 24.03,
+          "spearman_r": 0.2803
+        },
+        "vitb16_672_pooled_grid14": {
+          "pct_mae": 24.04,
+          "spearman_r": 0.2794
+        }
+      },
+      "published_multiblock_reference": {
+        "note": "published model adds Delaunay, SFace, gender-age and local-anatomy blocks",
+        "pct_mae": 26.7,
+        "spearman_r": 0.3316
+      },
+      "published_zone_agreement": {
+        "bot15_rank_spearman": 0.42,
+        "top15_rank_spearman": 0.294,
+        "zones": 12
+      },
+      "tail_legibility": {
+        "bot15_recovered_share": 0.0715,
+        "bottom_over_top": 1.281,
+        "top15_recovered_share": 0.0558
+      },
+      "tiers": {
+        "bot15": {
+          "abs_cell_mean_pct": 0.00352,
+          "cells_ci_excluding_zero_share": 0.7244,
+          "densest_zone": {
+            "per_cell_over_oval_mean": 1.623,
+            "zone_key": "philtrum"
+          },
+          "mean_actual_deviation_pct": -38.221,
+          "mean_predicted_deviation_pct": -2.734,
+          "n_faces": 509,
+          "null_abs_cell_mean_pct": 1e-05,
+          "null_map_corr_with_real": -0.0531,
+          "recovered_share_of_actual": 0.0715,
+          "reliability": {
+            "spearman_brown_full": 0.6747,
+            "split_half_r": 0.5091
+          },
+          "zones_pct": {
+            "brows": {
+              "cells": 63.77,
+              "ci_95": [
+                -0.251,
+                -0.104
+              ],
+              "estimate": -0.176,
+              "per_cell_ci_95": [
+                -0.00394,
+                -0.00163
+              ],
+              "per_cell_pct": -0.00277
+            },
+            "eyes_iris": {
+              "cells": 49.06,
+              "ci_95": [
+                -0.278,
+                -0.142
+              ],
+              "estimate": -0.213,
+              "per_cell_ci_95": [
+                -0.00567,
+                -0.00289
+              ],
+              "per_cell_pct": -0.00435
+            },
+            "forehead_glabella": {
+              "cells": 82.49,
+              "ci_95": [
+                -0.113,
+                -0.03
+              ],
+              "estimate": -0.071,
+              "per_cell_ci_95": [
+                -0.00137,
+                -0.00036
+              ],
+              "per_cell_pct": -0.00086
+            },
+            "jaw_chin": {
+              "cells": 12.64,
+              "ci_95": [
+                -0.068,
+                -0.031
+              ],
+              "estimate": -0.05,
+              "per_cell_ci_95": [
+                -0.00542,
+                -0.00249
+              ],
+              "per_cell_pct": -0.00396
+            },
+            "lateral_skin": {
+              "cells": 291.6,
+              "ci_95": [
+                -1.221,
+                -0.65
+              ],
+              "estimate": -0.935,
+              "per_cell_ci_95": [
+                -0.00419,
+                -0.00223
+              ],
+              "per_cell_pct": -0.00321
+            },
+            "lips_vermilion": {
+              "cells": 60.58,
+              "ci_95": [
+                -0.464,
+                -0.222
+              ],
+              "estimate": -0.34,
+              "per_cell_ci_95": [
+                -0.00766,
+                -0.00367
+              ],
+              "per_cell_pct": -0.00561
+            },
+            "malar_cheek": {
+              "cells": 64.96,
+              "ci_95": [
+                -0.363,
+                -0.169
+              ],
+              "estimate": -0.268,
+              "per_cell_ci_95": [
+                -0.00559,
+                -0.0026
+              ],
+              "per_cell_pct": -0.00413
+            },
+            "nasolabial": {
+              "cells": 37.23,
+              "ci_95": [
+                -0.274,
+                -0.15
+              ],
+              "estimate": -0.211,
+              "per_cell_ci_95": [
+                -0.00737,
+                -0.00403
+              ],
+              "per_cell_pct": -0.00568
+            },
+            "nose_alar_tip": {
+              "cells": 42.44,
+              "ci_95": [
+                -0.262,
+                -0.151
+              ],
+              "estimate": -0.207,
+              "per_cell_ci_95": [
+                -0.00616,
+                -0.00355
+              ],
+              "per_cell_pct": -0.00487
+            },
+            "nose_bridge": {
+              "cells": 34.26,
+              "ci_95": [
+                -0.135,
+                -0.044
+              ],
+              "estimate": -0.092,
+              "per_cell_ci_95": [
+                -0.00393,
+                -0.00128
+              ],
+              "per_cell_pct": -0.00267
+            },
+            "philtrum": {
+              "cells": 6.37,
+              "ci_95": [
+                -0.048,
+                -0.025
+              ],
+              "estimate": -0.036,
+              "per_cell_ci_95": [
+                -0.00749,
+                -0.0039
+              ],
+              "per_cell_pct": -0.00569
+            },
+            "tear_trough": {
+              "cells": 34.6,
+              "ci_95": [
+                -0.182,
+                -0.086
+              ],
+              "estimate": -0.134,
+              "per_cell_ci_95": [
+                -0.00525,
+                -0.00249
+              ],
+              "per_cell_pct": -0.00388
+            }
+          }
+        },
+        "mid": {
+          "abs_cell_mean_pct": 0.00122,
+          "cells_ci_excluding_zero_share": 0.0154,
+          "densest_zone": {
+            "per_cell_over_oval_mean": 2.271,
+            "zone_key": "tear_trough"
+          },
+          "mean_actual_deviation_pct": 4.106,
+          "mean_predicted_deviation_pct": 0.45,
+          "n_faces": 274,
+          "null_abs_cell_mean_pct": 2e-05,
+          "null_map_corr_with_real": -0.0827,
+          "recovered_share_of_actual": 0.1096,
+          "reliability": {
+            "spearman_brown_full": -0.2398,
+            "split_half_r": -0.1071
+          },
+          "zones_pct": {
+            "brows": {
+              "cells": 63.77,
+              "ci_95": [
+                -0.037,
+                0.163
+              ],
+              "estimate": 0.064,
+              "per_cell_ci_95": [
+                -0.00057,
+                0.00256
+              ],
+              "per_cell_pct": 0.001
+            },
+            "eyes_iris": {
+              "cells": 49.06,
+              "ci_95": [
+                -0.032,
+                0.159
+              ],
+              "estimate": 0.062,
+              "per_cell_ci_95": [
+                -0.00065,
+                0.00324
+              ],
+              "per_cell_pct": 0.00127
+            },
+            "forehead_glabella": {
+              "cells": 82.49,
+              "ci_95": [
+                -0.067,
+                0.037
+              ],
+              "estimate": -0.014,
+              "per_cell_ci_95": [
+                -0.00081,
+                0.00045
+              ],
+              "per_cell_pct": -0.00017
+            },
+            "jaw_chin": {
+              "cells": 12.64,
+              "ci_95": [
+                -0.021,
+                0.03
+              ],
+              "estimate": 0.004,
+              "per_cell_ci_95": [
+                -0.0017,
+                0.00234
+              ],
+              "per_cell_pct": 0.00033
+            },
+            "lateral_skin": {
+              "cells": 291.6,
+              "ci_95": [
+                -0.287,
+                0.383
+              ],
+              "estimate": 0.062,
+              "per_cell_ci_95": [
+                -0.00099,
+                0.00131
+              ],
+              "per_cell_pct": 0.00021
+            },
+            "lips_vermilion": {
+              "cells": 60.58,
+              "ci_95": [
+                -0.092,
+                0.212
+              ],
+              "estimate": 0.065,
+              "per_cell_ci_95": [
+                -0.00152,
+                0.00349
+              ],
+              "per_cell_pct": 0.00107
+            },
+            "malar_cheek": {
+              "cells": 64.96,
+              "ci_95": [
+                -0.057,
+                0.219
+              ],
+              "estimate": 0.08,
+              "per_cell_ci_95": [
+                -0.00087,
+                0.00337
+              ],
+              "per_cell_pct": 0.00124
+            },
+            "nasolabial": {
+              "cells": 37.23,
+              "ci_95": [
+                -0.041,
+                0.12
+              ],
+              "estimate": 0.042,
+              "per_cell_ci_95": [
+                -0.00111,
+                0.00322
+              ],
+              "per_cell_pct": 0.00112
+            },
+            "nose_alar_tip": {
+              "cells": 42.44,
+              "ci_95": [
+                -0.04,
+                0.109
+              ],
+              "estimate": 0.035,
+              "per_cell_ci_95": [
+                -0.00094,
+                0.00256
+              ],
+              "per_cell_pct": 0.00083
+            },
+            "nose_bridge": {
+              "cells": 34.26,
+              "ci_95": [
+                -0.055,
+                0.058
+              ],
+              "estimate": 0.002,
+              "per_cell_ci_95": [
+                -0.00161,
+                0.00168
+              ],
+              "per_cell_pct": 5e-05
+            },
+            "philtrum": {
+              "cells": 6.37,
+              "ci_95": [
+                -0.012,
+                0.017
+              ],
+              "estimate": 0.003,
+              "per_cell_ci_95": [
+                -0.00192,
+                0.00265
+              ],
+              "per_cell_pct": 0.00042
+            },
+            "tear_trough": {
+              "cells": 34.6,
+              "ci_95": [
+                -0.019,
+                0.109
+              ],
+              "estimate": 0.045,
+              "per_cell_ci_95": [
+                -0.00054,
+                0.00316
+              ],
+              "per_cell_pct": 0.00131
+            }
+          }
+        },
+        "top15": {
+          "abs_cell_mean_pct": 0.00363,
+          "cells_ci_excluding_zero_share": 0.4769,
+          "densest_zone": {
+            "per_cell_over_oval_mean": 1.619,
+            "zone_key": "philtrum"
+          },
+          "mean_actual_deviation_pct": 48.951,
+          "mean_predicted_deviation_pct": 2.73,
+          "n_faces": 273,
+          "null_abs_cell_mean_pct": 2e-05,
+          "null_map_corr_with_real": -0.0879,
+          "recovered_share_of_actual": 0.0558,
+          "reliability": {
+            "spearman_brown_full": 0.5884,
+            "split_half_r": 0.4169
+          },
+          "zones_pct": {
+            "brows": {
+              "cells": 63.77,
+              "ci_95": [
+                0.117,
+                0.336
+              ],
+              "estimate": 0.226,
+              "per_cell_ci_95": [
+                0.00183,
+                0.00526
+              ],
+              "per_cell_pct": 0.00355
+            },
+            "eyes_iris": {
+              "cells": 49.06,
+              "ci_95": [
+                0.122,
+                0.32
+              ],
+              "estimate": 0.221,
+              "per_cell_ci_95": [
+                0.00248,
+                0.00652
+              ],
+              "per_cell_pct": 0.0045
+            },
+            "forehead_glabella": {
+              "cells": 82.49,
+              "ci_95": [
+                0.005,
+                0.131
+              ],
+              "estimate": 0.066,
+              "per_cell_ci_95": [
+                6e-05,
+                0.00159
+              ],
+              "per_cell_pct": 0.0008
+            },
+            "jaw_chin": {
+              "cells": 12.64,
+              "ci_95": [
+                -0.001,
+                0.058
+              ],
+              "estimate": 0.029,
+              "per_cell_ci_95": [
+                -5e-05,
+                0.00461
+              ],
+              "per_cell_pct": 0.00227
+            },
+            "lateral_skin": {
+              "cells": 291.6,
+              "ci_95": [
+                0.611,
+                1.311
+              ],
+              "estimate": 0.947,
+              "per_cell_ci_95": [
+                0.0021,
+                0.0045
+              ],
+              "per_cell_pct": 0.00325
+            },
+            "lips_vermilion": {
+              "cells": 60.58,
+              "ci_95": [
+                0.087,
+                0.433
+              ],
+              "estimate": 0.265,
+              "per_cell_ci_95": [
+                0.00144,
+                0.00714
+              ],
+              "per_cell_pct": 0.00437
+            },
+            "malar_cheek": {
+              "cells": 64.96,
+              "ci_95": [
+                0.163,
+                0.408
+              ],
+              "estimate": 0.281,
+              "per_cell_ci_95": [
+                0.00251,
+                0.00627
+              ],
+              "per_cell_pct": 0.00433
+            },
+            "nasolabial": {
+              "cells": 37.23,
+              "ci_95": [
+                0.104,
+                0.268
+              ],
+              "estimate": 0.185,
+              "per_cell_ci_95": [
+                0.0028,
+                0.0072
+              ],
+              "per_cell_pct": 0.00497
+            },
+            "nose_alar_tip": {
+              "cells": 42.44,
+              "ci_95": [
+                0.153,
+                0.302
+              ],
+              "estimate": 0.228,
+              "per_cell_ci_95": [
+                0.00361,
+                0.00711
+              ],
+              "per_cell_pct": 0.00537
+            },
+            "nose_bridge": {
+              "cells": 34.26,
+              "ci_95": [
+                0.062,
+                0.17
+              ],
+              "estimate": 0.119,
+              "per_cell_ci_95": [
+                0.00182,
+                0.00498
+              ],
+              "per_cell_pct": 0.00346
+            },
+            "philtrum": {
+              "cells": 6.37,
+              "ci_95": [
+                0.021,
+                0.051
+              ],
+              "estimate": 0.036,
+              "per_cell_ci_95": [
+                0.00324,
+                0.00806
+              ],
+              "per_cell_pct": 0.00567
+            },
+            "tear_trough": {
+              "cells": 34.6,
+              "ci_95": [
+                0.068,
+                0.191
+              ],
+              "estimate": 0.128,
+              "per_cell_ci_95": [
+                0.00197,
+                0.00553
+              ],
+              "per_cell_pct": 0.00369
+            }
+          }
+        }
+      }
+    }
+  },
+  "composite_counts": {
+    "age:Female:18-24": 286,
+    "age:Female:25-34": 630,
+    "age:Female:35-44": 358,
+    "age:Female:45-54": 228,
+    "age:Female:55+": 220,
+    "age:Male:18-24": 220,
+    "age:Male:25-34": 859,
+    "age:Male:35-44": 584,
+    "age:Male:45-54": 248,
+    "age:Male:55+": 220,
+    "sex_all:Female": 1589,
+    "sex_all:Male": 1977,
+    "tier:Female:bot15": 225,
+    "tier:Female:mid": 244,
+    "tier:Female:top15": 342,
+    "tier:Male:bot15": 509,
+    "tier:Male:mid": 274,
+    "tier:Male:top15": 273
+  },
+  "deletion_test": {
+    "Female": {
+      "drivers_deleted_delta_pct": {
+        "ci_95": [
+          -8.79,
+          -7.057
+        ],
+        "estimate": -7.894,
+        "n": 150
+      },
+      "drivers_minus_random_pct": {
+        "ci_95": [
+          -8.462,
+          -6.989
+        ],
+        "estimate": -7.724,
+        "n": 150
+      },
+      "random_deleted_delta_pct": {
+        "ci_95": [
+          -0.902,
+          0.538
+        ],
+        "estimate": -0.17,
+        "n": 150
+      },
+      "rejectors_deleted_delta_pct": {
+        "ci_95": [
+          5.74,
+          7.543
+        ],
+        "estimate": 6.604,
+        "n": 150
+      },
+      "rejectors_minus_random_pct": {
+        "ci_95": [
+          6.19,
+          7.387
+        ],
+        "estimate": 6.774,
+        "n": 150
+      }
+    },
+    "Male": {
+      "drivers_deleted_delta_pct": {
+        "ci_95": [
+          -3.351,
+          -2.279
+        ],
+        "estimate": -2.799,
+        "n": 150
+      },
+      "drivers_minus_random_pct": {
+        "ci_95": [
+          -4.918,
+          -4.048
+        ],
+        "estimate": -4.485,
+        "n": 150
+      },
+      "random_deleted_delta_pct": {
+        "ci_95": [
+          1.22,
+          2.161
+        ],
+        "estimate": 1.686,
+        "n": 150
+      },
+      "rejectors_deleted_delta_pct": {
+        "ci_95": [
+          4.567,
+          5.762
+        ],
+        "estimate": 5.142,
+        "n": 150
+      },
+      "rejectors_minus_random_pct": {
+        "ci_95": [
+          3.059,
+          3.855
+        ],
+        "estimate": 3.456,
+        "n": 150
+      }
+    },
+    "cells_deleted_share": 0.1,
+    "variants": [
+      "drivers",
+      "rejectors",
+      "random_x3"
+    ]
+  },
+  "extraction": {
+    "atlas_px": 672,
+    "grid": 42,
+    "host": "xbabe0",
+    "machine": "x86_64",
+    "n_detector_fallback": 48,
+    "n_ok": 5353,
+    "n_records": 5353,
+    "numpy": "1.26.4",
+    "onnxruntime": "1.26.0",
+    "opencv": "4.10.0",
+    "ort_intra_threads": 8,
+    "portrait_px": 768,
+    "procs": 15,
+    "source_interocular_px": {
+      "max": 498.0128173828125,
+      "median": 428.67169189453125,
+      "min": 294.0084228515625
+    }
+  },
+  "extraction_errors": 0,
+  "folds": 5,
+  "inputs": {
+    "canon_lm106_224.npy": "5547f3b047d45e3b57bb8ed432fdb3b74ac585d21f3f8db2cc39ea71fedd42c9",
+    "live_5353_metas.json": "0a6f83dc5dfea10ef07087b54c18a6d08e89174306936a2b2c90f646bfc00cec",
+    "weights/2d106det.onnx": "f001b856447c413801ef5c42091ed0cd516fcd21f2d6b79635b1e733a7109dbf",
+    "weights/dinov3_vitb16/model.onnx": "0d68aa8f33d21a5616a468239dbe80608abe53619a2663f05e269785eaceb746",
+    "weights/dinov3_vitb16/model.onnx_data": "6f292af27497d258257d256bf5eee4151edb67d92f586196beaa182767060353",
+    "weights/yunet.onnx": "8f2383e4dd3cfbb4553ea8718107fc0423210dc964f9f4280604804ed2552fa4"
+  },
+  "legacy_cache_sha256": "59d6b3e82022058439c451f7db88422c12a8bf62db2e09e1b207deb2e1fb4820",
+  "legacy_pca_explained_variance": 0.8823,
+  "modelled_cells": {
+    "face_oval_cells": 780,
+    "grid": 42,
+    "legacy_face_oval_cells": 90,
+    "legacy_grid": 14
+  },
+  "module_sha256": "c7c2b48f5ac051df490288c19e21df9714528e8b9f37d0b5baa51bbd03e558fd",
+  "npz_bytes": 1244360,
+  "npz_sha256": "1c1844779c40b90a37275575608f89a7301ddb35b7d4faad7aad4a6c29411d1c",
+  "schema": "pbo-face-highres-1",
+  "seed": 20261113,
+  "token_pca": {
+    "components": 96,
+    "explained_variance": 0.8747,
+    "faces": 1785,
+    "tokens": 1392300
+  },
+  "vote_weight": "votes/(votes+42)",
+  "zone_keys": [
+    "eyes_iris",
+    "brows",
+    "tear_trough",
+    "lips_vermilion",
+    "nose_alar_tip",
+    "nose_bridge",
+    "malar_cheek",
+    "nasolabial",
+    "jaw_chin",
+    "philtrum",
+    "forehead_glabella",
+    "lateral_skin"
+  ]
+}
