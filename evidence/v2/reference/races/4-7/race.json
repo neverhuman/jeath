@@ -97,7 +97,7 @@
   },
   "effects": [
     {
-      "actor": "actor-0",
+      "actor": "actor-2",
       "proposal": {
         "effect": {
           "kind": "transfer",
@@ -108,22 +108,23 @@
           0,
           0
         ],
-        "expires": 1794574304,
-        "id": "actor-0"
+        "expires": 1794577716,
+        "id": "actor-2"
       }
     }
   ],
   "outcomes": [
     {
       "actor": 0,
-      "latency_ms": 92.496645,
+      "latency_ms": 104.538427,
       "response": {
-        "status": "committed"
+        "reason": "policy",
+        "status": "denied"
       }
     },
     {
       "actor": 1,
-      "latency_ms": 78.853561,
+      "latency_ms": 79.075712,
       "response": {
         "reason": "policy",
         "status": "denied"
@@ -131,15 +132,14 @@
     },
     {
       "actor": 2,
-      "latency_ms": 54.435476,
+      "latency_ms": 239.405541,
       "response": {
-        "reason": "policy",
-        "status": "denied"
+        "status": "committed"
       }
     },
     {
       "actor": 3,
-      "latency_ms": 53.820111,
+      "latency_ms": 79.636073,
       "response": {
         "reason": "policy",
         "status": "denied"
