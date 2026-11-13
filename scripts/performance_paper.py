@@ -83,6 +83,12 @@ plt.rcParams.update({
 
 
 EXTRA_BIBITEMS = r"""
+\bibitem[{Baraka} et~al.(2022){Baraka}, {Lawson}, {Schaffnit}, {Wamoyi}, and {Urassa}]{baraka2022}
+J.~{Baraka}, D.~W. {Lawson}, S.~B. {Schaffnit}, J.~{Wamoyi}, and M.~{Urassa}.
+\newblock {Why marry early? Parental influence, agency and gendered conflict in Tanzanian marriages}.
+\newblock \emph{Evolutionary Human Sciences}, 4:e49, 2022.
+\newblock \doi{10.1017/ehs.2022.46}.
+
 \bibitem[{Whyte} et~al.(2021){Whyte}, {Brooks}, {Chan}, and {Torgler}]{whyte2021}
 S.~{Whyte}, R.~C. {Brooks}, H.~F. {Chan}, and B.~{Torgler}.
 \newblock {Sex differences in sexual attraction for aesthetics, resources and personality across age}.
@@ -606,7 +612,7 @@ def fig1_main_plot(data):
     )
     for xf in (1.0, 0.78):
         ax_a.plot([xf], [318], marker="^", ms=4.0, color=AQUA, zorder=6)
-    ax_a.text(0.82, 540, "Fire + love\n(+50%/Myr)", fontsize=4.9, color=AQUA, ha="center", fontweight="bold", linespacing=1.0)
+    ax_a.text(0.82, 540, "Fire / cooking\nevidence", fontsize=4.9, color=AQUA, ha="center", fontweight="bold", linespacing=1.0)
     dot(ax_a, [0.08], [426], VIOLET, "o", s=14, z=5)
     ax_a.text(0.40, 340, "dwarfs", fontsize=4.9, color=INK2, ha="center")
     ax_a.set_yscale("log")
@@ -718,7 +724,7 @@ def fig1_main_plot(data):
     x_cross = pov["childless_crossover"]["band_midpoint_interpolated_age"]
     ax_c.axvline(x_cross, color=VIOLET, lw=0.85, ls=":", zorder=2)
     ax_c.scatter([x_cross], [np.interp(x_cross, bx, w_k)], s=22, facecolor=VIOLET, edgecolor="white", lw=0.5, zorder=6)
-    ax_c.text(19.5, 86.5, "Serious commitment: W > M always", fontsize=5.3, color=INK, fontweight="bold")
+    ax_c.text(19.5, 86.5, "Seeking serious relationship: W > M", fontsize=5.3, color=INK, fontweight="bold")
     ax_c.text(x_cross + 1.4, 39.5, f"Age ~{x_cross:.0f}\nwant-kids\ncrossover", fontsize=5.1, color=VIOLET, fontweight="bold", linespacing=1.02)
     ax_c.text(
         19.5, 4.5, "U.S. birth drop: 94% = non-marriage\n(observational; ~2.7 ideal unchanged)",
@@ -729,7 +735,7 @@ def fig1_main_plot(data):
     ax_c.set_ylim(0, 96)
     ax_c.set_xticks([20, 35, 50, 65])
     ax_c.set_yticks([0, 30, 60, 90])
-    panel(ax_c, "C", "Clocks vs. devotion (1.14M)", xlabel="Age (years)", ylabel="Share of profiles (%)", fontsize=7.6, pad=4)
+    panel(ax_c, "C", "Stated intentions (1.14M profiles)", xlabel="Age (years)", ylabel="Share of profiles (%)", fontsize=7.6, pad=4)
     ax_c.legend(loc="center right", bbox_to_anchor=(1.0, 0.62), fontsize=5.5, handlelength=1.4, labelspacing=0.18)
 
     return pdf(fig)
@@ -1405,7 +1411,7 @@ def ethnography_ancestors_plot(data):
     ax.invert_yaxis()
     ax.set_xlim(0, 118)
     ax.set_xticks([0, 25, 50, 75, 100])
-    panel(ax, "A", "Kin juries decide, firmer for daughters", xlabel="Societies (%)", pad=14)
+    panel(ax, "A", "Who chooses a spouse?", xlabel="Societies (%)", pad=14)
     ax.legend(
         handles=[Rectangle((0, 0), 1, 1, color=c, label=l) for _, l, c in segs],
         loc="lower left", bbox_to_anchor=(-0.18, 1.01), ncol=4, fontsize=5.2,
@@ -1445,7 +1451,7 @@ def ethnography_ancestors_plot(data):
     dot(ax, pairs[:, 1] + jit[:, 1], pairs[:, 0] + jit[:, 0], MEN, "o", s=12, alpha=0.82)
     ax.set_xlim(8, 26)
     ax.set_ylim(8, 36)
-    panel(ax, "C", f"Men wait +{C['binford_age']['gap']:.1f} yr ({C['binford_age']['n']} forager groups)", xlabel="Women's age at first marriage (yr)", ylabel="Men's age at first marriage (yr)")
+    panel(ax, "C", f"Men marry {C['binford_age']['gap']:.1f} yr later ({C['binford_age']['n']} groups)", xlabel="Women's age at first marriage (yr)", ylabel="Men's age at first marriage (yr)")
     ax.text(25.4, 11.5, f"Men older in {C['binford_age']['men_older_pct']:.0f}%\nof hunter-gatherer societies", fontsize=5.8, color=INK2, ha="right", linespacing=1.1)
 
     # Panel D: Effective Ancestor Ratio Nef / Nem (Prop. 18)
@@ -2629,7 +2635,7 @@ def pov_lifecourse_plot(data):
     ax.plot(wx, 0.5 * (yw_10 + ym_10), color=AQUA, lw=1.3, ls=":", marker="s", ms=2.7, label="Prior >10-yr union")
     _shared_age(ax)
     ax.set_ylim(0, 90)
-    panel(ax, "E", "Serious devotion stays W > M (1.14M)", ylabel="Share of profiles (%)")
+    panel(ax, "E", "Seeking a serious relationship", ylabel="Share of profiles (%)")
     ax.legend(loc="lower right", fontsize=5.3, labelspacing=0.18)
 
     # Panel F: Partnered Happiness Lift (Whyte) & Education Postponement Without Desire Loss (POV)
@@ -3501,6 +3507,20 @@ def numbers(data):
         "PboFaceWorldMinCorrM": f"{fa['world_regional_synthesis']['Male']['min_pairwise_driver_corr']:.2f}",
     }
 
+    arrangements = _v9_json("e18_cultures")["arrangement"]
+    for suffix, group in (
+        ("W", "women"),
+        ("M", "men"),
+        ("ForW", "women_foragers"),
+        ("ForM", "men_foragers"),
+    ):
+        coded = arrangements[group]
+        values[f"PboKinAutonomous{suffix}"] = str(coded["groups"]["alone"])
+        values[f"PboKinCoded{suffix}"] = str(coded["n"])
+    for suffix, sex in (("W", "Female"), ("M", "Male")):
+        regions = fa["world_regional_synthesis"][sex]["regions"]
+        values[f"PboFaceWorldMea{suffix}"] = str(regions["Middle East & Africa"]["n"])
+
     # Paleoclimate & 1.5-0.7 Ma Plateau Audit macros
     pp = data["paleoclimate_plateau"]
     du_pre = pp["du2018_age_uncertainty_mc"]["slopes"]["phase_II_2.0_1.5"]["median_slope_ln_per_myr"]
@@ -4159,7 +4179,7 @@ def pov_geography_table(data):
     sf_w = sum(b["women"]["n"] for b in sfc["by_age_band"].values())
     sf_m = sum(b["men"]["n"] for b in sfc["by_age_band"].values())
     lines = [
-        r"& \multicolumn{2}{c}{Eligible profiles} & \multicolumn{2}{c}{Childless ``Want children'' (W $-$ M, pp)} & \multicolumn{2}{c}{Serious commitment (W $-$ M, pp)}\\",
+        r"& \multicolumn{2}{c}{Eligible profiles} & \multicolumn{2}{c}{Childless ``Want children'' (W $-$ M, pp)} & \multicolumn{2}{c}{Seeking serious relationship (W $-$ M, pp)}\\",
         r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(l){6-7}",
         r"Country or open-science sub-cohort & Women & Men & Ages 25--29 & Ages 45--49 & Ages 25--29 & Ages 45--49\\\midrule",
     ]
@@ -4178,7 +4198,7 @@ def pov_geography_table(data):
         f"San Francisco (\\texttt{{OkCupid-JSE}}, open; 45--54 right) & {sf_w:,} & {sf_m:,} & "
         f"{format_pp(sfc['by_age_band']['25-29']['women_minus_men_pp'])} & "
         f"{format_pp(sfc['by_age_band']['45-54']['women_minus_men_pp'])} & "
-        f"\\multicolumn{{2}}{{c}}{{Crossover age: {sfc['interpolated_crossover_age']:.1f}\\,yr}}\\\\"
+        r"-- & --\\"
     )
     return "\n".join(lines) + "\n"
 
@@ -4495,10 +4515,10 @@ def macro_kpi_table(data):
     rows = [
         (
             r"\textbf{1. When Brains Grew vs.\ Stalled}",
-            r"When did hominin brains expand, why did they stall for 800\,kyr (1.50--0.70\,Ma), and what released the surge?",
+            r"When did hominin brains expand, and what does the timing of stasis and renewed growth constrain?",
             f"{pp['plateau_summary']['gingerich_n']} crania + \\texttt{{LR04}} + {cc['sccs_alloparenting_and_sharing']['early_childhood_nonmaternal_majority_sccs52']['coded_societies']} SCCS societies",
-            rf"Grew to $\sim\!908\,\mathrm{{cm^3}}$ by 1.5\,Ma, stalled \textbf{{800\,kyr}} (\textbf{{{pp['timing_gap_summary']['onset_to_mis34_cooling_kyr']:.0f}--{pp['timing_gap_summary']['onset_to_bolaven_impact_kyr']:.0f}\,kyr}} before crises), then surged \textbf{{$+50\%/\mathrm{{Myr}}$}} post-cooking; age-4.5 brain uses \textbf{{{cc['kuzawa_2014_brain_metabolism']['peak_rmr_pct']:.1f}\% RMR}}",
-            rf"SCCS solo-mother care is \textbf{{0/136 (0.0\%)}}; cooking w/o pair-bond love stalls at $\sim\!{cc['proposition_22_e22_coevolution']['regimes']['cooking_without_pair_bond_love']['equilibrium_cm3_closed_form']:,.0f}\,\mathrm{{cm^3}}$ vs.\ {cc['proposition_22_e22_coevolution']['regimes']['late_homo_cooking_plus_pair_bond_love']['equilibrium_cm3_closed_form']:,.0f} (Props.~\ref{{prop:tissue}},~\ref{{prop:childhood}})",
+            rf"Grew to $\sim\!908\,\mathrm{{cm^3}}$ by 1.5\,Ma, stalled \textbf{{800\,kyr}} (\textbf{{{pp['timing_gap_summary']['onset_to_mis34_cooling_kyr']:.0f}--{pp['timing_gap_summary']['onset_to_bolaven_impact_kyr']:.0f}\,kyr}} before crises), then surged \textbf{{$+50\%/\mathrm{{Myr}}$}} after evidence of cooking; age-4.5 brain uses \textbf{{{cc['kuzawa_2014_brain_metabolism']['peak_rmr_pct']:.1f}\% RMR}}",
+            rf"SCCS solo-mother care is \textbf{{0/136 (0.0\%)}}; modeled cooking without pair-bond provisioning yields $\sim\!{cc['proposition_22_e22_coevolution']['regimes']['cooking_without_pair_bond_love']['equilibrium_cm3_closed_form']:,.0f}\,\mathrm{{cm^3}}$ vs.\ {cc['proposition_22_e22_coevolution']['regimes']['late_homo_cooking_plus_pair_bond_love']['equilibrium_cm3_closed_form']:,.0f} (Props.~\ref{{prop:tissue}},~\ref{{prop:childhood}})",
         ),
         (
             r"\textbf{2. Multi-Modal Legibility Wall}",
@@ -4525,7 +4545,7 @@ def macro_kpi_table(data):
             r"\textbf{5. Audit Collapse \& Rush Hazard}",
             "What happens when digital apps compress pre-romantic witness audits and couples rush into lock-in?",
             rf"{hcm['total_respondents']:,} Stanford \texttt{{HCMST}} adults ({hcm['cohabitation_rush_hazard']['n_ever_cohabited']:,} cohabited)",
-            rf"Apps compress pre-romance acquaintance \textbf{{{hcm['audit_compression_ratios']['institutional_kin_to_app_mean_ratio']:.1f}$\times$}} ($0.27$ vs.\ $2.58$\,yr); rushing to cohabit in \textbf{{$\le 3$\,mo triples breakup}} ({100*hcm['cohabitation_rush_hazard']['by_romance_to_cohab_window']['le_3m_rush']['breakup_share']:.1f}\% vs.\ {100*hcm['cohabitation_rush_hazard']['by_romance_to_cohab_window']['gt_2_5y']['breakup_share']:.1f}\%)",
+            rf"Apps compress pre-romance acquaintance \textbf{{{hcm['audit_compression_ratios']['institutional_kin_to_app_mean_ratio']:.1f}$\times$}} ($0.27$ vs.\ $2.58$\,yr); cohabitation within $\le 3$\,mo was associated with more breakup ({100*hcm['cohabitation_rush_hazard']['by_romance_to_cohab_window']['le_3m_rush']['breakup_share']:.1f}\% vs.\ {100*hcm['cohabitation_rush_hazard']['by_romance_to_cohab_window']['gt_2_5y']['breakup_share']:.1f}\%)",
             rf"Non-marital breakups are near-symmetric, whereas \textbf{{marital divorces flip to {100*hcm['breakup_initiation_asymmetry']['married_divorce_or_separation']['woman_share_of_unilateral']:.1f}\% female initiation}} (85.7\% in husbands' reports; Prop.~\ref{{prop:lifecycle}}(ii--iii))",
         ),
         (
