@@ -100,6 +100,30 @@ or a reported count; each changes framing or presentation, and the paper says so
     differ. E5's numbers are not changed; Section 5 states this.
 - **E2 host.** Section 6 said E2 re-ran E8 "on the same host and backend"; E2's checkpoints share a host (llama-server
   on xbabe4's CPU) but E8 ran on xbabe2. Corrected; E2 also gets a generated appendix table with every arm.
+- **Review 5 (2026-11-13, ~08:05–08:50Z; a fresh hostile reviewer given only the PDF scored it 3/10).** Changes made
+  after reading it, none to data or analysis rules:
+  - **E8b Progent arm reported.** E8b ran and promoted a Progent arm (in-spec injections succeeded in 3/74) that the
+    paper never reported; the generator only wrote macros for the other four arms. It is now in the abstract, Section 6,
+    Figure 2c's caption and CLAIMS. Section 6 now says plainly that on AgentDojo our per-suite S did no better than
+    Progent's per-task policies on benign tasks and far worse on in-spec injections.
+  - **Abstract and page 1.** The abstract leads with the lambda(L+w) decomposition and when a fence matters; the E4
+    counts state that the stop was enforced at once; the R1 claim gives the second-CPU count (24/36). The hero's axes
+    name their baselines (after enforcement vs after the decision), panel (c)'s labels are larger, its author-code
+    glyph is distinct from "some runs", and the caption reports the census under trusted writers (4 of 9).
+  - **Text.** Synchronous vs asynchronous monitors (intro); why no kill-the-executors arm (zero by construction in this
+    harness) and when permit invalidation is a fence (Section 3); executor trust model (Section 8); S2 stated as a cost
+    (Section 7); oracle described as a reference, not an upper bound; consistency fixes (R0/R1 descriptions, six E8b
+    injections, worker counts, NORMAL vs FULL latency, sample-set denominators, race independence, notation, Table 9's
+    witness column); E3 and E7 disclosed as dropped by budget decision before data.
+  - **Related work** added after a primary-source check (REFERENCE_CHECK_V6.md).
+  - **Not done:** an end-to-end control evaluation (review's O1), a public registry for the plans (O7, needs the
+    author), the verified kernel in the release decision path (O8, branch cc/b1-kernel), a retitle (O3, author's call).
+- **E5d (post hoc; plan `fixtures/v6/e5d_structured_plan.json`, committed at 305c176 before data).** Prompted by review
+  5: does a structured per-rule verdict without reasoning close the gap at tens of tokens? Reporting rule fixed in the
+  plan.
+- **E5c R2 retry, first launch aborted.** The 07:52Z launch crashed after 4 reviews on a harness bug (the task returned a
+  record instead of a list of keyed records). It is kept as `target/runs/e5c-r2-retry-20261113T0752Z-ABORTED`, contents
+  not viewed; the retry was relaunched from scratch at 08:15Z with the fix (commit before relaunch).
 - **E1 framing.** "Powered" was removed. At N = 128 a single lost case defeats a usefulness claim (generated loss
   rule); E1 is presented as a strict test of the previous version's claims, not as evidence for the thesis.
 
