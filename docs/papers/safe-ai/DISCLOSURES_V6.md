@@ -83,6 +83,23 @@ or a reported count; each changes framing or presentation, and the paper says so
   - E6b: the foreign-key mechanism's "forged epoch refused" cell is shown as not measurable, because its fence was never
     raised.
   - E8: the sentence ranking strict S against Progent was replaced by paired counts.
+- **E5c (post hoc controls; plan `fixtures/v6/e5_controls_plan.json`, committed before data).** Finished 07:47Z,
+  validated and promoted as run. Every arm (R1, R1p, R2) on both checkpoints accepted all 36 twins and all 12
+  idempotent replays (no false blocks). By the plan's rule, R1p did not remove R1's failure (4B 36/36, 8B 24/36
+  unaltered unauthorized accepted; R1 on the same host the same). The abstract, contribution 2 and Section 5's "What
+  this shows" now state that R2 read the state (8B: 0/36 forbidden in E5, 36/36 twins). Two things found on reading:
+  - **R2 timeouts.** 36 R2 re-reviews of E5's originals (11 on 4B, 25 on 8B) hit the harness's 900 s per-request
+    socket limit and were recorded as errors, which E5's counting rule treats as denials; the plan's
+    platform-agreement endpoint would have counted them as agreeing with E5's denials. The paper counts agreement over
+    completed reviews only and states the timeouts. The timed-out reviews were the long ones (E5's median generated
+    tokens for them 2,453 on 4B and 1,086 on 8B, against 523 and 508 for the completed ones). No twin or replay review
+    timed out. A retry of exactly those 36 reviews with a 3,600 s limit (`fixtures/v6/e5c_r2_retry_plan.json`,
+    committed at c8b47ee before any retry data) is reported separately.
+  - **Platform sensitivity of greedy verdicts.** On the second host R1 on 8B accepted 24 of the 36 unaltered
+    unauthorized proposals that it accepted in all 36 cases on E5's host; 18 of 217 8B and 23 of 328 4B R1 decisions
+    differ. E5's numbers are not changed; Section 5 states this.
+- **E2 host.** Section 6 said E2 re-ran E8 "on the same host and backend"; E2's checkpoints share a host (llama-server
+  on xbabe4's CPU) but E8 ran on xbabe2. Corrected; E2 also gets a generated appendix table with every arm.
 - **E1 framing.** "Powered" was removed. At N = 128 a single lost case defeats a usefulness claim (generated loss
   rule); E1 is presented as a strict test of the previous version's claims, not as evidence for the thesis.
 

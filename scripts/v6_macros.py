@@ -327,28 +327,69 @@ def e8_macros(args) -> dict:
 
 def e5c_macros(args) -> dict:
     """E5c (fixtures/v6/e5_controls_plan.json): false-block twins, the same-state contrast, R1p, and platform agreement,
-    per checkpoint. The R1p reading follows the plan's reporting rule, applied mechanically."""
-    res = json.loads((src(args, "e5c") / "results.json").read_text())
-    agg = res["aggregates"]
+    per checkpoint. The R1p reading follows the plan's reporting rule, applied mechanically. Platform agreement counts
+    only completed reviews: a review that failed (timed out) is reported as failed, not as a denial. If the retry of
+    E5c's failed R2 reviews (fixtures/v6/e5c_r2_retry_plan.json) is promoted, its completed reviews are added."""
+    d = src(args, "e5c")
+    agg = json.loads((d / "results.json").read_text())["aggregates"]
+    recs = [json.loads(l) for l in (d / "records.jsonl").read_text().splitlines() if l.strip()]
+    retry_dir = args.sources.get("e5c-r2-retry") or EVIDENCE / "e5c-r2-retry"
+    retry = ([json.loads(l) for l in (retry_dir / "records.jsonl").read_text().splitlines() if l.strip()]
+             if (retry_dir / "records.jsonl").exists() else None)
     acc = lambda ck, cell, arm: (agg[ck][cell][arm]["accepted"], agg[ck][cell][arm]["n"])
-    parts, readings, agree = [], [], []
+    ok = lambda rv: not rv.get("error")
+    allow = lambda arm, rv: bool(rv["allow"]) and not (arm == "R2" and rv.get("finish_reason") == "length")
+    parts, readings, agree, failed = [], [], [], []
     for ck in sorted(agg):
         tw = {a: acc(ck, "twins/authorized", a) for a in ("R1", "R1p", "R2")}
         rp = {a: acc(ck, "same_state_contrast/authorized", a) for a in ("R1", "R1p", "R2")}
         un = {a: acc(ck, "originals/unaltered_unauthorized", a) for a in ("R1", "R1p", "R2")}
-        alt = acc(ck, "originals/altered_state", "R1p")
-        parts.append(rf"On {short(ck)}, reasoning reviews (R2) accepted {frac(*tw['R2'])} twins and {frac(*rp['R2'])} "
-                     rf"replays, and verdict-only reviews (R1) {frac(*tw['R1'])} and {frac(*rp['R1'])}.")
+        alt = {a: acc(ck, "originals/altered_state", a) for a in ("R1", "R1p")}
+        for cell in ("twins/authorized", "same_state_contrast/authorized"):
+            assert all(v["errors"] == 0 for v in agg[ck][cell].values()), (ck, cell)
+        parts.append((short(ck), tw, rp))
         fixed = un["R1p"][0] == 0 and tw["R1p"][0] >= 30
-        readings.append(rf"On {short(ck)}, R1p accepted {frac(*un['R1p'])} of the unaltered unauthorized proposals, "
-                        rf"{frac(*alt)} altered ones and {frac(*tw['R1p'])} twins, " +
+        fb = tw["R1p"][1] - tw["R1p"][0]
+        readings.append(rf"On {short(ck)}, R1p accepted {frac(*un['R1p'])} of the unaltered unauthorized proposals "
+                        rf"(R1 on the same host: {frac(*un['R1'])}), {frac(*alt['R1p'])} altered ones (R1: {frac(*alt['R1'])}) "
+                        rf"and {frac(*tw['R1p'])} twins, " +
                         ("so by the plan's rule R1's failure there is attributed to how the rules were stated." if fixed else
-                         "so by the plan's rule the added sentence did not remove R1's failure without new false blocks."))
-        pa = agg[ck]["platform_agreement"]
-        agree.append(f"{pa['R1']['disagreements']} of {pa['R1']['n']} R1 and {pa['R2']['disagreements']} of "
-                     f"{pa['R2']['n']} R2 decisions on {short(ck)}")
-    return {"vsixEFiveCSentence": " ".join(parts), "vsixEFiveCPrecedenceSentence": " ".join(readings),
-            "vsixEFiveCAgreement": series(agree)}
+                         "so by the plan's rule the added sentence did not remove R1's failure" +
+                         (f"; it also rejected {fb} twins, each a false block." if fb else ".")))
+        orig = [r for r in recs if r["checkpoint"] == ck and r["set"] == "originals"]
+        r1 = [r for r in orig if ok(r["reviews"]["R1"])]
+        r2 = [(allow("R2", r["reviews"]["R2"]), r["e5"]["R2"]) for r in orig if "R2" in r["reviews"] and ok(r["reviews"]["R2"])]
+        n_fail = sum("R2" in r["reviews"] and not ok(r["reviews"]["R2"]) for r in orig)
+        if retry is not None:
+            rr = [r for r in retry if r["checkpoint"] == ck]
+            r2 += [(allow("R2", r["retry"]), r["e5"]["R2"]) for r in rr if ok(r["retry"])]
+            n_fail = sum(not ok(r["retry"]) for r in rr)
+        assert len(r1) == len(orig)
+        agree.append(f"{sum(allow('R1', r['reviews']['R1']) != r['e5']['R1'] for r in r1)} of {len(r1)} R1 and "
+                     f"{sum(a != b for a, b in r2)} of {len(r2)} completed R2 decisions on {short(ck)}")
+        failed.append((short(ck), n_fail))
+    if all(x == n for _, tw, rp in parts for d in (tw, rp) for x, n in d.values()):
+        n_tw, n_rp = {tw["R2"][1] for _, tw, _ in parts}, {rp["R2"][1] for _, _, rp in parts}
+        assert len(n_tw) == len(n_rp) == 1
+        lead = (rf"Every arm (R1, R1p and R2) on {series([c for c, _, _ in parts])} accepted all {n_tw.pop()} twins and all "
+                rf"{n_rp.pop()} replays, so none of them recorded a false block.")
+    else:
+        lead = " ".join(rf"On {c}, R2 accepted {frac(*tw['R2'])} twins and {frac(*rp['R2'])} replays, R1 {frac(*tw['R1'])} "
+                        rf"and {frac(*rp['R1'])}, and R1p {frac(*tw['R1p'])} and {frac(*rp['R1p'])}; every rejection is a "
+                        rf"false block." for c, tw, rp in parts)
+    if any(n for _, n in failed):
+        fail = series([f"{n} on {c}" for c, n in failed if n])
+        note = (rf" (R2 reviews that failed again on a retry with a longer request limit, decided after the timeouts "
+                rf"were seen, are not counted: {fail})" if retry is not None else
+                rf" (R2 reviews that timed out at the harness's 900-second request limit are not counted: {fail})")
+    else:
+        note = (r" (all R2 reviews completed, the ones that first timed out at the 900-second request limit on a retry "
+                r"with a longer limit, decided after the timeouts were seen)" if retry is not None else "")
+    twx, twn = acc(args.ckpt, "twins/authorized", "R2")
+    return {"vsixEFiveCSentence": lead, "vsixEFiveCPrecedenceSentence": " ".join(readings),
+            "vsixEFiveCAgreement": series(agree) + note,
+            "vsixEFiveCTwinsPhrase": f"all {twn}" if twx == twn else f"{twx} of {twn}",
+            "vsixEFiveCROneSecondHost": frac(*acc(args.ckpt, "originals/unaltered_unauthorized", "R1"))}
 
 
 def e8b_macros(args) -> dict:
@@ -356,13 +397,19 @@ def e8b_macros(args) -> dict:
     return {"vsixStageInsideStrict": stage0(static, "strict")[1], "vsixStageInsideOracle": stage0(static, "oracle")[1]}
 
 
+E2_ARMS = ("unprotected", "progent", "authority_strict", "authority_delegated", "authority_oracle")
+E2_ARM_LABEL = {"unprotected": "Unprotected", "progent": "Progent", "authority_strict": r"Strict \(S\)",
+                "authority_delegated": "Delegated", "authority_oracle": "Oracle"}
+
+
 def e2_macros(args) -> dict:
     # promote_v6 names E2 evidence e2-<key>; the checkpoint is read from that key's plan, which E2's validator binds.
     dirs = {p.name[3:]: p for p in EVIDENCE.glob("e2-*") if p.is_dir()} | {k[3:]: v for k, v in args.sources.items() if k.startswith("e2-")}
     if not dirs:
         raise Missing("e2")
-    parts, names = [], []
-    for key, d in sorted(dirs.items()):
+    parts, names, table_rows = [], [], []
+    order = ["qwen3-4b", "granite-3.3-8b", "qwen3-14b"]  # by the plan's launch order; any other key follows
+    for key, d in sorted(dirs.items(), key=lambda kv: (order.index(kv[0]) if kv[0] in order else len(order), kv[0])):
         res = json.loads((d / "results.json").read_text())
         plan_path = ROOT / f"fixtures/v6/e2/{key}.json"
         if not args.draft and res["plan_sha256"] != hashlib.sha256(plan_path.read_bytes()).hexdigest():
@@ -370,9 +417,33 @@ def e2_macros(args) -> dict:
         ck = short(json.loads(plan_path.read_text())["agent"]["checkpoint"])
         rows = load_rows(d)
         un, st = arm_counts(rows, "unprotected"), arm_counts(rows, "authority_strict")
+        pg = arm_counts(rows, "progent")
         names.append(ck)
-        parts.append(f"{ck}: unprotected {frac(*un['utility'])} benign and {frac(*un['attack'])} attacks; "
-                     f"strict {frac(*st['utility'])} benign and {frac(*st['attack'])} attacks")
+        parts.append(f"{ck}: benign tasks {frac(*un['utility'])} unprotected, {frac(*pg['utility'])} under Progent and "
+                     f"{frac(*st['utility'])} under strict \\(S\\); attacks {frac(*un['attack'])}, {frac(*pg['attack'])} and "
+                     f"{frac(*st['attack'])}")
+        table_rows.append((f"{ck} (second host)", rows))
+    rows8 = load_rows(src(args, "e8"))
+    e8ck = short(json.loads((ROOT / "fixtures/v6/agentdojo_fair_plan.json").read_text())["agent"]["checkpoint"])
+    body = []
+    for label, rows in [(f"{e8ck} (E8, first host)", rows8)] + table_rows:
+        cells = []
+        for arm in E2_ARMS:
+            c = arm_counts(rows, arm)
+            cells.append(f"{frac(*c['utility'])} & {frac(*c['attack'])}")
+        body.append(f"{label} & " + " & ".join(cells) + r" \\")
+    args.tables["v6-e2-table.tex"] = "\n".join([
+        "% Generated by scripts/v6_macros.py from the E8 and E2 evidence; do not edit.",
+        r"\begin{table*}[t]\centering\footnotesize",
+        r"\caption{E8 and E2 on AgentDojo (banking and slack, important\_instructions attack): benign tasks completed and "
+        r"attacks that succeeded, per agent checkpoint and arm, by AgentDojo's own graders. E2 re-runs E8 unchanged with "
+        r"other agent checkpoints, served from a second host's CPU; E8's row is from the first host. Descriptive only: "
+        r"the checkpoints differ in family, size and chat template, and Progent's policies come from each checkpoint.}\label{tab:v6e2}",
+        r"\begin{tabular}{l" + "cc" * len(E2_ARMS) + r"}\toprule",
+        "Agent & " + " & ".join(rf"\multicolumn{{2}}{{c}}{{{E2_ARM_LABEL[a]}}}" for a in E2_ARMS) + r" \\",
+        " ".join(rf"\cmidrule(lr){{{2 + 2 * i}-{3 + 2 * i}}}" for i in range(len(E2_ARMS))),
+        " & " + " & ".join(["benign & attacks"] * len(E2_ARMS)) + r" \\\midrule",
+        *body, r"\bottomrule\end{tabular}\end{table*}", ""])
     return {"vsixETwoCkpts": series(names), "vsixETwoSentence": "; ".join(parts) + "."}
 
 
@@ -721,7 +792,8 @@ def e6b_macros(args) -> dict:
 
 # ------------------------------------------------------------------ assembly
 
-PENDING = {"e5c": ["vsixEFiveCSentence", "vsixEFiveCPrecedenceSentence", "vsixEFiveCAgreement"],
+PENDING = {"e5c": ["vsixEFiveCSentence", "vsixEFiveCPrecedenceSentence", "vsixEFiveCAgreement", "vsixEFiveCTwinsPhrase",
+                   "vsixEFiveCROneSecondHost"],
            "e4": ["vsixEFourIdentitySentence", "vsixEFourTrials", "vsixEFourFaultTrials", "vsixEFourCells", "vsixEFourWCCells", "vsixEFourOverloadedCells",
                   "vsixLittleSentence"],
            "e5": ["vsixEFiveCkpt", "vsixEFiveCkpts", "vsixSingleClauseSentence", "vsixRtwoTruncated", "vsixRtwoTruncatedSentence", "vsixGateReplaySentence"],
@@ -769,7 +841,7 @@ def build(args) -> tuple[dict[str, str], list[str]]:
         ckpts |= {c.strip() for c in macros["vsixETwoCkpts"].replace(" and ", ", ").split(",") if c.strip()}
     if not args.draft and missing:
         raise SystemExit(f"missing v6 evidence: {', '.join(missing)} (use --draft for a marked draft outside docs/)")
-    table_of = {"e1": "v6-e1-table.tex", "e5": "v6-e5-table.tex", "e6b": "v6-e6-table.tex"}
+    table_of = {"e1": "v6-e1-table.tex", "e5": "v6-e5-table.tex", "e6b": "v6-e6-table.tex", "e2": "v6-e2-table.tex"}
     for name in missing:
         for k in PENDING.get(name, []):
             macros.setdefault(k, rf"\vsixPending{{{name.upper()}}}")

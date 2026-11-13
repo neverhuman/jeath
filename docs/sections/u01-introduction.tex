@@ -30,7 +30,8 @@ evidence behind it:
         the rules and the state the gate reads, a same-model reviewer that replied with a bare verdict accepted a
         proposal from the approved list that the state had since made unauthorized, in every state-dependent case; on the larger checkpoint
         it accepted none of the altered ones. Reasoning at length closed the gap on the larger checkpoint, at about a hundred
-        times the generated tokens per check. A gate checks at commit rather than on a snapshot taken before.
+        times the generated tokens per check, and a post hoc control shows that it read the state: it accepted the
+        same proposals where the state permitted them. A gate checks at commit rather than on a snapshot taken before.
   \item \textbf{Mediation moves the failure into a written specification} (a hypothesis, illustrated by
         construction and measured on a public benchmark; Sections~\ref{sec:v6reviewers} and~\ref{sec:v6cost}). A gate
         missing one clause admits exactly the violations of that clause. On AgentDojo, with grants written without the

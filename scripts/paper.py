@@ -1417,7 +1417,7 @@ def generate_v6():
     text, missing = v6_macros.build(SimpleNamespace(ckpt="Qwen/Qwen3-8B-GGUF", draft=False, sources={}))
     assert not missing
     assert hero["v6-hero-fig.tex"].count(r"\captionof{figure}") == 1  # a non-float under the abstract, like v5's
-    for k in ("v6-e1-table.tex", "v6-pilot-table.tex", "v6-e5-table.tex", "v6-e6-table.tex"):
+    for k in ("v6-e1-table.tex", "v6-pilot-table.tex", "v6-e5-table.tex", "v6-e6-table.tex", "v6-e2-table.tex"):
         assert_pure_float(k, text[k])
     return hero | text
 

@@ -55,19 +55,25 @@ was resubmitted unchanged, an idempotent replay that every clause permits. \vsix
 one added sentence (R1p: ``Rule 1 alone is not enough: a proposal listed in policy.proposals must also satisfy rules 2,
 3 and 4 against visible\_state.'') tests whether R1's failure comes from how the rules were stated; it is the only
 wording we ran. \vsixEFiveCPrecedenceSentence{} Re-running R1 and R2 on E5's own proposals on the second host disagreed
-with E5's recorded decisions in \vsixEFiveCAgreement.
+with E5's recorded decisions in \vsixEFiveCAgreement. The R2 reviews that timed out were among the longest in E5, so
+the completed ones are not a random subset. Greedy decoding did not make a verdict portable: on \vsixEFiveCkpt, R1
+accepted \vsixEFiveCROneSecondHost{} of the unaltered unauthorized proposals on the second host, against
+\vsixReviewerExact{} of \vsixExactCases{} on E5's.
 
 \para{What this shows.} A reviewer can check state only if it is shown the state, and E5 shows it everything the gate
 reads: one moment, at most one prior record. Under those conditions the reviewer that replied with a bare verdict
-accepted the approved proposal whatever the state, and the reviewer that reasoned at length accepted none of these
-violations on \vsixEFiveCkpt{} and some on \vsixOtherCkpt. E5 alone cannot say whether reasoning made the reviewer read
-the state or only made it refuse approved proposals; the controls above measure that. Two differences remain that
-neither measures. The gate checks at commit, while a reviewer checks a snapshot before it, which is the
-time-of-check-to-time-of-use gap~\cite{bishop1996toctou}: state that changes in between, such as a budget spent by a
-concurrent call (Appendix~\ref{sec:systems}), is invisible to the reviewer. And the gate's decision is fixed by its
-predicate, while the reviewer's moved from \vsixReviewerExact{} to \vsixReasonerExact{} of the same unaltered
-proposals when reasoning was switched on; what a reviewer catches depends on its configuration, at a cost of hundreds of
-generated tokens per action where the gate's check is a database transaction.
+accepted the approved proposal whatever the state: in E5 where the state forbade it, and in the controls where the
+state permitted it; one added sentence saying that the first rule is not enough did not change that. The reviewer that
+reasoned did read the state: on \vsixEFiveCkpt{} it accepted \vsixReasonerExact{} of the approved proposals where the
+state forbade them and \vsixEFiveCTwinsPhrase{} where it permitted them, so its zero is not a refusal of approved
+proposals. On \vsixOtherCkpt{} it still accepted \vsixReasonerExactOther{} of the forbidden ones. Two differences
+remain that the controls do not touch. The gate checks at commit, while a reviewer checks a snapshot before it, which
+is the time-of-check-to-time-of-use gap~\cite{bishop1996toctou}: state that changes in between, such as a budget spent
+by a concurrent call (Appendix~\ref{sec:systems}), is invisible to the reviewer. And the gate's decision is fixed by
+its predicate, while the reviewer's depends on how it is run: the same unaltered proposals on \vsixEFiveCkpt{} were
+accepted in \vsixReviewerExact{} cases without reasoning, \vsixReasonerExact{} with it, and
+\vsixEFiveCROneSecondHost{} when the same greedy reviewer ran on another CPU. The reviewer spends hundreds of
+generated tokens per action on that decision; the gate spends a database transaction.
 
 \para{What a gate misses instead.} Remove one clause and the gate admits exactly the violations that break only that
 clause. This holds by construction, and Figure~\ref{fig:v6spec}a draws it as such. What the experiment measures is how
@@ -83,4 +89,5 @@ families differ in more than where the violation lives, so the comparison shows 
 hard for a reviewer without reasoning, not that state-dependence alone makes them hard. Only eight distinct proposals
 were authorized, so E5 cannot estimate how often a reviewer denies legitimate work, and a reviewer that denied
 everything would also score zero; the controls measure that only for the unaltered approved proposals of the
-state-dependent families. \vsixRtwoTruncatedSentence
+state-dependent families. A twin differs from its original only in the state, so the twins show whether a reviewer
+reads the state, not how often it blocks other legitimate work. \vsixRtwoTruncatedSentence

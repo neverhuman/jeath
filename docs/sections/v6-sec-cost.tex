@@ -49,9 +49,11 @@ concurrent calls, withdrawn grants or stops, so it exercises none of what holdin
 per-call policy; what it shows is the price of writing a specification once per suite. The oracle shows that a finer
 specification recovers most of that price, at the cost of writing it per task.
 
-\para{Across checkpoints (E2).} Re-running E8 unchanged on \vsixETwoCkpts{} on the same host and backend gives
-\vsixETwoSentence{} The comparison is descriptive: the checkpoints differ in family, size, chat template and how well
-they follow the JSON protocol, and Progent's policies come from each checkpoint itself.
+\para{Across checkpoints (E2).} Re-running E8 unchanged with \vsixETwoCkpts{} as the agent, each served by the
+same llama.cpp build on a second host's CPU (E8's \vsixEEightCkpt{} ran on the first), gives \vsixETwoSentence{} The
+comparison is descriptive: the checkpoints differ in family, size, chat template and how well they follow the JSON
+protocol, Progent's policies come from each checkpoint itself, and the host differs from E8's. Every arm is in
+Table~\ref{tab:v6e2} (Appendix~\ref{app:v6e2}).
 
 \para{Limits.} Two of AgentDojo's four suites; one attack template; none of AgentDojo's own defences (tool filtering,
 spotlighting, an injection detector) or the detection defences of Section~\ref{sec:gaps} as further arms; a repository-specific tool loop rather than
