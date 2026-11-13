@@ -23,7 +23,7 @@ from hero_v6 import CONTROLLERS, FAMILY_LABEL, STATE, VISIBLE, load_e4, load_row
 
 EVIDENCE = ROOT / "evidence/v6/reference"
 SOURCES = {"e4": "e4-revokebench", "e4b": "e4b-revokebench-faults", "e6b": "e6b-fenceability", "e5": "e5-omitted-clause", "e6": "e6-fenceability", "e8": "e8-agentdojo-fair",
-           "e8b": "e8b-inside-spec", "e1": "e1-n128"}
+           "e8b": "e8b-inside-spec", "e1": "e1-n128", "e5c": "e5c-controls"}
 CTRL_LABEL = {k: label for k, label, *_ in CONTROLLERS}
 SURFACE_LABEL = {"postgresql16": "PostgreSQL 16", "etcd_v3_5_17": "etcd v3.5.17", "posix_fs": "POSIX filesystem",
                  "aws_s3": "Amazon S3", "kubernetes_api": "Kubernetes API"}
@@ -288,6 +288,32 @@ def e8_macros(args) -> dict:
                                     " The written specification cost no more legitimate work than a per-task policy the model "
                                     "generated for itself.")
     return m
+
+
+def e5c_macros(args) -> dict:
+    """E5c (fixtures/v6/e5_controls_plan.json): false-block twins, the same-state contrast, R1p, and platform agreement,
+    per checkpoint. The R1p reading follows the plan's reporting rule, applied mechanically."""
+    res = json.loads((src(args, "e5c") / "results.json").read_text())
+    agg = res["aggregates"]
+    acc = lambda ck, cell, arm: (agg[ck][cell][arm]["accepted"], agg[ck][cell][arm]["n"])
+    parts, readings, agree = [], [], []
+    for ck in sorted(agg):
+        tw = {a: acc(ck, "twins/authorized", a) for a in ("R1", "R1p", "R2")}
+        rp = {a: acc(ck, "same_state_contrast/authorized", a) for a in ("R1", "R1p", "R2")}
+        un = {a: acc(ck, "originals/unaltered_unauthorized", a) for a in ("R1", "R1p", "R2")}
+        alt = acc(ck, "originals/altered_state", "R1p")
+        parts.append(rf"On {short(ck)}, reasoning reviews (R2) accepted {frac(*tw['R2'])} twins and {frac(*rp['R2'])} "
+                     rf"replays, and verdict-only reviews (R1) {frac(*tw['R1'])} and {frac(*rp['R1'])}.")
+        fixed = un["R1p"][0] == 0 and tw["R1p"][0] >= 30
+        readings.append(rf"On {short(ck)}, R1p accepted {frac(*un['R1p'])} of the unaltered unauthorized proposals, "
+                        rf"{frac(*alt)} altered ones and {frac(*tw['R1p'])} twins, " +
+                        ("so by the plan's rule R1's failure there is attributed to how the rules were stated." if fixed else
+                         "so by the plan's rule the added sentence did not remove R1's failure without new false blocks."))
+        pa = agg[ck]["platform_agreement"]
+        agree.append(f"{pa['R1']['disagreements']} of {pa['R1']['n']} R1 and {pa['R2']['disagreements']} of "
+                     f"{pa['R2']['n']} R2 decisions on {short(ck)}")
+    return {"vsixEFiveCSentence": " ".join(parts), "vsixEFiveCPrecedenceSentence": " ".join(readings),
+            "vsixEFiveCAgreement": series(agree)}
 
 
 def e8b_macros(args) -> dict:
@@ -643,7 +669,8 @@ def e6b_macros(args) -> dict:
 
 # ------------------------------------------------------------------ assembly
 
-PENDING = {"e4": ["vsixEFourIdentitySentence", "vsixEFourTrials", "vsixEFourFaultTrials", "vsixEFourCells", "vsixEFourWCCells", "vsixEFourOverloadedCells",
+PENDING = {"e5c": ["vsixEFiveCSentence", "vsixEFiveCPrecedenceSentence", "vsixEFiveCAgreement"],
+           "e4": ["vsixEFourIdentitySentence", "vsixEFourTrials", "vsixEFourFaultTrials", "vsixEFourCells", "vsixEFourWCCells", "vsixEFourOverloadedCells",
                   "vsixLittleSentence"],
            "e5": ["vsixEFiveCkpt", "vsixEFiveCkpts", "vsixSingleClauseSentence", "vsixRtwoTruncated", "vsixGateReplaySentence"],
            "e8": ["vsixEEightCkpt", "vsixEEightEpisodes", "vsixEEightProgentSentence", "vsixEEightCostSentence",
@@ -664,7 +691,7 @@ def build(args) -> tuple[dict[str, str], list[str]]:
     macros, missing, tables = {}, [], {}
     args.tables = tables
     for name, fn in (("e4", e4_macros), ("e4b", e4b_macros), ("e5", e5_macros), ("e6", e6_macros), ("e6b", e6b_macros),
-                     ("e8", e8_macros), ("e8b", e8b_macros), ("e2", e2_macros)):
+                     ("e8", e8_macros), ("e8b", e8b_macros), ("e2", e2_macros), ("e5c", e5c_macros)):
         try:
             macros |= fn(args)
         except Missing as e:

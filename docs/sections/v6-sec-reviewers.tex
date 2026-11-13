@@ -45,6 +45,16 @@ its written predicate, not a finding: on all \vsixGateUnique{} distinct valid pr
 with a separately written Python statement of the same clauses (\vsixMirrorDisagreements{} disagreements).
 \vsixGateReplaySentence
 
+\para{Controls (E5c, post hoc).} E5's state-dependent families contain no authorized proposal, so a reviewer that
+refused every unaltered approved proposal would also have scored zero there. After reading E5's results we fixed a plan
+for controls and ran it on a second host. Each state-dependent case was rebuilt without its state change, so that the
+same unaltered proposal is authorized (a \emph{twin}), and in each duplicate-replay case the proposal already committed
+was resubmitted unchanged, an idempotent replay that every clause permits. \vsixEFiveCSentence{} A variant of R1 with
+one added sentence (R1p: ``Rule 1 alone is not enough: a proposal listed in policy.proposals must also satisfy rules 2,
+3 and 4 against visible\_state.'') tests whether R1's failure comes from how the rules were stated; it is the only
+wording we ran. \vsixEFiveCPrecedenceSentence{} Re-running R1 and R2 on E5's own proposals on the second host disagreed
+with E5's recorded decisions in \vsixEFiveCAgreement.
+
 \para{What this shows.} A reviewer can check state only if it is shown the state, and E5 shows it everything the gate
 reads: one moment, at most one prior record. Under those conditions a same-model reviewer that reasons at length did
 about as well as the gate on these cases, and one that replies with a bare verdict treated ``this proposal was

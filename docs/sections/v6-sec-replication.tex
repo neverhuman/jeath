@@ -33,6 +33,10 @@ precede the data:
 \para{What the primary claims can and cannot show.} Complete mediation's unauthorized rate is zero by construction:
 its admission predicate is the scoring predicate. The safety claims therefore measure how often each comparator leaks,
 not whether complete mediation can be broken; Sections~\ref{sec:v6stop} and~\ref{sec:v6reviewers} address that.
+Usefulness keeps the previous version's scoring, which is coupled to the gate: a task succeeds only if the case's
+first approved proposal commits and nothing else does, and a denial counts as a false block only if the proposal
+satisfied the same predicate the gate enforces, so complete mediation cannot record a false block
+(Appendix~\ref{sec:systems}).
 \vsixEOneLossRuleSentence
 
 In the revocation cases, only a fenced controller can complete the task, because the queued old operation otherwise

@@ -12,14 +12,13 @@ Two methodological rules govern Table~\ref{tab:v5statistics}:
   \item \textbf{Strict clustering by independent base unit.} Running two checkpoints (Qwen3-4B and Qwen3-8B) on the same \(32\) holdout cases or evaluating multiple injection/withdrawal variants on the same \(12\) AgentDojo tasks induces within-task correlation. Pooled rows in Table~\ref{tab:v5statistics} therefore cluster strictly at the independent base unit (\(N = \VFiveStatHoldoutClustCases\) holdout cases, where \(\VFiveStatHoldoutClustNoneHarms/\VFiveStatHoldoutClustCases\) cases exhibit unmediated breach on at least one checkpoint vs.\ \(\VFiveStatHoldoutClustCompleteHarms/\VFiveStatHoldoutClustCases\) mediated; and \(N = \VFiveStatDojoClustTasks\) AgentDojo base tasks, where \(\VFiveStatDojoClustUnprotHarms/\VFiveStatDojoClustTasks\) tasks breach unprotected vs.\ \(\VFiveStatDojoClustCompleteHarms/\VFiveStatDojoClustTasks\) mediated).
 \end{enumerate}
 
-\subsection{Prospective Predictions and Human Grant-Reversal Protocol}
+\subsection{Earlier Predictions and the Human Grant-Reversal Protocol}
 
-Three falsifiable predictions extend our framework to prospective human-subject and frontier-training regimes not executed in this study:
-\begin{itemize}
-  \item \textbf{P5 (Human endogenous grant reversal).} In a randomized two-arm operator delegation study, participants assisted by a deferential persona with strictly lower fixed-scope error rates will confer wider capability scopes than participants assisted by a blunt persona, producing higher total out-of-policy harm in the endogenous-grant arm while reversing back to lower harm in a fixed-grant control arm.
-  \item \textbf{P6 (Frontier RLHF inside capability gates).} Post-training frontier tool-use models with live deterministic capability refusals inside the rollout loop will reduce unmonitored boundary-probing attempts relative to applying the identical capability gate only at deployment inference.
-  \item \textbf{P7 (Holdout power completion).} Expanding the frozen holdout beyond \(N \ge \VTwoZeroLossCasesMin\) independent tasks on dedicated inference hardware will close the predeclared \(\alpha = 0.05/16\) marginal non-inferiority bound without relaxing multiplicity corrections.
-\end{itemize}
+The previous version listed three further predictions. P5, that operators confer wider scopes on a deferential agent
+with lower fixed-scope error and so incur more total harm, is superseded by the conferral design in
+Appendix~\ref{app:v6conferral}. P6 extrapolated from synthetic simulations to the post-training of frontier models; it
+is withdrawn, because nothing in this paper bears on it. P7, that a larger frozen holdout would clear the
+noninferiority bound, was tested by E1 (Section~\ref{sec:v6replication}).
 
 \para{Human delegation protocol (for P5).} The previous version's two-arm protocol is superseded by the design in
 Appendix~\ref{app:v6conferral}, which controls competence and caution separately and measures harm at a mediated sink;
