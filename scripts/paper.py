@@ -904,6 +904,8 @@ def generate_v3():
         live_dojo_v3 = json.loads(live_dojo_v3_path.read_text()) if live_dojo_v3_path.is_file() else None
         mc_v3_path = DATA_V2 / "model-campaigns-analyzed.json"
         mc_v3 = json.loads(mc_v3_path.read_text()) if mc_v3_path.is_file() else None
+        smurf_v2_path = DATA_V2 / "multi-agent-smurfing-live.json"
+        smurf_v2 = json.loads(smurf_v2_path.read_text()) if smurf_v2_path.is_file() else None
         v5_macros_extra, v5_floats_extra = build_v5_paper_outputs(
             proof_v2_obj,
             si_v5,
@@ -917,6 +919,7 @@ def generate_v3():
             afc_json=afc_v3,
             live_dojo_json=live_dojo_v3,
             mc_json=mc_v3,
+            smurf_json=smurf_v2,
         )
         v4_v3_macros += v5_macros_extra
         v4_floats.update(v5_floats_extra)

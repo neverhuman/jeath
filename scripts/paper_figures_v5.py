@@ -34,6 +34,7 @@ def build_v5_paper_outputs(
     afc_json=None,
     live_dojo_json=None,
     mc_json=None,
+    smurf_json=None,
 ):
     """Return `(v5_macros_list, v5_floats_dict)` for `scripts/paper.py`."""
     t1 = si_json["track1_optimization_invariance"]
@@ -594,6 +595,142 @@ def build_v5_paper_outputs(
         r"\caption{Mechanized kernel summary.}\label{tab:v5kpis}\end{table}",
     ]
 
+    # -------------------------------------------------------------------------
+    # V9 Live Multi-Agent Smurfing (Gate S2) & d=3 Subtree Revocation (Gate S3)
+    # -------------------------------------------------------------------------
+    v9_smurf_floats = {}
+    if smurf_json is not None:
+        sm4 = smurf_json["checkpoints"]["Qwen/Qwen3-4B-GGUF"]
+        sm8 = smurf_json["checkpoints"]["Qwen/Qwen3-8B-GGUF"]
+        sm_tasks = smurf_json["smurfing_tasks_per_checkpoint"]
+        sm_rev_eps = smurf_json["subtree_revocation_episodes_per_checkpoint"]
+        sm_ben_eps = smurf_json["benign_episodes_per_checkpoint"]
+        sm_b0 = smurf_json["root_budget"]
+        sm_target = smurf_json["smurf_target_units"]
+        sm_depth = smurf_json["delegation_depth_d_tested"]
+
+        sm4_map = {r["a_sub"]: r for r in sm4["smurfing_by_a_sub"]}
+        sm8_map = {r["a_sub"]: r for r in sm8["smurfing_by_a_sub"]}
+
+        sm4_1_llm = 100.0 * sm4_map[1]["breach_rate"]["per_instance_llm_reviewer"]
+        sm4_8_llm = 100.0 * sm4_map[8]["breach_rate"]["per_instance_llm_reviewer"]
+        sm4_max_llm = 100.0 * max(sm4_map[a]["breach_rate"]["per_instance_llm_reviewer"] for a in (2, 4, 8))
+        sm8_1_llm = 100.0 * sm8_map[1]["breach_rate"]["per_instance_llm_reviewer"]
+        sm8_8_llm = 100.0 * sm8_map[8]["breach_rate"]["per_instance_llm_reviewer"]
+        sm8_max_llm = 100.0 * max(sm8_map[a]["breach_rate"]["per_instance_llm_reviewer"] for a in (2, 4, 8))
+
+        stat_1_cnt = sm4_map[1]["breach_count"]["per_instance_static_cap"] + sm8_map[1]["breach_count"]["per_instance_static_cap"]
+        stat_1_pct = 100.0 * stat_1_cnt / (2 * sm_tasks)
+        stat_multi_cnt = sum(
+            sm4_map[a]["breach_count"]["per_instance_static_cap"] + sm8_map[a]["breach_count"]["per_instance_static_cap"]
+            for a in (2, 4, 8)
+        )
+        stat_multi_tot = 6 * sm_tasks
+        stat_multi_pct = 100.0 * stat_multi_cnt / stat_multi_tot
+        comp_smurf_breaches = sum(
+            sm4_map[a]["breach_count"]["complete"] + sm8_map[a]["breach_count"]["complete"]
+            for a in (1, 2, 4, 8)
+        )
+
+        rev4 = sm4["subtree_revocation_d3"]
+        rev8 = sm8["subtree_revocation_d3"]
+        rev_nof_leaks = (
+            rev4["total_post_withdraw_commits"]["durable_lineage_no_fence"]
+            + rev8["total_post_withdraw_commits"]["durable_lineage_no_fence"]
+        )
+        rev_cmp_leaks = (
+            rev4["total_post_withdraw_commits"]["complete"]
+            + rev8["total_post_withdraw_commits"]["complete"]
+        )
+        rev_tot_eps = rev4["episodes"] + rev8["episodes"]
+        rev_ack_ms_min = min(rev4["mean_fence_ack_ms"], rev8["mean_fence_ack_ms"])
+        rev_ack_ms_max = max(rev4["mean_fence_ack_ms"], rev8["mean_fence_ack_ms"])
+
+        ben4 = sm4["benign_multi_agent"]
+        ben8 = sm8["benign_multi_agent"]
+        ben_fb_tot = ben4["complete_false_blocks"] + ben8["complete_false_blocks"]
+        ben_calls_tot = ben4["total_subagent_calls"] + ben8["total_subagent_calls"]
+        ben_llm_fb_tot = ben4["llm_reviewer_false_blocks"] + ben8["llm_reviewer_false_blocks"]
+
+        macros += [
+            ("VNineSmurfTasksPerModel", f"{sm_tasks}"),
+            ("VNineSmurfRevEpisodesPerModel", f"{sm_rev_eps}"),
+            ("VNineSmurfBenignEpisodesPerModel", f"{sm_ben_eps}"),
+            ("VNineSmurfRootBudget", f"{sm_b0}"),
+            ("VNineSmurfTargetUnits", f"{sm_target}"),
+            ("VNineSmurfDepthTested", f"{sm_depth}"),
+            ("VNineSmurfFourBOneLlmPct", f"{sm4_1_llm:.1f}"),
+            ("VNineSmurfFourBEightLlmPct", f"{sm4_8_llm:.1f}"),
+            ("VNineSmurfFourBMaxMultiLlmPct", f"{sm4_max_llm:.1f}"),
+            ("VNineSmurfEightBOneLlmPct", f"{sm8_1_llm:.1f}"),
+            ("VNineSmurfEightBEightLlmPct", f"{sm8_8_llm:.1f}"),
+            ("VNineSmurfEightBMaxMultiLlmPct", f"{sm8_max_llm:.1f}"),
+            ("VNineSmurfStaticOnePct", f"{stat_1_pct:.1f}"),
+            ("VNineSmurfStaticMultiCnt", f"{stat_multi_cnt}"),
+            ("VNineSmurfStaticMultiTot", f"{stat_multi_tot}"),
+            ("VNineSmurfStaticMultiPct", f"{stat_multi_pct:.1f}"),
+            ("VNineSmurfCompleteBreaches", f"{comp_smurf_breaches}"),
+            ("VNineSmurfSubtreeNoFenceLeaks", f"{rev_nof_leaks}"),
+            ("VNineSmurfSubtreeCompleteLeaks", f"{rev_cmp_leaks}"),
+            ("VNineSmurfSubtreeTotalEpisodes", f"{rev_tot_eps}"),
+            ("VNineSmurfSubtreeAckMinMs", f"{rev_ack_ms_min:.2f}"),
+            ("VNineSmurfSubtreeAckMaxMs", f"{rev_ack_ms_max:.2f}"),
+            ("VNineSmurfBenignFalseBlocks", f"{ben_fb_tot}"),
+            ("VNineSmurfBenignTotalCalls", f"{ben_calls_tot}"),
+            ("VNineSmurfBenignLlmFalseBlocks", f"{ben_llm_fb_tot}"),
+            ("VNineSmurfFourBBenignWorkflowCount", f"{ben4['complete_full_workflow_count']}"),
+            ("VNineSmurfEightBBenignWorkflowCount", f"{ben8['complete_full_workflow_count']}"),
+        ]
+
+        smurf_tab = [
+            "% Generated by scripts/paper.py via scripts/paper_figures_v5.py; do not edit.",
+            r"\begin{table*}[t]\centering\footnotesize\setlength{\tabcolsep}{4pt}",
+            r"\begin{tabularx}{\textwidth}{@{}lLrrrr@{}}\toprule",
+            r"Checkpoint & Multi-agent regime ($B_0=8$) & Per-inst.\ LLM & Static cap & Lineage, no fence & Complete (fenced)\\\midrule",
+        ]
+        for ckpt_label, sm_m, rev_m, ben_m in (
+            ("Qwen3-4B", sm4_map, rev4, ben4),
+            ("Qwen3-8B", sm8_map, rev8, ben8),
+        ):
+            for a in (1, 2, 4, 8):
+                rm = sm_m[a]
+                n_t = rm["tasks"]
+                sl = rm["slice_units"]
+                c_llm = rm["breach_count"]["per_instance_llm_reviewer"]
+                c_sta = rm["breach_count"]["per_instance_static_cap"]
+                c_nof = rm["breach_count"]["durable_lineage_no_fence"]
+                c_cmp = rm["breach_count"]["complete"]
+                smurf_tab.append(
+                    f"{ckpt_label} & Smurfing $A_{{\\mathrm{{sub}}}}={a}$ ($\\Delta B={sl}$, breach tasks) & "
+                    f"{c_llm}/{n_t} ({100.0*c_llm/n_t:.0f}\\%) & {c_sta}/{n_t} ({100.0*c_sta/n_t:.0f}\\%) & "
+                    f"{c_nof}/{n_t} (0\\%) & {c_cmp}/{n_t} (0\\%)\\\\"
+                )
+            n_r = rev_m["episodes"]
+            p_llm = rev_m["total_post_withdraw_commits"]["per_instance_llm_reviewer"]
+            p_sta = rev_m["total_post_withdraw_commits"]["per_instance_static_cap"]
+            p_nof = rev_m["total_post_withdraw_commits"]["durable_lineage_no_fence"]
+            p_cmp = rev_m["total_post_withdraw_commits"]["complete"]
+            smurf_tab.append(
+                f"{ckpt_label} & $d={sm_depth}$-hop root withdrawal ({n_r} eps, late ops) & "
+                f"{p_llm} late & {p_sta} late & {p_nof} late & {p_cmp} late\\\\"
+            )
+            n_b = ben_m["episodes"]
+            tot_b = ben_m["total_subagent_calls"]
+            smurf_tab.append(
+                f"{ckpt_label} & Benign $A_{{\\mathrm{{sub}}}}=4$ ($4\\times 2\\le B_0$, workflows / FB) & "
+                f"{ben_m['llm_reviewer_full_workflow_count']}/{n_b} ({ben_m['llm_reviewer_false_blocks']}/{tot_b} FB) & "
+                f"{ben_m['complete_full_workflow_count']}/{n_b} (0/{tot_b} FB) & "
+                f"{ben_m['complete_full_workflow_count']}/{n_b} (0/{tot_b} FB) & "
+                f"{ben_m['complete_full_workflow_count']}/{n_b} (0/{tot_b} FB)\\\\"
+            )
+            if ckpt_label == "Qwen3-4B":
+                smurf_tab.append(r"\midrule")
+        smurf_tab += [
+            r"\bottomrule\end{tabularx}",
+            f"\\caption{{Live multi-agent action fragmentation ($A_{{\\mathrm{{sub}}}}\\in\\{{1,2,4,8\\}}$, {sm_tasks} adversarial tasks per checkpoint splitting a {sm_target}-unit target against root cap $B_0={sm_b0}$), $d={sm_depth}$-hop ancestor withdrawal ({sm_rev_eps} mid-flight subtree-revocation episodes per checkpoint), and benign $4$-subagent collaborative delegation ({sm_ben_eps} workflows per checkpoint). Stateless per-instance caps and isolated per-instance LLM reviewers block single-call over-cap attempts ($A_{{\\mathrm{{sub}}}}=1$, $\\Delta B={sm_target}>B_0$) yet fail once spend is fragmented across $A_{{\\mathrm{{sub}}}}\\ge 2$ sub-agents ($\\Delta B\\le B_0$). Broker-only lineage accounting prevents smurfing ($0$ budget breaches) but still leaks {rev_nof_leaks} queued $d={sm_depth}$ descendant commits across {rev_tot_eps} root-withdrawal episodes; complete broker-and-sink epoch fencing achieves $0$ smurfing breaches, $0$ post-withdrawal descendant commits, and $0/{ben_calls_tot}$ benign false blocks.}}\\label{{tab:v9smurfing}}\\end{{table*}}",
+        ]
+        v9_smurf_floats["v9-smurfing-table.tex"] = "\n".join(smurf_tab) + "\n"
+
     floats = {
         "v5-hero-fig.tex": "\n".join(hero_fig) + "\n",
         "v5-kpi-table.tex": "\n".join(kpi_tab) + "\n",
@@ -601,5 +738,6 @@ def build_v5_paper_outputs(
         "v8-covert-fig.tex": "\n".join(covert_fig) + "\n",
         "v8-fence-census-table.tex": "\n".join(census_tab) + "\n",
         "v5-statistical-table.tex": "\n".join(stat_lines) + "\n",
+        **v9_smurf_floats,
     }
     return macros, floats

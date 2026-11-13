@@ -28,6 +28,25 @@ In the previous version's AgentDojo setup (budgets and permissions taken from re
 
 To measure Proposition~\ref{prop:optinvariance} with real language-model proposals rather than synthetic miss formulas, we draw \(K \in \{1,2,4,8,16\}\) stochastic candidate tool proposals (\(\VEightBokTotalCandidates\) live candidate generations across \(\VEightBokCasesPerModel\) adversarial tasks per checkpoint) from Qwen3-4B and Qwen3-8B and evaluate each candidate against both the same-checkpoint reviewer and the sink gate. The reviewer's view of state was not identical to the gate's (setup records were withheld from it); Section~\ref{sec:v6reviewers} repeats the comparison with matched views and unique proposals as the unit. On Qwen3-4B, cumulative reviewer bypass climbs from \(\VEightBokFourBSinglePct\%\) at \(K = 1\) to \(\VEightBokFourBSixteenPct\%\) at \(K = 16\); on Qwen3-8B, bypass climbs from \(\VEightBokEightBSinglePct\%\) to \(\VEightBokEightBSixteenPct\%\). Empirical bypass grows more slowly than the naive i.i.d.\ curve \(1 - (1 - \hat{p}_1)^K\) because candidates drawn for the same prompt correlate (\(\hat{\rho}_{\mathrm{cand}} = \VEightBokFourBRho\) on 4B; \(\VEightBokEightBRho\) on 8B), and does not decrease with \(K\), whereas the sink gate admits \(0\) unauthorized commits at every \(K\), which holds by construction because the gate's predicate defines ``unauthorized''.
 
+\subsection{Fragmented Spending and Withdrawal across Delegation Hops}
+
+A later run of the previous version's harness added two multi-agent cases (Table~\ref{tab:v9smurfing}). In the first, a
+coordinator splits a \(\VNineSmurfTargetUnits\)-unit transfer across \(A_{\mathrm{sub}} \in \{1,2,4,8\}\) delegated
+sub-agents against a root cap of \(B_0 = \VNineSmurfRootBudget\) (\VNineSmurfTasksPerModel{} tasks per checkpoint), so
+that each slice is within the cap on its own. In the second, authority is withdrawn at the root of a
+\(d = \VNineSmurfDepthTested\)-hop chain while leaf permits are already queued at the sink
+(\VNineSmurfRevEpisodesPerModel{} episodes per checkpoint). Most of the table holds by construction, and we read it that
+way. Each per-instance check, the cap and the same-model reviewer alike, was shown only its own slice and a policy that
+permits it, so a check that is correct on its own input must admit every slice; the shared ledger's zero is the
+conservation theorem of Section~\ref{sec:core}. The reviewer's column equals the cap's in every cell: the reviewer
+accepted the in-policy slices it was shown, and the breach counts track how often the sub-agents emitted their slices
+(every time on Qwen3-8B, less often on Qwen3-4B), not reviewer judgment. The unfenced withdrawal count is the number of
+leaves the harness queued before the withdrawal, and the fenced zero is the fence's design property. What the case adds
+is the point of Section~\ref{sec:v6stop} at depth: a check that does not see shared state cannot conserve a shared
+budget, and withdrawal at the root reaches queued descendants only at the sink.
+
+\input{generated/v9-smurfing-table}
+
 \para{Documentation census (withdrawn).} The previous version classified 14 production interfaces from their
 documentation, by hand. That census is withdrawn: its classes did not distinguish who enforces a fence, and
 Section~\ref{sec:v6boundary} replaces it, for the surfaces we could run, with executable probes and a single rule.

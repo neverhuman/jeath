@@ -532,6 +532,187 @@ def analyze(path: Path):
     chooser_grade_mask = np.isfinite(own_sat_vec) & np.isfinite(intel_own_vec)
     r_chooser_strict = float(np.corrcoef(own_sat_vec[chooser_grade_mask], intel_own_vec[chooser_grade_mask])[0, 1])
 
+    # --- v16: Outlier Confidence vs. Gross Arrogance, Audience Priors, & Status-Threat Backlash ---
+    def _ols_pp(y_vec: np.ndarray, x_cols: list[np.ndarray], names: list[str]) -> dict:
+        yv = y_vec.astype(np.float64)
+        X = np.column_stack([np.ones(len(yv), dtype=np.float64), *[c.astype(np.float64) for c in x_cols]])
+        beta, _, _, _ = np.linalg.lstsq(X, yv, rcond=None)
+        resid = yv - X @ beta
+        dof = max(1, len(yv) - X.shape[1])
+        s2 = float((resid @ resid) / dof)
+        cov = s2 * np.linalg.pinv(X.T @ X)
+        se = np.sqrt(np.maximum(np.diag(cov), 0.0))
+        out = {}
+        for idx_c, cname in enumerate(names, start=1):
+            b_val = float(beta[idx_c])
+            s_val = float(se[idx_c])
+            t_val = float(b_val / s_val) if s_val > 1e-12 else 0.0
+            out[cname] = {
+                "slope_pp": 100.0 * b_val,
+                "se_pp": 100.0 * s_val,
+                "t_stat": t_val,
+                "ci_95_pp": [100.0 * (b_val - 1.96 * s_val), 100.0 * (b_val + 1.96 * s_val)],
+            }
+        return {"n": int(len(yv)), "coefficients": out}
+
+    first_by_iid: dict[int, dict[str, str]] = {}
+    rec_by_iid: dict[int, list[list[float]]] = {}
+    for row in raw_rows:
+        iid_str = row.get("iid", "").strip()
+        if not iid_str:
+            continue
+        iid_int = int(float(iid_str))
+        if iid_int not in first_by_iid:
+            first_by_iid[iid_int] = row
+        rec_vals = [number(row.get(k, "")) for k in ("attr_o", "sinc_o", "intel_o", "fun_o", "amb_o", "dec_o", "like_o")]
+        rec_by_iid.setdefault(iid_int, []).append(rec_vals)
+
+    person_self_intel: dict[int, float] = {}
+    person_self_amb: dict[int, float] = {}
+    person_jury_intel: dict[int, float] = {}
+    person_overclaim: dict[int, float] = {}
+    person_age: dict[int, float] = {}
+    person_race: dict[int, int] = {}
+    person_archetype_rows = []
+
+    for iid_int, frow in sorted(first_by_iid.items()):
+        s_attr = number(frow.get("attr3_1", ""))
+        s_sinc = number(frow.get("sinc3_1", ""))
+        s_intel = number(frow.get("intel3_1", ""))
+        s_fun = number(frow.get("fun3_1", ""))
+        s_amb = number(frow.get("amb3_1", ""))
+        a_val = number(frow.get("age", ""))
+        r_val = number(frow.get("race", ""))
+        g_val = int(float(frow.get("gender", "0")))
+        if np.isfinite(s_intel):
+            person_self_intel[iid_int] = float(s_intel)
+        if np.isfinite(s_amb):
+            person_self_amb[iid_int] = float(s_amb)
+        if np.isfinite(a_val):
+            person_age[iid_int] = float(a_val)
+        if np.isfinite(r_val):
+            person_race[iid_int] = int(r_val)
+
+        rmat = np.array(rec_by_iid[iid_int], dtype=np.float64)
+        for col_j in range(5):
+            bad = (rmat[:, col_j] < 1.0) | (rmat[:, col_j] > 10.0)
+            rmat[bad, col_j] = np.nan
+        j_means = np.nanmean(rmat[:, :5], axis=0)
+        dec_ok = rmat[(rmat[:, 5] == 0.0) | (rmat[:, 5] == 1.0), 5]
+        like_ok = rmat[(rmat[:, 6] >= 0.0) & (rmat[:, 6] <= 10.0), 6]
+        if np.isfinite(j_means[2]):
+            person_jury_intel[iid_int] = float(j_means[2])
+        s_ag_vec = np.array([s_intel, s_fun, s_amb, s_attr], dtype=np.float64)
+        j_ag_vec = np.array([j_means[2], j_means[3], j_means[4], j_means[0]], dtype=np.float64)
+        if np.isfinite(s_ag_vec).all() and np.isfinite(j_ag_vec).all():
+            s_ag = float(s_ag_vec.mean())
+            j_ag = float(j_ag_vec.mean())
+            oc_val = s_ag - j_ag
+            person_overclaim[iid_int] = oc_val
+            if len(dec_ok) > 0 and np.isfinite(j_means[1]):
+                person_archetype_rows.append(
+                    (g_val, s_ag, j_ag, float(j_means[1]), oc_val, float(dec_ok.mean()), float(np.nanmean(like_ok)))
+                )
+
+    ch_age_vec = np.array([person_age.get(int(c), np.nan) for c in chooser], dtype=np.float64)
+    ch_race_vec = np.array([person_race.get(int(c), -1) for c in chooser], dtype=np.int32)
+    ch_s_intel_vec = np.array([person_self_intel.get(int(c), np.nan) for c in chooser], dtype=np.float64)
+    ch_s_amb_vec = np.array([person_self_amb.get(int(c), np.nan) for c in chooser], dtype=np.float64)
+    ch_j_intel_vec = np.array([person_jury_intel.get(int(c), np.nan) for c in chooser], dtype=np.float64)
+    tg_overclaim_vec = np.array([person_overclaim.get(int(p), np.nan) if np.isfinite(p) else np.nan for p in partner], dtype=np.float64)
+
+    # 1. Dyadic Agency x Warmth (Sincerity) 4-Archetype Matrix
+    five_ok = valid_decision & np.isfinite(own[:, :5]).all(axis=1)
+    dyad_agency = (own[:, 2] + own[:, 1] + own[:, 3]) / 3.0
+    sinc_vec = own[:, 4]
+    agency_x_warmth = {}
+    for ch_sx, dir_key in ((1.0, "male_chooser_to_female_target"), (0.0, "female_chooser_to_male_target")):
+        base_m = five_ok & (sex == ch_sx)
+        cells = {}
+        for ckey, cmask in (
+            ("warm_outlier_agency", base_m & (dyad_agency >= 8.0) & (sinc_vec >= 8.0)),
+            ("cold_arrogant_high_agency", base_m & (dyad_agency >= 8.0) & (sinc_vec <= 6.0)),
+            ("warm_humble_low_agency", base_m & (dyad_agency <= 6.0) & (sinc_vec >= 8.0)),
+            ("low_agency_low_warmth", base_m & (dyad_agency <= 6.0) & (sinc_vec <= 6.0)),
+        ):
+            n_c = int(cmask.sum())
+            y_c = int(yes[cmask].sum())
+            lk_sub = like_raw[cmask & np.isfinite(like_raw)]
+            cells[ckey] = {
+                "n": n_c,
+                "yes": y_c,
+                "yes_share": float(y_c / n_c),
+                "mean_like": float(lk_sub.mean()) if len(lk_sub) else 0.0,
+            }
+        warm_hi = cells["warm_outlier_agency"]["yes_share"]
+        cold_hi = cells["cold_arrogant_high_agency"]["yes_share"]
+        warm_lo = cells["warm_humble_low_agency"]["yes_share"]
+        cells["coldness_backlash_drop_pp"] = 100.0 * (warm_hi - cold_hi)
+        cells["warm_outlier_over_humble_low_pp"] = 100.0 * (warm_hi - warm_lo)
+        cells["warm_outlier_to_humble_low_ratio"] = float(warm_hi / warm_lo)
+        agency_x_warmth[dir_key] = cells
+
+    agency_x_warmth["female_to_male_coldness_backlash_ratio"] = float(
+        agency_x_warmth["male_chooser_to_female_target"]["coldness_backlash_drop_pp"]
+        / agency_x_warmth["female_chooser_to_male_target"]["coldness_backlash_drop_pp"]
+    )
+
+    # 2. Audience Age & Race/Ethnicity Modulation of Unbacked Overclaiming & Ambition
+    aud_ok = five_ok & np.isfinite(tg_overclaim_vec)
+    pred_names = ["attr", "sinc", "intel", "fun", "amb", "target_overclaim"]
+    pred_vecs = [own[:, 0], own[:, 4], own[:, 2], own[:, 1], own[:, 3], tg_overclaim_vec]
+    by_chooser_age = {}
+    for age_key, amask in (
+        ("age_le_24", aud_ok & (ch_age_vec <= 24.0)),
+        ("age_25_28", aud_ok & (ch_age_vec >= 25.0) & (ch_age_vec <= 28.0)),
+        ("age_ge_29", aud_ok & (ch_age_vec >= 29.0)),
+    ):
+        by_chooser_age[age_key] = _ols_pp(yes[amask], [v[amask] for v in pred_vecs], pred_names)
+
+    oc_le24 = abs(by_chooser_age["age_le_24"]["coefficients"]["target_overclaim"]["slope_pp"])
+    oc_ge29 = abs(by_chooser_age["age_ge_29"]["coefficients"]["target_overclaim"]["slope_pp"])
+    by_chooser_age["mature_to_young_overclaim_penalty_ratio"] = float(oc_ge29 / max(oc_le24, 1e-6))
+
+    by_chooser_race = {}
+    for r_code, r_key in ((1, "black"), (2, "white_euro"), (3, "latino"), (4, "asian"), (6, "other")):
+        rmask = aud_ok & (ch_race_vec == r_code)
+        if int(rmask.sum()) >= 200:
+            by_chooser_race[r_key] = _ols_pp(yes[rmask], [v[rmask] for v in pred_vecs], pred_names)
+
+    # 3. Asymmetric Status Threat ("Outsmarting / Out-Ambitioning the Chooser")
+    st_ok = five_ok & np.isfinite(ch_s_intel_vec) & np.isfinite(ch_s_amb_vec)
+    outsmart_vec = (own[:, 2] > ch_s_intel_vec).astype(np.float64)
+    outamb_vec = (own[:, 3] > ch_s_amb_vec).astype(np.float64)
+    st_names = ["attr", "sinc", "intel", "fun", "amb", "target_outsmarts_chooser", "target_outambitions_chooser"]
+    st_vecs = [own[:, 0], own[:, 4], own[:, 2], own[:, 1], own[:, 3], outsmart_vec, outamb_vec]
+    status_threat = {}
+    for ch_sx, dir_key in ((1.0, "male_chooser_evaluating_woman"), (0.0, "female_chooser_evaluating_man")):
+        smask = st_ok & (sex == ch_sx)
+        status_threat[dir_key] = _ols_pp(yes[smask], [v[smask] for v in st_vecs], st_names)
+
+    # Male chooser insecurity stratification on partner ambition & intelligence
+    dm_ok = five_ok & (sex == 1.0) & np.isfinite(ch_s_amb_vec) & np.isfinite(ch_j_intel_vec)
+    med_m_jintel = float(np.median(ch_j_intel_vec[dm_ok]))
+    male_insecurity_strata = {}
+    base_names_5 = ["attr", "sinc", "intel", "fun", "amb"]
+    base_vecs_5 = [own[:, 0], own[:, 4], own[:, 2], own[:, 1], own[:, 3]]
+    for skey, smask in (
+        ("ambition_insecure_men_le7", dm_ok & (ch_s_amb_vec <= 7.0)),
+        ("high_ambition_men_ge9", dm_ok & (ch_s_amb_vec >= 9.0)),
+        ("lower_jury_intel_men", dm_ok & (ch_j_intel_vec < med_m_jintel)),
+        ("higher_jury_intel_men", dm_ok & (ch_j_intel_vec >= med_m_jintel)),
+    ):
+        male_insecurity_strata[skey] = _ols_pp(yes[smask], [v[smask] for v in base_vecs_5], base_names_5)
+    status_threat["male_chooser_strata"] = male_insecurity_strata
+
+    confidence_and_backlash = {
+        "n_person_archetypes": len(person_archetype_rows),
+        "agency_x_warmth_dyadic": agency_x_warmth,
+        "audience_age_modulation": by_chooser_age,
+        "audience_race_modulation": by_chooser_race,
+        "status_threat": status_threat,
+    }
+
     checklist_and_hindsight = {
         "hobby_checklist_vs_live_wavelength": {
             "n_common_dyad_decisions": int(common_cs_mask.sum()),
@@ -579,10 +760,12 @@ def analyze(path: Path):
             "stated": "First row per participant. Mean looks points among complete allocations after rescaling each total to 100.",
             "dyadic_chemistry": "Two-way bipartite Social Relations Model variance partition within session x chooser-sex blocks (with exact degrees-of-freedom finite-sample correction), residual mutual dyadic liking correlation across matched pairs, and within-chooser yes slopes adding perceived reciprocal liking (prob).",
             "checklist_and_hindsight": "Comparison of pre-event objective 17-hobby profile correlation (int_corr) against live 4-minute shared wavelength (shar), plus normalized 100-point preference trajectories across pre-event (T1), 24-hour hindsight (T2), and 3-4-week post-event follow-up (T3).",
+            "confidence_and_backlash": "Dyadic agency x sincerity decision rates, chooser age/race OLS modulation on unbacked self-overclaiming (self_agency - jury_agency), and chooser status-comparison regressions when target intelligence or ambition exceeds chooser self-ratings.",
         },
         "counts": {"valid_binary_decisions": int(valid_decision.sum()), "decisions_with_looks_panel": int(curve_rows.sum())},
         "yes_by_panel_quintile": curves, "quintile_contrast_men_minus_women": curve_gap,
         "adjusted_slopes": slopes, "stated_looks": stated,
         "dyadic_chemistry": dyadic_chemistry,
         "checklist_and_hindsight": checklist_and_hindsight,
+        "confidence_and_backlash": confidence_and_backlash,
     }

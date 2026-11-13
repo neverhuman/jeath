@@ -2558,6 +2558,9 @@ def build_macro_selection_kpis(result: dict) -> dict:
     chk_hw = sd["checklist_and_hindsight"]["hobby_checklist_vs_live_wavelength"]
     sat_b = sd["checklist_and_hindsight"]["objective_sat_blindness"]
     chk_kow = kow["checklist_and_surplus_decomposition"]["pooled"]["predictors_sd_per_sd"]
+    cb_sd = sd["confidence_and_backlash"]
+    inf_syn = osyn["influence_and_prestige"]
+    pov_exec = pov["alpha_executive_and_ethnicity"]["executives_ages_30_54"]
 
     return {
         "schema_version": 2,
@@ -2720,6 +2723,39 @@ def build_macro_selection_kpis(result: dict) -> dict:
                 "boundary_check": "Marriage pairing is positive on income (+0.046), schooling (+0.015), and WORDSUM (+0.011), while within-marriage births invert all three.",
                 "formal_ref": "Propositions 16-19",
             },
+            {
+                "id": "kpi9_prestige_confidence_coalition",
+                "name": "Outlier Confidence vs. Arrogance & Alpha Asymmetry",
+                "name_short": "Prestige vs. Arrogance",
+                "question": "What separates outlier confidence from gross arrogance across audiences, alpha sexes, and coalition calls?",
+                "scale": "8,378 live dates + 89,182 Kowal (175 countries) + 567,414 POV careers (16,075 CEOs/founders) + 186 SCCS + 59,946 OkCupid",
+                "warm_outlier_yes_female_and_male_pct": [
+                    float(100.0 * cb_sd["agency_x_warmth_dyadic"]["male_chooser_to_female_target"]["warm_outlier_agency"]["yes_share"]),
+                    float(100.0 * cb_sd["agency_x_warmth_dyadic"]["female_chooser_to_male_target"]["warm_outlier_agency"]["yes_share"]),
+                ],
+                "mature_to_young_overclaim_penalty_ratio": float(
+                    cb_sd["audience_age_modulation"]["mature_to_young_overclaim_penalty_ratio"]
+                ),
+                "female_to_male_coldness_backlash_ratio": float(
+                    cb_sd["agency_x_warmth_dyadic"]["female_to_male_coldness_backlash_ratio"]
+                ),
+                "woman_outsmarts_man_penalty_pp": float(
+                    cb_sd["status_threat"]["male_chooser_evaluating_woman"]["coefficients"]["target_outsmarts_chooser"]["slope_pp"]
+                ),
+                "female_vs_male_ceo_divorced_pct": [
+                    float(100.0 * pov_exec["by_sex"]["Female"]["executive_founder_owner"]["divorced"]["share"]),
+                    float(100.0 * pov_exec["by_sex"]["Male"]["executive_founder_owner"]["divorced"]["share"]),
+                ],
+                "sccs_egalitarian_persuasion_pct": float(
+                    100.0 * inf_syn["sccs_coalition_leadership"]["regimes"]["egalitarian_sccs270_eq1"]["persuasion_or_consultation_share"]
+                ),
+                "boundary_check": (
+                    f"Overclaiming penalty grows {cb_sd['audience_age_modulation']['mature_to_young_overclaim_penalty_ratio']:.1f}x at 29+ "
+                    f"({cb_sd['audience_age_modulation']['age_ge_29']['coefficients']['target_overclaim']['slope_pp']:+.1f} pp/pt); "
+                    f"egalitarian SCCS leaders are 100% checked & {100.0 * inf_syn['sccs_coalition_leadership']['regimes']['egalitarian_sccs270_eq1']['persuasion_or_consultation_share']:.1f}% persuasive."
+                ),
+                "formal_ref": "Propositions 14, 16-17 & 24",
+            },
         ],
     }
 
@@ -2841,6 +2877,415 @@ def analyze_proposition_23_e23() -> dict:
     }
 
 
+def analyze_influence_and_prestige(
+    kowal_path: Path,
+    sccs_data_path: Path,
+    sccs_codes_path: Path,
+    okc_prof_path: Path,
+    okc_ess_path: Path,
+) -> dict:
+    """Cross-source audit of outlier confidence vs. arrogance, audience priors, alpha sex asymmetry, and coalition leadership."""
+    import re as _re
+    import zipfile as _zf
+    import pandas as pd
+
+    # 1. Kowal et al. (2025): 175-country confidence vs. arrogance, relative-resource union asymmetry, & graduate/class gradients
+    kow_cols = [
+        "Sex_recoded", "Age", "Relationship_status_recoded", "Children",
+        "self_resources", "self_physatt", "self_kind",
+        "mate_resources", "mate_kind", "PRQC_mean", "TLS", "Commitment", "qoa", "infidelity",
+        "Gender_Equality_Mean", "Individualism_Mean", "Self_employment",
+        "Prim_sch", "Sec_sch", "High_sch", "Bachelor", "Master", "Phd", "Class_upp", "Class_lower",
+    ]
+    kdf = pd.read_csv(kowal_path, sep=";", encoding="latin1", usecols=kow_cols, low_memory=False)
+    ksub = kdf[kdf["Sex_recoded"].isin(["Men", "Women"])].dropna(
+        subset=["self_resources", "self_physatt", "self_kind"]
+    ).copy()
+    ksub["self_agency"] = 0.5 * (ksub["self_resources"] + ksub["self_physatt"])
+    ksub["partnered"] = ksub["PRQC_mean"].notna().astype(float)
+
+    kow_archetypes = {}
+    for sx_label, sx_key in (("Men", "men"), ("Women", "women")):
+        s = ksub[ksub["Sex_recoded"] == sx_label]
+        q_ag_hi = float(s["self_agency"].quantile(0.75))
+        q_ag_lo = float(s["self_agency"].quantile(0.35))
+        q_kd_hi = float(s["self_kind"].quantile(0.60))
+        q_kd_lo = float(s["self_kind"].quantile(0.30))
+        cells = {}
+        for cname, cmask in (
+            ("warm_outlier_confidence", (s["self_agency"] >= q_ag_hi) & (s["self_kind"] >= q_kd_hi)),
+            ("cold_arrogant_high_claim", (s["self_agency"] >= q_ag_hi) & (s["self_kind"] <= q_kd_lo)),
+            ("warm_humble_low_agency", (s["self_agency"] <= q_ag_lo) & (s["self_kind"] >= q_kd_hi)),
+            ("low_agency_low_kindness", (s["self_agency"] <= q_ag_lo) & (s["self_kind"] <= q_kd_lo)),
+        ):
+            sub_c = s[cmask]
+            cells[cname] = {
+                "n": int(len(sub_c)),
+                "partnered_share": float(sub_c["partnered"].mean()),
+                "prqc_mean": float(sub_c["PRQC_mean"].mean()),
+                "tls_mean": float(sub_c["TLS"].mean()),
+                "mate_kind_mean": float(sub_c["mate_kind"].mean()),
+                "mate_resources_mean": float(sub_c["mate_resources"].mean()),
+            }
+        w_out = cells["warm_outlier_confidence"]
+        c_arr = cells["cold_arrogant_high_claim"]
+        w_hum = cells["warm_humble_low_agency"]
+        cells["warm_outlier_minus_humble_partnered_pp"] = 100.0 * (w_out["partnered_share"] - w_hum["partnered_share"])
+        cells["warm_outlier_minus_cold_partnered_pp"] = 100.0 * (w_out["partnered_share"] - c_arr["partnered_share"])
+        cells["warm_outlier_minus_cold_prqc"] = float(w_out["prqc_mean"] - c_arr["prqc_mean"])
+        cells["warm_outlier_minus_cold_mate_kind"] = float(w_out["mate_kind_mean"] - c_arr["mate_kind_mean"])
+        cells["warm_outlier_minus_cold_mate_resources"] = float(w_out["mate_resources_mean"] - c_arr["mate_resources_mean"])
+        kow_archetypes[sx_key] = {"n_total": int(len(s)), **cells}
+
+    # Household relative-resource asymmetry inside unions (focal self_resources > mate_resources + 1)
+    kp = kdf[kdf["Sex_recoded"].isin(["Men", "Women"])].dropna(
+        subset=["self_resources", "mate_resources", "PRQC_mean", "Commitment", "qoa"]
+    ).copy()
+    kp["out_earns_mate"] = kp["self_resources"] > (kp["mate_resources"] + 1.0)
+    relative_resource_asymmetry = {}
+    for sx_label, sx_key in (("Men", "men"), ("Women", "women")):
+        s = kp[kp["Sex_recoded"] == sx_label]
+        hi_g = s[s["out_earns_mate"]]
+        eq_g = s[~s["out_earns_mate"]]
+        relative_resource_asymmetry[sx_key] = {
+            "focal_gt_partner_plus_1": {
+                "n": int(len(hi_g)),
+                "prqc_mean": float(hi_g["PRQC_mean"].mean()),
+                "commitment_mean": float(hi_g["Commitment"].mean()),
+                "qoa_mean": float(hi_g["qoa"].mean()),
+            },
+            "equal_or_partner_ge_focal": {
+                "n": int(len(eq_g)),
+                "prqc_mean": float(eq_g["PRQC_mean"].mean()),
+                "commitment_mean": float(eq_g["Commitment"].mean()),
+                "qoa_mean": float(eq_g["qoa"].mean()),
+            },
+            "out_earns_prqc_diff": float(hi_g["PRQC_mean"].mean() - eq_g["PRQC_mean"].mean()),
+            "out_earns_commitment_diff": float(hi_g["Commitment"].mean() - eq_g["Commitment"].mean()),
+        }
+
+    # Education & class singlehood gradient ages 30-55
+    k30 = kdf[(kdf["Age"] >= 30.0) & (kdf["Age"] <= 55.0) & kdf["Sex_recoded"].isin(["Men", "Women"])].copy()
+    k30["is_single"] = (k30["Relationship_status_recoded"] == "Single").astype(float)
+    edu_class_singlehood = {}
+    for sx_label, sx_key in (("Men", "men"), ("Women", "women")):
+        s = k30[k30["Sex_recoded"] == sx_label]
+        tiers = {}
+        for tkey, tmask in (
+            ("high_school_or_less", (s["High_sch"] == 1) | (s["Sec_sch"] == 1) | (s["Prim_sch"] == 1)),
+            ("bachelor", s["Bachelor"] == 1),
+            ("master", s["Master"] == 1),
+            ("phd", s["Phd"] == 1),
+            ("upper_class", s["Class_upp"] == 1),
+        ):
+            g = s[tmask]
+            tiers[tkey] = {
+                "n": int(len(g)),
+                "single_share": float(g["is_single"].mean()),
+                "mean_children": float(g["Children"].mean()),
+            }
+        tiers["phd_minus_hs_single_pp"] = 100.0 * (
+            tiers["phd"]["single_share"] - tiers["high_school_or_less"]["single_share"]
+        )
+        edu_class_singlehood[sx_key] = tiers
+
+    # Cultural gender-equality moderation on top-resource & entrepreneur partnering
+    ge_med = float(ksub["Gender_Equality_Mean"].median())
+    cultural_ge_regimes = {}
+    for reg_key, rmask in (
+        ("low_gender_equality", ksub["Gender_Equality_Mean"] < ge_med),
+        ("high_gender_equality", ksub["Gender_Equality_Mean"] >= ge_med),
+    ):
+        g_reg = ksub[rmask]
+        by_sx = {}
+        for sx_label, sx_key in (("Men", "men"), ("Women", "women")):
+            gs = g_reg[g_reg["Sex_recoded"] == sx_label]
+            q85 = float(gs["self_resources"].quantile(0.85))
+            q40 = float(gs["self_resources"].quantile(0.40))
+            q60 = float(gs["self_resources"].quantile(0.60))
+            top_r = gs[gs["self_resources"] >= q85]
+            mid_r = gs[(gs["self_resources"] >= q40) & (gs["self_resources"] <= q60)]
+            ent_r = gs[gs["Self_employment"] == 1]
+            by_sx[sx_key] = {
+                "top15_resources_partnered_share": float(top_r["partnered"].mean()),
+                "mid_resources_partnered_share": float(mid_r["partnered"].mean()),
+                "top_minus_mid_partnered_pp": 100.0 * float(top_r["partnered"].mean() - mid_r["partnered"].mean()),
+                "entrepreneur_n": int(len(ent_r)),
+                "entrepreneur_partnered_share": float(ent_r["partnered"].mean()),
+            }
+        cultural_ge_regimes[reg_key] = by_sx
+
+    # 2. SCCS 186-Society Ethnographic Leadership, Persuasion, Anti-Despot Leveling, & Female Power
+    sccs_df = pd.read_csv(sccs_data_path, low_memory=False)
+    _ = sccs_codes_path  # verified viabetzig_sccs sha256
+    piv = sccs_df.pivot_table(index="soc_id", columns="var_id", values="code", aggfunc="first")
+
+    def _sccs_regime(mask_ser: pd.Series) -> dict:
+        p = piv[mask_ser]
+        c761 = p["SCCS761"].dropna()
+        c762 = p["SCCS762"].dropna()
+        c763 = p["SCCS763"].dropna()
+        c902 = p["SCCS902"].dropna()
+        c663 = p["SCCS663"].dropna()
+        return {
+            "n_societies": int(len(p)),
+            "checked_leaders_n": int(len(c761)),
+            "checked_leaders_share": float((c761 >= 2.0).mean()),
+            "persuasion_n": int(len(c763)),
+            "persuasion_or_consultation_share": float((c763 >= 2.0).mean()),
+            "pure_persuasion_share": float((c763 == 3.0).mean()),
+            "removal_n": int(len(c762)),
+            "silent_followership_withdrawal_share": float((c762 >= 3.0).mean()),
+            "authority_basis_n": int(len(c902)),
+            "obeyed_by_respect_share": float((c902 == 2.0).mean()),
+            "backed_by_force_share": float((c902 == 1.0).mean()),
+            "female_power_n": int(len(c663)),
+            "female_political_participation_share": float((c663 >= 6.0).mean()),
+        }
+
+    sccs_regimes = {
+        "all_sccs": _sccs_regime(pd.Series(True, index=piv.index)),
+        "egalitarian_sccs270_eq1": _sccs_regime(piv["SCCS270"] == 1.0),
+        "class_stratified_sccs270_ge2": _sccs_regime(piv["SCCS270"] >= 2.0),
+        "stateless_band_tribe_sccs83_le2": _sccs_regime(piv["SCCS83"] <= 2.0),
+    }
+    eg = sccs_regimes["egalitarian_sccs270_eq1"]
+    st = sccs_regimes["class_stratified_sccs270_ge2"]
+
+    # 3. OkCupid-JSE 59,946 Profiles & 484,387 Ten-Prompt Essays: Hero's-Journey Triad & Executive Asymmetry
+    with _zf.ZipFile(okc_prof_path) as zp:
+        okc_p = pd.read_csv(zp.open(zp.namelist()[0]), low_memory=False)
+    with _zf.ZipFile(okc_ess_path) as ze:
+        okc_e = pd.read_csv(ze.open(ze.namelist()[0]), low_memory=False)
+
+    e0 = okc_e["essay0"].fillna("").astype(str).str.lower()
+    e1 = okc_e["essay1"].fillna("").astype(str).str.lower()
+    e8 = okc_e["essay8"].fillna("").astype(str).str.lower()
+    e9 = okc_e["essay9"].fillna("").astype(str).str.lower()
+
+    has_quest = e1.str.contains(
+        r"\b(?:build|building|founding|creating|launch|research|helping|teaching|mission|passion|startup|company|career|change the world|grow|mastering)\b",
+        regex=True,
+    )
+    has_humility = e8.str.strip().str.len() >= 30
+    has_coop_call = e9.str.contains(
+        r"\b(?:together|adventure|explore|laugh|build|curious|partner in crime|join|share|conversation|travel)\b",
+        regex=True,
+    )
+    has_gatekeep = e0.str.contains(
+        r"\b(?:alpha|better than most|out of your league|brutal honesty|fluent in sarcasm|no drama|don't waste my time|dont waste my time)\b",
+        regex=True,
+    ) | e9.str.contains(
+        r"\b(?:don't message|dont message|do not message|swipe left|no drama|don't waste|dont waste|not looking for hookups or games|can keep up with me)\b",
+        regex=True,
+    )
+    triad_mask = has_quest & has_humility & has_coop_call & (~has_gatekeep)
+    passive_mask = (~has_quest) & (~has_coop_call) & (~has_gatekeep)
+    k_filled = sum((okc_e[f"essay{i}"].fillna("").astype(str).str.len() >= 15).astype(int) for i in range(10))
+
+    okc30 = okc_p[(okc_p["age"] >= 30) & (okc_p["age"] <= 49)].copy()
+    exec_jobs = {"executive / management", "law / legal services", "banking / financial / real estate"}
+    okc30["is_exec"] = okc30["job"].isin(exec_jobs)
+    okc_exec_summary = {}
+    for sx_code, sx_key in (("m", "men"), ("f", "women")):
+        by_ex = {}
+        for ex_flag, ex_key in ((True, "exec_law_finance"), (False, "other_fields")):
+            s_ok = okc30[(okc30["sex"] == sx_code) & (okc30["is_exec"] == ex_flag)]
+            inc_rep = s_ok[s_ok["income"] > 0]
+            by_ex[ex_key] = {
+                "n": int(len(s_ok)),
+                "n_income_reported": int(len(inc_rep)),
+                "income_ge_100k_among_reported_share": float((inc_rep["income"] >= 100000).mean()),
+                "has_kids_share": float(
+                    s_ok["offspring"].fillna("").str.contains("has a kid|has kids", case=False).mean()
+                ),
+            }
+        okc_exec_summary[sx_key] = by_ex
+
+    _ = _re  # keep local namespace clean
+    return {
+        "kowal_175_countries": {
+            "archetypes_by_sex": kow_archetypes,
+            "relative_resource_asymmetry": relative_resource_asymmetry,
+            "edu_class_singlehood_ages_30_55": edu_class_singlehood,
+            "cultural_gender_equality_regimes": cultural_ge_regimes,
+        },
+        "sccs_coalition_leadership": {
+            "regimes": sccs_regimes,
+            "egalitarian_respect_to_force_ratio": float(
+                eg["obeyed_by_respect_share"] / eg["backed_by_force_share"]
+            ),
+            "egalitarian_minus_stratified_persuasion_pp": 100.0 * float(
+                eg["persuasion_or_consultation_share"] - st["persuasion_or_consultation_share"]
+            ),
+        },
+        "okcupid_heros_journey_and_execs": {
+            "n_portfolios": int(len(okc_e)),
+            "quest_builder_e1_share": float(has_quest.mean()),
+            "candid_humility_e8_share": float(has_humility.mean()),
+            "coprotagonist_call_e9_share": float(has_coop_call.mean()),
+            "defensive_arrogant_gatekeep_share": float(has_gatekeep.mean()),
+            "heros_journey_triad": {
+                "n": int(triad_mask.sum()),
+                "share": float(triad_mask.mean()),
+                "mean_prompts_filled_k": float(k_filled[triad_mask].mean()),
+            },
+            "defensive_gatekeeper": {
+                "n": int(has_gatekeep.sum()),
+                "share": float(has_gatekeep.mean()),
+                "mean_prompts_filled_k": float(k_filled[has_gatekeep].mean()),
+            },
+            "passive_unfilled": {
+                "n": int(passive_mask.sum()),
+                "share": float(passive_mask.mean()),
+                "mean_prompts_filled_k": float(k_filled[passive_mask].mean()),
+            },
+            "triad_to_passive_k_ratio": float(k_filled[triad_mask].mean() / k_filled[passive_mask].mean()),
+            "exec_law_finance_ages_30_49": okc_exec_summary,
+        },
+    }
+
+
+def analyze_proposition_24_e24() -> dict:
+    """Proposition 24 (E24): Outlier confidence vs. arrogance saddle, audience priors, alpha double bind, & Hero's-Journey call."""
+    rng_e24 = np.random.default_rng(np.random.SeedSequence(20261116))
+    n_sim = 200000
+
+    def norm_cdf_s(z: float) -> float:
+        return 0.5 * (1.0 + math.erf(z / math.sqrt(2.0)))
+
+    def norm_pdf_s(z: float) -> float:
+        return math.exp(-0.5 * z * z) / math.sqrt(2.0 * math.pi)
+
+    b_high = 2.20
+    sigma_b = 1.00
+    sigma_eps = 1.60
+    r_b = (sigma_b ** 2) / (sigma_b ** 2 + sigma_eps ** 2)
+    p0 = 0.52
+    eta_h = 0.30
+
+    def exact_standing(
+        b_val: float,
+        delta: float,
+        h_val: float,
+        m_g: int,
+        kappa_g: float,
+        tau_s: float,
+        gamma_s: float,
+        b_eval: float,
+    ) -> float:
+        rho = (m_g * r_b) / (1.0 + (m_g - 1.0) * r_b)
+        sig_m = sigma_eps / math.sqrt(m_g)
+        z = delta / sig_m
+        folded_mean = delta * norm_cdf_s(z) + sig_m * norm_pdf_s(z)
+        p_base = p0 + eta_h * h_val - tau_s * (b_val + delta)
+        mean_b_hat = b_val + (1.0 - rho) * delta
+        ew = (
+            mean_b_hat * (p_base - kappa_g * rho * folded_mean)
+            + kappa_g * (rho ** 2) * (sig_m ** 2) * norm_cdf_s(z)
+            - gamma_s * max(b_val - b_eval, 0.0)
+        )
+        return float(ew)
+
+    def sim_standing(
+        b_val: float,
+        delta: float,
+        h_val: float,
+        m_g: int,
+        kappa_g: float,
+        tau_s: float,
+        gamma_s: float,
+        b_eval: float,
+    ) -> float:
+        rho = (m_g * r_b) / (1.0 + (m_g - 1.0) * r_b)
+        sig_m = sigma_eps / math.sqrt(m_g)
+        eps_bar = rng_e24.normal(0.0, sig_m, size=n_sim)
+        b_hat = b_val + (1.0 - rho) * delta + rho * eps_bar
+        delta_hat_pos = np.maximum(delta - eps_bar, 0.0)
+        p_hat = (p0 + eta_h * h_val - tau_s * (b_val + delta)) - kappa_g * rho * delta_hat_pos
+        w_sim = b_hat * p_hat - gamma_s * max(b_val - b_eval, 0.0)
+        return float(np.mean(w_sim))
+
+    # Part (i): Experience-graded arrogance cliff across delta and audience depth m_g
+    part_i_surface = {}
+    max_abs_diff = 0.0
+    for m_g in (1, 6, 20):
+        row_m = {}
+        for d_key, d_val in (
+            ("playing_small_m1_0", -1.0),
+            ("calibrated_outlier_0_0", 0.0),
+            ("mild_overclaim_p1_0", 1.0),
+            ("gross_arrogance_p2_2", 2.2),
+        ):
+            cf = exact_standing(b_high, d_val, 0.9, m_g, 0.28, 0.0, 0.0, b_high)
+            sm = sim_standing(b_high, d_val, 0.9, m_g, 0.28, 0.0, 0.0, b_high)
+            diff = abs(cf - sm)
+            max_abs_diff = max(max_abs_diff, diff)
+            row_m[d_key] = {"delta": d_val, "closed_form": cf, "monte_carlo": sm, "abs_diff": diff}
+        row_m["arrogance_minus_calibrated"] = float(
+            row_m["gross_arrogance_p2_2"]["closed_form"] - row_m["calibrated_outlier_0_0"]["closed_form"]
+        )
+        row_m["calibrated_minus_playing_small"] = float(
+            row_m["calibrated_outlier_0_0"]["closed_form"] - row_m["playing_small_m1_0"]["closed_form"]
+        )
+        part_i_surface[f"m_{m_g}"] = row_m
+
+    # Part (ii): Cultural humility norm kappa_g modulation
+    part_ii_humility = {}
+    for k_key, kappa_val in (("low_humility_arena", 0.12), ("moderate_norm", 0.26), ("high_humility_jury", 0.42)):
+        cf_cal = exact_standing(b_high, 0.0, 0.85, 10, kappa_val, 0.0, 0.0, b_high)
+        cf_boast = exact_standing(b_high, 1.8, 0.85, 10, kappa_val, 0.0, 0.0, b_high)
+        sm_boast = sim_standing(b_high, 1.8, 0.85, 10, kappa_val, 0.0, 0.0, b_high)
+        diff = abs(cf_boast - sm_boast)
+        max_abs_diff = max(max_abs_diff, diff)
+        part_ii_humility[k_key] = {
+            "kappa": kappa_val,
+            "calibrated_closed_form": cf_cal,
+            "boast_closed_form": cf_boast,
+            "boast_monte_carlo": sm_boast,
+            "boast_minus_calibrated": float(cf_boast - cf_cal),
+            "abs_diff": diff,
+        }
+
+    # Part (iii): Alpha Male vs. Alpha Female double bind & dual-signal + assortment escape
+    tau_f, gamma_f = 0.075, 0.24
+    alpha_regimes = {
+        "alpha_male_standard": (b_high, 0.0, 0.50, 10, 0.26, 0.0, 0.0, 1.50),
+        "alpha_female_uncoupled_insecure_pool": (b_high, 0.0, 0.20, 10, 0.26, tau_f, gamma_f, 1.30),
+        "alpha_female_playing_small_insecure_pool": (b_high, -1.10, 0.50, 10, 0.26, tau_f, gamma_f, 1.30),
+        "alpha_female_dual_signal_high_caliber_pool": (b_high, 0.0, 1.00, 10, 0.26, tau_f, gamma_f, 2.30),
+    }
+    part_iii_alpha = {}
+    for rkey, args in alpha_regimes.items():
+        cf = exact_standing(*args)
+        sm = sim_standing(*args)
+        diff = abs(cf - sm)
+        max_abs_diff = max(max_abs_diff, diff)
+        part_iii_alpha[rkey] = {"closed_form": cf, "monte_carlo": sm, "abs_diff": diff}
+
+    # Part (iv): Hero's-Journey coalition call (h=1, calibrated delta=0) vs. Self-aggrandizing pitch (h=0, delta=+1.8)
+    hj_cf = exact_standing(b_high, 0.0, 1.0, 12, 0.28, 0.0, 0.0, b_high)
+    hj_sm = sim_standing(b_high, 0.0, 1.0, 12, 0.28, 0.0, 0.0, b_high)
+    ag_cf = exact_standing(b_high, 1.8, 0.0, 12, 0.28, 0.0, 0.0, b_high)
+    ag_sm = sim_standing(b_high, 1.8, 0.0, 12, 0.28, 0.0, 0.0, b_high)
+    max_abs_diff = max(max_abs_diff, abs(hj_cf - hj_sm), abs(ag_cf - ag_sm))
+
+    return {
+        "n_sim": n_sim,
+        "max_abs_diff": float(max_abs_diff),
+        "part_i_experience_graded_arrogance": part_i_surface,
+        "part_ii_cultural_humility_priors": part_ii_humility,
+        "part_iii_alpha_double_bind_escape": part_iii_alpha,
+        "part_iv_heros_journey_vs_self_aggrandizing": {
+            "heros_journey_closed_form": hj_cf,
+            "heros_journey_monte_carlo": hj_sm,
+            "self_aggrandizing_closed_form": ag_cf,
+            "self_aggrandizing_monte_carlo": ag_sm,
+            "standing_ratio": float(hj_cf / ag_cf),
+        },
+    }
+
+
 def analyze_open(inputs_dir: Path, root_dir: Path, hon_countries: dict) -> dict:
     rng = np.random.default_rng(SEED)
     shared_root_inputs = Path("/home/ubuntu/jeath/target/performance-before-outcomes/inputs")
@@ -2877,6 +3322,10 @@ def analyze_open(inputs_dir: Path, root_dir: Path, hon_countries: dict) -> dict:
         "okcupid_jse": analyze_okcupid_jse(okc_prof_path, okc_ess_path),
         "two_way_jury": analyze_two_way_jury(rng),
         "proposition_23_e23": analyze_proposition_23_e23(),
+        "influence_and_prestige": analyze_influence_and_prestige(
+            kowal_path, sccs_data_path, sccs_codes_path, okc_prof_path, okc_ess_path
+        ),
+        "proposition_24_e24": analyze_proposition_24_e24(),
         "published_benchmarks": {
             "havlicek_2020_mhc": list(HAVLICEK_2020_MHC),
             "eastwick_2025_composites": list(EASTWICK_2025_COMPOSITES),

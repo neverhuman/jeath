@@ -1,10 +1,10 @@
 {
   "analysis_sha256": {
-    "scripts/performance_before_outcomes.py": "79561850c99fc8f96405da94a3658aa77d409924d92856e277b46becde793da4",
-    "scripts/performance_choice.py": "c1ec8bb2a334f12ab0b91b67ae471d16254cf1c85feb7f5bf7d7b1a141b7f367",
+    "scripts/performance_before_outcomes.py": "42f55e496dbeec9e34b48f2d237babb43ce61d99a3db0f5dd84707bcd6d8dc5b",
+    "scripts/performance_choice.py": "4e85d14a61aa74b9b82f6cae86c69fa0bbf807c571e723367a9c01465f43dd2f",
     "scripts/performance_face_attribution.py": "78aa8c4e439e75a67346e9f5482dd61ef3cdf1793d73e61e7596da82af4e41dc",
     "scripts/performance_holoface_benchmark.py": "1a1cccee4ea7a392be74cb3ed82320829d6a862687599867fae6a60bcdefa6b5",
-    "scripts/performance_open.py": "0f12284085676aeb4bc260dd05a96b3e9c04f440f8b5d10f94ead7808905d159",
+    "scripts/performance_open.py": "f67b9bbaff6bfdaeb60ac7f74999c65970cfefde1be4fc6c5065b4b5dfc320c9",
     "scripts/performance_paleoclimate_plateau.py": "07bfc391117c4e81d1e2a8a873e91caac1cdd3573f76587b6d0dfdf67a4117cb"
   },
   "cohorts": {
@@ -25006,7 +25006,7 @@
     }
   },
   "input_sha256": {
-    "experiment/LEADERBOARD.json": "a8077ad670fe4abe17b27c0ce85cb618944725ec1e9cdecbed147bccafc0e488",
+    "experiment/LEADERBOARD.json": "c7a08f1d1997bd05dab9631f9653fc40b86f536e220a76ce5bf0dcf79dbf9f80",
     "exports/HON_source_fields.parquet": "ebeea8123ce3f73810a18eafb89caf6351b3b908d680e20e610286670163234b",
     "exports/POV_source_fields.parquet": "a37d952316785e51f46fdfa66ec50d6fdf7a964baa144926e7137666d8f1230a",
     "exports/directories.parquet": "c39721287105c83900d0acef1bef46173d76bb4f42265b363433f39f0fc58c24",
@@ -25130,7 +25130,7 @@
     "reports/validation.json": "25f9c4a190b545468a34067f7cd900308c6751d3ed3a6f55b5e7153879e2b640"
   },
   "input_sizes_bytes": {
-    "experiment/LEADERBOARD.json": 271951,
+    "experiment/LEADERBOARD.json": 303923,
     "exports/HON_source_fields.parquet": 392297543,
     "exports/POV_source_fields.parquet": 281019498,
     "exports/directories.parquet": 20951042,
@@ -25381,7 +25381,7 @@
       "source_image_count": 3685764
     },
     "multimodal_benchmark": {
-      "benchmark": "HON Progressive Facial Alignment & Multimodal Prediction Study (H1-H62)",
+      "benchmark": "HON Progressive Facial Alignment & Multimodal Prediction Study (H1-H67)",
       "sample_images_total": 20000,
       "sample_primary_images": 19130,
       "sample_profiles": 10000,
@@ -30862,6 +30862,609 @@
           "title": "Quality-Conditioned Stage-0 Front-End Pre-Processing Router & 62-Wave Grand Synthesis",
           "track": "Phase IV \u2014 Stage-0 Quality Router & 62-Wave Dual-Track Synthesis (Pixels-Only + Multimodal)",
           "wave_id": "H62"
+        },
+        {
+          "paired_bootstrap_comparisons": {
+            "vs_H10_image_test": {
+              "ci95_high": -0.0045589472795591,
+              "ci95_low": -0.014875734000293139,
+              "delta_mae": -0.009842335464437692,
+              "win_prob": 0.9995
+            },
+            "vs_H10_profile_test": {
+              "ci95_high": -0.0016963052954673745,
+              "ci95_low": -0.01435169827795028,
+              "delta_mae": -0.007977768936157223,
+              "win_prob": 0.993
+            },
+            "vs_H1_image_test": {
+              "ci95_high": -0.1338221431428396,
+              "ci95_low": -0.1668865314364122,
+              "delta_mae": -0.15031189770611394,
+              "win_prob": 1.0
+            },
+            "vs_H1_profile_test": {
+              "ci95_high": -0.12379756298828123,
+              "ci95_low": -0.1687134258618355,
+              "delta_mae": -0.1462503722000122,
+              "win_prob": 1.0
+            },
+            "vs_H20_image_test": {
+              "ci95_high": -0.001080312827984286,
+              "ci95_low": -0.0064437604822004425,
+              "delta_mae": -0.003821234391812554,
+              "win_prob": 0.997
+            },
+            "vs_H20_profile_test": {
+              "ci95_high": 0.0019534717907905555,
+              "ci95_low": -0.0013211090788841254,
+              "delta_mae": 0.0003583901977539075,
+              "win_prob": 0.328
+            },
+            "vs_H30_image_test": {
+              "ci95_high": -0.0011422256225705409,
+              "ci95_low": -0.008730413278773927,
+              "delta_mae": -0.00492612696316472,
+              "win_prob": 0.996
+            },
+            "vs_H30_profile_test": {
+              "ci95_high": 0.001953543763160703,
+              "ci95_low": -0.001318609683036805,
+              "delta_mae": 0.00035101495742797975,
+              "win_prob": 0.333
+            },
+            "vs_H50_image_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H50_profile_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H62_image_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H62_profile_test": {
+              "ci95_high": 0.0010626395950317387,
+              "ci95_low": -0.0009486486220359795,
+              "delta_mae": 6.816028594970724e-05,
+              "win_prob": 0.4625
+            }
+          },
+          "profile_test": {
+            "beauty_mae": 0.3368258479309082,
+            "beauty_median_ae": 0.25780975341796886,
+            "beauty_rmse": 0.4545827986120132,
+            "bias": 0.058286648139953594,
+            "like_ece_10": 0.0040092383717350326,
+            "like_mae": 0.034686128498914094,
+            "like_rmse": 0.04597298832551229,
+            "n": 1000,
+            "pearson_r": 0.6505436897876422,
+            "percentile_mae": 19.599355931002822,
+            "percentile_spearman_r": 0.5775990711007747,
+            "r2": 0.41150716514519026,
+            "spearman_r": 0.659284637048425,
+            "vote_weighted_beauty_mae": 0.31204082055196236
+          },
+          "profile_validation": {
+            "beauty_mae": 0.35671915683746336,
+            "beauty_median_ae": 0.2668837451934811,
+            "beauty_rmse": 0.4816034476923634,
+            "bias": 0.09115039436340332,
+            "like_ece_10": 0.006706554660284704,
+            "like_mae": 0.03658179671667844,
+            "like_rmse": 0.048852326472652405,
+            "n": 1000,
+            "pearson_r": 0.6320694851863997,
+            "percentile_mae": 21.08030077652087,
+            "percentile_spearman_r": 0.5282797620740441,
+            "r2": 0.37434056939362836,
+            "spearman_r": 0.6278534945454183,
+            "vote_weighted_beauty_mae": 0.32913749629887673
+          },
+          "title": "Stage-0 P11: Telemetry-Gated Catchlight-Safe Optical ISP & Dual Farkas/Procrustes Framing",
+          "track": "Phase V \u2014 Stage-0 Optical/Anatomical Processing (Dual-Track: Pixels-Only + Multimodal)",
+          "wave_id": "H63"
+        },
+        {
+          "paired_bootstrap_comparisons": {
+            "vs_H10_image_test": {
+              "ci95_high": -0.0045589472795591,
+              "ci95_low": -0.014875734000293139,
+              "delta_mae": -0.009842335464437692,
+              "win_prob": 0.9995
+            },
+            "vs_H10_profile_test": {
+              "ci95_high": -0.0016963052954673745,
+              "ci95_low": -0.01435169827795028,
+              "delta_mae": -0.007977768936157223,
+              "win_prob": 0.993
+            },
+            "vs_H1_image_test": {
+              "ci95_high": -0.1338221431428396,
+              "ci95_low": -0.1668865314364122,
+              "delta_mae": -0.15031189770611394,
+              "win_prob": 1.0
+            },
+            "vs_H1_profile_test": {
+              "ci95_high": -0.12379756298828123,
+              "ci95_low": -0.1687134258618355,
+              "delta_mae": -0.1462503722000122,
+              "win_prob": 1.0
+            },
+            "vs_H20_image_test": {
+              "ci95_high": -0.001080312827984286,
+              "ci95_low": -0.0064437604822004425,
+              "delta_mae": -0.003821234391812554,
+              "win_prob": 0.997
+            },
+            "vs_H20_profile_test": {
+              "ci95_high": 0.0019534717907905555,
+              "ci95_low": -0.0013211090788841254,
+              "delta_mae": 0.0003583901977539075,
+              "win_prob": 0.328
+            },
+            "vs_H30_image_test": {
+              "ci95_high": -0.0011422256225705409,
+              "ci95_low": -0.008730413278773927,
+              "delta_mae": -0.00492612696316472,
+              "win_prob": 0.996
+            },
+            "vs_H30_profile_test": {
+              "ci95_high": 0.001953543763160703,
+              "ci95_low": -0.001318609683036805,
+              "delta_mae": 0.00035101495742797975,
+              "win_prob": 0.333
+            },
+            "vs_H50_image_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H50_profile_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H62_image_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H62_profile_test": {
+              "ci95_high": 0.0010626395950317387,
+              "ci95_low": -0.0009486486220359795,
+              "delta_mae": 6.816028594970724e-05,
+              "win_prob": 0.4625
+            },
+            "vs_H63_image_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H63_profile_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            }
+          },
+          "profile_test": {
+            "beauty_mae": 0.3368258479309082,
+            "beauty_median_ae": 0.25780975341796886,
+            "beauty_rmse": 0.4545827986120132,
+            "bias": 0.058286648139953594,
+            "like_ece_10": 0.0040092383717350326,
+            "like_mae": 0.034686128498914094,
+            "like_rmse": 0.04597298832551229,
+            "n": 1000,
+            "pearson_r": 0.6505436897876422,
+            "percentile_mae": 19.599355931002822,
+            "percentile_spearman_r": 0.5775990711007747,
+            "r2": 0.41150716514519026,
+            "spearman_r": 0.659284637048425,
+            "vote_weighted_beauty_mae": 0.31204082055196236
+          },
+          "profile_validation": {
+            "beauty_mae": 0.35671915683746336,
+            "beauty_median_ae": 0.2668837451934811,
+            "beauty_rmse": 0.4816034476923634,
+            "bias": 0.09115039436340332,
+            "like_ece_10": 0.006706554660284704,
+            "like_mae": 0.03658179671667844,
+            "like_rmse": 0.048852326472652405,
+            "n": 1000,
+            "pearson_r": 0.6320694851863997,
+            "percentile_mae": 21.08030077652087,
+            "percentile_spearman_r": 0.5282797620740441,
+            "r2": 0.37434056939362836,
+            "spearman_r": 0.6278534945454183,
+            "vote_weighted_beauty_mae": 0.32913749629887673
+          },
+          "title": "Stage-0 P12: Bilateral Mirror-Canonicalized Equivariant Pair & Fluctuating Asymmetry",
+          "track": "Phase V \u2014 Stage-0 Equivariance & Symmetry Processing (Dual-Track: Pixels-Only + Multimodal)",
+          "wave_id": "H64"
+        },
+        {
+          "paired_bootstrap_comparisons": {
+            "vs_H10_image_test": {
+              "ci95_high": -0.0045589472795591,
+              "ci95_low": -0.014875734000293139,
+              "delta_mae": -0.009842335464437692,
+              "win_prob": 0.9995
+            },
+            "vs_H10_profile_test": {
+              "ci95_high": -0.0016963052954673745,
+              "ci95_low": -0.01435169827795028,
+              "delta_mae": -0.007977768936157223,
+              "win_prob": 0.993
+            },
+            "vs_H1_image_test": {
+              "ci95_high": -0.1338221431428396,
+              "ci95_low": -0.1668865314364122,
+              "delta_mae": -0.15031189770611394,
+              "win_prob": 1.0
+            },
+            "vs_H1_profile_test": {
+              "ci95_high": -0.12379756298828123,
+              "ci95_low": -0.1687134258618355,
+              "delta_mae": -0.1462503722000122,
+              "win_prob": 1.0
+            },
+            "vs_H20_image_test": {
+              "ci95_high": -0.001080312827984286,
+              "ci95_low": -0.0064437604822004425,
+              "delta_mae": -0.003821234391812554,
+              "win_prob": 0.997
+            },
+            "vs_H20_profile_test": {
+              "ci95_high": 0.0019534717907905555,
+              "ci95_low": -0.0013211090788841254,
+              "delta_mae": 0.0003583901977539075,
+              "win_prob": 0.328
+            },
+            "vs_H30_image_test": {
+              "ci95_high": -0.0011422256225705409,
+              "ci95_low": -0.008730413278773927,
+              "delta_mae": -0.00492612696316472,
+              "win_prob": 0.996
+            },
+            "vs_H30_profile_test": {
+              "ci95_high": 0.001953543763160703,
+              "ci95_low": -0.001318609683036805,
+              "delta_mae": 0.00035101495742797975,
+              "win_prob": 0.333
+            },
+            "vs_H50_image_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H50_profile_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H62_image_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H62_profile_test": {
+              "ci95_high": 0.0010626395950317387,
+              "ci95_low": -0.0009486486220359795,
+              "delta_mae": 6.816028594970724e-05,
+              "win_prob": 0.4625
+            },
+            "vs_H64_image_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H64_profile_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            }
+          },
+          "profile_test": {
+            "beauty_mae": 0.3368258479309082,
+            "beauty_median_ae": 0.25780975341796886,
+            "beauty_rmse": 0.4545827986120132,
+            "bias": 0.058286648139953594,
+            "like_ece_10": 0.0040092383717350326,
+            "like_mae": 0.034686128498914094,
+            "like_rmse": 0.04597298832551229,
+            "n": 1000,
+            "pearson_r": 0.6505436897876422,
+            "percentile_mae": 19.599355931002822,
+            "percentile_spearman_r": 0.5775990711007747,
+            "r2": 0.41150716514519026,
+            "spearman_r": 0.659284637048425,
+            "vote_weighted_beauty_mae": 0.31204082055196236
+          },
+          "profile_validation": {
+            "beauty_mae": 0.35671915683746336,
+            "beauty_median_ae": 0.2668837451934811,
+            "beauty_rmse": 0.4816034476923634,
+            "bias": 0.09115039436340332,
+            "like_ece_10": 0.006706554660284704,
+            "like_mae": 0.03658179671667844,
+            "like_rmse": 0.048852326472652405,
+            "n": 1000,
+            "pearson_r": 0.6320694851863997,
+            "percentile_mae": 21.08030077652087,
+            "percentile_spearman_r": 0.5282797620740441,
+            "r2": 0.37434056939362836,
+            "spearman_r": 0.6278534945454183,
+            "vote_weighted_beauty_mae": 0.32913749629887673
+          },
+          "title": "Stage-0 P13: Native-1200px Retinotopic 3-Fovea High-Acuity Anatomical Pyramid",
+          "track": "Phase V \u2014 Stage-0 Retinotopic Multi-Fovea Processing (Dual-Track: Pixels-Only + Multimodal)",
+          "wave_id": "H65"
+        },
+        {
+          "paired_bootstrap_comparisons": {
+            "vs_H10_image_test": {
+              "ci95_high": -0.0045589472795591,
+              "ci95_low": -0.014875734000293139,
+              "delta_mae": -0.009842335464437692,
+              "win_prob": 0.9995
+            },
+            "vs_H10_profile_test": {
+              "ci95_high": -0.0016345186939239575,
+              "ci95_low": -0.015607519356250764,
+              "delta_mae": -0.008439228591918941,
+              "win_prob": 0.992
+            },
+            "vs_H1_image_test": {
+              "ci95_high": -0.1338221431428396,
+              "ci95_low": -0.1668865314364122,
+              "delta_mae": -0.15031189770611394,
+              "win_prob": 1.0
+            },
+            "vs_H1_profile_test": {
+              "ci95_high": -0.12366084464597706,
+              "ci95_low": -0.16944552902889254,
+              "delta_mae": -0.14671183185577394,
+              "win_prob": 1.0
+            },
+            "vs_H20_image_test": {
+              "ci95_high": -0.001080312827984286,
+              "ci95_low": -0.0064437604822004425,
+              "delta_mae": -0.003821234391812554,
+              "win_prob": 0.997
+            },
+            "vs_H20_profile_test": {
+              "ci95_high": 0.0024473251557350162,
+              "ci95_low": -0.002626511392593384,
+              "delta_mae": -0.00010306945800781086,
+              "win_prob": 0.5305
+            },
+            "vs_H30_image_test": {
+              "ci95_high": -0.0011422256225705409,
+              "ci95_low": -0.008730413278773927,
+              "delta_mae": -0.00492612696316472,
+              "win_prob": 0.996
+            },
+            "vs_H30_profile_test": {
+              "ci95_high": 0.0024351235623359647,
+              "ci95_low": -0.0026339913549423195,
+              "delta_mae": -0.0001104446983337386,
+              "win_prob": 0.533
+            },
+            "vs_H50_image_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H50_profile_test": {
+              "ci95_high": 0.0012536470046043376,
+              "ci95_low": -0.002164170996189117,
+              "delta_mae": -0.0004614596557617183,
+              "win_prob": 0.719
+            },
+            "vs_H62_image_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H62_profile_test": {
+              "ci95_high": 0.0017788916397094724,
+              "ci95_low": -0.002580629604816434,
+              "delta_mae": -0.0003932993698120111,
+              "win_prob": 0.6615
+            },
+            "vs_H65_image_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H65_profile_test": {
+              "ci95_high": 0.0012536470046043376,
+              "ci95_low": -0.002164170996189117,
+              "delta_mae": -0.0004614596557617183,
+              "win_prob": 0.719
+            }
+          },
+          "profile_test": {
+            "beauty_mae": 0.3363643882751464,
+            "beauty_median_ae": 0.2571457195281983,
+            "beauty_rmse": 0.4555953295768081,
+            "bias": 0.06471198497772215,
+            "like_ece_10": 0.0040092383717350326,
+            "like_mae": 0.034686128498914094,
+            "like_rmse": 0.04597298832551229,
+            "n": 1000,
+            "pearson_r": 0.6518335083880772,
+            "percentile_mae": 19.640194957082855,
+            "percentile_spearman_r": 0.5837313966652793,
+            "r2": 0.4088826451124864,
+            "spearman_r": 0.6602493421496319,
+            "vote_weighted_beauty_mae": 0.30921872083225355
+          },
+          "profile_validation": {
+            "beauty_mae": 0.35567930364608763,
+            "beauty_median_ae": 0.2547613239288329,
+            "beauty_rmse": 0.4819998425576636,
+            "bias": 0.09853620855331421,
+            "like_ece_10": 0.006706554660284704,
+            "like_mae": 0.03658179671667844,
+            "like_rmse": 0.048852326472652405,
+            "n": 1000,
+            "pearson_r": 0.6357912752159569,
+            "percentile_mae": 21.138955826396504,
+            "percentile_spearman_r": 0.5385618898922631,
+            "r2": 0.3733102185880153,
+            "spearman_r": 0.6329096644368164,
+            "vote_weighted_beauty_mae": 0.3265542229251407
+          },
+          "title": "Stage-0 P14: Biophysical Melanin-Hemoglobin Chromophore & 3-Octave Laplacian Skin-Optics",
+          "track": "Phase V \u2014 Stage-0 Biophysical Skin-Optics Processing (Dual-Track: Pixels-Only + Multimodal)",
+          "wave_id": "H66"
+        },
+        {
+          "paired_bootstrap_comparisons": {
+            "vs_H10_image_test": {
+              "ci95_high": -0.0045589472795591,
+              "ci95_low": -0.014875734000293139,
+              "delta_mae": -0.009842335464437692,
+              "win_prob": 0.9995
+            },
+            "vs_H10_profile_test": {
+              "ci95_high": -0.0016345186939239575,
+              "ci95_low": -0.015607519356250764,
+              "delta_mae": -0.008439228591918941,
+              "win_prob": 0.992
+            },
+            "vs_H1_image_test": {
+              "ci95_high": -0.1338221431428396,
+              "ci95_low": -0.1668865314364122,
+              "delta_mae": -0.15031189770611394,
+              "win_prob": 1.0
+            },
+            "vs_H1_profile_test": {
+              "ci95_high": -0.12366084464597706,
+              "ci95_low": -0.16944552902889254,
+              "delta_mae": -0.14671183185577394,
+              "win_prob": 1.0
+            },
+            "vs_H20_image_test": {
+              "ci95_high": -0.001080312827984286,
+              "ci95_low": -0.0064437604822004425,
+              "delta_mae": -0.003821234391812554,
+              "win_prob": 0.997
+            },
+            "vs_H20_profile_test": {
+              "ci95_high": 0.0024473251557350162,
+              "ci95_low": -0.002626511392593384,
+              "delta_mae": -0.00010306945800781086,
+              "win_prob": 0.5305
+            },
+            "vs_H30_image_test": {
+              "ci95_high": -0.0011422256225705409,
+              "ci95_low": -0.008730413278773927,
+              "delta_mae": -0.00492612696316472,
+              "win_prob": 0.996
+            },
+            "vs_H30_profile_test": {
+              "ci95_high": 0.0024351235623359647,
+              "ci95_low": -0.0026339913549423195,
+              "delta_mae": -0.0001104446983337386,
+              "win_prob": 0.533
+            },
+            "vs_H50_image_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H50_profile_test": {
+              "ci95_high": 0.0012536470046043376,
+              "ci95_low": -0.002164170996189117,
+              "delta_mae": -0.0004614596557617183,
+              "win_prob": 0.719
+            },
+            "vs_H62_image_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H62_profile_test": {
+              "ci95_high": 0.0017788916397094724,
+              "ci95_low": -0.002580629604816434,
+              "delta_mae": -0.0003932993698120111,
+              "win_prob": 0.6615
+            },
+            "vs_H66_image_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            },
+            "vs_H66_profile_test": {
+              "ci95_high": 0.0,
+              "ci95_low": 0.0,
+              "delta_mae": 0.0,
+              "win_prob": 0.0
+            }
+          },
+          "profile_test": {
+            "beauty_mae": 0.3363643882751464,
+            "beauty_median_ae": 0.2571457195281983,
+            "beauty_rmse": 0.4555953295768081,
+            "bias": 0.06471198497772215,
+            "like_ece_10": 0.0040092383717350326,
+            "like_mae": 0.034686128498914094,
+            "like_rmse": 0.04597298832551229,
+            "n": 1000,
+            "pearson_r": 0.6518335083880772,
+            "percentile_mae": 19.640194957082855,
+            "percentile_spearman_r": 0.5837313966652793,
+            "r2": 0.4088826451124864,
+            "spearman_r": 0.6602493421496319,
+            "vote_weighted_beauty_mae": 0.30921872083225355
+          },
+          "profile_validation": {
+            "beauty_mae": 0.35567930364608763,
+            "beauty_median_ae": 0.2547613239288329,
+            "beauty_rmse": 0.4819998425576636,
+            "bias": 0.09853620855331421,
+            "like_ece_10": 0.006706554660284704,
+            "like_mae": 0.03658179671667844,
+            "like_rmse": 0.048852326472652405,
+            "n": 1000,
+            "pearson_r": 0.6357912752159569,
+            "percentile_mae": 21.138955826396504,
+            "percentile_spearman_r": 0.5385618898922631,
+            "r2": 0.3733102185880153,
+            "spearman_r": 0.6329096644368164,
+            "vote_weighted_beauty_mae": 0.3265542229251407
+          },
+          "title": "Stage-0 P15: Landmark-Guided 8-Region Spatial Token Pooling & 16-Expert Stage-0 Router",
+          "track": "Phase V \u2014 Stage-0 Spatial Tokenization & Quality Router (Dual-Track: Pixels-Only + Multimodal)",
+          "wave_id": "H67"
         }
       ]
     },
@@ -31301,6 +31904,27 @@
         "non_marriage_share_of_birth_drop_pct": 94.0,
         "question": "Did modern fertility fall because humans stopped wanting children or because single-context markets stall union entry?",
         "scale": "34,092 U.S. GSS respondents (1972-2024, incl. objective WORDSUM) + Lidborg 232 meta-analytic effects"
+      },
+      {
+        "boundary_check": "Overclaiming penalty grows 7.6x at 29+ (-3.7 pp/pt); egalitarian SCCS leaders are 100% checked & 93.9% persuasive.",
+        "female_to_male_coldness_backlash_ratio": 1.8374263355252336,
+        "female_vs_male_ceo_divorced_pct": [
+          31.246290801186944,
+          18.46517119244392
+        ],
+        "formal_ref": "Propositions 14, 16-17 & 24",
+        "id": "kpi9_prestige_confidence_coalition",
+        "mature_to_young_overclaim_penalty_ratio": 7.563170824430109,
+        "name": "Outlier Confidence vs. Arrogance & Alpha Asymmetry",
+        "name_short": "Prestige vs. Arrogance",
+        "question": "What separates outlier confidence from gross arrogance across audiences, alpha sexes, and coalition calls?",
+        "scale": "8,378 live dates + 89,182 Kowal (175 countries) + 567,414 POV careers (16,075 CEOs/founders) + 186 SCCS + 59,946 OkCupid",
+        "sccs_egalitarian_persuasion_pct": 93.93939393939394,
+        "warm_outlier_yes_female_and_male_pct": [
+          69.05710491367863,
+          60.12048192771084
+        ],
+        "woman_outsmarts_man_penalty_pp": -6.651728945952002
       }
     ],
     "schema_version": 2
@@ -32133,6 +32757,337 @@
       "meeting_coded_couples": 3295,
       "sha256": "8f21fe52e1d9fb5ad286fc68ef9ac74c4a4ade8fbeca5b45a64087083b06a64c",
       "total_respondents": 3510
+    },
+    "influence_and_prestige": {
+      "kowal_175_countries": {
+        "archetypes_by_sex": {
+          "men": {
+            "cold_arrogant_high_claim": {
+              "mate_kind_mean": 8.0896,
+              "mate_resources_mean": 7.238627294493217,
+              "n": 2132,
+              "partnered_share": 0.5802063789868668,
+              "prqc_mean": 5.583508488278092,
+              "tls_mean": 4.04731350554451
+            },
+            "low_agency_low_kindness": {
+              "mate_kind_mean": 7.052262587635437,
+              "mate_resources_mean": 5.9020108522183214,
+              "n": 6607,
+              "partnered_share": 0.47041017103072497,
+              "prqc_mean": 5.211137923637923,
+              "tls_mean": 3.967656586222147
+            },
+            "n_total": 29310,
+            "warm_humble_low_agency": {
+              "mate_kind_mean": 8.65196662693683,
+              "mate_resources_mean": 6.226133651551312,
+              "n": 3701,
+              "partnered_share": 0.44960821399621725,
+              "prqc_mean": 5.842227564102563,
+              "tls_mean": 4.174383076261932
+            },
+            "warm_outlier_confidence": {
+              "mate_kind_mean": 9.226992351344682,
+              "mate_resources_mean": 8.124969128179798,
+              "n": 6176,
+              "partnered_share": 0.6517163212435233,
+              "prqc_mean": 5.865627329192547,
+              "tls_mean": 4.120743453050962
+            },
+            "warm_outlier_minus_cold_mate_kind": 1.1373923513446815,
+            "warm_outlier_minus_cold_mate_resources": 0.8863418336865809,
+            "warm_outlier_minus_cold_partnered_pp": 7.150994225665652,
+            "warm_outlier_minus_cold_prqc": 0.28211884091445505,
+            "warm_outlier_minus_humble_partnered_pp": 20.210810724730603
+          },
+          "women": {
+            "cold_arrogant_high_claim": {
+              "mate_kind_mean": 8.106463878326997,
+              "mate_resources_mean": 7.524488825487399,
+              "n": 3383,
+              "partnered_share": 0.6154300916346438,
+              "prqc_mean": 5.661519372398335,
+              "tls_mean": 4.045320475076463
+            },
+            "low_agency_low_kindness": {
+              "mate_kind_mean": 7.3004940859410095,
+              "mate_resources_mean": 6.175625093576882,
+              "n": 12344,
+              "partnered_share": 0.5331335061568373,
+              "prqc_mean": 5.477424910094717,
+              "tls_mean": 3.892140377351498
+            },
+            "n_total": 59872,
+            "warm_humble_low_agency": {
+              "mate_kind_mean": 8.420338983050847,
+              "mate_resources_mean": 6.486532303635336,
+              "n": 9380,
+              "partnered_share": 0.5559701492537313,
+              "prqc_mean": 5.777941834451902,
+              "tls_mean": 4.07346440982683
+            },
+            "warm_outlier_confidence": {
+              "mate_kind_mean": 9.168647942521227,
+              "mate_resources_mean": 8.251863475872891,
+              "n": 11901,
+              "partnered_share": 0.6364171078060668,
+              "prqc_mean": 5.913286682510343,
+              "tls_mean": 4.158017331452489
+            },
+            "warm_outlier_minus_cold_mate_kind": 1.0621840641942306,
+            "warm_outlier_minus_cold_mate_resources": 0.7273746503854923,
+            "warm_outlier_minus_cold_partnered_pp": 2.0987016171422956,
+            "warm_outlier_minus_cold_prqc": 0.25176731011200815,
+            "warm_outlier_minus_humble_partnered_pp": 8.044695855233542
+          }
+        },
+        "cultural_gender_equality_regimes": {
+          "high_gender_equality": {
+            "men": {
+              "entrepreneur_n": 1553,
+              "entrepreneur_partnered_share": 0.5660012878300065,
+              "mid_resources_partnered_share": 0.5029833897758426,
+              "top15_resources_partnered_share": 0.5840559440559441,
+              "top_minus_mid_partnered_pp": 8.107255428010152
+            },
+            "women": {
+              "entrepreneur_n": 3356,
+              "entrepreneur_partnered_share": 0.6385578069129917,
+              "mid_resources_partnered_share": 0.5531900999151048,
+              "top15_resources_partnered_share": 0.5927988121752041,
+              "top_minus_mid_partnered_pp": 3.960871226009932
+            }
+          },
+          "low_gender_equality": {
+            "men": {
+              "entrepreneur_n": 2253,
+              "entrepreneur_partnered_share": 0.6080781180648025,
+              "mid_resources_partnered_share": 0.5589027047814383,
+              "top15_resources_partnered_share": 0.6697453120626924,
+              "top_minus_mid_partnered_pp": 11.084260728125406
+            },
+            "women": {
+              "entrepreneur_n": 2128,
+              "entrepreneur_partnered_share": 0.6968984962406015,
+              "mid_resources_partnered_share": 0.61037981051396,
+              "top15_resources_partnered_share": 0.680752453653217,
+              "top_minus_mid_partnered_pp": 7.037264313925706
+            }
+          }
+        },
+        "edu_class_singlehood_ages_30_55": {
+          "men": {
+            "bachelor": {
+              "mean_children": 0.8934010152284264,
+              "n": 6514,
+              "single_share": 0.29152594412035615
+            },
+            "high_school_or_less": {
+              "mean_children": 0.8936926820138499,
+              "n": 5354,
+              "single_share": 0.3171460590212925
+            },
+            "master": {
+              "mean_children": 0.8379611265370884,
+              "n": 5056,
+              "single_share": 0.29529272151898733
+            },
+            "phd": {
+              "mean_children": 0.7796728971962616,
+              "n": 4291,
+              "single_share": 0.3029596830575623
+            },
+            "phd_minus_hs_single_pp": -1.418637596373018,
+            "upper_class": {
+              "mean_children": 0.7545683679899181,
+              "n": 3183,
+              "single_share": 0.29846057178762175
+            }
+          },
+          "women": {
+            "bachelor": {
+              "mean_children": 1.0334003672291685,
+              "n": 11455,
+              "single_share": 0.2565691837625491
+            },
+            "high_school_or_less": {
+              "mean_children": 1.1275436046511629,
+              "n": 8265,
+              "single_share": 0.23617664851784634
+            },
+            "master": {
+              "mean_children": 1.0079312623925976,
+              "n": 10614,
+              "single_share": 0.25918598078010174
+            },
+            "phd": {
+              "mean_children": 0.9513054974110389,
+              "n": 9096,
+              "single_share": 0.2733069481090589
+            },
+            "phd_minus_hs_single_pp": 3.7130299591212585,
+            "upper_class": {
+              "mean_children": 0.9788972089857045,
+              "n": 5888,
+              "single_share": 0.2508491847826087
+            }
+          }
+        },
+        "relative_resource_asymmetry": {
+          "men": {
+            "equal_or_partner_ge_focal": {
+              "commitment_mean": 4.231147133474631,
+              "n": 12739,
+              "prqc_mean": 5.705110291231652,
+              "qoa_mean": 4.255514561582542
+            },
+            "focal_gt_partner_plus_1": {
+              "commitment_mean": 4.081382196584096,
+              "n": 2947,
+              "prqc_mean": 5.417130415111412,
+              "qoa_mean": 4.558534102477095
+            },
+            "out_earns_commitment_diff": -0.14976493689053516,
+            "out_earns_prqc_diff": -0.28797987612023945
+          },
+          "women": {
+            "equal_or_partner_ge_focal": {
+              "commitment_mean": 4.259201565386592,
+              "n": 30493,
+              "prqc_mean": 5.791113807540528,
+              "qoa_mean": 4.20145607188535
+            },
+            "focal_gt_partner_plus_1": {
+              "commitment_mean": 3.9941717019133938,
+              "n": 3972,
+              "prqc_mean": 5.387516784155757,
+              "qoa_mean": 4.422205438066465
+            },
+            "out_earns_commitment_diff": -0.265029863473198,
+            "out_earns_prqc_diff": -0.403597023384771
+          }
+        }
+      },
+      "okcupid_heros_journey_and_execs": {
+        "candid_humility_e8_share": 0.5371834651186067,
+        "coprotagonist_call_e9_share": 0.17090381343208888,
+        "defensive_arrogant_gatekeep_share": 0.013161845661094986,
+        "defensive_gatekeeper": {
+          "mean_prompts_filled_k": 8.978453738910012,
+          "n": 789,
+          "share": 0.013161845661094986
+        },
+        "exec_law_finance_ages_30_49": {
+          "men": {
+            "exec_law_finance": {
+              "has_kids_share": 0.09738171796049609,
+              "income_ge_100k_among_reported_share": 0.676056338028169,
+              "n": 2177,
+              "n_income_reported": 497
+            },
+            "other_fields": {
+              "has_kids_share": 0.08501277320465513,
+              "income_ge_100k_among_reported_share": 0.35433543354335434,
+              "n": 14092,
+              "n_income_reported": 3333
+            }
+          },
+          "women": {
+            "exec_law_finance": {
+              "has_kids_share": 0.15078125,
+              "income_ge_100k_among_reported_share": 0.4129032258064516,
+              "n": 1280,
+              "n_income_reported": 155
+            },
+            "other_fields": {
+              "has_kids_share": 0.1119495555096134,
+              "income_ge_100k_among_reported_share": 0.1927710843373494,
+              "n": 9674,
+              "n_income_reported": 1162
+            }
+          }
+        },
+        "heros_journey_triad": {
+          "mean_prompts_filled_k": 9.631353919239904,
+          "n": 2105,
+          "share": 0.03511493677643212
+        },
+        "n_portfolios": 59946,
+        "passive_unfilled": {
+          "mean_prompts_filled_k": 7.209495411664911,
+          "n": 38903,
+          "share": 0.6489674039969305
+        },
+        "quest_builder_e1_share": 0.22285056550895807,
+        "triad_to_passive_k_ratio": 1.335926215260009
+      },
+      "sccs_coalition_leadership": {
+        "egalitarian_minus_stratified_persuasion_pp": 34.680134680134685,
+        "egalitarian_respect_to_force_ratio": 3.2727272727272725,
+        "regimes": {
+          "all_sccs": {
+            "authority_basis_n": 142,
+            "backed_by_force_share": 0.43661971830985913,
+            "checked_leaders_n": 86,
+            "checked_leaders_share": 0.9418604651162791,
+            "female_political_participation_share": 0.5413533834586466,
+            "female_power_n": 133,
+            "n_societies": 186,
+            "obeyed_by_respect_share": 0.47183098591549294,
+            "persuasion_n": 87,
+            "persuasion_or_consultation_share": 0.7241379310344828,
+            "pure_persuasion_share": 0.42528735632183906,
+            "removal_n": 77,
+            "silent_followership_withdrawal_share": 0.6233766233766234
+          },
+          "class_stratified_sccs270_ge2": {
+            "authority_basis_n": 89,
+            "backed_by_force_share": 0.5730337078651685,
+            "checked_leaders_n": 54,
+            "checked_leaders_share": 0.9074074074074074,
+            "female_political_participation_share": 0.575,
+            "female_power_n": 80,
+            "n_societies": 110,
+            "obeyed_by_respect_share": 0.34831460674157305,
+            "persuasion_n": 54,
+            "persuasion_or_consultation_share": 0.5925925925925926,
+            "pure_persuasion_share": 0.2777777777777778,
+            "removal_n": 47,
+            "silent_followership_withdrawal_share": 0.46808510638297873
+          },
+          "egalitarian_sccs270_eq1": {
+            "authority_basis_n": 53,
+            "backed_by_force_share": 0.20754716981132076,
+            "checked_leaders_n": 32,
+            "checked_leaders_share": 1.0,
+            "female_political_participation_share": 0.49056603773584906,
+            "female_power_n": 53,
+            "n_societies": 76,
+            "obeyed_by_respect_share": 0.6792452830188679,
+            "persuasion_n": 33,
+            "persuasion_or_consultation_share": 0.9393939393939394,
+            "pure_persuasion_share": 0.6666666666666666,
+            "removal_n": 30,
+            "silent_followership_withdrawal_share": 0.8666666666666667
+          },
+          "stateless_band_tribe_sccs83_le2": {
+            "authority_basis_n": 93,
+            "backed_by_force_share": 0.25806451612903225,
+            "checked_leaders_n": 60,
+            "checked_leaders_share": 0.9666666666666667,
+            "female_political_participation_share": 0.5172413793103449,
+            "female_power_n": 87,
+            "n_societies": 129,
+            "obeyed_by_respect_share": 0.6236559139784946,
+            "persuasion_n": 61,
+            "persuasion_or_consultation_share": 0.819672131147541,
+            "pure_persuasion_share": 0.5409836065573771,
+            "removal_n": 57,
+            "silent_followership_withdrawal_share": 0.7543859649122807
+          }
+        }
+      }
     },
     "joel_2020": {
       "commitment": {
@@ -42473,6 +43428,151 @@
         }
       }
     },
+    "proposition_24_e24": {
+      "max_abs_diff": 0.00305167668345252,
+      "n_sim": 200000,
+      "part_i_experience_graded_arrogance": {
+        "m_1": {
+          "arrogance_minus_calibrated": 0.7108902210362924,
+          "calibrated_minus_playing_small": 0.5010521229632683,
+          "calibrated_outlier_0_0": {
+            "abs_diff": 0.0006442969749669292,
+            "closed_form": 1.6558305184662134,
+            "delta": 0.0,
+            "monte_carlo": 1.6551862214912465
+          },
+          "gross_arrogance_p2_2": {
+            "abs_diff": 0.00305167668345252,
+            "closed_form": 2.366720739502506,
+            "delta": 2.2,
+            "monte_carlo": 2.3697724161859584
+          },
+          "mild_overclaim_p1_0": {
+            "abs_diff": 0.00135823826053727,
+            "closed_form": 2.0585315119637686,
+            "delta": 1.0,
+            "monte_carlo": 2.0571732737032313
+          },
+          "playing_small_m1_0": {
+            "abs_diff": 0.0007523787984411445,
+            "closed_form": 1.1547783955029451,
+            "delta": -1.0,
+            "monte_carlo": 1.154026016704504
+          }
+        },
+        "m_20": {
+          "arrogance_minus_calibrated": -1.0485012402873817,
+          "calibrated_minus_playing_small": 0.02585477513946466,
+          "calibrated_outlier_0_0": {
+            "abs_diff": 0.00043117385664426244,
+            "closed_form": 1.674139085442098,
+            "delta": 0.0,
+            "monte_carlo": 1.6745702592987424
+          },
+          "gross_arrogance_p2_2": {
+            "abs_diff": 0.0004591067418128203,
+            "closed_form": 0.6256378451547164,
+            "delta": 2.2,
+            "monte_carlo": 0.6251787384129036
+          },
+          "mild_overclaim_p1_0": {
+            "abs_diff": 0.0010106832360214923,
+            "closed_form": 1.2813140542308976,
+            "delta": 1.0,
+            "monte_carlo": 1.2803033709948761
+          },
+          "playing_small_m1_0": {
+            "abs_diff": 0.0008088686747194096,
+            "closed_form": 1.6482843103026334,
+            "delta": -1.0,
+            "monte_carlo": 1.6490931789773529
+          }
+        },
+        "m_6": {
+          "arrogance_minus_calibrated": -0.5724100807761896,
+          "calibrated_minus_playing_small": 0.15605534824664358,
+          "calibrated_outlier_0_0": {
+            "abs_diff": 0.00012150338826710794,
+            "closed_form": 1.6548319721738312,
+            "delta": 0.0,
+            "monte_carlo": 1.654710468785564
+          },
+          "gross_arrogance_p2_2": {
+            "abs_diff": 0.00027031751981199115,
+            "closed_form": 1.0824218913976416,
+            "delta": 2.2,
+            "monte_carlo": 1.0821515738778296
+          },
+          "mild_overclaim_p1_0": {
+            "abs_diff": 0.0006513575489190959,
+            "closed_form": 1.5300478022355333,
+            "delta": 1.0,
+            "monte_carlo": 1.5306991597844524
+          },
+          "playing_small_m1_0": {
+            "abs_diff": 0.0005188325960776563,
+            "closed_form": 1.4987766239271876,
+            "delta": -1.0,
+            "monte_carlo": 1.4992954565232652
+          }
+        }
+      },
+      "part_ii_cultural_humility_priors": {
+        "high_humility_jury": {
+          "abs_diff": 0.0002181767844942062,
+          "boast_closed_form": 0.5124229544861797,
+          "boast_minus_calibrated": -1.0781603191945295,
+          "boast_monte_carlo": 0.5126411312706739,
+          "calibrated_closed_form": 1.590583273680709,
+          "kappa": 0.42
+        },
+        "low_humility_arena": {
+          "abs_diff": 0.0003661190921189217,
+          "boast_closed_form": 1.5673574228468248,
+          "boast_minus_calibrated": -0.10495208391909228,
+          "boast_monte_carlo": 1.5677235419389437,
+          "calibrated_closed_form": 1.672309506765917,
+          "kappa": 0.12
+        },
+        "moderate_norm": {
+          "abs_diff": 3.3763769377692654e-05,
+          "boast_closed_form": 1.0750546709451902,
+          "boast_minus_calibrated": -0.5591159270476298,
+          "boast_monte_carlo": 1.075088434714568,
+          "calibrated_closed_form": 1.63417059799282,
+          "kappa": 0.26
+        }
+      },
+      "part_iii_alpha_double_bind_escape": {
+        "alpha_female_dual_signal_high_caliber_pool": {
+          "abs_diff": 0.00017603199193949592,
+          "closed_form": 1.37017059799282,
+          "monte_carlo": 1.3703466299847595
+        },
+        "alpha_female_playing_small_insecure_pool": {
+          "abs_diff": 0.0008758659029564075,
+          "closed_form": 0.9443183612990154,
+          "monte_carlo": 0.943442495396059
+        },
+        "alpha_female_uncoupled_insecure_pool": {
+          "abs_diff": 0.00032725861610971574,
+          "closed_form": 0.6261705979928198,
+          "monte_carlo": 0.6258433393767101
+        },
+        "alpha_male_standard": {
+          "abs_diff": 0.000638497494357626,
+          "closed_form": 1.40317059799282,
+          "monte_carlo": 1.4038090954871776
+        }
+      },
+      "part_iv_heros_journey_vs_self_aggrandizing": {
+        "heros_journey_closed_form": 1.7307382198151666,
+        "heros_journey_monte_carlo": 1.7287620120344696,
+        "self_aggrandizing_closed_form": 0.3038327165447461,
+        "self_aggrandizing_monte_carlo": 0.3031413782497869,
+        "standing_ratio": 5.696352385936283
+      }
+    },
     "published_benchmarks": {
       "eastwick_2025_composites": [
         {
@@ -48510,6 +49610,316 @@
       "blank_or_null_keys": 0,
       "distinct_nonnull_keys": 1208771,
       "rows": 1208771
+    },
+    "alpha_executive_and_ethnicity": {
+      "ambition_by_ethnicity_ages_25_49": {
+        "Asian": {
+          "Female": {
+            "count": 718,
+            "n": 3572,
+            "share": 0.20100783874580067
+          },
+          "Male": {
+            "count": 2444,
+            "n": 9363,
+            "share": 0.2610274484673716
+          },
+          "female_minus_male_pp": -6.001960972157091
+        },
+        "Black": {
+          "Female": {
+            "count": 17585,
+            "n": 40921,
+            "share": 0.4297304562449598
+          },
+          "Male": {
+            "count": 57758,
+            "n": 114056,
+            "share": 0.5064003647331136
+          },
+          "female_minus_male_pp": -7.666990848815375
+        },
+        "Caucasian": {
+          "Female": {
+            "count": 29231,
+            "n": 143664,
+            "share": 0.2034678137877269
+          },
+          "Male": {
+            "count": 88277,
+            "n": 327223,
+            "share": 0.2697762687830623
+          },
+          "female_minus_male_pp": -6.6308454995335415
+        },
+        "Hispanic": {
+          "Female": {
+            "count": 4474,
+            "n": 18039,
+            "share": 0.248018182826099
+          },
+          "Male": {
+            "count": 17455,
+            "n": 57283,
+            "share": 0.3047151860063195
+          },
+          "female_minus_male_pp": -5.669700318022053
+        },
+        "Indian": {
+          "Female": {
+            "count": 254,
+            "n": 926,
+            "share": 0.27429805615550756
+          },
+          "Male": {
+            "count": 1901,
+            "n": 5792,
+            "share": 0.3282113259668508
+          },
+          "female_minus_male_pp": -5.391326981134325
+        },
+        "Middle Eastern": {
+          "Female": {
+            "count": 157,
+            "n": 474,
+            "share": 0.33122362869198313
+          },
+          "Male": {
+            "count": 1351,
+            "n": 4061,
+            "share": 0.3326766806205368
+          },
+          "female_minus_male_pp": -0.14530519285536614
+        },
+        "Mixed Race": {
+          "Female": {
+            "count": 5043,
+            "n": 16143,
+            "share": 0.31239546552685377
+          },
+          "Male": {
+            "count": 14702,
+            "n": 38489,
+            "share": 0.3819792668035023
+          },
+          "female_minus_male_pp": -6.958380127664854
+        },
+        "Native American": {
+          "Female": {
+            "count": 570,
+            "n": 2435,
+            "share": 0.23408624229979466
+          },
+          "Male": {
+            "count": 1507,
+            "n": 4739,
+            "share": 0.31799957797003586
+          },
+          "female_minus_male_pp": -8.39133356702412
+        },
+        "Other Ethnicity": {
+          "Female": {
+            "count": 1651,
+            "n": 6910,
+            "share": 0.23892908827785816
+          },
+          "Male": {
+            "count": 6303,
+            "n": 18555,
+            "share": 0.3396928051738076
+          },
+          "female_minus_male_pp": -10.076371689594946
+        }
+      },
+      "executives_ages_30_54": {
+        "by_sex": {
+          "Female": {
+            "executive_founder_owner": {
+              "childless": {
+                "count": 1139,
+                "n": 3345,
+                "share": 0.34050822122571
+              },
+              "divorced": {
+                "count": 1053,
+                "n": 3370,
+                "share": 0.31246290801186943
+              },
+              "n": 3370,
+              "over_10y_union": {
+                "count": 1257,
+                "n": 3370,
+                "share": 0.3729970326409496
+              },
+              "over_3y_union": {
+                "count": 3041,
+                "n": 3370,
+                "share": 0.902373887240356
+              },
+              "serious_commitment": {
+                "count": 2513,
+                "n": 3370,
+                "share": 0.7456973293768546
+              },
+              "single_never_married": {
+                "count": 2012,
+                "n": 3370,
+                "share": 0.5970326409495549
+              },
+              "very_ambitious_all": {
+                "count": 1468,
+                "n": 3370,
+                "share": 0.4356083086053412
+              },
+              "very_ambitious_answered": {
+                "count": 1468,
+                "n": 3369,
+                "share": 0.43573760759869395
+              }
+            },
+            "non_executive_pool": {
+              "childless": {
+                "count": 53291,
+                "n": 175573,
+                "share": 0.3035261686022338
+              },
+              "divorced": {
+                "count": 42849,
+                "n": 176944,
+                "share": 0.24216136178678
+              },
+              "n": 176944,
+              "over_10y_union": {
+                "count": 60114,
+                "n": 176944,
+                "share": 0.33973460529885163
+              },
+              "over_3y_union": {
+                "count": 152658,
+                "n": 176944,
+                "share": 0.8627475359435753
+              },
+              "serious_commitment": {
+                "count": 129482,
+                "n": 176944,
+                "share": 0.7317682430599511
+              },
+              "single_never_married": {
+                "count": 114385,
+                "n": 176944,
+                "share": 0.6464474636043042
+              },
+              "very_ambitious_all": {
+                "count": 38097,
+                "n": 176944,
+                "share": 0.21530540736052084
+              },
+              "very_ambitious_answered": {
+                "count": 38097,
+                "n": 176566,
+                "share": 0.21576634233091307
+              }
+            }
+          },
+          "Male": {
+            "executive_founder_owner": {
+              "childless": {
+                "count": 5838,
+                "n": 12567,
+                "share": 0.4645500119360229
+              },
+              "divorced": {
+                "count": 2346,
+                "n": 12705,
+                "share": 0.1846517119244392
+              },
+              "n": 12705,
+              "over_10y_union": {
+                "count": 3054,
+                "n": 12705,
+                "share": 0.24037780401416764
+              },
+              "over_3y_union": {
+                "count": 10807,
+                "n": 12705,
+                "share": 0.8506099960645416
+              },
+              "serious_commitment": {
+                "count": 7759,
+                "n": 12705,
+                "share": 0.6107044470680835
+              },
+              "single_never_married": {
+                "count": 9496,
+                "n": 12705,
+                "share": 0.747422274695002
+              },
+              "very_ambitious_all": {
+                "count": 7196,
+                "n": 12705,
+                "share": 0.5663911845730027
+              },
+              "very_ambitious_answered": {
+                "count": 7196,
+                "n": 12698,
+                "share": 0.5667034178610805
+              }
+            },
+            "non_executive_pool": {
+              "childless": {
+                "count": 175277,
+                "n": 369648,
+                "share": 0.47417272648573777
+              },
+              "divorced": {
+                "count": 55629,
+                "n": 374395,
+                "share": 0.14858371506029727
+              },
+              "n": 374395,
+              "over_10y_union": {
+                "count": 77063,
+                "n": 374395,
+                "share": 0.20583341123679536
+              },
+              "over_3y_union": {
+                "count": 295935,
+                "n": 374395,
+                "share": 0.7904352355132948
+              },
+              "serious_commitment": {
+                "count": 226515,
+                "n": 374395,
+                "share": 0.6050160926294421
+              },
+              "single_never_married": {
+                "count": 286306,
+                "n": 374395,
+                "share": 0.7647164091400793
+              },
+              "very_ambitious_all": {
+                "count": 111420,
+                "n": 374395,
+                "share": 0.29760012820684034
+              },
+              "very_ambitious_answered": {
+                "count": 111420,
+                "n": 372978,
+                "share": 0.29873075623763334
+              }
+            }
+          }
+        },
+        "contrasts": {
+          "female_exec_minus_nonexec_childless_pp": 3.6982052623476203,
+          "female_exec_minus_nonexec_divorced_pp": 7.0301546225089435,
+          "female_minus_male_exec_divorced_pp": 12.781119608743024,
+          "female_minus_male_exec_very_ambitious_pp": -13.078287596766152,
+          "female_to_male_exec_divorced_ratio": 1.692174444284229,
+          "male_exec_minus_nonexec_childless_pp": -0.9622714549714861,
+          "male_exec_minus_nonexec_divorced_pp": 3.606799686414192
+        }
+      }
     },
     "bands": {
       "18-19": {
@@ -65400,10 +66810,892 @@
     },
     "cohorts": {
       "checklist_and_hindsight": "Comparison of pre-event objective 17-hobby profile correlation (int_corr) against live 4-minute shared wavelength (shar), plus normalized 100-point preference trajectories across pre-event (T1), 24-hour hindsight (T2), and 3-4-week post-event follow-up (T3).",
+      "confidence_and_backlash": "Dyadic agency x sincerity decision rates, chooser age/race OLS modulation on unbacked self-overclaiming (self_agency - jury_agency), and chooser status-comparison regressions when target intelligence or ambition exceeds chooser self-ratings.",
       "dyadic_chemistry": "Two-way bipartite Social Relations Model variance partition within session x chooser-sex blocks (with exact degrees-of-freedom finite-sample correction), residual mutual dyadic liking correlation across matched pairs, and within-chooser yes slopes adding perceived reciprocal liking (prob).",
       "quintiles": "Within each chooser, midpoint ranks of partners' mean 1\u201310 looks ratings from at least three other session peers. Quintiles are 20-point rank bands; ties remain together. Rates count yes decisions among rows with an observed binary decision and available panel rating.",
       "slopes": "Within-chooser linear probability models for yes, by chooser gender, adjusting for looks, fun, intelligence, ambition, sincerity and shared interests. Own and leave-one-out panel ratings use separate, common-across-gender SD scales. All six ratings and two usable decisions per chooser are required.",
       "stated": "First row per participant. Mean looks points among complete allocations after rescaling each total to 100."
+    },
+    "confidence_and_backlash": {
+      "agency_x_warmth_dyadic": {
+        "female_chooser_to_male_target": {
+          "cold_arrogant_high_agency": {
+            "mean_like": 6.60625,
+            "n": 81,
+            "yes": 39,
+            "yes_share": 0.48148148148148145
+          },
+          "coldness_backlash_drop_pp": 11.9723337795627,
+          "low_agency_low_warmth": {
+            "mean_like": 4.15315934065934,
+            "n": 731,
+            "yes": 108,
+            "yes_share": 0.14774281805745554
+          },
+          "warm_humble_low_agency": {
+            "mean_like": 4.840277777777778,
+            "n": 144,
+            "yes": 25,
+            "yes_share": 0.1736111111111111
+          },
+          "warm_outlier_agency": {
+            "mean_like": 7.594316807738815,
+            "n": 830,
+            "yes": 499,
+            "yes_share": 0.6012048192771084
+          },
+          "warm_outlier_over_humble_low_pp": 42.759370816599734,
+          "warm_outlier_to_humble_low_ratio": 3.4629397590361446
+        },
+        "female_to_male_coldness_backlash_ratio": 1.8374263355252336,
+        "male_chooser_to_female_target": {
+          "cold_arrogant_high_agency": {
+            "mean_like": 6.636363636363637,
+            "n": 34,
+            "yes": 16,
+            "yes_share": 0.47058823529411764
+          },
+          "coldness_backlash_drop_pp": 21.99828138426686,
+          "low_agency_low_warmth": {
+            "mean_like": 4.7368421052631575,
+            "n": 726,
+            "yes": 200,
+            "yes_share": 0.27548209366391185
+          },
+          "warm_humble_low_agency": {
+            "mean_like": 5.288557213930348,
+            "n": 202,
+            "yes": 47,
+            "yes_share": 0.23267326732673269
+          },
+          "warm_outlier_agency": {
+            "mean_like": 7.721381142098274,
+            "n": 753,
+            "yes": 520,
+            "yes_share": 0.6905710491367862
+          },
+          "warm_outlier_over_humble_low_pp": 45.78977818100536,
+          "warm_outlier_to_humble_low_ratio": 2.9679862111836344
+        }
+      },
+      "audience_age_modulation": {
+        "age_25_28": {
+          "coefficients": {
+            "amb": {
+              "ci_95_pp": [
+                -2.20743752600554,
+                -0.021314357122451284
+              ],
+              "se_pp": 0.5576844818579307,
+              "slope_pp": -1.1143759415639956,
+              "t_stat": -1.9982193835687203
+            },
+            "attr": {
+              "ci_95_pp": [
+                8.777211590773828,
+                10.761483854657518
+              ],
+              "se_pp": 0.5061919040519617,
+              "slope_pp": 9.769347722715672,
+              "t_stat": 19.299691766134664
+            },
+            "fun": {
+              "ci_95_pp": [
+                4.867972322656556,
+                7.019731256737825
+              ],
+              "se_pp": 0.5489180954288956,
+              "slope_pp": 5.94385178969719,
+              "t_stat": 10.82830360156551
+            },
+            "intel": {
+              "ci_95_pp": [
+                -0.032990175944406196,
+                2.861206105352059
+              ],
+              "se_pp": 0.7383153778817513,
+              "slope_pp": 1.4141079647038264,
+              "t_stat": 1.9153169594827404
+            },
+            "sinc": {
+              "ci_95_pp": [
+                -3.0790262675142794,
+                -0.7476834583880841
+              ],
+              "se_pp": 0.5947303084505601,
+              "slope_pp": -1.9133548629511818,
+              "t_stat": -3.2171806880601226
+            },
+            "target_overclaim": {
+              "ci_95_pp": [
+                -2.747170202192984,
+                -0.10882961629528377
+              ],
+              "se_pp": 0.6730460678310459,
+              "slope_pp": -1.4279999092441338,
+              "t_stat": -2.121697128171326
+            }
+          },
+          "n": 3085
+        },
+        "age_ge_29": {
+          "coefficients": {
+            "amb": {
+              "ci_95_pp": [
+                -1.9636779837473015,
+                1.060012915059495
+              ],
+              "se_pp": 0.7713497190833665,
+              "slope_pp": -0.4518325343439031,
+              "t_stat": -0.5857687157530028
+            },
+            "attr": {
+              "ci_95_pp": [
+                7.393427662384259,
+                9.891771246316296
+              ],
+              "se_pp": 0.6373325469214378,
+              "slope_pp": 8.642599454350277,
+              "t_stat": 13.560580729946036
+            },
+            "fun": {
+              "ci_95_pp": [
+                4.992614208706446,
+                7.777389320079588
+              ],
+              "se_pp": 0.7104018141258017,
+              "slope_pp": 6.385001764393017,
+              "t_stat": 8.9878736757594
+            },
+            "intel": {
+              "ci_95_pp": [
+                -4.3629073205289455,
+                -0.3549090555313248
+              ],
+              "se_pp": 1.022448536989189,
+              "slope_pp": -2.358908188030135,
+              "t_stat": -2.307116791400013
+            },
+            "sinc": {
+              "ci_95_pp": [
+                -2.2203717831139294,
+                1.127141160949105
+              ],
+              "se_pp": 0.8539573836895495,
+              "slope_pp": -0.5466153110824122,
+              "t_stat": -0.6400967091832425
+            },
+            "target_overclaim": {
+              "ci_95_pp": [
+                -5.463492223539312,
+                -1.8959152375358217
+              ],
+              "se_pp": 0.9100961698988494,
+              "slope_pp": -3.679703730537567,
+              "t_stat": -4.043203182523599
+            }
+          },
+          "n": 1742
+        },
+        "age_le_24": {
+          "coefficients": {
+            "amb": {
+              "ci_95_pp": [
+                -4.1760596787976185,
+                -1.6574832904552674
+              ],
+              "se_pp": 0.6424939766179469,
+              "slope_pp": -2.916771484626443,
+              "t_stat": -4.539764714963039
+            },
+            "attr": {
+              "ci_95_pp": [
+                9.40675491338924,
+                11.527778008813131
+              ],
+              "se_pp": 0.5410773202611976,
+              "slope_pp": 10.467266461101184,
+              "t_stat": 19.345232315500226
+            },
+            "fun": {
+              "ci_95_pp": [
+                3.534871809381445,
+                5.893879419182561
+              ],
+              "se_pp": 0.6017876555615093,
+              "slope_pp": 4.714375614282003,
+              "t_stat": 7.833952010669223
+            },
+            "intel": {
+              "ci_95_pp": [
+                -0.08088308375910486,
+                3.2762053783247604
+              ],
+              "se_pp": 0.856400117878537,
+              "slope_pp": 1.5976611472828277,
+              "t_stat": 1.865554562557199
+            },
+            "sinc": {
+              "ci_95_pp": [
+                -2.2952598458325255,
+                0.3453225958934285
+              ],
+              "se_pp": 0.6736179698280496,
+              "slope_pp": -0.9749686249695487,
+              "t_stat": -1.4473613659956592
+            },
+            "target_overclaim": {
+              "ci_95_pp": [
+                -1.9651069381910777,
+                0.9920484641839579
+              ],
+              "se_pp": 0.7543763781568968,
+              "slope_pp": -0.48652923700356004,
+              "t_stat": -0.6449423008077947
+            }
+          },
+          "n": 2534
+        },
+        "mature_to_young_overclaim_penalty_ratio": 7.563170824430109
+      },
+      "audience_race_modulation": {
+        "asian": {
+          "coefficients": {
+            "amb": {
+              "ci_95_pp": [
+                -4.2357735253620215,
+                -1.0073946472105137
+              ],
+              "se_pp": 0.8235660403447723,
+              "slope_pp": -2.6215840862862674,
+              "t_stat": -3.183210523334333
+            },
+            "attr": {
+              "ci_95_pp": [
+                8.274982314069804,
+                11.206864927709443
+              ],
+              "se_pp": 0.747929238173377,
+              "slope_pp": 9.740923620889625,
+              "t_stat": 13.02385723638683
+            },
+            "fun": {
+              "ci_95_pp": [
+                5.456907458155605,
+                8.776100779137536
+              ],
+              "se_pp": 0.846732990046411,
+              "slope_pp": 7.11650411864657,
+              "t_stat": 8.404661448535862
+            },
+            "intel": {
+              "ci_95_pp": [
+                -1.309205160998209,
+                2.956120775499713
+              ],
+              "se_pp": 1.088093351147429,
+              "slope_pp": 0.823457807250752,
+              "t_stat": 0.7567896691790181
+            },
+            "sinc": {
+              "ci_95_pp": [
+                -3.173222592003805,
+                0.20699393741728106
+              ],
+              "se_pp": 0.8623001350563995,
+              "slope_pp": -1.4831143272932619,
+              "t_stat": -1.719951403227204
+            },
+            "target_overclaim": {
+              "ci_95_pp": [
+                -2.061380336650499,
+                1.5496205128513882
+              ],
+              "se_pp": 0.9211736860974201,
+              "slope_pp": -0.25587991189955533,
+              "t_stat": -0.2777759675090137
+            }
+          },
+          "n": 1813
+        },
+        "black": {
+          "coefficients": {
+            "amb": {
+              "ci_95_pp": [
+                -1.2034897511199436,
+                6.2423427237628895
+              ],
+              "se_pp": 1.89944705991909,
+              "slope_pp": 2.5194264863214726,
+              "t_stat": 1.326399950535495
+            },
+            "attr": {
+              "ci_95_pp": [
+                7.607377733568526,
+                13.084913277017925
+              ],
+              "se_pp": 1.3973304957779078,
+              "slope_pp": 10.346145505293226,
+              "t_stat": 7.40422221983599
+            },
+            "fun": {
+              "ci_95_pp": [
+                1.6382668412743364,
+                7.767909949748228
+              ],
+              "se_pp": 1.5636844664474217,
+              "slope_pp": 4.7030883955112825,
+              "t_stat": 3.0076965631028876
+            },
+            "intel": {
+              "ci_95_pp": [
+                -11.12847386439191,
+                -1.9486487222688087
+              ],
+              "se_pp": 2.341792128092628,
+              "slope_pp": -6.53856129333036,
+              "t_stat": -2.792118572307256
+            },
+            "sinc": {
+              "ci_95_pp": [
+                -0.017611463820925433,
+                6.92293151513364
+              ],
+              "se_pp": 1.7705466783047363,
+              "slope_pp": 3.4526600256563573,
+              "t_stat": 1.950053092620078
+            },
+            "target_overclaim": {
+              "ci_95_pp": [
+                -6.125823960166044,
+                1.9219617617091254
+              ],
+              "se_pp": 2.0530065617028495,
+              "slope_pp": -2.101931099228459,
+              "t_stat": -1.0238306776209376
+            }
+          },
+          "n": 357
+        },
+        "latino": {
+          "coefficients": {
+            "amb": {
+              "ci_95_pp": [
+                -1.0916362986115202,
+                3.1662657961838954
+              ],
+              "se_pp": 1.0861995139784224,
+              "slope_pp": 1.0373147487861876,
+              "t_stat": 0.9549946721913135
+            },
+            "attr": {
+              "ci_95_pp": [
+                7.050133242221936,
+                11.004547648550432
+              ],
+              "se_pp": 1.0087791852878818,
+              "slope_pp": 9.027340445386184,
+              "t_stat": 8.948777469878102
+            },
+            "fun": {
+              "ci_95_pp": [
+                3.6657924427087143,
+                7.933003208982386
+              ],
+              "se_pp": 1.0885741750698141,
+              "slope_pp": 5.79939782584555,
+              "t_stat": 5.327517369657988
+            },
+            "intel": {
+              "ci_95_pp": [
+                -1.5799446377253656,
+                4.282639227466839
+              ],
+              "se_pp": 1.4955571084673993,
+              "slope_pp": 1.3513472948707368,
+              "t_stat": 0.903574518966752
+            },
+            "sinc": {
+              "ci_95_pp": [
+                -5.283824201764467,
+                -0.7467747950418889
+              ],
+              "se_pp": 1.1574105629394333,
+              "slope_pp": -3.015299498403178,
+              "t_stat": -2.6052116638242286
+            },
+            "target_overclaim": {
+              "ci_95_pp": [
+                -2.612270182761346,
+                2.908498511077858
+              ],
+              "se_pp": 1.4083593606732665,
+              "slope_pp": 0.14811416415825615,
+              "t_stat": 0.1051678771016583
+            }
+          },
+          "n": 590
+        },
+        "other": {
+          "coefficients": {
+            "amb": {
+              "ci_95_pp": [
+                -5.172825372586972,
+                0.9301471949673821
+              ],
+              "se_pp": 1.5568807570291723,
+              "slope_pp": -2.1213390888097954,
+              "t_stat": -1.3625572024268051
+            },
+            "attr": {
+              "ci_95_pp": [
+                4.896187148348166,
+                10.26968674409262
+              ],
+              "se_pp": 1.3707907132001163,
+              "slope_pp": 7.582936946220394,
+              "t_stat": 5.531797723168111
+            },
+            "fun": {
+              "ci_95_pp": [
+                5.982034786082349,
+                11.896541453769064
+              ],
+              "se_pp": 1.5088027213486515,
+              "slope_pp": 8.939288119925706,
+              "t_stat": 5.924756095306665
+            },
+            "intel": {
+              "ci_95_pp": [
+                -5.947661259711338,
+                1.9545394042578816
+              ],
+              "se_pp": 2.0158675163186786,
+              "slope_pp": -1.996560927726728,
+              "t_stat": -0.9904226897672286
+            },
+            "sinc": {
+              "ci_95_pp": [
+                -3.8119937097664494,
+                3.2758435483030564
+              ],
+              "se_pp": 1.808121749507527,
+              "slope_pp": -0.2680750807316966,
+              "t_stat": -0.14826163161010117
+            },
+            "target_overclaim": {
+              "ci_95_pp": [
+                -5.351529662913237,
+                1.0519017324539428
+              ],
+              "se_pp": 1.6335284171855053,
+              "slope_pp": -2.1498139652296473,
+              "t_stat": -1.3160554433045484
+            }
+          },
+          "n": 480
+        },
+        "white_euro": {
+          "coefficients": {
+            "amb": {
+              "ci_95_pp": [
+                -2.8961974818343976,
+                -1.0412129219144222
+              ],
+              "se_pp": 0.47321034691836117,
+              "slope_pp": -1.96870520187441,
+              "t_stat": -4.160317319126696
+            },
+            "attr": {
+              "ci_95_pp": [
+                9.237841124904355,
+                10.818446521938235
+              ],
+              "se_pp": 0.4032156625086428,
+              "slope_pp": 10.028143823421294,
+              "t_stat": 24.87042234676671
+            },
+            "fun": {
+              "ci_95_pp": [
+                4.002949057936219,
+                5.729058196207395
+              ],
+              "se_pp": 0.4403339638446882,
+              "slope_pp": 4.866003627071807,
+              "t_stat": 11.050711565797165
+            },
+            "intel": {
+              "ci_95_pp": [
+                -0.17097407048456137,
+                2.3117332220717115
+              ],
+              "se_pp": 0.6333436970806819,
+              "slope_pp": 1.070379575793575,
+              "t_stat": 1.6900453588270556
+            },
+            "sinc": {
+              "ci_95_pp": [
+                -2.420361976417661,
+                -0.3867180910976188
+              ],
+              "se_pp": 0.5187867054387864,
+              "slope_pp": -1.40354003375764,
+              "t_stat": -2.7054279129426324
+            },
+            "target_overclaim": {
+              "ci_95_pp": [
+                -3.786667081290729,
+                -1.5118929718667902
+              ],
+              "se_pp": 0.5802995177101884,
+              "slope_pp": -2.6492800265787593,
+              "t_stat": -4.565366583506029
+            }
+          },
+          "n": 4146
+        }
+      },
+      "n_person_archetypes": 542,
+      "status_threat": {
+        "female_chooser_evaluating_man": {
+          "coefficients": {
+            "amb": {
+              "ci_95_pp": [
+                -3.155151562368267,
+                -0.9830547500496852
+              ],
+              "se_pp": 0.5541063296731076,
+              "slope_pp": -2.069103156208976,
+              "t_stat": -3.7341265482919748
+            },
+            "attr": {
+              "ci_95_pp": [
+                6.574252132676167,
+                8.32821004659362
+              ],
+              "se_pp": 0.4474382433462888,
+              "slope_pp": 7.451231089634894,
+              "t_stat": 16.65309391952917
+            },
+            "fun": {
+              "ci_95_pp": [
+                5.014138193345022,
+                6.866985416583102
+              ],
+              "se_pp": 0.47266510796889805,
+              "slope_pp": 5.940561804964062,
+              "t_stat": 12.568225800485697
+            },
+            "intel": {
+              "ci_95_pp": [
+                0.3672188028167324,
+                3.2378500162271786
+              ],
+              "se_pp": 0.7323038809720526,
+              "slope_pp": 1.8025344095219553,
+              "t_stat": 2.4614568574036366
+            },
+            "sinc": {
+              "ci_95_pp": [
+                -1.8690612017645756,
+                0.20658037917887107
+              ],
+              "se_pp": 0.5295004033018997,
+              "slope_pp": -0.8312404112928523,
+              "t_stat": -1.5698579379908661
+            },
+            "target_outambitions_chooser": {
+              "ci_95_pp": [
+                -0.8957771848371022,
+                6.054912870238772
+              ],
+              "se_pp": 1.7731352181316007,
+              "slope_pp": 2.579567842700835,
+              "t_stat": 1.4548060499407336
+            },
+            "target_outsmarts_chooser": {
+              "ci_95_pp": [
+                -3.52211211119663,
+                4.514908718928783
+              ],
+              "se_pp": 2.0502604158483195,
+              "slope_pp": 0.4963983038660769,
+              "t_stat": 0.24211475772978147
+            }
+          },
+          "n": 3690
+        },
+        "male_chooser_evaluating_woman": {
+          "coefficients": {
+            "amb": {
+              "ci_95_pp": [
+                -2.200472117746232,
+                -0.014229341752529032
+              ],
+              "se_pp": 0.5577149938759446,
+              "slope_pp": -1.1073507297493803,
+              "t_stat": -1.9855136439019498
+            },
+            "attr": {
+              "ci_95_pp": [
+                11.018784995001361,
+                12.817483984412442
+              ],
+              "se_pp": 0.4588517830130309,
+              "slope_pp": 11.918134489706903,
+              "t_stat": 25.9738218983197
+            },
+            "fun": {
+              "ci_95_pp": [
+                5.1252844700807785,
+                7.164777121077528
+              ],
+              "se_pp": 0.5202787374991711,
+              "slope_pp": 6.145030795579154,
+              "t_stat": 11.811035801917514
+            },
+            "intel": {
+              "ci_95_pp": [
+                -1.157113159963707,
+                1.7144402002404535
+              ],
+              "se_pp": 0.7325391225010613,
+              "slope_pp": 0.27866352013837314,
+              "t_stat": 0.3804076964339463
+            },
+            "sinc": {
+              "ci_95_pp": [
+                -3.503262479962484,
+                -1.1887106722276763
+              ],
+              "se_pp": 0.5904468897282672,
+              "slope_pp": -2.34598657609508,
+              "t_stat": -3.9732389430906125
+            },
+            "target_outambitions_chooser": {
+              "ci_95_pp": [
+                -5.947860915858205,
+                0.917045426316599
+              ],
+              "se_pp": 1.7512516179017354,
+              "slope_pp": -2.5154077447708025,
+              "t_stat": -1.4363485629692905
+            },
+            "target_outsmarts_chooser": {
+              "ci_95_pp": [
+                -10.931432603013688,
+                -2.372025288890317
+              ],
+              "se_pp": 2.183522274011064,
+              "slope_pp": -6.651728945952002,
+              "t_stat": -3.046329787940738
+            }
+          },
+          "n": 3754
+        },
+        "male_chooser_strata": {
+          "ambition_insecure_men_le7": {
+            "coefficients": {
+              "amb": {
+                "ci_95_pp": [
+                  -3.2980709961204933,
+                  -0.22215094359277765
+                ],
+                "se_pp": 0.7846734827876826,
+                "slope_pp": -1.7601109698566355,
+                "t_stat": -2.243112592009035
+              },
+              "attr": {
+                "ci_95_pp": [
+                  10.658192915087646,
+                  13.39128554111411
+                ],
+                "se_pp": 0.6972175066394036,
+                "slope_pp": 12.024739228100877,
+                "t_stat": 17.246754583171985
+              },
+              "fun": {
+                "ci_95_pp": [
+                  4.065386102787101,
+                  7.1759435556332445
+                ],
+                "se_pp": 0.7935095542974857,
+                "slope_pp": 5.620664829210172,
+                "t_stat": 7.083298239787787
+              },
+              "intel": {
+                "ci_95_pp": [
+                  -1.181759716794941,
+                  2.903533104024863
+                ],
+                "se_pp": 1.0421665359234193,
+                "slope_pp": 0.8608866936149608,
+                "t_stat": 0.8260548232362555
+              },
+              "sinc": {
+                "ci_95_pp": [
+                  -3.3343294253884768,
+                  0.23599754116479693
+                ],
+                "se_pp": 0.9107976955493046,
+                "slope_pp": -1.5491659421118402,
+                "t_stat": -1.7008891762484466
+              }
+            },
+            "n": 1613
+          },
+          "high_ambition_men_ge9": {
+            "coefficients": {
+              "amb": {
+                "ci_95_pp": [
+                  -3.1388137792705937,
+                  0.22062697253639568
+                ],
+                "se_pp": 0.8570001917874973,
+                "slope_pp": -1.459093403367099,
+                "t_stat": -1.7025590161465183
+              },
+              "attr": {
+                "ci_95_pp": [
+                  10.0561144296511,
+                  12.938174353019669
+                ],
+                "se_pp": 0.7352193682062673,
+                "slope_pp": 11.497144391335384,
+                "t_stat": 15.637706089524341
+              },
+              "fun": {
+                "ci_95_pp": [
+                  4.601695412662979,
+                  7.80502025994679
+                ],
+                "se_pp": 0.8171747059397478,
+                "slope_pp": 6.2033578363048845,
+                "t_stat": 7.591225953538352
+              },
+              "intel": {
+                "ci_95_pp": [
+                  -2.5340928301254584,
+                  1.8157311680599288
+                ],
+                "se_pp": 1.1096489791289252,
+                "slope_pp": -0.35918083103276477,
+                "t_stat": -0.32368869596466604
+              },
+              "sinc": {
+                "ci_95_pp": [
+                  -5.6225084376929715,
+                  -1.9797156273864125
+                ],
+                "se_pp": 0.9292838801802447,
+                "slope_pp": -3.801112032539692,
+                "t_stat": -4.090366908982027
+              }
+            },
+            "n": 1351
+          },
+          "higher_jury_intel_men": {
+            "coefficients": {
+              "amb": {
+                "ci_95_pp": [
+                  -2.729446043792953,
+                  0.10449089737961381
+                ],
+                "se_pp": 0.7229430972378997,
+                "slope_pp": -1.3124775732066698,
+                "t_stat": -1.8154645617631109
+              },
+              "attr": {
+                "ci_95_pp": [
+                  10.893306038505202,
+                  13.44408975408477
+                ],
+                "se_pp": 0.6507101315254006,
+                "slope_pp": 12.168697896294987,
+                "t_stat": 18.700643046342332
+              },
+              "fun": {
+                "ci_95_pp": [
+                  4.127568078002436,
+                  6.932426798963176
+                ],
+                "se_pp": 0.7155251839185562,
+                "slope_pp": 5.529997438482806,
+                "t_stat": 7.72858532832892
+              },
+              "intel": {
+                "ci_95_pp": [
+                  -1.0800555744482205,
+                  2.7185983907618856
+                ],
+                "se_pp": 0.9690443788801292,
+                "slope_pp": 0.8192714081568325,
+                "t_stat": 0.8454426092472865
+              },
+              "sinc": {
+                "ci_95_pp": [
+                  -3.997614039089111,
+                  -0.8636296065088124
+                ],
+                "se_pp": 0.7994858246378314,
+                "slope_pp": -2.4306218227989618,
+                "t_stat": -3.040231293531737
+              }
+            },
+            "n": 1941
+          },
+          "lower_jury_intel_men": {
+            "coefficients": {
+              "amb": {
+                "ci_95_pp": [
+                  -2.8792115303544983,
+                  0.18950516316943966
+                ],
+                "se_pp": 0.7828358912050862,
+                "slope_pp": -1.3448531835925295,
+                "t_stat": -1.7179247894757124
+              },
+              "attr": {
+                "ci_95_pp": [
+                  10.227068451199917,
+                  12.75988120320072
+                ],
+                "se_pp": 0.6461257020410214,
+                "slope_pp": 11.49347482720032,
+                "t_stat": 17.78829535939219
+              },
+              "fun": {
+                "ci_95_pp": [
+                  5.268655634130972,
+                  8.233067348191291
+                ],
+                "se_pp": 0.7562274780766124,
+                "slope_pp": 6.750861491161133,
+                "t_stat": 8.927024852801251
+              },
+              "intel": {
+                "ci_95_pp": [
+                  -3.6589105444455337,
+                  0.29654783903685855
+                ],
+                "se_pp": 1.0090455059904062,
+                "slope_pp": -1.6811813527043376,
+                "t_stat": -1.666110539835576
+              },
+              "sinc": {
+                "ci_95_pp": [
+                  -3.7773765078147807,
+                  -0.3351755463777112
+                ],
+                "se_pp": 0.8781124901625179,
+                "slope_pp": -2.056276027096246,
+                "t_stat": -2.341700010115649
+              }
+            },
+            "n": 1813
+          }
+        }
+      }
     },
     "counts": {
       "decisions_with_looks_panel": 8368,
