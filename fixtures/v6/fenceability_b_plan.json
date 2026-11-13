@@ -1,0 +1,393 @@
+{
+  "schema_version": 1,
+  "experiment": "E6b_deterministic_fence_census",
+  "status": "predeclared_before_any_E6b_data",
+  "recorded_utc": "2026-11-12T21:02Z",
+  "recorded_utc_source": "date -u, immediately before this file was written. No E6b probe, smoke run or writer attempt had been executed. The authoritative pre-data time is this file's git commit time; the validator checks that it precedes the run's started_utc.",
+  "base_experiment": {
+    "plan": "fixtures/v6/fenceability_plan.json",
+    "plan_sha256": "6086db6447b06acc6bb42416555dc3499348761755a54e2423ff4691a61de70e",
+    "probe": "scripts/fenceability_probes_v6.py",
+    "probe_sha256": "c5ce162d37eb358553edaa87ee77aedbbc6d0b6878a2011331e848795099ea3a",
+    "validator": "scripts/validate_fenceability_v6.py",
+    "validator_sha256": "81c94960ef228d1a593a7fda14216be6d87898b9f6c166e8ef4cab94db69e3c1",
+    "evidence": "evidence/v6/reference/e6-fenceability/",
+    "rule": "E6's plan, probe and validator are not modified: the promoted E6 evidence records their hashes and E6's validator checks them. E6b adds scripts/fenceability_probes_v6b.py and scripts/validate_fenceability_v6b.py. The E6b probe imports E6's p2_race, PG_FENCE, PG_FAIR, PG_SCHEMA (for the trigger function text), Postgres and the etcd request helpers unchanged, and records the E6 probe's sha256 so the validator can confirm that E6's code ran unchanged."
+  },
+  "disclosure_E6_plan_timeline": {
+    "summary": "E6's plan was finalized after its development runs. Its status field 'predeclared_before_any_E6_probe' describes only the first draft, not the file the reported run used and that was committed. The field is left as it is (the promoted evidence hashes the file); this entry is the correction.",
+    "facts": [
+      "The first draft says recorded_utc 2026-11-12T19:37Z, before any E6 probe. It was not committed; no hash of that draft exists.",
+      "Development run target/runs/e6-dev-20261112T1946Z (cc-iina-tier1 lane, xbabe2) started 19:46:03Z with plan sha256 ba91ed14ddc0... and probe sha256 8f4762169fc5...; PostgreSQL P2 passed (2 refused, 1 attempt after the fence ack).",
+      "Amendment 1 (recorded 19:48Z) added fence lock-wait timing and the fair_fence_variant after that run.",
+      "Development run target/runs/e6-dev-20261112T1950Z started 19:50:22Z with plan sha256 6f1ce90773f6... and probe sha256 55eee2dd7c0c...; PostgreSQL P2 failed (0 refused, 0 attempts after the ack).",
+      "Amendment 2 (recorded 19:53Z) added P1 delivery timing after that run.",
+      "The reported run target/runs/e6-20261112T1953Z (directory birth time 19:53:19.86Z, started_utc 19:53:20.624Z) hashed the plan as 6086db64... and the probe as c5ce162d...; these are the committed bytes, so the plan the reported run used was fixed before it started.",
+      "That plan and probe were first committed in 37265ce at 2026-11-12T20:03:17Z, after the reported run. No commit predates any E6 run, so there is no external timestamp for any E6 design before data.",
+      "All three E6 runs ran on xbabe2 with 1-minute load averages between 95.9 and 103.2 on 128 CPUs."
+    ],
+    "accurate_label": "E6: drafted before any probe (self-reported 19:37Z, not committed); amended twice after development runs, which changed the design and in which the PostgreSQL P2 outcome flipped between pass and fail; final plan hashed by the reported run at 19:53:20Z; first committed 20:03:17Z, after the reported run."
+  },
+  "why": [
+    "In E6 the PostgreSQL P2 outcome turned on timing. Its bare writer was refused by the trigger (class sink_enforced), yet P2 failed because 0 of 480 stale attempts started after the fence ack: FOR SHARE writers kept the FOR UPDATE fence waiting for 2.88 s. The two development runs flipped between pass and fail. Condition (b), 'sink refused at least one stale write' (validate_fenceability_v6.py:65-66), depends on a race, and E6 measured it once.",
+    "E6 labelled an author-written trigger (fenceability_plan.json:54) sink_enforced, as if the surface provided the fence. It ruled the filesystem staged-file + rename(2) design 'a protocol built on the filesystem' (fenceability_plan.json:112). And etcd's P2 passed although its bare put committed. These are not one standard.",
+    "E6b separates (1) a deterministic refusal test, (2) the timing-dependent race as its own measured rate, and (3) one classification rule for every surface, which is reported first."
+  ],
+  "question": "For local reference instances of PostgreSQL 16.15, etcd v3.5.17 and a POSIX filesystem (ext4, Linux 6.8): (1) once a fence is acknowledged, does the surface itself refuse a later write by a writer that holds the old epoch? (2) Under the single rule below, what is each mechanism's enforcement class? (3) How often, over 20 predeclared repeats, does E6's timing-dependent race leave the fence starved, and how often does the surface refuse at least one stale write during the race?",
+  "claim_boundary": "As for E6: local single-node reference instances on one host (xbabe0); not production services, not replicated deployments, not external exactly-once execution, not sandbox verification. A mechanism's class describes what these instances did with the predeclared requests from writers that use no administrative privilege over the mechanism. It does not say that a deployment uses the mechanism, or that a privileged writer cannot bypass it.",
+  "host": {
+    "hostname": "xbabe0",
+    "uname_sm": "Linux x86_64",
+    "cpus": 128,
+    "check": "The probe exits before any setup unless socket.gethostname() == 'xbabe0' and 'uname -sm' == 'Linux x86_64'. It records hostname, uname -a, nproc and load averages.",
+    "remote_dir": "~/jeath-remote/cc-e6b (scripts and fixtures copied from lane cc-e6b; scratch state under its target/e6b; runs under its target/runs). Raw outputs are copied back to the lane's target/runs/e6b-<UTC>/."
+  },
+  "software": {
+    "postgresql": "postgresql-16, postgresql-client-16 and libpq5 16.15-0ubuntu0.24.04.1 .debs from the Ubuntu noble-updates archive (apt-get download), unpacked without installation (dpkg -x) into target/pg16; LD_LIBRARY_PATH points at its libpq. The postgres binary's sha256 must be 201d8daff9a5bd9df70b820471b965c39f5a776d677f395232c477d051270722, the same bytes as E6's /usr/lib/postgresql/16/bin/postgres on xbabe2. Each repeat uses a fresh cluster made by E6's Postgres.init (initdb -A trust -U e6 --no-locale -E UTF8; unix socket only, listen_addresses='', fsync on, max_prepared_transactions 8, max_connections 40, shared_buffers 32MB).",
+    "postgresql_package_sha256": {
+      "postgresql-16_16.15-0ubuntu0.24.04.1_amd64.deb": "d60ae76fb862cd4cca7bfdcdcdcc271c5e1d75f6b7915305ce2d962735a4b666",
+      "postgresql-client-16_16.15-0ubuntu0.24.04.1_amd64.deb": "4796f72e1a7270ad8c17b1ecb025cd453f692b42c10aaf89f6b476da61761eac",
+      "libpq5_16.15-0ubuntu0.24.04.1_amd64.deb": "3f96dd36bcd7841172c1ead4965da20a193bb9ccf9a93a3f5a3ac7f56369dbb1"
+    },
+    "psycopg2": "psycopg2-binary 2.9.11 (libpq 170006), the version E6 used, in the venv target/venv",
+    "etcd": "quay.io/coreos/etcd:v3.5.17 with repo digest sha256:a055da833a7c013b836ed0822e8ec1f99b059658be255ad8d0fcd31b635ae3d6 (E6's). E6 recorded that digest as its image id. xbabe0's Docker 29.8.1 reports a different local image id for the same digest; both are recorded. Containers are named e6b-etcd-<hex>, started with --cpus 2 and the client port on 127.0.0.1, accessed through the v3 JSON gateway, and removed at the end of each instance. One container per (condition, repeat, mechanism).",
+    "filesystem": "a fresh directory per (condition, repeat, mechanism) under target/e6b/fs on xbabe0's ext4 root; findmnt output and the kernel release are recorded"
+  },
+  "epoch_model": "Epoch 1 is the stale authority and epoch 2 the current one. Before the fence, the epoch-1 writer may write. The fence revokes epoch 1. 'Stale writer' = a writer holding epoch 1 whose handle (connection, token or directory fd) was opened before the fence. 'Fresh writer' = a writer holding epoch 2.",
+  "writer_variants": {
+    "cond": "the stale writer issues the effect exactly as the mechanism asks: its epoch value, compare or path included",
+    "omit_epoch": "the same stale writer and effect, with the epoch value left out but every other field kept (for example the issuer). Where the mechanism has no separate epoch field, this is the cond request again with a new op id.",
+    "omit_all": "the same stale writer and effect, with every field, clause, compare, lock or path component that exists only for the fence left out: the surface's plain write of that effect",
+    "forge": "the same stale writer and handle, claiming epoch 2 wherever the request carries a claim. Where the epoch is carried by the credential, the request is the cond request again. Reported; not an input to the class rule.",
+    "fresh": "the epoch-2 writer issues cond with epoch 2 on its own handle"
+  },
+  "deterministic_probe": {
+    "instance": "a separate namespace (table, issuer id, key prefix or directory) from the race in the same (condition, repeat, mechanism)",
+    "sequence": [
+      "setup at epoch 1; open the stale and fresh handles",
+      "pre: the stale writer's cond write (must commit; this shows the stale path works before the fence)",
+      "fence: raise and wait for the acknowledgement (t_req, t_ack recorded)",
+      "after t_ack, one at a time and each after the previous one returned: cond, omit_epoch, omit_all, forge, fresh",
+      "read back: list this namespace's effects through a separate administrative handle"
+    ],
+    "no_race": "Every write after the fence starts after t_ack and after the previous write returned, on one client thread. The validator checks these orderings from the recorded client monotonic times.",
+    "outcome_secondary": "pass iff (i) pre committed, (ii) cond after the ack was refused_by_surface, (iii) fresh committed (the fence is not a blanket stop), and (iv) the read-back contains exactly the ops whose writes committed. Otherwise fail. Secondary to the class.",
+    "repeats": "run once in every (condition, repeat, mechanism): 40 times per mechanism. The probe is called deterministic for a mechanism if its class and outcome are identical in all 40; otherwise the varying runs are reported."
+  },
+  "classification_rule": {
+    "applies_to": "every executed mechanism on every surface, computed by one function from the deterministic probe's recorded statuses and refusal origins; the same function for PostgreSQL, etcd and the filesystem",
+    "classes_strongest_first": [
+      "surface_native",
+      "author_code_in_surface",
+      "writer_supplied_condition",
+      "advisory"
+    ],
+    "definitions": {
+      "surface_native": "a built-in mechanism of the surface (a constraint, a permission check, a server-side permission store) refuses the stale write. Deployment configuration such as a schema, a grant or a mode bit is allowed; no author-written executable code takes part, and a writer that omits every fence field is also refused",
+      "author_code_in_surface": "author-written code that the surface runs on every write (a trigger or stored procedure) refuses the stale write, and a writer that omits every fence field is also refused",
+      "writer_supplied_condition": "the surface refuses the stale write only because the writer submitted the condition: a writer that leaves the condition out (omit_epoch or omit_all) has its write committed",
+      "advisory": "the surface does not refuse the stale write. Any refusal is the writer's own decision (refused_self)"
+    },
+    "rule": [
+      "R1: if cond after the ack is not refused_by_surface, then advisory",
+      "R2: else if omit_epoch or omit_all committed, then writer_supplied_condition",
+      "R3: else, if both omit_epoch and omit_all were refused_by_surface, the class is the origin of cond's refusal (surface_native or author_code_in_surface) under refusal_origin below",
+      "R4: if any input to R1-R3 has status error, or the origin is unmapped, the class is indeterminate, with the reason recorded"
+    ],
+    "refusal_origin": {
+      "postgresql_sqlstate": {
+        "P0001": "author_code_in_surface (RAISE EXCEPTION in a PL/pgSQL trigger)",
+        "23503": "surface_native (foreign_key_violation)",
+        "23502": "surface_native (not_null_violation)",
+        "42501": "surface_native (insufficient_privilege)"
+      },
+      "etcd": {
+        "txn succeeded=false": "surface_native (a compare evaluated by the server; with a writer-supplied compare, R2 decides the class)",
+        "gRPC code 7 (PermissionDenied)": "surface_native (RBAC permission check)",
+        "error message containing 'revision of auth store is old'": "surface_native (request authenticated before an auth change; refused when applied)"
+      },
+      "posix": {
+        "EACCES": "surface_native (kernel permission check)",
+        "EPERM": "surface_native (kernel permission check)"
+      },
+      "not_refusals": "Any other SQLSTATE, HTTP or gRPC error, or errno (including 23505 unique_violation, 40001, 40P01 and timeouts) has status error. refused_self is a writer's own decision and never counts as refused_by_surface."
+    },
+    "surface_lead": "For each surface, report first the strongest class held by a mechanism whose class was identical in all 40 deterministic runs, then each mechanism's class, then the class of E6's own mechanism for that surface. Pass/fail follows.",
+    "selection_labels_are_not_results": "Each mechanism below has a 'selected_as' label: the slot it was chosen to probe. The reported class is computed by the rule and may differ."
+  },
+  "contention_probe": {
+    "what": "E6's race, imported unchanged (fenceability_probes_v6.p2_race), with E6's parameters, run once in every (condition, repeat, mechanism) on its own namespace. Eight writer threads each issue 60 cond writes at epoch 1. A separate thread raises the fence once 40 stale writes have committed. Attempts are logged as [op, status, raw, t_start, t_end] in client monotonic seconds; the fence records t0 (request), t_locked where applicable, and t1 (ack).",
+    "parameters": {
+      "writers": 8,
+      "attempts_per_writer": 60,
+      "writer_epoch": 1,
+      "fence_after_commits": 40,
+      "raised_epoch": 2
+    },
+    "events_per_repeat": {
+      "starved": "no stale attempt started after the fence ack (attempts_started_after_fence_ack == 0): the fence was not acknowledged until every stale attempt had been issued",
+      "refusal_observed": "at least one attempt was refused_by_surface during the race (E6's condition (b) as measured in its race)",
+      "violation_free": "no committed stale race effect is ordered after the fence by the mechanism's ordering evidence",
+      "stale_commit_started_after_ack": "at least one committed attempt started after the fence ack (client timing)"
+    },
+    "continuous_per_repeat": [
+      "fence_wait_s = t1 - t0",
+      "fence_lock_wait_s = t_locked - t0 where the mechanism has a lock step",
+      "attempts_started_after_fence_ack",
+      "stale_commits_acked_while_fence_waited (committed with t0 < t_end <= t1)",
+      "committed, refused_by_surface, refused_self, errors",
+      "fence_started_after_writers_done (the 40-commit trigger was never reached)"
+    ],
+    "ordering_evidence": {
+      "pg_snapshot": "E6's definition: pg_current_snapshot() taken in the fence transaction after its lock or revoke statement and stored in fence_log. A committed stale effect whose xid is not visible in that snapshot is a violation. This is conservative: it also flags commits between the snapshot and the fence commit. Cross-checked with pg_visible_in_snapshot on the server.",
+      "etcd_revision": "a committed stale effect whose mod_revision exceeds the fence revision. For etcd_txn_compare, the fence revision is the fence key's mod_revision (E6). For etcd_rbac_revoke, it is the header revision of the role-revoke response, the KV revision when the revoke was applied.",
+      "listing_under_lock": "E6's flock definition: a stale effect missing from the listing taken while the fence holds LOCK_EX",
+      "listing_after_ack": "for fs_dir_mode: a stale effect missing from the listing of the epoch-1 directory taken immediately after chmod returned"
+    },
+    "primary": "Brief item (b): for condition idle and E6's three mechanisms (pg_trigger_e6, etcd_txn_compare, fs_flock), report the rates of starved and refusal_observed over N=20 with exact Clopper-Pearson 95% intervals. All other (condition, mechanism, event) rates are secondary and get the same interval."
+  },
+  "conditions": {
+    "idle": "no added load. xbabe0's 1-minute load average was 1.8 at plan time.",
+    "loaded": "96 CPU-bound busy-loop Python processes at default priority, started at least 2 s before the block's first probe and stopped after its last. Each one exits if the probe process exits. Rationale: E6's three runs started at 1-minute load averages of 95.9-103.2 on xbabe2's 128 CPUs. This reproduces run-queue length, not E6's workload. Secondary.",
+    "per_block_record": "burner count and how many were alive at block end, load averages at block start and end, and CPU busy fraction over the block from /proc/stat"
+  },
+  "repeats": 20,
+  "order": "For r in 1..20: conditions (idle, loaded) if r is odd, else (loaded, idle). Within a condition, surfaces run in the order postgresql16, etcd_v3_5_17, posix_fs. Within a surface, mechanisms are shuffled with random.Random('e6b-<condition>-<r>-<surface>'). Within a mechanism, the deterministic probe runs before the race. Each (condition, repeat) gets one fresh PostgreSQL cluster shared by its PostgreSQL mechanisms (each on its own tables and issuer ids). It gets a fresh etcd container and a fresh filesystem directory per mechanism.",
+  "mechanisms": {
+    "pg_trigger_e6": {
+      "surface": "postgresql16",
+      "selected_as": "author_code_in_surface",
+      "source": "E6's planned P2 probe, re-tested",
+      "epoch_binding": "request_declared (epoch column compared with a floor row)",
+      "schema": "fence(issuer int PRIMARY KEY, floor int NOT NULL) and fence_log as in E6. Per instance, a table <t>(op_id text PRIMARY KEY, issuer int, epoch int, observed_floor int, xid xid8 DEFAULT pg_current_xact_id()), E6's effects definition. Trigger BEFORE INSERT ... EXECUTE FUNCTION fence_guard('locked'), whose function text comes from E6's PG_SCHEMA byte for byte (sha256 recorded). fence row (I, 1).",
+      "writer_connection": "cluster superuser e6, as in E6: one autocommit connection per writer, opened before the fence",
+      "requests": {
+        "cond": "INSERT INTO <t>(op_id, issuer, epoch) VALUES (op, I, e) RETURNING observed_floor",
+        "omit_epoch": "INSERT INTO <t>(op_id, issuer) VALUES (op, I)",
+        "omit_all": "INSERT INTO <t>(op_id) VALUES (op)",
+        "forge": "cond with e = 2 on the stale connection",
+        "fresh": "cond with e = 2 on the fresh connection"
+      },
+      "fence": "E6's PG_FENCE for issuer I and floor 2 in one transaction (SELECT ... FOR UPDATE; UPDATE fence SET floor=GREATEST(floor, 2); INSERT INTO fence_log ... pg_current_snapshot() RETURNING snap); t_locked after the FOR UPDATE; ack when COMMIT returns",
+      "ordering_evidence": "pg_snapshot"
+    },
+    "pg_trigger_e6_fair": {
+      "surface": "postgresql16",
+      "selected_as": "author_code_in_surface",
+      "source": "E6 amendment 1's fair_fence_variant, re-tested",
+      "epoch_binding": "request_declared",
+      "schema": "as pg_trigger_e6, own table and issuer id",
+      "writer_connection": "as pg_trigger_e6",
+      "requests": "as pg_trigger_e6",
+      "fence": "E6's PG_FAIR (LOCK TABLE fence IN EXCLUSIVE MODE), then PG_FENCE, in one transaction; t_locked after both lock statements",
+      "ordering_evidence": "pg_snapshot"
+    },
+    "pg_trigger_notnull": {
+      "surface": "postgresql16",
+      "selected_as": "author_code_in_surface",
+      "source": "E6b variant: E6's trigger with issuer and epoch declared NOT NULL",
+      "epoch_binding": "request_declared",
+      "schema": "as pg_trigger_e6, except that the table declares issuer int NOT NULL and epoch int NOT NULL",
+      "writer_connection": "as pg_trigger_e6",
+      "requests": "as pg_trigger_e6",
+      "fence": "as pg_trigger_e6",
+      "ordering_evidence": "pg_snapshot"
+    },
+    "pg_foreign_key": {
+      "surface": "postgresql16",
+      "selected_as": "surface_native",
+      "source": "E6b",
+      "epoch_binding": "request_declared (epoch column must reference a live epoch row)",
+      "schema": "live_epochs(issuer int, epoch int, PRIMARY KEY (issuer, epoch)), row (I, 1). Per instance <t>(op_id text PRIMARY KEY, issuer int NOT NULL, epoch int NOT NULL, xid xid8 DEFAULT pg_current_xact_id(), FOREIGN KEY (issuer, epoch) REFERENCES live_epochs (issuer, epoch)). No trigger or function written by E6b.",
+      "writer_connection": "cluster superuser e6, as pg_trigger_e6",
+      "requests": {
+        "cond": "INSERT INTO <t>(op_id, issuer, epoch) VALUES (op, I, e)",
+        "omit_epoch": "INSERT INTO <t>(op_id, issuer) VALUES (op, I)",
+        "omit_all": "INSERT INTO <t>(op_id) VALUES (op)",
+        "forge": "cond with e = 2 on the stale connection",
+        "fresh": "cond with e = 2 on the fresh connection"
+      },
+      "fence": "one transaction: INSERT INTO live_epochs VALUES (I, 2) ON CONFLICT DO NOTHING; DELETE FROM live_epochs WHERE issuer = I AND epoch < 2; INSERT INTO fence_log ... pg_current_snapshot() RETURNING snap. t_locked after the DELETE; ack when COMMIT returns",
+      "ordering_evidence": "pg_snapshot"
+    },
+    "pg_revoke": {
+      "surface": "postgresql16",
+      "selected_as": "surface_native",
+      "source": "E6b",
+      "epoch_binding": "credential (one login role per epoch)",
+      "schema": "per instance <t>(op_id text PRIMARY KEY, xid xid8 DEFAULT pg_current_xact_id()); roles <t>_w1 and <t>_w2 (LOGIN NOSUPERUSER, trust over the unix socket); GRANT INSERT ON <t> TO both",
+      "writer_connection": "stale writer as <t>_w1 and fresh writer as <t>_w2, autocommit connections opened before the fence. Non-superuser roles are required because a superuser bypasses privilege checks.",
+      "requests": {
+        "cond": "INSERT INTO <t>(op_id) VALUES (op) on the w1 connection",
+        "omit_epoch": "same request (no fence field exists; the role carries the epoch)",
+        "omit_all": "same request",
+        "forge": "same request (the stale writer has no epoch-2 credential)",
+        "fresh": "INSERT INTO <t>(op_id) VALUES (op) on the w2 connection"
+      },
+      "fence": "one transaction as superuser: REVOKE INSERT ON <t> FROM <t>_w1; INSERT INTO fence_log ... pg_current_snapshot() RETURNING snap. t_locked after the REVOKE; ack when COMMIT returns",
+      "ordering_evidence": "pg_snapshot"
+    },
+    "etcd_txn_compare": {
+      "surface": "etcd_v3_5_17",
+      "selected_as": "writer_supplied_condition",
+      "source": "E6's planned P2 probe, re-tested",
+      "epoch_binding": "request_declared (compare value)",
+      "setup": "fence key fence/<I> = floor zero-padded to 10 digits (1); effects under p2/<I>/",
+      "writer_connection": "HTTP requests to the JSON gateway (stateless; no session handle)",
+      "requests": {
+        "cond": "E6's writer txn: compare VALUE(fence/<I>) LESS pad(e+1); success put p2/<I>/<op> and range fence/<I>; failure range fence/<I>",
+        "omit_epoch": "plain put p2/<I>/<op> (the epoch exists only inside the compare)",
+        "omit_all": "plain put p2/<I>/<op>",
+        "forge": "cond with e = 2",
+        "fresh": "cond with e = 2"
+      },
+      "fence": "E6's raise: txn compare VALUE(fence/<I>) LESS pad(2), success put fence/<I> = pad(2); ack when the response arrives",
+      "ordering_evidence": "etcd_revision (fence key mod_revision)"
+    },
+    "etcd_rbac_revoke": {
+      "surface": "etcd_v3_5_17",
+      "selected_as": "surface_native",
+      "source": "E6b",
+      "epoch_binding": "credential (one etcd user and role per epoch)",
+      "setup": "Users root (role root), w1 and w2, each with a random password generated in memory and never written or logged. Roles r1 and r2, each granted READWRITE on the prefix p2/<I>/; w1 gets r1, w2 gets r2. Auth enabled. Tokens from /v3/auth/authenticate, obtained before the fence and held only in memory.",
+      "writer_connection": "HTTP requests carrying w1's token (stale) or w2's token (fresh)",
+      "requests": {
+        "cond": "plain put p2/<I>/<op> with w1's token",
+        "omit_epoch": "same request (no fence field exists; the token carries the epoch)",
+        "omit_all": "same request",
+        "forge": "same request (the stale writer has no epoch-2 credential)",
+        "fresh": "plain put p2/<I>/<op> with w2's token"
+      },
+      "fence": "as root: revoke r1's READWRITE permission on the prefix (auth role revoke-permission); ack when the response arrives",
+      "ordering_evidence": "etcd_revision (header revision of the revoke response)"
+    },
+    "fs_flock": {
+      "surface": "posix_fs",
+      "selected_as": "advisory",
+      "source": "E6's planned P2 probe, re-tested",
+      "epoch_binding": "request_declared (the writer compares its epoch with the floor it reads)",
+      "setup": "a fence file holding the floor (1) and an effects directory",
+      "writer_connection": "the writer process (no persistent handle; E6's cooperative writer opens the fence file per attempt)",
+      "requests": {
+        "cond": "E6's cooperative writer: open the fence file, flock LOCK_SH, read the floor; if e < floor return refused_self, else create effects/<op> with O_CREAT|O_EXCL; close",
+        "omit_epoch": "create effects/<op> with O_CREAT|O_EXCL, without the lock or the floor read",
+        "omit_all": "same as omit_epoch",
+        "forge": "cond with e = 2",
+        "fresh": "cond with e = 2"
+      },
+      "fence": "E6's raise: flock LOCK_EX, rewrite the floor to 2, fsync, list effects/ under the lock, close; ack when it returns",
+      "ordering_evidence": "listing_under_lock"
+    },
+    "fs_dir_mode": {
+      "surface": "posix_fs",
+      "selected_as": "surface_native",
+      "source": "E6b",
+      "epoch_binding": "address (one directory per epoch)",
+      "setup": "effects/e1 and effects/e2 created with mode 0755, then effects/ set to mode 0555, so no name can be created at the top level. The writer runs as the non-root owner (euid recorded; the probe refuses to run as root, because root bypasses mode bits).",
+      "writer_connection": "stale writer holds an O_DIRECTORY fd for effects/e1 and fresh writer one for effects/e2, both opened before the fence",
+      "requests": {
+        "cond": "openat(fd(e1), op, O_CREAT|O_EXCL|O_WRONLY, 0644)",
+        "omit_epoch": "open(effects/<op>, O_CREAT|O_EXCL|O_WRONLY) at the top level, with no epoch path component",
+        "omit_all": "same as omit_epoch",
+        "forge": "open(effects/e2/<op>, O_CREAT|O_EXCL|O_WRONLY) by path from the stale writer",
+        "fresh": "openat(fd(e2), op, O_CREAT|O_EXCL|O_WRONLY, 0644)"
+      },
+      "fence": "chmod(effects/e1, 0o555); ack when chmod returns",
+      "ordering_evidence": "listing_after_ack"
+    }
+  },
+  "slots_per_surface": {
+    "postgresql16": {
+      "surface_native": [
+        "pg_foreign_key",
+        "pg_revoke"
+      ],
+      "author_code_in_surface": [
+        "pg_trigger_e6",
+        "pg_trigger_e6_fair",
+        "pg_trigger_notnull"
+      ],
+      "writer_supplied_condition": "not probed: a conditional INSERT ... SELECT ... WHERE floor <= epoch would be one. It is not run, because the trigger and etcd probes already cover a server-evaluated condition.",
+      "advisory": "not probed: pg_advisory_lock is advisory by construction"
+    },
+    "etcd_v3_5_17": {
+      "surface_native": [
+        "etcd_rbac_revoke"
+      ],
+      "author_code_in_surface": "not available: etcd v3.5 runs no user code in the server",
+      "writer_supplied_condition": [
+        "etcd_txn_compare"
+      ],
+      "advisory": "not probed: the concurrency lock API is advisory unless the writer adds the lock key to a compare"
+    },
+    "posix_fs": {
+      "surface_native": [
+        "fs_dir_mode"
+      ],
+      "author_code_in_surface": "not available without privilege: FUSE or an LSM would be author code in the kernel's path; neither is used",
+      "writer_supplied_condition": "not available: no POSIX call makes a write conditional on another file's content (O_EXCL, link and rename conditions refer only to the target name)",
+      "advisory": [
+        "fs_flock"
+      ]
+    }
+  },
+  "documented_surfaces": {
+    "aws_s3": {
+      "executed": false,
+      "class": "documentation_only: writer_supplied_condition for the If-Match precondition recorded in E6's plan (the writer supplies the ETag). Not executed.",
+      "note": "E6 recorded a quote that bucket policies can require conditional writes. A policy that refuses an omitted header would make omission refused by the surface. The precondition still compares the object's own ETag, not a floor kept elsewhere. E6b executes nothing for S3 and does not classify further."
+    },
+    "kubernetes_api": {
+      "executed": false,
+      "class": "undetermined: E6 recorded no documentation and nothing was executed",
+      "candidates_not_classified": "metadata.resourceVersion preconditions, admission webhooks or ValidatingAdmissionPolicy, RBAC revocation"
+    }
+  },
+  "statistics": {
+    "intervals": "exact two-sided Clopper-Pearson 95% intervals (each tail 0.025), computed by bisection on the exact binomial CDF with math.comb, with no external library. For k=0, lower = 0; for k=n, upper = 1.",
+    "summaries": "for continuous race measures: median, min and max over the 20 repeats per (condition, mechanism)",
+    "tests": "none. Idle and loaded rates are reported side by side with their intervals."
+  },
+  "outputs": {
+    "run_directory": "target/runs/e6b-<date -u +%Y%m%dT%H%MZ>/ (smoke runs: target/runs/e6b-smoke-<stamp>/)",
+    "files": [
+      "results.json",
+      "probe.log",
+      "postgres-<condition>-<r>.log for each cluster",
+      "SHA256SUMS"
+    ],
+    "results_schema": "results.json: plan_sha256, plan_commit, script_sha256, validator_sha256, e6_probe_sha256, e6_trigger_function_sha256, host, software, started_utc, finished_utc, blocks (one per (condition, repeat): load record), runs (one per (condition, repeat, mechanism): order index, versions, det.{attempts, fence, readback}, race.{attempts, fence, order, effects}), summary (computed by analyze() in the validator from runs)"
+  },
+  "validator": "scripts/validate_fenceability_v6b.py <run> recomputes every status, event, class, outcome, count, rate, interval and median from the raw attempt rows, and compares the result with the recorded summary. It asserts integrity only: hashes; plan commit before started_utc; host; completeness of conditions x repeats x mechanisms; the predeclared order; deterministic-probe orderings; race attempt counts; load records; versions; and agreement between the recorded summary and the recomputation. It never asserts an outcome, class or rate. Disagreements between client logs and the surface's read-back are reported as findings.",
+  "run_policy": [
+    "This plan is committed before any E6b probe runs. The commit time is the authoritative pre-data time.",
+    "Smoke runs: after the commit, the probe may run with --smoke (repeat 1 only, both conditions) into target/runs/e6b-smoke-<stamp>/ to find harness defects. Every smoke run is kept and disclosed with its outcomes in the report.",
+    "Frozen from this commit: mechanisms, requests, writer variants, events, the classification rule, the refusal-origin map, N, conditions, parameters and statistics. Before the reported run, only operational details that do not change what is measured may change (API request encoding, timeouts, paths, ports, cleanup). Each such change is appended to 'amendments' with date -u and the smoke run that prompted it, and committed before the reported run. A design flaw found after any E6b data is reported as a limitation, not fixed in E6b.",
+    "The reported run is the first non-smoke run that completes. If a run aborts, the abort is disclosed, its partial output is kept, and the next complete run is reported.",
+    "E6b's author validates the run and does not promote it into evidence/."
+  ],
+  "scope_P1_P3": "E6b re-tests only the fence (E6's P2). It does not re-run P1 or P3. Review point 3 also concerns E6's P3 ruling at fenceability_plan.json:112: the filesystem staged-file + rename(2) design was excluded as 'a protocol built on the filesystem', while etcd's lease-staged key counted although its promotion also depends on a compare the promoter supplies (LEASE(staged/x) == lease). E6b records this as an open inconsistency for the lead. It neither reclassifies nor re-executes P3.",
+  "disclosures": [
+    "Host: E6 ran on xbabe2, E6b on xbabe0. The postgres binary hash, psycopg2 version, etcd image digest and kernel release are the same. The Docker server version differs (29.2.1 vs 29.8.1), the ext4 device differs, and host load differs: E6 ran at load ~96-103, xbabe0 is idle, and the loaded condition approximates E6's load.",
+    "Privilege: classes assume a writer that issues only the predeclared requests and uses no administrative privilege over the mechanism. A PostgreSQL superuser or table owner can disable triggers, and session_replication_role = replica disables both triggers and foreign-key enforcement; a superuser bypasses privilege checks. A filesystem owner can chmod the directory back, and root bypasses mode bits. The etcd root user bypasses RBAC. None of this is tested. PostgreSQL trigger and foreign-key writers connect as the cluster superuser, as in E6. pg_revoke writers are non-superuser roles. The filesystem writer is the non-root directory owner. etcd RBAC writers are non-root users.",
+    "From documentation, not tested: E6's fence_guard is not SECURITY DEFINER, so it runs SELECT ... FOR SHARE with the writer's privileges. PostgreSQL requires UPDATE privilege on at least one column of a table locked FOR SHARE, so a non-superuser writer that E6's trigger can serve also holds UPDATE on some column of fence.",
+    "Forgery: request_declared and address-bound mechanisms trust the epoch the writer claims. Only credential-bound mechanisms (pg_revoke, etcd_rbac_revoke) refuse a stale writer that claims epoch 2. The forge variant measures this and is not an input to the class rule.",
+    "In-flight writes: the deterministic probe issues each write after the ack as a new autocommit statement or request. A write inside a transaction or request that began before the fence is covered only by the race and its ordering evidence.",
+    "Revocation-style mechanisms (pg_foreign_key, pg_revoke, etcd_rbac_revoke, fs_dir_mode) need a row, credential or directory per epoch. A floor compare does not. The operational cost is not measured.",
+    "Client timestamps are monotonic seconds in the probe process. They measure latency and order client events; the surface's own ordering evidence decides violations."
+  ],
+  "amendments": [
+    {
+      "number": 1,
+      "recorded_utc": "2026-11-12T21:14Z",
+      "recorded_utc_source": "date -u",
+      "after_run": "target/runs/e6b-smoke-20261112T2111Z (smoke run 1, started 21:11:57Z, aborted; kept and disclosed; not the reported run)",
+      "observed": "The run aborted in pg_foreign_key's deterministic probe (idle, repeat 1). The fence's DELETE FROM live_epochs WHERE issuer = 7 AND epoch < 2 raised 23503 foreign_key_violation, because the committed det-pre row still references (7, 1). Under a NO ACTION foreign key, a referenced row cannot be deleted, so this fence cannot be raised once the stale epoch has any effect. Three mechanisms had completed before the abort, and their printed results are disclosed in the report: pg_trigger_e6_fair, pg_trigger_e6 and pg_revoke. Afterwards a separate check of etcd auth API request shapes ran in container e6b-apicheck-*: setup endpoints and a role permission revoke only, with no fence probe and no effect writes.",
+      "changes": [
+        "Design unchanged. pg_foreign_key keeps its predeclared schema, requests and fence. That this fence cannot be raised is a result, reported as a limitation of the mechanism under the run policy.",
+        "Operational: a fence raise that raises an exception is recorded in the fence record as error {exc, sqlstate or message} instead of aborting the run. The deterministic probe still issues its post-fence writes, and they are recorded.",
+        "Analysis in that case (R4: there is no acknowledged fence, so R1-R3 have no input): the deterministic run's class is indeterminate, with reason 'fence raise failed', and its outcome is fail. A race whose fence raise failed has no ordering evidence and contributes no events. It is left out of each rate's n and counted as fence_failed."
+      ]
+    }
+  ]
+}

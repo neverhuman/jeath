@@ -5,17 +5,37 @@
 \begin{center}
 {\fontsize{22}{26}\selectfont\bfseries\color{ink}Intelligence Is {\color{notred}Not} Authority\par}
 \vspace{4pt}
-{\normalsize\bfseries\color{slate}Verified Exogenous Authority, Cooperative Sink Fencing, and Structural Bounds on Agentic Reach\par}
+{\normalsize\bfseries\color{slate}Stopping a Model Is Not Stopping Its Effects\par}
 \vspace{5pt}
-{\normalsize Jepson Taylor\enspace{\small\color{slate}(\href{mailto:jepson@veox.ai}{\nolinkurl{jepson@veox.ai}})}\enspace\textperiodcentered\enspace{\small\color{slate}12 November 2026}\par}
+{\normalsize Jepson Taylor\enspace{\small\color{slate}(\href{mailto:jepson@veox.ai}{\nolinkurl{jepson@veox.ai}})}\enspace\textperiodcentered\enspace{\small\color{slate}\paperdate}\par}
 \end{center}
 \vspace{2pt}
 \begin{center}\begin{minipage}{.96\textwidth}\small
 \textbf{Abstract.}\enspace
-Scaling a model's reasoning or candidate search neither confers authority to mutate external state nor keeps classifier-based safety gates reliable. Stopping an autonomous agent involves three distinct events---halting token generation, revoking admission at a broker, and fencing the state-bearing sink---and only the third stops operations already in flight. Rather than inferring model intent, we enforce \emph{conferred, revocable authority} at cooperative capability-bearing sinks via canonical wire bijections, clock-skew-buffered quorum epoch fences, attenuated delegation credentials, and monotone spend ledgers (\VTwoProofs{} verified Verus obligations over all proposer inputs). Across asynchronous network partitions, broker-only revocation permits \VFourJepsenBrokerOnlyLeaks/\VFourJepsenSchedulesPerClass{} late commits after withdrawal acknowledgment, whereas cooperative sink fencing permits $0$ while increasing safe-and-useful task completion across live open-weight tool campaigns without benign false blocks. These guarantees cover only specified invariants on cooperative or proxy-fenced sinks; uncooperative external interfaces, operating-system refinement, and human delegation trials remain open.
+Many AI control protocols act on proposals: a monitor reads what an agent proposes, and an agent that is caught is
+stopped. Stopping the model does not stop the tool calls it already made. Counted from the decision to stop, about
+\(\lambda(L+w)\) of them still commit, for call rate \(\lambda\), enforcement delay \(L\) and tool latency \(w\). A
+control evaluation that scores a caught attack as prevented does not count them; we do not measure how many would be
+harmful. Halting inference, or revoking permits at the issuing broker, leaves both terms. Fencing the sink that
+commits effects, so it refuses work issued before the stop, removes \(\lambda w\); only faster enforcement removes
+\(\lambda L\). This is Little's law and a fencing token, measured where AI control stops agents. On real broker and
+sink processes with a synthetic agent, enforcing at once, a median of \vsixPhaseHaltMedian{} effects committed after a
+halt took effect, \vsixPhaseRevokeMedian{} after a revocation and \vsixPhaseFenceRange{} after a fence (by design),
+which refused \vsixPhaseFenceLostMedian{} legitimate calls in flight. A gate that reads state at commit
+catches by construction what a proposal reviewer can miss, and one without reasoning did: shown the
+rules and the state, a \vsixEFiveCkpt{} reviewer giving a bare verdict accepted an approved proposal that the state had
+since made unauthorized in \vsixReviewerExact{} of \vsixExactCases{} cases (\vsixEFiveCROneSecondHost{} on a second
+CPU); with reasoning it accepted \vsixReasonerExact{}, yet accepted \vsixEFiveCTwinsPhrase{} the state permitted. A
+gate moves the failure into its specification, which has costs and gaps. On \vsixEEightTasks{} of AgentDojo, under a
+specification written per suite, a \vsixEEightCkpt{} agent completed \vsixStrictUtility{} benign tasks
+(\vsixUnprotectedUtility{} unprotected, \vsixProgentUtility{} under Progent), and injections that fit the
+specification succeeded in \vsixStrictInside{} episodes (\vsixUnprotectedInside{} unprotected, \vsixProgentInside{}
+under Progent). Of \vsixFenceMechanisms{} fencing mechanisms we probed, only \vsixFenceAllThree{} was enforced by the
+store itself, refused a forged epoch and held in all \vsixFenceAllThreeRaces{} races. All models are small open-weight
+checkpoints on CPU.
 \end{minipage}\end{center}
 \vspace{3pt}
-\input{generated/v5-hero-fig}
+\input{generated/v6-hero-fig}
 \vspace{4pt}
 \end{@twocolumnfalse}]
 \makeatother

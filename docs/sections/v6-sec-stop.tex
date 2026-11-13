@@ -1,0 +1,89 @@
+% v6 section. Every number is a generated \vsix macro (scripts/hero_v6.py,
+% scripts/v6_macros.py); none is typed here. To be \input during the post-PR-6 integration pass.
+\section{Stopping a Model Is Not Stopping Its Effects}\label{sec:v6stop}
+
+An operator who decides to stop an agent can act at three places. \emph{Halting inference} ends the stream of new
+proposals. \emph{Revoking admission} at the broker refuses permits for proposals that arrive later. \emph{Fencing the
+sink} raises the epoch floor at the component that writes durable state, so that any operation carrying an older epoch
+is refused at commit, including operations that were admitted, dispatched and are already running. A system that
+tracks and stops model workloads~\cite{controlroom} acts at the first, on the producer of proposals. Only the third reaches work that is already in flight, and it
+is the fencing-token argument of distributed locking~\cite{kleppmann2016} applied to agent authority.
+
+\para{Setup (E4).} We run the real broker and sink processes (Rust, SQLite, JSON-lines RPC; Section~\ref{sec:core})
+under a synthetic agent that emits \(\lambda = 2\) tool calls per second to \(C \in \{4, 32\}\) concurrent executors
+whose latencies are exponential with mean \(w \in \{0.5, 5, 30\}\)\,s. Each call is a pre-approved, authorized one-unit
+effect; nothing in the workload is adversarial. After a 20\,s warm-up the operator decides to stop, and the stop takes
+effect \(L \in \{0, 1, 5, 35\}\)\,s later. A trial counts the effects committed after the stop took effect, timed
+by the harness's log of the sink's replies (the set of committed effects must equal the sink's database), and the
+legitimate calls the stop discards (cancelled or denied). A reply follows its commit, so this timing can place a commit
+later than it happened but never earlier: it can add effects after the stop, never hide one. E4b, which kills the sink
+inside requests, counts from the database instead. The plan, grid and
+metrics were committed before the first trial; the \vsixEFourTrials{}
+trials include \vsixEFourFaultTrials{} with SIGKILL of the sink or delayed completions.
+
+\para{Result.} We draw the stable cell with the longest latency (\(C = \vsixStopCalls\),
+\(w = \vsixStopLatency\)\,s, \(L = 0\)), chosen by that rule rather than by eye; the rule was written after E4's
+data, not in its plan, and the grid-wide ranges follow. In E4, after the stop took effect, halting
+inference let \vsixHaltRange{} effects commit and revoking at the broker \vsixRevokeRange{}, the last
+\vsixLastCommitSeconds\,s later; fencing the sink let \vsixFenceRange{} commit and discarded \vsixFenceLost{}
+legitimate calls. Across all \vsixEFourCells{} fault-free cells, halting leaked up to \vsixGridHaltMax{} effects and
+revoking up to \vsixGridRevokeMax; across \vsixFenceTrials{} fence trials, the most effects any one committed after
+the fence took effect was \vsixFencePostMax. \vsixEFourIdentitySentence
+
+\para{Where the stop lands (E4c, post hoc).} E4's warm-up was a whole number of the agent's 2\,s emission cycles, so
+the decision always fell just after a burst of four calls, which revoking at once refused and halting did not. After an
+internal review pointed this out, we fixed a plan for one more run of the drawn cell with the decision at a uniformly
+random point of the cycle, \vsixPhaseReplicates{} replicates per stop, the three stops of a replicate paired by seed
+and phase, and committed the front figure to its result before running it. Halting let a median of
+\vsixPhaseHaltMedian{} effects commit after the stop took effect (range \vsixPhaseHaltRange), revoking
+\vsixPhaseRevokeMedian{} (\vsixPhaseRevokeRange) and fencing \vsixPhaseFenceRange, which discarded a median of
+\vsixPhaseFenceLostMedian{} legitimate calls (\vsixPhaseFenceLostRange). Paired by replicate, halting and revoking
+differed by \vsixPhaseDiffMedian{} in the median (range \vsixPhaseDiffRange; no difference in \vsixPhaseDiffZero{} of
+\vsixPhaseReplicates). Figure~\ref{fig:v6hero}a draws this run. E4's gap between halting and revoking came from where
+its stop landed: when calls are dispatched as soon as they are emitted, revoking at the broker refuses almost nothing
+that halting does not, and both leave open the work already in flight.
+
+\para{What the numbers mean.} The fence's zero is a property of the design, not a discovery: the sink serializes its
+RPCs, \texttt{fence} cancels every pending record below the new floor, and effect identifiers are unique in the schema,
+so duplicates are impossible rather than rare. What E4 measures is (i) that this implementation keeps the property
+under the faults we injected, and (ii) the size and cost of the window the other two layers leave open. That window is
+queueing, and it behaves like queueing. Where the offered load \(\rho = \lambda w / C\) is below one, halting leaks
+the calls in flight and those emitted before the stop takes effect, which the plan predicted from Little's law.
+\vsixLittleSentence{} Revocation leaks the calls already accepted.
+Where \(\rho \ge 1\) (\vsixEFourOverloadedCells{} of the \vsixEFourWCCells{} \((w, C)\) cells), the backlog grows during the warm-up and
+halting leaks all of it; we report those cells separately and do not apply Little's law to them. The fence pays for its
+zero in the opposite currency. Every legitimate call in flight at the stop is discarded, which is what an operator who
+stops an agent usually wants and what an operator who meant ``pause'' does not.
+
+\para{Which term each stop removes.} Counting from the decision rather than from enforcement separates two terms
+(Figure~\ref{fig:v6hero}b). During the delay \(L\) no layer acts, and about \(\lambda L\) effects commit at call rate
+\(\lambda\). When the stop takes effect, the calls already dispatched add about \(\lambda w\) for halting, and as
+many for revocation less those the broker had not yet accepted (a paired median difference of \vsixPhaseDiffMedian{}
+at a random stop phase, E4c). The fence removes the second term and none of the first. In the drawn
+cell at \(L = \vsixDelayMax\)\,s, with a measured call rate of \vsixDelayLambda{} per second, halting let
+\vsixDelayHaltAtMax{} effects commit after the decision and fencing \vsixDelayFenceAtMax. Whenever enforcement is slow
+compared with tool latency, shortening \(L\) is the larger lever; the fence is what makes the remainder zero. The plan
+predicted \(\lambda(L+w)\) for halting; reading the fence's count as \(\lambda L\) is post hoc.
+
+\para{Why not kill the executors?} An operator who controls every executor can stop each one before it commits, and
+in this harness that would also leave zero, for the same reason the fence does: the executors are our processes and
+every effect lands at our sink. We did not run that arm, because its zero would hold by construction as well. The fence
+needs no such control. It acts at the one place every effect must pass, so it also covers an executor the operator
+cannot reach (a remote runner, a third-party service, a host on the other side of a partition), a commit request
+already sent when the kill arrives, and a retry after the sink restarts; E4b below measures the last two. Killing what
+can be reached and fencing what must not commit are complementary, and the fence is the one that does not depend on
+knowing where every executor is. The other natural strengthening, revoking at the broker and also invalidating the
+permits it has already issued, is a fence exactly when something checks the invalidation at commit; checked anywhere
+earlier, a permit already presented is not reached. Undoing effects after they commit, as a saga's compensating step does, is the remaining
+alternative; it needs an inverse for each effect, and a sent message, a disclosed secret or a transfer to a third party
+has none.
+
+\para{Faults (E4b).} A SIGKILL that lands between requests tests little. In a separately predeclared run we kill the sink while a \texttt{complete} or a \texttt{fence} request is
+outstanding, hold the executor's \texttt{accept} across the fence, and drive the system with closed-loop agents that
+wait for each result. \vsixEFourBSentence
+
+\para{Scope.} The sink mediates only its own SQLite effects. An external effect (a payment API, a repository, a cloud
+resource) is fenced only if that surface can refuse a stale epoch, which is the question of
+Section~\ref{sec:v6boundary} and Figure~\ref{fig:v6hero}c. No arm aborts an executor that is already running: the
+fence refuses its commit, but anything an executor does outside the sink before it commits is stopped by none of the
+three layers. The latencies are sampled, not production traces, and the agent is synthetic.

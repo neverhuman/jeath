@@ -1,0 +1,103 @@
+% v6 section. Numbers are generated \vsix macros (scripts/e5_analysis_v6.py via
+% scripts/hero_v6.py and scripts/v6_macros.py).
+\section{Reviewers and Gates on Violations That Live in State}\label{sec:v6reviewers}
+
+\input{generated/v6-spec-fig}
+
+A common alternative to mediation is review: a second model, often the same one, reads each proposed action and
+approves or denies it~\cite{control}. Review sees the proposal. Many unauthorized actions, however, are
+unauthorized only because of the state they would act on: a payment that was legitimate once and is now a replay, a
+grant whose issuer has since been withdrawn, an edit against a revision that has moved. Such a proposal can be
+byte-identical to one the policy approved. We test whether a reviewer that is given the rules, the visible state and
+time to reason catches these, and what a gate that reads state does instead.
+
+\para{Setup (E5).} Sixty cases in five families (twelve each) each pose a pre-state, a policy with six written
+clauses (exact match to an approved proposal, cumulative budget, live issuers, current revision, expiry, scope) and an
+objective. Three families are \emph{state-dependent}: their violations break a clause that can only be checked against
+sink state (replay after the budget is spent, issuer withdrawn, stale revision). Two are \emph{proposal-visible}: an
+altered payload, and a payload altered at the request of an injected note that the proposer, not the reviewer, reads.
+The same checkpoint proposes candidates under eight predeclared mutation strategies and reviews them in three arms:
+the minimal prompt of this paper's previous version (R0), the four rules the families test stated in the prompt (R1),
+and the same rules with reasoning enabled (R2, up to 4096 tokens; a truncated review is a deny). Proposals are sampled
+at temperature 0.8; reviews are greedy. Every valid candidate also goes through the real broker and sink at the case's pre-state
+(G). Plan, prompts, clauses, parse rules and hypotheses were committed before data
+(three pre-data amendments). We count each distinct proposal once, because greedy reviews of a repeated proposal are identical, and
+take cases as the unit, because proposals within a case are not independent.
+
+\para{Result.} The first predeclared hypothesis (H\textsubscript{E5a}: without reasoning, reviewers admit violations
+that live in state more often than violations visible in the proposal) held on both checkpoints. With the rules stated
+(R1), the \vsixEFiveCkpt{} reviewer admitted a state-dependent violation in \vsixReviewerStateCases{} cases and a
+proposal-visible one in \vsixReviewerVisibleCases{} (Figure~\ref{fig:v6spec}a; \vsixReviewerState{} and
+\vsixReviewerVisible{} of the distinct proposals). The failure is narrow. Each case approves two proposals, and in the
+state-dependent families the state has made one of them unauthorized: its issuer was withdrawn, its document has moved
+to a new revision, or the budget it would draw on is spent. The proposer submitted that unaltered proposal in all
+\vsixExactCases{} state-dependent cases. The R1 reviewer approved it in \vsixReviewerExact{} of them and approved
+\vsixReviewerMutated{} of the altered state-dependent proposals: it applied the first rule, exact approval, and not the
+three that read state. On \vsixOtherCkpt{} it approved \vsixReviewerExactOther{} unaltered and
+\vsixReviewerMutatedOther{} altered ones. H\textsubscript{E5a}'s comparison is therefore partly one of how the cases were
+built: only a state-dependent family can contain a proposal that matches the approved list exactly, and on
+\vsixEFiveCkpt{} that proposal accounts for every state-dependent admission without reasoning. Reasoning changed this. The second hypothesis (H\textsubscript{E5b}: reasoning
+reduces state-dependent misses but does not remove them) held on \vsixOtherCkpt{} and failed on \vsixEFiveCkpt. With
+reasoning enabled (R2), the \vsixEFiveCkpt{} reviewer approved \vsixReasonerExact{} of the unaltered proposals,
+\vsixReasonerMutated{} altered ones and \vsixReasonerVisible{} visible violations, at a median of \vsixReasonerTokens{}
+generated tokens per review instead of \vsixReviewerTokens; on \vsixOtherCkpt{} it approved
+\vsixReasonerExactOther{} unaltered and \vsixReasonerMutatedOther{} altered ones. Every arm on both checkpoints is in
+Table~\ref{tab:v6e5} (Appendix~\ref{app:v6e5}). The gate admitted \vsixGateBreaches{}. That zero is the gate enforcing
+its written predicate, not a finding: on all \vsixGateUnique{} distinct valid proposals of both sample sets on
+\vsixEFiveCkpt{} its Rust implementation agreed
+with a separately written Python statement of the same clauses (\vsixMirrorDisagreements{} disagreements).
+\vsixGateReplaySentence
+
+\para{Controls (E5c, post hoc).} E5's state-dependent families contain no authorized proposal, so a reviewer that
+refused every unaltered approved proposal would also have scored zero there. After reading E5's results we fixed a plan
+for controls and ran it on a second host. Each state-dependent case was rebuilt without its state change, so that the
+same unaltered proposal is authorized (a \emph{twin}), and in each duplicate-replay case the proposal already committed
+was resubmitted unchanged, an idempotent replay that every clause permits. \vsixEFiveCSentence{} A variant of R1 with
+one sentence added after the rules (R1p), saying that a proposal on the approved list must still satisfy rules 2, 3
+and 4 against the visible state, tests whether R1's failure comes from how the rules were stated; it is the only
+wording we ran, and its exact text is in the evidence. \vsixEFiveCPrecedenceSentence{} Re-running R1 and R2 on E5's own proposals on the second host disagreed
+with E5's recorded decisions in \vsixEFiveCAgreement. The R2 reviews that timed out were among the longest in E5, so
+the completed ones are not a random subset. Greedy decoding did not make a verdict portable: on \vsixEFiveCkpt, R1
+accepted \vsixEFiveCROneSecondHost{} of the unaltered unauthorized proposals on the second host, against
+\vsixReviewerExact{} of \vsixExactCases{} on E5's. R2 accepted \vsixEFiveCRTwoSecondHost{} of them on the second host, against \vsixReasonerExact{}
+on E5's.
+
+\para{A structured verdict (E5d, post hoc).} R1's failure might only reflect a poor output format: a single boolean
+gives the model no place to apply the rules one by one. After reading E5c we fixed a plan for a third arm (R3), R1's
+prompt with a reply that states each rule's verdict in order before the decision, still without reasoning, and fixed
+in advance what would count as closing the gap on a checkpoint: accepting at most 3 of the 36 unaltered unauthorized
+proposals and at least 33 of the 36 twins. R3 reviewed every E5c item on the second host in one run.
+\vsixEFiveDSentence{}
+
+\para{What this shows.} A reviewer can check state only if it is shown the state, and E5 shows it everything the gate
+reads: one moment, at most one prior record. Under those conditions the reviewer that replied with a bare verdict
+accepted the approved proposal whatever the state: in E5 where the state forbade it, and in the controls where the
+state permitted it; one added sentence saying that the first rule is not enough did not change that. The reviewer that
+reasoned did read the state: on \vsixEFiveCkpt{} it accepted \vsixReasonerExact{} of the approved proposals where the
+state forbade them and \vsixEFiveCTwinsPhrase{} where it permitted them, so its zero is not a refusal of approved
+proposals. On \vsixOtherCkpt{} it still accepted \vsixReasonerExactOther{} of the forbidden ones. Two differences
+remain that the controls do not touch. The gate checks at commit, while a reviewer checks a snapshot before it, which
+is the time-of-check-to-time-of-use gap~\cite{bishop1996toctou}: state that changes in between, such as a budget spent
+by a concurrent call (Appendix~\ref{sec:systems}), is invisible to the reviewer. And the gate's decision is fixed by
+its predicate, while the reviewer's depends on how it is run: the same unaltered proposals on \vsixEFiveCkpt{} were
+accepted in \vsixReviewerExact{} cases without reasoning, \vsixReasonerExact{} with it, and
+\vsixEFiveCROneSecondHost{} when the same greedy reviewer ran on another CPU. \vsixEFiveDCostSentence
+
+\para{What a gate misses instead.} Remove one clause and the gate admits exactly the violations that break only that
+clause. This holds by construction, and Figure~\ref{fig:v6spec}a draws it as such. What the experiment measures is how
+much each family rests on a single clause. In the three state-dependent families the proposals that break only that family's clause are
+the unaltered approved ones, one per case, which are also the ones R1 admitted, so there the open circles and R1's
+marks count the same proposals; that share reflects how the cases were built as much as the families themselves. \vsixSingleClauseSentence{} This is the paper's central hypothesis, which E5
+illustrates and does not test: mediation does not make safety independent of the proposer. It moves the failure from
+a reviewer's judgment, which here varied with prompt and budget, to a written specification, whose gaps can be listed,
+tested and argued about.
+
+\para{Limits.} The reviewers are local open-weight checkpoints, decoding greedily, reviewing their own proposals; a
+stronger or differently trained monitor may do better, and control protocols that resample or
+audit~\cite{bhatt2025ctrlz} are a different defence. The proposer is told the adversarial objective in plain text. The
+families differ in more than where the violation lives, so the comparison shows that these state-dependent cases are
+hard for a reviewer without reasoning, not that state-dependence alone makes them hard. Only eight distinct proposals
+were authorized, so E5 cannot estimate how often a reviewer denies legitimate work, and a reviewer that denied
+everything would also score zero; the controls measure that only for the unaltered approved proposals of the
+state-dependent families. A twin differs from its original only in the state, so the twins show whether a reviewer
+reads the state, not how often it blocks other legitimate work. \vsixRtwoTruncatedSentence

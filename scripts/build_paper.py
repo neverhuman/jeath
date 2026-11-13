@@ -141,6 +141,20 @@ def check_general_audience_cleanliness(pdf):
         )
 
 
+# Terms earlier versions used for simulations or framing the evidence does not support (v6 review). "Jepsen" may appear
+# only to say the partition schedules are not Jepsen, so it is checked by context in the source, not banned here.
+SAFE_AI_BANNED_RE = re.compile(r"superintelligen|scaling law|emergent deception|120,000", re.IGNORECASE)
+
+
+def check_safe_ai_terms(pdf):
+    if shutil.which("pdftotext") is None:
+        return
+    text = re.sub(r"-\n", "", subprocess.check_output(["pdftotext", str(pdf), "-"], text=True, errors="replace"))
+    found = sorted({m.group(0).lower() for m in SAFE_AI_BANNED_RE.finditer(re.sub(r"\s+", " ", text))})
+    if found:
+        raise SystemExit(f"Banned framing terms in the SAFE AI PDF: {found}")
+
+
 def safe_ai():
     output = ROOT / "target/paper-build"
     output.mkdir(parents=True, exist_ok=True)
@@ -175,6 +189,7 @@ def safe_ai():
             f"Citations out of sequential [1]-[N] order (key, assigned_num, expected_num): {bad[:8]}"
         )
     check_general_audience_cleanliness(pdf)
+    check_safe_ai_terms(pdf)
     shutil.copy2(pdf, ROOT / "docs/intelligence-is-not-authority.pdf")
     print("built docs/intelligence-is-not-authority.pdf; all citations [1..N], references, fonts, hboxes, and general-audience cleanliness verified")
 

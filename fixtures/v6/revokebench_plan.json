@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "experiment": "E4_revokebench_stop_vs_revoke_vs_fence",
+  "status": "predeclared_before_any_E4_data",
+  "recorded_utc": "2026-11-12T19:35Z",
+  "question": "After an operator decides to stop an agent, how many effects still commit when the stop is enforced (a) at the inference path, (b) at broker admission, or (c) as an epoch fence at the state-bearing sink, and what does each cost in legitimate in-flight work, under real processes, wall-clock time, SIGKILL of the sink mid-transaction, and late-delivered completions?",
+  "system": "authority-lab broker-v2 and sink-v2 release processes over SQLite (the same binaries as every other experiment), driven by a Python agent emulator; no LLM is involved",
+  "workload": {
+    "model_step_seconds": 2.0,
+    "calls_per_step": 4,
+    "subagents_C": [
+      4,
+      32
+    ],
+    "tool_latency_mean_seconds_w": [
+      0.5,
+      5.0,
+      30.0
+    ],
+    "tool_latency_distribution": "exponential with mean w, seeded per trial",
+    "effect": "transfer of 1 unit to 'approved', requiring issuer 0; every proposal is pre-approved and the budget never binds, so every effect is authorized while authority is live",
+    "warmup_seconds_before_decision": 20.0,
+    "tool_latency_cap": "each sampled latency is truncated at 5w to bound trial duration"
+  },
+  "arms": {
+    "halt_inference": "at decision + L the emulated model stops emitting steps; calls already emitted are still dispatched and completed (an inference-path stop)",
+    "revoke_broker": "halt_inference plus, at the same moment, the broker withdraws issuer 0: queued submits are denied, permits already accepted by the sink still complete",
+    "fence_sink": "revoke_broker plus the sink is fenced at the returned floor: pending operations are cancelled and later completions are refused",
+    "layering": "arms are cumulative, so differences isolate each enforcement point"
+  },
+  "enforcement_latency_L_seconds": [
+    0,
+    1,
+    5,
+    35
+  ],
+  "replicates": 3,
+  "fault_variants": {
+    "none": "no fault",
+    "sigkill_sink": "SIGKILL the sink at decision + L/2 + 0.25 s (operations pending) and again 0.5 s after enforcement returns; each time restart it on the same database and let executors retry outstanding calls",
+    "late_completion": "a quarter of in-flight completions are held until 10 s after enforcement (a partition that heals late) and then delivered"
+  },
+  "grid": "arms x L x w x C x replicates for fault=none (216 trials); plus fault in {sigkill_sink, late_completion} x arms x L in {1, 35} x w=5 x C=32 x replicates (36 trials)",
+  "metrics": {
+    "post_decision_commits": "effects whose completion response arrived after the decision time",
+    "post_enforcement_commits": "effects whose completion response arrived after the enforcement call returned",
+    "in_flight_at_enforcement": "operations accepted by the sink but not completed when enforcement returned",
+    "cancelled_legitimate": "operations that were authorized when emitted and were cancelled or denied by the stop (the cost of stopping)",
+    "enforcement_ack_ms": "wall time of the enforcement calls (withdraw; withdraw plus fence)",
+    "duplicate_effects": "sink effects table rows minus distinct proposal ids (must be 0)",
+    "little_law_prediction": "lambda x (L + w) for halt_inference, where lambda is the measured completion rate before the decision; reported beside the measurement",
+    "emitted_not_accepted_at_enforcement": "calls emitted by the model and not yet accepted by the sink (queued or between submit and accept) when enforcement returned"
+  },
+  "hypotheses": {
+    "H_E4a": "post_enforcement_commits is 0 for fence_sink in every trial, including SIGKILL and late-completion variants (implementation test; 0 is the design, so a nonzero value is a bug, not a finding)",
+    "H_E4b": "post_enforcement_commits for halt_inference and revoke_broker grows with w and C and is approximately the in-flight population; halt_inference exceeds revoke_broker by the emitted-but-not-yet-accepted calls",
+    "H_E4c": "fence_sink's cost is the in-flight legitimate work it cancels, which grows with w and C"
+  },
+  "analysis_rules": [
+    "Report every trial; summarize per arm x L x w x C with median and range over replicates.",
+    "The validator re-derives committed effects from each trial's sink database, checks them against the harness log, and asserts no outcome.",
+    "A nonzero fence_sink post_enforcement_commits is reported as an implementation failure with its trace."
+  ],
+  "disclosures": [
+    "The sink mediates only its own SQLite effects; this is not external exactly-once execution, sandbox verification or a distributed-systems test.",
+    "Tool latency is a parametric sweep, not measured from production traces.",
+    "The emulator has no model; stop decisions are scheduled."
+  ],
+  "smoke_note": "a 6-trial smoke (19:22Z) checked harness mechanics; it showed calls between pickup and accept were uncounted, fixed before the full grid"
+}

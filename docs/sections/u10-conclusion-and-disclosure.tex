@@ -1,7 +1,26 @@
-\section{Conclusion and Scope Disclosure}\label{sec:conclusion}
+\section{Conclusion}\label{sec:conclusion}
 
-Intelligence measures how capably a system searches, predicts, and plans; authority determines which irreversible transitions an external sink will commit. Treating safety as an internal property of model weights or transcript classifiers fails whenever queued operations outlive broker revocation, candidate search scales across blindspots, exploit routes multiply through tool composition, or deferential demeanor induces wider human grants. Moving authority outside the proposer---through Verus-verified capability transitions, \(\delta_{\max}\)-buffered quorum sink fences, narrow kernel and schema waists, prose-stripped escrow triage, and exogenous scope caps---turns each of those failure modes into an explicit, auditable engineering boundary.
+Intelligence lives in proposals and authority lives in state. Holding authority as state at the sink, and checking
+it when an effect commits, separates stopping a model from stopping its effects. Halting a model stops new proposals;
+a fence also stops the effects already in flight; and only faster enforcement shortens the delay before either acts. For AI control this is a matter of accounting as
+much as engineering: an evaluation that counts a caught attack as prevented should also count what the stop did not
+reach. A
+gate that reads state does not depend on a reviewer's prompt or token budget, but it enforces only what its
+specification names. We conjecture that this is the general shape of mediation: it moves the safety problem from a
+model's dispositions, which no one can enumerate, to a written specification, which anyone can read, test and argue
+about. The costs move with it: legitimate work a coarse specification refuses and attacks it admits because they stay
+inside it (Section~\ref{sec:v6cost}), work in flight a fence discards (Section~\ref{sec:v6stop}), and surfaces that cannot refuse a stale epoch at all
+(Section~\ref{sec:v6boundary}).
 
-Equally important, exogenous mediation improves practical agent usefulness rather than trading capability for refusal. Across frozen Qwen3-4B and Qwen3-8B campaigns, complete sink mediation achieves the highest safe-and-useful task completion with zero benign false blocks, eliminates late commits after authority withdrawal, and preserves Upgrade-Invariant soundness (\S\ref{sec:gaps}) as proposer competence doubles from 4B to 8B. Where cooperative preconditions exist or can be shimmed (\(\VEightCensusCooperativeOrShim/\VEightCensusTotalApis\) audited production APIs), containment rests on sink invariants quantified over all inputs rather than trust in model intent.
+Three questions decide whether this is enough. Which external surfaces can enforce an epoch themselves rather than
+trust the writer to send one (Section~\ref{sec:v6boundary}), and how much of what deployed agents do ends in a commit
+that such a surface can refuse? How fine must a specification be before its cost in
+utility is acceptable, and who writes it (Section~\ref{sec:v6cost})? And do people grant more to agents that are more
+capable or more agreeable, so that intelligence regains through conferral the reach that mediation removed
+(Observation~\ref{obs:conferral})? The first is an engineering survey and a measurement of real agents' tool traces; the second is a measurement this paper starts;
+the third needs a study with people, whose design we state in Appendix~\ref{app:v6conferral}.
 
-\para{Scope disclosure.} Our SQLite broker and cooperative sinks mediate only their own declared database and socket state transitions. Their tests do not constitute operating-system or storage-engine formal refinement, external exactly-once execution on uncooperative third-party APIs, frontier-scale reinforcement learning, or human-participant behavioral evidence. Live language-model campaigns use quantized open-weight Qwen3-4B and Qwen3-8B checkpoints on CPU hardware at pilot sample sizes (\(N = \VFourHoldoutCasesPerCheckpoint\) frozen holdout cases and \(N = \VFiveStatDojoClustTasks\) AgentDojo base tasks), where predeclared marginal union-bound intervals remain inconclusive. Selection, neural policy-gradient, and grant-reversal experiments validate mathematical incentive mechanics on controlled environments rather than deployed human institutions.
+\para{Scope.} The SQLite broker and sink mediate only their own database effects. Nothing here is a sandbox, external
+exactly-once execution, a formal refinement of a deployed system, a frontier-model result or evidence from human
+participants. Live results use quantized open-weight checkpoints (\vsixCheckpointList) on CPU, decoding greedily except for E5's
+sampled proposals.

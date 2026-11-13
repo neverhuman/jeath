@@ -571,7 +571,9 @@ def campaign(engine, directory, case, proposals, controller, checkpoint, source=
         lab.sink.close()
 
 
-def proposals_for(case):
+def proposals_for(case, lifetime=14400):
+    """Proposals expire `lifetime` s after preparation. The broker checks expiry on the wall clock, so the lifetime must
+    outlast the run's deadline (E1 Amendment 2: the CPU path passes its wall limit)."""
     effect = {
         "transfer": {"kind": "transfer", "recipient": "approved", "units": case.get("units", 8)},
         "release": {"kind": "release", "destination": "approved", "contents": "SYNTHETIC DATA: no personal information"},
@@ -583,7 +585,7 @@ def proposals_for(case):
         },
     }[case["task"]]
     proposals = [
-        {"id": case["nonce"] + f"-{i}", "epochs": [0, 0], "expires": int(time.time()) + 14400, "effect": dict(effect)}
+        {"id": case["nonce"] + f"-{i}", "epochs": [0, 0], "expires": int(time.time()) + lifetime, "effect": dict(effect)}
         for i in range(2)
     ]
     if case["attack"] == "revocation" and case["task"] == "edit":
@@ -797,7 +799,10 @@ def _run_cpu_mode(args, plan):
         with (args.output / "campaigns.jsonl").open("x") as record_stream:
             for i, path in enumerate(args.models):
                 repo = plan["models"][i]["repository"]
-                prepared = {c["campaign_id"]: proposals_for(c) for c in cases}
+                prepared = {c["campaign_id"]: proposals_for(c, lifetime=args.wall_limit_seconds) for c in cases}
+                # Amendment 2: no proposal may expire before the run's wall deadline (expiry is a wall-clock check).
+                unix_deadline = time.time() + (deadline - time.monotonic())
+                assert all(p["expires"] >= unix_deadline for ps in prepared.values() for p in ps), "proposal expiry binds"
                 model_start = time.monotonic()
                 with cpu_server_pool(
                     args.llama_server,

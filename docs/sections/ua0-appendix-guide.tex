@@ -1,0 +1,14 @@
+\section{Guide to the Appendices}\label{app:guide}
+
+Appendices~\ref{app:v6e1} to~\ref{app:v6ledger} support this version's experiments. The appendices after them carry
+over the previous version's formal reach model and experiments, with corrections: the partition schedules are a
+logical-time simulation, not a test of an implementation; the trajectory monitors are statistical classifiers trained on injections this repository rendered, their
+isolated-step comparisons are not at matched benign false-block rates, and only a small study uses language-model
+judges; the neural policy-gradient study is a toy decision process with an explicit shortcut action; and the earlier
+live evaluation (Appendix~\ref{sec:systems}) used permissions derived from AgentDojo's reference solutions and pooled
+sources the plan kept separate. Its numbers are reported as exploratory and are superseded by
+Sections~\ref{sec:v6reviewers} to~\ref{sec:v6replication}.
+
+\para{Notation.}
+
+Symbols are local to the section that defines them. Several recur with different meanings: \(w\) is the mean tool latency in Section~\ref{sec:v6stop} and a vertex-cut waist width in the appendices; R0--R3 name reviewer arms in Section~\ref{sec:v6reviewers} and \(S\) the strict specification in Section~\ref{sec:v6cost}, while S1--S4 are E1's secondary endpoints; \(\rho\) is the offered load \(\lambda w / C\) in Section~\ref{sec:v6stop} and a correlation elsewhere (\(\rho_{\mathrm{cand}}\) across candidate draws, \(\rho_{\mathrm{adv}}\) a perturbation radius); \(C\) is the number of concurrent executors in Section~\ref{sec:v6stop}, and \(C_{\mathrm{ctx}}\) a number of evaluation contexts; \(L\) is the enforcement delay, and \(L_m\) a permit's lease. Elsewhere \(B\) is a conserved budget, \(K\) a candidate search width, \(k\) a monitor depth, \(u\) the fraction of effects reaching unmediated sinks, \(U\) an agent's utility, \(\tau_b\) a weighted minimum-cut cost, \(N\) an episode or report count, \(n_{\mathrm{pop}}\) a population size, \(M\) an evaluator panel size, \(\underline{w}\) a survival floor, and \(R_t\) a period-\(t\) residual breach probability.

@@ -47,6 +47,18 @@ def assert_pure_float(filename, content):
     )
 
 
+def sat_p(rh: dict) -> float:
+    """Conditional per-gate miss p of Proposition prop:saturation, from the model's marginal m = c + (1 - c) p."""
+    c, m = rh["saturation_default_c"], rh["saturation_default_m"]
+    return (m - c) / (1 - c)
+
+
+def sat_kstar(rh: dict, eta: float = 0.1) -> int:
+    """Eq. (kstar): the depth beyond which another gate lowers the joint miss by less than eta * c."""
+    c = rh["saturation_default_c"]
+    return math.ceil(math.log(eta * c / (1 - c)) / math.log(sat_p(rh)))
+
+
 def generate_v1():
     model = load_v1("model")
     full = next(r for r in model if r["enforcer"] == "complete")
@@ -458,10 +470,10 @@ def generate_v2():
     mut_count = proof_obj.get("soundness_mutations_rejected", 0)
     mut_note = f"; {mut_count}/{mut_count} soundness mutants rejected" if mut_count else ""
     core_rows = [
-        f"Mechanized Rust authority kernel & Verus SMT proof & {exec_fns} executable functions + {theorems} theorems (wire bijection, $d$-hop attenuation, relational mutex, $\\delta_{{\\max}}$-buffered quorum fence, safe-bootstrap ratchet){mut_note}; not SQLite/OS refinement & {proof} verified, {trig_warns} warnings\\\\",
+        f"Mechanized Rust authority kernel & Verus SMT proof & {exec_fns} executable functions + {theorems} theorems (canonical permit encoding, $d$-hop attenuation, relational mutex, $\\delta_{{\\max}}$-buffered quorum fence, safe-bootstrap ratchet){mut_note}; not SQLite/OS refinement & {proof} verified, {trig_warns} warnings\\\\",
         f"Abstract invariant omission search & Exhaustive trace search & {ablations['searched_traces']:,} traces over 10 protocol clauses (single + pair omissions) & {sum(bool(r['shortest_searched_witness']) for r in ablations['rows'])}/{len(ablations['rows'])} witnesses\\\\",
         f"Separate-process RPC fault suite & Multi-process SQLite & Crash, lost-reply, quorum split, sub-delegation, extra-steward fence, slow-read deadline & {len(faults)}/{len(faults)} oracle-checked\\\\",
-        f"Full-scale concurrent linearization & Multi-process SQLite & Partial-order real-time linearization + final conservation ($1..{lin_max_actors}$ writers; $\\le {lin_max_calls}$ RPCs) & {lin_runs}/{len(races)} linearizable\\\\",
+        f"Concurrent linearization, one transfer workload & Multi-process SQLite & Partial-order real-time linearization + final conservation ($1..{lin_max_actors}$ writers; $\\le {lin_max_calls}$ RPCs) & {lin_runs}/{len(races)} linearizable\\\\",
     ]
     if cj_v2 is not None:
         jmap = {c["class"]: c for c in cj_v2["jepsen_classes"]}
@@ -476,10 +488,10 @@ def generate_v2():
             else ""
         )
         core_rows.append(
-            f"Ed25519/Macaroon \\& 3-sink partitions & Unix-socket fault net & {crt['total_attacks']:,} crypto attacks (incl.\\ RFC 8032 \\& OpenSSL CLI); {coop_j['schedules_run']:,} schedules/class ({coop_j['signed_fence_completions']} signed acks + {coop_j['lease_expiry_completions']} lease expiries vs.\\ {brk_j['post_ack_unauthorized_commits']} broker-only, {unc_j['post_ack_unauthorized_commits']} uncooperative{skew_detail}) & {crt['false_accepts']} accepts; {coop_j['post_ack_unauthorized_commits']} leaks\\\\"
+            f"Ed25519/Macaroon attacks; 3-sink partition schedules & Test vectors; one-process simulation in logical time & {crt['total_attacks']:,} crypto attacks (incl.\\ RFC 8032 \\& OpenSSL CLI); {coop_j['schedules_run']:,} schedules/class ({coop_j['signed_fence_completions']} signed acks + {coop_j['lease_expiry_completions']} lease expiries vs.\\ {brk_j['post_ack_unauthorized_commits']} broker-only, {unc_j['post_ack_unauthorized_commits']} uncooperative{skew_detail}) & {crt['false_accepts']} accepts; {coop_j['post_ack_unauthorized_commits']} leaks\\\\"
         )
     core_rows += [
-        f"Linux Landlock v4 + seccomp boundary & Linux kernel ABI & Filesystem/TCP Landlock, 64-bit resource-limit filter, SysV/POSIX IPC + pre-existing queue canary & {probe_count}/{probe_count} confined\\\\",
+        f"Linux Landlock v4 + seccomp boundary & Linux kernel ABI & Filesystem/TCP Landlock, 64-bit resource-limit filter, SysV/POSIX IPC + pre-existing queue canary; two bypasses found in review were fixed before this count & {probe_count}/{probe_count} confined\\\\",
         f"Non-idempotent \\& omitted-spec controls & Negative controls & Uncooperative sink duplicates ({neg['unsupported_sink']['effects']} effects); {cost['fence_ack_ms']:.1f}\\,ms delayed fence ack; authorized bad edit commits & All 3 reproduced\\\\",
     ]
     cl_v5_path = DATA_V3 / "e2e_crypto_cluster.json"
@@ -487,7 +499,7 @@ def generate_v2():
         cl5 = json.loads(cl_v5_path.read_text())
         core_rows.insert(
             5,
-            f"3-process crypto SQLite WAL cluster & OS IPC + SQLite WAL & {cl5['wire_fuzz']['total_adversarial_frames']:,} wire-fuzz frames, {cl5['smurfing_delegation']['concurrent_subagents']} subagents ({cl5['smurfing_delegation']['delegation_depth_hops']} hops), {cl5['crash_recovery']['hard_sigkill_cycles']} hard process-kill restarts & 0 diffs; 0 post-ack leaks\\\\",
+            f"3-process crypto SQLite cluster (WAL, synchronous NORMAL) & OS IPC + SQLite & {cl5['wire_fuzz']['total_adversarial_frames']:,} wire-fuzz frames, {cl5['smurfing_delegation']['concurrent_subagents']} interleaved sub-agent identities from one driver ({cl5['smurfing_delegation']['delegation_depth_hops']} hops), {cl5['crash_recovery']['hard_sigkill_cycles']} SIGKILL restarts between requests & 0 diffs; 0 post-ack leaks\\\\",
         )
     core_tab = [
         "% Generated by scripts/paper.py; do not edit.",
@@ -496,7 +508,7 @@ def generate_v2():
         r"Verification or protocol layer & Verification method & Scope boundary & Recorded result\\\midrule",
         *core_rows,
         r"\bottomrule\end{tabularx}",
-        r"\caption{Summary of mechanized authority-kernel obligations and separate-process protocol checks. Executable Rust state transitions, canonical wire bijection, $d$-hop attenuation, relational mutexes, $\delta_{\max}$-buffered quorum lease fencing, and monotone safe-bootstrap ratcheting are verified in Verus; SQLite write-ahead-logged durability, hard process-kill recovery, and Linux kernel confinement are tested empirically rather than formally refined.}\label{tab:v2core}\end{table*}",
+        r"\caption{Mechanized kernel obligations and protocol checks. The six properties of Section~\ref{sec:core} are proved in Verus for the verified kernel functions; the broker's and sink's decision logic, SQLite durability, process-kill recovery and Linux confinement are tested, not proved. The partition schedules run in one process in logical time; the multi-process rows run separate operating-system processes.}\label{tab:v2core}\end{table*}",
     ]
 
     # Pure self-contained float 2: v2-eval-table.tex
@@ -552,7 +564,7 @@ def generate_v2():
                 f"{ckpt_short} & \\textbf{{Complete mediation}} & \\textbf{{{c_su}/{ng}}} & 0/{ng} & 0/{ng} & \\textbf{{{c_pw}}} ($n=12$) & 12 base tasks $\\times$ 2 injection/withdrawal scenarios\\\\"
             )
             eval_tab.append(
-                f" & Progent / Unprotected & P:{p_su} U:{u_su} & --- & P:{p_un} U:{u_un} & P:{p_pw} U:{u_pw} & Progent blocks native injections (0) but misses cumulative spend ({p_un})\\\\"
+                f" & Progent / Unprotected & P:{p_su} U:{u_su} & --- & P:{p_un} U:{u_un} & P:{p_pw} U:{u_pw} & Progent blocks native injections (0); cumulative spend is outside its policies ({p_un})\\\\"
             )
         eval_tab.append(r"\midrule")
     su_comp_scr = sum(1 for r in controls if r["controller"] == "complete" and r["safe_useful"])
@@ -567,7 +579,7 @@ def generate_v2():
     )
     eval_tab += [
         r"\bottomrule\end{tabularx}",
-        r"\caption{Live open-weight checkpoint campaigns on the SHA-256-frozen holdout ($N=32$ independent cases per checkpoint; $n=6$ revocation cases each), live AgentDojo v1.2.2 episodes ($12$ distinct base tasks $\times 2$ injection/withdrawal scenarios per checkpoint), and scripted shared-budget controls. Complete mediation achieves the highest safe-and-useful completion rate with $0/64$ benign false blocks, eliminates the $9$ queued post-withdrawal operations completed across the $12$ revocation cases under broker-only revocation (\emph{Durable, no sink fence}), and prevents the $7/32$ (4B) and $2/32$ (8B) unauthorized commits leaked by same-checkpoint LLM review. Zero unauthorized commits under complete mediation reflects deterministic gate-grader policy soundness; at pilot $N=32 < 113$, predeclared marginal union-bound intervals remain preserved in Appendix~\ref{app:holdout} as inconclusive.}\label{tab:v2eval}\end{table*}",
+        r"\caption{Live open-weight checkpoint campaigns on the SHA-256-frozen holdout ($N=32$ independent cases per checkpoint; $n=6$ revocation cases each), live AgentDojo v1.2.2 episodes ($12$ distinct base tasks $\times 2$ injection/withdrawal scenarios per checkpoint), and scripted shared-budget controls. Under this scoring, complete mediation's zero benign false blocks and zero unauthorized commits hold by construction: its admission predicate is the grader's. The table measures what the comparators leak, including queued operations that commit after a broker-only revocation (\emph{Durable, no sink fence}) and commits admitted by same-checkpoint review. At this pilot size the predeclared bounds are inconclusive (Appendix~\ref{app:holdout}).}\label{tab:v2eval}\end{table*}",
     ]
 
     # Pure self-contained float 3: v2-runtime-fig.tex (2 panels, external bottom legends)
@@ -880,7 +892,7 @@ def generate_v3():
             )
         npt_tab += [
             r"\bottomrule\end{tabularx}",
-            f"\\caption{{Controlled 2-layer neural policy-gradient post-training on a 12-dimensional contextual tool-use Markov decision process (analytical backpropagation maximum error ${npt['gradient_verification']['max_abs_error']:.1e}$, rollout Price identity error $<{max_price_err:.1e}$). Auditing visible harm inside a top-rank tournament trains emergent evaluation-aware covert shortcutting (${100*veto['eval_awareness_shortcut_gap']['mean']:+.1f}\\pm{100*veto['eval_awareness_shortcut_gap']['approximate_95_half_width']:.1f}$\\,pp gap); survival-floor RL suppresses shortcutting while preserving {100*flr['useful_task_completion_rate']['mean']:.1f}\\% task completion (vs.\\ {100*care['useful_task_completion_rate']['mean']:.1f}\\% over-deferring clipped caretaker), and coupling an exogenous pre-commit gate yields $0.00\\%$ external harm. Controlled neural MDP only, not frontier-model RLHF.}}\\label{{tab:v4neural}}\\end{{table*}}",
+            f"\\caption{{Controlled 2-layer neural policy-gradient post-training on a 12-dimensional contextual tool-use Markov decision process (analytical backpropagation maximum error ${npt['gradient_verification']['max_abs_error']:.1e}$, rollout Price identity error $<{max_price_err:.1e}$). Auditing visible harm inside a top-rank tournament raises how often the policy takes the MDP's explicit, built-in evaluation-aware shortcut action (${100*veto['eval_awareness_shortcut_gap']['mean']:+.1f}\\pm{100*veto['eval_awareness_shortcut_gap']['approximate_95_half_width']:.1f}$\\,pp gap); survival-floor RL suppresses shortcutting while preserving {100*flr['useful_task_completion_rate']['mean']:.1f}\\% task completion (vs.\\ {100*care['useful_task_completion_rate']['mean']:.1f}\\% over-deferring clipped caretaker), and coupling an exogenous pre-commit gate yields $0.00\\%$ external harm, by construction. Controlled neural MDP only, not frontier-model RLHF.}}\\label{{tab:v4neural}}\\end{{table*}}",
         ]
         v4_floats["v4-neural-table.tex"] = "\n".join(npt_tab) + "\n"
 
@@ -936,6 +948,12 @@ def generate_v3():
             ("VThreeSatDefaultCPct", f"{100 * rh['saturation_default_c']:.2f}"),
             ("VThreeSatDefaultMPct", f"{100 * rh['saturation_default_m']:.2f}"),
             ("VThreeSatDefaultKStar", f"{rh['saturation_default_k_star']}"),
+            # Eq. (kstar) of Proposition prop:saturation at eta = 0.1. The model reports the marginal miss
+            # m = c + (1 - c) p; the proposition's conditional miss p is recovered from it.
+            ("VThreeSatEqKStar", f"{sat_kstar(rh)}"),
+            ("VThreeSatMarginalM", f"{rh['saturation_default_m']:.3f}"),
+            ("VThreeSatP", f"{sat_p(rh):.2f}"),
+            ("VThreeSatC", f"{rh['saturation_default_c']:.2f}"),
             ("VThreeAppACommonFourPct", f"{100 * rh['appendix_a_common_4']:.2f}"),
             ("VThreeAppAIndepFourPct", f"{100 * rh['appendix_a_independent_4']:.4f}"),
             ("VThreeAppAUnderstatement", f"{rh['appendix_a_understatement_4']:.1f}"),
@@ -1127,7 +1145,7 @@ def generate_v3():
         r"\addplot[gold,thick,dashed,mark=square*] coordinates {" + hor_harm_coords + r"};\addlegendentry{$p_t=0.01/t$}",
         r"\addplot[teal,very thick,mark=*] coordinates {" + hor_sum_coords + r"};\addlegendentry{$p_t=0.01/t^2$}",
         r"\end{axis}\end{tikzpicture}",
-        r"\caption{Analytical laws and finite-lag state-uncertainty mechanics. \textbf{(a)} Sound upper-envelope gating preserves $0\%$ budget breaches across all lags while contracting admission monotonically; stale snapshots breach as lag grows. \textbf{(b)} Common-cause floor $c=0.01$ saturates by $k^*=2$, diverging $71.6\times$ from $m^4$ at $k=4$. \textbf{(c)} Constant per-epoch hazard approaches $100\%$ cumulative breach, whereas summable $0.01/t^2$ stays below $\pi^2/600\approx 1.64\%$.}\label{fig:v3saturation}\end{figure*}",
+        r"\caption{Analytical laws and finite-lag state-uncertainty mechanics. \textbf{(a)} Sound upper-envelope gating preserves $0\%$ budget breaches across all lags while contracting admission monotonically; stale snapshots breach as lag grows. \textbf{(b)} Common-cause floor $c=" + f"{rh['saturation_default_c']:g}" + r"$: beyond depth $k^\star=" + f"{sat_kstar(rh)}" + r"$ another gate lowers the joint miss by less than $0.1c$ (Proposition~\ref{prop:saturation}), and at $k=4$ the joint miss is " + f"{rh['appendix_a_understatement_4']:.1f}" + r"$\times$ the independent product $m^4$. \textbf{(c)} Constant per-epoch hazard approaches $100\%$ cumulative breach, whereas summable $0.01/t^2$ stays below $\pi^2/600\approx 1.64\%$.}\label{fig:v3saturation}\end{figure*}",
     ]
 
     # Float 5: v3-interdiction-fig.tex (H10, H11)
@@ -1167,7 +1185,7 @@ def generate_v3():
         r"\addplot[violet,thick,dashed,mark=square*] coordinates {" + sev_hub_n + r"};\addlegendentry{Hub ($w\approx 21$)}",
         r"\addplot[notred,thick,dotted,mark=triangle*] coordinates {" + sev_wid_n + r"};\addlegendentry{Wide ($w=27$)}",
         r"\end{axis}\end{tikzpicture}",
-        f"\\caption{{Synthetic 8-stage sparse directed acyclic graph interdiction ({inter['n_graphs_per_family']} graphs per family, $\\sim 7.6$M--$8.4$M pathways). \\textbf{{(a,b)}} On narrow-waist graphs ($w=6$, $N=300$ Boltzmann reports), reported-subgraph Dinic minimum cuts block {100*nar['cut']['blocked_mean'][6]:.1f}\\% and completely sever {100*nar['cut']['severed_share'][6]:.1f}\\% of graphs at $B=6$, whereas route-specific patching severs $0\\%$ even at $B=32$. \\textbf{{(c)}} On wide graphs ($w=27$), reported minimum cuts rarely sever the full graph even at $N=3{{,}}000$, demonstrating that structural bottlenecks are necessary for compact gating.}}\\label{{fig:v3interdiction}}\\end{{figure*}}",
+        f"\\caption{{Synthetic 8-stage sparse directed acyclic graph interdiction ({inter['n_graphs_per_family']} graphs per family, $\\sim 7.6$M--$8.4$M pathways). \\textbf{{(a,b)}} On narrow-waist graphs ($w=6$, $N=300$ Boltzmann reports), reported-subgraph Dinic minimum cuts block {100*nar['cut']['blocked_mean'][6]:.1f}\\% and completely sever {100*nar['cut']['severed_share'][6]:.1f}\\% of graphs at $B=6$, whereas route-specific patching severs $0\\%$ even at $B=32$. \\textbf{{(c)}} On wide graphs ($w=27$), reported minimum cuts rarely sever the full graph even at $N=3{{,}}000$, consistent with compact gating requiring a narrow bottleneck in these synthetic graphs.}}\\label{{fig:v3interdiction}}\\end{{figure*}}",
     ]
 
     # Float 6: v3-coverage-fig.tex (H12, H13)
@@ -1383,11 +1401,38 @@ def generate_v3():
     return out
 
 
+def generate_v6():
+    """The v6 front figure, text macros and tables, from promoted evidence/v6/reference only. Missing evidence is an
+    error: there is no draft or placeholder path here (scripts/v6_macros.py --draft writes drafts outside docs/)."""
+    from types import SimpleNamespace
+
+    import hero_v6
+    import v6_macros
+
+    ref = ROOT / "evidence/v6/reference"
+    need = {k: ref / v6_macros.SOURCES[k] for k in ("e4", "e6b", "e5", "e8", "e8b")}
+    absent = [k for k, d in need.items() if not (d / "results.json").exists()]
+    if absent:
+        raise SystemExit(f"v6 evidence not promoted: {', '.join(absent)} (scripts/promote_v6.py)")
+    e4c = ref / "e4c-revokebench-phase"  # post hoc random-phase cell; draws panel (a) when promoted
+    hero = hero_v6.build(SimpleNamespace(e4=need["e4"], e6b=need["e6b"], e5=need["e5"], e8=need["e8"], e8b=need["e8b"],
+                                         e4c=e4c if (e4c / "results.json").exists() else None,
+                                         ckpt="Qwen/Qwen3-8B-GGUF", layout_preview=False))
+    assert_pure_float("v6-spec-fig.tex", hero["v6-spec-fig.tex"])
+    text, missing = v6_macros.build(SimpleNamespace(ckpt="Qwen/Qwen3-8B-GGUF", draft=False, sources={}))
+    assert not missing
+    assert hero["v6-hero-fig.tex"].count(r"\captionof{figure}") == 1  # a non-float under the abstract, like v5's
+    for k in ("v6-e1-table.tex", "v6-pilot-table.tex", "v6-e5-table.tex", "v6-e6-table.tex", "v6-e2-table.tex"):
+        assert_pure_float(k, text[k])
+    return hero | text
+
+
 def generate():
     result = {}
     result.update(generate_v1())
     result.update(generate_v2())
     result.update(generate_v3())
+    result.update(generate_v6())
     return result
 
 

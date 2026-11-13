@@ -1,0 +1,4734 @@
+{
+ "aggregates": {
+  "fence_sink": {
+   "discarded_max": 15,
+   "discarded_median": 11.0,
+   "discarded_min": 6,
+   "n": 40,
+   "post_enforcement_max": 0,
+   "post_enforcement_median": 0.0,
+   "post_enforcement_min": 0
+  },
+  "halt_inference": {
+   "discarded_max": 0,
+   "discarded_median": 0.0,
+   "discarded_min": 0,
+   "n": 40,
+   "post_enforcement_max": 20,
+   "post_enforcement_median": 11.0,
+   "post_enforcement_min": 6
+  },
+  "halt_minus_revoke": {
+   "max": 7,
+   "median": 0.0,
+   "min": -5,
+   "n": 40,
+   "zero": 18
+  },
+  "revoke_broker": {
+   "discarded_max": 0,
+   "discarded_median": 0.0,
+   "discarded_min": 0,
+   "n": 40,
+   "post_enforcement_max": 19,
+   "post_enforcement_median": 11.0,
+   "post_enforcement_min": 6
+  }
+ },
+ "authority_lab_sha256": "bb8b3f2c2862cc49db7f0f18b51187d2403ebbc8a78b349e0b8f14cb945d9232",
+ "e4_script_sha256": "3cf301bd59df438e1a733a5b9ba73aba76caeed1bfef7109ae1744cc33062cb9",
+ "experiment": "E4c: E4's front-figure cell with the stop at a random phase",
+ "plan_sha256": "0b1da085a27b083fbeb591d2d38f4c45aa0bc51782db3f9bcfcc05c15d5dca6b",
+ "provenance": {
+  "elapsed_seconds": 319.2374544143677,
+  "gpu_seconds_used": 0,
+  "hostname": "xbabe2",
+  "llm": null,
+  "parallel": 16,
+  "started_unix": 1794560611.3890836
+ },
+ "schema_version": 1,
+ "script_sha256": "3940bf7d60b141251f5e542ccefe30998e847f57ad32f82202cf3f916915bf84",
+ "trials": [
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.35730318752298507,
+    "rep": 0,
+    "seed": 20261113,
+    "trial_id": "p00-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.357303187522984
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 12,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 43.98622500593774,
+     "halt_ms": 0.10239399853162467,
+     "total_ms": 121.85789199429564,
+     "withdraw_ms": 77.66945401090197
+    },
+    "harness_commits": 32,
+    "in_flight_at_enforcement": 12,
+    "little_law_post_decision_prediction": 9.323437022387445,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.864687404477489,
+    "retried_calls": 0,
+    "sink_effect_rows": 32,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.35730318752298507,
+    "rep": 0,
+    "seed": 20261113,
+    "trial_id": "p00-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.357303187522984
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 3,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.16376000712625682,
+     "total_ms": 0.17905898857861757
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 9,
+    "little_law_post_decision_prediction": 9.323001188799282,
+    "post_decision_commits": 12,
+    "post_enforcement_commits": 12,
+    "pre_decision_completion_rate_per_s": 1.8646002377598563,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.35730318752298507,
+    "rep": 0,
+    "seed": 20261113,
+    "trial_id": "p00-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.357303187522984
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 1,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.13485600356943905,
+     "total_ms": 679.3256209930405,
+     "withdraw_ms": 679.1547170141712
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 10,
+    "little_law_post_decision_prediction": 9.321160740477481,
+    "post_decision_commits": 12,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 1.8642321480954962,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.12814835072916075,
+    "rep": 1,
+    "seed": 20261114,
+    "trial_id": "p01-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.128148350729163
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 11,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 907.1152870019432,
+     "halt_ms": 0.10829500388354063,
+     "total_ms": 2433.175491023576,
+     "withdraw_ms": 1525.8827490033582
+    },
+    "harness_commits": 33,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 7.938958038652131,
+    "post_decision_commits": 7,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.5877916077304262,
+    "retried_calls": 0,
+    "sink_effect_rows": 33,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.12814835072916075,
+    "rep": 1,
+    "seed": 20261114,
+    "trial_id": "p01-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.128148350729163
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 2,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.03195999306626618,
+     "total_ms": 0.03675901098176837
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 8.918208235592685,
+    "post_decision_commits": 13,
+    "post_enforcement_commits": 13,
+    "pre_decision_completion_rate_per_s": 1.783641647118537,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.12814835072916075,
+    "rep": 1,
+    "seed": 20261114,
+    "trial_id": "p01-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.128148350729163
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.06375100929290056,
+     "total_ms": 21.505000011529773,
+     "withdraw_ms": 21.416142000816762
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 13,
+    "little_law_post_decision_prediction": 9.415513264699754,
+    "post_decision_commits": 13,
+    "post_enforcement_commits": 13,
+    "pre_decision_completion_rate_per_s": 1.8831026529399508,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.6016747508249127,
+    "rep": 2,
+    "seed": 20261115,
+    "trial_id": "p02-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.601674750824913
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 10,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 680.2631860191468,
+     "halt_ms": 0.11394600733183324,
+     "total_ms": 1484.7813509986736,
+     "withdraw_ms": 804.3657459784299
+    },
+    "harness_commits": 34,
+    "in_flight_at_enforcement": 10,
+    "little_law_post_decision_prediction": 8.71240747985196,
+    "post_decision_commits": 4,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.7424814959703918,
+    "retried_calls": 0,
+    "sink_effect_rows": 34,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.6016747508249127,
+    "rep": 2,
+    "seed": 20261115,
+    "trial_id": "p02-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.601674750824913
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 4,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.06354000652208924,
+     "total_ms": 0.08025200804695487
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 7,
+    "little_law_post_decision_prediction": 10.169072737322498,
+    "post_decision_commits": 11,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 2.0338145474644995,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.6016747508249127,
+    "rep": 2,
+    "seed": 20261115,
+    "trial_id": "p02-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.601674750824913
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.01885599340312183,
+     "total_ms": 22.193220996996388,
+     "withdraw_ms": 22.15462800813839
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 10,
+    "little_law_post_decision_prediction": 11.125043844522715,
+    "post_decision_commits": 10,
+    "post_enforcement_commits": 10,
+    "pre_decision_completion_rate_per_s": 2.225008768904543,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.42073506036671704,
+    "rep": 3,
+    "seed": 20261116,
+    "trial_id": "p03-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.420735060366717
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 7,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 18.875373993068933,
+     "halt_ms": 0.15167798846960068,
+     "total_ms": 35.994079982629046,
+     "withdraw_ms": 16.91673300229013
+    },
+    "harness_commits": 37,
+    "in_flight_at_enforcement": 7,
+    "little_law_post_decision_prediction": 11.692877112779225,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 2.338575422555845,
+    "retried_calls": 0,
+    "sink_effect_rows": 37,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.42073506036671704,
+    "rep": 3,
+    "seed": 20261116,
+    "trial_id": "p03-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.420735060366717
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.18460999126546085,
+     "total_ms": 0.21408498287200928
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 7,
+    "little_law_post_decision_prediction": 11.23336132759265,
+    "post_decision_commits": 7,
+    "post_enforcement_commits": 7,
+    "pre_decision_completion_rate_per_s": 2.24667226551853,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.42073506036671704,
+    "rep": 3,
+    "seed": 20261116,
+    "trial_id": "p03-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.420735060366717
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.09395802044309676,
+     "total_ms": 391.3758920098189,
+     "withdraw_ms": 391.25318999867886
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 7,
+    "little_law_post_decision_prediction": 11.230880515503499,
+    "post_decision_commits": 7,
+    "post_enforcement_commits": 7,
+    "pre_decision_completion_rate_per_s": 2.2461761031006997,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.7183497420794722,
+    "rep": 4,
+    "seed": 20261117,
+    "trial_id": "p04-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.71834974207947
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 8,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 55.13958400115371,
+     "halt_ms": 0.14552599168382585,
+     "total_ms": 112.27656199480407,
+     "withdraw_ms": 56.95873001241125
+    },
+    "harness_commits": 36,
+    "in_flight_at_enforcement": 8,
+    "little_law_post_decision_prediction": 11.02761466899027,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 2.2055229337980538,
+    "retried_calls": 0,
+    "sink_effect_rows": 36,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.7183497420794722,
+    "rep": 4,
+    "seed": 20261117,
+    "trial_id": "p04-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.71834974207947
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 1,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.04926399560645223,
+     "total_ms": 0.05839098594151437
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 7,
+    "little_law_post_decision_prediction": 11.033583160961742,
+    "post_decision_commits": 8,
+    "post_enforcement_commits": 8,
+    "pre_decision_completion_rate_per_s": 2.2067166321923484,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.7183497420794722,
+    "rep": 4,
+    "seed": 20261117,
+    "trial_id": "p04-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.71834974207947
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.03907401696778834,
+     "total_ms": 101.4504519989714,
+     "withdraw_ms": 101.39312298269942
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 7,
+    "little_law_post_decision_prediction": 11.040410375793531,
+    "post_decision_commits": 8,
+    "post_enforcement_commits": 7,
+    "pre_decision_completion_rate_per_s": 2.208082075158706,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.8025237866660933,
+    "rep": 5,
+    "seed": 20261118,
+    "trial_id": "p05-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.802523786666093
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 11,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 15.372569992905483,
+     "halt_ms": 0.10118100908584893,
+     "total_ms": 30.1117800117936,
+     "withdraw_ms": 14.580839982954785
+    },
+    "harness_commits": 33,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 7.324623285006107,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.4649246570012213,
+    "retried_calls": 0,
+    "sink_effect_rows": 33,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.8025237866660933,
+    "rep": 5,
+    "seed": 20261118,
+    "trial_id": "p05-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.802523786666093
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.07000300684012473,
+     "total_ms": 0.0816049869172275
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 14,
+    "little_law_post_decision_prediction": 6.868612879439998,
+    "post_decision_commits": 14,
+    "post_enforcement_commits": 14,
+    "pre_decision_completion_rate_per_s": 1.3737225758879996,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.8025237866660933,
+    "rep": 5,
+    "seed": 20261118,
+    "trial_id": "p05-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.802523786666093
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.061175000155344605,
+     "total_ms": 66.28117299987935,
+     "withdraw_ms": 66.20201401528902
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 6.866363851960662,
+    "post_decision_commits": 12,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 1.3732727703921324,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.588184676781096,
+    "rep": 6,
+    "seed": 20261119,
+    "trial_id": "p06-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.588184676781097
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 11,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 29.15655801189132,
+     "halt_ms": 0.08507102029398084,
+     "total_ms": 59.476909023942426,
+     "withdraw_ms": 30.209802003810182
+    },
+    "harness_commits": 33,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 10.644659365356379,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 2.128931873071276,
+    "retried_calls": 0,
+    "sink_effect_rows": 33,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.588184676781096,
+    "rep": 6,
+    "seed": 20261119,
+    "trial_id": "p06-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.588184676781097
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.1441229833289981,
+     "total_ms": 0.17517199739813805
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 10,
+    "little_law_post_decision_prediction": 10.172767211379643,
+    "post_decision_commits": 10,
+    "post_enforcement_commits": 10,
+    "pre_decision_completion_rate_per_s": 2.0345534422759286,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.588184676781096,
+    "rep": 6,
+    "seed": 20261119,
+    "trial_id": "p06-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.588184676781097
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.28460900648497045,
+     "total_ms": 27.229129016632214,
+     "withdraw_ms": 26.879124983679503
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 10,
+    "little_law_post_decision_prediction": 10.18134196462735,
+    "post_decision_commits": 10,
+    "post_enforcement_commits": 10,
+    "pre_decision_completion_rate_per_s": 2.03626839292547,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.8868661312001829,
+    "rep": 7,
+    "seed": 20261120,
+    "trial_id": "p07-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.886866131200183
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 9,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 17.193813022458926,
+     "halt_ms": 0.06173702422529459,
+     "total_ms": 35.608748003141955,
+     "withdraw_ms": 18.323351978324354
+    },
+    "harness_commits": 35,
+    "in_flight_at_enforcement": 9,
+    "little_law_post_decision_prediction": 10.02845668910499,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 2.005691337820998,
+    "retried_calls": 0,
+    "sink_effect_rows": 35,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.8868661312001829,
+    "rep": 7,
+    "seed": 20261120,
+    "trial_id": "p07-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.886866131200183
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.05174797843210399,
+     "total_ms": 0.06192698492668569
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 9,
+    "little_law_post_decision_prediction": 9.558920401257149,
+    "post_decision_commits": 9,
+    "post_enforcement_commits": 9,
+    "pre_decision_completion_rate_per_s": 1.9117840802514297,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.8868661312001829,
+    "rep": 7,
+    "seed": 20261120,
+    "trial_id": "p07-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.886866131200183
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.06287900032475591,
+     "total_ms": 62.982706003822386,
+     "withdraw_ms": 62.90204401011579
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 9,
+    "little_law_post_decision_prediction": 9.559919406730481,
+    "post_decision_commits": 9,
+    "post_enforcement_commits": 9,
+    "pre_decision_completion_rate_per_s": 1.911983881346096,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.877199165922356,
+    "rep": 8,
+    "seed": 20261121,
+    "trial_id": "p08-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.877199165922356
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 9,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 382.09817101596855,
+     "halt_ms": 0.13914398732595146,
+     "total_ms": 561.518646980403,
+     "withdraw_ms": 179.22627698862925
+    },
+    "harness_commits": 35,
+    "in_flight_at_enforcement": 9,
+    "little_law_post_decision_prediction": 7.302226080717803,
+    "post_decision_commits": 3,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.4604452161435606,
+    "retried_calls": 0,
+    "sink_effect_rows": 35,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.877199165922356,
+    "rep": 8,
+    "seed": 20261121,
+    "trial_id": "p08-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.877199165922356
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.016511010471731424,
+     "total_ms": 0.021590996766462922
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 9,
+    "little_law_post_decision_prediction": 8.66542154642972,
+    "post_decision_commits": 9,
+    "post_enforcement_commits": 9,
+    "pre_decision_completion_rate_per_s": 1.7330843092859438,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.877199165922356,
+    "rep": 8,
+    "seed": 20261121,
+    "trial_id": "p08-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.877199165922356
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.10702299186959863,
+     "total_ms": 11.66297699091956,
+     "withdraw_ms": 11.525005014846101
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 8,
+    "little_law_post_decision_prediction": 9.120813856489683,
+    "post_decision_commits": 8,
+    "post_enforcement_commits": 8,
+    "pre_decision_completion_rate_per_s": 1.8241627712979365,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.9508125717896267,
+    "rep": 9,
+    "seed": 20261122,
+    "trial_id": "p09-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.950812571789626
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 6,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 30.708815000252798,
+     "halt_ms": 0.1846899976953864,
+     "total_ms": 59.852636011783034,
+     "withdraw_ms": 28.882375016110018
+    },
+    "harness_commits": 38,
+    "in_flight_at_enforcement": 6,
+    "little_law_post_decision_prediction": 11.820650356748228,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 2.3641300713496456,
+    "retried_calls": 0,
+    "sink_effect_rows": 38,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.9508125717896267,
+    "rep": 9,
+    "seed": 20261122,
+    "trial_id": "p09-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.950812571789626
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 4,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.14314099098555744,
+     "total_ms": 0.17509100143797696
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 6,
+    "little_law_post_decision_prediction": 8.63653171259958,
+    "post_decision_commits": 10,
+    "post_enforcement_commits": 10,
+    "pre_decision_completion_rate_per_s": 1.7273063425199162,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.9508125717896267,
+    "rep": 9,
+    "seed": 20261122,
+    "trial_id": "p09-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.950812571789626
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.041457999031990767,
+     "total_ms": 15.355773008195683,
+     "withdraw_ms": 15.297351987101138
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 6,
+    "little_law_post_decision_prediction": 10.458126249382262,
+    "post_decision_commits": 6,
+    "post_enforcement_commits": 6,
+    "pre_decision_completion_rate_per_s": 2.0916252498764525,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.5096938099820483,
+    "rep": 10,
+    "seed": 20261123,
+    "trial_id": "p10-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.50969380998205
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 13,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 20.760829997016117,
+     "halt_ms": 0.09411797509528697,
+     "total_ms": 36.106380983255804,
+     "withdraw_ms": 15.190247009741142
+    },
+    "harness_commits": 31,
+    "in_flight_at_enforcement": 13,
+    "little_law_post_decision_prediction": 8.35263520369505,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.6705270407390098,
+    "retried_calls": 0,
+    "sink_effect_rows": 31,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.5096938099820483,
+    "rep": 10,
+    "seed": 20261123,
+    "trial_id": "p10-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.50969380998205
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.090871995780617,
+     "total_ms": 0.10641198605298996
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 13,
+    "little_law_post_decision_prediction": 7.886238128431737,
+    "post_decision_commits": 13,
+    "post_enforcement_commits": 13,
+    "pre_decision_completion_rate_per_s": 1.5772476256863475,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.5096938099820483,
+    "rep": 10,
+    "seed": 20261123,
+    "trial_id": "p10-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.50969380998205
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.06871100049465895,
+     "total_ms": 59.25419201957993,
+     "withdraw_ms": 59.15084498701617
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 12,
+    "little_law_post_decision_prediction": 9.275580477056243,
+    "post_decision_commits": 12,
+    "post_enforcement_commits": 12,
+    "pre_decision_completion_rate_per_s": 1.8551160954112487,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.647790076930828,
+    "rep": 11,
+    "seed": 20261124,
+    "trial_id": "p11-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.64779007693083
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 11,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 7.16311001451686,
+     "halt_ms": 0.02348402631469071,
+     "total_ms": 17.41791600943543,
+     "withdraw_ms": 10.21505199605599
+    },
+    "harness_commits": 33,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 8.767137984175026,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.753427596835005,
+    "retried_calls": 0,
+    "sink_effect_rows": 33,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.647790076930828,
+    "rep": 11,
+    "seed": 20261124,
+    "trial_id": "p11-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.64779007693083
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 3,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.044373999116942286,
+     "total_ms": 0.053682015277445316
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 10,
+    "little_law_post_decision_prediction": 7.3814644049292735,
+    "post_decision_commits": 13,
+    "post_enforcement_commits": 13,
+    "pre_decision_completion_rate_per_s": 1.4762928809858546,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.647790076930828,
+    "rep": 11,
+    "seed": 20261124,
+    "trial_id": "p11-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.64779007693083
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.09632197907194495,
+     "total_ms": 45.88479999802075,
+     "withdraw_ms": 45.7531209976878
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 10,
+    "little_law_post_decision_prediction": 8.742273349689512,
+    "post_decision_commits": 10,
+    "post_enforcement_commits": 10,
+    "pre_decision_completion_rate_per_s": 1.7484546699379024,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.689180536810445,
+    "rep": 12,
+    "seed": 20261125,
+    "trial_id": "p12-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.689180536810444
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 6,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 96.42356398398988,
+     "halt_ms": 0.3094760177191347,
+     "total_ms": 155.64976900350302,
+     "withdraw_ms": 58.867986022960395
+    },
+    "harness_commits": 38,
+    "in_flight_at_enforcement": 6,
+    "little_law_post_decision_prediction": 11.040123562723416,
+    "post_decision_commits": 1,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 2.2080247125446832,
+    "retried_calls": 0,
+    "sink_effect_rows": 38,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.689180536810445,
+    "rep": 12,
+    "seed": 20261125,
+    "trial_id": "p12-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.689180536810444
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.04225998418405652,
+     "total_ms": 0.049152993597090244
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 7,
+    "little_law_post_decision_prediction": 11.0549072129619,
+    "post_decision_commits": 7,
+    "post_enforcement_commits": 7,
+    "pre_decision_completion_rate_per_s": 2.21098144259238,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.689180536810445,
+    "rep": 12,
+    "seed": 20261125,
+    "trial_id": "p12-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.689180536810444
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 1,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.07099399226717651,
+     "total_ms": 313.7377820094116,
+     "withdraw_ms": 313.61995899351314
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 8.26824374750047,
+    "post_decision_commits": 13,
+    "post_enforcement_commits": 12,
+    "pre_decision_completion_rate_per_s": 1.6536487495000942,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.9493609286079052,
+    "rep": 13,
+    "seed": 20261126,
+    "trial_id": "p13-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.949360928607906
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 11,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 229.22373897745274,
+     "halt_ms": 0.101482990430668,
+     "total_ms": 1141.9725099985953,
+     "withdraw_ms": 912.5984759884886
+    },
+    "harness_commits": 33,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 8.094450652675567,
+    "post_decision_commits": 2,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.6188901305351133,
+    "retried_calls": 0,
+    "sink_effect_rows": 33,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.9493609286079052,
+    "rep": 13,
+    "seed": 20261126,
+    "trial_id": "p13-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.949360928607906
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.11399600771255791,
+     "total_ms": 0.13984399265609682
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 8.571041262655017,
+    "post_decision_commits": 11,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 1.7142082525310034,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.9493609286079052,
+    "rep": 13,
+    "seed": 20261126,
+    "trial_id": "p13-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.949360928607906
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.2187639765907079,
+     "total_ms": 256.8411309912335,
+     "withdraw_ms": 256.59307098248973
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 8.581257040071424,
+    "post_decision_commits": 12,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 1.7162514080142848,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.07378289986470166,
+    "rep": 14,
+    "seed": 20261127,
+    "trial_id": "p14-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.073782899864703
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 13,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 68.83389901486225,
+     "halt_ms": 0.040516984881833196,
+     "total_ms": 354.94763500173576,
+     "withdraw_ms": 286.04233998339623
+    },
+    "harness_commits": 31,
+    "in_flight_at_enforcement": 13,
+    "little_law_post_decision_prediction": 8.44937488422108,
+    "post_decision_commits": 1,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.6898749768442158,
+    "retried_calls": 0,
+    "sink_effect_rows": 31,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.07378289986470166,
+    "rep": 14,
+    "seed": 20261127,
+    "trial_id": "p14-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.073782899864703
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 2,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.06646598922088742,
+     "total_ms": 0.08530198829248548
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 12,
+    "little_law_post_decision_prediction": 8.446946312271482,
+    "post_decision_commits": 14,
+    "post_enforcement_commits": 14,
+    "pre_decision_completion_rate_per_s": 1.6893892624542963,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.07378289986470166,
+    "rep": 14,
+    "seed": 20261127,
+    "trial_id": "p14-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.073782899864703
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 1,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.03937401925213635,
+     "total_ms": 21.714216010877863,
+     "withdraw_ms": 21.654203010257334
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 13,
+    "little_law_post_decision_prediction": 8.448255981449309,
+    "post_decision_commits": 14,
+    "post_enforcement_commits": 14,
+    "pre_decision_completion_rate_per_s": 1.6896511962898617,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.9218679832598093,
+    "rep": 15,
+    "seed": 20261128,
+    "trial_id": "p15-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.92186798325981
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 11,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 62.75934100267477,
+     "halt_ms": 0.08217501454055309,
+     "total_ms": 189.73150601959787,
+     "withdraw_ms": 126.82695098919794
+    },
+    "harness_commits": 33,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 10.961692409635953,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 2.1923384819271905,
+    "retried_calls": 0,
+    "sink_effect_rows": 33,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.9218679832598093,
+    "rep": 15,
+    "seed": 20261128,
+    "trial_id": "p15-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.92186798325981
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.039956008549779654,
+     "total_ms": 0.04646799061447382
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 10.979055655159842,
+    "post_decision_commits": 11,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 2.1958111310319683,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.9218679832598093,
+    "rep": 15,
+    "seed": 20261128,
+    "trial_id": "p15-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.92186798325981
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.07205599104054272,
+     "total_ms": 34.08469000714831,
+     "withdraw_ms": 33.99058201466687
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 10.981759990129218,
+    "post_decision_commits": 11,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 2.1963519980258437,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.04681222773950644,
+    "rep": 16,
+    "seed": 20261129,
+    "trial_id": "p16-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.046812227739508
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 10,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 352.00371500104666,
+     "halt_ms": 0.1232040231116116,
+     "total_ms": 1657.9742680187337,
+     "withdraw_ms": 1305.785011005355
+    },
+    "harness_commits": 34,
+    "in_flight_at_enforcement": 10,
+    "little_law_post_decision_prediction": 9.462330428366911,
+    "post_decision_commits": 2,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.8924660856733821,
+    "retried_calls": 0,
+    "sink_effect_rows": 34,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.04681222773950644,
+    "rep": 16,
+    "seed": 20261129,
+    "trial_id": "p16-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.046812227739508
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 3,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.21969599765725434,
+     "total_ms": 0.2506249875295907
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 9,
+    "little_law_post_decision_prediction": 9.458093696872806,
+    "post_decision_commits": 12,
+    "post_enforcement_commits": 12,
+    "pre_decision_completion_rate_per_s": 1.8916187393745612,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.04681222773950644,
+    "rep": 16,
+    "seed": 20261129,
+    "trial_id": "p16-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.046812227739508
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 2,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.07814800483174622,
+     "total_ms": 1473.7204650009517,
+     "withdraw_ms": 1473.6172099946998
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 10,
+    "little_law_post_decision_prediction": 7.961677782341794,
+    "post_decision_commits": 15,
+    "post_enforcement_commits": 12,
+    "pre_decision_completion_rate_per_s": 1.5923355564683588,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.5214962831011976,
+    "rep": 17,
+    "seed": 20261130,
+    "trial_id": "p17-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.521496283101197
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 12,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 44.6322180214338,
+     "halt_ms": 0.11434699990786612,
+     "total_ms": 178.78736200509593,
+     "withdraw_ms": 133.95506399683654
+    },
+    "harness_commits": 32,
+    "in_flight_at_enforcement": 12,
+    "little_law_post_decision_prediction": 9.728153294910825,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.9456306589821653,
+    "retried_calls": 0,
+    "sink_effect_rows": 32,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.5214962831011976,
+    "rep": 17,
+    "seed": 20261130,
+    "trial_id": "p17-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.521496283101197
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.051718001486733556,
+     "total_ms": 0.0640310172457248
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 12,
+    "little_law_post_decision_prediction": 11.130212456620379,
+    "post_decision_commits": 12,
+    "post_enforcement_commits": 12,
+    "pre_decision_completion_rate_per_s": 2.2260424913240757,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.5214962831011976,
+    "rep": 17,
+    "seed": 20261130,
+    "trial_id": "p17-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.521496283101197
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.08656401769258082,
+     "total_ms": 30.179612018400803,
+     "withdraw_ms": 30.051890993490815
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 12,
+    "little_law_post_decision_prediction": 11.11668324623539,
+    "post_decision_commits": 12,
+    "post_enforcement_commits": 12,
+    "pre_decision_completion_rate_per_s": 2.223336649247078,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.589251694037173,
+    "rep": 18,
+    "seed": 20261131,
+    "trial_id": "p18-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.589251694037173
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 12,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 44.66986900661141,
+     "halt_ms": 0.05492399213835597,
+     "total_ms": 122.30608699610457,
+     "withdraw_ms": 77.5372909847647
+    },
+    "harness_commits": 32,
+    "in_flight_at_enforcement": 12,
+    "little_law_post_decision_prediction": 6.934047507299797,
+    "post_decision_commits": 1,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.3868095014599595,
+    "retried_calls": 0,
+    "sink_effect_rows": 32,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.589251694037173,
+    "rep": 18,
+    "seed": 20261131,
+    "trial_id": "p18-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.589251694037173
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.10377602302469313,
+     "total_ms": 0.12208102270960808
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 12,
+    "little_law_post_decision_prediction": 8.321633765054134,
+    "post_decision_commits": 12,
+    "post_enforcement_commits": 12,
+    "pre_decision_completion_rate_per_s": 1.664326753010827,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.589251694037173,
+    "rep": 18,
+    "seed": 20261131,
+    "trial_id": "p18-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.589251694037173
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.1945690019056201,
+     "total_ms": 612.8380040172487,
+     "withdraw_ms": 612.5122570083477
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 12,
+    "little_law_post_decision_prediction": 7.397482068741612,
+    "post_decision_commits": 13,
+    "post_enforcement_commits": 12,
+    "pre_decision_completion_rate_per_s": 1.4794964137483224,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.6750746045137683,
+    "rep": 19,
+    "seed": 20261132,
+    "trial_id": "p19-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.675074604513767
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 13,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 32.582943997113034,
+     "halt_ms": 0.07250701310113072,
+     "total_ms": 223.4412989928387,
+     "withdraw_ms": 190.7226180192083
+    },
+    "harness_commits": 31,
+    "in_flight_at_enforcement": 13,
+    "little_law_post_decision_prediction": 9.65987883490009,
+    "post_decision_commits": 1,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.931975766980018,
+    "retried_calls": 0,
+    "sink_effect_rows": 31,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.6750746045137683,
+    "rep": 19,
+    "seed": 20261132,
+    "trial_id": "p19-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.675074604513767
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.06565402145497501,
+     "total_ms": 0.07719601853750646
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 14,
+    "little_law_post_decision_prediction": 9.662031335621275,
+    "post_decision_commits": 14,
+    "post_enforcement_commits": 14,
+    "pre_decision_completion_rate_per_s": 1.9324062671242552,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.6750746045137683,
+    "rep": 19,
+    "seed": 20261132,
+    "trial_id": "p19-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.675074604513767
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.047901005018502474,
+     "total_ms": 10.564800992142409,
+     "withdraw_ms": 10.50136098638177
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 14,
+    "little_law_post_decision_prediction": 9.176079166134524,
+    "post_decision_commits": 14,
+    "post_enforcement_commits": 14,
+    "pre_decision_completion_rate_per_s": 1.8352158332269048,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.5997601266637151,
+    "rep": 20,
+    "seed": 20261133,
+    "trial_id": "p20-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.599760126663714
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 11,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 296.35058299754746,
+     "halt_ms": 0.05263002822175622,
+     "total_ms": 1489.8387340072077,
+     "withdraw_ms": 1193.4077180048916
+    },
+    "harness_commits": 33,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 9.208787260846393,
+    "post_decision_commits": 1,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.8417574521692786,
+    "retried_calls": 0,
+    "sink_effect_rows": 33,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.5997601266637151,
+    "rep": 20,
+    "seed": 20261133,
+    "trial_id": "p20-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.599760126663714
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.03195999306626618,
+     "total_ms": 0.04226999590173364
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 9.689732684244085,
+    "post_decision_commits": 11,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 1.9379465368488171,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.5997601266637151,
+    "rep": 20,
+    "seed": 20261133,
+    "trial_id": "p20-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.599760126663714
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.06885098991915584,
+     "total_ms": 19.380352983716875,
+     "withdraw_ms": 19.283518980955705
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 9.686234452806726,
+    "post_decision_commits": 11,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 1.9372468905613454,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.1888144698797336,
+    "rep": 21,
+    "seed": 20261134,
+    "trial_id": "p21-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.188814469879734
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 11,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 1059.32212001062,
+     "halt_ms": 0.08027200237847865,
+     "total_ms": 1307.029859017348,
+     "withdraw_ms": 247.57862399565056
+    },
+    "harness_commits": 33,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 6.595702632014647,
+    "post_decision_commits": 3,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.3191405264029294,
+    "retried_calls": 0,
+    "sink_effect_rows": 33,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.1888144698797336,
+    "rep": 21,
+    "seed": 20261134,
+    "trial_id": "p21-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.188814469879734
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.050134985940530896,
+     "total_ms": 0.06055500125512481
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 8.004044921080652,
+    "post_decision_commits": 11,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 1.6008089842161304,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.1888144698797336,
+    "rep": 21,
+    "seed": 20261134,
+    "trial_id": "p21-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.188814469879734
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 1,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.0867340131662786,
+     "total_ms": 500.45871999464,
+     "withdraw_ms": 500.3338640090078
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 13,
+    "little_law_post_decision_prediction": 6.598777140846108,
+    "post_decision_commits": 14,
+    "post_enforcement_commits": 14,
+    "pre_decision_completion_rate_per_s": 1.3197554281692216,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.871112799591409,
+    "rep": 22,
+    "seed": 20261135,
+    "trial_id": "p22-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.87111279959141
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 10,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 124.9714510049671,
+     "halt_ms": 0.06747798761352897,
+     "total_ms": 585.695140005555,
+     "withdraw_ms": 460.61016502790153
+    },
+    "harness_commits": 34,
+    "in_flight_at_enforcement": 10,
+    "little_law_post_decision_prediction": 8.22313842511775,
+    "post_decision_commits": 1,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.64462768502355,
+    "retried_calls": 0,
+    "sink_effect_rows": 34,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.871112799591409,
+    "rep": 22,
+    "seed": 20261135,
+    "trial_id": "p22-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.87111279959141
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.05418300861492753,
+     "total_ms": 0.06563399801962078
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 9,
+    "little_law_post_decision_prediction": 8.67227921674244,
+    "post_decision_commits": 9,
+    "post_enforcement_commits": 9,
+    "pre_decision_completion_rate_per_s": 1.7344558433484882,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.871112799591409,
+    "rep": 22,
+    "seed": 20261135,
+    "trial_id": "p22-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.87111279959141
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.02215200220234692,
+     "total_ms": 52.34730298980139,
+     "withdraw_ms": 52.30626498814672
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 9,
+    "little_law_post_decision_prediction": 8.682122543642256,
+    "post_decision_commits": 9,
+    "post_enforcement_commits": 9,
+    "pre_decision_completion_rate_per_s": 1.736424508728451,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.96948254856652,
+    "rep": 23,
+    "seed": 20261136,
+    "trial_id": "p23-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.96948254856652
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 9,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 464.4880809937604,
+     "halt_ms": 0.117661984404549,
+     "total_ms": 1316.6201319836546,
+     "withdraw_ms": 851.9660970196128
+    },
+    "harness_commits": 35,
+    "in_flight_at_enforcement": 9,
+    "little_law_post_decision_prediction": 9.54405586431459,
+    "post_decision_commits": 4,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.9088111728629178,
+    "retried_calls": 0,
+    "sink_effect_rows": 35,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.96948254856652,
+    "rep": 23,
+    "seed": 20261136,
+    "trial_id": "p23-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.96948254856652
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 2,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.0702030083630234,
+     "total_ms": 0.08074298966675997
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 13,
+    "little_law_post_decision_prediction": 8.178424801151763,
+    "post_decision_commits": 15,
+    "post_enforcement_commits": 15,
+    "pre_decision_completion_rate_per_s": 1.6356849602303525,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.96948254856652,
+    "rep": 23,
+    "seed": 20261136,
+    "trial_id": "p23-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.96948254856652
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.45650399988517165,
+     "total_ms": 218.27357800793834,
+     "withdraw_ms": 217.56177098723128
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 8,
+    "little_law_post_decision_prediction": 10.901526128329566,
+    "post_decision_commits": 8,
+    "post_enforcement_commits": 8,
+    "pre_decision_completion_rate_per_s": 2.1803052256659132,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.1995354295476699,
+    "rep": 24,
+    "seed": 20261137,
+    "trial_id": "p24-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.19953542954767
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 12,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 14.461991988355294,
+     "halt_ms": 0.060816004406660795,
+     "total_ms": 27.726555010303855,
+     "withdraw_ms": 13.153662002878264
+    },
+    "harness_commits": 32,
+    "in_flight_at_enforcement": 12,
+    "little_law_post_decision_prediction": 7.874029130603271,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.5748058261206541,
+    "retried_calls": 0,
+    "sink_effect_rows": 32,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.1995354295476699,
+    "rep": 24,
+    "seed": 20261137,
+    "trial_id": "p24-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.19953542954767
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 3,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.11206199997104704,
+     "total_ms": 0.1260490098502487
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 9,
+    "little_law_post_decision_prediction": 8.40684368673321,
+    "post_decision_commits": 12,
+    "post_enforcement_commits": 12,
+    "pre_decision_completion_rate_per_s": 1.681368737346642,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.1995354295476699,
+    "rep": 24,
+    "seed": 20261137,
+    "trial_id": "p24-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.19953542954767
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.062959996284917,
+     "total_ms": 154.5109319849871,
+     "withdraw_ms": 154.40617300919257
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 8.399350185888562,
+    "post_decision_commits": 11,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 1.6798700371777122,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.0896190402503285,
+    "rep": 25,
+    "seed": 20261138,
+    "trial_id": "p25-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.08961904025033
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 15,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 35.02891099196859,
+     "halt_ms": 0.1969739969354123,
+     "total_ms": 87.74369201273657,
+     "withdraw_ms": 52.379617001861334
+    },
+    "harness_commits": 29,
+    "in_flight_at_enforcement": 15,
+    "little_law_post_decision_prediction": 8.508948679061545,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.701789735812309,
+    "retried_calls": 0,
+    "sink_effect_rows": 29,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.0896190402503285,
+    "rep": 25,
+    "seed": 20261138,
+    "trial_id": "p25-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.08961904025033
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.2209490048699081,
+     "total_ms": 0.26316900039091706
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 15,
+    "little_law_post_decision_prediction": 8.511947161786571,
+    "post_decision_commits": 15,
+    "post_enforcement_commits": 15,
+    "pre_decision_completion_rate_per_s": 1.7023894323573143,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.0896190402503285,
+    "rep": 25,
+    "seed": 20261138,
+    "trial_id": "p25-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.08961904025033
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.19120299839414656,
+     "total_ms": 52.20944501343183,
+     "withdraw_ms": 51.97278599371202
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 15,
+    "little_law_post_decision_prediction": 8.029099826923137,
+    "post_decision_commits": 15,
+    "post_enforcement_commits": 15,
+    "pre_decision_completion_rate_per_s": 1.6058199653846272,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.9680488299231595,
+    "rep": 26,
+    "seed": 20261139,
+    "trial_id": "p26-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.96804882992316
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 8,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 9.038141986820847,
+     "halt_ms": 0.020969018805772066,
+     "total_ms": 21.266776020638645,
+     "withdraw_ms": 12.182689009932801
+    },
+    "harness_commits": 36,
+    "in_flight_at_enforcement": 8,
+    "little_law_post_decision_prediction": 12.273265854848566,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 2.454653170969713,
+    "retried_calls": 0,
+    "sink_effect_rows": 36,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.9680488299231595,
+    "rep": 26,
+    "seed": 20261139,
+    "trial_id": "p26-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.96804882992316
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.05144800525158644,
+     "total_ms": 0.0600240018684417
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 9.550343623334903,
+    "post_decision_commits": 11,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 1.9100687246669807,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.9680488299231595,
+    "rep": 26,
+    "seed": 20261139,
+    "trial_id": "p26-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.96804882992316
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.037430989323183894,
+     "total_ms": 34.96937599265948,
+     "withdraw_ms": 34.898551995866
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 9,
+    "little_law_post_decision_prediction": 10.896432851893751,
+    "post_decision_commits": 9,
+    "post_enforcement_commits": 9,
+    "pre_decision_completion_rate_per_s": 2.1792865703787503,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.0914883017763097,
+    "rep": 27,
+    "seed": 20261140,
+    "trial_id": "p27-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.09148830177631
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 12,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 12.01134198345244,
+     "halt_ms": 0.16205600695684552,
+     "total_ms": 28.518870007246733,
+     "withdraw_ms": 16.283654986182228
+    },
+    "harness_commits": 32,
+    "in_flight_at_enforcement": 12,
+    "little_law_post_decision_prediction": 11.359507718147857,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 2.2719015436295713,
+    "retried_calls": 0,
+    "sink_effect_rows": 32,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.0914883017763097,
+    "rep": 27,
+    "seed": 20261140,
+    "trial_id": "p27-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.09148830177631
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.1318800204899162,
+     "total_ms": 0.18014200031757355
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 10.887800976966231,
+    "post_decision_commits": 11,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 2.177560195393246,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.0914883017763097,
+    "rep": 27,
+    "seed": 20261140,
+    "trial_id": "p27-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.09148830177631
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.06007400224916637,
+     "total_ms": 143.82594299968332,
+     "withdraw_ms": 143.73120400705375
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 12,
+    "little_law_post_decision_prediction": 10.396992167517325,
+    "post_decision_commits": 12,
+    "post_enforcement_commits": 12,
+    "pre_decision_completion_rate_per_s": 2.079398433503465,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.5536748943791943,
+    "rep": 28,
+    "seed": 20261141,
+    "trial_id": "p28-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.553674894379196
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 14,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 621.3736269855872,
+     "halt_ms": 0.040696992073208094,
+     "total_ms": 1240.9044730011374,
+     "withdraw_ms": 619.4338839850388
+    },
+    "harness_commits": 30,
+    "in_flight_at_enforcement": 14,
+    "little_law_post_decision_prediction": 8.742178273214984,
+    "post_decision_commits": 2,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.7484356546429969,
+    "retried_calls": 0,
+    "sink_effect_rows": 30,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.5536748943791943,
+    "rep": 28,
+    "seed": 20261141,
+    "trial_id": "p28-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.553674894379196
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.046778994146734476,
+     "total_ms": 0.05967300967313349
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 10,
+    "little_law_post_decision_prediction": 11.657393231475892,
+    "post_decision_commits": 10,
+    "post_enforcement_commits": 10,
+    "pre_decision_completion_rate_per_s": 2.3314786462951784,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.5536748943791943,
+    "rep": 28,
+    "seed": 20261141,
+    "trial_id": "p28-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.553674894379196
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.040557002648711205,
+     "total_ms": 12.503800011472777,
+     "withdraw_ms": 12.435931013897061
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 10,
+    "little_law_post_decision_prediction": 11.653782268334869,
+    "post_decision_commits": 10,
+    "post_enforcement_commits": 10,
+    "pre_decision_completion_rate_per_s": 2.330756453666974,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.4868722388002584,
+    "rep": 29,
+    "seed": 20261142,
+    "trial_id": "p29-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.48687223880026
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 8,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 1175.5073629901744,
+     "halt_ms": 0.04267101758159697,
+     "total_ms": 2042.2953400120605,
+     "withdraw_ms": 866.6913030028809
+    },
+    "harness_commits": 36,
+    "in_flight_at_enforcement": 8,
+    "little_law_post_decision_prediction": 9.29512850296459,
+    "post_decision_commits": 5,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.8590257005929178,
+    "retried_calls": 0,
+    "sink_effect_rows": 36,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.4868722388002584,
+    "rep": 29,
+    "seed": 20261142,
+    "trial_id": "p29-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.48687223880026
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.08573199738748372,
+     "total_ms": 0.09227500413544476
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 12,
+    "little_law_post_decision_prediction": 9.756295266249712,
+    "post_decision_commits": 12,
+    "post_enforcement_commits": 12,
+    "pre_decision_completion_rate_per_s": 1.9512590532499425,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.4868722388002584,
+    "rep": 29,
+    "seed": 20261142,
+    "trial_id": "p29-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.48687223880026
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.01938597415573895,
+     "total_ms": 109.25959298037924,
+     "withdraw_ms": 109.22448700875975
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 9,
+    "little_law_post_decision_prediction": 10.697228818214093,
+    "post_decision_commits": 9,
+    "post_enforcement_commits": 9,
+    "pre_decision_completion_rate_per_s": 2.1394457636428186,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.854867037278705,
+    "rep": 30,
+    "seed": 20261143,
+    "trial_id": "p30-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.854867037278705
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 10,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 205.23347501875833,
+     "halt_ms": 0.12870400678366423,
+     "total_ms": 435.1190990128089,
+     "withdraw_ms": 229.64829500415362
+    },
+    "harness_commits": 34,
+    "in_flight_at_enforcement": 10,
+    "little_law_post_decision_prediction": 10.491221375464264,
+    "post_decision_commits": 1,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 2.0982442750928527,
+    "retried_calls": 0,
+    "sink_effect_rows": 34,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.854867037278705,
+    "rep": 30,
+    "seed": 20261143,
+    "trial_id": "p30-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.854867037278705
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.0463780015707016,
+     "total_ms": 0.05955298547632992
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 13,
+    "little_law_post_decision_prediction": 8.685778751957681,
+    "post_decision_commits": 13,
+    "post_enforcement_commits": 13,
+    "pre_decision_completion_rate_per_s": 1.7371557503915362,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.854867037278705,
+    "rep": 30,
+    "seed": 20261143,
+    "trial_id": "p30-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.854867037278705
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.06700700032524765,
+     "total_ms": 81.62491000257432,
+     "withdraw_ms": 81.49380100076087
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 13,
+    "little_law_post_decision_prediction": 7.767272128633521,
+    "post_decision_commits": 14,
+    "post_enforcement_commits": 13,
+    "pre_decision_completion_rate_per_s": 1.5534544257267042,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.6174082223302437,
+    "rep": 31,
+    "seed": 20261144,
+    "trial_id": "p31-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.617408222330244
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 9,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 29.759553988697007,
+     "halt_ms": 0.044935004552826285,
+     "total_ms": 70.85792798898183,
+     "withdraw_ms": 41.02603698265739
+    },
+    "harness_commits": 35,
+    "in_flight_at_enforcement": 9,
+    "little_law_post_decision_prediction": 10.662652272595533,
+    "post_decision_commits": 1,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 2.132530454519107,
+    "retried_calls": 0,
+    "sink_effect_rows": 35,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.6174082223302437,
+    "rep": 31,
+    "seed": 20261144,
+    "trial_id": "p31-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.617408222330244
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.0987270032055676,
+     "total_ms": 0.11569898924790323
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 8,
+    "little_law_post_decision_prediction": 11.622215305562893,
+    "post_decision_commits": 8,
+    "post_enforcement_commits": 8,
+    "pre_decision_completion_rate_per_s": 2.3244430611125786,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.6174082223302437,
+    "rep": 31,
+    "seed": 20261144,
+    "trial_id": "p31-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.617408222330244
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 2,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.46370801283046603,
+     "total_ms": 1203.25715499348,
+     "withdraw_ms": 1202.7677180012688
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 9,
+    "little_law_post_decision_prediction": 8.716374583213728,
+    "post_decision_commits": 14,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 1.7432749166427455,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.0609074073624765,
+    "rep": 32,
+    "seed": 20261145,
+    "trial_id": "p32-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.06090740736248
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 8,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 12.36692100064829,
+     "halt_ms": 0.025098008336499333,
+     "total_ms": 30.625323008280247,
+     "withdraw_ms": 18.17386198672466
+    },
+    "harness_commits": 36,
+    "in_flight_at_enforcement": 8,
+    "little_law_post_decision_prediction": 10.422446333277568,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 2.0844892666555137,
+    "retried_calls": 0,
+    "sink_effect_rows": 36,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.0609074073624765,
+    "rep": 32,
+    "seed": 20261145,
+    "trial_id": "p32-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.06090740736248
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.04451500717550516,
+     "total_ms": 0.05307100946083665
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 8,
+    "little_law_post_decision_prediction": 10.422140792185628,
+    "post_decision_commits": 8,
+    "post_enforcement_commits": 8,
+    "pre_decision_completion_rate_per_s": 2.0844281584371256,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.0609074073624765,
+    "rep": 32,
+    "seed": 20261145,
+    "trial_id": "p32-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.06090740736248
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.20811401191167533,
+     "total_ms": 20.25514599517919,
+     "withdraw_ms": 19.999992015073076
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 8,
+    "little_law_post_decision_prediction": 10.422772966333085,
+    "post_decision_commits": 8,
+    "post_enforcement_commits": 8,
+    "pre_decision_completion_rate_per_s": 2.084554593266617,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.3309858966475414,
+    "rep": 33,
+    "seed": 20261146,
+    "trial_id": "p33-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.33098589664754
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 7,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 20.77152399579063,
+     "halt_ms": 0.09572101407684386,
+     "total_ms": 42.46301099192351,
+     "withdraw_ms": 21.53833699412644
+    },
+    "harness_commits": 37,
+    "in_flight_at_enforcement": 7,
+    "little_law_post_decision_prediction": 9.358863526166685,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.8717727052333368,
+    "retried_calls": 0,
+    "sink_effect_rows": 37,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.3309858966475414,
+    "rep": 33,
+    "seed": 20261146,
+    "trial_id": "p33-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.33098589664754
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 3,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.19001998589374125,
+     "total_ms": 0.2111699723172933
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 8,
+    "little_law_post_decision_prediction": 8.890344007425647,
+    "post_decision_commits": 11,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 1.7780688014851291,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.3309858966475414,
+    "rep": 33,
+    "seed": 20261146,
+    "trial_id": "p33-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.33098589664754
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 1,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.07094399188645184,
+     "total_ms": 227.4226649897173,
+     "withdraw_ms": 227.33610100112855
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 7,
+    "little_law_post_decision_prediction": 8.888644965610935,
+    "post_decision_commits": 8,
+    "post_enforcement_commits": 8,
+    "pre_decision_completion_rate_per_s": 1.777728993122187,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.4754805070939065,
+    "rep": 34,
+    "seed": 20261147,
+    "trial_id": "p34-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.475480507093906
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 10,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 21.44738400238566,
+     "halt_ms": 0.1295149850193411,
+     "total_ms": 33.891600993229076,
+     "withdraw_ms": 12.273513013496995
+    },
+    "harness_commits": 34,
+    "in_flight_at_enforcement": 10,
+    "little_law_post_decision_prediction": 8.362059195173986,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.672411839034797,
+    "retried_calls": 0,
+    "sink_effect_rows": 34,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.4754805070939065,
+    "rep": 34,
+    "seed": 20261147,
+    "trial_id": "p34-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.475480507093906
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 3,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.11280301259830594,
+     "total_ms": 0.17759599722921848
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 7.428815317926385,
+    "post_decision_commits": 14,
+    "post_enforcement_commits": 14,
+    "pre_decision_completion_rate_per_s": 1.485763063585277,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.4754805070939065,
+    "rep": 34,
+    "seed": 20261147,
+    "trial_id": "p34-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.475480507093906
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.1986270071938634,
+     "total_ms": 73.00849299645051,
+     "withdraw_ms": 72.65695600653999
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 10,
+    "little_law_post_decision_prediction": 9.744559781769208,
+    "post_decision_commits": 10,
+    "post_enforcement_commits": 10,
+    "pre_decision_completion_rate_per_s": 1.9489119563538415,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.24935381273411927,
+    "rep": 35,
+    "seed": 20261148,
+    "trial_id": "p35-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.24935381273412
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 15,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 1195.3462310193572,
+     "halt_ms": 0.08923900895752013,
+     "total_ms": 2134.5522009942215,
+     "withdraw_ms": 939.0739600057714
+    },
+    "harness_commits": 29,
+    "in_flight_at_enforcement": 15,
+    "little_law_post_decision_prediction": 5.9170671001601125,
+    "post_decision_commits": 4,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.1834134200320225,
+    "retried_calls": 0,
+    "sink_effect_rows": 29,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.24935381273411927,
+    "rep": 35,
+    "seed": 20261148,
+    "trial_id": "p35-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.24935381273412
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 4,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.056746997870504856,
+     "total_ms": 0.07226699381135404
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 16,
+    "little_law_post_decision_prediction": 5.426795753887181,
+    "post_decision_commits": 20,
+    "post_enforcement_commits": 20,
+    "pre_decision_completion_rate_per_s": 1.0853591507774363,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.24935381273411927,
+    "rep": 35,
+    "seed": 20261148,
+    "trial_id": "p35-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.24935381273412
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 1,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.16831900575198233,
+     "total_ms": 72.43698401725851,
+     "withdraw_ms": 72.23514199722558
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 18,
+    "little_law_post_decision_prediction": 5.919376961321019,
+    "post_decision_commits": 19,
+    "post_enforcement_commits": 19,
+    "pre_decision_completion_rate_per_s": 1.1838753922642038,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.46505383239783615,
+    "rep": 36,
+    "seed": 20261149,
+    "trial_id": "p36-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.465053832397835
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 13,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 22.577449009986594,
+     "halt_ms": 0.08319798507727683,
+     "total_ms": 39.12887998740189,
+     "withdraw_ms": 16.414602025179192
+    },
+    "harness_commits": 31,
+    "in_flight_at_enforcement": 13,
+    "little_law_post_decision_prediction": 9.266774692293966,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.853354938458793,
+    "retried_calls": 0,
+    "sink_effect_rows": 31,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.46505383239783615,
+    "rep": 36,
+    "seed": 20261149,
+    "trial_id": "p36-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.465053832397835
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.05228901864029467,
+     "total_ms": 0.06496300920844078
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 14,
+    "little_law_post_decision_prediction": 8.77760717335039,
+    "post_decision_commits": 14,
+    "post_enforcement_commits": 14,
+    "pre_decision_completion_rate_per_s": 1.755521434670078,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.46505383239783615,
+    "rep": 36,
+    "seed": 20261149,
+    "trial_id": "p36-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.465053832397835
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.03447500057518482,
+     "total_ms": 58.659456990426406,
+     "withdraw_ms": 58.59824101207778
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 13,
+    "little_law_post_decision_prediction": 9.26342051613039,
+    "post_decision_commits": 13,
+    "post_enforcement_commits": 13,
+    "pre_decision_completion_rate_per_s": 1.8526841032260781,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.20076948145233353,
+    "rep": 37,
+    "seed": 20261150,
+    "trial_id": "p37-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.200769481452333
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 12,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 11.665505997370929,
+     "halt_ms": 0.04809102392755449,
+     "total_ms": 25.95754901994951,
+     "withdraw_ms": 14.210687979357317
+    },
+    "harness_commits": 32,
+    "in_flight_at_enforcement": 12,
+    "little_law_post_decision_prediction": 8.899328510297558,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.7798657020595117,
+    "retried_calls": 0,
+    "sink_effect_rows": 32,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.20076948145233353,
+    "rep": 37,
+    "seed": 20261150,
+    "trial_id": "p37-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.200769481452333
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.1176029909402132,
+     "total_ms": 0.13306198525242507
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 12,
+    "little_law_post_decision_prediction": 8.902604014406073,
+    "post_decision_commits": 12,
+    "post_enforcement_commits": 12,
+    "pre_decision_completion_rate_per_s": 1.7805208028812145,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.20076948145233353,
+    "rep": 37,
+    "seed": 20261150,
+    "trial_id": "p37-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.200769481452333
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.07762698805890977,
+     "total_ms": 21.285644004819915,
+     "withdraw_ms": 21.1773990013171
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 13,
+    "little_law_post_decision_prediction": 8.400744860692164,
+    "post_decision_commits": 13,
+    "post_enforcement_commits": 13,
+    "pre_decision_completion_rate_per_s": 1.6801489721384328,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 1.794343572077263,
+    "rep": 38,
+    "seed": 20261151,
+    "trial_id": "p38-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.794343572077263
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 6,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 1068.0128190142568,
+     "halt_ms": 0.13038699398748577,
+     "total_ms": 1585.2764319861308,
+     "withdraw_ms": 517.0557090023067
+    },
+    "harness_commits": 38,
+    "in_flight_at_enforcement": 6,
+    "little_law_post_decision_prediction": 9.160188337324678,
+    "post_decision_commits": 4,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.8320376674649357,
+    "retried_calls": 0,
+    "sink_effect_rows": 38,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 1.794343572077263,
+    "rep": 38,
+    "seed": 20261151,
+    "trial_id": "p38-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.794343572077263
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.07939100032672286,
+     "total_ms": 0.10240401024930179
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 6,
+    "little_law_post_decision_prediction": 11.457006923698316,
+    "post_decision_commits": 6,
+    "post_enforcement_commits": 6,
+    "pre_decision_completion_rate_per_s": 2.2914013847396633,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 1.794343572077263,
+    "rep": 38,
+    "seed": 20261151,
+    "trial_id": "p38-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 21.794343572077263
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.15050498768687248,
+     "total_ms": 56.42389800050296,
+     "withdraw_ms": 56.188191985711455
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 7,
+    "little_law_post_decision_prediction": 10.98715985889541,
+    "post_decision_commits": 7,
+    "post_enforcement_commits": 7,
+    "pre_decision_completion_rate_per_s": 2.197431971779082,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "fence_sink",
+    "fault": "none",
+    "phase_seconds": 0.5388488495175714,
+    "rep": 39,
+    "seed": 20261152,
+    "trial_id": "p39-fence_sink-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.53884884951757
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 11,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "fence_ms": 23.34867700119503,
+     "halt_ms": 0.0369400077033788,
+     "total_ms": 38.72929699718952,
+     "withdraw_ms": 15.287713991710916
+    },
+    "harness_commits": 33,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 9.715138379985325,
+    "post_decision_commits": 0,
+    "post_enforcement_commits": 0,
+    "pre_decision_completion_rate_per_s": 1.943027675997065,
+    "retried_calls": 0,
+    "sink_effect_rows": 33,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "halt_inference",
+    "fault": "none",
+    "phase_seconds": 0.5388488495175714,
+    "rep": 39,
+    "seed": 20261152,
+    "trial_id": "p39-halt_inference-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.53884884951757
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 3,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.08133400115184486,
+     "total_ms": 0.10201300028711557
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 8,
+    "little_law_post_decision_prediction": 9.721747141539815,
+    "post_decision_commits": 11,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 1.944349428307963,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  },
+  {
+   "config": {
+    "C": 32,
+    "L": 0,
+    "arm": "revoke_broker",
+    "fault": "none",
+    "phase_seconds": 0.5388488495175714,
+    "rep": 39,
+    "seed": 20261152,
+    "trial_id": "p39-revoke_broker-L0-w5.0-C32",
+    "w": 5.0,
+    "workload": {
+     "calls_per_step": 4,
+     "model_step_seconds": 2.0,
+     "warmup": 20.53884884951757
+    }
+   },
+   "metrics": {
+    "audit_consistent": true,
+    "cancelled_legitimate": 0,
+    "denied_after_enforcement": 0,
+    "duplicate_effects": 0,
+    "emitted_not_accepted_at_enforcement": 0,
+    "enforcement_ack_ms": {
+     "halt_ms": 0.08742601494304836,
+     "total_ms": 20.988067000871524,
+     "withdraw_ms": 20.865555008640513
+    },
+    "harness_commits": 44,
+    "in_flight_at_enforcement": 11,
+    "little_law_post_decision_prediction": 9.704217029989318,
+    "post_decision_commits": 11,
+    "post_enforcement_commits": 11,
+    "pre_decision_completion_rate_per_s": 1.9408434059978636,
+    "retried_calls": 0,
+    "sink_effect_rows": 44,
+    "sink_restarts": 0
+   }
+  }
+ ]
+}

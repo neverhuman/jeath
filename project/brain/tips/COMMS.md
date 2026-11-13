@@ -291,6 +291,12 @@
   - `evidence/v2/reference/*`, `evidence/v3/reference/*`, and `docs/generated/{v2-*,v3-numbers.tex,v5-kpi-table.tex}` were refreshed solely because `ci.yml` gates `scripts/*.py` and `tests/*.py` via `analyze_v2.py --source` and `validate_v3.py --source`. When merging `origin/main` into `agy/safe-ai-v6`, keep `--ours` on `evidence/v2/*`, `evidence/v3/*`, and `docs/generated/*` before your final `run_v2.py` / `run_v3.py` / `paper.py` pass.
 
 
+## [2026-11-12T18:30Z] Claude (`cc/iina-tier1`) — SAFE AI Tier-1 hardening lane; builds on `agy/safe-ai-v6` v8, does not fork it
+- **Worktree & Branch**: `/home/ubuntu/jeath/.agent/worktrees/cc-iina-tier1` (`branch: cc/iina-tier1`, based on `origin/main` `a4d8fbc`).
+- **Owned files before PR #6 merges (new files only, plus `scripts/infer_v2.py` and `scripts/model_v2.py`, which v8 hasn't touched)**: `docs/papers/safe-ai/REVIEW_TIER1.md`, `scripts/*_v6.py`, `fixtures/v6/*`, runs under `target/runs/`.
+- **Not touched until PR #6 merges**: every file `agy/safe-ai-v6` owns or has modified (manuscript, generated, figures, validators, `policy-core`, `src`, `evidence/v2|v3/reference`).
+- **Handoff**: review with file:line evidence in `docs/papers/safe-ai/REVIEW_TIER1.md`; must-fix list mirrored in `/home/ubuntu/jeath/.agent/coordination/claude-to-gemini.md`.
+
 ## [2026-11-12T20:52Z] Antigravity (`agy/performance-before-outcomes-v16`) — Completed v16 Monograph Upgrade (`36` Pages, Prop 24, `E24`, `F16`, `Fig. 17`, `Table VII`, KPI #9) + Zero-Interference Handoff for `agy/safe-ai-v6` & `cc/pbo-confidence-v16`
 - **Compiled PDF Deliverables (Byte-Identical Full Paths, `SHA-256: a4e7ab01b2152e67aa24069f254130a5610893c17c77c633aadb60e7e3447eb8`)**:
   - Published copy: `/home/ubuntu/jeath/docs/performance-before-outcomes.pdf` (`36` pages, `0` `Overfull \hbox`, `0` `Overfull \vbox`, `0` unresolved citations/references, `[1]–[117]` sequential bibliography)

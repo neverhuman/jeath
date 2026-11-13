@@ -9,23 +9,14 @@ Exogenous sink mediation solves only one of three distinct governance problems, 
 Four explicit boundaries limit our guarantees:
 \begin{enumerate}
   \item \textbf{In-policy destructive actions.} If a capability grant authorizes editing a repository file or spending \(2\) budget units, a harmful edit or bad transfer within that envelope commits cleanly (Table~\ref{tab:v2core}).
-  \item \textbf{Uncooperative external sinks.} Interfaces lacking idempotency keys, conditional-write epochs, or pre-dispatch hold buffers (\(\VEightCensusUncooperative/\VEightCensusTotalApis\) audited surfaces in Table~\ref{tab:fencecensus}) enter Eq.~\eqref{eq:reach} as positive unmediated exposure \(u > 0\).
+  \item \textbf{Uncooperative external sinks.} Interfaces lacking idempotency keys, conditional-write epochs, or pre-dispatch hold buffers (Section~\ref{sec:v6boundary}) enter Eq.~\eqref{eq:reach} as positive unmediated exposure \(u > 0\).
   \item \textbf{Lower-layer TCB and clock-skew assumptions.} Verification covers our Rust state machine and wire codec, not the Linux kernel, SQLite storage engine, physical side channels~\cite{kocher1996}, or hardware clock faults exceeding \(\delta_{\max}\).
-  \item \textbf{Pilot live sample size and prospective human/frontier scope.} Predeclared marginal union bounds on our frozen \(N = \VFourHoldoutCasesPerCheckpoint\) checkpoint holdout remain under-powered relative to \(N \ge \VTwoZeroLossCasesMin\), and frontier-scale RLHF and human delegation experiments remain prospective (Appendix~\ref{app:holdout}).
+  \item \textbf{Pilot live sample size and prospective human/frontier scope.} Predeclared marginal union bounds on the pilot's frozen \(N = \VFourHoldoutCasesPerCheckpoint\) checkpoint holdout were under-powered relative to \(N \ge \VTwoZeroLossCasesMin\); E1 reruns that comparison at \(N = 128\) (Section~\ref{sec:v6replication}). Frontier-scale and human delegation experiments remain prospective; the conferral design is in Appendix~\ref{app:v6conferral}, and the earlier predictions it supersedes are in Appendix~\ref{app:holdout}.
 \end{enumerate}
 
 \subsection{Falsifiable Architectural Predictions}
 
-Table~\ref{tab:predictions} summarizes the five structural predictions directly tested in our experiments; prospective deployment and human-subject predictions appear in Appendix~\ref{app:holdout}.
-
-\begin{table*}[t]\centering\footnotesize
-\begin{tabularx}{\textwidth}{@{}P{0.22\textwidth}P{0.31\textwidth}L@{}}\toprule
-Prediction & Falsifiable operational test & Measured outcome in this study\\\midrule
-\textbf{P1. Sink vs.\ broker stop} & Withdraw authority while tool calls are queued across processes or partitions & Broker-only stop leaks \(\VFourJepsenBrokerOnlyLeaks/\VFourJepsenSchedulesPerClass\) (partition) and \(\VEightTotalNoFencePostWithdraw\) late ops across \(\VEightTotalWithdrawCases\) live cases; \(\delta_{\max}\)-buffered cooperative sink fence leaks \(0\) (\S\ref{sec:core}--\S\ref{sec:systems})\\
-\textbf{P2. Correlated best-of-\(K\)} & Sample \(K\) live proposals against a learned reviewer vs.\ a verified sink gate & Qwen3 reviewer bypass rises monotonically (\(\VEightBokFourBSinglePct\%\to\VEightBokFourBSixteenPct\%\) on 4B; \(\VEightBokEightBSinglePct\%\to\VEightBokEightBSixteenPct\%\) on 8B), moderated by \(\hat{\rho}_{\mathrm{cand}}\); sink gate holds at \(0\%\) (\S\ref{sec:systems})\\
-\textbf{P3. Waist min-cuts} & Compare min-cut capability gating against patching \(B\) known exploit routes & AgentDojo min-cuts (\(w \in [2,5]\)) sever \(100\%\) of \(\VFourCutBankingRoutes\)--\(\VFourCutWorkspaceRoutes\) routes; \(32\) exploit patches leave \(94.7\%\)--\(99.9\%\) live (\S\ref{sec:width})\\
-\textbf{P4. Context isolation} & Compare multi-step monitors on full transcripts vs.\ prose-stripped step schemas & Shared transcripts inflate 5-step miss \(\VFourTrajHetInflation\times\) (classifiers) and \(\VEightLlmJudgeFourBSharedInflation\times\)--\(\VEightLlmJudgeEightBSharedInflation\times\) (Qwen3 judges); isolated escrow cuts false aborts \(\VFourTrajEscrowReductionFactor\times\) (\S\ref{sec:monitors})\\
-\textbf{P5. Sub-agent smurfing \& \(d\)-hop stop} & Fragment unauthorized spend across \(A_{\mathrm{sub}} \in \{1,2,4,8\}\) live sub-agents and withdraw root authority across \(d = \VNineSmurfDepthTested\) hops & Per-instance static caps breach on \(\VNineSmurfStaticMultiCnt/\VNineSmurfStaticMultiTot\) (\(A_{\mathrm{sub}} \ge 2\)) tasks, isolated LLM review reaches \(\VNineSmurfFourBMaxMultiLlmPct\%\) (4B) and \(\VNineSmurfEightBMaxMultiLlmPct\%\) (8B) under fragmentation, and unfenced lineage leaks \VNineSmurfSubtreeNoFenceLeaks{} queued \(d = \VNineSmurfDepthTested\) ops; fenced lineage leaks \(0\) (\S\ref{sec:systems})\\
-\bottomrule\end{tabularx}
-\caption{Empirically tested architectural predictions and measured outcomes.}\label{tab:predictions}
-\end{table*}
+The previous version tabulated four architectural predictions with outcomes drawn from simulations, scripted cases and
+by-construction zeros. Those outcomes are superseded by the predeclared measurements in
+Sections~\ref{sec:v6stop}--\ref{sec:v6boundary}, and the table is withdrawn rather than reconciled; the human-subject design that replaces the earlier prospective predictions is in
+Appendix~\ref{app:v6conferral}.

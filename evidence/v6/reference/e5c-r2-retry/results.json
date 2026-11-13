@@ -1,0 +1,62 @@
+{
+ "aggregates": {
+  "Qwen/Qwen3-4B-GGUF": {
+   "accepted": 0,
+   "combined": {
+    "accepted": 6,
+    "completed": 36,
+    "disagreements_with_e5": 4
+   },
+   "completed": 11,
+   "disagreements_with_e5": 1,
+   "failed_again": 0,
+   "rerun": 11,
+   "truncated": 1
+  },
+  "Qwen/Qwen3-8B-GGUF": {
+   "accepted": 0,
+   "combined": {
+    "accepted": 0,
+    "completed": 36,
+    "disagreements_with_e5": 0
+   },
+   "completed": 25,
+   "disagreements_with_e5": 0,
+   "failed_again": 0,
+   "rerun": 25,
+   "truncated": 0
+  }
+ },
+ "e5c_records_sha256": "af58c03836a77c2c6c0672f6762c4c42b279f93f2fae21bc0ec350040c3566e0",
+ "experiment": "E5c-R2-retry: completing E5c's platform-agreement endpoint for the reasoning reviewer",
+ "plan_sha256": "23134593c41081f1267d15010903d1c1134e52c372ccbbba1fb3d02b7d66eaf4",
+ "provenance": {
+  "cpu_model": "AMD Ryzen Threadripper PRO 3995WX 64-Cores",
+  "elapsed_seconds_per_checkpoint": {
+   "Qwen/Qwen3-4B-GGUF": 2571.3557848149794,
+   "Qwen/Qwen3-8B-GGUF": 5894.374458100006
+  },
+  "gpu_seconds_used": 0,
+  "gpu_snapshot_after": {
+   "available": true,
+   "csv": "pid, process_name\n933800, /usr/bin/python3\n742794, python3"
+  },
+  "gpu_snapshot_before": {
+   "available": true,
+   "csv": "pid, process_name\n933800, /usr/bin/python3\n552848, python3"
+  },
+  "hostname": "xbabe2",
+  "llama_server_sha256": "812f4c8b53c6367048d0e0f9ff7439d6ef73851ca75e43c891d997cf86fa4840",
+  "llama_server_version": [
+   "version: 0.9.0-dev (build 12276, commit 7592b61d3)",
+   "built with GNU 13.3.0 for Linux x86_64"
+  ],
+  "records_jsonl_sha256": "22d8c0b7840bbd5620be3881bf97d7e06b070712d4405892ae95ddb34b3c55f9",
+  "started_unix": 1794557700.6491735,
+  "threads": 12,
+  "workers": 4
+ },
+ "request_limit_seconds": 3600.0,
+ "schema_version": 1,
+ "script_sha256": "fc3c52502bf0f04f720eb35a420d43f38150906c5fd6b6579c633811bac1cd24"
+}

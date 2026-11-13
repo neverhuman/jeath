@@ -1,39 +1,126 @@
-\section{Mechanized Kernel, Clock-Skew Bounds, and Sink Fencing}\label{sec:core}
+\section{The Authority Kernel and the Sink Protocol}\label{sec:core}
 
-\subsection{Mechanized Authority Kernel and Mutation Controls}
+The broker issues permits; the sink commits effects. Both are Rust processes that keep their state in SQLite (write-ahead
+log, \texttt{synchronous=FULL}) and talk over JSON-lines RPC. A permit names one effect, its budget charge, the issuer
+whose grant it draws on, the revision it expects and the epoch under which it was issued. The sink commits a permitted
+effect only if, at commit time, the charge fits the remaining budget, the issuer's grant is live, the revision matches,
+the permit has not been used and its epoch is at least the sink's floor. Raising the floor is the fence. The stop
+experiments (Section~\ref{sec:v6stop}) and the replication (Section~\ref{sec:v6replication}) run these processes, and
+the gate of Section~\ref{sec:v6reviewers} decides each proposal by submitting it to them. On AgentDojo
+(Section~\ref{sec:v6cost}) they are not involved: each arm's predicate is applied in the harness, at the tool boundary,
+to AgentDojo's in-memory environment.
 
-To eliminate parser differentials and state-machine bugs inside the reference monitor itself, we implement the core authority transition logic in Rust and verify it with the Verus SMT prover~\cite{verus}. The verified core comprises \VTwoExecFns{} executable functions and \VTwoTheorems{} proofs discharging \VTwoProofs{} verification obligations with \VTwoTriggerWarnings{} solver trigger warnings (Table~\ref{tab:v2core}). Five properties hold over all syntactically representable inputs:
+\subsection{Threat Model}\label{sec:threat}
+
+\para{Untrusted.} The proposer: the model, its prompts and scaffolding, any sub-agents, and any content injected into
+them. It may send any sequence of requests, well-formed or not, at any rate, and may be misaligned or under an
+attacker's control. Its process is confined so that it reaches effects only through the broker's socket (below).
+
+\para{Trusted.} The broker, the sink and the host they run on; SQLite; the cryptographic code, which is unaudited; the
+channel by which an operator orders a stop; and whoever writes the specification. A compromised broker or sink host
+defeats every guarantee here.
+
+\para{Covered effects.} Only effects that commit at the sink, so that nothing happens until the sink commits it. We
+call this the \emph{deferred-commit precondition}. An effect that a tool performs before or without the sink's
+commit, and any external system the sink merely records, is outside the guarantee; Section~\ref{sec:v6boundary} asks
+which external surfaces can enforce the sink's epoch themselves. Reading data, side channels, and exfiltration through
+an effect the specification permits are covered only as far as the specification names them.
+
+\subsection{What Is Proved}
+
+We verified the kernel of the authority transitions with Verus~\cite{lattuada2023verus,verus}: \VTwoExecFns{} executable
+functions and \VTwoTheorems{} proofs discharging \VTwoProofs{} obligations with \VTwoTriggerWarnings{} trigger warnings
+(Table~\ref{tab:v2core}), with no \texttt{assume}, \texttt{admit} or external bodies in the verified block. The
+properties, each over every input of its type, are:
 \begin{enumerate}
-  \item \textbf{Canonical wire bijection.} Fixed-width 21-byte capability frames satisfy round-trip encoding/decoding bijection and deterministic rejection of non-canonical tags, preventing parser mismatch between broker and sink.
-  \item \textbf{Multi-hop delegation attenuation.} Across any \(d\)-hop sub-agent chain, child capability scope is bitmask-monotone and spend limits satisfy \(B_d \le B_{d-1} \le \dots \le B_0\), blocking parallel smurfing across sub-agents (Table~\ref{tab:v9smurfing}).
-  \item \textbf{Relational mutex exclusion.} Conflicting resource-pair actions (for example, simultaneous credential read and outbound network dispatch) cannot co-commit within an epoch.
-  \item \textbf{Monotone bootstrap ratchet (\textbf{C5}).} Policy version transitions \(P_v \to P_{v+1}\) are rejected unless \(\Permits(P_{v+1}) \subseteq \Permits(P_v)\) or an out-of-band human steward quorum signs the expansion (Figure~\ref{fig:v5scaling}a).
-  \item \textbf{Clock-skew-buffered quorum quiescence (\textbf{C3}).} Revocation acknowledgment requires every sink shard either to sign an epoch bump \(e' > e\) or to pass its physical lease-expiry horizon adjusted for bounded clock skew, guaranteeing post-acknowledgment interruption regardless of agent preferences (Figure~\ref{fig:v5scaling}b).
+  \item \textbf{Conservation and post-fence exclusion.} No sequence of operations commits more than the granted budget,
+        and after a fence no operation below the new floor commits.
+  \item \textbf{Canonical permit encoding.} The fixed-width encoding that the broker and sink use to compare a
+        submitted permit with the approved one, byte for byte, is a bijection on canonical frames and rejects every
+        non-canonical frame. Between processes, permits travel as JSON lines, whose parsing is not verified.
+  \item \textbf{Delegation attenuation.} Along any delegation chain, a child's scope is a subset of its parent's and its
+        budget no larger.
+  \item \textbf{Relational exclusion.} Two actions declared conflicting (for example, reading a credential and sending
+        to the network) cannot both commit within one epoch.
+  \item \textbf{Monotone policy ratchet.} A new policy version is accepted only if it permits a subset of what the old
+        one did, unless an out-of-band quorum signs the expansion.
+  \item \textbf{Skew-buffered quorum quiescence.} A revocation is acknowledged only when every sink shard has signed the
+        new epoch or has passed its lease expiry adjusted for a bound \(\delta_{\max}\) on clock skew.
 \end{enumerate}
 
-Because formal proofs fail silently if specifications are vacuous, we pair the Verus proof with three negative-control layers. First, \VFiveProofMutationsRejected/\VFiveProofMutationsRejected{} injected soundness mutations---weakening budget conservation, replay tracking, version comparison, delegation attenuation, bootstrap subset checks, or the clock-skew buffer---are each rejected by Verus. Second, exhaustive finite-state exploration over \CheckedStates{} reachable states (\CheckedEdges{} transitions) confirms zero invariant violations under the complete enforcer, whereas omitting the budget clause from the specification admits \OmittedStates{} states and spends \(8\) units against a \(2\)-unit cap. Third, searching \VTwoTraces{} traces across all \VTwoAblationSets{} single and paired protocol-clause omissions yields concrete violation witnesses in every ablated configuration.
+Proofs fail silently when the specification is vacuous, so we pair them with three negative controls. First,
+\VFiveProofMutationsRejected{} soundness mutations of the executable code are each rejected by Verus: refunding a
+timed-out charge without the sink's authority, bypassing the epoch check, admitting on the lower bound of an uncertain
+cost, accepting trailing bytes in the decoder, widening scope on self-upgrade without a quorum, accepting a cluster
+acknowledgment from a subset of shards, bypassing the conflict check, committing a staged effect without its verified
+postcondition, accepting an unverified widening certificate in the ratchet, and declaring quiescence without the skew
+buffer. Second, exhaustive exploration of \CheckedStates{} reachable states (\CheckedEdges{} transitions) of a small
+configuration finds no violation under the complete enforcer, while the same exploration with the budget clause
+omitted from the specification reaches \OmittedStates{} states and spends 8 units against a 2-unit cap while passing
+every remaining check. That is the specification gap of Section~\ref{sec:v6reviewers} in its smallest form. Third,
+\VTwoTraces{} traces across all \VTwoAblationSets{} single and paired clause omissions each produce a concrete
+violation.
 
 \input{generated/v2-core-table}
 
-\subsection{Bounded Clock Skew and Five-Class Partition Tests}
+\para{What the proofs cover in the running code.} The proofs are about the verified functions. In the release
+binaries that every experiment here used, the broker and sink decide with unverified Rust that calls the verified
+predicates; the comparison of each decision with the verified executable kernel was a debug assertion, compiled out of
+those builds. The decision logic, the RPC handling and SQLite are tested, not proved. The proof
+receipt is produced by a separate script and checked by hash; neither the local gate nor continuous integration reruns
+Verus.
 
-In a distributed deployment, a network partition can isolate a sink shard before a signed revocation reaches it. Relying on lease expiry to stand in for a missing shard acknowledgment requires an explicit physical timing assumption:
+\subsection{Partition Schedules (Simulated)}
 
-\para{Assumption 1 (Bounded physical clock skew).} At every protocol step, each cooperative sink shard's local monotonic clock \(t_{\mathrm{shard}}\) and the broker's reference clock \(t_{\mathrm{broker}}\) satisfy \(|t_{\mathrm{shard}} - t_{\mathrm{broker}}| \le \delta_{\max}\) for a known hardware/NTP bound \(\delta_{\max} \ge 0\).
+A sink shard may be partitioned from the broker when a revocation is sent. Lease expiry can stand in for its missing
+acknowledgment only under a timing assumption.
 
-If a permit issued at broker time \(t_{\mathrm{issue}}\) carries lease duration \(L_m\), the shard rejects the permit once \(t_{\mathrm{shard}} > t_{\mathrm{issue}} + L_m\). Under Assumption~1, waiting until \(t_{\mathrm{broker}} > t_{\mathrm{issue}} + L_m + \delta_{\max}\) guarantees \(t_{\mathrm{shard}} > t_{\mathrm{issue}} + L_m\) even on a partitioned shard whose clock lags by \(\delta_{\max}\). Both the Verus theorem and mutant~\#10 mechanize this exact inequality: omitting \(\delta_{\max}\) fails verification.
+\para{Assumption 1 (bounded clock skew).} Each shard's clock and the broker's differ by at most a known
+\(\delta_{\max} \ge 0\).
 
-We test this boundary empirically across a three-sink Unix-socket fault-injection cluster (\VFourJepsenSchedulesPerClass{} adversarial partition, packet-drop, delay, and man-in-the-middle schedules per class; Table~\ref{tab:v2core} and Figure~\ref{fig:v5hero}a):
+A shard rejects a permit issued at broker time \(t_{\mathrm{issue}}\) with lease \(L_m\) once its own clock passes
+\(t_{\mathrm{issue}} + L_m\). Under Assumption~1, waiting until the broker's clock passes \(t_{\mathrm{issue}} + L_m +
+\delta_{\max}\) guarantees this even for a shard whose clock lags by \(\delta_{\max}\); the Verus theorem states this
+inequality, and the mutation that drops \(\delta_{\max}\) fails verification.
+
+We exercised the protocol logic in a single-process simulation: three sink threads connected to a coordinator by Unix
+socket pairs, under \VFourJepsenSchedulesPerClass{} randomized schedules per protocol class of message drops, delays,
+reorderings, duplications, asymmetric partitions, forged acknowledgments and simulated restarts, applied in logical
+time. It is in the style of Jepsen~\cite{kingsbury-jepsen} testing but is not Jepsen and does not test a deployed
+implementation under real faults; Section~\ref{sec:v6stop} does that for one sink. Each class's outcome follows from its
+protocol rule, and the simulation counts how often a randomized schedule exposes it:
 \begin{itemize}
-  \item \textbf{Cooperative signed + \(\delta_{\max}\)-buffered fences:} \(0/\VFourJepsenSchedulesPerClass\) post-acknowledgment leaks across both zero-skew schedules (\VFourJepsenCoopSignedFences{} signed quorum fences, \VFourJepsenCoopLeaseExpiries{} lease expiries, \VFourJepsenMitmRejected{} forged acknowledgments rejected) and schedules injecting up to \(45\)\,ms shard clock lag under a \(\delta_{\max} = 50\)\,ms buffer (\(\VEightJepsenSkewBufLeaks/\VFourJepsenSchedulesPerClass\) leaks).
-  \item \textbf{Unbuffered clock skew (\(\delta_{\max}\) omitted):} When shard clocks lag by up to \(45\)\,ms and the broker declares quiescence at \(t_{\mathrm{issue}} + L_m\), \(\VEightJepsenSkewUnbufLeaks/\VFourJepsenSchedulesPerClass\) schedules (\(\VEightJepsenSkewUnbufLeakPct\%\)) suffer late commits after revocation acknowledgment.
-  \item \textbf{Broker-only revocation (\emph{Stop~2}) and uncooperative sinks:} Returning revocation acknowledgment at the broker while queued requests remain in flight yields \(\VFourJepsenBrokerOnlyLeaks/\VFourJepsenSchedulesPerClass\) (\(\VFourJepsenBrokerOnlyLeakPct\%\)) post-acknowledgment commits; dispatching to an external sink that ignores epoch preconditions yields \(\VFourJepsenUncoopLeaks/\VFourJepsenSchedulesPerClass\) (\(\VFourJepsenUncoopLeakPct\%\)) leaks.
+  \item \textbf{Signed, skew-buffered fences:} \VFourJepsenCoopLeaks{} of \VFourJepsenSchedulesPerClass{} schedules
+        leaked a commit after acknowledgment (\VFourJepsenCoopSignedFences{} acknowledged by signed fences,
+        \VFourJepsenCoopLeaseExpiries{} by lease expiry, \VFourJepsenMitmRejected{} forged acknowledgments rejected), and
+        \VEightJepsenSkewBufLeaks{} with shard clocks lagging up to 45\,ms under a 50\,ms buffer.
+  \item \textbf{Skew buffer omitted:} \VEightJepsenSkewUnbufLeaks{} of \VFourJepsenSchedulesPerClass{} schedules
+        (\VEightJepsenSkewUnbufLeakPct\%) leaked.
+  \item \textbf{Acknowledged at the broker} while requests were in flight: \VFourJepsenBrokerOnlyLeaks{} schedules
+        (\VFourJepsenBrokerOnlyLeakPct\%); \textbf{a sink that ignores epochs:} \VFourJepsenUncoopLeaks{}
+        (\VFourJepsenUncoopLeakPct\%).
 \end{itemize}
+These are counts of schedules with at least one leaked commit, not of leaked commits. The percentages depend on the
+schedule generator's fault rates, which we chose; they are existence witnesses for each class's failure, not
+estimates of how often it occurs in a deployment.
 
-\input{generated/v8-scaling-fig}
+\subsection{Cryptography, Crash Recovery and Confinement}
 
-\subsection{Cryptographic Hardening, Crash Recovery, and OS Confinement}
+\para{Cryptography.} The SHA-2, HMAC and Ed25519~\cite{bernstein2012ed25519} code is written from scratch with no
+external crates. It enforces canonical scalars and encodings and rejects small-order points, passes the RFC test
+vectors and a bidirectional cross-check against the OpenSSL command line, and accepted \VFourCryptoFalseAccepts{} of
+\VFourCryptoAttacks{} forgery and malleability attempts. It has not been audited and is part of the trusted computing
+base; a deployment should use an audited library.
 
-Our zero-dependency Ed25519 and HMAC-chained Macaroon verifier enforces canonical scalar bounds (\(S < \ell\)), canonical field encoding, and explicit torsion rejection (\([8]P = \mathcal{O}\)) on both public keys and nonce points. It passes RFC~8032 test vectors, bidirectional OpenSSL~3.0 CLI signature cross-checks, and \VFourCryptoAttacks{} adversarial forgery/malleability trials with \VFourCryptoFalseAccepts{} false accepts. Across a three-process write-ahead-logged SQLite cluster~\cite{sqlite-wal}, \VFiveClusterFuzzFrames{} adversarial wire-fuzz frames, \VFiveClusterSubagents{} concurrent \(4\)-hop sub-agents, and \VFiveClusterSigkillCycles{} hard process-kill recovery cycles reconcile with zero ledger discrepancies (\(\VFiveClusterMedianUs\,\mu\text{s}\) median commit latency). Finally, Linux Landlock~v4 filesystem/network rules~\cite{landlock} and seccomp filters~\cite{seccomp} block all \VTwoProbes/\VTwoProbes{} direct socket, IPC, and resource-limit bypass probes so local user-space code must traverse the broker socket. Figure~\ref{fig:v3saturation} verifies the analytical lag-contraction, common-cause saturation, and horizon-summability laws of Section~\ref{sec:theory}.
+\para{Crash recovery.} A separate three-process cluster test (SQLite in write-ahead mode with
+\texttt{synchronous=NORMAL}, which survives a killed process but may lose the last commits on power loss) drives
+\VFiveClusterFuzzFrames{} malformed frames, \VFiveClusterSubagents{} interleaved sub-agent identities with
+\VFiveClusterHops-hop delegation from one driver thread, and \VFiveClusterSigkillCycles{} SIGKILL-and-restart cycles
+delivered between requests, and reconciles the ledgers with no discrepancy (\(\VFiveClusterMedianUs\,\mu\)s median
+commit latency, against the tens of milliseconds per commit of Table~\ref{tab:runtime}, which uses
+\texttt{synchronous=FULL} and so waits for the disk). Kills inside a request are tested in Section~\ref{sec:v6stop}.
 
-\input{generated/v3-saturation-fig}
+\para{Confinement.} Landlock~\cite{landlock} file and network rules and seccomp~\cite{seccomp} filters block the
+\VTwoProbes{} direct socket, IPC and resource probes we wrote, so local user-space code must go through the broker
+socket. Independent review found two bypasses, a message queue that already existed and an inherited stderr
+descriptor; both were fixed and their probes added. The probe set is ours and is not exhaustive.

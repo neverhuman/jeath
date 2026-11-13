@@ -1,0 +1,2833 @@
+{
+ "run": "target/runs/e4b-20261112T210608Z",
+ "trials": 152,
+ "smoke_test": false,
+ "plan_sha256_ok": true,
+ "grid_coverage": {
+  "predeclared": 152,
+  "present": 152,
+  "missing": 0,
+  "extra": [],
+  "duplicates": 0,
+  "complete": true
+ },
+ "problems": [],
+ "implementation_findings": [],
+ "sinkdb_vs_harness_post_enforcement_disagreements": [
+  {
+   "trial": "b040-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r0",
+   "sinkdb": 0,
+   "harness": 1,
+   "harness_only": [
+    "b040-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r0-30"
+   ],
+   "sinkdb_only": []
+  },
+  {
+   "trial": "b041-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r1",
+   "sinkdb": 0,
+   "harness": 1,
+   "harness_only": [
+    "b041-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r1-22"
+   ],
+   "sinkdb_only": []
+  },
+  {
+   "trial": "b042-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r2",
+   "sinkdb": 0,
+   "harness": 1,
+   "harness_only": [
+    "b042-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r2-24"
+   ],
+   "sinkdb_only": []
+  },
+  {
+   "trial": "b043-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r3",
+   "sinkdb": 0,
+   "harness": 1,
+   "harness_only": [
+    "b043-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r3-29"
+   ],
+   "sinkdb_only": []
+  },
+  {
+   "trial": "b044-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r4",
+   "sinkdb": 0,
+   "harness": 1,
+   "harness_only": [
+    "b044-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r4-36"
+   ],
+   "sinkdb_only": []
+  },
+  {
+   "trial": "b045-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r5",
+   "sinkdb": 0,
+   "harness": 1,
+   "harness_only": [
+    "b045-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r5-42"
+   ],
+   "sinkdb_only": []
+  },
+  {
+   "trial": "b046-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r6",
+   "sinkdb": 0,
+   "harness": 1,
+   "harness_only": [
+    "b046-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r6-37"
+   ],
+   "sinkdb_only": []
+  },
+  {
+   "trial": "b047-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r7",
+   "sinkdb": 0,
+   "harness": 1,
+   "harness_only": [
+    "b047-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r7-11"
+   ],
+   "sinkdb_only": []
+  },
+  {
+   "trial": "b048-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r8",
+   "sinkdb": 0,
+   "harness": 1,
+   "harness_only": [
+    "b048-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r8-14"
+   ],
+   "sinkdb_only": []
+  },
+  {
+   "trial": "b049-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r9",
+   "sinkdb": 0,
+   "harness": 1,
+   "harness_only": [
+    "b049-exit_after_commit_in_complete-fence_sink-open-L1-w5.0-C32-r9-42"
+   ],
+   "sinkdb_only": []
+  }
+ ],
+ "kills_not_meeting_criterion": [],
+ "table": [
+  {
+   "condition": "closed_loop",
+   "arm": "fence_sink",
+   "emitter": "closed",
+   "L": 1,
+   "w": 0.5,
+   "C": 4,
+   "trials": 3,
+   "rho_design": 0.2,
+   "rho_measured_median": 0.19374009663566846,
+   "post_sinkdb": [
+    0,
+    0,
+    0
+   ],
+   "post_harness": [
+    0,
+    0,
+    0
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    2,
+    1,
+    1
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    2,
+    1,
+    1
+   ],
+   "in_flight": [
+    2,
+    1,
+    1
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "fence_sink",
+   "emitter": "closed",
+   "L": 1,
+   "w": 0.5,
+   "C": 32,
+   "trials": 3,
+   "rho_design": 0.030303030303030304,
+   "rho_measured_median": 0.02967851620776882,
+   "post_sinkdb": [
+    0,
+    0,
+    0
+   ],
+   "post_harness": [
+    0,
+    0,
+    0
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    2,
+    0,
+    2
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    2,
+    0,
+    2
+   ],
+   "in_flight": [
+    2,
+    0,
+    2
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "fence_sink",
+   "emitter": "closed",
+   "L": 1,
+   "w": 5.0,
+   "C": 4,
+   "trials": 3,
+   "rho_design": 0.7142857142857143,
+   "rho_measured_median": 0.8749585358028734,
+   "post_sinkdb": [
+    0,
+    0,
+    0
+   ],
+   "post_harness": [
+    0,
+    0,
+    0
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    1,
+    2,
+    1
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    1,
+    2,
+    1
+   ],
+   "in_flight": [
+    1,
+    2,
+    1
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "fence_sink",
+   "emitter": "closed",
+   "L": 1,
+   "w": 5.0,
+   "C": 32,
+   "trials": 3,
+   "rho_design": 0.23809523809523808,
+   "rho_measured_median": 0.22647772430335034,
+   "post_sinkdb": [
+    0,
+    0,
+    0
+   ],
+   "post_harness": [
+    0,
+    0,
+    0
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    8,
+    11,
+    7
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    8,
+    11,
+    7
+   ],
+   "in_flight": [
+    8,
+    11,
+    7
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "fence_sink",
+   "emitter": "closed",
+   "L": 35,
+   "w": 0.5,
+   "C": 4,
+   "trials": 3,
+   "rho_design": 0.2,
+   "rho_measured_median": 0.19374182558671108,
+   "post_sinkdb": [
+    0,
+    0,
+    0
+   ],
+   "post_harness": [
+    0,
+    0,
+    0
+   ],
+   "during": [
+    0,
+    1,
+    0
+   ],
+   "cancelled": [
+    1,
+    0,
+    1
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    1,
+    0,
+    1
+   ],
+   "in_flight": [
+    1,
+    0,
+    1
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "fence_sink",
+   "emitter": "closed",
+   "L": 35,
+   "w": 0.5,
+   "C": 32,
+   "trials": 3,
+   "rho_design": 0.030303030303030304,
+   "rho_measured_median": 0.030460345451526826,
+   "post_sinkdb": [
+    0,
+    0,
+    0
+   ],
+   "post_harness": [
+    0,
+    0,
+    0
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    2,
+    2
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    2,
+    2
+   ],
+   "in_flight": [
+    0,
+    2,
+    2
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "fence_sink",
+   "emitter": "closed",
+   "L": 35,
+   "w": 5.0,
+   "C": 4,
+   "trials": 3,
+   "rho_design": 0.7142857142857143,
+   "rho_measured_median": 0.6249678460607421,
+   "post_sinkdb": [
+    0,
+    0,
+    0
+   ],
+   "post_harness": [
+    0,
+    0,
+    0
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    3,
+    4,
+    3
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    3,
+    4,
+    3
+   ],
+   "in_flight": [
+    3,
+    4,
+    3
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "fence_sink",
+   "emitter": "closed",
+   "L": 35,
+   "w": 5.0,
+   "C": 32,
+   "trials": 3,
+   "rho_design": 0.23809523809523808,
+   "rho_measured_median": 0.25771944885977005,
+   "post_sinkdb": [
+    0,
+    0,
+    0
+   ],
+   "post_harness": [
+    0,
+    0,
+    0
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    10,
+    6,
+    4
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    10,
+    6,
+    4
+   ],
+   "in_flight": [
+    10,
+    6,
+    4
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "halt_inference",
+   "emitter": "closed",
+   "L": 1,
+   "w": 0.5,
+   "C": 4,
+   "trials": 3,
+   "rho_design": 0.2,
+   "rho_measured_median": 0.19374113663355844,
+   "post_sinkdb": [
+    0,
+    1,
+    0
+   ],
+   "post_harness": [
+    0,
+    1,
+    0
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    0,
+    1,
+    0
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "halt_inference",
+   "emitter": "closed",
+   "L": 1,
+   "w": 0.5,
+   "C": 32,
+   "trials": 3,
+   "rho_design": 0.030303030303030304,
+   "rho_measured_median": 0.028897380318986962,
+   "post_sinkdb": [
+    0,
+    2,
+    1
+   ],
+   "post_harness": [
+    0,
+    2,
+    1
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    0,
+    2,
+    1
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "halt_inference",
+   "emitter": "closed",
+   "L": 1,
+   "w": 5.0,
+   "C": 4,
+   "trials": 3,
+   "rho_design": 0.7142857142857143,
+   "rho_measured_median": 0.7499669881400305,
+   "post_sinkdb": [
+    3,
+    3,
+    3
+   ],
+   "post_harness": [
+    3,
+    3,
+    3
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    3,
+    3,
+    3
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "halt_inference",
+   "emitter": "closed",
+   "L": 1,
+   "w": 5.0,
+   "C": 32,
+   "trials": 3,
+   "rho_design": 0.23809523809523808,
+   "rho_measured_median": 0.22649589831463973,
+   "post_sinkdb": [
+    7,
+    9,
+    9
+   ],
+   "post_harness": [
+    7,
+    9,
+    9
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    7,
+    9,
+    9
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "halt_inference",
+   "emitter": "closed",
+   "L": 35,
+   "w": 0.5,
+   "C": 4,
+   "trials": 3,
+   "rho_design": 0.2,
+   "rho_measured_median": 0.19374057523780164,
+   "post_sinkdb": [
+    0,
+    0,
+    2
+   ],
+   "post_harness": [
+    0,
+    0,
+    2
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    0,
+    0,
+    2
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "halt_inference",
+   "emitter": "closed",
+   "L": 35,
+   "w": 0.5,
+   "C": 32,
+   "trials": 3,
+   "rho_design": 0.030303030303030304,
+   "rho_measured_median": 0.029678642032353396,
+   "post_sinkdb": [
+    1,
+    2,
+    1
+   ],
+   "post_harness": [
+    1,
+    2,
+    1
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    1,
+    2,
+    1
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "halt_inference",
+   "emitter": "closed",
+   "L": 35,
+   "w": 5.0,
+   "C": 4,
+   "trials": 3,
+   "rho_design": 0.7142857142857143,
+   "rho_measured_median": 0.6249726406039345,
+   "post_sinkdb": [
+    4,
+    1,
+    3
+   ],
+   "post_harness": [
+    4,
+    1,
+    3
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    4,
+    1,
+    3
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "halt_inference",
+   "emitter": "closed",
+   "L": 35,
+   "w": 5.0,
+   "C": 32,
+   "trials": 3,
+   "rho_design": 0.23809523809523808,
+   "rho_measured_median": 0.2343039324306884,
+   "post_sinkdb": [
+    9,
+    6,
+    10
+   ],
+   "post_harness": [
+    9,
+    6,
+    10
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    9,
+    6,
+    10
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "revoke_broker",
+   "emitter": "closed",
+   "L": 1,
+   "w": 0.5,
+   "C": 4,
+   "trials": 3,
+   "rho_design": 0.2,
+   "rho_measured_median": 0.1999905359476817,
+   "post_sinkdb": [
+    2,
+    1,
+    3
+   ],
+   "post_harness": [
+    2,
+    1,
+    3
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    2,
+    1,
+    3
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "revoke_broker",
+   "emitter": "closed",
+   "L": 1,
+   "w": 0.5,
+   "C": 32,
+   "trials": 3,
+   "rho_design": 0.030303030303030304,
+   "rho_measured_median": 0.029676264638927304,
+   "post_sinkdb": [
+    0,
+    2,
+    1
+   ],
+   "post_harness": [
+    0,
+    2,
+    1
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    0,
+    2,
+    1
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "revoke_broker",
+   "emitter": "closed",
+   "L": 1,
+   "w": 5.0,
+   "C": 4,
+   "trials": 3,
+   "rho_design": 0.7142857142857143,
+   "rho_measured_median": 0.8124583670734871,
+   "post_sinkdb": [
+    3,
+    2,
+    3
+   ],
+   "post_harness": [
+    3,
+    2,
+    3
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    3,
+    2,
+    3
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "revoke_broker",
+   "emitter": "closed",
+   "L": 1,
+   "w": 5.0,
+   "C": 32,
+   "trials": 3,
+   "rho_design": 0.23809523809523808,
+   "rho_measured_median": 0.24210974257031698,
+   "post_sinkdb": [
+    6,
+    3,
+    8
+   ],
+   "post_harness": [
+    6,
+    3,
+    8
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    6,
+    3,
+    8
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "revoke_broker",
+   "emitter": "closed",
+   "L": 35,
+   "w": 0.5,
+   "C": 4,
+   "trials": 3,
+   "rho_design": 0.2,
+   "rho_measured_median": 0.19998983341699683,
+   "post_sinkdb": [
+    0,
+    1,
+    1
+   ],
+   "post_harness": [
+    0,
+    1,
+    1
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    0,
+    1,
+    1
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "revoke_broker",
+   "emitter": "closed",
+   "L": 35,
+   "w": 0.5,
+   "C": 32,
+   "trials": 3,
+   "rho_design": 0.030303030303030304,
+   "rho_measured_median": 0.0304593537036244,
+   "post_sinkdb": [
+    1,
+    0,
+    0
+   ],
+   "post_harness": [
+    1,
+    0,
+    0
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    1,
+    0,
+    0
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "revoke_broker",
+   "emitter": "closed",
+   "L": 35,
+   "w": 5.0,
+   "C": 4,
+   "trials": 3,
+   "rho_design": 0.7142857142857143,
+   "rho_measured_median": 0.7499652693710359,
+   "post_sinkdb": [
+    3,
+    1,
+    2
+   ],
+   "post_harness": [
+    3,
+    1,
+    2
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    3,
+    1,
+    2
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "closed_loop",
+   "arm": "revoke_broker",
+   "emitter": "closed",
+   "L": 35,
+   "w": 5.0,
+   "C": 32,
+   "trials": 3,
+   "rho_design": 0.23809523809523808,
+   "rho_measured_median": 0.24211708237714086,
+   "post_sinkdb": [
+    7,
+    9,
+    7
+   ],
+   "post_harness": [
+    7,
+    9,
+    7
+   ],
+   "during": [
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    7,
+    9,
+    7
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "exit_after_commit_in_complete",
+   "arm": "fence_sink",
+   "emitter": "open",
+   "L": 1,
+   "w": 5.0,
+   "C": 32,
+   "trials": 10,
+   "rho_design": 0.3125,
+   "rho_measured_median": 0.3747571045020196,
+   "post_sinkdb": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "post_harness": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "during": [
+    1,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    4,
+    7,
+    9,
+    10,
+    11,
+    11,
+    10,
+    6,
+    6,
+    5
+   ],
+   "denied": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    4,
+    7,
+    9,
+    10,
+    11,
+    11,
+    10,
+    6,
+    6,
+    5
+   ],
+   "in_flight": [
+    5,
+    8,
+    10,
+    11,
+    12,
+    12,
+    11,
+    7,
+    7,
+    6
+   ],
+   "retried_calls": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "kill_classes": [
+    "after_commit_before_reply",
+    "after_commit_before_reply",
+    "after_commit_before_reply",
+    "after_commit_before_reply",
+    "after_commit_before_reply",
+    "after_commit_before_reply",
+    "after_commit_before_reply",
+    "after_commit_before_reply",
+    "after_commit_before_reply",
+    "after_commit_before_reply"
+   ],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "kill_in_complete",
+   "arm": "fence_sink",
+   "emitter": "open",
+   "L": 1,
+   "w": 5.0,
+   "C": 32,
+   "trials": 10,
+   "rho_design": 0.3125,
+   "rho_measured_median": 0.37474984223225116,
+   "post_sinkdb": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "post_harness": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "during": [
+    0,
+    0,
+    0,
+    1,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1
+   ],
+   "cancelled": [
+    10,
+    9,
+    16,
+    11,
+    10,
+    6,
+    9,
+    8,
+    14,
+    6
+   ],
+   "denied": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    10,
+    9,
+    16,
+    11,
+    10,
+    6,
+    9,
+    8,
+    14,
+    6
+   ],
+   "in_flight": [
+    10,
+    9,
+    16,
+    11,
+    10,
+    6,
+    9,
+    8,
+    14,
+    6
+   ],
+   "retried_calls": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "kill_classes": [
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted"
+   ],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "kill_in_complete",
+   "arm": "halt_inference",
+   "emitter": "open",
+   "L": 1,
+   "w": 5.0,
+   "C": 32,
+   "trials": 10,
+   "rho_design": 0.3125,
+   "rho_measured_median": 0.3747465677572791,
+   "post_sinkdb": [
+    12,
+    10,
+    10,
+    8,
+    7,
+    16,
+    8,
+    11,
+    15,
+    13
+   ],
+   "post_harness": [
+    12,
+    10,
+    10,
+    8,
+    7,
+    16,
+    8,
+    11,
+    15,
+    13
+   ],
+   "during": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    12,
+    10,
+    10,
+    8,
+    7,
+    16,
+    8,
+    11,
+    14,
+    13
+   ],
+   "retried_calls": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "kill_classes": [
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted"
+   ],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "kill_in_complete",
+   "arm": "revoke_broker",
+   "emitter": "open",
+   "L": 1,
+   "w": 5.0,
+   "C": 32,
+   "trials": 10,
+   "rho_design": 0.3125,
+   "rho_measured_median": 0.3747562545145363,
+   "post_sinkdb": [
+    11,
+    10,
+    13,
+    21,
+    10,
+    11,
+    6,
+    7,
+    12,
+    8
+   ],
+   "post_harness": [
+    11,
+    10,
+    13,
+    21,
+    10,
+    11,
+    6,
+    7,
+    12,
+    8
+   ],
+   "during": [
+    1,
+    0,
+    0,
+    1,
+    1,
+    2,
+    2,
+    1,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    11,
+    10,
+    13,
+    21,
+    10,
+    11,
+    6,
+    7,
+    12,
+    8
+   ],
+   "retried_calls": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "kill_classes": [
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted",
+    "inside_complete_uncommitted"
+   ],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed",
+    "committed"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "kill_in_fence",
+   "arm": "fence_sink",
+   "emitter": "open",
+   "L": 1,
+   "w": 5.0,
+   "C": 32,
+   "trials": 10,
+   "rho_design": 0.3125,
+   "rho_measured_median": 0.37474869622369694,
+   "post_sinkdb": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "post_harness": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "during": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+   ],
+   "cancelled": [
+    10,
+    11,
+    12,
+    12,
+    10,
+    10,
+    7,
+    12,
+    7,
+    8
+   ],
+   "denied": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    10,
+    11,
+    12,
+    12,
+    10,
+    10,
+    7,
+    12,
+    7,
+    8
+   ],
+   "in_flight": [
+    10,
+    11,
+    12,
+    12,
+    10,
+    10,
+    7,
+    12,
+    7,
+    8
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [
+    "inside_fence_uncommitted",
+    "inside_fence_uncommitted",
+    "inside_fence_uncommitted",
+    "inside_fence_uncommitted",
+    "inside_fence_uncommitted",
+    "inside_fence_uncommitted",
+    "inside_fence_uncommitted",
+    "inside_fence_uncommitted",
+    "inside_fence_uncommitted",
+    "inside_fence_uncommitted"
+   ],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "late_accept",
+   "arm": "fence_sink",
+   "emitter": "open",
+   "L": 1,
+   "w": 5.0,
+   "C": 32,
+   "trials": 10,
+   "rho_design": 0.3125,
+   "rho_measured_median": 0.3747598940162775,
+   "post_sinkdb": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "post_harness": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "during": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    13,
+    12,
+    14,
+    14,
+    16,
+    15,
+    15,
+    14,
+    13,
+    15
+   ],
+   "denied": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    13,
+    12,
+    14,
+    14,
+    16,
+    15,
+    15,
+    14,
+    13,
+    15
+   ],
+   "in_flight": [
+    5,
+    4,
+    6,
+    6,
+    8,
+    7,
+    7,
+    6,
+    5,
+    7
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled",
+    "cancelled"
+   ],
+   "held_with_effect": 0
+  },
+  {
+   "condition": "late_accept",
+   "arm": "halt_inference",
+   "emitter": "open",
+   "L": 1,
+   "w": 5.0,
+   "C": 32,
+   "trials": 10,
+   "rho_design": 0.3125,
+   "rho_measured_median": 0.37475544852409903,
+   "post_sinkdb": [
+    17,
+    15,
+    13,
+    14,
+    14,
+    15,
+    10,
+    14,
+    15,
+    13
+   ],
+   "post_harness": [
+    17,
+    15,
+    13,
+    14,
+    14,
+    15,
+    10,
+    14,
+    15,
+    13
+   ],
+   "during": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    9,
+    7,
+    5,
+    6,
+    6,
+    7,
+    2,
+    6,
+    7,
+    5
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending"
+   ],
+   "held_with_effect": 80
+  },
+  {
+   "condition": "late_accept",
+   "arm": "revoke_broker",
+   "emitter": "open",
+   "L": 1,
+   "w": 5.0,
+   "C": 32,
+   "trials": 10,
+   "rho_design": 0.3125,
+   "rho_measured_median": 0.37474348688933595,
+   "post_sinkdb": [
+    15,
+    18,
+    15,
+    14,
+    14,
+    14,
+    14,
+    15,
+    15,
+    14
+   ],
+   "post_harness": [
+    15,
+    18,
+    15,
+    14,
+    14,
+    14,
+    14,
+    15,
+    15,
+    14
+   ],
+   "during": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "cancelled": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "denied": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "legit_work_lost": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "in_flight": [
+    7,
+    10,
+    7,
+    6,
+    6,
+    6,
+    6,
+    7,
+    7,
+    6
+   ],
+   "retried_calls": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "kill_classes": [],
+   "fence_order_violations": 0,
+   "trapped_final_status": [
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None",
+    "None"
+   ],
+   "held_accept": [
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending",
+    "pending"
+   ],
+   "held_with_effect": 80
+  }
+ ]
+}

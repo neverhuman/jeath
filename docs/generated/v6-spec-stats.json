@@ -1,0 +1,767 @@
+{
+ "cost": {
+  "arms": {
+   "authority_delegated": {
+    "benign_utility": [
+     12,
+     37
+    ],
+    "inside_spec_attack": [
+     52,
+     74
+    ],
+    "native_attack": [
+     8,
+     74
+    ],
+    "ungraded": 0
+   },
+   "authority_oracle": {
+    "benign_utility": [
+     15,
+     37
+    ],
+    "inside_spec_attack": [
+     0,
+     74
+    ],
+    "native_attack": [
+     0,
+     74
+    ],
+    "ungraded": 0
+   },
+   "authority_strict": {
+    "benign_utility": [
+     9,
+     37
+    ],
+    "inside_spec_attack": [
+     53,
+     74
+    ],
+    "native_attack": [
+     0,
+     74
+    ],
+    "ungraded": 0
+   },
+   "progent": {
+    "benign_utility": [
+     12,
+     37
+    ],
+    "inside_spec_attack": [
+     3,
+     74
+    ],
+    "native_attack": [
+     2,
+     74
+    ],
+    "ungraded": 0
+   },
+   "unprotected": {
+    "benign_utility": [
+     16,
+     37
+    ],
+    "inside_spec_attack": [
+     62,
+     74
+    ],
+    "native_attack": [
+     42,
+     74
+    ],
+    "ungraded": 0
+   }
+  }
+ },
+ "inputs": {
+  "e5": "evidence/v6/reference/e5-omitted-clause",
+  "e8": "evidence/v6/reference/e8-agentdojo-fair",
+  "e8b": "evidence/v6/reference/e8b-inside-spec"
+ },
+ "layout_preview": false,
+ "reviewers": {
+  "G_breaches": 0,
+  "R1_state": {
+   "ci95": [
+    0.19732598576244037,
+    0.3545306136912938
+   ],
+   "n": 133,
+   "rate": 0.2706766917293233,
+   "x": 36
+  },
+  "R1_state_cases": {
+   "ci95": [
+    0.902606244085508,
+    1.0
+   ],
+   "n": 36,
+   "rate": 1.0,
+   "x": 36
+  },
+  "R1_visible": {
+   "ci95": [
+    0.0032030053447325577,
+    0.09184952332315813
+   ],
+   "n": 76,
+   "rate": 0.02631578947368421,
+   "x": 2
+  },
+  "R1_visible_cases": {
+   "ci95": [
+    0.01025634128125014,
+    0.26997280155760295
+   ],
+   "n": 24,
+   "rate": 0.08333333333333333,
+   "x": 2
+  },
+  "R2_state": {
+   "ci95": [
+    0.0,
+    0.02735482628403159
+   ],
+   "n": 133,
+   "rate": 0.0,
+   "x": 0
+  },
+  "R2_state_cases": {
+   "ci95": [
+    0.0,
+    0.0973937559144924
+   ],
+   "n": 36,
+   "rate": 0.0,
+   "x": 0
+  },
+  "R2_visible": {
+   "ci95": [
+    0.0032030053447325577,
+    0.09184952332315813
+   ],
+   "n": 76,
+   "rate": 0.02631578947368421,
+   "x": 2
+  },
+  "R2_visible_cases": {
+   "ci95": [
+    0.01025634128125014,
+    0.26997280155760295
+   ],
+   "n": 24,
+   "rate": 0.08333333333333333,
+   "x": 2
+  },
+  "ckpt": "Qwen/Qwen3-8B-GGUF",
+  "exact": {
+   "exact": {
+    "R1": 36,
+    "R2": 0,
+    "n": 36
+   },
+   "mutated": {
+    "R1": 0,
+    "R2": 0,
+    "n": 97
+   }
+  },
+  "exact_other": {
+   "exact": {
+    "R1": 36,
+    "R2": 6,
+    "n": 36
+   },
+   "mutated": {
+    "R1": 42,
+    "R2": 3,
+    "n": 180
+   }
+  },
+  "families": {
+   "altered_payload": {
+    "G": {
+     "breach_cases": {
+      "ci95": [
+       0.0,
+       0.2646484693970512
+      ],
+      "n": 12,
+      "rate": 0.0,
+      "x": 0
+     },
+     "breach_unique": {
+      "ci95": [
+       0.0,
+       0.0973937559144924
+      ],
+      "n": 36,
+      "rate": 0.0,
+      "x": 0
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "R0": {
+     "breach_cases": {
+      "ci95": [
+       0.0992460911495833,
+       0.6511244935811884
+      ],
+      "n": 12,
+      "rate": 0.3333333333333333,
+      "x": 4
+     },
+     "breach_unique": {
+      "ci95": [
+       0.0819436397652088,
+       0.360248016175027
+      ],
+      "n": 36,
+      "rate": 0.19444444444444445,
+      "x": 7
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "R1": {
+     "breach_cases": {
+      "ci95": [
+       0.0,
+       0.2646484693970512
+      ],
+      "n": 12,
+      "rate": 0.0,
+      "x": 0
+     },
+     "breach_unique": {
+      "ci95": [
+       0.0,
+       0.0973937559144924
+      ],
+      "n": 36,
+      "rate": 0.0,
+      "x": 0
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "R2": {
+     "breach_cases": {
+      "ci95": [
+       0.0,
+       0.2646484693970512
+      ],
+      "n": 12,
+      "rate": 0.0,
+      "x": 0
+     },
+     "breach_unique": {
+      "ci95": [
+       0.0,
+       0.0973937559144924
+      ],
+      "n": 36,
+      "rate": 0.0,
+      "x": 0
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "cases": 12,
+    "omitted_clause_share": [
+     12,
+     36
+    ],
+    "unauthorized_unique": 36
+   },
+   "duplicate_replay": {
+    "G": {
+     "breach_cases": {
+      "ci95": [
+       0.0,
+       0.2646484693970512
+      ],
+      "n": 12,
+      "rate": 0.0,
+      "x": 0
+     },
+     "breach_unique": {
+      "ci95": [
+       0.0,
+       0.09489058741499057
+      ],
+      "n": 37,
+      "rate": 0.0,
+      "x": 0
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "R0": {
+     "breach_cases": {
+      "ci95": [
+       0.42814153812181077,
+       0.945139355472008
+      ],
+      "n": 12,
+      "rate": 0.75,
+      "x": 9
+     },
+     "breach_unique": {
+      "ci95": [
+       0.29487312822864453,
+       0.6307804298934594
+      ],
+      "n": 37,
+      "rate": 0.4594594594594595,
+      "x": 17
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "R1": {
+     "breach_cases": {
+      "ci95": [
+       0.7353515306029488,
+       1.0
+      ],
+      "n": 12,
+      "rate": 1.0,
+      "x": 12
+     },
+     "breach_unique": {
+      "ci95": [
+       0.18013864805205665,
+       0.49785328351339486
+      ],
+      "n": 37,
+      "rate": 0.32432432432432434,
+      "x": 12
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "R2": {
+     "breach_cases": {
+      "ci95": [
+       0.0,
+       0.2646484693970512
+      ],
+      "n": 12,
+      "rate": 0.0,
+      "x": 0
+     },
+     "breach_unique": {
+      "ci95": [
+       0.0,
+       0.09489058741499057
+      ],
+      "n": 37,
+      "rate": 0.0,
+      "x": 0
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "cases": 12,
+    "omitted_clause_share": [
+     12,
+     37
+    ],
+    "unauthorized_unique": 37
+   },
+   "injected_exfiltration": {
+    "G": {
+     "breach_cases": {
+      "ci95": [
+       0.0,
+       0.2646484693970512
+      ],
+      "n": 12,
+      "rate": 0.0,
+      "x": 0
+     },
+     "breach_unique": {
+      "ci95": [
+       0.0,
+       0.088097302878821
+      ],
+      "n": 40,
+      "rate": 0.0,
+      "x": 0
+     },
+     "false_block_unique": {
+      "ci95": [
+       0.0,
+       0.3694166475528239
+      ],
+      "n": 8,
+      "rate": 0.0,
+      "x": 0
+     }
+    },
+    "R0": {
+     "breach_cases": {
+      "ci95": [
+       0.2766696856821059,
+       0.8483477701915707
+      ],
+      "n": 12,
+      "rate": 0.5833333333333334,
+      "x": 7
+     },
+     "breach_unique": {
+      "ci95": [
+       0.18572896676335032,
+       0.4912948754784746
+      ],
+      "n": 40,
+      "rate": 0.325,
+      "x": 13
+     },
+     "false_block_unique": {
+      "ci95": [
+       0.0,
+       0.3694166475528239
+      ],
+      "n": 8,
+      "rate": 0.0,
+      "x": 0
+     }
+    },
+    "R1": {
+     "breach_cases": {
+      "ci95": [
+       0.02086252546009236,
+       0.4841377486859716
+      ],
+      "n": 12,
+      "rate": 0.16666666666666666,
+      "x": 2
+     },
+     "breach_unique": {
+      "ci95": [
+       0.006113646599350894,
+       0.16919686395943812
+      ],
+      "n": 40,
+      "rate": 0.05,
+      "x": 2
+     },
+     "false_block_unique": {
+      "ci95": [
+       0.0,
+       0.3694166475528239
+      ],
+      "n": 8,
+      "rate": 0.0,
+      "x": 0
+     }
+    },
+    "R2": {
+     "breach_cases": {
+      "ci95": [
+       0.02086252546009236,
+       0.4841377486859716
+      ],
+      "n": 12,
+      "rate": 0.16666666666666666,
+      "x": 2
+     },
+     "breach_unique": {
+      "ci95": [
+       0.006113646599350894,
+       0.16919686395943812
+      ],
+      "n": 40,
+      "rate": 0.05,
+      "x": 2
+     },
+     "false_block_unique": {
+      "ci95": [
+       0.0,
+       0.3694166475528239
+      ],
+      "n": 8,
+      "rate": 0.0,
+      "x": 0
+     }
+    },
+    "cases": 12,
+    "omitted_clause_share": [
+     24,
+     40
+    ],
+    "unauthorized_unique": 40
+   },
+   "stale_revision": {
+    "G": {
+     "breach_cases": {
+      "ci95": [
+       0.0,
+       0.2646484693970512
+      ],
+      "n": 12,
+      "rate": 0.0,
+      "x": 0
+     },
+     "breach_unique": {
+      "ci95": [
+       0.0,
+       0.07251926366426975
+      ],
+      "n": 49,
+      "rate": 0.0,
+      "x": 0
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "R0": {
+     "breach_cases": {
+      "ci95": [
+       0.515862251314033,
+       0.9791374745399077
+      ],
+      "n": 12,
+      "rate": 0.8333333333333334,
+      "x": 10
+     },
+     "breach_unique": {
+      "ci95": [
+       0.10244938549524765,
+       0.34342999304646815
+      ],
+      "n": 49,
+      "rate": 0.20408163265306123,
+      "x": 10
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "R1": {
+     "breach_cases": {
+      "ci95": [
+       0.7353515306029488,
+       1.0
+      ],
+      "n": 12,
+      "rate": 1.0,
+      "x": 12
+     },
+     "breach_unique": {
+      "ci95": [
+       0.13342871084229357,
+       0.38869591468841724
+      ],
+      "n": 49,
+      "rate": 0.24489795918367346,
+      "x": 12
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "R2": {
+     "breach_cases": {
+      "ci95": [
+       0.0,
+       0.2646484693970512
+      ],
+      "n": 12,
+      "rate": 0.0,
+      "x": 0
+     },
+     "breach_unique": {
+      "ci95": [
+       0.0,
+       0.07251926366426975
+      ],
+      "n": 49,
+      "rate": 0.0,
+      "x": 0
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "cases": 12,
+    "omitted_clause_share": [
+     12,
+     49
+    ],
+    "unauthorized_unique": 49
+   },
+   "withdrawn_issuer": {
+    "G": {
+     "breach_cases": {
+      "ci95": [
+       0.0,
+       0.2646484693970512
+      ],
+      "n": 12,
+      "rate": 0.0,
+      "x": 0
+     },
+     "breach_unique": {
+      "ci95": [
+       0.0,
+       0.07548573369106881
+      ],
+      "n": 47,
+      "rate": 0.0,
+      "x": 0
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "R0": {
+     "breach_cases": {
+      "ci95": [
+       0.7353515306029488,
+       1.0
+      ],
+      "n": 12,
+      "rate": 1.0,
+      "x": 12
+     },
+     "breach_unique": {
+      "ci95": [
+       0.7425858232107556,
+       0.9516777845383857
+      ],
+      "n": 47,
+      "rate": 0.8723404255319149,
+      "x": 41
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "R1": {
+     "breach_cases": {
+      "ci95": [
+       0.7353515306029488,
+       1.0
+      ],
+      "n": 12,
+      "rate": 1.0,
+      "x": 12
+     },
+     "breach_unique": {
+      "ci95": [
+       0.13944912001757004,
+       0.4034951899715833
+      ],
+      "n": 47,
+      "rate": 0.2553191489361702,
+      "x": 12
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "R2": {
+     "breach_cases": {
+      "ci95": [
+       0.0,
+       0.2646484693970512
+      ],
+      "n": 12,
+      "rate": 0.0,
+      "x": 0
+     },
+     "breach_unique": {
+      "ci95": [
+       0.0,
+       0.07548573369106881
+      ],
+      "n": 47,
+      "rate": 0.0,
+      "x": 0
+     },
+     "false_block_unique": {
+      "ci95": null,
+      "n": 0,
+      "rate": null,
+      "x": 0
+     }
+    },
+    "cases": 12,
+    "omitted_clause_share": [
+     12,
+     47
+    ],
+    "unauthorized_unique": 47
+   }
+  },
+  "other_ckpt": "Qwen/Qwen3-4B-GGUF",
+  "title_claim_supported": true,
+  "tokens": {
+   "R1": 6,
+   "R2": 637
+  }
+ }
+}
