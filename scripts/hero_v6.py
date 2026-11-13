@@ -351,7 +351,7 @@ def caption_c(s: dict, ckpt8: str) -> str:
     if "inside_spec_attack" in a["authority_strict"]:
         text += (rf"; injections that name only principals already in the user's state (written by us) succeed in "
                  rf"{f('authority_strict', 'inside_spec_attack')} strict, {f('authority_delegated', 'inside_spec_attack')} delegated, "
-                 rf"{f('unprotected', 'inside_spec_attack')} unprotected and {f('authority_oracle', 'inside_spec_attack')} allowlist episodes")
+                 rf"{f('unprotected', 'inside_spec_attack')} unprotected and {f('authority_oracle', 'inside_spec_attack')} oracle episodes")
     return text + ". "
 
 
