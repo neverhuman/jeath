@@ -4,7 +4,12 @@
 
 **Thesis:** *Intelligence lives in proposals; authority lives in state.* Halting a model stops new proposals, not effects already in flight; a fence at the state-bearing sink also stops those, and only for what the specification names. We conjecture that mediation moves the safety problem from a model's judgment into a written specification; the measured costs and gaps are in the paper and in [`docs/CLAIMS.md`](docs/CLAIMS.md), including the negative results (a reasoning same-model reviewer matched the gate on E5's small cases; the written AgentDojo specification cost more benign utility than Progent).
 
-**v6 (this branch):** predeclared experiments E1, E4, E4b, E5, E6, E6b, E8 and E8b (E2 declared, not yet run) on real broker/sink processes, local open-weight checkpoints and AgentDojo, with plans in `fixtures/v6/`, evidence in `evidence/v6/reference/` (gate: `python3 scripts/validate_v6.py`), and every stopped launch, interim view and by-construction result in [`docs/papers/safe-ai/DISCLOSURES_V6.md`](docs/papers/safe-ai/DISCLOSURES_V6.md). See the v6 table in [`docs/CLAIMS.md`](docs/CLAIMS.md).
+**v6 (this branch):** predeclared experiments E1, E4, E4b, E5, E6, E6b, E8 and E8b on real broker/sink processes, local open-weight checkpoints and AgentDojo; E5c, a control for E5 designed after E5's results and committed before its own data; E2 declared, not yet run.
+
+- Plans: `fixtures/v6/`. Evidence: `evidence/v6/reference/` (gate: `python3 scripts/validate_v6.py`).
+- Every stopped launch, interim view and by-construction result: [`docs/papers/safe-ai/DISCLOSURES_V6.md`](docs/papers/safe-ai/DISCLOSURES_V6.md).
+- Every cited preprint checked against its arXiv record: [`docs/papers/safe-ai/REFERENCE_CHECK_V6.md`](docs/papers/safe-ai/REFERENCE_CHECK_V6.md).
+- Claims: the v6 table in [`docs/CLAIMS.md`](docs/CLAIMS.md).
 
 ---
 
