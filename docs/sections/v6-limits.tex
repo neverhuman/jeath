@@ -57,6 +57,11 @@ checks, not second opinions.
 reviewers on fixed cases, a specification on a benchmark, fences on single-node surfaces. None puts an adaptive red
 team against the whole system, a monitor, a stop and a fenced sink together, as a control evaluation~\cite{control}
 would. That evaluation would show whether the components compose, and it is the most important piece this paper lacks.
+A version that fits on CPU with small models: an agent with concurrent benign tasks and a covert side objective runs
+against the real broker and sink; a same-model monitor triggers the stop, so the delay \(L\) is the monitor's own
+detection time, and the stop's phase is randomized; harm is scored by an oracle written apart from the gate's
+specification, including harms the specification does not name; and halting, revoking and fencing are compared on the
+same trajectories. It would replace every zero in this paper that holds by construction with a measured one.
 
 \para{Conferral.} The independence of reach from the proposer holds at a fixed grant. Whether more capable agents earn
 broader grants, and whether that reverses the comparison (Observation~\ref{obs:conferral}), needs a study with people,
