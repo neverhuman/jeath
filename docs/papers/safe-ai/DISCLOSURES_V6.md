@@ -34,6 +34,9 @@ or a reported count; each changes framing or presentation, and the paper says so
 - **E8 framing.** The strict specification completed fewer benign tasks than Progent. A generated sentence states the
   per-arm utility differences against the unprotected agent and, by a rule on the counts, whether S cost more than
   Progent. The reading now says AgentDojo exercises none of what holding authority as state adds.
+- **E8 determinism.** The validator's determinism check found 5 of 1,110 same-episode arm pairs whose model replies
+  differed under identical history (llama.cpp at temperature 0, top_k 1, fixed seed). Now stated in Section 6 by a
+  generated sentence.
 - **E4 Little's-law summary.** The text macro summarized the plan's halting prediction over 48 trials (including 12
   with injected faults), the hero figure over 36 (fault-free). Both were seen; the text now uses the fault-free set, as
   the prediction is for the unfaulted process.

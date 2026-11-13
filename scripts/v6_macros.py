@@ -227,6 +227,27 @@ def e8_macros(args) -> dict:
         f"Against the {base} benign tasks the unprotected agent completed, " +
         series([cost("authority_strict", "strict \\(S\\)"), cost("progent", "Progent's per-task policies"),
                 cost("authority_delegated", "delegation"), cost("authority_oracle", "the oracle grant")]) + ".")
+    # The validator's determinism check (scripts/validate_agentdojo_fair_v6.py): two arms of one episode must give the
+    # same raw reply turn by turn while every earlier reply they received was identical.
+    groups, pairs, diverged = {}, 0, 0
+    for r in rows:
+        groups.setdefault((r["suite"], r["user_task"], r["injection_task"]), []).append(r)
+    for rs in groups.values():
+        for i, a in enumerate(rs):
+            for b in rs[i + 1:]:
+                pairs += 1
+                for sa, sb in zip(a["trace"], b["trace"]):
+                    if sa["raw"] != sb["raw"]:
+                        diverged += 1
+                        break
+                    if sa.get("reply") != sb.get("reply"):
+                        break
+    m["vsixEEightDivergenceSentence"] = (
+        f"In {diverged} of {pairs:,} pairs of arms run on the same episode, the model's reply differed while everything it "
+        "had received was identical, so inference at temperature 0 was not fully deterministic and a small part of the "
+        "differences between arms is not caused by the arm." if diverged else
+        f"In all {pairs:,} pairs of arms run on the same episode, the model's replies agreed for as long as everything it "
+        "had received was identical.")
     su, pu = arm_counts(rows, "authority_strict")["utility"][0], arm_counts(rows, "progent")["utility"][0]
     m["vsixEEightCostSentence"] += (" The written specification cost more legitimate work than a per-task policy the model "
                                     "generated for itself." if su < pu else
@@ -528,7 +549,8 @@ def e6b_macros(args) -> dict:
 PENDING = {"e4": ["vsixEFourTrials", "vsixEFourFaultTrials", "vsixEFourCells", "vsixEFourWCCells", "vsixEFourOverloadedCells",
                   "vsixLittleSentence"],
            "e5": ["vsixEFiveCkpt", "vsixSingleClauseSentence", "vsixRtwoTruncated", "vsixGateReplaySentence"],
-           "e8": ["vsixEEightCkpt", "vsixEEightEpisodes", "vsixEEightProgentSentence", "vsixEEightCostSentence"] +
+           "e8": ["vsixEEightCkpt", "vsixEEightEpisodes", "vsixEEightProgentSentence", "vsixEEightCostSentence",
+                  "vsixEEightDivergenceSentence"] +
                  [f"vsixStage{n}{k}" for n in ("Strict", "Delegated", "Oracle") for k in ("User", "Attack")],
            "e8b": ["vsixStageInsideStrict", "vsixStageInsideOracle"],
            "e6": ["vsixESixPgSentence", "vsixESixPgFairSentence", "vsixESixFsSentence", "vsixESixPOneThreeSentence"],

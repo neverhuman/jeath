@@ -2,9 +2,9 @@
 
 [Paper PDF](docs/intelligence-is-not-authority.pdf) · [Claims & Tiers (`H1`–`H18`)](docs/CLAIMS.md) · [Experiments & Reproduction](docs/EXPERIMENTS.md) · [Revision Audit](docs/REVISION_NOTES.md) · [CI Contract](docs/CI.md) · [Actions](https://github.com/neverhuman/jeath/actions)
 
-**Thesis:** *Intelligence lives in proposals; authority lives in state.* Halting a model stops new proposals, not effects already in flight; only a fence at the state-bearing sink stops those, and only for what the specification names. Mediation turns a learned blind spot into a written specification gap.
+**Thesis:** *Intelligence lives in proposals; authority lives in state.* Halting a model stops new proposals, not effects already in flight; a fence at the state-bearing sink also stops those, and only for what the specification names. We conjecture that mediation moves the safety problem from a model's judgment into a written specification; the measured costs and gaps are in the paper and in [`docs/CLAIMS.md`](docs/CLAIMS.md), including the negative results (a reasoning same-model reviewer matched the gate on E5's small cases; the written AgentDojo specification cost more benign utility than Progent).
 
-**v6 (this branch):** new predeclared experiments E1, E2, E4, E4b, E5, E6, E6b, E8 and E8b on real broker/sink processes, local open-weight checkpoints and AgentDojo, with plans in `fixtures/v6/`, evidence in `evidence/v6/reference/` (gate: `python3 scripts/validate_v6.py`), and every stopped launch, interim view and by-construction result in [`docs/papers/safe-ai/DISCLOSURES_V6.md`](docs/papers/safe-ai/DISCLOSURES_V6.md). See the v6 table in [`docs/CLAIMS.md`](docs/CLAIMS.md).
+**v6 (this branch):** predeclared experiments E1, E4, E4b, E5, E6, E6b, E8 and E8b (E2 declared, not yet run) on real broker/sink processes, local open-weight checkpoints and AgentDojo, with plans in `fixtures/v6/`, evidence in `evidence/v6/reference/` (gate: `python3 scripts/validate_v6.py`), and every stopped launch, interim view and by-construction result in [`docs/papers/safe-ai/DISCLOSURES_V6.md`](docs/papers/safe-ai/DISCLOSURES_V6.md). See the v6 table in [`docs/CLAIMS.md`](docs/CLAIMS.md).
 
 ---
 
