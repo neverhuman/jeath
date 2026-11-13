@@ -8,7 +8,7 @@ Every promoted file is listed with its SHA-256 in evidence/v6/reference/manifest
   promote_v6.py e4 target/runs/e4-full-...      promote_v6.py e6 target/runs/e6-...
   promote_v6.py e5 target/runs/e5-full-...      promote_v6.py e8 target/runs/e8-full-...
   promote_v6.py e2:<key> target/runs/e2-...     promote_v6.py e1 <E1 run directory>
-  promote_v6.py e8b target/runs/e8b-...
+  promote_v6.py e8b target/runs/e8b-...         promote_v6.py e5c-r2-retry target/runs/e5c-r2-retry-...
 """
 from __future__ import annotations
 
@@ -32,6 +32,7 @@ VALIDATORS = {
     "e8": [str(VENV_PY), "scripts/validate_agentdojo_fair_v6.py"],
     "e8b": [str(VENV_PY), "scripts/agentdojo_inside_spec_v6.py", "validate"],
     "e5c": [sys.executable, "scripts/e5_controls_v6.py", "validate"],
+    "e5c-r2-retry": [sys.executable, "scripts/e5c_r2_retry_v6.py", "validate"],
     "e1": [sys.executable, "scripts/validate_e1_v6.py"],
 }
 FILES = {  # files copied verbatim from the run directory
@@ -41,6 +42,7 @@ FILES = {  # files copied verbatim from the run directory
     "e8b": ["results.json", "static.json", "episodes.jsonl", "progent_policies.json"],
     "e1": ["freeze.json", "holdout.json", "campaigns.jsonl", "campaign-analysis.json"],
     "e5c": ["results.json", "records.jsonl"],
+    "e5c-r2-retry": ["results.json", "records.jsonl"],
 }
 
 
@@ -117,7 +119,7 @@ def main():
     # decision and its report is kept with the evidence, because the paper cites it.
     report = validate(kind, run, ("--replay-gate",) if kind == "e5" else ())
     name = {"e4": "e4-revokebench", "e4b": "e4b-revokebench-faults", "e5": "e5-omitted-clause", "e6": "e6-fenceability", "e6b": "e6b-fenceability", "e8": "e8-agentdojo-fair",
-            "e8b": "e8b-inside-spec", "e1": "e1-n128", "e5c": "e5c-controls"}.get(kind) or f"e2-{kind.split(':', 1)[1]}"
+            "e8b": "e8b-inside-spec", "e1": "e1-n128", "e5c": "e5c-controls", "e5c-r2-retry": "e5c-r2-retry"}.get(kind) or f"e2-{kind.split(':', 1)[1]}"
     out = DEST / name
     if out.exists():
         shutil.rmtree(out)
