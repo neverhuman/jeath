@@ -26,7 +26,8 @@ protocols that resample, defer or audit.
 \para{Benchmark coverage.} E8 covers two of AgentDojo's four suites and one attack template, through this repository's
 JSON tool loop rather than native function calling. Progent's policies come from the same open-weight checkpoint (its
 paper used GPT-4o), with adaptive policy updates disabled. E8b's injections and graders are ours and were chosen to lie
-inside \(S\); they show the blind spot exists but do not estimate how often attackers find it. Across checkpoints (E2)
+inside \(S\), as the replay without a model confirms; how often an agent carries them out depends on the model, and
+none of it estimates how often attackers find such injections. Across checkpoints (E2)
 the comparison is descriptive: chat template, protocol compliance and Progent policy quality all vary with the
 checkpoint.
 

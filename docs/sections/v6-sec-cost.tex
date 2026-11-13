@@ -50,8 +50,10 @@ specification recovers most of that price, at the cost of writing it per task.
 \vsixETwoSentence{} The comparison is descriptive: the checkpoints differ in family, size, chat template and how well
 they follow the JSON protocol, and Progent's policies come from each checkpoint itself.
 
-\para{Limits.} Two of AgentDojo's four suites; one attack template; a repository-specific tool loop rather than
+\para{Limits.} Two of AgentDojo's four suites; one attack template; none of AgentDojo's own defences (tool filtering,
+spotlighting, an injection detector) or the detection defences of Section~\ref{sec:gaps} as further arms; a repository-specific tool loop rather than
 AgentDojo's native function calling; local open-weight models. \vsixEEightDivergenceSentence E8b's injections and graders are ours and were chosen to
-lie inside \(S\); they demonstrate the blind spot rather than estimate its prevalence. The sink mediates only its own
+lie inside \(S\), which the replay without a model confirms; E8b measures how often the agent carries them out, which
+depends on the model as well as on \(S\), not how often attackers find such injections. The sink mediates only its own
 records; AgentDojo's effects run in AgentDojo's in-memory environment, and the arm's predicate, not the sink, decides
 whether a call runs.

@@ -5,14 +5,14 @@ Measurements on 4B and 8B open-weight checkpoints need not transfer to stronger 
 \begin{table*}[t]\centering\footnotesize
 \begin{tabularx}{\textwidth}{@{}P{0.23\textwidth}P{0.23\textwidth}P{0.16\textwidth}L@{}}\toprule
 Safety claim or artifact & Quantified domain & Upgrade lifetime & Status when proposer checkpoint is upgraded\\\midrule
-Verus authority-kernel theorems (\S\ref{sec:core}) & All wire frames \& call sequences (\(\forall x\)) & \textbf{Upgrade-invariant} & Holds for the verified functions; covers the running code only as far as those functions decide (\S\ref{sec:core})\\
+Verus authority-kernel theorems (\S\ref{sec:core}) & All wire frames \& call sequences (\(\forall x\)) & \textbf{Upgrade-invariant} & Holds for the verified functions; the experiments' release binaries do not run the comparison against them, so no reported number rests on it (\S\ref{sec:core})\\
 Linux Landlock + seccomp confinement (\S\ref{sec:core}) & Process ABI \& file/socket descriptors & \textbf{Untested against an adaptive proposer} & Two bypasses found in review (existing IPC objects, an inherited descriptor) were fixed; others may remain, and a more capable proposer is better placed to find them\\
 AgentDojo tool-graph min-cuts (\S\ref{sec:width}) & The graph we drew from tool schemas and sinks & \textbf{Schema-dependent} & A property of that graph, not of the deployed tools; recomputed when tools change\\
 Stop, revoke and fence leakage (\S\ref{sec:v6stop}) & Tool latency, concurrency \& enforcement delay & \textbf{Workload-dependent} & Independent of the proposer; changes with the tool latencies and load, which here are sampled, not traced\\
 Fenceability of a surface (\S\ref{sec:v6boundary}) & One version of one surface & \textbf{Version-dependent} & Re-run the probe when the surface or its configuration changes\\
 Reviewer misses (\S\ref{sec:v6reviewers}) & Checkpoint proposals \((x_1,\dots,x_K) \sim \pi_\theta\) & \textbf{Expires on upgrade} & Must be re-measured per checkpoint and per reviewer\\
 Utility under a specification (\S\ref{sec:v6cost}) & Checkpoint competence within a fixed grant & \textbf{Expires on upgrade} & The gate's admissions follow its predicate; task utility changes with the checkpoint\\
-What is not written in the specification (\S\ref{sec:v6cost}) & Attacks inside the grant & \textbf{Upgrade-invariant gap} & The gap stays; a stronger proposer may find more of it (conjecture)\\
+What is not written in the specification (\S\ref{sec:v6cost}) & Attacks inside the grant & \textbf{Set fixed; rate expires} & Which attacks the specification admits does not depend on the proposer; how often an agent carries one out (E8b) does, and a stronger proposer may find more (conjecture)\\
 Human scope grants (Observation~\ref{obs:conferral}) & Human conferral policy \(g(a \mid \text{persona})\) & \textbf{Expires / degrades} & More capable or agreeable models may be granted more; not measured here\\
 \bottomrule\end{tabularx}
 \caption{Lifetime of safety evidence across model upgrades. Proposer-independent properties are bounded by their specification and assumptions; checkpoint-contingent measurements must be repeated per checkpoint. The 4B and 8B experiments test the protocol, its cost and its gaps, not the alignment of any model.}\label{tab:upgrade}

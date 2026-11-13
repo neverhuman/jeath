@@ -314,11 +314,14 @@ def e8_macros(args) -> dict:
         "Paired by user task against the unprotected agent (the plan's descriptive McNemar counts), " +
         series([paired("authority_strict", "strict \\(S\\)"), paired("progent", "Progent"),
                 paired("authority_delegated", "delegation"), paired("authority_oracle", "the oracle grant")]) + " tasks.")
-    su, pu = arm_counts(rows, "authority_strict")["utility"][0], arm_counts(rows, "progent")["utility"][0]
-    m["vsixEEightCostSentence"] += (" The written specification cost more legitimate work than a per-task policy the model "
-                                    "generated for itself." if su < pu else
-                                    " The written specification cost no more legitimate work than a per-task policy the model "
-                                    "generated for itself.")
+    # Strict S against Progent, paired by user task: counts only, no ranking (the plan declares no test, and at this size
+    # a handful of discordant tasks cannot order two arms).
+    us, up = ok("authority_strict"), ok("progent")
+    s_only = sum(us[k] and not up[k] for k in us)
+    p_only = sum(up[k] and not us[k] for k in us)
+    m["vsixEEightCostSentence"] += (f" Paired by task, strict \\(S\\) completed {s_only} benign "
+                                    f"{'task' if s_only == 1 else 'tasks'} that Progent did not, and Progent {p_only} that "
+                                    f"\\(S\\) did not; with {len(us)} tasks and no test declared, we do not rank the two.")
     return m
 
 

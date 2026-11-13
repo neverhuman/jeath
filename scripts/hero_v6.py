@@ -33,8 +33,8 @@ FAMILY_LABEL = {"duplicate_replay": "Replay, budget spent", "withdrawn_issuer": 
                 "injected_exfiltration": "Injected payload"}
 FILLED = {"square": "square*", "diamond": "diamond*", "o": "*", "pentagon": "pentagon*", "triangle": "triangle*"}
 E8_ARMS = (("unprotected", "Unprotected", "structgray", "square"), ("progent", "Progent (per call)", "warnamber!85!black", "diamond"),
-           ("authority_strict", "Strict provenance", "exoblue", "o"), ("authority_delegated", "Delegated sources", "exoblue", "pentagon"),
-           ("authority_oracle", "Solution allowlist", "exoblue!60!black", "triangle"))
+           ("authority_strict", "Strict \\(S\\)", "exoblue", "o"), ("authority_delegated", "Delegated", "exoblue", "pentagon"),
+           ("authority_oracle", "Oracle (solution allowlist)", "exoblue!60!black", "triangle"))
 CONTROLLERS = (("none", "No mediation", "structgray", "square*"), ("stateless", "Per-call policy", "warnamber", "diamond*"),
                ("learned_same_checkpoint", "Same-model reviewer", "endored", "triangle*"),
                ("durable_without_fence", "Durable, no fence", "safegreen", "pentagon*"),
@@ -343,10 +343,10 @@ def caption_c(s: dict, ckpt8: str) -> str:
     f = lambda k, m: pct(*a[k][m])
     # Counts only, no comparative words: 37 tasks at temperature 0 cannot separate most of these arms.
     text = (rf"\textbf{{(c)}} AgentDojo banking and Slack (37 user tasks), {ckpt8}, AgentDojo's graders, every episode counted "
-            rf"(95\% Clopper--Pearson, episodes not independent within a task). A provenance specification written without the "
-            rf"reference solutions (strict) completes {f('authority_strict', 'benign_utility')} benign tasks; unprotected, "
-            rf"{f('unprotected', 'benign_utility')}; an allowlist copied from the solution, whose refusals can steer the agent "
-            rf"toward it, {f('authority_oracle', 'benign_utility')}. AgentDojo's injections succeed in {f('authority_strict', 'native_attack')} "
+            rf"(95\% Clopper--Pearson; the two attacked episodes of a task are not independent, so attack intervals are too "
+            rf"narrow). A provenance specification written without the reference solutions (strict \(S\)) completes "
+            rf"{f('authority_strict', 'benign_utility')} benign tasks; unprotected, {f('unprotected', 'benign_utility')}; the oracle, "
+            rf"an allowlist copied from each task's solution and so an upper bound, {f('authority_oracle', 'benign_utility')}. AgentDojo's injections succeed in {f('authority_strict', 'native_attack')} "
             rf"strict and {f('unprotected', 'native_attack')} unprotected episodes")
     if "inside_spec_attack" in a["authority_strict"]:
         text += (rf"; injections that name only principals already in the user's state (written by us) succeed in "
