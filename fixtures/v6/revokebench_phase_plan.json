@@ -1,0 +1,29 @@
+{
+ "schema_version": 1,
+ "experiment": "E4c: E4's front-figure cell with the stop at a random phase",
+ "status": "post hoc; written after E4, E4b and an external-style review (review 6) were read; committed before any E4c data",
+ "recorded_utc": "2026-11-13T09:02Z",
+ "question": "In E4's front-figure cell (C=32, w=5 s, L=0, no fault), how many effects commit after each kind of stop takes effect when the decision falls at a random point of the agent's emission cycle, and how much of E4's halt-versus-revoke difference remains?",
+ "why": "In E4 the decision always fell just after the agent emitted a burst of 4 calls (warmup 20 s is a multiple of the 2 s model step), so revoking at once denied those 4 and halting did not. Review 6 objected that the front figure's halt-versus-revoke separation is therefore an artifact of a fixed phase.",
+ "system": "E4's trial function unchanged (scripts/revokebench_v6.py run_trial: real broker-v2 and sink-v2 processes over SQLite, no LLM). The authority-lab release binary is built from this branch, not E4's: src/protocol_v2.rs, which implements broker-v2 and sink-v2, is unchanged since E4, while policy-core and the binary's command dispatch changed when PR #6 merged; both binary hashes are recorded. Only the decision time and the seeds differ.",
+ "cell": {
+  "C": 32,
+  "w_seconds": 5.0,
+  "L_seconds": 0,
+  "fault": "none",
+  "model_step_seconds": 2.0,
+  "calls_per_step": 4
+ },
+ "phase": "decision at 20 s + u after the agent starts, with u uniform on [0, 2) s (one model step), drawn per replicate from random.Random(20261113 + replicate)",
+ "pairing": "the three arms of a replicate share its seed and u, so they see the same tool latencies and the same phase",
+ "replicates": 40,
+ "trials": "3 arms x 40 replicates = 120",
+ "metrics": "E4's metrics, computed by E4's run_trial; the validator re-derives them from the event log and each sink database as E4's does",
+ "reporting_rules": [
+  "Descriptive only; no test. Reported as post hoc.",
+  "Per arm: median and range of commits after the stop took effect (post_enforcement_commits) and of legitimate calls discarded (cancelled_legitimate plus denied_after_enforcement, E4's cost metric). Per replicate: the halt minus revoke difference, with its median, range and the number of replicates where it is 0.",
+  "The front figure's panel (a) and the abstract's stop counts will be taken from E4c for this cell, whatever they show; E4's fixed-phase result stays in Section 4, labelled as fixed phase.",
+  "Any fence-arm commit after enforcement, duplicate effect or inconsistent audit is reported as an implementation finding."
+ ],
+ "host": "xbabe2 (Linux x86_64), --parallel 16 as in E4"
+}
