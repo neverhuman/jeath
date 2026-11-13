@@ -35,6 +35,12 @@ Web sources were checked against the publisher's own page where it could be fetc
 Version dates checked: Terekhov et al. v2, 2026-03-02; Progent v3, 2026-05-14 (both cited as 2026).
 Venue years: AgentSpec (ICSE 2026), IsolateGPT (NDSS 2025), Chan et al. (TMLR 2025).
 
+Added after review 4 and checked the same way: `goex` 2404.06921 (Patil et al., 2024), `taubench` 2406.12045 (Yao
+et al., 2024), `melon` 2502.05174 (Zhu et al., 2025), `taskshield` 2412.16682 (Jia et al., 2024), `shadearena`
+2506.15740 (Kutasov et al., 2025). Classic references added from their journal records: Lamport 1998 (TOCS 16(2)),
+Ongaro and Ousterhout 2014 (USENIX ATC), Kung and Robinson 1981 (TODS 6(2)), Bishop and Dilger 1996 (Computing
+Systems 9(2)).
+
 ## Corrections made after reading the abstracts
 
 - Zhu and Wang (`ftbudget`) prove at-most-once *settlement*, not dispatch.

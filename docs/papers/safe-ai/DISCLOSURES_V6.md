@@ -71,6 +71,18 @@ or a reported count; each changes framing or presentation, and the paper says so
   unauthorized) and S2 (first-proposal success), which were computed and promoted with E1 but had not been reported in
   the paper. No data or analysis changed; Section 7 now states that the primary scoring cannot register the fence's
   safety effect and that the two "safer than the durable broker without a fence" claims could not succeed.
+- **Presentation changes after review 4 (2026-11-13, 05:00–05:40Z; no data or analysis changed).**
+  - E4: the abstract now says halting leaks calls already dispatched and revoking calls already admitted. Their
+    difference in the drawn cell is the burst emitted just before the decision (stop phase fixed). At L >= 1 the two
+    arms' medians were within one or two effects, and the generated text and Figure 1b caption now say so.
+  - E5: Figure 2a no longer draws intervals on distinct proposals, which are not independent within a case. Its title
+    rule now uses case-level intervals. H_E5a's comparison is stated to be partly one of case construction, since only
+    state-dependent families can contain an exact match to the approved list.
+  - E5: the per-checkpoint truncation sensitivity is reported (4B: 9/216 vs 17/216 if truncations counted as
+    acceptances).
+  - E6b: the foreign-key mechanism's "forged epoch refused" cell is shown as not measurable, because its fence was never
+    raised.
+  - E8: the sentence ranking strict S against Progent was replaced by paired counts.
 - **E1 framing.** "Powered" was removed. At N = 128 a single lost case defeats a usefulness claim (generated loss
   rule); E1 is presented as a strict test of the previous version's claims, not as evidence for the thesis.
 
