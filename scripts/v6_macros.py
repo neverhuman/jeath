@@ -74,7 +74,25 @@ def e4_macros(args) -> dict:
     burst = trials[0]["config"]["workload"]["calls_per_step"]
     sentence += (rf", where RPC time and the emitter's bursts of {burst} calls are not small against the window." if
                  worst["L"] + worst["w"] <= 1 else ".")
-    return {"vsixEFourTrials": len(trials),
+    # Trial-by-trial accounting (fault-free): what commits after enforcement is what was in flight plus what was emitted
+    # and not yet accepted, less what was refused; under the fence nothing commits and everything in flight is discarded.
+    pt = [per_trial(t) for t in trials if t["config"]["fault"] == "none"]
+    hr = [r for r in pt if r["arm"] != "fence_sink"]
+    fr = [r for r in pt if r["arm"] == "fence_sink"]
+    ok_hr = sum(r["post_enforcement_commits"] == r["in_flight_at_enforcement"] + r["emitted_not_accepted_at_enforcement"]
+                - r["denied_after_enforcement"] for r in hr)
+    ok_f = sum(r["post_enforcement_commits"] == 0 and r["cancelled"] == r["in_flight_at_enforcement"] for r in fr)
+    identity = (rf"The counts reconcile trial by trial: in {ok_hr} of {len(hr)} fault-free halting and revoking trials, the "
+                r"effects committed after enforcement equal the calls in flight at enforcement plus those emitted but not yet "
+                rf"accepted, less those refused, and in {ok_f} of {len(fr)} fence trials none committed and every call in "
+                r"flight was discarded.")
+    warm, step = trials[0]["config"]["workload"]["warmup"], trials[0]["config"]["workload"]["model_step_seconds"]
+    if abs(warm / step - round(warm / step)) < 1e-9:
+        identity += (rf" The decision always falls just after the agent emits a burst of {burst} calls (the {warm:g}\,s "
+                     rf"warm-up is a whole number of {step:g}\,s steps), so every halting and revoking count includes that "
+                     r"burst; a stop at another point in the cycle would catch less of it. We did not vary the phase.")
+    return {"vsixEFourIdentitySentence": identity,
+            "vsixEFourTrials": len(trials),
             "vsixEFourFaultTrials": sum(t["config"]["fault"] != "none" for t in trials),
             "vsixEFourCells": len({(c["w"], c["C"], c["L"]) for c in nofault}),
             "vsixEFourWCCells": len(wc),
@@ -335,7 +353,8 @@ def e1_report(ca: dict, sec: dict | None, source: str, label: str, title: str) -
         if inel:
             s += f" Claims against {series(inel)} were ineligible because pairs were missing."
         sentences.append(s)
-    m = {"planned": planned, "sentence": f"Of the {total} predeclared component claims, {held} held. " + " ".join(sentences),
+    m = {"planned": planned, "held": held, "total": total,
+         "sentence": f"Of the {total} predeclared component claims, {held} held. " + " ".join(sentences),
          "s4": (f"Without the revocation cases (S4), the usefulness bound cleared the five-point margin in {s4_ok} of {s4_n} "
                 f"checkpoint--comparator pairs.") if sec is not None else None}
     cols, head = (r"llrrcrrcrc", r" & S4 lower (loss/$n$) & S4") if sec is not None else (r"llrrcrrc", "")
@@ -443,7 +462,8 @@ def e1_macros(args) -> tuple[dict, str]:
               rf"bounds). " + s4)
     return {"vsixEOneCampaigns": f"{r['planned']:,}", "vsixEOneOutcomeSentence": r["sentence"],
             "vsixEOneSFourSentence": s4, "vsixEOneN": g["n"], "vsixEOneZeroLossBound": f"{g['zero']:.3f}",
-            "vsixEOneOneLossBound": f"{g['one']:.3f}", "vsixEOneLossRuleSentence": g["rule"]}, table
+            "vsixEOneOneLossBound": f"{g['one']:.3f}", "vsixEOneLossRuleSentence": g["rule"],
+            "vsixEOneHeld": f"{r['held']} of its {r['total']}"}, table
 
 
 def pilot_macros() -> tuple[dict, str]:
@@ -623,7 +643,7 @@ def e6b_macros(args) -> dict:
 
 # ------------------------------------------------------------------ assembly
 
-PENDING = {"e4": ["vsixEFourTrials", "vsixEFourFaultTrials", "vsixEFourCells", "vsixEFourWCCells", "vsixEFourOverloadedCells",
+PENDING = {"e4": ["vsixEFourIdentitySentence", "vsixEFourTrials", "vsixEFourFaultTrials", "vsixEFourCells", "vsixEFourWCCells", "vsixEFourOverloadedCells",
                   "vsixLittleSentence"],
            "e5": ["vsixEFiveCkpt", "vsixEFiveCkpts", "vsixSingleClauseSentence", "vsixRtwoTruncated", "vsixGateReplaySentence"],
            "e8": ["vsixEEightCkpt", "vsixEEightEpisodes", "vsixEEightProgentSentence", "vsixEEightCostSentence",
@@ -632,7 +652,7 @@ PENDING = {"e4": ["vsixEFourTrials", "vsixEFourFaultTrials", "vsixEFourCells", "
            "e8b": ["vsixStageInsideStrict", "vsixStageInsideOracle"],
            "e6": ["vsixESixPgSentence", "vsixESixPgFairSentence", "vsixESixFsSentence", "vsixESixPOneThreeSentence"],
            "e2": ["vsixETwoCkpts", "vsixETwoSentence"],
-           "e1": ["vsixEOneCampaigns", "vsixEOneOutcomeSentence", "vsixEOneSFourSentence", "vsixEOneN",
+           "e1": ["vsixEOneCampaigns", "vsixEOneHeld", "vsixEOneOutcomeSentence", "vsixEOneSFourSentence", "vsixEOneN",
                   "vsixEOneZeroLossBound", "vsixEOneOneLossBound", "vsixEOneLossRuleSentence"],
            "e4b": ["vsixEFourBSentence"],
            "e6b": ["vsixESixBSentence", "vsixESixBStarvationN", "vsixESixBMechanisms", "vsixESixBRuns", "vsixESixBVariants", "vsixFenceAllThreeRaces", "vsixFenceRaceBound"]}

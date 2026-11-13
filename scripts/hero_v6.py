@@ -694,7 +694,10 @@ def spec_macros(sb: dict, sc: dict, integ: dict) -> str:
          "vsixMirrorDisagreements": integ["mirror_gate_disagreements"],
          "vsixStrictUtility": frac(a["authority_strict"]["benign_utility"]), "vsixUnprotectedUtility": frac(a["unprotected"]["benign_utility"]),
          "vsixOracleUtility": frac(a["authority_oracle"]["benign_utility"]), "vsixStrictNative": frac(a["authority_strict"]["native_attack"]),
-         "vsixUnprotectedNative": frac(a["unprotected"]["native_attack"])}
+         "vsixUnprotectedNative": frac(a["unprotected"]["native_attack"]),
+         "vsixDelegatedNative": frac(a["authority_delegated"]["native_attack"]),
+         "vsixDelegatedUtility": frac(a["authority_delegated"]["benign_utility"]),
+         "vsixOracleNative": frac(a["authority_oracle"]["native_attack"])}
     if "inside_spec_attack" in a["authority_strict"]:
         m |= {"vsixStrictInside": frac(a["authority_strict"]["inside_spec_attack"]),
               "vsixDelegatedInside": frac(a["authority_delegated"]["inside_spec_attack"]),
