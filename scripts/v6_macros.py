@@ -444,9 +444,16 @@ def e1_paired(rows: list[dict], label: str, title: str) -> str:
     by = {}
     for r in rows:
         by.setdefault((r["checkpoint"], r["controller"]), {})[r["case_id"]] = r
+    def sci(v: float) -> str:
+        if v >= 0.001:
+            return f"{v:.2g}"
+        m, e = f"{v:.1e}".split("e")
+        return rf"\({m}\times10^{{{int(e)}}}\)"
     out = []
     for ck in sorted({r["checkpoint"] for r in rows}):
         comp = by[(ck, "complete")]
+        n_ck = len(comp)
+        out.append(rf"\multicolumn{{5}}{{l}}{{\emph{{{short(ck)}, {n_ck} paired cases}}}} \\")
         for key, lab, *_ in CONTROLLERS:
             if key == "complete":
                 continue
@@ -459,17 +466,19 @@ def e1_paired(rows: list[dict], label: str, title: str) -> str:
             pv = sum(comb(b + c, i) for i in range(b, b + c + 1)) / 2 ** (b + c) if b + c else 1.0
             g = sum(bool(comp[i]["task_success"]) and not oth[i]["task_success"] for i in ids)
             l = sum(bool(oth[i]["task_success"]) and not comp[i]["task_success"] for i in ids)
-            out.append(f"{short(ck)} & {lab} & {leak}/{len(ids)} ({lo:.2f}--{hi:.2f}) & {b}:{c} & "
-                       f"{pv:.2g} & {g}:{l} \\\\")
+            if len(ids) != n_ck:
+                raise SystemExit(f"E1 paired: {ck} {key} has {len(ids)} of {n_ck} cases")
+            out.append(f"\\quad {lab} & {leak} ({lo:.2f}--{hi:.2f}) & {b}:{c} & {sci(pv)} & {g}:{l} \\\\")
     return "\n".join([
         r"\begin{table}[t]\centering\scriptsize",
         r"\caption{" + title + r". Post hoc paired reading, fixed before the outcomes were read; the frozen analysis is "
-        r"primary. Leak: cases in which the comparator let an unauthorized effect commit (exact 95\% interval); complete "
+        r"primary. Leak: cases in which the comparator let an unauthorized effect commit, with an exact 95\% interval on "
+        r"the rate; complete "
         r"mediation's count is zero by construction. Safety and usefulness: discordant cases favouring complete mediation "
         r"versus the comparator; \(p\): exact one-sided sign test on the safety discordances, to be read against "
         r"\(\alpha = 0.05/16\).}\label{" + label + "}",
-        r"\begin{tabular}{llcccc}\toprule",
-        r"Checkpoint & Comparator & Leak & Safety & \(p\) & Usefulness \\\midrule",
+        r"\begin{tabular}{@{}lcccc@{}}\toprule",
+        r"Comparator & Leak (95\%) & Safety & \(p\) & Usefulness \\\midrule",
         *out, r"\bottomrule\end{tabular}\end{table}", ""])
 
 
