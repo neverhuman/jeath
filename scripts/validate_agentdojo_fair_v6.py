@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 import sys
 
@@ -22,6 +23,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import agentdojo_fair_v6 as e8  # noqa: E402
 from infer_v2 import sha  # noqa: E402
 
+
+
+def echo_masked(reply):
+    """Pydantic's validation errors echo the call's arguments in the model's key order, which episodes do not keep (they
+    store arguments with sorted keys). Compare tool errors with that echo masked; added 2026-11-13 after E2's Granite run,
+    where one error differed only in it (DISCLOSURES_V6.md)."""
+    if isinstance(reply, dict) and "tool_error" in reply:
+        return {"tool_error": re.sub(r"input_value=.*?, input_type=", "input_value=<args>, input_type=", reply["tool_error"])}
+    return reply
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
@@ -98,7 +108,7 @@ def main():
             admitted_effects += fn in e8.EFFECT_TOOLS[s_name]
             value, err = runtime.run_function(env, fn, a)
             text = e8.fmt_result(value) if err is None else str(err)
-            if step.get("reply") != ({"tool_result": text} if err is None else {"tool_error": text}):
+            if echo_masked(step.get("reply")) != echo_masked({"tool_result": text} if err is None else {"tool_error": text}):
                 problems.append(f"{tag} turn {step['turn']}: replayed tool output differs from the stored reply")
             if spec is not None:
                 spec.observe(fn, a, text)

@@ -31,8 +31,31 @@ CLASS_LABEL = {"sink_enforced": "sink", "writer_supplied_condition": "writer", "
 OUTCOME_LABEL = {"pass": "pass", "fail": "fail", "not_applicable": "n/a", "documented_not_executed": "doc.\\ only"}
 
 
+DISPLAY = {"granite-3.3-8b-instruct": "Granite-3.3-8B"}  # names as the model cards write them
+
+
 def short(ckpt: str) -> str:
-    return ckpt.split("/")[-1].replace("-GGUF", "")
+    name = ckpt.split("/")[-1].replace("-GGUF", "")
+    return DISPLAY.get(name, name)
+
+
+def divergence(rows: list[dict]) -> tuple[int, int]:
+    """The validator's determinism check (scripts/validate_agentdojo_fair_v6.py): two arms of one episode must give the
+    same raw reply turn by turn while every earlier reply they received was identical. Returns (diverged, pairs)."""
+    groups, pairs, diverged = {}, 0, 0
+    for r in rows:
+        groups.setdefault((r["suite"], r["user_task"], r["injection_task"]), []).append(r)
+    for rs in groups.values():
+        for i, a in enumerate(rs):
+            for b in rs[i + 1:]:
+                pairs += 1
+                for sa, sb in zip(a["trace"], b["trace"]):
+                    if sa["raw"] != sb["raw"]:
+                        diverged += 1
+                        break
+                    if sa.get("reply") != sb.get("reply"):
+                        break
+    return diverged, pairs
 
 
 def frac(x: int, n: int) -> str:
@@ -280,21 +303,7 @@ def e8_macros(args) -> dict:
         f"Against the {base} benign tasks the unprotected agent completed, " +
         series([cost("authority_strict", "strict \\(S\\)"), cost("progent", "Progent's per-task policies"),
                 cost("authority_delegated", "delegation"), cost("authority_oracle", "the oracle grant")]) + ".")
-    # The validator's determinism check (scripts/validate_agentdojo_fair_v6.py): two arms of one episode must give the
-    # same raw reply turn by turn while every earlier reply they received was identical.
-    groups, pairs, diverged = {}, 0, 0
-    for r in rows:
-        groups.setdefault((r["suite"], r["user_task"], r["injection_task"]), []).append(r)
-    for rs in groups.values():
-        for i, a in enumerate(rs):
-            for b in rs[i + 1:]:
-                pairs += 1
-                for sa, sb in zip(a["trace"], b["trace"]):
-                    if sa["raw"] != sb["raw"]:
-                        diverged += 1
-                        break
-                    if sa.get("reply") != sb.get("reply"):
-                        break
+    diverged, pairs = divergence(rows)
     m["vsixEEightDivergenceSentence"] = (
         f"In {diverged} of {pairs:,} pairs of arms run on the same episode, the model's reply differed while everything it "
         "had received was identical, so inference at temperature 0 was not fully deterministic and a small part of the "
@@ -449,7 +458,7 @@ def e2_macros(args) -> dict:
     dirs = {p.name[3:]: p for p in EVIDENCE.glob("e2-*") if p.is_dir()} | {k[3:]: v for k, v in args.sources.items() if k.startswith("e2-")}
     if not dirs:
         raise Missing("e2")
-    parts, names, table_rows = [], [], []
+    parts, names, table_rows, div = [], [], [], []
     order = ["qwen3-4b", "granite-3.3-8b", "qwen3-14b"]  # by the plan's launch order; any other key follows
     for key, d in sorted(dirs.items(), key=lambda kv: (order.index(kv[0]) if kv[0] in order else len(order), kv[0])):
         res = json.loads((d / "results.json").read_text())
@@ -465,6 +474,8 @@ def e2_macros(args) -> dict:
                      f"{frac(*st['utility'])} under strict \\(S\\); attacks {frac(*un['attack'])}, {frac(*pg['attack'])} and "
                      f"{frac(*st['attack'])}")
         table_rows.append((f"{ck} (second host)", rows))
+        diverged, pairs = divergence(rows)
+        div.append(f"{diverged:,} of {pairs:,} for {ck}")
     rows8 = load_rows(src(args, "e8"))
     e8ck = short(json.loads((ROOT / "fixtures/v6/agentdojo_fair_plan.json").read_text())["agent"]["checkpoint"])
     body = []
@@ -486,7 +497,11 @@ def e2_macros(args) -> dict:
         " ".join(rf"\cmidrule(lr){{{2 + 2 * i}-{3 + 2 * i}}}" for i in range(len(E2_ARMS))),
         " & " + " & ".join(["benign & attacks"] * len(E2_ARMS)) + r" \\\midrule",
         *body, r"\bottomrule\end{tabular}\end{table*}", ""])
-    return {"vsixETwoCkpts": series(names), "vsixETwoSentence": "; ".join(parts) + "."}
+    d8 = divergence(rows8)
+    return {"vsixETwoCkpts": series(names), "vsixETwoSentence": "; ".join(parts) + ".",
+            # E8's determinism count, per checkpoint: pairs of arms of one episode whose replies differed while
+            # everything the model had received was identical (E8's own count is in its limits paragraph).
+            "vsixETwoDivergence": series([f"{d8[0]:,} of {d8[1]:,} for {e8ck} in E8"] + div)}
 
 
 # ------------------------------------------------------------------ E1
@@ -844,7 +859,7 @@ PENDING = {"e5c": ["vsixEFiveCSentence", "vsixEFiveCPrecedenceSentence", "vsixEF
                  [f"vsixStage{n}{k}" for n in ("Strict", "Delegated", "Oracle") for k in ("User", "Attack")],
            "e8b": ["vsixStageInsideStrict", "vsixStageInsideOracle"],
            "e6": ["vsixESixPgSentence", "vsixESixPgFairSentence", "vsixESixFsSentence", "vsixESixPOneThreeSentence"],
-           "e2": ["vsixETwoCkpts", "vsixETwoSentence"],
+           "e2": ["vsixETwoCkpts", "vsixETwoSentence", "vsixETwoDivergence"],
            "e1": ["vsixEOneCampaigns", "vsixEOneHeld", "vsixEOneOutcomeSentence", "vsixEOneSFourSentence", "vsixEOneN",
                   "vsixEOneZeroLossBound", "vsixEOneOneLossBound", "vsixEOneLossRuleSentence", "vsixEOneSecondarySentence"],
            "e4b": ["vsixEFourBSentence"],

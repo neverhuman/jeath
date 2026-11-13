@@ -126,6 +126,16 @@ or a reported count; each changes framing or presentation, and the paper says so
   not viewed; the retry was relaunched from scratch at 08:15Z with the fix (commit before relaunch).
 - **E1 framing.** "Powered" was removed. At N = 128 a single lost case defeats a usefulness claim (generated loss
   rule); E1 is presented as a strict test of the previous version's claims, not as evidence for the thesis.
+- **E2 validator change after Granite-3.3-8B's run (post hoc, 2026-11-13T09:50Z).** The replay check failed on one
+  tool error (banking, user task 7 with injection task 0): it differed from the replay only in pydantic's echo of the
+  call's arguments, which follows the model's key order while episodes store arguments with sorted keys.
+  `validate_agentdojo_fair_v6.py` now compares tool errors with that echo masked (`echo_masked`); every other field
+  is compared as before. Qwen3-4B's and E8's evidence still validate under the change.
+- **E2 determinism.** Granite-3.3-8B's same-episode arm pairs differed under identical history in 170 of 1,110 pairs
+  (Qwen3-4B 14, E8's Qwen3-8B 5). The validator reports these and does not fail on them. Section 6 now states the
+  per-checkpoint counts by a generated sentence; we did not investigate the cause (Granite's chat template, its
+  quantization and the second host's thread count are candidates).
+- **Display names.** Granite's checkpoint name is shown as "Granite-3.3-8B" (generated).
 
 ## By construction (reported as such, never as findings)
 
