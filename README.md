@@ -4,7 +4,7 @@
 
 **Thesis:** *Intelligence lives in proposals; authority lives in state.* Halting a model stops new proposals, not effects already in flight; a fence at the state-bearing sink also stops those, and only for what the specification names. We conjecture that mediation moves the safety problem from a model's judgment into a written specification; the measured costs and gaps are in the paper and in [`docs/CLAIMS.md`](docs/CLAIMS.md), including the negative results (a reasoning same-model reviewer matched the gate on E5's small cases; the written AgentDojo specification cost more benign utility than Progent).
 
-**v6 (this branch):** predeclared experiments E1, E4, E4b, E5, E6, E6b, E8 and E8b on real broker/sink processes, local open-weight checkpoints and AgentDojo; E5c, a control for E5 designed after E5's results and committed before its own data; E2 declared, not yet run.
+**v6 (this branch):** predeclared experiments E1, E4, E4b, E5, E6, E6b, E8 and E8b on real broker/sink processes, local open-weight checkpoints and AgentDojo; post hoc controls for E5, each designed after E5's results and committed before its own data: E5c (twins and replays), its R2 timeout retry, and E5d (a structured per-rule verdict); E2 (AgentDojo across checkpoints on a second host), descriptive.
 
 - Plans: `fixtures/v6/`. Evidence: `evidence/v6/reference/` (gate: `python3 scripts/validate_v6.py`).
 - Every stopped launch, interim view and by-construction result: [`docs/papers/safe-ai/DISCLOSURES_V6.md`](docs/papers/safe-ai/DISCLOSURES_V6.md).
