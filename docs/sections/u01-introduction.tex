@@ -9,8 +9,8 @@ it. This paper separates the two. \emph{Intelligence} lives in proposals: the ca
 choose actions. \emph{Authority} lives in state: which effects a sink will commit, given what has already been
 committed and granted.
 
-The separation is easiest to see when an operator stops an agent. Systems that track and stop model
-workloads~\cite{controlroom} can act in three places (Figure~\ref{fig:v6hero}a). \emph{Halting inference} ends the
+The separation is easiest to see when an operator stops an agent, by hand or through a system that tracks and stops
+model workloads~\cite{controlroom}. The stop can act in three places (Figure~\ref{fig:v6hero}a). \emph{Halting inference} ends the
 stream of new proposals. \emph{Revoking admission} at a broker refuses permits for proposals that arrive later.
 \emph{Fencing the sink} raises an epoch floor at the component that writes durable state, so that an operation carrying
 an older epoch is refused when it tries to commit, even if it was admitted and dispatched before the stop. Only the

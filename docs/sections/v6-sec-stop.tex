@@ -5,8 +5,8 @@
 An operator who decides to stop an agent can act at three places. \emph{Halting inference} ends the stream of new
 proposals. \emph{Revoking admission} at the broker refuses permits for proposals that arrive later. \emph{Fencing the
 sink} raises the epoch floor at the component that writes durable state, so that any operation carrying an older epoch
-is refused at commit, including operations that were admitted, dispatched and are already running. The first two are
-what most deployed stop controls do~\cite{controlroom}. Only the third reaches work that is already in flight, and it
+is refused at commit, including operations that were admitted, dispatched and are already running. A system that
+tracks and stops model workloads~\cite{controlroom} acts at the first, on the producer of proposals. Only the third reaches work that is already in flight, and it
 is the fencing-token argument of distributed locking~\cite{kleppmann2016} applied to agent authority.
 
 \para{Setup (E4).} We run the real broker and sink processes (Rust, SQLite, JSON-lines RPC; Section~\ref{sec:core})
