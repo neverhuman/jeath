@@ -175,7 +175,8 @@ def e5_macros(args) -> dict:
     args.tables["v6-e5-table.tex"] = e5_table(an, d)
     m = {"vsixEFiveCkpt": short(args.ckpt), "vsixEFiveCkpts": series(sorted(short(c) for c in an["checkpoints"])),
          "vsixSingleClauseSentence": single[0].upper() + single[1:],
-         "vsixRtwoTruncated": f"{integ['r2_truncated_unique']} of {integ['unique_valid']}"}
+         "vsixRtwoTruncated": f"{integ['r2_truncated_unique']} of {integ['unique_valid']}",
+         "vsixRtwoTruncatedSentence": r2_truncation_sentence(an)}
     rp = d / "gate-replay.json"
     if rp.exists():
         r = json.loads(rp.read_text())
@@ -187,6 +188,23 @@ def e5_macros(args) -> dict:
     elif not args.draft:
         raise SystemExit(f"{rp} is missing; promote E5 with scripts/promote_v6.py, which runs the replay")
     return m
+
+
+def r2_truncation_sentence(an: dict) -> str:
+    """Per checkpoint: R2 reviews that reached the token cap (a denial, as the plan specified) and, where any did, what the
+    state-dependent admissions would be if they had counted as acceptances (the table's post hoc sensitivity)."""
+    parts, sens = [], []
+    for ck in sorted(an["checkpoints"]):
+        c = an["checkpoints"][ck]
+        integ, sd = c["integrity"], c["sets"]["strategy"]["state_dependent"]["arms"]
+        parts.append(f"{integ['r2_truncated_unique']} of {integ['unique_valid']} on {short(ck)}")
+        if integ["r2_truncated_unique"]:
+            a, b = sd["R2"]["breach_unique"], sd["R2_truncated_as_allow"]["breach_unique"]
+            sens.append(f"on {short(ck)}, counting them as acceptances would raise R2's state-dependent admissions from "
+                        f"{a['x']}/{a['n']} to {b['x']}/{b['n']}")
+    s = (f"R2 reviews that reached the token cap ({series(parts)}) count as denials, as the plan specified, which can only "
+         f"lower R2's admissions")
+    return s + ("; " + "; ".join(sens) + "." if sens else ".")
 
 
 def e5_table(an: dict, d: Path) -> str:
@@ -703,7 +721,7 @@ def e6b_macros(args) -> dict:
 PENDING = {"e5c": ["vsixEFiveCSentence", "vsixEFiveCPrecedenceSentence", "vsixEFiveCAgreement"],
            "e4": ["vsixEFourIdentitySentence", "vsixEFourTrials", "vsixEFourFaultTrials", "vsixEFourCells", "vsixEFourWCCells", "vsixEFourOverloadedCells",
                   "vsixLittleSentence"],
-           "e5": ["vsixEFiveCkpt", "vsixEFiveCkpts", "vsixSingleClauseSentence", "vsixRtwoTruncated", "vsixGateReplaySentence"],
+           "e5": ["vsixEFiveCkpt", "vsixEFiveCkpts", "vsixSingleClauseSentence", "vsixRtwoTruncated", "vsixRtwoTruncatedSentence", "vsixGateReplaySentence"],
            "e8": ["vsixEEightCkpt", "vsixEEightEpisodes", "vsixEEightProgentSentence", "vsixEEightCostSentence",
                   "vsixEEightDivergenceSentence", "vsixProgentUtility", "vsixProgentNative", "vsixEEightPairedSentence"] +
                  [f"vsixStage{n}{k}" for n in ("Strict", "Delegated", "Oracle") for k in ("User", "Attack")],

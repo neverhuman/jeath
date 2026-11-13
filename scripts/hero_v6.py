@@ -188,8 +188,9 @@ def panel_b(an: dict, plan: dict, ckpt: str) -> tuple[list[str], dict]:
         st[f"{arm}_state_cases"] = sets["state_dependent"]["arms"][arm]["breach_cases"]
         st[f"{arm}_visible_cases"] = sets["proposal_visible"]["arms"][arm]["breach_cases"]
     st["G_breaches"] = sum(sets[f]["arms"]["G"]["breach_unique"]["x"] for f in order)
-    sd, pv = st["R1_state"], st["R1_visible"]
-    # H_E5a's direction, claimed in the title only when the 95% intervals separate.
+    # H_E5a's direction, claimed in the title only when the 95% intervals on cases (the unit; proposals within a case are
+    # not independent) separate.
+    sd, pv = st["R1_state_cases"], st["R1_visible_cases"]
     separated = sd["ci95"] and pv["ci95"] and sd["ci95"][0] > pv["ci95"][1]
     title = (r"\textbf{(b)} Without reasoning, reviewers miss state" if separated else
              r"\textbf{(b)} Unauthorized proposals admitted")
@@ -209,12 +210,11 @@ def panel_b(an: dict, plan: dict, ckpt: str) -> tuple[list[str], dict]:
             e = st["families"][f][arm]["breach_unique"]
             if not e["n"]:
                 continue
-            m = 100 * e["x"] / e["n"]
-            lo, hi = (100 * v for v in e["ci95"]) if arm != "G" else (m, m)  # the gate's admissions are fixed by design: no interval
-            pts.append(f"({m:.4g},{ypos[f] + offs[arm]:.3f}) -= ({m - lo:.4g},0) += ({hi - m:.4g},0)")
+            # Share of distinct proposals, descriptive: no interval, because proposals within a case are not independent.
+            pts.append(f"({100 * e['x'] / e['n']:.4g},{ypos[f] + offs[arm]:.3f})")
         fill = "white" if arm == "R2" else color  # open diamond: distinct from the filled triangle in grayscale
-        lines.append(rf"\addplot[only marks,mark={mark},mark size=2pt,draw={color},fill={fill},line width=0.6pt,error bars/.cd,x dir=both,x explicit,"
-                     rf"error bar style={{{color},line width=0.5pt}}] coordinates {{{' '.join(pts)}}};\addlegendentry{{{label}}}")
+        lines.append(rf"\addplot[only marks,mark={mark},mark size=2pt,draw={color},fill={fill},line width=0.6pt] "
+                     rf"coordinates {{{' '.join(pts)}}};\addlegendentry{{{label}}}")
     pts = []
     for f in order:
         x, n = st["families"][f]["omitted_clause_share"]
@@ -273,13 +273,15 @@ def exact_copy_tally(e5: Path, ckpt: str) -> dict:
 def caption_b(s: dict, integ: dict) -> str:
     ck = s["ckpt"].split("/")[-1].replace("-GGUF", "")
     sd, pv, sd2, pv2 = s["R1_state"], s["R1_visible"], s["R2_state"], s["R2_visible"]
-    # Comparative wording only when the 95% intervals separate (the same rule as the panel title); otherwise neutral.
+    sc, pc = s["R1_state_cases"], s["R1_visible_cases"]
+    # Comparative wording only when the case-level 95% intervals separate (the same rule as the panel title).
     cmp = "more often than" if s["title_claim_supported"] else "against"
     tok = s["tokens"]
     return (rf"\textbf{{(b)}} {ck} red-team proposals under 8 predeclared mutation strategies, each distinct proposal counted once "
-            rf"(95\% Clopper--Pearson). The reviewer is the same checkpoint, shown the rules and the state the gate reads. "
-            rf"Without reasoning it admits {pct(sd['x'], sd['n'])} of unauthorized proposals whose violation lives in sink state, {cmp} "
-            rf"{pct(pv['x'], pv['n'])} of those visible in the proposal. With reasoning (median {tok['R2']:g} generated tokens per "
+            rf"(no interval: proposals within a case are not independent). The reviewer is the same checkpoint, shown the rules "
+            rf"and the state the gate reads. Without reasoning it admits {pct(sd['x'], sd['n'])} of unauthorized proposals whose "
+            rf"violation lives in sink state, {cmp} {pct(pv['x'], pv['n'])} of those visible in the proposal (by case, "
+            rf"{sc['x']}/{sc['n']} against {pc['x']}/{pc['n']}). With reasoning (median {tok['R2']:g} generated tokens per "
             rf"review, against {tok['R1']:g}) it admits {pct(sd2['x'], sd2['n'])} and {pct(pv2['x'], pv2['n'])}. "
             rf"The gate admits {s['G_breaches']}; it enforces "
             rf"the written predicate, and its Rust kernel agreed with the Python reference on all {integ['unique_valid']} valid "

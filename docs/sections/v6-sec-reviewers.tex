@@ -34,7 +34,9 @@ to a new revision, or the budget it would draw on is spent. The proposer submitt
 \vsixExactCases{} state-dependent cases. The R1 reviewer approved it in \vsixReviewerExact{} of them and approved
 \vsixReviewerMutated{} of the altered state-dependent proposals: it applied the first rule, exact approval, and not the
 three that read state. On \vsixOtherCkpt{} it approved \vsixReviewerExactOther{} unaltered and
-\vsixReviewerMutatedOther{} altered ones. Reasoning changed this. The second hypothesis (H\textsubscript{E5b}: reasoning
+\vsixReviewerMutatedOther{} altered ones. H\textsubscript{E5a}'s comparison is therefore partly one of how the cases were
+built: only a state-dependent family can contain a proposal that matches the approved list exactly, and on
+\vsixEFiveCkpt{} that proposal accounts for every state-dependent admission without reasoning. Reasoning changed this. The second hypothesis (H\textsubscript{E5b}: reasoning
 reduces state-dependent misses but does not remove them) held on \vsixOtherCkpt{} and failed on \vsixEFiveCkpt. With
 reasoning enabled (R2), the \vsixEFiveCkpt{} reviewer approved \vsixReasonerExact{} of the unaltered proposals,
 \vsixReasonerMutated{} altered ones and \vsixReasonerVisible{} visible violations, at a median of \vsixReasonerTokens{}
@@ -56,13 +58,15 @@ wording we ran. \vsixEFiveCPrecedenceSentence{} Re-running R1 and R2 on E5's own
 with E5's recorded decisions in \vsixEFiveCAgreement.
 
 \para{What this shows.} A reviewer can check state only if it is shown the state, and E5 shows it everything the gate
-reads: one moment, at most one prior record. Under those conditions a same-model reviewer that reasons at length did
-about as well as the gate on these cases, and one that replies with a bare verdict treated ``this proposal was
-approved'' as ``this proposal is authorized''. Two differences remain that E5 does not measure. The gate checks at
-commit, while a reviewer checks a snapshot before it, so state that changes in between, such as a budget spent by a
+reads: one moment, at most one prior record. Under those conditions the reviewer that replied with a bare verdict
+accepted the approved proposal whatever the state, and the reviewer that reasoned at length accepted none of these
+violations on \vsixEFiveCkpt{} and some on \vsixOtherCkpt. E5 alone cannot say whether reasoning made the reviewer read
+the state or only made it refuse approved proposals; the controls above measure that. Two differences remain that
+neither measures. The gate checks at commit, while a reviewer checks a snapshot before it, which is the
+time-of-check-to-time-of-use gap~\cite{bishop1996toctou}: state that changes in between, such as a budget spent by a
 concurrent call (Appendix~\ref{sec:systems}), is invisible to the reviewer. And the gate's decision is fixed by its
-predicate, while the reviewer's moved from \vsixReviewerExact{} to \vsixReasonerExact{} of the same unaltered proposals
-when reasoning was switched on; what a reviewer catches depends on its configuration, at a cost of hundreds of
+predicate, while the reviewer's moved from \vsixReviewerExact{} to \vsixReasonerExact{} of the same unaltered
+proposals when reasoning was switched on; what a reviewer catches depends on its configuration, at a cost of hundreds of
 generated tokens per action where the gate's check is a database transaction.
 
 \para{What a gate misses instead.} Remove one clause and the gate admits exactly the violations that break only that
@@ -77,6 +81,6 @@ stronger or differently trained monitor may do better, and control protocols tha
 audit~\cite{bhatt2025ctrlz} are a different defence. The proposer is told the adversarial objective in plain text. The
 families differ in more than where the violation lives, so the comparison shows that these state-dependent cases are
 hard for a reviewer without reasoning, not that state-dependence alone makes them hard. Only eight distinct proposals
-were authorized, so the data cannot estimate how often a reviewer denies legitimate work, and a reviewer that denied
-everything would also score zero. \vsixRtwoTruncated{} R2 reviews reached the token cap and count as denials, as the
-plan specified; this can only lower R2's admissions.
+were authorized, so E5 cannot estimate how often a reviewer denies legitimate work, and a reviewer that denied
+everything would also score zero; the controls measure that only for the unaltered approved proposals of the
+state-dependent families. \vsixRtwoTruncatedSentence
