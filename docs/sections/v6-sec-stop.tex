@@ -24,7 +24,8 @@ trials include \vsixEFourFaultTrials{} with SIGKILL of the sink or delayed compl
 inference let \vsixHaltRange{} effects commit and revoking at the broker \vsixRevokeRange{}, the last
 \vsixLastCommitSeconds\,s later; fencing the sink let \vsixFenceRange{} commit and discarded \vsixFenceLost{}
 legitimate calls. Across all \vsixEFourCells{} fault-free cells, halting leaked up to \vsixGridHaltMax{} effects and
-revoking up to \vsixGridRevokeMax; the fence admitted at most \vsixFencePostMax{} in \vsixFenceTrials{} trials.
+revoking up to \vsixGridRevokeMax; across \vsixFenceTrials{} fence trials, the most effects any one committed after
+the fence took effect was \vsixFencePostMax.
 
 \para{What the numbers mean.} The fence's zero is a property of the design, not a discovery: the sink serializes its
 RPCs, \texttt{fence} cancels every pending record below the new floor, and effect identifiers are unique in the schema,

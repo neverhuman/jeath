@@ -13,7 +13,7 @@ Under Eq.~\eqref{eq:reach}, the \(k\)-gate joint miss rate satisfies \(\Prb(E \m
 \begin{equation}\label{eq:kstar}
   k^\star(\eta) = \left\lceil \frac{\ln(\eta c / (1 - c))}{\ln p} \right\rceil
 \end{equation}
-reduces conditional breach by less than \(\eta c\). At \(u = 0.02\), \(c = 0.01\), and \(m = 0.10\), \(k^\star(0.1) = \VThreeSatDefaultKStar\), and \(k = 4\) fails \(\VThreeAppAUnderstatement\times\) more often than the naive independent product \(m^4\) (\(\VThreeAppACommonFourPct\%\) vs.\ \(\VThreeAppAIndepFourPct\%\)).
+reduces conditional breach by less than \(\eta c\). At \(c = \VThreeSatC\) and \(p = \VThreeSatP\) (single-gate miss \(m \approx \VThreeSatMarginalM\)), \(k^\star(0.1) = \VThreeSatEqKStar\), and \(k = 4\) fails \(\VThreeAppAUnderstatement\times\) more often than the naive independent product \(m^4\) (\(\VThreeAppACommonFourPct\%\) vs.\ \(\VThreeAppAIndepFourPct\%\)).
 \end{proposition}
 
 Equation~\eqref{eq:reach} exposes why adding statistical monitors cannot substitute for sink mediation: if uncooperative exposure \(u > 0\) or shared transcript blindspot \(c > 0\) remains nonzero, \(\Prb(E) \ge u\,\Prb(E \mid \neg G) + (1 - u)c\) regardless of \(k\).

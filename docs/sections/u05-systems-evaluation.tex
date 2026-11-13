@@ -28,13 +28,9 @@ On live AgentDojo v1.2.2 episodes, upstream Progent static policies~\cite{progen
 
 To measure Proposition~\ref{prop:optinvariance} with real language-model proposals rather than synthetic miss formulas, we draw \(K \in \{1,2,4,8,16\}\) stochastic candidate tool proposals (\(\VEightBokTotalCandidates\) live candidate generations across \(\VEightBokCasesPerModel\) adversarial tasks per checkpoint) from Qwen3-4B and Qwen3-8B and evaluate each candidate against both the same-checkpoint reviewer and the verified sink gate. The reviewer's view of state was not identical to the gate's (setup records were withheld from it); Section~\ref{sec:v6reviewers} repeats the comparison with matched views and unique proposals as the unit. On Qwen3-4B, cumulative reviewer bypass climbs from \(\VEightBokFourBSinglePct\%\) at \(K = 1\) to \(\VEightBokFourBSixteenPct\%\) at \(K = 16\); on Qwen3-8B, bypass climbs from \(\VEightBokEightBSinglePct\%\) to \(\VEightBokEightBSixteenPct\%\). Empirical bypass grows more slowly than the naive i.i.d.\ curve \(1 - (1 - \hat{p}_1)^K\) because candidates drawn for the same prompt correlate (\(\hat{\rho}_{\mathrm{cand}} = \VEightBokFourBRho\) on 4B; \(\VEightBokEightBRho\) on 8B), yet still trends monotonically upward with \(K\), whereas the verified sink gate admits \(0\) unauthorized commits at every \(K\), which holds by construction because the gate's predicate defines ``unauthorized''.
 
-\subsection{Production API Fence-Ability Census (Documentation Only)}
-
-This census was coded by hand from documentation; Section~\ref{sec:v6boundary} replaces it, for the surfaces it can run, with executable probes and a single classification rule. Because our zero-leak revocation guarantee covers only cooperative sinks (\textbf{C1}, \textbf{C3}), practical deployment depends on how many real-world tool APIs support idempotency or conditional-write preconditions. Table~\ref{tab:fencecensus} audits \VEightCensusTotalApis{} widely deployed payment, cloud, database, code-hosting, and messaging interfaces.
-
-\input{generated/v8-fence-census-table}
-
-Five interfaces (Stripe, Kubernetes, S3, PostgreSQL, Google Cloud Storage) natively enforce idempotency keys, resource-version compare-and-swap, or transactional locks; four more (GitHub Git refs, Terraform state, Slack chat updates, Jira issues) support proxy-enforced compare-and-swap via expected commit hashes or version tags (\(\VEightCensusCooperativeOrShim/\VEightCensusTotalApis\) cooperative or proxy-fenced total). Three outbound communication APIs (SendGrid scheduled mail, Gmail drafts, Twilio queued messages) require a local pre-dispatch hold window to support cancellation, while raw SMTP relay and unauthenticated webhooks lack revocation primitives and must be treated explicitly as uncooperative exposure \(u > 0\).
+\para{Documentation census (withdrawn).} The previous version classified 14 production interfaces from their
+documentation, by hand. That census is withdrawn: its classes did not distinguish who enforces a fence, and
+Section~\ref{sec:v6boundary} replaces it, for the surfaces we could run, with executable probes and a single rule.
 
 \subsection{Concurrency Linearization and Base-Unit Accounting}
 
