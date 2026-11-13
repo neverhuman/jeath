@@ -26,6 +26,7 @@ VENV_PY = ROOT / "target/benchmark-venv/bin/python"
 VALIDATORS = {
     "e4": [sys.executable, "scripts/validate_revokebench_v6.py"],
     "e4b": [sys.executable, "scripts/validate_revokebench_b_v6.py"],
+    "e4c": [sys.executable, "scripts/revokebench_phase_v6.py", "validate"],
     "e5": [sys.executable, "scripts/validate_omitted_clause_v6.py"],
     "e6": [sys.executable, "scripts/validate_fenceability_v6.py"],
     "e6b": [sys.executable, "scripts/validate_fenceability_v6b.py"],
@@ -121,12 +122,12 @@ def main():
     # decision and its report is kept with the evidence, because the paper cites it.
     report = validate(kind, run, ("--replay-gate",) if kind == "e5" else ())
     name = {"e4": "e4-revokebench", "e4b": "e4b-revokebench-faults", "e5": "e5-omitted-clause", "e6": "e6-fenceability", "e6b": "e6b-fenceability", "e8": "e8-agentdojo-fair",
-            "e8b": "e8b-inside-spec", "e1": "e1-n128", "e5c": "e5c-controls", "e5c-r2-retry": "e5c-r2-retry", "e5d": "e5d-structured"}.get(kind) or f"e2-{kind.split(':', 1)[1]}"
+            "e8b": "e8b-inside-spec", "e1": "e1-n128", "e5c": "e5c-controls", "e5c-r2-retry": "e5c-r2-retry", "e5d": "e5d-structured", "e4c": "e4c-revokebench-phase"}.get(kind) or f"e2-{kind.split(':', 1)[1]}"
     out = DEST / name
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)
-    if kind == "e4":
+    if kind in ("e4", "e4c"):  # same trial format; E4c's validator reads E4's promoted form
         promote_e4(run, out)
     elif kind == "e4b":
         promote_e4b(run, out)

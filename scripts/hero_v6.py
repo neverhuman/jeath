@@ -138,21 +138,108 @@ def panel_a(trials: list[dict]) -> tuple[list[str], dict]:
     return lines, st
 
 
+def panel_a_phase(trials: list[dict]) -> tuple[list[str], dict]:
+    """E4c: E4's drawn cell with the decision at a random phase (fixtures/v6/revokebench_phase_plan.json). Per arm, the
+    median number of effects committed by each time after the stop took effect, with the range across replicates shaded."""
+    from revokebench_reanalysis_v6 import per_trial
+    curves, lost, tmax, post = {}, [], 0.0, {}
+    for t in trials:
+        ev, cfg = t["events"], t["config"]
+        t_enf = next(e["t"] for e in ev if e["kind"] == "enforced")
+        ts = sorted(e["t"] - t_enf for e in ev if e["kind"] == "completed" and e["status"] == "committed" and e["t"] > t_enf)
+        if len(ts) != t["metrics"]["post_enforcement_commits"]:
+            raise SystemExit(f"{cfg['trial_id']}: event log does not reproduce post_enforcement_commits")
+        curves.setdefault(cfg["arm"], []).append(ts)
+        post[(cfg["arm"], cfg["rep"])] = len(ts)
+        tmax = max(tmax, ts[-1] if ts else 0.0)
+        if cfg["arm"] == "fence_sink":
+            lost.append(per_trial(t)["legit_lost"])
+    fin = {a: sorted(len(c) for c in cs) for a, cs in curves.items()}
+    reps = sorted({r for _, r in post})
+    diff = [post[("halt_inference", r)] - post[("revoke_broker", r)] for r in reps]
+    c0 = trials[0]["config"]
+    wl = c0["workload"]
+    st = {"rule": "E4c: E4's drawn cell, decision at a uniformly random phase of the agent's 2 s emission cycle",
+          "w": c0["w"], "C": c0["C"], "lambda_offered": wl["calls_per_step"] / wl["model_step_seconds"],
+          "replicates": len(curves["fence_sink"]), "final": fin, "fence_lost_legitimate": sorted(lost),
+          "median": {a: median(v) for a, v in fin.items()}, "lost_median": median(lost),
+          "last_commit_s": round(tmax, 1), "diff": {"median": median(diff), "min": min(diff), "max": max(diff),
+                                                    "zero": sum(d == 0 for d in diff), "n": len(diff)},
+          "fence_post_max": max(fin["fence_sink"]), "phase": True}
+    xmax = math.ceil(max(tmax, 1.0) * 1.08 / 5) * 5
+    ymax = max(fin["halt_inference"] + fin["revoke_broker"]) * 1.15 + 1
+    grid = [xmax * i / 240 for i in range(241)]
+    lines = [r"\begin{tikzpicture}[baseline]",
+             rf"\begin{{axis}}[{AXIS},xmin=0,xmax={xmax},ymin=-0.6,ymax={ymax:.0f},grid=major,clip=false,"
+             r"xlabel={Seconds after the stop took effect},ylabel={Effects committed after enforcement},"
+             r"title={\textbf{(a)} Stopping the model $\neq$ stopping its effects}]"]
+    styles = {"halt_inference": ("endored", "dashed", "thick"), "revoke_broker": ("warnamber!80!black", "densely dotted", "very thick"),
+              "fence_sink": ("exoblue", "solid", "ultra thick")}
+    for arm in ("halt_inference", "revoke_broker", "fence_sink"):
+        colour, dash, width = styles[arm]
+        at = [[sum(1 for x in ts if x <= g) for ts in curves[arm]] for g in grid]
+        lo, hi, md = [min(v) for v in at], [max(v) for v in at], [median(v) for v in at]
+        if max(hi) > 0:
+            band = [(g, h) for g, h in zip(grid, hi)] + [(g, l) for g, l in reversed(list(zip(grid, lo)))]
+            lines.append(rf"\addplot[draw=none,fill={colour},fill opacity=0.09,forget plot] coordinates "
+                         rf"{{{' '.join(f'({x:.2f},{y})' for x, y in band)}}} -- cycle;")
+        lines.append(rf"\addplot[{colour},{dash},{width},const plot] coordinates "
+                     rf"{{{' '.join(f'({x:.2f},{y:g})' for x, y in zip(grid, md))}}};")
+    mh, mr = st["median"]["halt_inference"], st["median"]["revoke_broker"]
+    if abs(mh - mr) < 2:  # the medians coincide: one label for both
+        lab = [rf"\node[font=\scriptsize,text=ink,anchor=south east,inner sep=1.5pt,align=right] at (axis cs:{xmax},{max(mh, mr):g}) "
+               rf"{{halt the model, or\\[-1pt]revoke at the broker: {mh:g}, {mr:g}}};"]
+    else:
+        lab = [rf"\node[font=\scriptsize,text=ink,anchor=south east,inner sep=1pt] at (axis cs:{xmax},{mh:g}) {{halt the model}};",
+               rf"\node[font=\scriptsize,text=ink,anchor=north east,inner sep=1.5pt] at (axis cs:{xmax},{mr:g}) {{revoke at the broker}};"]
+    lines += lab + [
+        rf"\node[font=\scriptsize,text=ink,anchor=south east,inner sep=1.5pt,align=right] at (axis cs:{xmax},0.4) "
+        rf"{{\textbf{{fence the sink: {rng(fin['fence_sink'])}}}\\[-1pt]loses {st['lost_median']:g} legitimate calls (median)}};",
+        r"\end{axis}\end{tikzpicture}"]
+    return lines, st
+
+
+def signed_range(lo: int, hi: int) -> str:
+    sgn = lambda v: rf"\(-{-v}\)" if v < 0 else f"{v}"
+    return sgn(lo) if lo == hi else f"{sgn(lo)} to {sgn(hi)}"
+
+
+def caption_a_phase(s: dict, e4: dict) -> str:
+    d = s["diff"]
+    return (rf"\textbf{{(a)}} Real broker and sink processes. A synthetic agent whose calls are all authorized when issued "
+            rf"emits {s['lambda_offered']:g} calls/s to {s['C']} concurrent tool calls of {s['w']:g}\,s mean latency; the "
+            rf"stop is decided at a random point of the agent's emission cycle and enforced at once; {s['replicates']} "
+            rf"replicates per stop, paired by seed (post hoc, E4c). Lines: median over replicates; shading: their range. "
+            rf"Halting and revoking differed by {d['median']:g} effects in the median replicate (range {signed_range(d['min'], d['max'])}; "
+            rf"no difference in {d['zero']} of {d['n']}): revoking refuses only calls emitted but not yet admitted. The fence's zero is "
+            rf"by design; it admitted none after enforcement in any of E4's {e4['fence_trials']} trials, "
+            rf"{e4['fence_fault_trials']} with the sink killed or late completions. ")
+
+
 def banner(s: dict) -> list[str]:
     """The three places a stop can act, with the drawn cell's counts from panel (a). Colours and dash styles match (a)."""
     f = s["final"]
+    if s.get("phase"):  # E4c: medians over random-phase replicates
+        med = s["median"]
+        show = lambda a: f"{med[a]:g}"
+        lost = f"{s['lost_median']:g}"
+        sfx = ", median"
+    else:
+        show = lambda a: rng(f[a])
+        lost = rng(s["fence_lost_legitimate"])
+        sfx = ""
     box = r"line width={lw},rounded corners=2.5pt,minimum width={w}cm,minimum height=1.2cm,align=center,inner sep=2.5pt,font=\scriptsize,text=ink"
     def node(name, x, w, lw, colour, fill, title, line):
         return (rf"\node[draw={colour},fill={fill},{box.format(lw=lw, w=w)}] ({name}) at ({x},0) "
                 rf"{{{{\footnotesize\bfseries {title}}}\\[1pt]{line}}};")
     return [r"\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]",
             node("s1", 2.75, 4.9, "0.8pt,dashed", "endored", "endored!6", "1\\enspace Halt the model",
-                 rf"new proposals stop\\[-1pt]\textbf{{{rng(f['halt_inference'])}}} dispatched effects still commit"),
+                 rf"new proposals stop\\[-1pt]\textbf{{{show('halt_inference')}}} dispatched effects still commit{sfx}"),
             node("s2", 8.95, 4.9, "0.8pt,densely dotted", "warnamber!80!black", "warnamber!8", "2\\enspace Revoke at the broker",
-                 rf"new permits stop\\[-1pt]\textbf{{{rng(f['revoke_broker'])}}} admitted effects still commit"),
+                 rf"new permits stop\\[-1pt]\textbf{{{show('revoke_broker')}}} admitted effects still commit{sfx}"),
             node("s3", 15.15, 4.9, "1.2pt", "exoblue", "exoblue!7", "3\\enspace Fence the sink",
-                 rf"stale epochs refused at commit\\[-1pt]\textbf{{{rng(f['fence_sink'])}}} commit; "
-                 rf"\textbf{{{rng(s['fence_lost_legitimate'])}}} calls in flight discarded"),
+                 rf"stale epochs refused at commit\\[-1pt]\textbf{{{show('fence_sink')}}} commit; "
+                 rf"\textbf{{{lost}}} calls in flight discarded{sfx}"),
             r"\draw[->,line width=1pt,draw=slate] (s1.east) -- node[above,font=\scriptsize,text=ink]{in flight} (s2.west);",
             r"\draw[->,line width=1pt,draw=slate] (s2.east) -- node[above,font=\scriptsize,text=ink]{admitted} (s3.west);",
             r"\end{tikzpicture}"]
@@ -462,19 +549,22 @@ def panel_delay(trials: list[dict], w: float, C: int) -> tuple[list[str], dict]:
     return lines, st
 
 
-def caption_delay(s: dict) -> str:
+def caption_delay(s: dict, phase: bool = False) -> str:
     lo, hi = s["halt_ratio_range"]
     L0, rest = f"{s['L'][0]:g}", [f"{L:g}" for L in s["L"][1:]]
     ena = {L: s["gap"][L]["emitted_not_admitted_median"] for L in s["gap"]}
     rv = sorted({ena[L] for L in rest})
     rest_txt = f"{rv[0]:g}" if len(rv) == 1 else f"{rv[0]:g}--{rv[-1]:g}"
     why = (rf", just after a burst of {s['burst']} calls" if s["burst_at_decision"] else "")
-    return (rf"\textbf{{(b)}} The same cell, median and range at each delay \(L\) from decision to enforcement. Solid "
+    f0 = rng(s["points"]["fence_sink"][L0])
+    where = (rf"E4 (stop at a fixed phase), same cell:" if phase else "The same cell,")
+    tail = (rf"where it lands; panel (a) varies it. " if phase else "where it lands. ")
+    return (rf"\textbf{{(b)}} {where} median and range at each delay \(L\) from decision to enforcement. Solid "
             rf"marks: the plan's halting prediction \(\lambda(L+w)\), \(\lambda\) measured ({s['lambda_mean']:.1f}/s); "
             rf"observed/predicted {s['halt_ratio_median']:g} (median; {lo:g}--{hi:g}; {s['halt_trials']} stable trials). "
             rf"Dotted: \(\lambda L\), a post hoc reading. Halting and revoking differ only by the calls emitted but not yet "
-            rf"admitted when the stop lands (median {ena[L0]:g} at \(L = {L0}\){why}; {rest_txt} otherwise); we did not vary "
-            rf"where it lands. ")
+            rf"admitted when the stop lands (median {ena[L0]:g} at \(L = {L0}\){why}; {rest_txt} otherwise); E4 did not vary "
+            + tail + rf"Counted from the decision, the fence's {f0} effects at \(L = {L0}\) committed while its enforcement calls ran. ")
 
 
 # ------------------------------------------------------------------ hero panel (c): E6b fenceability
@@ -602,17 +692,25 @@ def build_hero(args) -> dict:
     a, sa = panel_a(trials)
     b, sb = panel_delay(trials, sa["w"], sa["C"])
     c, sc = panel_fence(summ6)
-    caption = (r"\captionof{figure}{\textbf{Stopping a model does not stop its effects.} " + caption_a(sa) + caption_delay(sb)
+    sp = None
+    if getattr(args, "e4c", None):
+        ptrials, pres = load_e4(args.e4c)
+        a, sp = panel_a_phase(ptrials)
+        if (sp["w"], sp["C"]) != (sa["w"], sa["C"]):
+            raise SystemExit("E4c's cell is not E4's drawn cell")
+    cap_a = caption_a_phase(sp, sa) if sp else caption_a(sa)
+    caption = (r"\captionof{figure}{\textbf{Stopping a model does not stop its effects.} " + cap_a + caption_delay(sb, bool(sp))
                + caption_fence(sc) + r"}\label{fig:v6hero}")
     # Not a float: the hero sits under the abstract inside the two-column header, as the previous version's did.
     tex = ["% Generated by scripts/hero_v6.py from promoted v6 evidence; do not edit.",
            r"\begin{center}\begin{minipage}{\textwidth}\centering"]
-    tex += preview_mark(args.layout_preview) + banner(sa) + [r"\par\vspace{4pt}"] + a + [r"\hfill"] + b + [r"\hfill"] + c
+    tex += preview_mark(args.layout_preview) + banner(sp or sa) + [r"\par\vspace{4pt}"] + a + [r"\hfill"] + b + [r"\hfill"] + c
     tex += [r"\par\vspace{2pt}", caption, r"\end{minipage}\end{center}"]
-    stats = {"a": sa, "b": sb, "c": sc, "layout_preview": args.layout_preview, "inputs": {"e4": rel(args.e4), "e6b": rel(args.e6b)}}
+    stats = {"a": sa, "a_phase": sp, "b": sb, "c": sc, "layout_preview": args.layout_preview,
+             "inputs": {"e4": rel(args.e4), "e6b": rel(args.e6b)} | ({"e4c": rel(args.e4c)} if sp else {})}
     return {"v6-hero-fig.tex": "\n".join(tex) + "\n",
             "v6-hero-stats.json": json.dumps(stats, indent=1, sort_keys=True, default=list) + "\n",
-            "v6-hero-macros.tex": hero_macros(sa, sb, sc)}
+            "v6-hero-macros.tex": hero_macros(sa, sb, sc, sp)}
 
 
 def build_spec(args) -> dict:
@@ -672,7 +770,7 @@ def write_macros(m: dict) -> str:
     return "% Generated by scripts/hero_v6.py; do not edit.\n" + "".join(f"\\newcommand{{\\{k}}}{{{v}}}\n" for k, v in sorted(m.items()))
 
 
-def hero_macros(sa: dict, sb: dict, sc: dict) -> str:
+def hero_macros(sa: dict, sb: dict, sc: dict, sp: dict | None = None) -> str:
     """The text's numbers come from the same statistics the figure draws, so prose and figure cannot disagree."""
     f = sa["final"]
     Lmax = f"{sb['L'][-1]:g}"
@@ -691,6 +789,15 @@ def hero_macros(sa: dict, sb: dict, sc: dict) -> str:
          "vsixFenceHeldCount": len(sc["held_under_writers"]),
          "vsixFenceHeldList": series([next(f"{SURF_SHORT[r['surface']].split(' ')[0]}'s {HERO_MECH[x]}" for r in sc["rows"]
                                            if r["mechanism"] == x) for x in sc["held_under_writers"]]) or "none"}
+    if sp:  # E4c, the front figure's random-phase cell (post hoc)
+        d = sp["diff"]
+        m |= {"vsixPhaseReplicates": sp["replicates"], "vsixPhaseHaltMedian": f"{sp['median']['halt_inference']:g}",
+              "vsixPhaseHaltRange": rng(sp["final"]["halt_inference"]),
+              "vsixPhaseRevokeMedian": f"{sp['median']['revoke_broker']:g}",
+              "vsixPhaseRevokeRange": rng(sp["final"]["revoke_broker"]), "vsixPhaseFenceRange": rng(sp["final"]["fence_sink"]),
+              "vsixPhaseFenceLostMedian": f"{sp['lost_median']:g}", "vsixPhaseFenceLostRange": rng(sp["fence_lost_legitimate"]),
+              "vsixPhaseDiffMedian": f"{d['median']:g}", "vsixPhaseDiffRange": signed_range(d["min"], d["max"]),
+              "vsixPhaseDiffZero": d["zero"], "vsixPhaseLastCommitSeconds": f"{sp['last_commit_s']:g}"}
     return write_macros(m)
 
 
@@ -748,6 +855,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--e4", type=Path, required=True, help="E4 evidence directory (trials.jsonl) or raw results.json")
     ap.add_argument("--e6b", type=Path, required=True, help="E6b evidence directory (results.json)")
+    ap.add_argument("--e4c", type=Path, help="E4c evidence directory (random-phase cell); draws panel (a) and the banner")
     ap.add_argument("--e5", type=Path, help="E5 directory with candidates.jsonl and results.json (body figure)")
     ap.add_argument("--e8", type=Path, help="E8 directory with episodes.jsonl and results.json (body figure)")
     ap.add_argument("--e8b", type=Path, help="E8b directory (injections inside S); adds the open markers to the body figure")

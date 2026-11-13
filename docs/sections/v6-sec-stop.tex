@@ -21,13 +21,26 @@ inside requests, counts from the database instead. The plan, grid and
 metrics were committed before the first trial; the \vsixEFourTrials{}
 trials include \vsixEFourFaultTrials{} with SIGKILL of the sink or delayed completions.
 
-\para{Result.} Figure~\ref{fig:v6hero}a shows the stable cell with the longest latency (\(C = \vsixStopCalls\),
-\(w = \vsixStopLatency\)\,s, \(L = 0\)), chosen by that rule rather than by eye. After the stop took effect, halting
+\para{Result.} We draw the stable cell with the longest latency (\(C = \vsixStopCalls\),
+\(w = \vsixStopLatency\)\,s, \(L = 0\)), chosen by that rule rather than by eye. In E4, after the stop took effect, halting
 inference let \vsixHaltRange{} effects commit and revoking at the broker \vsixRevokeRange{}, the last
 \vsixLastCommitSeconds\,s later; fencing the sink let \vsixFenceRange{} commit and discarded \vsixFenceLost{}
 legitimate calls. Across all \vsixEFourCells{} fault-free cells, halting leaked up to \vsixGridHaltMax{} effects and
 revoking up to \vsixGridRevokeMax; across \vsixFenceTrials{} fence trials, the most effects any one committed after
 the fence took effect was \vsixFencePostMax. \vsixEFourIdentitySentence
+
+\para{Where the stop lands (E4c, post hoc).} E4's warm-up was a whole number of the agent's 2\,s emission cycles, so
+the decision always fell just after a burst of four calls, which revoking at once refused and halting did not. After an
+internal review pointed this out, we fixed a plan for one more run of the drawn cell with the decision at a uniformly
+random point of the cycle, \vsixPhaseReplicates{} replicates per stop, the three stops of a replicate paired by seed
+and phase, and committed the front figure to its result before running it. Halting let a median of
+\vsixPhaseHaltMedian{} effects commit after the stop took effect (range \vsixPhaseHaltRange), revoking
+\vsixPhaseRevokeMedian{} (\vsixPhaseRevokeRange) and fencing \vsixPhaseFenceRange, which discarded a median of
+\vsixPhaseFenceLostMedian{} legitimate calls (\vsixPhaseFenceLostRange). Paired by replicate, halting and revoking
+differed by \vsixPhaseDiffMedian{} in the median (range \vsixPhaseDiffRange; no difference in \vsixPhaseDiffZero{} of
+\vsixPhaseReplicates). Figure~\ref{fig:v6hero}a draws this run. E4's gap between halting and revoking came from where
+its stop landed: when calls are dispatched as soon as they are emitted, revoking at the broker refuses almost nothing
+that halting does not, and both leave open the work already in flight.
 
 \para{What the numbers mean.} The fence's zero is a property of the design, not a discovery: the sink serializes its
 RPCs, \texttt{fence} cancels every pending record below the new floor, and effect identifiers are unique in the schema,

@@ -51,7 +51,8 @@ gives every mechanism.
 \para{Reading.} A fence needs three properties at once: the surface enforces it, a writer cannot claim the new epoch,
 and it takes effect while stale writers are still running, with no stale write committing after it. A fence that is
 acknowledged only once every writer has finished (starved, in Table~\ref{tab:v6fence}) has no write after it by
-default, and we do not count it as holding. Of the \vsixFenceMechanisms{} mechanisms probed, only \vsixFenceAllThree{} had all
+default, and we do not count it as holding. We fixed this three-property reading when we read E6b's results; E6b's
+plan reports each surface's strongest enforcement class, which Table~\ref{tab:v6fence} gives first. Of the \vsixFenceMechanisms{} mechanisms probed, only \vsixFenceAllThree{} had all
 three (Figure~\ref{fig:v6hero}c). If every writer is trusted to follow the protocol, \vsixFenceHeldCount{} held in every
 race (\vsixFenceHeldList), so for honest writers a fence is common and the census's question is how many survive a
 writer that is not. The reason etcd's revoke survives one is specific to etcd. Each authenticated request carries the revision
@@ -63,8 +64,9 @@ writer's role therefore reaches writes that were already accepted into the log, 
 cannot do. The same check refuses legitimate requests issued before any unrelated change to authentication, which a
 client retries with a fresh token. We probed one node, and \vsixFenceAllThreeRaces{} clean races bound the per-race
 failure rate only below \vsixFenceRaceBound{} (one-sided 95\%, treating races as independent); on a cluster each member applies the check on its own
-apply path, which we did not test. Three results bear on the stop problem. First, fenceability is a property of the effect surface and of
-how its fence is bound, not of the agent framework. An epoch that the writer states can be omitted or forged, so such a
+apply path, which we did not test. Three results bear on the stop problem. First, whether a stop reaches a surface depends on the surface and on
+how its fence is bound, not on the agent framework. We built one to four mechanisms per surface, and a stronger one may
+exist: on PostgreSQL, for instance, ending the revoked role's open sessions as well, which we did not test. An epoch that the writer states can be omitted or forged, so such a
 fence stops a stale writer that is honest and nothing else. Second, binding the epoch to a credential resists a writer
 that lies, but revoking a credential is not automatically a fence: on one surface it behaved exactly like revocation at
 our broker, refusing new work while letting work already running commit. Whether a surface's revoke reaches in-flight

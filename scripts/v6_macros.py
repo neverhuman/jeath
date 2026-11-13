@@ -696,7 +696,7 @@ def e6_macros(args) -> dict:
     for prim, what in (("P1", "Idempotent retry"), ("P3", "The crash-surviving hold")):
         verb = {"pass": "passed on", "fail": "failed on", "not_applicable": "had no mechanism on"}
         bits = [f"{verb[o]} {series(by(prim, o))}" for o in verb if by(prim, o)]
-        p13.append(f"{what} ({prim}) {'; '.join(bits)}.")
+        p13.append(f"{what} ({prim}) {series(bits)}.")
     p13.append(r"E6's P3 ruling excluded a filesystem design built on staged files and rename while counting etcd's lease-staged "
                r"key, whose promotion also depends on a compare the promoter supplies; we report this inconsistency rather than "
                r"reclassify after the fact.")

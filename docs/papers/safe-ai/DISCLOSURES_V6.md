@@ -158,6 +158,38 @@ or a reported count; each changes framing or presentation, and the paper says so
     breach non-decreasing in K, zero benign false blocks). Those asserts are removed so that a null can be published;
     the mediated-controller invariants (zero breaches) stay, labelled as regression tests.
 
+- **E4c (post hoc, review 6, 2026-11-13).** E4's warm-up (20 s) is a multiple of the agent's 2 s step, so every
+  decision fell just after a burst of 4. Revoking at once refused those 4 and halting did not, which made the front
+  figure's halt-vs-revoke gap.
+  - E4c (`fixtures/v6/revokebench_phase_plan.json`, committed b82e4d5 before data) reran the drawn cell with the
+    decision at 20 s + U[0, 2) s, 40 paired replicates per arm.
+  - Results: halt median 11 (6–20), revoke 11 (6–19), fence 0, with 11 (6–15) legitimate calls discarded. Halt − revoke
+    has median 0 (−5 to 7), and is 0 in 18/40 replicates.
+  - Per the plan, the front figure's panel (a), the banner and the abstract now use E4c. E4's fixed-phase numbers stay
+    in §4, labelled as fixed phase.
+  - E4c's binary is built from this branch, not E4's. `src/protocol_v2.rs` is unchanged since E4; policy-core and the
+    binary's command dispatch changed in PR #6.
+  - No smoke run preceded the full run.
+- **E6b "three properties" reading (review 6).** The rule that a fence holds only if it is surface-enforced,
+  forgery-resistant and effective while stale writers run (a starved fence does not count) was fixed when E6b's results
+  were read. E6b's plan headlines each surface's strongest enforcement class. The "only etcd's RBAC revoke" sentence
+  follows the later rule, and the text now says so.
+- **Review 6 text changes (no new data):**
+  - The abstract names the control-evaluation consequence and gives long-work/short-commit examples.
+  - The abstract no longer compares in-spec injections against Progent, which they were not written to evade.
+  - E1 is removed from the numbered contributions.
+  - The kernel contribution states that it is not the decision procedure.
+  - Legacy appendix overclaims (G, O, Table 9) are softened.
+  - The PDF metadata title is fixed.
+  - TOCTOU-Bench, PFI, f-secure and Cornucopia are cited, each checked against its arXiv or venue record.
+- **Review 6 objections not addressed:**
+  - an end-to-end control evaluation;
+  - real agent traces for λ, w and L;
+  - an external surface with deferred commit;
+  - a TOCTOU condition in E5;
+  - injections adapted to every AgentDojo arm;
+  - multi-node etcd.
+
 ## Fixed by predeclared amendment
 
 - **E8 Amendment 1:**

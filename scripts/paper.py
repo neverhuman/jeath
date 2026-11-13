@@ -564,7 +564,7 @@ def generate_v2():
                 f"{ckpt_short} & \\textbf{{Complete mediation}} & \\textbf{{{c_su}/{ng}}} & 0/{ng} & 0/{ng} & \\textbf{{{c_pw}}} ($n=12$) & 12 base tasks $\\times$ 2 injection/withdrawal scenarios\\\\"
             )
             eval_tab.append(
-                f" & Progent / Unprotected & P:{p_su} U:{u_su} & --- & P:{p_un} U:{u_un} & P:{p_pw} U:{u_pw} & Progent blocks native injections (0) but misses cumulative spend ({p_un})\\\\"
+                f" & Progent / Unprotected & P:{p_su} U:{u_su} & --- & P:{p_un} U:{u_un} & P:{p_pw} U:{u_pw} & Progent blocks native injections (0); cumulative spend is outside its policies ({p_un})\\\\"
             )
         eval_tab.append(r"\midrule")
     su_comp_scr = sum(1 for r in controls if r["controller"] == "complete" and r["safe_useful"])
@@ -1414,7 +1414,9 @@ def generate_v6():
     absent = [k for k, d in need.items() if not (d / "results.json").exists()]
     if absent:
         raise SystemExit(f"v6 evidence not promoted: {', '.join(absent)} (scripts/promote_v6.py)")
+    e4c = ref / "e4c-revokebench-phase"  # post hoc random-phase cell; draws panel (a) when promoted
     hero = hero_v6.build(SimpleNamespace(e4=need["e4"], e6b=need["e6b"], e5=need["e5"], e8=need["e8"], e8b=need["e8b"],
+                                         e4c=e4c if (e4c / "results.json").exists() else None,
                                          ckpt="Qwen/Qwen3-8B-GGUF", layout_preview=False))
     assert_pure_float("v6-spec-fig.tex", hero["v6-spec-fig.tex"])
     text, missing = v6_macros.build(SimpleNamespace(ckpt="Qwen/Qwen3-8B-GGUF", draft=False, sources={}))

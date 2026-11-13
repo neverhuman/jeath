@@ -16,7 +16,7 @@ Under Eq.~\eqref{eq:reach}, the \(k\)-gate joint miss rate satisfies \(\Prb(E \m
 reduces conditional breach by less than \(\eta c\). At \(c = \VThreeSatC\) and \(p = \VThreeSatP\) (single-gate miss \(m \approx \VThreeSatMarginalM\)), \(k^\star(0.1) = \VThreeSatEqKStar\), and \(k = 4\) fails \(\VThreeAppAUnderstatement\times\) more often than the naive independent product \(m^4\) (\(\VThreeAppACommonFourPct\%\) vs.\ \(\VThreeAppAIndepFourPct\%\)).
 \end{proposition}
 
-Equation~\eqref{eq:reach} exposes why adding statistical monitors cannot substitute for sink mediation: if uncooperative exposure \(u > 0\) or shared transcript blindspot \(c > 0\) remains nonzero, \(\Prb(E) \ge u\,\Prb(E \mid \neg G) + (1 - u)c\) regardless of \(k\).
+Within this model, adding monitors leaves a floor: if uncooperative exposure \(u > 0\) or shared transcript blindspot \(c > 0\) remains nonzero, \(\Prb(E) \ge u\,\Prb(E \mid \neg G) + (1 - u)c\) regardless of \(k\). The floor follows from the correlation the model assumes; it is not evidence about any measured monitor.
 
 \subsection{Candidate Search Scaling and Enforced Interruption}
 
@@ -59,7 +59,7 @@ Concretely, an unacknowledged or timed-out RPC widens \(\mathcal{I}_t\) and ther
 \textbf{C5} & Monotone bootstrap ratchet & \(\Permits(P_{v+1}) \subseteq \Permits(P_v)\) w/o human quorum & Self-authored policy expansion widens capabilities during upgrades\\
 \textbf{C6} & Summable horizon hazard & \(\sum_{t=1}^\infty R_t < \infty\) across lease renewals & Constant per-lease leak \(R_t = r_0 > 0\) drives \(\Prb(\bigcup_{t\le T} E_t) \to 1\) (\(\VThreeHorizonConstTenKPct\%\) at \(10^4\))\\
 \bottomrule\end{tabularx}
-\caption{Six structural conditions separating intelligence from external authority, each with a failure witness when the clause is relaxed. Partition counts are schedules with a leak in the logical-time simulation of Section~\ref{sec:core}; the live withdrawal counts used a harness-scheduled pending operation.}\label{tab:conditions}
+\caption{Six conditions of the formal model, each with a failure witness when the clause is relaxed. Partition counts are schedules with a leak in the logical-time simulation of Section~\ref{sec:core}; the live withdrawal counts used a harness-scheduled pending operation.}\label{tab:conditions}
 \end{table*}
 
 \begin{observation}[Multi-period reach union bound]\label{thm:horizon}

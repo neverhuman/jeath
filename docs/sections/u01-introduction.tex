@@ -21,7 +21,10 @@ they run, leave it open by design~\cite{stickland2025async}. A monitor that bloc
 read it~\cite{lucassen2026blocking} still approves calls one at a time; when a later call, or a pattern across calls, is flagged, the calls it
 approved earlier are still running. Work in flight at the stop is then the call rate times the tool latency, plus
 whatever the agent emits while the stop is being enforced. It is small when tools return in milliseconds and large when
-a tool runs for minutes or hours before its effect lands, as a build, a deployment or a long job does.
+a tool runs for minutes or hours before its effect lands, as when an agent runs a long build or test suite and then
+merges the result, or authorizes a payment and captures it later: the work is long and the effect is a final write that
+can be refused. A control evaluation that counts an attack caught before it succeeds as prevented assumes that the stop
+reaches what was already dispatched; where it does not, measured safety is overstated by these effects.
 
 Moving authority out of the model raises an obvious objection: the gate is then only as good as what it was told to
 check. We take that objection as the paper's subject rather than its limitation. The contributions, each with the
@@ -45,16 +48,15 @@ evidence behind it:
   \item \textbf{Which real effect surfaces can be fenced} (measured on CPU fixtures; Section~\ref{sec:v6boundary}).
         Executable probes against PostgreSQL, etcd and a POSIX filesystem sort each mechanism by who enforces the
         epoch: the surface itself, author code installed in it, or a condition the writer must remember to send.
-  \item \textbf{A predeclared replication at the planned size} (predeclared; Section~\ref{sec:v6replication}). The
-        previous version's\footnote{An unpublished earlier draft of this paper. Its code and evidence are in the same repository
-        (\texttt{evidence/v2}, \texttt{evidence/v3}), and its experiments are reproduced, with corrections, in the
-        appendices.} five-controller comparison could not clear its own noninferiority margin even with no losses.
-        We rerun it at the sample size its design diagnostic gives, with the frozen analysis, and report the result
-        whatever it is: \vsixEOneHeld{} component claims held. At that size a single lost case defeats a usefulness
-        claim, so this is a strict test of the previous version's claims rather than new evidence for the thesis.
-  \item \textbf{A machine-checked authority kernel} (proved; Section~\ref{sec:core}), with the gap between the
-        verified functions and the code the experiments run stated explicitly.
+  \item \textbf{A machine-checked authority kernel} (proved; Section~\ref{sec:core}). The experiments' binaries do not
+        use it as their decision procedure: unverified code calls verified predicates, and the comparison with the
+        kernel is compiled out of release builds.
 \end{enumerate}
+We also rerun the previous version's\footnote{An unpublished earlier draft of this paper. Its code and evidence are in
+the same repository (\texttt{evidence/v2}, \texttt{evidence/v3}), and its experiments are reproduced, with corrections,
+in the appendices.} five-controller comparison at the sample size its design required, with its frozen analysis
+(Section~\ref{sec:v6replication}): \vsixEOneHeld{} of its component claims held. Its scoring is coupled to the gate, so
+it tests that version's claims, not this paper's thesis.
 
 \para{What this paper does not show.} All live results use quantized open-weight models on CPU, decoding greedily except where E5 samples
 proposals; none uses a frontier model. There is no end-to-end control evaluation in which an adaptive red team attacks the whole

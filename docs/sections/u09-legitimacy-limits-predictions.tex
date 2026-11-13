@@ -11,12 +11,12 @@ Four explicit boundaries limit our guarantees:
   \item \textbf{In-policy destructive actions.} If a capability grant authorizes editing a repository file or spending \(2\) budget units, a harmful edit or bad transfer within that envelope commits cleanly (Table~\ref{tab:v2core}).
   \item \textbf{Uncooperative external sinks.} Interfaces lacking idempotency keys, conditional-write epochs, or pre-dispatch hold buffers (Section~\ref{sec:v6boundary}) enter Eq.~\eqref{eq:reach} as positive unmediated exposure \(u > 0\).
   \item \textbf{Lower-layer TCB and clock-skew assumptions.} Verification covers our Rust state machine and wire codec, not the Linux kernel, SQLite storage engine, physical side channels~\cite{kocher1996}, or hardware clock faults exceeding \(\delta_{\max}\).
-  \item \textbf{Pilot live sample size and prospective human/frontier scope.} Predeclared marginal union bounds on the pilot's frozen \(N = \VFourHoldoutCasesPerCheckpoint\) checkpoint holdout were under-powered relative to \(N \ge \VTwoZeroLossCasesMin\); E1 reruns that comparison at \(N = 128\) (Section~\ref{sec:v6replication}). Frontier-scale RLHF and human delegation experiments remain prospective (Appendix~\ref{app:holdout}).
+  \item \textbf{Pilot live sample size and prospective human/frontier scope.} Predeclared marginal union bounds on the pilot's frozen \(N = \VFourHoldoutCasesPerCheckpoint\) checkpoint holdout were under-powered relative to \(N \ge \VTwoZeroLossCasesMin\); E1 reruns that comparison at \(N = 128\) (Section~\ref{sec:v6replication}). Frontier-scale and human delegation experiments remain prospective; the conferral design is in Appendix~\ref{app:v6conferral}, and the earlier predictions it supersedes are in Appendix~\ref{app:holdout}.
 \end{enumerate}
 
 \subsection{Falsifiable Architectural Predictions}
 
 The previous version tabulated four architectural predictions with outcomes drawn from simulations, scripted cases and
 by-construction zeros. Those outcomes are superseded by the predeclared measurements in
-Sections~\ref{sec:v6stop}--\ref{sec:v6boundary}, and the table is withdrawn rather than reconciled; prospective
-deployment and human-subject predictions appear in Appendix~\ref{app:holdout}.
+Sections~\ref{sec:v6stop}--\ref{sec:v6boundary}, and the table is withdrawn rather than reconciled; the human-subject design that replaces the earlier prospective predictions is in
+Appendix~\ref{app:v6conferral}.
