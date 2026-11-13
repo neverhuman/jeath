@@ -65,6 +65,13 @@ meant to stop; its latency belongs in the stop budget of Section~\ref{sec:v6stop
 reach dispatched work must route effects through a surface whose fence is native and reaches in-flight writes, or place
 a mediating sink in front of one whose fence does not.
 
+\para{Limits of the census.} We chose the nine mechanisms by hand, one or a few per surface, and ran each on one
+unloaded node; Amazon S3 and Kubernetes are classified from documentation only. The deterministic runs are repeated to
+detect nondeterminism, not drawn as independent samples, so their counts are not rates. Refusing a forged epoch is
+nearly definitional once the epoch is bound to a credential; the informative column is the third. We did not try
+combinations, such as revoking a PostgreSQL role and terminating its sessions, which may close the gap that revocation
+alone left; the trigger's class changed between E6 and E6b when the classification rule was fixed.
+
 \subsection{What the specification does not name}
 
 Section~\ref{sec:v6reviewers} showed that removing one clause of a gate admits exactly the violations that break only

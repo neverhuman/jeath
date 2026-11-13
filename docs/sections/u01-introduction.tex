@@ -40,7 +40,9 @@ evidence behind it:
         Executable probes against PostgreSQL, etcd and a POSIX filesystem sort each mechanism by who enforces the
         epoch: the surface itself, author code installed in it, or a condition the writer must remember to send.
   \item \textbf{A predeclared replication at the planned size} (predeclared; Section~\ref{sec:v6replication}). The
-        previous version's five-controller comparison could not clear its own noninferiority margin even with no losses.
+        previous version's\footnote{An unpublished earlier draft of this paper. Its code and evidence are in the same repository
+        (\texttt{evidence/v2}, \texttt{evidence/v3}), and its experiments are reproduced, with corrections, in the
+        appendices.} five-controller comparison could not clear its own noninferiority margin even with no losses.
         We rerun it at the sample size its design diagnostic gives, with the frozen analysis, and report the result
         whatever it is: \vsixEOneHeld{} component claims held. At that size a single lost case defeats a usefulness
         claim, so this is a strict test of the previous version's claims rather than new evidence for the thesis.

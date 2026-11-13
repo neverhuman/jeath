@@ -473,7 +473,7 @@ def generate_v2():
         f"Mechanized Rust authority kernel & Verus SMT proof & {exec_fns} executable functions + {theorems} theorems (canonical permit encoding, $d$-hop attenuation, relational mutex, $\\delta_{{\\max}}$-buffered quorum fence, safe-bootstrap ratchet){mut_note}; not SQLite/OS refinement & {proof} verified, {trig_warns} warnings\\\\",
         f"Abstract invariant omission search & Exhaustive trace search & {ablations['searched_traces']:,} traces over 10 protocol clauses (single + pair omissions) & {sum(bool(r['shortest_searched_witness']) for r in ablations['rows'])}/{len(ablations['rows'])} witnesses\\\\",
         f"Separate-process RPC fault suite & Multi-process SQLite & Crash, lost-reply, quorum split, sub-delegation, extra-steward fence, slow-read deadline & {len(faults)}/{len(faults)} oracle-checked\\\\",
-        f"Full-scale concurrent linearization & Multi-process SQLite & Partial-order real-time linearization + final conservation ($1..{lin_max_actors}$ writers; $\\le {lin_max_calls}$ RPCs) & {lin_runs}/{len(races)} linearizable\\\\",
+        f"Concurrent linearization, one transfer workload & Multi-process SQLite & Partial-order real-time linearization + final conservation ($1..{lin_max_actors}$ writers; $\\le {lin_max_calls}$ RPCs) & {lin_runs}/{len(races)} linearizable\\\\",
     ]
     if cj_v2 is not None:
         jmap = {c["class"]: c for c in cj_v2["jepsen_classes"]}
@@ -491,7 +491,7 @@ def generate_v2():
             f"Ed25519/Macaroon attacks; 3-sink partition schedules & Test vectors; one-process simulation in logical time & {crt['total_attacks']:,} crypto attacks (incl.\\ RFC 8032 \\& OpenSSL CLI); {coop_j['schedules_run']:,} schedules/class ({coop_j['signed_fence_completions']} signed acks + {coop_j['lease_expiry_completions']} lease expiries vs.\\ {brk_j['post_ack_unauthorized_commits']} broker-only, {unc_j['post_ack_unauthorized_commits']} uncooperative{skew_detail}) & {crt['false_accepts']} accepts; {coop_j['post_ack_unauthorized_commits']} leaks\\\\"
         )
     core_rows += [
-        f"Linux Landlock v4 + seccomp boundary & Linux kernel ABI & Filesystem/TCP Landlock, 64-bit resource-limit filter, SysV/POSIX IPC + pre-existing queue canary & {probe_count}/{probe_count} confined\\\\",
+        f"Linux Landlock v4 + seccomp boundary & Linux kernel ABI & Filesystem/TCP Landlock, 64-bit resource-limit filter, SysV/POSIX IPC + pre-existing queue canary & {probe_count}/{probe_count} confined after two bypasses found in review were fixed\\\\",
         f"Non-idempotent \\& omitted-spec controls & Negative controls & Uncooperative sink duplicates ({neg['unsupported_sink']['effects']} effects); {cost['fence_ack_ms']:.1f}\\,ms delayed fence ack; authorized bad edit commits & All 3 reproduced\\\\",
     ]
     cl_v5_path = DATA_V3 / "e2e_crypto_cluster.json"
