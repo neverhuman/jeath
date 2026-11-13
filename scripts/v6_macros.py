@@ -421,65 +421,70 @@ def e1_design(d: Path, alpha: float) -> dict:
     return {"n": n, "n4": n4, "zero": zero, "one": one, "zero4": binomial_bound(0, n4, alpha), "rule": rule}
 
 
-def e1_paired(rows: list[dict], label: str, title: str) -> str:
-    """Post hoc paired reading of E1, fixed before E1's outcomes were read (DISCLOSURES_V6.md): per checkpoint and
-    comparator, the cases in which the comparator let an unauthorized effect commit (exact 95% interval), the safety
-    discordances against complete mediation with an exact one-sided sign test, and the usefulness discordances. The
-    frozen analysis remains the primary result."""
-    from math import comb
-    from campaign_analysis import binomial_bound  # noqa: F401  (same module family; exact intervals below)
-
-    def cp(k: int, n: int) -> tuple[float, float]:
-        def tail_ge(x, p):
-            return sum(comb(n, i) * p ** i * (1 - p) ** (n - i) for i in range(x, n + 1))
-
-        def solve(f, lo=0.0, hi=1.0):
-            for _ in range(60):
-                mid = (lo + hi) / 2
-                lo, hi = (mid, hi) if f(mid) else (lo, mid)
-            return (lo + hi) / 2
-        low = 0.0 if k == 0 else solve(lambda p: tail_ge(k, p) < 0.025)
-        high = 1.0 if k == n else solve(lambda p: 1 - tail_ge(k + 1, p) > 0.025)
-        return low, high
-    by = {}
+def e1_paired(rows: list[dict], sec: dict, label: str, title: str) -> tuple[str, str]:
+    """E1 per checkpoint and controller: the predeclared primary counts (leak, task success), the predeclared
+    secondaries S1 (an effect after a withdrawal also counts as unauthorized) and S2 (the first proposal's effect
+    committed, whatever else did), and the paired discordances against complete mediation (a reading fixed after the
+    plan and before E1's outcomes; DISCLOSURES_V6.md). No test is run on the discordances: complete mediation's leak is
+    zero by construction, so every safety discordance favours it. The frozen analysis remains the primary result.
+    Returns the table and a sentence on S1 and S2."""
+    s1, s2 = sec["S1"], sec["S2"]
+    by: dict = {}
     for r in rows:
         by.setdefault((r["checkpoint"], r["controller"]), {})[r["case_id"]] = r
-    def sci(v: float) -> str:
-        if v >= 0.001:
-            return f"{v:.2g}"
-        m, e = f"{v:.1e}".split("e")
-        return rf"\({m}\times10^{{{int(e)}}}\)"
-    out = []
+    out, sent = [], []
     for ck in sorted({r["checkpoint"] for r in rows}):
         comp = by[(ck, "complete")]
         n_ck = len(comp)
-        out.append(rf"\multicolumn{{5}}{{l}}{{\emph{{{short(ck)}, {n_ck} paired cases}}}} \\")
+        out.append(rf"\multicolumn{{7}}{{@{{}}l}}{{\emph{{{short(ck)}, {n_ck} paired cases}}}} \\")
         for key, lab, *_ in CONTROLLERS:
-            if key == "complete":
-                continue
             oth = by[(ck, key)]
             ids = sorted(set(comp) & set(oth))
+            if len(ids) != n_ck or s1[f"{ck}/{key}"]["n"] != n_ck or s2[f"{ck}/{key}"]["n"] != n_ck:
+                raise SystemExit(f"E1 paired: {ck} {key} does not pair with complete mediation's {n_ck} cases")
             leak = sum(bool(oth[i]["unauthorized"]) for i in ids)
-            lo, hi = cp(leak, len(ids))
-            b = sum(bool(oth[i]["unauthorized"]) and not comp[i]["unauthorized"] for i in ids)
-            c = sum(bool(comp[i]["unauthorized"]) and not oth[i]["unauthorized"] for i in ids)
-            pv = sum(comb(b + c, i) for i in range(b, b + c + 1)) / 2 ** (b + c) if b + c else 1.0
-            g = sum(bool(comp[i]["task_success"]) and not oth[i]["task_success"] for i in ids)
-            l = sum(bool(oth[i]["task_success"]) and not comp[i]["task_success"] for i in ids)
-            if len(ids) != n_ck:
-                raise SystemExit(f"E1 paired: {ck} {key} has {len(ids)} of {n_ck} cases")
-            out.append(f"\\quad {lab} & {leak} ({lo:.2f}--{hi:.2f}) & {b}:{c} & {sci(pv)} & {g}:{l} \\\\")
-    return "\n".join([
-        r"\begin{table}[t]\centering\scriptsize",
-        r"\caption{" + title + r". Post hoc paired reading, fixed before the outcomes were read; the frozen analysis is "
-        r"primary. Leak: cases in which the comparator let an unauthorized effect commit, with an exact 95\% interval on "
-        r"the rate; complete "
-        r"mediation's count is zero by construction. Safety and usefulness: discordant cases favouring complete mediation "
-        r"versus the comparator; \(p\): exact one-sided sign test on the safety discordances, to be read against "
-        r"\(\alpha = 0.05/16\).}\label{" + label + "}",
-        r"\begin{tabular}{@{}lcccc@{}}\toprule",
-        r"Comparator & Leak (95\%) & Safety & \(p\) & Usefulness \\\midrule",
-        *out, r"\bottomrule\end{tabular}\end{table}", ""])
+            if leak != s1[f"{ck}/{key}"]["primary_unauthorized"]:
+                raise SystemExit(f"E1 paired: {ck} {key} leak {leak} disagrees with secondary.json")
+            task = sum(bool(oth[i]["task_success"]) for i in ids)
+            if task != s2[f"{ck}/{key}"]["task_success"]:
+                raise SystemExit(f"E1 paired: {ck} {key} task success disagrees with secondary.json")
+            wd, first = s1[f"{ck}/{key}"]["unauthorized_or_post_withdraw"], s2[f"{ck}/{key}"]["foreground_success"]
+            if key == "complete":
+                disc = ("--", "--")
+            else:
+                b = sum(bool(oth[i]["unauthorized"]) and not comp[i]["unauthorized"] for i in ids)
+                c = sum(bool(comp[i]["unauthorized"]) and not oth[i]["unauthorized"] for i in ids)
+                g = sum(bool(comp[i]["task_success"]) and not oth[i]["task_success"] for i in ids)
+                l = sum(bool(oth[i]["task_success"]) and not comp[i]["task_success"] for i in ids)
+                disc = (f"{b}:{c}", f"{g}:{l}")
+            lab = "Complete mediation" if key == "complete" else lab
+            out.append(f"\\quad {lab} & {leak} & {wd} & {disc[0]} & {task} & {first} & {disc[1]} \\\\")
+        dur = s1[f"{ck}/durable_without_fence"]
+        sent.append((short(ck), n_ck, dur["primary_unauthorized"], dur["unauthorized_or_post_withdraw"],
+                     s1[f"{ck}/complete"]["unauthorized_or_post_withdraw"], s2[f"{ck}/none"]["foreground_success"],
+                     s2[f"{ck}/complete"]["foreground_success"]))
+    table = "\n".join([
+        r"\begin{table*}[t]\centering\footnotesize",
+        r"\caption{" + title + r". Leak and task success: the predeclared primary scoring (complete mediation's leak is "
+        r"zero by construction, and task success requires that nothing but the first approved proposal commit). "
+        r"After withdrawal: S1, which also counts an effect committed after a withdrawal as unauthorized. First "
+        r"proposal: S2, whether the first approved proposal's effect committed, whatever else did. Safety and usefulness "
+        r"discordances: cases favouring complete mediation versus the comparator, a paired reading fixed after the plan "
+        r"and before the outcomes were read; no test is run on them, because every safety discordance must favour "
+        r"complete mediation. The frozen analysis (Table~\ref{tab:v6e1}) is primary.}\label{" + label + "}",
+        r"\begin{tabular}{@{}lcccccc@{}}\toprule",
+        r" & \multicolumn{3}{c}{Unauthorized (cases)} & \multicolumn{3}{c}{Useful (cases)} \\",
+        r"\cmidrule(lr){2-4}\cmidrule(l){5-7}",
+        r"Controller & Leak & After withdrawal (S1) & Safety & Task success & First proposal (S2) & Usefulness \\\midrule",
+        *out, r"\bottomrule\end{tabular}\end{table*}", ""])
+    cks = " and ".join(x[0] for x in sent)
+    def j(i: int) -> str:  # one value if every checkpoint agrees, else one per checkpoint
+        vals = [str(x[i]) for x in sent]
+        return vals[0] if len(set(vals)) == 1 else " and ".join(vals)
+    sentence = (f"Under S1 the durable broker without a fence leaked in {j(3)} of {j(1)} cases ({cks}), against "
+                f"{j(2)} under the primary rule, and complete mediation in {j(4)}. Under S2 the first proposal's effect "
+                f"committed in {j(5)} cases without mediation and {j(6)} under complete mediation.")
+    return table, sentence
 
 
 def e1_macros(args) -> tuple[dict, str]:
@@ -489,7 +494,8 @@ def e1_macros(args) -> tuple[dict, str]:
                          "evidence/v6/reference/e1-n128", "tab:v6e1", "E1 primary claims under the frozen analysis")
     g = e1_design(d, ca["component_alpha"])
     rows = [json.loads(l) for l in (d / "campaigns.jsonl").read_text().splitlines() if l.strip()]
-    args.tables["v6-e1-paired-table.tex"] = e1_paired(rows, "tab:v6e1paired", "E1 read as paired cases")
+    args.tables["v6-e1-paired-table.tex"], secondary_sentence = e1_paired(
+        rows, json.loads((d / "secondary.json").read_text()), "tab:v6e1paired", "E1 per controller")
     s4 = r["s4"]
     if g["zero4"] >= margin():
         s4 = (rf"S4 cannot clear the {margin() * 100:g}-point margin at this sample even with no losses: its "
@@ -498,7 +504,7 @@ def e1_macros(args) -> tuple[dict, str]:
     return {"vsixEOneCampaigns": f"{r['planned']:,}", "vsixEOneOutcomeSentence": r["sentence"],
             "vsixEOneSFourSentence": s4, "vsixEOneN": g["n"], "vsixEOneZeroLossBound": f"{g['zero']:.3f}",
             "vsixEOneOneLossBound": f"{g['one']:.3f}", "vsixEOneLossRuleSentence": g["rule"],
-            "vsixEOneHeld": f"{r['held']} of its {r['total']}"}, table
+            "vsixEOneHeld": f"{r['held']} of its {r['total']}", "vsixEOneSecondarySentence": secondary_sentence}, table
 
 
 def pilot_macros() -> tuple[dict, str]:
@@ -689,7 +695,7 @@ PENDING = {"e5c": ["vsixEFiveCSentence", "vsixEFiveCPrecedenceSentence", "vsixEF
            "e6": ["vsixESixPgSentence", "vsixESixPgFairSentence", "vsixESixFsSentence", "vsixESixPOneThreeSentence"],
            "e2": ["vsixETwoCkpts", "vsixETwoSentence"],
            "e1": ["vsixEOneCampaigns", "vsixEOneHeld", "vsixEOneOutcomeSentence", "vsixEOneSFourSentence", "vsixEOneN",
-                  "vsixEOneZeroLossBound", "vsixEOneOneLossBound", "vsixEOneLossRuleSentence"],
+                  "vsixEOneZeroLossBound", "vsixEOneOneLossBound", "vsixEOneLossRuleSentence", "vsixEOneSecondarySentence"],
            "e4b": ["vsixEFourBSentence"],
            "e6b": ["vsixESixBSentence", "vsixESixBStarvationN", "vsixESixBMechanisms", "vsixESixBRuns", "vsixESixBVariants", "vsixFenceAllThreeRaces", "vsixFenceRaceBound"]}
 

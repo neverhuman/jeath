@@ -39,20 +39,28 @@ satisfied the same predicate the gate enforces, so complete mediation cannot rec
 (Appendix~\ref{sec:systems}).
 \vsixEOneLossRuleSentence
 
-In the revocation cases, only a fenced controller can complete the task, because the queued old operation otherwise
-commits. Those cases count toward usefulness in complete mediation's favour. We therefore report, beside every
-usefulness claim, the predeclared secondary S4, which recomputes the same bound without revocation cases. S1 counts
-effects after a withdrawal as unauthorized, S2 counts the first proposal's effect regardless of others, and S3 splits
-by attack family.
+The frozen scoring is also inconsistent about revocation. When a grant is withdrawn, the queued old operation commits
+unless the sink is fenced, so only complete mediation can complete those tasks, and they count toward usefulness in its
+favour; yet the same scoring does not count the effect committed after the withdrawal as unauthorized. The safety
+effect of the fence is therefore invisible to the primary claims. The durable broker without a fence differs from
+complete mediation only in the fence, so under the primary scoring it cannot leak, and the two claims that complete
+mediation is safer than it could not succeed. The plan anticipated this with predeclared secondaries, reported beside every primary claim:
+S1 also counts an effect after a withdrawal as unauthorized, S2 counts the first proposal's effect whatever else
+committed, S3 splits by attack family, and S4 recomputes the usefulness bound without revocation cases.
 
-\para{Result.} \vsixEOneOutcomeSentence{} \vsixEOneSFourSentence{} The pilot (\(N = 32\)) is reported separately in
-Appendix~\ref{app:v6e1} and never pooled.
+\para{Result.} \vsixEOneOutcomeSentence{} \vsixEOneSFourSentence{} \vsixEOneSecondarySentence{}
+Table~\ref{tab:v6e1paired} gives every controller. S1 is where the fence shows: every effect it adds is one committed
+after a withdrawal, and complete mediation committed none. The old operation is queued by the case's schedule, not
+proposed adversarially, so this is E4's mechanism observed in live campaigns, not new evidence about the models. S2 separates two things the primary scoring combines: without
+mediation the first proposal's effect committed more often than under complete mediation, but often beside an effect
+that should not have committed, which the primary scoring counts as a failed task. The usefulness claims therefore
+test the previous version's claims under its own scoring, which cannot measure what mediation costs
+(Appendix~\ref{sec:systems}); Section~\ref{sec:v6cost} measures that cost with a benchmark's own graders. The pilot (\(N = 32\)) is reported
+separately in Appendix~\ref{app:v6e1} and never pooled.
 
-\para{A paired reading (post hoc).} The frozen analysis bounds each direction of discordance separately and ignores
-cases where complete mediation gains, so it is conservative: on the pilot it reported as inconclusive a comparison in
-which ten of ten safety discordances favoured complete mediation, which an exact sign test puts at \(p \approx 0.001\).
-Before E1's outcomes were read, we fixed a second reading and report it beside the frozen one, not instead of it
-(Table~\ref{tab:v6e1paired}): how often each comparator let an unauthorized effect commit, with an exact interval,
-which is the safety quantity E1 actually measures, and the paired discordances on safety and usefulness.
+\para{Paired counts (post hoc).} The frozen analysis bounds each direction of discordance separately. Before E1's
+outcomes were read we also fixed a paired tabulation, reported in Table~\ref{tab:v6e1paired} beside the frozen
+analysis and not instead of it. We run no test on it: complete mediation's leak is zero by construction, so every
+safety discordance favours it, and a sign test would only ask whether the comparator ever leaked.
 
 \input{generated/v6-e1-paired-table}

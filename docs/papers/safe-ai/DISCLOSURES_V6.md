@@ -63,6 +63,14 @@ or a reported count; each changes framing or presentation, and the paper says so
   file from git history by the SHA-256 the E1 plan names (found at 52ed6d0) and reproduces `campaign-analysis.json`
   with it; the working-tree file is not used for E1's primary claims. E1 validated with no problems (1,280 of 1,280
   records, 0 effect mismatches, 0 re-derivation problems) and was promoted at 04:17Z.
+- **E1 paired reading: sign test withdrawn after review 4 (2026-11-13, ~05:20Z).** A hostile review pointed out that
+  complete mediation's leak is zero by construction, so every safety discordance must favour it and the sign test only
+  asks whether a comparator ever leaked; its caption also invited reading it against the corrected alpha, which would
+  overturn the frozen 4B per-call result. The p-value column and the interval column were removed; the paired counts
+  remain, with no test. The table now also reports the predeclared secondaries S1 (post-withdrawal effects counted as
+  unauthorized) and S2 (first-proposal success), which were computed and promoted with E1 but had not been reported in
+  the paper. No data or analysis changed; Section 7 now states that the primary scoring cannot register the fence's
+  safety effect and that the two "safer than the durable broker without a fence" claims could not succeed.
 - **E1 framing.** "Powered" was removed. At N = 128 a single lost case defeats a usefulness claim (generated loss
   rule); E1 is presented as a strict test of the previous version's claims, not as evidence for the thesis.
 
