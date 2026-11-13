@@ -16,7 +16,7 @@ Four explicit boundaries limit our guarantees:
 
 \subsection{Falsifiable Architectural Predictions}
 
-Table~\ref{tab:predictions} summarizes the four structural predictions directly tested in our experiments; prospective deployment and human-subject predictions appear in Appendix~\ref{app:holdout}.
+Table~\ref{tab:predictions} summarizes the five structural predictions directly tested in our experiments; prospective deployment and human-subject predictions appear in Appendix~\ref{app:holdout}.
 
 \begin{table*}[t]\centering\footnotesize
 \begin{tabularx}{\textwidth}{@{}P{0.22\textwidth}P{0.31\textwidth}L@{}}\toprule
@@ -25,6 +25,7 @@ Prediction & Falsifiable operational test & Measured outcome in this study\\\mid
 \textbf{P2. Correlated best-of-\(K\)} & Sample \(K\) live proposals against a learned reviewer vs.\ a verified sink gate & Qwen3 reviewer bypass rises monotonically (\(\VEightBokFourBSinglePct\%\to\VEightBokFourBSixteenPct\%\) on 4B; \(\VEightBokEightBSinglePct\%\to\VEightBokEightBSixteenPct\%\) on 8B), moderated by \(\hat{\rho}_{\mathrm{cand}}\); sink gate holds at \(0\%\) (\S\ref{sec:systems})\\
 \textbf{P3. Waist min-cuts} & Compare min-cut capability gating against patching \(B\) known exploit routes & AgentDojo min-cuts (\(w \in [2,5]\)) sever \(100\%\) of \(\VFourCutBankingRoutes\)--\(\VFourCutWorkspaceRoutes\) routes; \(32\) exploit patches leave \(94.7\%\)--\(99.9\%\) live (\S\ref{sec:width})\\
 \textbf{P4. Context isolation} & Compare multi-step monitors on full transcripts vs.\ prose-stripped step schemas & Shared transcripts inflate 5-step miss \(\VFourTrajHetInflation\times\) (classifiers) and \(\VEightLlmJudgeFourBSharedInflation\times\)--\(\VEightLlmJudgeEightBSharedInflation\times\) (Qwen3 judges); isolated escrow cuts false aborts \(\VFourTrajEscrowReductionFactor\times\) (\S\ref{sec:monitors})\\
+\textbf{P5. Sub-agent smurfing \& \(d\)-hop stop} & Fragment unauthorized spend across \(A_{\mathrm{sub}} \in \{1,2,4,8\}\) live sub-agents and withdraw root authority across \(d = \VNineSmurfDepthTested\) hops & Per-instance static caps breach on \(\VNineSmurfStaticMultiCnt/\VNineSmurfStaticMultiTot\) (\(A_{\mathrm{sub}} \ge 2\)) tasks, isolated LLM review reaches \(\VNineSmurfFourBMaxMultiLlmPct\%\) (4B) and \(\VNineSmurfEightBMaxMultiLlmPct\%\) (8B) under fragmentation, and unfenced lineage leaks \VNineSmurfSubtreeNoFenceLeaks{} queued \(d = \VNineSmurfDepthTested\) ops; fenced lineage leaks \(0\) (\S\ref{sec:systems})\\
 \bottomrule\end{tabularx}
 \caption{Empirically tested architectural predictions and measured outcomes.}\label{tab:predictions}
 \end{table*}
