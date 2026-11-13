@@ -384,7 +384,7 @@ class PlatformStudyTests(unittest.TestCase):
         self.assertIn(r"\newcommand{\PboSccsEgalPersuadePct}", macros_tex)
         self.assertIn(r"\newcommand{\PboETwentyFourMaxDiff}", macros_tex)
         kpi_tex = ppaper.macro_kpi_table(ref)
-        self.assertEqual(kpi_tex.strip().count(r"\\"), 9)
+        self.assertEqual(kpi_tex.strip().count(r"\\"), 10)  # charter Law 3.4: 5-10 macro KPIs
         psec_tex = ppaper.primary_secondary_table(ref)
         self.assertGreaterEqual(psec_tex.strip().count(r"\\"), 8)
         ireg_tex = ppaper.influence_regimes_table(ref)

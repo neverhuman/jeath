@@ -822,6 +822,26 @@ def check_confidence(conf):
     for tally in totals.values():
         assert tally["predicted"] + tally["contradicted"] + tally["silent"] == rows
     assert totals["PBO"]["contradicted"] >= 1  # losses are reported, not hidden
+    if "speed_dating_decision_confidence" in conf:
+        dc = conf["speed_dating_decision_confidence"]
+        assert dc["n_sessions"] == 20 and dc["n_decisions"] > 7000  # the capped wave is excluded
+        for side in ("women", "men"):
+            r = dc["by_chooser_sex"][side]
+            assert r["n_choosers"] > 200
+            for key in ("forecast_predicts_partner_yes", "partner_record_predicts_partner_yes", "forecast_predicts_own_yes"):
+                c = r[key]
+                assert 0.0 <= c["ci_95"][0] <= c["auc"] <= c["ci_95"][1] <= 1.0, (side, key)
+            gain = r["record_minus_forecast_auc"]
+            assert gain["ci_95"][0] <= gain["estimate"] <= gain["ci_95"][1]
+            cal = dc["calibration_before_and_after_meeting"][side]
+            assert cal["n_people"] >= 30 and cal["all_waves_end_of_night"]["n_people"] >= cal["n_people"]
+        levels = dc["by_forecast_level_pooled"]
+        assert [c["forecast"] for c in levels] == list(range(1, 11)) and sum(c["n"] for c in levels) == dc["n_decisions"]
+        e27 = conf["proposition_27_e27"]
+        assert e27["max_abs_error"] < 0.01
+        for row in e27["grid"]:
+            assert row["agreement_confidence"]["closed_form"] >= row["validity_r2"]["closed_form"]  # Prop. 27(i)
+        assert e27["gap_limit_many_judges_one_context"] > e27["gap_limit_many_judges_many_contexts"]  # Prop. 27(iii)
 
 
 def check_face_highres(fh):

@@ -53,6 +53,16 @@ LEDGER_MACROS = (
     ("adams2018_ceo_traits", "Adams", 100, 0),
     ("lu2020_assertiveness", "Lu", 1, 2),
     ("fisman2006_intel_kink", "FismanKink", 100, 1),
+    ("oskamp1965_confidence", "OskampConf", 1, 0),
+    ("oskamp1965_accuracy", "OskampAcc", 1, 0),
+    ("dana2013_after_interview", "DanaWith", 1, 2),
+    ("dana2013_without_interview", "DanaWithout", 1, 2),
+    ("zacharakis2001_overconfident_vcs", "ZachVc", 1, 0),
+    ("lavner2012_wife_doubts", "LavnerDoubt", 100, 0),
+    ("lavner2012_wife_no_doubts", "LavnerNoDoubt", 100, 0),
+    ("barber2001_men_trade_more", "BarberTrade", 1, 0),
+    ("barber2001_men_return_cost", "BarberMen", 1, 2),
+    ("barber2001_women_return_cost", "BarberWomen", 1, 2),
 )
 
 
@@ -645,7 +655,7 @@ def face_highres_plot(data, root) -> bytes:
     cb.ax.tick_params(labelsize=5.6, length=2)
     cb.outline.set_linewidth(0.4)
 
-    arms = (("published_vits16_224_grid14", "v16 encoder\n224 px, 14$\\times$14"),
+    arms = (("published_vits16_224_grid14", "Original encoder\n224 px, 14$\\times$14"),
             ("vitb16_672_pooled_grid14", "Same 672 px\npooled 14$\\times$14"),
             ("vitb16_672_global_pool_only", "Same 672 px\none face vector"))
     ax = fig.add_subplot(side[0])
@@ -692,3 +702,161 @@ def face_highres_plot(data, root) -> bytes:
     else:
         ax.axis("off")
     return pp.pdf(fig, dpi=300)
+
+
+# ---------------------------------------------------------------------------------------------- decision confidence
+def decision_confidence_macros(data) -> dict[str, str]:
+    """Macros for the decision-confidence section (speed-dating forecasts and Proposition 27 / E27)."""
+    conf = data["confidence"]
+    d = conf["speed_dating_decision_confidence"]
+    v: dict[str, str] = {}
+    v["PboDcN"] = f"{d['n_decisions']:,}".replace(",", "{,}")
+    v["PboDcChoosers"] = str(d["n_choosers"])
+    v["PboDcSessions"] = str(d["n_sessions"])
+    for key, tag in (("women", "W"), ("men", "M")):
+        r = d["by_chooser_sex"][key]
+        for field, stem in (("forecast_predicts_partner_yes", "Fc"), ("partner_record_predicts_partner_yes", "Rec"),
+                            ("forecast_predicts_own_yes", "Own")):
+            v[f"PboDc{stem}{tag}"] = num(r[field]["auc"], 2)
+            v[f"PboDc{stem}{tag}CI"] = ci(*r[field]["ci_95"], d=2)
+        v[f"PboDcGain{tag}"] = num(r["record_minus_forecast_auc"]["estimate"], 2, plus=True)
+        v[f"PboDcGain{tag}CI"] = ci(*r["record_minus_forecast_auc"]["ci_95"], d=2)
+        fp = r["forecast_points_per_decision"]
+        v[f"PboDcPtsOwn{tag}"] = num(fp["own_yes"]["estimate"], 2)
+        v[f"PboDcPtsPartner{tag}"] = num(fp["partner_yes"]["estimate"], 2)
+        v[f"PboDcPtsPartner{tag}CI"] = ci(*fp["partner_yes"]["ci_95"], d=2)
+        v[f"PboDcRatio{tag}"] = num(fp["own_over_partner_ratio"]["estimate"], 1)
+        v[f"PboDcRatio{tag}CI"] = ci(*fp["own_over_partner_ratio"]["ci_95"], d=1)
+        c = d["calibration_before_and_after_meeting"][key]
+        v[f"PboDcCalN{tag}"] = str(c["n_people"])
+        b = c["before_meeting_expected_minus_actual_share_accepting_pp"]
+        a = c["end_of_night_expected_minus_actual_matches_pp_of_met"]
+        v[f"PboDcBefore{tag}"] = num(b["estimate"], 1, plus=True)
+        v[f"PboDcBefore{tag}CI"] = ci(*b["ci_95"])
+        v[f"PboDcAfter{tag}"] = num(a["estimate"], 1, plus=True)
+        v[f"PboDcAfter{tag}CI"] = ci(*a["ci_95"])
+        v[f"PboDcExpShare{tag}"] = num(100 * c["expected_share_accepting_before"], 0)
+        v[f"PboDcActShare{tag}"] = num(100 * c["actual_share_accepting"], 0)
+        aw = c["all_waves_end_of_night"]
+        v[f"PboDcAllN{tag}"] = str(aw["n_people"])
+        v[f"PboDcAllExp{tag}"] = num(aw["expected_matches"], 2)
+        v[f"PboDcAllAct{tag}"] = num(aw["actual_matches"], 2)
+    e27 = conf["proposition_27_e27"]
+    v["PboDcEErr"] = num(e27["max_abs_error"], 3)
+    v["PboDcEGapOne"] = num(e27["gap_limit_many_judges_one_context"], 2)
+    v["PboDcEGapMany"] = num(e27["gap_limit_many_judges_many_contexts"], 2)
+    grid = {(r["contexts_k"], r["judges_m"]): r for r in e27["grid"]}
+    m_hi = max(m for _, m in grid)
+    v["PboDcEMHi"] = str(m_hi)
+    for (k, m), tag in (((1, 1), "OneOne"), ((1, m_hi), "OneHi"), ((8, m_hi), "EightHi")):
+        v[f"PboDcEConf{tag}"] = num(grid[(k, m)]["agreement_confidence"]["closed_form"], 2)
+        v[f"PboDcEAcc{tag}"] = num(grid[(k, m)]["validity_r2"]["closed_form"], 2)
+    return v
+
+
+def decision_confidence_plot(data) -> bytes:
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+
+    import performance_paper as pp
+
+    conf = data["confidence"]
+    d = conf["speed_dating_decision_confidence"]
+    e27 = conf["proposition_27_e27"]
+    fig = plt.figure(figsize=(7.16, 2.28))
+    gs = fig.add_gridspec(1, 4, wspace=0.50, left=0.055, right=0.995, top=0.84, bottom=0.20, width_ratios=[1.0, 1.0, 1.12, 0.92])
+
+    # A. Derived: agreement-based confidence versus accuracy as judges are added
+    ax = fig.add_subplot(gs[0, 0])
+    rows = e27["grid"]
+    for k, color, ls, lbl_acc in ((1, pp.INK, "-", "Accuracy, 1 context"), (8, pp.AQUA, "-", "Accuracy, 8 contexts")):
+        sub = sorted((r for r in rows if r["contexts_k"] == k), key=lambda r: r["judges_m"])
+        m = np.array([r["judges_m"] for r in sub], dtype=float)
+        acc = np.array([r["validity_r2"]["closed_form"] for r in sub])
+        ax.plot(m, acc, color=color, lw=1.25, ls=ls)
+        ax.scatter(m, [r["validity_r2"]["monte_carlo"] for r in sub], color=color, s=7, zorder=3, edgecolor="white", lw=0.3)
+        if k == 1:
+            conf1 = np.array([r["agreement_confidence"]["closed_form"] for r in sub])
+            ax.plot(m, conf1, color=pp.GOLD, lw=1.25, ls=(0, (4, 2)))
+            ax.scatter(m, [r["agreement_confidence"]["monte_carlo"] for r in sub], color=pp.GOLD, marker="s", s=7, zorder=3, edgecolor="white", lw=0.3)
+            ax.fill_between(m, acc, conf1, color=pp.BAND, lw=0, zorder=0)
+            ax.text(1.0, 0.86, "Confidence\n(judges agree)", ha="left", va="center", fontsize=5.4, color=pp.GOLD)
+            ax.text(m[-1], acc[-1] - 0.12, "Accuracy, one context", ha="right", va="top", fontsize=5.4, color=pp.INK)
+            ax.text(m[-2], 0.79, "gap", ha="center", va="center", fontsize=5.6, color=pp.INK2, style="italic")
+        else:
+            ax.text(m[-1], acc[-1] + 0.03, "Accuracy, 8 contexts", ha="right", va="bottom", fontsize=5.4, color=pp.AQUA)
+    ax.set_xscale("log", base=2)
+    ax.set_xticks([1, 4, 16, 64], ["1", "4", "16", "64"])
+    ax.set_ylim(0, 1.05)
+    ax.set_xlabel("Judges watching the same contexts", labelpad=2)
+    pp.panel(ax, "A", "Agreement breeds certainty", ylabel="Share of variance", fontsize=7.4, pad=4)
+    ax.text(0.98, 0.03, "Derived + Monte Carlo\n(Prop. 27)", transform=ax.transAxes, fontsize=5.0, color=pp.MUTED, ha="right", va="bottom")
+
+    # B. Measured: the forecast tracks the chooser's own decision more than the partner's
+    ax = fig.add_subplot(gs[0, 1])
+    curve = d["by_forecast_level_pooled"]
+    x = np.array([c["forecast"] for c in curve], dtype=float)
+    for key, wkey, color, marker, ls, lbl in (("own_yes", "own_yes_wilson_95", pp.GOLD, "s", (0, (4, 2)), "You said yes"),
+                                               ("partner_yes", "partner_yes_wilson_95", pp.AQUA, "o", "-", "They said yes")):
+        y = 100 * np.array([c[key] for c in curve])
+        lo = 100 * np.array([c[wkey][0] for c in curve])
+        hi = 100 * np.array([c[wkey][1] for c in curve])
+        ax.fill_between(x, lo, hi, color=color, alpha=0.16, lw=0)
+        ax.plot(x, y, color=color, lw=1.15, ls=ls, marker=marker, ms=2.4, label=lbl)
+    ax.set_xticks([1, 4, 7, 10])
+    ax.set_xlim(0.6, 10.4)
+    ax.set_ylim(0, 80)
+    ax.set_xlabel("Your guess that they say yes (1–10)", labelpad=2)
+    pp.panel(ax, "B", "Your guess tracks your own yes", ylabel="Said yes (%)", fontsize=7.4, pad=4)
+    ax.legend(loc="upper left", fontsize=5.3, handlelength=1.6, borderaxespad=0.2)
+    ax.text(0.98, 0.03, f"{d['n_decisions']:,} dates, {d['n_choosers']} people\nWilson 95% bands", transform=ax.transAxes,
+            ha="right", va="bottom", fontsize=5.0, color=pp.MUTED)
+
+    # C. Measured: within-chooser AUC, forecast versus the partner's record with others
+    ax = fig.add_subplot(gs[0, 2])
+    items = (("forecast_predicts_partner_yes", "Your guess\n→ their yes"),
+             ("partner_record_predicts_partner_yes", "Their choices with\nothers → their yes"),
+             ("forecast_predicts_own_yes", "Your guess\n→ your own yes"))
+    yb = np.arange(len(items))[::-1].astype(float)
+    for key, color, marker, off in (("women", pp.WOMEN, "D", 0.13), ("men", pp.MEN, "o", -0.13)):
+        r = d["by_chooser_sex"][key]
+        for yi, (field, _) in zip(yb, items):
+            c = r[field]
+            ax.errorbar(c["auc"], yi + off, xerr=[[c["auc"] - c["ci_95"][0]], [c["ci_95"][1] - c["auc"]]], fmt=marker, ms=3.0,
+                        color=color, elinewidth=0.8, capsize=1.4)
+    ax.axvline(0.5, color=pp.MUTED, lw=0.7, ls=(0, (2, 2)))
+    ax.text(0.505, yb[-1] - 0.55, "chance", fontsize=5.0, color=pp.MUTED, va="bottom")
+    ax.set_yticks(yb, [lbl for _, lbl in items], fontsize=5.6)
+    ax.set_xlim(0.45, 0.85)
+    ax.set_ylim(yb[-1] - 0.6, yb[0] + 0.5)
+    ax.set_xticks([0.5, 0.6, 0.7, 0.8])
+    ax.set_xlabel("Within-person AUC", labelpad=2)
+    pp.panel(ax, "C", "A record beats a feeling", fontsize=7.4, pad=4)
+    ax.grid(axis="y", visible=False)
+    ax.grid(axis="x", color=pp.GRID, lw=0.5)
+    handles = [Line2D([], [], color=pp.WOMEN, marker="D", ls="", ms=3.0, label="Women choosing"),
+               Line2D([], [], color=pp.MEN, marker="o", ls="", ms=3.0, label="Men choosing")]
+    ax.legend(handles=handles, loc="center left", bbox_to_anchor=(0.0, 0.66), fontsize=5.0, handlelength=0.8, borderaxespad=0.2)
+
+    # D. Measured: calibration in the large before meeting and at the end of the night
+    ax = fig.add_subplot(gs[0, 3])
+    cal = d["calibration_before_and_after_meeting"]
+    xs = np.array([0.0, 1.0])
+    for key, color, marker, off, lbl in (("women", pp.WOMEN, "D", -0.05, "Women"), ("men", pp.MEN, "o", 0.05, "Men")):
+        c = cal[key]
+        b = c["before_meeting_expected_minus_actual_share_accepting_pp"]
+        a = c["end_of_night_expected_minus_actual_matches_pp_of_met"]
+        est = np.array([b["estimate"], a["estimate"]])
+        lo = np.array([b["ci_95"][0], a["ci_95"][0]])
+        hi = np.array([b["ci_95"][1], a["ci_95"][1]])
+        ax.errorbar(xs + off, est, yerr=[est - lo, hi - est], color=color, marker=marker, ms=3.0, lw=1.0, elinewidth=0.8, capsize=1.6,
+                    label=f"{lbl} (n={c['n_people']})")
+    ax.axhline(0, color=pp.MUTED, lw=0.7, ls=(0, (2, 2)))
+    ax.text(-0.33, -0.9, "calibrated", fontsize=5.0, color=pp.MUTED, ha="left", va="top")
+    ax.set_xticks(xs, ["At sign-up,\nbefore meeting", "Event night,\nbefore matches"], fontsize=5.8)
+    ax.set_xlim(-0.35, 1.35)
+    ax.set_ylim(-31, 16)
+    pp.panel(ax, "D", "Modest before, men sure after", ylabel="Guess − outcome (pp of dates)", fontsize=7.4, pad=4)
+    ax.legend(loc="lower right", fontsize=5.0, handlelength=1.2, borderaxespad=0.2)
+    ax.text(0.03, 0.985, "Same people, waves 1–5", transform=ax.transAxes, fontsize=5.0, color=pp.MUTED, va="top")
+    return pp.pdf(fig)

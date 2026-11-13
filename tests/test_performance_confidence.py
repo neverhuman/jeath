@@ -275,6 +275,93 @@ class WarmConfidenceTests(unittest.TestCase):
         self.assertEqual(a, b)
 
 
+def projection_world(seed=11, sessions=21, per_side=8):
+    """Speed-dating world in which forecasts copy the chooser's own desire while partners decide on selectivity."""
+    rng = np.random.default_rng(seed)
+    cols = {k: [] for k in ("wave", "gender", "iid", "pid", "dec", "dec_o", "match", "prob", "expnum", "match_es")}
+    pid_next = 0
+    for w in range(1, sessions + 1):
+        people = {code: list(range(pid_next + code * per_side, pid_next + (code + 1) * per_side)) for code in (0, 1)}
+        pid_next += 2 * per_side
+        select = {p: rng.normal(0.0, 1.2) for code in (0, 1) for p in people[code]}
+        expn = {p: float(rng.integers(0, 21)) for code in (0, 1) for p in people[code]}
+        est = {p: float(rng.integers(0, 6)) for code in (0, 1) for p in people[code]}
+        desire = {}
+        for i in people[0]:
+            for j in people[1]:
+                desire[(i, j)] = rng.normal()
+                desire[(j, i)] = rng.normal()
+        dec = {pair: float(select[pair[0]] + desire[pair] > 0.0) for pair in desire}
+        for (i, j), d in desire.items():
+            g = 0 if i in people[0] else 1
+            prob = np.clip(np.round(5.5 + 2.0 * d + 0.3 * rng.normal()), 1, 10)
+            for k, v in (("wave", w), ("gender", g), ("iid", i), ("pid", j), ("dec", dec[(i, j)]), ("dec_o", dec[(j, i)]),
+                         ("match", dec[(i, j)] * dec[(j, i)]), ("prob", prob), ("expnum", expn[i] if w <= 5 else np.nan),
+                         ("match_es", est[i])):
+                cols[k].append(v)
+    return {k: np.array(v, dtype=float) for k, v in cols.items()}
+
+
+class DecisionConfidenceTests(unittest.TestCase):
+    def test_auc_rank_and_ties(self):
+        self.assertEqual(pc.auc_rank([1, 2, 3, 4], [0, 0, 1, 1]), 1.0)
+        self.assertEqual(pc.auc_rank([4, 3, 2, 1], [0, 0, 1, 1]), 0.0)
+        self.assertEqual(pc.auc_rank([5, 5, 5, 5], [0, 1, 0, 1]), 0.5)
+        self.assertAlmostEqual(pc.auc_rank([1, 2, 2, 3], [0, 0, 1, 1]), 0.875)
+        self.assertTrue(math.isnan(pc.auc_rank([1, 2], [1, 1])))
+
+    def test_wilson_interval(self):
+        lo, hi = pc.wilson(5, 10)
+        self.assertAlmostEqual(lo, 0.2365931, places=6)
+        self.assertAlmostEqual(hi, 0.7634069, places=6)
+
+    def test_forecast_tracks_own_desire_and_record_beats_it(self):
+        out = pc.decision_confidence_from_arrays(**projection_world(), draws_n=200)
+        self.assertEqual(out["n_sessions"], 20)  # the capped wave is dropped
+        for side in ("women", "men"):
+            r = out["by_chooser_sex"][side]
+            self.assertLess(abs(r["forecast_predicts_partner_yes"]["auc"] - 0.5), 0.06, side)
+            self.assertGreater(r["forecast_predicts_own_yes"]["auc"], 0.8, side)
+            self.assertGreater(r["record_minus_forecast_auc"]["ci_95"][0], 0.0, side)
+            self.assertGreater(r["forecast_points_per_decision"]["own_yes"]["estimate"],
+                               r["forecast_points_per_decision"]["partner_yes"]["estimate"], side)
+        cal = out["calibration_before_and_after_meeting"]["women"]
+        self.assertGreater(cal["n_people"], 0)
+
+    def test_partner_record_leaves_out_the_chooser(self):
+        iid = np.array([1, 1, 2, 2, 2, 3, 3, 3.0])
+        pid = np.array([2, 3, 1, 8, 9, 1, 8, 9.0])
+        dec = np.array([1, 0, 1, 0, 1, 0, 1, 1.0])
+        rec = pc.partner_acceptance_record(iid, pid, dec, np.ones(8, bool))
+        # Row (1 -> 2): partner 2 accepted 1, rejected 8, accepted 9; leaving out 1 gives 1/2.
+        self.assertAlmostEqual(rec[0], 0.5)
+        # Row (1 -> 3): partner 3 rejected 1 and accepted 8 and 9; leaving out 1 gives 2/2.
+        self.assertAlmostEqual(rec[1], 1.0)
+        # Partner 1 met only two people, so the leave-one-out record has one decision: below the floor.
+        self.assertTrue(math.isnan(rec[2]) and math.isnan(rec[5]))
+        self.assertTrue(np.isnan(pc.partner_acceptance_record(iid, pid, dec, np.ones(8, bool), min_others=3)[0]))
+
+    def test_e27_closed_form_monte_carlo_and_limits(self):
+        e = pc.analyze_proposition_27_e27()
+        self.assertLess(e["max_abs_error"], 0.01)
+        p = e["parameters"]
+        for k in (1, 8):
+            gaps = [r["gap"] for r in sorted((r for r in e["grid"] if r["contexts_k"] == k), key=lambda r: r["judges_m"])]
+            self.assertTrue(all(b > a for a, b in zip(gaps, gaps[1:])), "gap must widen with judges")
+        lim = lambda k: (p["var_halo"] + p["var_context"] / k) / (p["var_trait"] + p["var_halo"] + p["var_context"] / k)
+        self.assertGreater(lim(1), lim(8))
+        self.assertAlmostEqual(e["gap_limit_many_judges_one_context"], lim(1))
+        for row in e["lone_judge_self_consistency"]:
+            k = row["contexts_k"]
+            den = p["var_trait"] + p["var_halo"] + p["var_context"] / k + p["var_observer"] + p["var_residual"] / k
+            jury = (p["var_trait"] + p["var_halo"] + p["var_context"] / k) / den
+            self.assertAlmostEqual(row["self_consistency"]["closed_form"] - jury, p["var_observer"] / den)
+
+    def test_decision_confidence_is_deterministic(self):
+        world = projection_world(seed=5, per_side=5)
+        self.assertEqual(pc.decision_confidence_from_arrays(**world, draws_n=50), pc.decision_confidence_from_arrays(**world, draws_n=50))
+
+
 class ConfidencePaperMacroTests(unittest.TestCase):
     def test_macros_are_alphabetic_and_do_not_shadow_v16_macros(self):
         import json
@@ -293,3 +380,18 @@ class ConfidencePaperMacroTests(unittest.TestCase):
         paper_src = (root / "scripts/performance_paper.py").read_text()
         v16_names = set(re.findall(r'"(Pbo[A-Za-z]+)":', paper_src))
         self.assertFalse(v16_names & set(macros), "confidence macros shadow existing names")
+
+    def test_decision_confidence_macros_are_alphabetic_and_new(self):
+        import json
+        import re
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[1]
+        data = json.loads((root / "evidence/reference/performance-before-outcomes.json").read_text())
+        if "speed_dating_decision_confidence" not in data.get("confidence", {}):
+            self.skipTest("reference predates the decision-confidence section")
+        from scripts import performance_confidence_paper as cpp
+        macros = cpp.decision_confidence_macros(data)
+        for name in macros:
+            self.assertRegex(name, r"^PboDc[A-Za-z]+$")
+        others = set(cpp.confidence_macros(data)) | set(re.findall(r'"(Pbo[A-Za-z]+)":', (root / "scripts/performance_paper.py").read_text()))
+        self.assertFalse(others & set(macros))

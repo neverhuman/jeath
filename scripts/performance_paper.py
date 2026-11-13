@@ -730,6 +730,84 @@ W.~{Samek}, A.~{Binder}, G.~{Montavon}, S.~{Lapuschkin}, and K.-R. {M{\"u}ller}.
 \newblock {Evaluating the visualization of what a deep neural network has learned}.
 \newblock \emph{IEEE Transactions on Neural Networks and Learning Systems}, 28(11):2660--2673, 2017.
 \newblock \doi{10.1109/TNNLS.2016.2599820}.
+
+\bibitem[{Kepecs} et~al.(2008){Kepecs}, {Uchida}, {Zariwala}, and {Mainen}]{kepecs2008}
+A.~{Kepecs}, N.~{Uchida}, H.~A.~{Zariwala}, and Z.~F.~{Mainen}.
+\newblock {Neural correlates, computation and behavioural impact of decision confidence}.
+\newblock \emph{Nature}, 455\penalty0 (7210):\penalty0 227--231, 2008.
+\newblock \doi{10.1038/nature07200}.
+
+\bibitem[{Lak} et~al.(2014){Lak}, {Costa}, {Romberg}, {Koulakov}, {Mainen}, and {Kepecs}]{lak2014}
+A.~{Lak}, G.~M.~{Costa}, E.~{Romberg}, A.~A.~{Koulakov}, Z.~F.~{Mainen}, and A.~{Kepecs}.
+\newblock {Orbitofrontal cortex is required for optimal waiting based on decision confidence}.
+\newblock \emph{Neuron}, 84\penalty0 (1):\penalty0 190--201, 2014.
+\newblock \doi{10.1016/j.neuron.2014.08.039}.
+
+\bibitem[{Kiani} and {Shadlen}(2009)]{kiani2009}
+R.~{Kiani} and M.~N.~{Shadlen}.
+\newblock {Representation of confidence associated with a decision by neurons in the parietal cortex}.
+\newblock \emph{Science}, 324\penalty0 (5928):\penalty0 759--764, 2009.
+\newblock \doi{10.1126/science.1169405}.
+
+\bibitem[{Bahrami} et~al.(2010){Bahrami}, {Olsen}, {Latham}, {Roepstorff}, {Rees}, and {Frith}]{bahrami2010}
+B.~{Bahrami}, K.~{Olsen}, P.~E.~{Latham}, A.~{Roepstorff}, G.~{Rees}, and C.~D.~{Frith}.
+\newblock {Optimally interacting minds}.
+\newblock \emph{Science}, 329\penalty0 (5995):\penalty0 1081--1085, 2010.
+\newblock \doi{10.1126/science.1185718}.
+
+\bibitem[{Price} and {Stone}(2004)]{price2004}
+P.~C.~{Price} and E.~R.~{Stone}.
+\newblock {Intuitive evaluation of likelihood judgment producers: Evidence for a confidence heuristic}.
+\newblock \emph{Journal of Behavioral Decision Making}, 17\penalty0 (1):\penalty0 39--57, 2004.
+\newblock \doi{10.1002/bdm.460}.
+
+\bibitem[{Koriat}(2008)]{koriat2008}
+A.~{Koriat}.
+\newblock {Subjective confidence in one's answers: The consensuality principle}.
+\newblock \emph{Journal of Experimental Psychology: Learning, Memory, and Cognition}, 34\penalty0 (4):\penalty0 945--959, 2008.
+\newblock \doi{10.1037/0278-7393.34.4.945}.
+
+\bibitem[{Oskamp}(1965)]{oskamp1965}
+S.~{Oskamp}.
+\newblock {Overconfidence in case-study judgments}.
+\newblock \emph{Journal of Consulting Psychology}, 29\penalty0 (3):\penalty0 261--265, 1965.
+\newblock \doi{10.1037/h0022125}.
+
+\bibitem[{Tsai} et~al.(2008){Tsai}, {Klayman}, and {Hastie}]{tsai2008}
+C.~I.~{Tsai}, J.~{Klayman}, and R.~{Hastie}.
+\newblock {Effects of amount of information on judgment accuracy and confidence}.
+\newblock \emph{Organizational Behavior and Human Decision Processes}, 107\penalty0 (2):\penalty0 97--105, 2008.
+\newblock \doi{10.1016/j.obhdp.2008.01.005}.
+
+\bibitem[{Dana} et~al.(2013){Dana}, {Dawes}, and {Peterson}]{dana2013}
+J.~{Dana}, R.~{Dawes}, and N.~{Peterson}.
+\newblock {Belief in the unstructured interview: The persistence of an illusion}.
+\newblock \emph{Judgment and Decision Making}, 8\penalty0 (5):\penalty0 512--520, 2013.
+\newblock \doi{10.1017/S1930297500003612}.
+
+\bibitem[{Zacharakis} and {Shepherd}(2001)]{zacharakis2001}
+A.~L.~{Zacharakis} and D.~A.~{Shepherd}.
+\newblock {The nature of information and overconfidence on venture capitalists' decision making}.
+\newblock \emph{Journal of Business Venturing}, 16\penalty0 (4):\penalty0 311--332, 2001.
+\newblock \doi{10.1016/S0883-9026(99)00052-X}.
+
+\bibitem[{Barber} and {Odean}(2001)]{barber2001}
+B.~M.~{Barber} and T.~{Odean}.
+\newblock {Boys will be boys: Gender, overconfidence, and common stock investment}.
+\newblock \emph{Quarterly Journal of Economics}, 116\penalty0 (1):\penalty0 261--292, 2001.
+\newblock \doi{10.1162/003355301556400}.
+
+\bibitem[{Lavner} et~al.(2012){Lavner}, {Karney}, and {Bradbury}]{lavner2012}
+J.~A.~{Lavner}, B.~R.~{Karney}, and T.~N.~{Bradbury}.
+\newblock {Do cold feet warn of trouble ahead? Premarital uncertainty and four-year marital outcomes}.
+\newblock \emph{Journal of Family Psychology}, 26\penalty0 (6):\penalty0 1012--1017, 2012.
+\newblock \doi{10.1037/a0029912}.
+
+\bibitem[{Moore} and {Healy}(2008)]{moore2008}
+D.~A.~{Moore} and P.~J.~{Healy}.
+\newblock {The trouble with overconfidence}.
+\newblock \emph{Psychological Review}, 115\penalty0 (2):\penalty0 502--517, 2008.
+\newblock \doi{10.1037/0033-295X.115.2.502}.
 """
 
 
@@ -4309,8 +4387,9 @@ def numbers(data):
 
     for name in values:
         assert name.isalpha(), f"LaTeX macro name must be alphabetic: {name}"
-    from performance_confidence_paper import confidence_macros, face_highres_macros
+    from performance_confidence_paper import confidence_macros, decision_confidence_macros, face_highres_macros
     values.update(confidence_macros(data))
+    values.update(decision_confidence_macros(data))
     if data.get("face_highres") is not None:
         values.update(face_highres_macros(data))
     return "".join(f"\\newcommand{{\\{name}}}{{{value}}}\n" for name, value in values.items())
@@ -4816,6 +4895,18 @@ def macro_kpi_table(data):
             rf"Audience sex gap \textbf{{${gap['estimate_pp']:+.1f}$\,pp}} $[{gap['ci_95_pp'][0]:+.1f},{gap['ci_95_pp'][1]:+.1f}]$ (shared stereotype); she-earns-more ${conf['hcmst_relative_income']['confirmatory']['estimate_pp']:+.1f}$\,pp, Holm $p={conf['multiplicity']['holm_adjusted_p']['h1_she_earns_more_vs_he_earns_more_excellent_pp']:.3f}$; PBO predicts {sc['PBO']['predicted']} and fails {sc['PBO']['contradicted']} of {len(conf['scorecard']['rows'])} regularities (Props.~\ref{{prop:prestige}}--\ref{{prop:sharedbias}})",
         ),
     ]
+    dcf = conf.get("speed_dating_decision_confidence")
+    if dcf:
+        dw, dm = dcf["by_chooser_sex"]["women"], dcf["by_chooser_sex"]["men"]
+        cw, cm = dcf["calibration_before_and_after_meeting"]["women"], dcf["calibration_before_and_after_meeting"]["men"]
+        aft = lambda c: c["end_of_night_expected_minus_actual_matches_pp_of_met"]
+        rows.append((
+            r"\textbf{10. Confidence Before Outcomes}",
+            "Does a chooser's certainty at the moment of choice foresee the partner's decision, and what foresees it better?",
+            rf"{dcf['n_decisions']:,} pre-outcome forecasts by {dcf['n_choosers']} choosers in {dcf['n_sessions']} sessions",
+            rf"Four-minute forecast foresees the partner's yes at AUC \textbf{{{dw['forecast_predicts_partner_yes']['auc']:.2f}/{dm['forecast_predicts_partner_yes']['auc']:.2f}}} (W/M) but one's own yes at {dw['forecast_predicts_own_yes']['auc']:.2f}/{dm['forecast_predicts_own_yes']['auc']:.2f}; the partner's record with others reaches \textbf{{{dw['partner_record_predicts_partner_yes']['auc']:.2f}/{dm['partner_record_predicts_partner_yes']['auc']:.2f}}}",
+            rf"End-of-night match estimates: women calibrated (${aft(cw)['estimate']:+.1f}$\,pp), men over by \textbf{{${aft(cm)['estimate']:+.1f}$\,pp}} $[{aft(cm)['ci_95'][0]:+.1f},{aft(cm)['ci_95'][1]:+.1f}]$ (error management, not PBO; Prop.~\ref{{prop:confidence}})",
+        ))
     return "\n".join(" & ".join(r) + r"\\" for r in rows) + "\n"
 
 
@@ -5164,7 +5255,7 @@ def confidence_influence_plot(data):
 
 def generate(data):
     from performance_confidence_paper import (confidence_audit_plot, confidence_ledger_table, confidence_scorecard_table,
-                                              face_highres_plot)
+                                              decision_confidence_plot, face_highres_plot)
     pov, hon, speed = data["pov"], data["hon"], data["speed_dating"]
     responses, sensitivity = pov_tables(pov)
     plateau_tbl = plateau_events_table(data)
@@ -5202,6 +5293,7 @@ def generate(data):
         "performance-fig-primary-secondary-dynamics.pdf": primary_secondary_dynamics_plot(data),
         "performance-fig-confidence-influence.pdf": confidence_influence_plot(data),
         "performance-fig-confidence-audit.pdf": confidence_audit_plot(data),
+        "performance-fig-decision-confidence.pdf": decision_confidence_plot(data),
         **({"performance-fig-face-highres.pdf": face_highres_plot(data, ROOT)} if data.get("face_highres") else {}),
         "performance-fig-hon-architecture.pdf": hon_architecture_plot(data),
         "performance-fig-holoface-ceiling.pdf": holoface_ceiling_plot(data),

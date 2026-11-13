@@ -2,8 +2,8 @@
   "analysis_sha256": {
     "scripts/performance_before_outcomes.py": "8e4867af2987a04e2af769fa6b7810db615d16a175653ba61f847dac5f1a8b73",
     "scripts/performance_choice.py": "4e85d14a61aa74b9b82f6cae86c69fa0bbf807c571e723367a9c01465f43dd2f",
-    "scripts/performance_confidence.py": "0119574095a3a07c032bd8e9dfca21715e7b6a7b12042dba47c21455208fc288",
-    "scripts/performance_confidence_ledger.py": "7ee71cf20d6dee8dd43cfedfff09b9d6177f056e162e0d3e0f8b8bbef80e66a0",
+    "scripts/performance_confidence.py": "fa63d0a2d4ce347c7c772c27dc8b47fdf7de31448a35b867796d126e21ea7365",
+    "scripts/performance_confidence_ledger.py": "f5c65d244c38ac3125cfa00d7530200ebceeb1a4ba5de086785a000509efe14b",
     "scripts/performance_face_attribution.py": "78aa8c4e439e75a67346e9f5482dd61ef3cdf1793d73e61e7596da82af4e41dc",
     "scripts/performance_face_highres.py": "c7c2b48f5ac051df490288c19e21df9714528e8b9f37d0b5baa51bbd03e558fd",
     "scripts/performance_holoface_benchmark.py": "1a1cccee4ea7a392be74cb3ed82320829d6a862687599867fae6a60bcdefa6b5",
@@ -3399,24 +3399,214 @@
         "stage": "entry",
         "status": "verified-fulltext-preprint",
         "tier": "Tier 2 published"
+      },
+      {
+        "arena": "case judgment",
+        "ci_95": null,
+        "construct": "information without new contexts",
+        "direction": "+",
+        "doi": "10.1037/h0022125",
+        "estimate": 19.6,
+        "id": "oskamp1965_confidence",
+        "k": 4,
+        "locator": "Table 2, p. 264",
+        "metric": "mean confidence, stage 4 minus stage 1 of one case file (pp)",
+        "n": 32,
+        "note": "33.2 -> 39.2 -> 46.0 -> 52.8%; 8 clinical psychologists, 18 psychology graduate students, 6 undergraduates",
+        "se": null,
+        "source_key": "oskamp1965",
+        "stage": "benchmark",
+        "status": "verified-fulltext",
+        "tier": "Tier 2 published"
+      },
+      {
+        "arena": "case judgment",
+        "ci_95": null,
+        "construct": "information without new contexts",
+        "direction": "0",
+        "doi": "10.1037/h0022125",
+        "estimate": 1.8,
+        "id": "oskamp1965_accuracy",
+        "k": 4,
+        "locator": "Table 2, p. 264",
+        "metric": "accuracy, stage 4 minus stage 1 (pp; chance 20%)",
+        "n": 32,
+        "note": "26.0 -> 23.0 -> 28.4 -> 27.8%; stage 1 vs 4 t = 1.13, df = 31, n.s.",
+        "se": null,
+        "source_key": "oskamp1965",
+        "stage": "benchmark",
+        "status": "verified-fulltext",
+        "tier": "Tier 2 published"
+      },
+      {
+        "arena": "admissions/hiring",
+        "ci_95": null,
+        "construct": "unstructured interview",
+        "direction": "+",
+        "doi": "10.1017/S1930297500003612",
+        "estimate": 0.31,
+        "id": "dana2013_after_interview",
+        "k": null,
+        "locator": "Study 1, p. 515",
+        "metric": "validity of GPA predictions made after an unstructured interview (r)",
+        "n": 76,
+        "note": "prior GPA alone r = .65; interviewers rated the information valuable equally in accurate, natural and random-answer conditions (Table 3)",
+        "se": null,
+        "source_key": "dana2013",
+        "stage": "benchmark",
+        "status": "verified-fulltext",
+        "tier": "Tier 2 published"
+      },
+      {
+        "arena": "admissions/hiring",
+        "ci_95": null,
+        "construct": "unstructured interview",
+        "direction": "+",
+        "doi": "10.1017/S1930297500003612",
+        "estimate": 0.61,
+        "id": "dana2013_without_interview",
+        "k": null,
+        "locator": "Study 1, p. 516",
+        "metric": "validity of the same judges' GPA predictions made without an interview (r)",
+        "n": 76,
+        "note": "Study 2 (watching a random interview) did not replicate the dilution effect",
+        "se": null,
+        "source_key": "dana2013",
+        "stage": "benchmark",
+        "status": "verified-fulltext",
+        "tier": "Tier 2 published"
+      },
+      {
+        "arena": "founders/investors",
+        "ci_95": null,
+        "construct": "venture-capitalist overconfidence",
+        "direction": "+",
+        "doi": "10.1016/S0883-9026(99)00052-X",
+        "estimate": 96,
+        "id": "zacharakis2001_overconfident_vcs",
+        "k": null,
+        "locator": "Abstract",
+        "metric": "share of venture capitalists significantly overconfident (%)",
+        "n": 51,
+        "note": "abstract: overconfidence 'negatively affects VC decision accuracy'; the information-amount claim is not stated in the abstract",
+        "se": null,
+        "source_key": "zacharakis2001",
+        "stage": "benchmark",
+        "status": "verified-abstract-only",
+        "tier": "Tier 2 published"
+      },
+      {
+        "arena": "romance",
+        "ci_95": null,
+        "construct": "decision doubt at commitment",
+        "direction": "+",
+        "doi": "10.1037/a0029912",
+        "estimate": 0.1905,
+        "id": "lavner2012_wife_doubts",
+        "k": null,
+        "locator": "Results, Predicting divorce",
+        "metric": "share divorced within four years, wives recalling premarital doubts",
+        "n": 84,
+        "note": "16/84 vs 11/141 without doubts, chi2(1, N = 225) = 6.31; husbands 14% vs 9%, n.s.; doubts reported retrospectively after the wedding",
+        "se": null,
+        "source_key": "lavner2012",
+        "stage": "outcome",
+        "status": "verified-fulltext-preprint",
+        "tier": "Tier 2 published"
+      },
+      {
+        "arena": "romance",
+        "ci_95": null,
+        "construct": "decision doubt at commitment",
+        "direction": "0",
+        "doi": "10.1037/a0029912",
+        "estimate": 0.078,
+        "id": "lavner2012_wife_no_doubts",
+        "k": null,
+        "locator": "Results, Predicting divorce",
+        "metric": "share divorced within four years, wives without premarital doubts",
+        "n": 141,
+        "note": "NIH author manuscript PMC3525794",
+        "se": null,
+        "source_key": "lavner2012",
+        "stage": "outcome",
+        "status": "verified-fulltext-preprint",
+        "tier": "Tier 2 published"
+      },
+      {
+        "arena": "investors",
+        "ci_95": null,
+        "construct": "overconfidence and trading",
+        "direction": "+",
+        "doi": "10.1162/003355301556400",
+        "estimate": 45,
+        "id": "barber2001_men_trade_more",
+        "k": null,
+        "locator": "Abstract, p. 261",
+        "metric": "men's trading relative to women's (% more)",
+        "n": null,
+        "note": "annual turnover about 77% (men) vs 53% (women), Table II",
+        "se": null,
+        "source_key": "barber2001",
+        "stage": "entry",
+        "status": "verified-fulltext",
+        "tier": "Tier 2 published"
+      },
+      {
+        "arena": "investors",
+        "ci_95": null,
+        "construct": "overconfidence and trading",
+        "direction": "-",
+        "doi": "10.1162/003355301556400",
+        "estimate": 2.65,
+        "id": "barber2001_men_return_cost",
+        "k": null,
+        "locator": "Abstract, p. 261",
+        "metric": "reduction in men's annual net return from trading (pp)",
+        "n": null,
+        "note": "women 1.72 pp",
+        "se": null,
+        "source_key": "barber2001",
+        "stage": "outcome",
+        "status": "verified-fulltext",
+        "tier": "Tier 2 published"
+      },
+      {
+        "arena": "investors",
+        "ci_95": null,
+        "construct": "overconfidence and trading",
+        "direction": "-",
+        "doi": "10.1162/003355301556400",
+        "estimate": 1.72,
+        "id": "barber2001_women_return_cost",
+        "k": null,
+        "locator": "Abstract, p. 261",
+        "metric": "reduction in women's annual net return from trading (pp)",
+        "n": null,
+        "note": "men 2.65 pp",
+        "se": null,
+        "source_key": "barber2001",
+        "stage": "outcome",
+        "status": "verified-fulltext",
+        "tier": "Tier 2 published"
       }
     ],
-    "ledger_module_sha256": "7ee71cf20d6dee8dd43cfedfff09b9d6177f056e162e0d3e0f8b8bbef80e66a0",
+    "ledger_module_sha256": "f5c65d244c38ac3125cfa00d7530200ebceeb1a4ba5de086785a000509efe14b",
     "ledger_summary": {
       "by_stage": {
-        "benchmark": 13,
+        "benchmark": 18,
         "boundary": 7,
-        "entry": 32,
-        "outcome": 18
+        "entry": 33,
+        "outcome": 22
       },
       "by_status": {
-        "verified-abstract-only": 22,
-        "verified-fulltext": 24,
-        "verified-fulltext-preprint": 24
+        "verified-abstract-only": 23,
+        "verified-fulltext": 31,
+        "verified-fulltext-preprint": 26
       },
-      "rows": 70
+      "rows": 80
     },
-    "module_sha256": "0119574095a3a07c032bd8e9dfca21715e7b6a7b12042dba47c21455208fc288",
+    "module_sha256": "fa63d0a2d4ce347c7c772c27dc8b47fdf7de31448a35b867796d126e21ea7365",
     "multiplicity": {
       "confirmatory_family": [
         "h1_she_earns_more_vs_he_earns_more_excellent_pp",
@@ -3729,6 +3919,224 @@
           "mean_true_quality_if_funded": 1.6718101454898957
         }
       }
+    },
+    "proposition_27_e27": {
+      "epistemic_tier": "derived + Monte Carlo check",
+      "gap_limit_many_judges_many_contexts": 0.3333333333333333,
+      "gap_limit_many_judges_one_context": 0.6,
+      "grid": [
+        {
+          "agreement_confidence": {
+            "closed_form": 0.4166666666666667,
+            "monte_carlo": 0.4178011649738473
+          },
+          "contexts_k": 1,
+          "gap": 0.25,
+          "judges_m": 1,
+          "validity_r2": {
+            "closed_form": 0.16666666666666666,
+            "monte_carlo": 0.16519083329214707
+          }
+        },
+        {
+          "agreement_confidence": {
+            "closed_form": 0.5882352941176471,
+            "monte_carlo": 0.5901450747250598
+          },
+          "contexts_k": 1,
+          "gap": 0.35294117647058826,
+          "judges_m": 2,
+          "validity_r2": {
+            "closed_form": 0.23529411764705882,
+            "monte_carlo": 0.2317649986247525
+          }
+        },
+        {
+          "agreement_confidence": {
+            "closed_form": 0.7407407407407407,
+            "monte_carlo": 0.7406599803741567
+          },
+          "contexts_k": 1,
+          "gap": 0.4444444444444444,
+          "judges_m": 4,
+          "validity_r2": {
+            "closed_form": 0.2962962962962963,
+            "monte_carlo": 0.2962511394548339
+          }
+        },
+        {
+          "agreement_confidence": {
+            "closed_form": 0.851063829787234,
+            "monte_carlo": 0.8507184880294351
+          },
+          "contexts_k": 1,
+          "gap": 0.5106382978723405,
+          "judges_m": 8,
+          "validity_r2": {
+            "closed_form": 0.3404255319148936,
+            "monte_carlo": 0.34115180192762407
+          }
+        },
+        {
+          "agreement_confidence": {
+            "closed_form": 0.9195402298850575,
+            "monte_carlo": 0.9195497276095767
+          },
+          "contexts_k": 1,
+          "gap": 0.5517241379310345,
+          "judges_m": 16,
+          "validity_r2": {
+            "closed_form": 0.367816091954023,
+            "monte_carlo": 0.36953739909923405
+          }
+        },
+        {
+          "agreement_confidence": {
+            "closed_form": 0.9580838323353293,
+            "monte_carlo": 0.9578312785428699
+          },
+          "contexts_k": 1,
+          "gap": 0.5748502994011976,
+          "judges_m": 32,
+          "validity_r2": {
+            "closed_form": 0.38323353293413176,
+            "monte_carlo": 0.3850505706518758
+          }
+        },
+        {
+          "agreement_confidence": {
+            "closed_form": 0.9785932721712538,
+            "monte_carlo": 0.9785765131896926
+          },
+          "contexts_k": 1,
+          "gap": 0.5871559633027523,
+          "judges_m": 64,
+          "validity_r2": {
+            "closed_form": 0.39143730886850153,
+            "monte_carlo": 0.3887200539103216
+          }
+        },
+        {
+          "agreement_confidence": {
+            "closed_form": 0.48148148148148145,
+            "monte_carlo": 0.48316223598687064
+          },
+          "contexts_k": 8,
+          "gap": 0.18518518518518517,
+          "judges_m": 1,
+          "validity_r2": {
+            "closed_form": 0.2962962962962963,
+            "monte_carlo": 0.29859168717716444
+          }
+        },
+        {
+          "agreement_confidence": {
+            "closed_form": 0.65,
+            "monte_carlo": 0.6516028358861137
+          },
+          "contexts_k": 8,
+          "gap": 0.25,
+          "judges_m": 2,
+          "validity_r2": {
+            "closed_form": 0.4,
+            "monte_carlo": 0.3997380504666309
+          }
+        },
+        {
+          "agreement_confidence": {
+            "closed_form": 0.7878787878787878,
+            "monte_carlo": 0.7876226237867836
+          },
+          "contexts_k": 8,
+          "gap": 0.303030303030303,
+          "judges_m": 4,
+          "validity_r2": {
+            "closed_form": 0.48484848484848486,
+            "monte_carlo": 0.48387397647201275
+          }
+        },
+        {
+          "agreement_confidence": {
+            "closed_form": 0.8813559322033898,
+            "monte_carlo": 0.8811917032301171
+          },
+          "contexts_k": 8,
+          "gap": 0.3389830508474576,
+          "judges_m": 8,
+          "validity_r2": {
+            "closed_form": 0.5423728813559322,
+            "monte_carlo": 0.5403704704339322
+          }
+        },
+        {
+          "agreement_confidence": {
+            "closed_form": 0.9369369369369369,
+            "monte_carlo": 0.9369284682044082
+          },
+          "contexts_k": 8,
+          "gap": 0.36036036036036034,
+          "judges_m": 16,
+          "validity_r2": {
+            "closed_form": 0.5765765765765766,
+            "monte_carlo": 0.5766341358342428
+          }
+        },
+        {
+          "agreement_confidence": {
+            "closed_form": 0.9674418604651163,
+            "monte_carlo": 0.9674474452825177
+          },
+          "contexts_k": 8,
+          "gap": 0.37209302325581395,
+          "judges_m": 32,
+          "validity_r2": {
+            "closed_form": 0.5953488372093023,
+            "monte_carlo": 0.5937867163192214
+          }
+        },
+        {
+          "agreement_confidence": {
+            "closed_form": 0.983451536643026,
+            "monte_carlo": 0.9835522612534086
+          },
+          "contexts_k": 8,
+          "gap": 0.37825059101654845,
+          "judges_m": 64,
+          "validity_r2": {
+            "closed_form": 0.6052009456264775,
+            "monte_carlo": 0.6085689256019484
+          }
+        }
+      ],
+      "lone_judge_self_consistency": [
+        {
+          "contexts_k": 1,
+          "excess_over_jury_agreement": 0.25,
+          "self_consistency": {
+            "closed_form": 0.6666666666666666,
+            "monte_carlo": 0.6680794643097189
+          }
+        },
+        {
+          "contexts_k": 8,
+          "excess_over_jury_agreement": 0.4444444444444444,
+          "self_consistency": {
+            "closed_form": 0.9259259259259259,
+            "monte_carlo": 0.9256531026345415
+          }
+        }
+      ],
+      "max_abs_error": 0.0035291190223063207,
+      "parameters": {
+        "agents_per_cell": 100000,
+        "var_context": 1.0,
+        "var_halo": 0.5,
+        "var_observer": 1.5,
+        "var_residual": 2.0,
+        "var_trait": 1.0
+      },
+      "proposition": 27,
+      "seed": 20262162
     },
     "schema": "pbo-confidence-1",
     "scorecard": {
@@ -4058,6 +4466,332 @@
           "silent": 13
         }
       }
+    },
+    "speed_dating_decision_confidence": {
+      "bootstrap": "4000 session-cluster resamples",
+      "by_chooser_sex": {
+        "men": {
+          "forecast_points_per_decision": {
+            "own_over_partner_ratio": {
+              "ci_95": [
+                1.8987704568738835,
+                4.034530691481641
+              ],
+              "estimate": 2.6641119509040365
+            },
+            "own_yes": {
+              "ci_95": [
+                1.114798895016256,
+                1.5781720434963544
+              ],
+              "estimate": 1.3438612741086031
+            },
+            "partner_yes": {
+              "ci_95": [
+                0.33994704534490044,
+                0.6582784719872423
+              ],
+              "estimate": 0.5044312321982486
+            }
+          },
+          "forecast_predicts_own_yes": {
+            "auc": 0.7299793470945337,
+            "ci_95": [
+              0.6952729111040009,
+              0.7596095651611402
+            ],
+            "n_choosers": 237
+          },
+          "forecast_predicts_partner_yes": {
+            "auc": 0.5848960676087885,
+            "ci_95": [
+              0.5589131761158612,
+              0.6125692939912005
+            ],
+            "n_choosers": 244
+          },
+          "mean_forecast_tenths_exploratory": 0.5239471619147267,
+          "n_choosers": 263,
+          "n_decisions": 3823,
+          "partner_record_predicts_partner_yes": {
+            "auc": 0.7710663643663971,
+            "ci_95": [
+              0.7428476168490772,
+              0.7987535372210801
+            ],
+            "n_choosers": 244
+          },
+          "partner_yes_rate": 0.37379021710698407,
+          "record_minus_forecast_auc": {
+            "ci_95": [
+              0.15179778434365362,
+              0.21706480064320993
+            ],
+            "estimate": 0.18617029675760846
+          }
+        },
+        "women": {
+          "forecast_points_per_decision": {
+            "own_over_partner_ratio": {
+              "ci_95": [
+                2.711735699226236,
+                6.327224794903651
+              ],
+              "estimate": 3.6676467263193424
+            },
+            "own_yes": {
+              "ci_95": [
+                1.2284711187075135,
+                1.479593691951436
+              ],
+              "estimate": 1.3435481024864773
+            },
+            "partner_yes": {
+              "ci_95": [
+                0.22078331146609528,
+                0.4795035173642539
+              ],
+              "estimate": 0.36632429531586636
+            }
+          },
+          "forecast_predicts_own_yes": {
+            "auc": 0.7504727882673072,
+            "ci_95": [
+              0.7252193767881592,
+              0.7780086633154172
+            ],
+            "n_choosers": 229
+          },
+          "forecast_predicts_partner_yes": {
+            "auc": 0.5630260517687952,
+            "ci_95": [
+              0.5370659736344774,
+              0.5853243002164193
+            ],
+            "n_choosers": 252
+          },
+          "mean_forecast_tenths_exploratory": 0.5217162411160832,
+          "n_choosers": 259,
+          "n_decisions": 3799,
+          "partner_record_predicts_partner_yes": {
+            "auc": 0.7820812757230083,
+            "ci_95": [
+              0.7493756320801185,
+              0.8172268060647688
+            ],
+            "n_choosers": 252
+          },
+          "partner_yes_rate": 0.4903922084759147,
+          "record_minus_forecast_auc": {
+            "ci_95": [
+              0.17634149036952737,
+              0.26756386970436014
+            ],
+            "estimate": 0.21905522395421317
+          }
+        }
+      },
+      "by_forecast_level_pooled": [
+        {
+          "forecast": 1,
+          "n": 386,
+          "own_yes": 0.13471502590673576,
+          "own_yes_wilson_95": [
+            0.1042323312415146,
+            0.172396683914863
+          ],
+          "partner_yes": 0.3316062176165803,
+          "partner_yes_wilson_95": [
+            0.2865022485702449,
+            0.3800288577075179
+          ]
+        },
+        {
+          "forecast": 2,
+          "n": 521,
+          "own_yes": 0.16698656429942418,
+          "own_yes_wilson_95": [
+            0.13742293222146945,
+            0.20142503001897455
+          ],
+          "partner_yes": 0.3761996161228407,
+          "partner_yes_wilson_95": [
+            0.33565142535700093,
+            0.41856006492835135
+          ]
+        },
+        {
+          "forecast": 3,
+          "n": 688,
+          "own_yes": 0.25726744186046513,
+          "own_yes_wilson_95": [
+            0.22601466936286463,
+            0.2912157658161243
+          ],
+          "partner_yes": 0.32558139534883723,
+          "partner_yes_wilson_95": [
+            0.29161923295933867,
+            0.36148048094173124
+          ]
+        },
+        {
+          "forecast": 4,
+          "n": 901,
+          "own_yes": 0.32519422863485015,
+          "own_yes_wilson_95": [
+            0.2954046576466481,
+            0.35646805781165053
+          ],
+          "partner_yes": 0.3762486126526082,
+          "partner_yes_wilson_95": [
+            0.345204674138542,
+            0.40834331172558697
+          ]
+        },
+        {
+          "forecast": 5,
+          "n": 1711,
+          "own_yes": 0.43015780245470486,
+          "own_yes_wilson_95": [
+            0.4068807668698001,
+            0.4537477485123963
+          ],
+          "partner_yes": 0.41963763880771476,
+          "partner_yes_wilson_95": [
+            0.39645965056836885,
+            0.4431756704780915
+          ]
+        },
+        {
+          "forecast": 6,
+          "n": 1319,
+          "own_yes": 0.5329795299469295,
+          "own_yes_wilson_95": [
+            0.505998132110181,
+            0.559769386302464
+          ],
+          "partner_yes": 0.41546626231993933,
+          "partner_yes_wilson_95": [
+            0.38915435194954634,
+            0.4422691353375822
+          ]
+        },
+        {
+          "forecast": 7,
+          "n": 1066,
+          "own_yes": 0.5816135084427767,
+          "own_yes_wilson_95": [
+            0.5517596871804515,
+            0.6108812336451475
+          ],
+          "partner_yes": 0.49624765478424016,
+          "partner_yes_wilson_95": [
+            0.46630082553429736,
+            0.5262214309794682
+          ]
+        },
+        {
+          "forecast": 8,
+          "n": 617,
+          "own_yes": 0.6288492706645057,
+          "own_yes_wilson_95": [
+            0.5900416776397257,
+            0.66606235301252
+          ],
+          "partner_yes": 0.5445705024311183,
+          "partner_yes_wilson_95": [
+            0.5051199814569993,
+            0.5834694631082429
+          ]
+        },
+        {
+          "forecast": 9,
+          "n": 232,
+          "own_yes": 0.646551724137931,
+          "own_yes_wilson_95": [
+            0.5831077445040411,
+            0.7052215439087275
+          ],
+          "partner_yes": 0.6594827586206896,
+          "partner_yes_wilson_95": [
+            0.5963496387438272,
+            0.7174204692347739
+          ]
+        },
+        {
+          "forecast": 10,
+          "n": 181,
+          "own_yes": 0.6961325966850829,
+          "own_yes_wilson_95": [
+            0.6256278077479758,
+            0.7584851529102374
+          ],
+          "partner_yes": 0.6685082872928176,
+          "partner_yes_wilson_95": [
+            0.5970521800748033,
+            0.7329603635892953
+          ]
+        }
+      ],
+      "calibration_before_and_after_meeting": {
+        "men": {
+          "actual_matches": 2.207547169811321,
+          "actual_share_accepting": 0.3635109787046232,
+          "all_waves_end_of_night": {
+            "actual_matches": 2.3955555555555557,
+            "expected_matches": 3.2239999999999998,
+            "n_people": 225
+          },
+          "before_meeting_expected_minus_actual_share_accepting_pp": {
+            "ci_95": [
+              -15.232552686748317,
+              1.762606201037188
+            ],
+            "estimate": -6.822795983669865
+          },
+          "end_of_night_expected_minus_actual_matches_pp_of_met": {
+            "ci_95": [
+              3.1534536025598583,
+              11.710278053624629
+            ],
+            "estimate": 7.306631358269887
+          },
+          "expected_matches_end_of_night": 3.2264150943396226,
+          "expected_share_accepting_before": 0.2952830188679245,
+          "n_people": 53
+        },
+        "women": {
+          "actual_matches": 2.452830188679245,
+          "actual_share_accepting": 0.4966194968553459,
+          "all_waves_end_of_night": {
+            "actual_matches": 2.495575221238938,
+            "expected_matches": 2.856194690265487,
+            "n_people": 226
+          },
+          "before_meeting_expected_minus_actual_share_accepting_pp": {
+            "ci_95": [
+              -28.35200471698113,
+              -12.342701781970648
+            ],
+            "estimate": -20.322327044025155
+          },
+          "end_of_night_expected_minus_actual_matches_pp_of_met": {
+            "ci_95": [
+              -3.564006813417191,
+              4.551952306079665
+            ],
+            "estimate": 0.558176100628931
+          },
+          "expected_matches_end_of_night": 2.4716981132075473,
+          "expected_share_accepting_before": 0.29339622641509433,
+          "n_people": 53
+        }
+      },
+      "definition": "Within-chooser AUC (Mann-Whitney, ties = 1/2) averaged over choosers with both outcomes; partner record = partner's acceptance rate of the other people met that night (leave-one-out, >=2 others); wave 12 excluded (acceptances capped); forecast answers outside 1-10 set missing",
+      "epistemic_tier": "measured (exploratory; outside the confirmatory family)",
+      "n_choosers": 522,
+      "n_decisions": 7622,
+      "n_sessions": 20
     },
     "speed_dating_sat_proxy": {
       "cluster_bootstrap": {
