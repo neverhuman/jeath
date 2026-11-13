@@ -24,6 +24,9 @@ EXPORTS = Path("exports")
 PARTIAL = Path("faceflow/output/partial_exports")
 FULL_FACEFLOW = Path("faceflow/output/summary.json")
 BENCHMARK = Path("experiment/LEADERBOARD.json")
+# HON_INDEX is a live workspace owned by another agent. Only waves reviewed into the PBO evidence are admitted;
+# later waves stay out until a scientific update reviews them (H68-H72 repeat H67's held-out metrics exactly).
+BENCHMARK_REVIEWED_LAST_WAVE = 67
 REVIEW = Path("reports/beauty_review")
 
 US_STATES = frozenset({
@@ -1291,7 +1294,7 @@ def snapshot_inventory(hon_data, pov_data):
             "host_counts": full_faceflow["host_counts"],
         },
         "multimodal_benchmark": {
-            "benchmark": leaderboard["benchmark"],
+            "benchmark": re.sub(r"\(H1-H\d+\)", f"(H1-H{BENCHMARK_REVIEWED_LAST_WAVE})", leaderboard["benchmark"]),
             "sample_profiles": leaderboard["sample_profiles"],
             "sample_images_total": leaderboard["sample_images_total"],
             "sample_primary_images": leaderboard["sample_primary_images"],
@@ -1305,6 +1308,16 @@ def snapshot_inventory(hon_data, pov_data):
                     "paired_bootstrap_comparisons": w["paired_bootstrap_comparisons"],
                 }
                 for w in leaderboard["waves"]
+                if int(w["wave_id"][1:]) <= BENCHMARK_REVIEWED_LAST_WAVE
+            ],
+            "unreviewed_waves_excluded": [
+                {
+                    "wave_id": w["wave_id"],
+                    "profile_test_identical_to": next(
+                        (v["wave_id"] for v in leaderboard["waves"][:i] if v["profile_test"] == w["profile_test"]), None),
+                }
+                for i, w in enumerate(leaderboard["waves"])
+                if int(w["wave_id"][1:]) > BENCHMARK_REVIEWED_LAST_WAVE
             ],
         },
         "cached_pilot": {

@@ -25,7 +25,9 @@ def sources():
 
 def run_performance_before_outcomes(output, speed_data):
     from performance_choice import analyze
+    from performance_confidence import analyze_confidence
     from performance_face_attribution import analyze_face_attribution
+    from performance_face_highres import analyze_face_highres
     from performance_holoface_benchmark import load_or_analyze_holoface_benchmark
     from performance_open import analyze_open, build_macro_selection_kpis
     from performance_paleoclimate_plateau import analyze_paleoclimate_plateau
@@ -42,13 +44,18 @@ def run_performance_before_outcomes(output, speed_data):
         result["hon"]["cross_national"]["countries"],
     )
     result["facial_attribution"] = analyze_face_attribution()
+    result["face_highres"] = analyze_face_highres()
+    result["confidence"] = analyze_confidence(speed_data.parent, ROOT)
     result["paleoclimate_plateau"] = analyze_paleoclimate_plateau()
     result["holoface_benchmark"] = load_or_analyze_holoface_benchmark()
     result["macro_selection_kpis"] = build_macro_selection_kpis(result)
     result["analysis_sha256"] = {
         "scripts/performance_before_outcomes.py": hashlib.sha256(program).hexdigest(),
         "scripts/performance_choice.py": digest(ROOT / "scripts/performance_choice.py"),
+        "scripts/performance_confidence.py": digest(ROOT / "scripts/performance_confidence.py"),
+        "scripts/performance_confidence_ledger.py": digest(ROOT / "scripts/performance_confidence_ledger.py"),
         "scripts/performance_face_attribution.py": digest(ROOT / "scripts/performance_face_attribution.py"),
+        "scripts/performance_face_highres.py": digest(ROOT / "scripts/performance_face_highres.py"),
         "scripts/performance_holoface_benchmark.py": digest(ROOT / "scripts/performance_holoface_benchmark.py"),
         "scripts/performance_open.py": digest(ROOT / "scripts/performance_open.py"),
         "scripts/performance_paleoclimate_plateau.py": digest(ROOT / "scripts/performance_paleoclimate_plateau.py"),

@@ -217,3 +217,79 @@ class LedgerAndScorecardTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def halo_world(seed=11, sessions=21, per_side=10, halo=1.2):
+    """Speed-dating sessions where yes depends on true agency only and the chooser's own warmth rating
+    carries a halo from that same decision; other raters see true warmth plus independent noise."""
+    rng = np.random.default_rng(seed)
+    cols = {k: [] for k in ("wave", "sex", "chooser", "partner", "yes")}
+    own = []
+    pid = 0
+    for w in range(sessions):
+        men = np.arange(pid, pid + per_side)
+        women = np.arange(pid + per_side, pid + 2 * per_side)
+        pid += 2 * per_side
+        traits = {p: rng.normal(0.0, 1.0, 5) for p in [*men, *women]}  # attr, fun, intel, amb, sinc
+        for choosers, targets, code in ((men, women, 1.0), (women, men, 0.0)):
+            for c in choosers:
+                bias = rng.normal(0.0, 0.5)
+                for t in targets:
+                    tr = traits[t]
+                    agency = tr[[1, 2, 3]].mean()
+                    latent = 0.9 * agency + 0.8 * tr[0] + bias + rng.logistic(0.0, 0.6)
+                    y = float(latent > 0.3)
+                    rating = tr + rng.normal(0.0, 0.7, 5)
+                    rating[4] += halo * (y - 0.5)  # halo: the decision leaks into the warmth rating
+                    own.append(np.clip(np.round(5.5 + 1.5 * rating), 1, 10))
+                    for k, v in (("wave", w), ("sex", code), ("chooser", c), ("partner", t), ("yes", y)):
+                        cols[k].append(v)
+    return [np.array(cols[k], dtype=float) for k in ("wave", "sex", "chooser", "partner", "yes")] + [np.array(own)]
+
+
+class WarmConfidenceTests(unittest.TestCase):
+    def test_leave_one_out_panel_excludes_the_rater(self):
+        wave = np.zeros(4)
+        partner = np.zeros(4)
+        own = np.array([[1.0], [2.0], [3.0], [10.0]])
+        panel = pc.leave_one_out_panel(wave, partner, own, min_peers=3)
+        np.testing.assert_allclose(panel[:, 0], [5.0, 14 / 3, 13 / 3, 2.0])
+        self.assertTrue(np.isnan(pc.leave_one_out_panel(wave[:3], partner[:3], own[:3], min_peers=3)).all())
+
+    def test_halo_appears_in_own_ratings_but_not_in_other_raters(self):
+        wave, sex, chooser, partner, yes, own = halo_world()
+        out = pc.warm_confidence_from_arrays(wave, sex, chooser, partner, yes, own, draws_n=400)
+        for side in ("male_chooser_female_target", "female_chooser_male_target"):
+            own_w = out["own"][side]["coefficients_pp_per_sd"]["warmth"]
+            pan_w = out["panel"][side]["coefficients_pp_per_sd"]["warmth"]
+            pan_a = out["panel"][side]["coefficients_pp_per_sd"]["agency"]
+            self.assertGreater(own_w["interval_95"][0], 0.0, side)  # the halo is "found" in own ratings
+            self.assertLess(pan_w["interval_95"][0], 0.0, side)      # and vanishes for independent raters
+            self.assertGreater(pan_w["interval_95"][1], 0.0, side)
+            self.assertGreater(pan_a["interval_95"][0], 0.0, side)   # true agency survives
+
+    def test_estimator_is_deterministic(self):
+        args = halo_world(seed=3, sessions=21, per_side=6)
+        a = pc.warm_confidence_from_arrays(*args, draws_n=50)
+        b = pc.warm_confidence_from_arrays(*args, draws_n=50)
+        self.assertEqual(a, b)
+
+
+class ConfidencePaperMacroTests(unittest.TestCase):
+    def test_macros_are_alphabetic_and_do_not_shadow_v16_macros(self):
+        import json
+        import re
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[1]
+        ref = root / "evidence/reference/performance-before-outcomes.json"
+        data = json.loads(ref.read_text())
+        if "confidence" not in data:
+            self.skipTest("reference predates the confidence layer")
+        from scripts import performance_confidence_paper as cpp
+        macros = cpp.confidence_macros(data)
+        self.assertGreater(len(macros), 200)
+        for name in macros:
+            self.assertRegex(name, r"^Pbo[A-Za-z]+$")
+        paper_src = (root / "scripts/performance_paper.py").read_text()
+        v16_names = set(re.findall(r'"(Pbo[A-Za-z]+)":', paper_src))
+        self.assertFalse(v16_names & set(macros), "confidence macros shadow existing names")

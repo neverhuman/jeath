@@ -866,12 +866,109 @@ def score(card) -> dict:
     return out
 
 
+# ----------------------------------------------------------------------------- W1: warm confidence, own vs other raters
+WARM_ATTRS = ("attr", "fun", "intel", "amb", "sinc")
+
+
+def analyze_warm_confidence(csv_path: Path) -> dict:
+    """Is the v16 'warm outlier confidence' complementarity a same-rater halo?
+
+    Within-chooser linear probability model of the yes decision on standardized agency (mean of the
+    intel, fun and amb ratings, the v16 definition), warmth (sinc), their product, and attractiveness.
+    Ratings come either from the deciding chooser (``own``, halo-prone) or from the other choosers who
+    met the same partner in the same session (``panel``, leave-one-out, at least three peers).
+    Intervals resample the 21 sessions. Exploratory: outside the confirmatory family.
+    """
+    data = csv_path.read_bytes()
+    if hashlib.sha256(data).hexdigest() != CONFIDENCE_INPUTS["speed_dating.csv"]["sha256"]:
+        raise ValueError("speed-dating checksum mismatch")
+    rows = list(csv.DictReader(data.decode("latin-1").splitlines()))
+
+    def num(v):
+        v = str(v).replace(",", "").strip()
+        return float(v) if v else np.nan
+
+    wave = np.array([num(r["wave"]) for r in rows])
+    sex = np.array([num(r["gender"]) for r in rows])  # 1 = male chooser
+    chooser = np.array([num(r["iid"]) for r in rows])
+    partner = np.array([num(r["pid"]) for r in rows])
+    yes = np.array([num(r["dec"]) for r in rows])
+    own = np.array([[num(r[a]) for a in WARM_ATTRS] for r in rows])
+    if len(np.unique(wave)) != 21 or len(rows) != 8378:
+        raise ValueError("unexpected speed-dating layout")
+    return warm_confidence_from_arrays(wave, sex, chooser, partner, yes, own)
+
+
+def leave_one_out_panel(wave, partner, own, min_peers=3):
+    """Mean rating of each partner by the *other* choosers in the same session (NaN below ``min_peers``)."""
+    panel = np.full_like(own, np.nan)
+    for event in np.unique(wave):
+        for person in np.unique(partner[wave == event]):
+            idx = np.flatnonzero((wave == event) & (partner == person))
+            vals = own[idx]
+            tot = np.nansum(vals, axis=0) - np.nan_to_num(vals)
+            peers = np.isfinite(vals).sum(axis=0) - np.isfinite(vals)
+            panel[idx] = np.divide(tot, peers, out=np.full_like(tot, np.nan), where=peers >= min_peers)
+    return panel
+
+
+def warm_confidence_from_arrays(wave, sex, chooser, partner, yes, own, draws_n=4000, seed=SEED + 1031):
+    """Estimator behind ``analyze_warm_confidence``; columns of ``own`` follow ``WARM_ATTRS``."""
+    own = np.array(own, dtype=np.float64)
+    own[(own < 1) | (own > 10)] = np.nan
+    panel = leave_one_out_panel(wave, partner, own)
+    sessions, s_idx = np.unique(wave, return_inverse=True)
+    rng = np.random.default_rng(seed)
+    draws = rng.integers(len(sessions), size=(draws_n, len(sessions)))
+    terms = ("agency", "warmth", "agency_x_warmth", "attractiveness")
+    out = {"definition": "agency = mean(intel, fun, amb); warmth = sinc; z-scored over complete rows; chooser fixed effects",
+           "terms": list(terms)}
+    boots = {}
+    for source, ratings in (("own", own), ("panel", panel)):
+        ok = np.isfinite(ratings).all(axis=1) & ((yes == 0) | (yes == 1))
+        ag = ratings[:, [1, 2, 3]].mean(axis=1)
+        z = lambda v: (v - v[ok].mean()) / v[ok].std()
+        za, zw, zt = z(ag), z(ratings[:, 4]), z(ratings[:, 0])
+        design = np.column_stack([za, zw, za * zw, zt])
+        res = {}
+        for code, key in ((1.0, "male_chooser_female_target"), (0.0, "female_chooser_male_target")):
+            sel = ok & (sex == code)
+            xx = np.zeros((len(sessions), 4, 4))
+            xy = np.zeros((len(sessions), 4))
+            n_rows = n_people = 0
+            for person in np.unique(chooser[sel]):
+                r_ = np.flatnonzero(sel & (chooser == person))
+                if len(r_) < 2:
+                    continue
+                x = design[r_] - design[r_].mean(axis=0)
+                y = yes[r_] - yes[r_].mean()
+                e = s_idx[r_[0]]
+                xx[e] += x.T @ x
+                xy[e] += x.T @ y
+                n_rows += len(r_)
+                n_people += 1
+            coef = np.linalg.solve(xx.sum(axis=0), xy.sum(axis=0))
+            bt = np.linalg.solve(xx[draws].sum(axis=1), xy[draws].sum(axis=1)[..., None])[..., 0]
+            boots[(source, key)] = bt
+            res[key] = {"n_decisions": n_rows, "n_choosers": n_people,
+                        "coefficients_pp_per_sd": {t: {"estimate": float(100 * c), "interval_95": [float(v) for v in 100 * np.quantile(b, [.025, .975])]}
+                                                   for t, c, b in zip(terms, coef, bt.T)}}
+        diff = 100 * (boots[(source, "male_chooser_female_target")] - boots[(source, "female_chooser_male_target")])
+        res["female_minus_male_target_pp_per_sd"] = {
+            t: {"estimate": float(res["male_chooser_female_target"]["coefficients_pp_per_sd"][t]["estimate"]
+                                  - res["female_chooser_male_target"]["coefficients_pp_per_sd"][t]["estimate"]),
+                "interval_95": [float(v) for v in np.quantile(diff[:, i], [.025, .975])]} for i, t in enumerate(terms)}
+        out[source] = res
+    return out
+
+
 # ----------------------------------------------------------------------------- entry point
 def analyze_confidence(inputs_dir: Path, root: Path = ROOT) -> dict:
     inputs_dir = Path(inputs_dir)
     gss = analyze_gss_audience(resolve("gss_all.rda", inputs_dir), root)
     hcmst = analyze_hcmst_relative_income(resolve("hcmst2017_public_v1.1.dta", inputs_dir))
     sat = analyze_sat_proxy(resolve("speed_dating.csv", inputs_dir))
+    warm = analyze_warm_confidence(resolve("speed_dating.csv", inputs_dir))
     e25 = analyze_proposition_25_e25()
     e26 = analyze_proposition_26_e26()
     check_ledger(LEDGER)
@@ -884,6 +981,7 @@ def analyze_confidence(inputs_dir: Path, root: Path = ROOT) -> dict:
         "gss_audience_women_leaders": gss,
         "hcmst_relative_income": hcmst,
         "speed_dating_sat_proxy": sat,
+        "speed_dating_warm_confidence": warm,
         "proposition_25_e25": e25,
         "proposition_26_e26": e26,
         "ledger": list(LEDGER),
