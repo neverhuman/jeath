@@ -491,7 +491,7 @@ def generate_v2():
             f"Ed25519/Macaroon attacks; 3-sink partition schedules & Test vectors; one-process simulation in logical time & {crt['total_attacks']:,} crypto attacks (incl.\\ RFC 8032 \\& OpenSSL CLI); {coop_j['schedules_run']:,} schedules/class ({coop_j['signed_fence_completions']} signed acks + {coop_j['lease_expiry_completions']} lease expiries vs.\\ {brk_j['post_ack_unauthorized_commits']} broker-only, {unc_j['post_ack_unauthorized_commits']} uncooperative{skew_detail}) & {crt['false_accepts']} accepts; {coop_j['post_ack_unauthorized_commits']} leaks\\\\"
         )
     core_rows += [
-        f"Linux Landlock v4 + seccomp boundary & Linux kernel ABI & Filesystem/TCP Landlock, 64-bit resource-limit filter, SysV/POSIX IPC + pre-existing queue canary & {probe_count}/{probe_count} confined after two bypasses found in review were fixed\\\\",
+        f"Linux Landlock v4 + seccomp boundary & Linux kernel ABI & Filesystem/TCP Landlock, 64-bit resource-limit filter, SysV/POSIX IPC + pre-existing queue canary; two bypasses found in review were fixed before this count & {probe_count}/{probe_count} confined\\\\",
         f"Non-idempotent \\& omitted-spec controls & Negative controls & Uncooperative sink duplicates ({neg['unsupported_sink']['effects']} effects); {cost['fence_ack_ms']:.1f}\\,ms delayed fence ack; authorized bad edit commits & All 3 reproduced\\\\",
     ]
     cl_v5_path = DATA_V3 / "e2e_crypto_cluster.json"
