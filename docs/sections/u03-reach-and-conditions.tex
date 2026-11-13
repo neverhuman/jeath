@@ -62,15 +62,15 @@ Concretely, an unacknowledged or timed-out RPC widens \(\mathcal{I}_t\) and ther
 \caption{Six structural conditions separating intelligence from external authority, each with a failure witness when the clause is relaxed. Partition counts are schedules with a leak in the logical-time simulation of Section~\ref{sec:core}; the live withdrawal counts used a harness-scheduled pending operation.}\label{tab:conditions}
 \end{table*}
 
-\begin{theorem}[Multi-period reach union bound]\label{thm:horizon}
+\begin{observation}[Multi-period reach union bound]\label{thm:horizon}
 Let \(E_t\) denote the event of an unauthorized sink commit during lease period \(t \in \{1,\dots,T\}\). Suppose conditions \textbf{C1}--\textbf{C5} (Table~\ref{tab:conditions}) bound single-period residual hazard by \(\Prb(E_t) \le R_t = u_t + (1 - u_t)\,\varepsilon_t\), where \(\varepsilon_t\) captures residual specification or key-custody failure. Then cumulative breach across \(T\) periods satisfies
 \begin{equation}\label{eq:horizon}
   \Prb\!\left(\bigcup_{t=1}^T E_t\right) \le \sum_{t=1}^T R_t.
 \end{equation}
 Under \textbf{C6} (\(\sum_{t=1}^\infty R_t = R_\infty < 1\)), infinite-horizon breach probability remains bounded by \(R_\infty\) uniformly as \(T \to \infty\); conversely, any constant independent floor \(R_t \ge r_0 > 0\) yields \(\lim_{T\to\infty}\Prb(\bigcup_{t=1}^T E_t) = 1\).
-\end{theorem}
+\end{observation}
 
-Theorem~\ref{thm:horizon} is intentionally elementary once \textbf{C1}--\textbf{C5} do the structural work: Eq.~\eqref{eq:horizon} applies Boole's union bound (Appendix~\ref{app:proofs}, Proposition~\ref{prop:envelope}) to per-lease residual hazards, showing that long-horizon autonomy requires shrinking per-renewal exposure \(R_t\) (via monotone capability ratchets \textbf{C5} rather than constant-rate statistical filtering).
+Observation~\ref{thm:horizon} is Boole's inequality once \textbf{C1}--\textbf{C5} do the structural work: Eq.~\eqref{eq:horizon} applies Boole's union bound (Appendix~\ref{app:proofs}, Proposition~\ref{prop:envelope}) to per-lease residual hazards, showing that long-horizon autonomy requires shrinking per-renewal exposure \(R_t\) (via monotone capability ratchets \textbf{C5} rather than constant-rate statistical filtering).
 
 Figure~\ref{fig:v3saturation} plots the lag-contraction, common-cause and horizon laws of this appendix. It evaluates the formulas numerically and is an illustration, not an experiment.
 

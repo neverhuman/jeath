@@ -579,7 +579,7 @@ def build_v5_paper_outputs(
         stat_lines.append(f"{label} & {n_str} & {d_str} & {up_str} & {status_str}\\\\")
     stat_lines += [
         r"\bottomrule\end{tabularx}",
-        f"\\caption{{The previous version's post hoc clustered ledger, kept for the record and superseded by E1 (Section~\\ref{{sec:v6replication}}). Its holdout rows pool both checkpoints, which E1's plan does not allow, and its Progent row counts budget overruns, a property Progent does not claim to enforce. Complete mediation's zero unauthorized commits hold by construction. The predeclared union-bound intervals were inconclusive at the pilot's size.}}\\label{{tab:v5statistics}}\\end{{table*}}",
+        f"\\caption{{The previous version's clustered ledger, kept for the record and superseded by E1 (Section~\\ref{{sec:v6replication}}). Rows marked predeclared are the pilot's planned comparisons; the clustering and every pooled row were added after the data. Its holdout rows pool both checkpoints, which E1's plan does not allow, and its Progent row counts budget overruns, a property Progent does not claim to enforce. Complete mediation's zero unauthorized commits hold by construction. The predeclared union-bound intervals were inconclusive at the pilot's size.}}\\label{{tab:v5statistics}}\\end{{table*}}",
     ]
 
     # Retain valid minimal v5-kpi-table.tex float in case legacy check inspects generated files
