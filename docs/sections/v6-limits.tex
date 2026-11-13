@@ -32,20 +32,24 @@ none of it estimates how often attackers find such injections. Across checkpoint
 the comparison is descriptive: chat template, protocol compliance and Progent policy quality all vary with the
 checkpoint.
 
-\para{What the sink is.} The SQLite sink mediates only its own database effects. Nothing here is a sandbox,
-external exactly-once execution, or a formal refinement of a deployed system. The fenceability probes use single-node
+\para{What the sink is.} The SQLite sink mediates only its own database effects. Linux proposer confinement is
+tested separately; these results do not establish OS-kernel sandbox verification, external exactly-once execution,
+or formal refinement of a deployed system. The fenceability probes use single-node
 reference instances in default configuration, and two surfaces come from documentation only.
 
 \para{Verification boundary.} The mechanized kernel proves properties of its own state machine and of the permit
-encoding. In the release binaries used by the experiments, the broker and sink decisions on the v2 path are made by
-unverified Rust that calls verified leaf predicates; the full kernel comparison runs only in debug builds. The
+encoding. In the Rust releases used for the model and stop measurements, broker and sink decisions were made by
+unverified Rust that called verified leaf predicates; the full kernel comparison ran only in debug builds. The
+current artifact gates these transitions on kernel agreement in release builds, with fresh process regressions;
+the empirical datasets retain their original implementation provenance. The
 cryptographic primitives are a from-scratch implementation that has not been audited.
 
 \para{Preregistration.} Every v6 plan was committed to this repository's history before the data it governs, and amendments record what was seen
 before them. Three launches were stopped and rerun (Appendix~\ref{app:v6ledger}): E1 for a proposal-expiry defect, E8
 for arm-dependent denial text, and an E5 smoke run for a change of strategy. None of the stopping decisions used an
-outcome aggregate. However, the commits are on no public remote, and several hand-typed timestamps needed errata, so
-the timing cannot be verified externally. E6's plan was finalized after its two development runs and is labelled
+outcome aggregate. The plans were not publicly timestamped before their experiments; publishing the repository
+history afterward does not independently establish that ordering. Several hand-typed timestamps needed errata.
+E6's plan was finalized after its two development runs and is labelled
 accordingly; E6b's plan precedes its data.
 
 \para{Validators.} The validators recompute every reported number from raw artefacts (sink databases, episode logs,

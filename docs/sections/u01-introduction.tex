@@ -53,7 +53,8 @@ evidence behind it:
         epoch: the surface itself, author code installed in it, or a condition the writer must remember to send.
   \item \textbf{A machine-checked authority kernel} (proved; Section~\ref{sec:core}). The experiments' binaries do not
         use it as their decision procedure: unverified code calls verified predicates, and the comparison with the
-        kernel is compiled out of release builds.
+        kernel was compiled out of the binaries used for the live-model and stop measurements. The current artifact
+        additionally checks kernel agreement in release builds (Section~\ref{sec:core}).
 \end{enumerate}
 We also rerun the previous version's\footnote{An unpublished earlier draft of this paper. Its code and evidence are in
 the same repository (\texttt{evidence/v2}, \texttt{evidence/v3}), and its experiments are reproduced, with corrections,

@@ -2,9 +2,10 @@
 
 The broker issues permits; the sink commits effects. Both are Rust processes that keep their state in SQLite (write-ahead
 log, \texttt{synchronous=FULL}) and talk over JSON-lines RPC. A permit names one effect, its budget charge, the issuer
-whose grant it draws on, the revision it expects and the epoch under which it was issued. The sink commits a permitted
-effect only if, at commit time, the charge fits the remaining budget, the issuer's grant is live, the revision matches,
-the permit has not been used and its epoch is at least the sink's floor. Raising the floor is the fence. The stop
+whose grant it draws on, the revision it expects and the epoch under which it was issued. At admission, the broker
+reserves the charge against the remaining budget and checks every required issuer's live, current grant. At commit,
+the sink checks the revision and epoch floors and atomically deduplicates the effect by permit identity. Admission
+withdrawal alone does not invalidate an issued permit at the sink; raising the sink's floor does. The stop
 experiments (Section~\ref{sec:v6stop}) and the replication (Section~\ref{sec:v6replication}) run these processes, and
 the gate of Section~\ref{sec:v6reviewers} decides each proposal by submitting it to them. On AgentDojo
 (Section~\ref{sec:v6cost}) they are not involved: each arm's predicate is applied in the harness, at the tool boundary,
@@ -14,7 +15,8 @@ to AgentDojo's in-memory environment.
 
 \para{Untrusted.} The proposer: the model, its prompts and scaffolding, any sub-agents, and any content injected into
 them. It may send any sequence of requests, well-formed or not, at any rate, and may be misaligned or under an
-attacker's control. Its process is confined so that it reaches effects only through the broker's socket (below).
+attacker's control. Its process is confined so that it reaches effects only through the trusted launcher's
+submission and status interface.
 
 \para{Trusted.} The broker, the sink and the host they run on; SQLite; the cryptographic code, which is unaudited; the
 channel by which an operator orders a stop; and whoever writes the specification. A compromised broker or sink host
@@ -63,12 +65,16 @@ violation.
 
 \input{generated/v2-core-table}
 
-\para{What the proofs cover in the running code.} The proofs are about the verified functions. In the release
-binaries that every experiment here used, the broker and sink decide with unverified Rust that calls the verified
+\para{What the proofs cover in the evaluated code.} The proofs are about the verified functions. In the release
+binaries used for the stop measurements and live-model experiments, the broker and sink decided with unverified Rust that called the verified
 predicates; the comparison of each decision with the verified executable kernel was a debug assertion, compiled out of
-those builds. The decision logic, the RPC handling and SQLite are tested, not proved. The proof
-receipt is produced by a separate script and checked by hash; neither the local gate nor continuous integration reruns
-Verus.
+those builds. The current artifact also gates reservations, settlement, renewal, sink acceptance, completion and
+fencing on the executable kernel's decision and projected post-state, including in release builds. It discards a
+candidate transition on disagreement or when its pre-state has no valid kernel image. Release regressions check
+both refusals and useful permitted work. This does not formally verify the wrapper, state projection, delegation
+bookkeeping, RPC handling or SQLite, and does not retroactively strengthen the evaluated binaries. The proof
+receipt is produced by a separate script and checked by hash. On Linux, both the local gate and continuous integration
+rerun Verus on the policy core and check the soundness mutations; the native macOS check tests functionality.
 
 \subsection{Partition Schedules (Simulated)}
 

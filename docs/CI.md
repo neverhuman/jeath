@@ -31,6 +31,11 @@ access, matching labels and fleet health; do not silently substitute a hosted
 Linux runner or a project-specific runner. Existing fleet credentials and
 services remain controlled by the shared runner administrator.
 
+The Linux job also runs `cargo test --locked --release --test kernel_guard_v2`
+after building the separate-service protocol. This checks the authorization
+guard with debug assertions disabled, including useful operations, denial
+without effects, and compatibility of recovered permit encodings.
+
 V2 reference provenance includes the workflow hash. A workflow update therefore
 requires a fresh v2 run, validation, and regeneration of the paper's tables.
 This preserves the evidence check without rewriting old source hashes by hand.

@@ -1,0 +1,1539 @@
+{
+  "campaigns/campaign-0.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 1,
+        "spent": 1,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577610
+      }
+    ],
+    "receipts": [
+      {
+        "sequence": 1,
+        "id": "campaign-0-step-0",
+        "payload": "{\"id\":\"campaign-0-step-0\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577610,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      }
+    ],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 1
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 41 }",
+        "revision": 0
+      }
+    ],
+    "deliveries": []
+  },
+  "campaigns/campaign-1.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 2,
+        "spent": 2,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577611
+      }
+    ],
+    "receipts": [
+      {
+        "sequence": 1,
+        "id": "campaign-1-step-0",
+        "payload": "{\"id\":\"campaign-1-step-0\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577611,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 2,
+        "id": "campaign-1-step-2",
+        "payload": "{\"id\":\"campaign-1-step-2\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577611,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      }
+    ],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 2
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 41 }",
+        "revision": 0
+      }
+    ],
+    "deliveries": []
+  },
+  "campaigns/campaign-2.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 2,
+        "spent": 1,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577612
+      }
+    ],
+    "receipts": [
+      {
+        "sequence": 1,
+        "id": "campaign-2-step-1",
+        "payload": "{\"id\":\"campaign-2-step-1\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577612,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      }
+    ],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 1
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 41 }",
+        "revision": 0
+      }
+    ],
+    "deliveries": []
+  },
+  "campaigns/campaign-3.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 2,
+        "spent": 1,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577612
+      }
+    ],
+    "receipts": [
+      {
+        "sequence": 1,
+        "id": "campaign-3-step-1",
+        "payload": "{\"id\":\"campaign-3-step-1\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577613,\"operation\":{\"kind\":\"release\",\"document\":\"synthetic\",\"destination\":\"approved\",\"purpose\":\"analysis\"}}",
+        "units": 1
+      }
+    ],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 0
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 41 }",
+        "revision": 0
+      }
+    ],
+    "deliveries": [
+      {
+        "id": "campaign-3-step-1",
+        "actor": "actor0",
+        "body": "SYNTHETIC DATA: no personal information"
+      }
+    ]
+  },
+  "campaigns/campaign-4.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 2,
+        "spent": 1,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577613
+      }
+    ],
+    "receipts": [
+      {
+        "sequence": 1,
+        "id": "campaign-4-step-0",
+        "payload": "{\"id\":\"campaign-4-step-0\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577613,\"operation\":{\"kind\":\"edit\",\"document\":\"toy.rs\",\"expected_revision\":0,\"body\":\"fn answer() -> u32 { 42 }\"}}",
+        "units": 1
+      }
+    ],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 0
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 42 }",
+        "revision": 1
+      }
+    ],
+    "deliveries": []
+  },
+  "campaigns/campaign-5.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 1,
+        "spent": 0,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577614
+      }
+    ],
+    "receipts": [],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 0
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 41 }",
+        "revision": 0
+      }
+    ],
+    "deliveries": []
+  },
+  "runtime/checkpoint.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 16,
+        "spent": 16,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577583
+      }
+    ],
+    "receipts": [
+      {
+        "sequence": 1,
+        "id": "checkpoint-3-0",
+        "payload": "{\"id\":\"checkpoint-3-0\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 2,
+        "id": "checkpoint-3-1",
+        "payload": "{\"id\":\"checkpoint-3-1\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 3,
+        "id": "checkpoint-3-2",
+        "payload": "{\"id\":\"checkpoint-3-2\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 4,
+        "id": "checkpoint-3-3",
+        "payload": "{\"id\":\"checkpoint-3-3\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 5,
+        "id": "checkpoint-1-0",
+        "payload": "{\"id\":\"checkpoint-1-0\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 6,
+        "id": "checkpoint-1-1",
+        "payload": "{\"id\":\"checkpoint-1-1\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 7,
+        "id": "checkpoint-1-2",
+        "payload": "{\"id\":\"checkpoint-1-2\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 8,
+        "id": "checkpoint-1-3",
+        "payload": "{\"id\":\"checkpoint-1-3\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 9,
+        "id": "checkpoint-2-0",
+        "payload": "{\"id\":\"checkpoint-2-0\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 10,
+        "id": "checkpoint-2-1",
+        "payload": "{\"id\":\"checkpoint-2-1\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 11,
+        "id": "checkpoint-2-2",
+        "payload": "{\"id\":\"checkpoint-2-2\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 12,
+        "id": "checkpoint-2-3",
+        "payload": "{\"id\":\"checkpoint-2-3\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 13,
+        "id": "checkpoint-0-0",
+        "payload": "{\"id\":\"checkpoint-0-0\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 14,
+        "id": "checkpoint-0-1",
+        "payload": "{\"id\":\"checkpoint-0-1\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 15,
+        "id": "checkpoint-0-2",
+        "payload": "{\"id\":\"checkpoint-0-2\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 16,
+        "id": "checkpoint-0-3",
+        "payload": "{\"id\":\"checkpoint-0-3\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      }
+    ],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 16
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 41 }",
+        "revision": 0
+      }
+    ],
+    "deliveries": []
+  },
+  "runtime/crash-after.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 2,
+        "spent": 1,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577582
+      }
+    ],
+    "receipts": [
+      {
+        "sequence": 1,
+        "id": "ambiguous-receipt",
+        "payload": "{\"id\":\"ambiguous-receipt\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577583,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      }
+    ],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 1
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 41 }",
+        "revision": 0
+      }
+    ],
+    "deliveries": []
+  },
+  "runtime/crash-before.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 2,
+        "spent": 1,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577582
+      }
+    ],
+    "receipts": [
+      {
+        "sequence": 1,
+        "id": "ambiguous-receipt",
+        "payload": "{\"id\":\"ambiguous-receipt\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577582,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      }
+    ],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 1
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 41 }",
+        "revision": 0
+      }
+    ],
+    "deliveries": []
+  },
+  "runtime/grants.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 4,
+        "spent": 1,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577579
+      }
+    ],
+    "receipts": [
+      {
+        "sequence": 1,
+        "id": "release",
+        "payload": "{\"id\":\"release\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577579,\"operation\":{\"kind\":\"release\",\"document\":\"synthetic\",\"destination\":\"approved\",\"purpose\":\"analysis\"}}",
+        "units": 1
+      }
+    ],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 0
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 41 }",
+        "revision": 0
+      }
+    ],
+    "deliveries": [
+      {
+        "id": "release",
+        "actor": "actor0",
+        "body": "SYNTHETIC DATA: no personal information"
+      }
+    ]
+  },
+  "runtime/lifecycle.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 2,
+        "spent": 2,
+        "epoch": 1,
+        "live": 1,
+        "expires_at": 1794577582
+      }
+    ],
+    "receipts": [
+      {
+        "sequence": 1,
+        "id": "first",
+        "payload": "{\"id\":\"first\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577582,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 2,
+        "id": "second",
+        "payload": "{\"id\":\"second\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":1,\"expires_at\":1794577582,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      }
+    ],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 2
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 41 }",
+        "revision": 0
+      }
+    ],
+    "deliveries": []
+  },
+  "runtime/payload.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 2,
+        "spent": 0,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577580
+      }
+    ],
+    "receipts": [],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 0
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 41 }",
+        "revision": 0
+      }
+    ],
+    "deliveries": []
+  },
+  "runtime/race/executor.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 2,
+        "spent": 2,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577584
+      }
+    ],
+    "receipts": [
+      {
+        "sequence": 1,
+        "id": "worker3-0",
+        "payload": "{\"id\":\"worker3-0\",\"actor\":\"actor3\",\"amount\":2,\"epoch\":0,\"expires_at\":1794577584,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 2
+      }
+    ],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 2
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 41 }",
+        "revision": 0
+      }
+    ],
+    "deliveries": []
+  },
+  "runtime/revision.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 3,
+        "spent": 1,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577580
+      }
+    ],
+    "receipts": [
+      {
+        "sequence": 1,
+        "id": "edit",
+        "payload": "{\"id\":\"edit\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577579,\"operation\":{\"kind\":\"edit\",\"document\":\"toy.rs\",\"expected_revision\":0,\"body\":\"fn answer() -> u32 { 42 }\"}}",
+        "units": 1
+      }
+    ],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 0
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 42 }",
+        "revision": 1
+      }
+    ],
+    "deliveries": []
+  },
+  "runtime/throughput-1/executor.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 64,
+        "spent": 64,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577585
+      }
+    ],
+    "receipts": [
+      {
+        "sequence": 1,
+        "id": "worker0-0",
+        "payload": "{\"id\":\"worker0-0\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 2,
+        "id": "worker0-1",
+        "payload": "{\"id\":\"worker0-1\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 3,
+        "id": "worker0-2",
+        "payload": "{\"id\":\"worker0-2\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 4,
+        "id": "worker0-3",
+        "payload": "{\"id\":\"worker0-3\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 5,
+        "id": "worker0-4",
+        "payload": "{\"id\":\"worker0-4\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 6,
+        "id": "worker0-5",
+        "payload": "{\"id\":\"worker0-5\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 7,
+        "id": "worker0-6",
+        "payload": "{\"id\":\"worker0-6\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 8,
+        "id": "worker0-7",
+        "payload": "{\"id\":\"worker0-7\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 9,
+        "id": "worker0-8",
+        "payload": "{\"id\":\"worker0-8\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 10,
+        "id": "worker0-9",
+        "payload": "{\"id\":\"worker0-9\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 11,
+        "id": "worker0-10",
+        "payload": "{\"id\":\"worker0-10\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 12,
+        "id": "worker0-11",
+        "payload": "{\"id\":\"worker0-11\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 13,
+        "id": "worker0-12",
+        "payload": "{\"id\":\"worker0-12\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 14,
+        "id": "worker0-13",
+        "payload": "{\"id\":\"worker0-13\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 15,
+        "id": "worker0-14",
+        "payload": "{\"id\":\"worker0-14\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 16,
+        "id": "worker0-15",
+        "payload": "{\"id\":\"worker0-15\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 17,
+        "id": "worker0-16",
+        "payload": "{\"id\":\"worker0-16\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 18,
+        "id": "worker0-17",
+        "payload": "{\"id\":\"worker0-17\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 19,
+        "id": "worker0-18",
+        "payload": "{\"id\":\"worker0-18\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 20,
+        "id": "worker0-19",
+        "payload": "{\"id\":\"worker0-19\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 21,
+        "id": "worker0-20",
+        "payload": "{\"id\":\"worker0-20\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 22,
+        "id": "worker0-21",
+        "payload": "{\"id\":\"worker0-21\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 23,
+        "id": "worker0-22",
+        "payload": "{\"id\":\"worker0-22\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 24,
+        "id": "worker0-23",
+        "payload": "{\"id\":\"worker0-23\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 25,
+        "id": "worker0-24",
+        "payload": "{\"id\":\"worker0-24\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 26,
+        "id": "worker0-25",
+        "payload": "{\"id\":\"worker0-25\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 27,
+        "id": "worker0-26",
+        "payload": "{\"id\":\"worker0-26\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 28,
+        "id": "worker0-27",
+        "payload": "{\"id\":\"worker0-27\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 29,
+        "id": "worker0-28",
+        "payload": "{\"id\":\"worker0-28\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 30,
+        "id": "worker0-29",
+        "payload": "{\"id\":\"worker0-29\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 31,
+        "id": "worker0-30",
+        "payload": "{\"id\":\"worker0-30\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 32,
+        "id": "worker0-31",
+        "payload": "{\"id\":\"worker0-31\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 33,
+        "id": "worker0-32",
+        "payload": "{\"id\":\"worker0-32\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 34,
+        "id": "worker0-33",
+        "payload": "{\"id\":\"worker0-33\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 35,
+        "id": "worker0-34",
+        "payload": "{\"id\":\"worker0-34\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 36,
+        "id": "worker0-35",
+        "payload": "{\"id\":\"worker0-35\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 37,
+        "id": "worker0-36",
+        "payload": "{\"id\":\"worker0-36\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 38,
+        "id": "worker0-37",
+        "payload": "{\"id\":\"worker0-37\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 39,
+        "id": "worker0-38",
+        "payload": "{\"id\":\"worker0-38\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 40,
+        "id": "worker0-39",
+        "payload": "{\"id\":\"worker0-39\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 41,
+        "id": "worker0-40",
+        "payload": "{\"id\":\"worker0-40\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 42,
+        "id": "worker0-41",
+        "payload": "{\"id\":\"worker0-41\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 43,
+        "id": "worker0-42",
+        "payload": "{\"id\":\"worker0-42\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 44,
+        "id": "worker0-43",
+        "payload": "{\"id\":\"worker0-43\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 45,
+        "id": "worker0-44",
+        "payload": "{\"id\":\"worker0-44\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 46,
+        "id": "worker0-45",
+        "payload": "{\"id\":\"worker0-45\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 47,
+        "id": "worker0-46",
+        "payload": "{\"id\":\"worker0-46\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 48,
+        "id": "worker0-47",
+        "payload": "{\"id\":\"worker0-47\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 49,
+        "id": "worker0-48",
+        "payload": "{\"id\":\"worker0-48\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 50,
+        "id": "worker0-49",
+        "payload": "{\"id\":\"worker0-49\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 51,
+        "id": "worker0-50",
+        "payload": "{\"id\":\"worker0-50\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 52,
+        "id": "worker0-51",
+        "payload": "{\"id\":\"worker0-51\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 53,
+        "id": "worker0-52",
+        "payload": "{\"id\":\"worker0-52\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 54,
+        "id": "worker0-53",
+        "payload": "{\"id\":\"worker0-53\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 55,
+        "id": "worker0-54",
+        "payload": "{\"id\":\"worker0-54\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 56,
+        "id": "worker0-55",
+        "payload": "{\"id\":\"worker0-55\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 57,
+        "id": "worker0-56",
+        "payload": "{\"id\":\"worker0-56\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 58,
+        "id": "worker0-57",
+        "payload": "{\"id\":\"worker0-57\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 59,
+        "id": "worker0-58",
+        "payload": "{\"id\":\"worker0-58\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 60,
+        "id": "worker0-59",
+        "payload": "{\"id\":\"worker0-59\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 61,
+        "id": "worker0-60",
+        "payload": "{\"id\":\"worker0-60\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 62,
+        "id": "worker0-61",
+        "payload": "{\"id\":\"worker0-61\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 63,
+        "id": "worker0-62",
+        "payload": "{\"id\":\"worker0-62\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 64,
+        "id": "worker0-63",
+        "payload": "{\"id\":\"worker0-63\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577585,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      }
+    ],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 64
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 41 }",
+        "revision": 0
+      }
+    ],
+    "deliveries": []
+  },
+  "runtime/throughput-4/executor.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 64,
+        "spent": 64,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577593
+      }
+    ],
+    "receipts": [
+      {
+        "sequence": 1,
+        "id": "worker0-0",
+        "payload": "{\"id\":\"worker0-0\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 2,
+        "id": "worker0-1",
+        "payload": "{\"id\":\"worker0-1\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 3,
+        "id": "worker0-2",
+        "payload": "{\"id\":\"worker0-2\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 4,
+        "id": "worker0-3",
+        "payload": "{\"id\":\"worker0-3\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 5,
+        "id": "worker0-4",
+        "payload": "{\"id\":\"worker0-4\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 6,
+        "id": "worker0-5",
+        "payload": "{\"id\":\"worker0-5\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 7,
+        "id": "worker0-6",
+        "payload": "{\"id\":\"worker0-6\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 8,
+        "id": "worker0-7",
+        "payload": "{\"id\":\"worker0-7\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 9,
+        "id": "worker0-8",
+        "payload": "{\"id\":\"worker0-8\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 10,
+        "id": "worker0-9",
+        "payload": "{\"id\":\"worker0-9\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 11,
+        "id": "worker0-10",
+        "payload": "{\"id\":\"worker0-10\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 12,
+        "id": "worker0-11",
+        "payload": "{\"id\":\"worker0-11\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 13,
+        "id": "worker0-12",
+        "payload": "{\"id\":\"worker0-12\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 14,
+        "id": "worker0-13",
+        "payload": "{\"id\":\"worker0-13\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 15,
+        "id": "worker0-14",
+        "payload": "{\"id\":\"worker0-14\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 16,
+        "id": "worker0-15",
+        "payload": "{\"id\":\"worker0-15\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577593,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 17,
+        "id": "worker2-0",
+        "payload": "{\"id\":\"worker2-0\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 18,
+        "id": "worker2-1",
+        "payload": "{\"id\":\"worker2-1\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 19,
+        "id": "worker2-2",
+        "payload": "{\"id\":\"worker2-2\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 20,
+        "id": "worker2-3",
+        "payload": "{\"id\":\"worker2-3\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 21,
+        "id": "worker2-4",
+        "payload": "{\"id\":\"worker2-4\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 22,
+        "id": "worker2-5",
+        "payload": "{\"id\":\"worker2-5\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 23,
+        "id": "worker2-6",
+        "payload": "{\"id\":\"worker2-6\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 24,
+        "id": "worker2-7",
+        "payload": "{\"id\":\"worker2-7\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 25,
+        "id": "worker2-8",
+        "payload": "{\"id\":\"worker2-8\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 26,
+        "id": "worker2-9",
+        "payload": "{\"id\":\"worker2-9\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 27,
+        "id": "worker2-10",
+        "payload": "{\"id\":\"worker2-10\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 28,
+        "id": "worker2-11",
+        "payload": "{\"id\":\"worker2-11\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 29,
+        "id": "worker2-12",
+        "payload": "{\"id\":\"worker2-12\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 30,
+        "id": "worker2-13",
+        "payload": "{\"id\":\"worker2-13\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 31,
+        "id": "worker2-14",
+        "payload": "{\"id\":\"worker2-14\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 32,
+        "id": "worker2-15",
+        "payload": "{\"id\":\"worker2-15\",\"actor\":\"actor2\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 33,
+        "id": "worker1-0",
+        "payload": "{\"id\":\"worker1-0\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 34,
+        "id": "worker1-1",
+        "payload": "{\"id\":\"worker1-1\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 35,
+        "id": "worker1-2",
+        "payload": "{\"id\":\"worker1-2\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 36,
+        "id": "worker1-3",
+        "payload": "{\"id\":\"worker1-3\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 37,
+        "id": "worker1-4",
+        "payload": "{\"id\":\"worker1-4\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 38,
+        "id": "worker1-5",
+        "payload": "{\"id\":\"worker1-5\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 39,
+        "id": "worker1-6",
+        "payload": "{\"id\":\"worker1-6\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 40,
+        "id": "worker1-7",
+        "payload": "{\"id\":\"worker1-7\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 41,
+        "id": "worker1-8",
+        "payload": "{\"id\":\"worker1-8\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 42,
+        "id": "worker1-9",
+        "payload": "{\"id\":\"worker1-9\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 43,
+        "id": "worker1-10",
+        "payload": "{\"id\":\"worker1-10\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 44,
+        "id": "worker1-11",
+        "payload": "{\"id\":\"worker1-11\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 45,
+        "id": "worker1-12",
+        "payload": "{\"id\":\"worker1-12\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 46,
+        "id": "worker1-13",
+        "payload": "{\"id\":\"worker1-13\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 47,
+        "id": "worker1-14",
+        "payload": "{\"id\":\"worker1-14\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 48,
+        "id": "worker1-15",
+        "payload": "{\"id\":\"worker1-15\",\"actor\":\"actor1\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577594,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 49,
+        "id": "worker3-0",
+        "payload": "{\"id\":\"worker3-0\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 50,
+        "id": "worker3-1",
+        "payload": "{\"id\":\"worker3-1\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 51,
+        "id": "worker3-2",
+        "payload": "{\"id\":\"worker3-2\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 52,
+        "id": "worker3-3",
+        "payload": "{\"id\":\"worker3-3\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 53,
+        "id": "worker3-4",
+        "payload": "{\"id\":\"worker3-4\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 54,
+        "id": "worker3-5",
+        "payload": "{\"id\":\"worker3-5\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 55,
+        "id": "worker3-6",
+        "payload": "{\"id\":\"worker3-6\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 56,
+        "id": "worker3-7",
+        "payload": "{\"id\":\"worker3-7\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 57,
+        "id": "worker3-8",
+        "payload": "{\"id\":\"worker3-8\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 58,
+        "id": "worker3-9",
+        "payload": "{\"id\":\"worker3-9\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 59,
+        "id": "worker3-10",
+        "payload": "{\"id\":\"worker3-10\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 60,
+        "id": "worker3-11",
+        "payload": "{\"id\":\"worker3-11\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 61,
+        "id": "worker3-12",
+        "payload": "{\"id\":\"worker3-12\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 62,
+        "id": "worker3-13",
+        "payload": "{\"id\":\"worker3-13\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 63,
+        "id": "worker3-14",
+        "payload": "{\"id\":\"worker3-14\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 64,
+        "id": "worker3-15",
+        "payload": "{\"id\":\"worker3-15\",\"actor\":\"actor3\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577596,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      }
+    ],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 64
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 41 }",
+        "revision": 0
+      }
+    ],
+    "deliveries": []
+  },
+  "runtime/useful.sqlite": {
+    "policy": [
+      {
+        "singleton": 1,
+        "budget": 3,
+        "spent": 3,
+        "epoch": 0,
+        "live": 1,
+        "expires_at": 1794577579
+      }
+    ],
+    "receipts": [
+      {
+        "sequence": 1,
+        "id": "spend",
+        "payload": "{\"id\":\"spend\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577579,\"operation\":{\"kind\":\"spend\",\"destination\":\"approved\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 2,
+        "id": "release",
+        "payload": "{\"id\":\"release\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577579,\"operation\":{\"kind\":\"release\",\"document\":\"synthetic\",\"destination\":\"approved\",\"purpose\":\"analysis\"}}",
+        "units": 1
+      },
+      {
+        "sequence": 3,
+        "id": "edit",
+        "payload": "{\"id\":\"edit\",\"actor\":\"actor0\",\"amount\":1,\"epoch\":0,\"expires_at\":1794577579,\"operation\":{\"kind\":\"edit\",\"document\":\"toy.rs\",\"expected_revision\":0,\"body\":\"fn answer() -> u32 { 42 }\"}}",
+        "units": 1
+      }
+    ],
+    "accounts": [
+      {
+        "destination": "approved",
+        "units": 1
+      }
+    ],
+    "objects": [
+      {
+        "name": "synthetic",
+        "body": "SYNTHETIC DATA: no personal information",
+        "revision": 0
+      },
+      {
+        "name": "toy.rs",
+        "body": "fn answer() -> u32 { 42 }",
+        "revision": 1
+      }
+    ],
+    "deliveries": [
+      {
+        "id": "release",
+        "actor": "actor0",
+        "body": "SYNTHETIC DATA: no personal information"
+      }
+    ]
+  }
+}

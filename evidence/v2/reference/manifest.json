@@ -1,6 +1,6 @@
 {
   "admission_revocation": "close issuance of new dispatch permits; previously issued permits may still arrive or complete",
-  "binary_sha256": "bb8b3f2c2862cc49db7f0f18b51187d2403ebbc8a78b349e0b8f14cb945d9232",
+  "binary_sha256": "bc2a5b11c1572c3578569795293d2bfb95cf9657d643b2eec098cb84a28acf0d",
   "evaluation": {
     "agentdojo": {
       "banking": [
@@ -118,7 +118,7 @@
     "status"
   ],
   "protocol": "local-reservation-fenced-sink-v2",
-  "recorded_utc": "2026-11-13T12:43:19Z",
+  "recorded_utc": "2026-11-13T12:51:35Z",
   "reservation": "persist before dispatch permit; no timeout refund",
   "response_states": [
     "pending",
@@ -136,7 +136,7 @@
   "scope": "synthetic local effects; no external exactly-once or whole-runtime formal verification",
   "sink_contract": "trusted exclusive channel; atomic deduplication, effect and durable status; per-issuer monotone fences",
   "sources": {
-    ".github/workflows/ci.yml": "11adbf2747df60b7c4ab2d26b3c6a9a13fb5e120c9588787085497ec3b66448b",
+    ".github/workflows/ci.yml": "0fb5958dd4d5b4083383938359cd3b1d888922a5e2c5a0a2b2383ef99cf35f68",
     "Cargo.lock": "88012c868b8e716f1b18c7cf9001081bd18cd5558b3d5463f2bbc65fd5997bdd",
     "Cargo.toml": "71fc1f0b90c3f3c802bd5147cae3e1137f18989b2fb223ab59e31cd142c0d175",
     "Makefile": "96de69b2070b9867479e9e44ff18feae88c602a9967a654e0ddce93f9876fda8",
@@ -188,7 +188,7 @@
     "scripts/promote_v6.py": "753e12f5d2567baa5dcd3389d229720072a0118a38e7d44aeddec133911ce027",
     "scripts/real_tool_graphs.py": "11caa87de20da25fe1924a27e57c69f996f83f70c40df6ec27aaa9b22096aba7",
     "scripts/reference_v2.py": "0f9067593168a21b13f282dc52800cdd4da7a63b45f1625fe737dceab432ad14",
-    "scripts/required.sh": "a4003046b9a35e98b3260c6bb1ad1a4491f794c92d979034598611d2acbc0c22",
+    "scripts/required.sh": "f4cf620a6d5addcebc9c10d1b7ac11abea94a2e5b063f561d893a58740b58d00",
     "scripts/revokebench_b_v6.py": "89d142485a499923390e9d7c17232be8f24981f309993cd548c0f953ee7e69f8",
     "scripts/revokebench_phase_v6.py": "3940bf7d60b141251f5e542ccefe30998e847f57ad32f82202cf3f916915bf84",
     "scripts/revokebench_reanalysis_v6.py": "5e5ad5db641e9d195d27c83fcdd59f4c610ed1fd4d2da475339e72bdbfb332d7",
@@ -198,7 +198,7 @@
     "scripts/run_v3.py": "af59e272e1b398cf79c093fc50054d543820c0667add314efad9589315b7c381",
     "scripts/statistical_spine_v5.py": "ad59ad6d8960c14498f0aa495bb13cd3656d634707959929e35dcffb91f9afc8",
     "scripts/trajectory_monitors.py": "38c6ce88ea132306ed46cfcdba34462cbb83f83a174a83c09f213e76d0a570ea",
-    "scripts/v6_macros.py": "6d1b5710731e0b1fd238608004cb8905027649477bcddea302c714074508a35d",
+    "scripts/v6_macros.py": "2c455971c6d7b7e7c0d94a60fe757761c72306bfc3ad92ed05a13cbe39d463af",
     "scripts/validate.py": "a1e16bb35a9709edf7fe480ab7e77da5c48c9b8f34886ec5837d7c737512a648",
     "scripts/validate_agentdojo_fair_v6.py": "983c2007d44da75dd09a0f6dc445f4b04a1858626733c3a5de757128cfa828d0",
     "scripts/validate_e1_v6.py": "bdf5adb5ffd1ac27892b90cff6719a6107361e24c6e0efa09027eb94fb2e52b3",
@@ -222,7 +222,7 @@
     "src/lib.rs": "262e24df1980781c46d8f1a9d69bb734a8f0bb0bbfa0266dd3ef2826a2d1a752",
     "src/model.rs": "65c13f80d609dc698d2e284b5782e65a6db10cc5d4c33c29118b8d4c5b86b460",
     "src/monitors.rs": "0d832059119d3455a9154f244b81a1ea71af6b6e286528e34f3cafc97e3e4346",
-    "src/protocol_v2.rs": "688852078aaefb8ae5ca3cfa2a4aa25d455603f46ea23af845724d21d5861b44",
+    "src/protocol_v2.rs": "e8dd9942a071f604b330bbce5d8a7073e8a6240f49ed7ef7e8040d0ffd3c1f4d",
     "src/rng.rs": "c5350cbae56f9cf6b5120a24d90f74a3e9066b1fdcfb75c4da1a98043b93304e",
     "src/runtime.rs": "215404617d6273679ee30298ecf5c7c8533ea599f26fff47601094cf3216b1f9",
     "src/runtime_experiments.rs": "1e5ebea4c7d3b6750ed45cd2eb0b815c041b8425a49702ac087345d36ee4d83e",
@@ -240,6 +240,7 @@
     "tests/campaigns.rs": "46e9719c0adc9b7ec4d8a4da01f22ac10ff036f093eada45f9349a5d7e8fb8e3",
     "tests/crypto_and_jepsen_v4.rs": "4817080c4ea2b08b447915a266b3b7ad6f677572636a00af22c3737580bcf3c1",
     "tests/e2e_crypto_cluster_v5.rs": "8b853153005a9fa96e112e9c4bc3d50c13e06459596e330170a51f9de0c3ad8e",
+    "tests/kernel_guard_v2.rs": "aa326c8d5b31344b146d81e56235dcac6358f2fd9afd66de13a64f5e1825fe42",
     "tests/policy_core.rs": "fe17d88aa15f63aedcbffe36137668b4efe0f550cc54d1b9c69ae8b61466b320",
     "tests/protocol_v2_interleavings.rs": "bd583dcd53237ac0e93e02e34258d1635437a572a2c13a5e285b18c5d585a303",
     "tests/runtime.rs": "ebfeaf41b063ff2db80b005e5b584ec8d306826e077c68f9608d11997d6b0328",

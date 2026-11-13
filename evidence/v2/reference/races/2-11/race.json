@@ -81,7 +81,7 @@
   },
   "effects": [
     {
-      "actor": "actor-0",
+      "actor": "actor-1",
       "proposal": {
         "effect": {
           "kind": "transfer",
@@ -92,25 +92,25 @@
           0,
           0
         ],
-        "expires": 1794577253,
-        "id": "actor-0"
+        "expires": 1794577711,
+        "id": "actor-1"
       }
     }
   ],
   "outcomes": [
     {
       "actor": 0,
-      "latency_ms": 99.435939,
+      "latency_ms": 55.598696,
       "response": {
-        "status": "committed"
+        "reason": "policy",
+        "status": "denied"
       }
     },
     {
       "actor": 1,
-      "latency_ms": 34.257468,
+      "latency_ms": 80.208196,
       "response": {
-        "reason": "policy",
-        "status": "denied"
+        "status": "committed"
       }
     }
   ],

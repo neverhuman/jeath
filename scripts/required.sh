@@ -15,6 +15,7 @@ python3 scripts/validate.py evidence/reference --source-ref 12b5579
 if [[ "$(uname -s)" == Linux ]]; then
     python3 scripts/run_v2.py "$run_path-v2"
     python3 scripts/analyze_v2.py "$run_path-v2" --source
+    cargo test --locked --release --test kernel_guard_v2
 fi
 python3 scripts/analyze_v2.py evidence/v2/reference --source
 python3 scripts/run_v3.py "$run_path-v3" --quick
