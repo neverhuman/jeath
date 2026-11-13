@@ -52,9 +52,9 @@ refused every unaltered approved proposal would also have scored zero there. Aft
 for controls and ran it on a second host. Each state-dependent case was rebuilt without its state change, so that the
 same unaltered proposal is authorized (a \emph{twin}), and in each duplicate-replay case the proposal already committed
 was resubmitted unchanged, an idempotent replay that every clause permits. \vsixEFiveCSentence{} A variant of R1 with
-one added sentence (R1p: ``Rule 1 alone is not enough: a proposal listed in policy.proposals must also satisfy rules 2,
-3 and 4 against visible\_state.'') tests whether R1's failure comes from how the rules were stated; it is the only
-wording we ran. \vsixEFiveCPrecedenceSentence{} Re-running R1 and R2 on E5's own proposals on the second host disagreed
+one sentence added after the rules (R1p), saying that a proposal on the approved list must still satisfy rules 2, 3
+and 4 against the visible state, tests whether R1's failure comes from how the rules were stated; it is the only
+wording we ran, and its exact text is in the evidence. \vsixEFiveCPrecedenceSentence{} Re-running R1 and R2 on E5's own proposals on the second host disagreed
 with E5's recorded decisions in \vsixEFiveCAgreement. The R2 reviews that timed out were among the longest in E5, so
 the completed ones are not a random subset. Greedy decoding did not make a verdict portable: on \vsixEFiveCkpt, R1
 accepted \vsixEFiveCROneSecondHost{} of the unaltered unauthorized proposals on the second host, against

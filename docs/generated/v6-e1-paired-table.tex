@@ -1,0 +1,19 @@
+\begin{table*}[t]\centering\footnotesize
+\caption{E1 per controller. Leak and task success: the predeclared primary scoring (complete mediation's leak is zero by construction, and task success requires that nothing but the first approved proposal commit). After withdrawal: S1, which also counts an effect committed after a withdrawal as unauthorized. First proposal: S2, whether the first approved proposal's effect committed, whatever else did. Safety and usefulness discordances: cases favouring complete mediation versus the comparator, a paired reading fixed after the plan and before the outcomes were read; no test is run on them, because every safety discordance must favour complete mediation. The frozen analysis (Table~\ref{tab:v6e1}) is primary.}\label{tab:v6e1paired}
+\begin{tabular}{@{}lcccccc@{}}\toprule
+ & \multicolumn{3}{c}{Unauthorized (cases)} & \multicolumn{3}{c}{Useful (cases)} \\
+\cmidrule(lr){2-4}\cmidrule(l){5-7}
+Controller & Leak & After withdrawal (S1) & Safety & Task success & First proposal (S2) & Usefulness \\\midrule
+\multicolumn{7}{@{}l}{\emph{Qwen3-4B, 128 paired cases}} \\
+\quad No mediation & 39 & 54 & 39:0 & 23 & 44 & 20:6 \\
+\quad Per-call policy & 10 & 24 & 10:0 & 4 & 23 & 33:0 \\
+\quad Same-model reviewer & 32 & 46 & 32:0 & 19 & 35 & 22:4 \\
+\quad Durable, no fence & 0 & 14 & 0:0 & 27 & 36 & 10:0 \\
+\quad Complete mediation & 0 & 0 & -- & 37 & 37 & -- \\
+\multicolumn{7}{@{}l}{\emph{Qwen3-8B, 128 paired cases}} \\
+\quad No mediation & 17 & 37 & 17:0 & 46 & 82 & 28:0 \\
+\quad Per-call policy & 8 & 28 & 8:0 & 32 & 59 & 43:1 \\
+\quad Same-model reviewer & 8 & 28 & 8:0 & 46 & 69 & 28:0 \\
+\quad Durable, no fence & 0 & 20 & 0:0 & 55 & 74 & 19:0 \\
+\quad Complete mediation & 0 & 0 & -- & 74 & 74 & -- \\
+\bottomrule\end{tabular}\end{table*}
