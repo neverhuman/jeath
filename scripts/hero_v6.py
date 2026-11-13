@@ -465,11 +465,27 @@ SURF_SHORT = {"postgresql16": "PostgreSQL 16", "etcd_v3_5_17": "etcd 3.5", "posi
 HERO_MECH = {"pg_trigger_e6": "epoch trigger", "pg_trigger_e6_fair": "trigger + table lock", "pg_trigger_notnull": "trigger, epoch required",
              "pg_foreign_key": "foreign key to epoch", "pg_revoke": "REVOKE writer role", "etcd_txn_compare": "txn compare on floor",
              "etcd_rbac_revoke": "RBAC revoke", "fs_flock": "flock + floor file", "fs_dir_mode": "directory mode bits"}
-FENCE_COLS = ("surface enforces", "forged epoch refused", "no stale write")
+FENCE_COLS = ("surface enforces", "forged epoch refused", "holds under writers")
 
 
 def load_e6b(path: Path) -> dict:
-    return json.loads((path / "results.json").read_text())["summary"]
+    """E6b summary, plus per mechanism the idle races in which the fence took effect while stale writers were still
+    running (not starved) and no stale write was ordered after it, derived per race by the E6b validator's own rule. A
+    starved race has no write after the fence by default, so it does not count as the fence holding."""
+    res = json.loads((path / "results.json").read_text())
+    from validate_fenceability_v6b import PLAN, race_derive
+    plan = json.loads(PLAN.read_text())
+    held: dict = {}
+    for u in res["runs"]:
+        if u["condition"] != "idle" or not u.get("race"):
+            continue
+        d = race_derive(u["race"], plan)
+        if d["events"] is None:
+            continue
+        h = held.setdefault(u["mechanism"], [0, 0])
+        h[0] += (not d["events"]["starved"]) and d["events"]["violation_free"]
+        h[1] += 1
+    return res["summary"] | {"held_live": held}
 
 
 def panel_fence(summ: dict) -> tuple[list[str], dict]:
@@ -482,10 +498,10 @@ def panel_fence(summ: dict) -> tuple[list[str], dict]:
         r = idle[m]
         c1 = None if v["class"] == "indeterminate" else {"surface_native": 1.0, "author_code_in_surface": 0.5}.get(v["class"], 0.0)
         c2 = v["forge_refused"] / v["runs"] if v["runs"] else None
-        ev = r["events"]["violation_free"]
-        c3 = None if r.get("fence_failed") or not ev["n"] else ev["k"] / ev["n"]
+        hk, hn = summ["held_live"].get(m, (0, 0))
+        c3 = None if r.get("fence_failed") or not hn else hk / hn
         rows.append({"mechanism": m, "surface": v["surface"], "cells": [c1, c2, c3], "class": v["class"],
-                     "forged": [v["forge_refused"], v["runs"]], "no_stale": [ev["k"], ev["n"]]})
+                     "forged": [v["forge_refused"], v["runs"]], "no_stale": [hk, hn]})
     all3 = [r["mechanism"] for r in rows if all(c == 1.0 for c in r["cells"])]
     h, xs = 0.23, (0.45, 1.15, 1.85)
     items, last = [], None
@@ -527,17 +543,18 @@ def caption_fence(s: dict) -> str:
     a3 = s["all_three"]
     who = ("No mechanism has all three" if not a3 else
            f"Only {series([name(m) for m in a3])} {'is' if len(a3) == 1 else 'are'} enforced by the surface, refuse"
-           f"{'s' if len(a3) == 1 else ''} a forged epoch, and let{'s' if len(a3) == 1 else ''} no stale write commit after the fence")
+           f"{'s' if len(a3) == 1 else ''} a forged epoch, and hold{'s' if len(a3) == 1 else ''} in every race")
     runs = sorted({r["forged"][1] for r in s["rows"]})
     races = sorted({r["no_stale"][1] for r in s["rows"] if r["no_stale"][1]})
     span = lambda xs: str(xs[0]) if len(xs) == 1 else f"{xs[0]}--{xs[-1]}"
-    bound = (rf" With no stale write in {races[0]} races, the per-race failure rate is below "
+    bound = (rf" With the fence holding in all {races[0]} races, the per-race failure rate is below "
              rf"{100 * (1 - 0.05 ** (1 / races[0])):.0f}\% (one-sided 95\%)." if len(races) == 1 and a3 else "")
     return (rf"\textbf{{(c)}} Executable probes on single-node instances ({span(runs)} deterministic runs and {span(races)} races "
             r"per mechanism). Columns: the surface itself enforces the fence, even for a writer that omits every fence field; a "
-            r"stale writer claiming the new epoch is refused; no stale write commits after the fence takes effect, in races "
-            r"whose writers follow the mechanism's protocol. Filled, in every run; open, in none; half, by a trigger we "
-            r"installed; dash, not measurable. " + who + "." + bound + " ")
+            r"stale writer claiming the new epoch is refused; the fence takes effect while stale writers are still running and "
+            r"no stale write commits after it (races use writers that follow the mechanism's protocol; a fence that waits until "
+            r"every writer has finished does not count). Filled, in every run; open, in none; half, in some runs or, in the "
+            r"first column, by a trigger we installed; dash, not measurable. " + who + "." + bound + " ")
 
 
 def series(xs: list[str]) -> str:

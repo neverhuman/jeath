@@ -43,7 +43,9 @@ gives every mechanism.
 \input{generated/v6-e6-table.tex}
 
 \para{Reading.} A fence needs three properties at once: the surface enforces it, a writer cannot claim the new epoch,
-and no stale write commits after it. Of the \vsixFenceMechanisms{} mechanisms probed, only \vsixFenceAllThree{} had all
+and it takes effect while stale writers are still running, with no stale write committing after it. A fence that is
+acknowledged only once every writer has finished (starved, in Table~\ref{tab:v6fence}) has no write after it by
+default, and we do not count it as holding. Of the \vsixFenceMechanisms{} mechanisms probed, only \vsixFenceAllThree{} had all
 three (Figure~\ref{fig:v6hero}c), and the reason is specific to etcd. Each authenticated request carries the revision
 of the authentication store at which its token was checked, any change to users, roles or permissions raises that
 revision, and

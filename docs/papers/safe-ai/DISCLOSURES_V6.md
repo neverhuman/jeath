@@ -52,6 +52,12 @@ or a reported count; each changes framing or presentation, and the paper says so
   which a halt cannot recall. The explanation was found by reading per-trial fields after the results were known.
 - **E6b race bound.** The paper now states that 20 clean races bound etcd RBAC revoke's per-race failure rate only
   below 14% (one-sided 95%), and that the races use writers that follow each mechanism's protocol.
+- **E1 paired reading (fixed before E1's outcomes were read).** E1's last record was written at 04:15Z on
+  2026-11-13. Before any E1 outcome, aggregate or record content was read, a post hoc paired reading was added
+  (`e1_paired` in `scripts/v6_macros.py`, tested only on the v2 pilot): comparator leak rates with exact 95%
+  intervals, safety discordances with an exact one-sided sign test, and usefulness discordances. The frozen analysis
+  remains primary. Prompted by a review noting that the frozen bounds ignore pairing (pilot 4B vs. no mediation: 10:0
+  safety discordances, sign test p = 0.00098, reported inconclusive).
 - **E1 framing.** "Powered" was removed. At N = 128 a single lost case defeats a usefulness claim (generated loss
   rule); E1 is presented as a strict test of the previous version's claims, not as evidence for the thesis.
 
