@@ -211,7 +211,9 @@ or a reported count; each changes framing or presentation, and the paper says so
   relabelled "injected payload".
 - **Hero (`hero_v6.py`):**
   - no outcome text is written in advance;
-  - panel (a)'s cell is chosen by a rule (stable, longest latency, L=0), with grid-wide ranges in the caption;
+  - panel (a)'s cell is chosen by a rule (stable, longest latency, L=0), with grid-wide ranges in the caption. The rule
+    was written in the figure code after E4's data, not in E4's plan; §4 says so. E4c's plan then fixed the cell before
+    its own data;
   - the fence's cost is cancelled + denied;
   - panel (b) uses plan-conformant unique units;
   - panel (c) counts every episode.

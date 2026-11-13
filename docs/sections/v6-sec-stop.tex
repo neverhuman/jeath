@@ -22,7 +22,8 @@ metrics were committed before the first trial; the \vsixEFourTrials{}
 trials include \vsixEFourFaultTrials{} with SIGKILL of the sink or delayed completions.
 
 \para{Result.} We draw the stable cell with the longest latency (\(C = \vsixStopCalls\),
-\(w = \vsixStopLatency\)\,s, \(L = 0\)), chosen by that rule rather than by eye. In E4, after the stop took effect, halting
+\(w = \vsixStopLatency\)\,s, \(L = 0\)), chosen by that rule rather than by eye; the rule was written after E4's
+data, not in its plan, and the grid-wide ranges follow. In E4, after the stop took effect, halting
 inference let \vsixHaltRange{} effects commit and revoking at the broker \vsixRevokeRange{}, the last
 \vsixLastCommitSeconds\,s later; fencing the sink let \vsixFenceRange{} commit and discarded \vsixFenceLost{}
 legitimate calls. Across all \vsixEFourCells{} fault-free cells, halting leaked up to \vsixGridHaltMax{} effects and
