@@ -1,0 +1,23 @@
+{
+ "schema_version": 1,
+ "experiment": "E5c-R2-retry: completing E5c's platform-agreement endpoint for the reasoning reviewer",
+ "status": "written after E5c finished and its aggregates were read; committed before any retry data",
+ "recorded_utc": "2026-11-13T07:55Z",
+ "why": "In E5c (evidence/v6/reference/e5c-controls), 36 R2 re-reviews of E5's unaltered unauthorized originals (11 on Qwen3-4B, 25 on Qwen3-8B) hit the harness's 900-second per-request limit and were recorded as errors (counted as denials by E5's rule). The timeouts fell on the longest reviews (E5's own token counts for them are higher), so the completed reviews are not a random subset. No twin or same-state-contrast review timed out.",
+ "base_plan": "fixtures/v6/e5_controls_plan.json",
+ "base_evidence": "evidence/v6/reference/e5c-controls",
+ "items": "exactly the E5c records with set 'originals' whose R2 review has an error; nothing else is re-run",
+ "decoding": "identical to E5 and E5c R2: E5's RULES_PROMPT verbatim, thinking on, greedy (temperature 0, top_k 1, top_p 1), seed 20261110, repeat_penalty 1, max_tokens 4096, ctx 8192; a reply cut off at the token cap is a deny",
+ "change": "only the per-request socket limit, raised from 900 to 3600 seconds, and fewer, larger servers (4 workers x 12 threads) on the same host, binary and checkpoints",
+ "host": "xbabe2, local llama-server on CPU only, same binary hash as E5c",
+ "endpoints": [
+  "per checkpoint: completed, accepted, truncated and still-failed counts among the re-run reviews",
+  "per checkpoint: disagreements with E5's recorded R2 decision among completed re-run reviews",
+  "per checkpoint: platform agreement over all 36 R2 originals, combining E5c's completed reviews with the completed retries"
+ ],
+ "reporting_rules": [
+  "Descriptive only; no test. Reported separately from E5c, which is not changed.",
+  "Any retry that fails again is reported as failed, not dropped and not counted as a denial in agreement.",
+  "The paper states that this retry was decided after E5c's timeouts were seen."
+ ]
+}
