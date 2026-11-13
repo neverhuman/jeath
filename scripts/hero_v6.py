@@ -59,6 +59,8 @@ def pct(x, n) -> str:
     return f"{x}/{n}"
 
 
+LEGEND_B = (r"legend style={font=\tiny,at={(0.03,0.97)},anchor=north west,draw=slate!40,fill=white,fill opacity=0.9,"
+            r"text opacity=1,row sep=-2pt,inner sep=1.5pt},legend cell align=left")
 LEGEND_C = (r"legend style={font=\tiny,at={(0.5,-0.34)},anchor=north,draw=none,fill=none,legend columns=2,"
             r"row sep=-1.5pt,column sep=3pt},legend cell align=left")
 AXIS = (r"scale only axis,width=3.75cm,height=3.7cm,tick label style={font=\scriptsize},label style={font=\footnotesize},"
@@ -119,7 +121,7 @@ def panel_a(trials: list[dict]) -> tuple[list[str], dict]:
     ymax = max(fin["halt_inference"] + fin["revoke_broker"]) * 1.25 + 1
     lines = [r"\begin{tikzpicture}[baseline]",
              rf"\begin{{axis}}[{AXIS},xmin=0,xmax={xmax},ymin=-0.6,ymax={ymax:.0f},grid=major,clip=false,"
-             r"xlabel={Seconds after the stop took effect},ylabel={Effects committed after the stop},"
+             r"xlabel={Seconds after the stop took effect},ylabel={Effects committed after enforcement},"
              r"title={\textbf{(a)} Stopping the model $\neq$ stopping its effects}]"]
     styles = {"halt_inference": "endored,thick,dashed", "revoke_broker": "warnamber!80!black,very thick,densely dotted",
               "fence_sink": "exoblue,ultra thick"}
@@ -159,12 +161,11 @@ def banner(s: dict) -> list[str]:
 def caption_a(s: dict) -> str:
     f = s["final"]
     fence = ("admits none after enforcement in any of its" if s["fence_post_max"] == 0 else f"admits at most {s['fence_post_max']} in its")
-    return (rf"\textbf{{(a)}} Real broker and sink processes; a synthetic, non-adversarial agent whose calls are all "
-            rf"authorized when issued, so an effect committed after the stop is one the operator decided against. It emits "
-            rf"{s['lambda_offered']:g} calls/s to {s['C']} concurrent tool calls of {s['w']:g}\,s mean latency (the stable cell "
-            rf"with the longest latency, by a fixed rule); stop enforced at once; {s['replicates']} replicates. The fence's zero "
-            rf"is by design; across all cells it {fence} {s['fence_trials']} trials, {s['fence_fault_trials']} with the sink "
-            rf"killed or late completions. ")
+    return (rf"\textbf{{(a)}} Real broker and sink processes. A synthetic agent whose calls are all authorized when issued "
+            rf"emits {s['lambda_offered']:g} calls/s to {s['C']} concurrent tool calls of {s['w']:g}\,s mean latency (the "
+            rf"stable cell with the longest latency, by a fixed rule); stop enforced at once; {s['replicates']} replicates. The "
+            rf"fence's zero is by design; it {fence} {s['fence_trials']} trials, {s['fence_fault_trials']} with the sink killed "
+            rf"or late completions. ")
 
 
 # ------------------------------------------------------------------ panel (b): E5
@@ -346,12 +347,13 @@ def caption_c(s: dict, ckpt8: str) -> str:
             rf"(95\% Clopper--Pearson; the two attacked episodes of a task are not independent, so attack intervals are too "
             rf"narrow). A provenance specification written without the reference solutions (strict \(S\)) completes "
             rf"{f('authority_strict', 'benign_utility')} benign tasks; unprotected, {f('unprotected', 'benign_utility')}; the oracle, "
-            rf"an allowlist copied from each task's solution and so an upper bound, {f('authority_oracle', 'benign_utility')}. AgentDojo's injections succeed in {f('authority_strict', 'native_attack')} "
+            rf"an allowlist copied from each task's solution and so a reference rather than a deployable specification, {f('authority_oracle', 'benign_utility')}. AgentDojo's injections succeed in {f('authority_strict', 'native_attack')} "
             rf"strict and {f('unprotected', 'native_attack')} unprotected episodes")
     if "inside_spec_attack" in a["authority_strict"]:
         text += (rf"; injections that name only principals already in the user's state (written by us) succeed in "
                  rf"{f('authority_strict', 'inside_spec_attack')} strict, {f('authority_delegated', 'inside_spec_attack')} delegated, "
-                 rf"{f('unprotected', 'inside_spec_attack')} unprotected and {f('authority_oracle', 'inside_spec_attack')} oracle episodes")
+                 rf"{f('unprotected', 'inside_spec_attack')} unprotected, {f('progent', 'inside_spec_attack')} Progent and "
+                 rf"{f('authority_oracle', 'inside_spec_attack')} oracle episodes")
     return text + ". "
 
 
@@ -428,8 +430,8 @@ def panel_delay(trials: list[dict], w: float, C: int) -> tuple[list[str], dict]:
     lines = [r"\begin{tikzpicture}[baseline]",
              rf"\begin{{axis}}[{AXIS},xmin=-0.5,xmax={n - 0.5},ymin=0,ymax={ymax:.0f},xtick={{{','.join(str(i) for i in range(n))}}},"
              rf"xticklabels={{{','.join(f'{L:g}' for L in Ls)}}},ymajorgrids,clip=false,"
-             r"xlabel={Delay before the stop takes effect, $L$ (s)},ylabel={Effects committed after the decision},"
-             r"title={\textbf{(b)} After the decision: $\lambda L$ + $\lambda w$}," + LEGEND_C + "]"]
+             r"xlabel={Delay before the stop takes effect, $L$ (s; categorical)},ylabel={Effects committed after the decision},"
+             r"title={\textbf{(b)} After the decision: $\lambda L$ + $\lambda w$}," + LEGEND_B + "]"]
     pred = {"halt_inference": lambda L: lam * (L + w), "fence_sink": lambda L: lam * L}
     off = {"halt_inference": -0.2, "revoke_broker": 0.0, "fence_sink": 0.2}
     # Predictions are marks at each delay, not lines: L is categorical here. The plan's halting prediction is solid; the
@@ -466,13 +468,13 @@ def caption_delay(s: dict) -> str:
     ena = {L: s["gap"][L]["emitted_not_admitted_median"] for L in s["gap"]}
     rv = sorted({ena[L] for L in rest})
     rest_txt = f"{rv[0]:g}" if len(rv) == 1 else f"{rv[0]:g}--{rv[-1]:g}"
-    why = (rf", where the decision falls just after a burst of {s['burst']} calls" if s["burst_at_decision"] else "")
-    return (rf"\textbf{{(b)}} The same cell at each delay \(L\) from decision to enforcement (median, range; \(L\) "
-            rf"categorical). Solid marks: the plan's halting prediction \(\lambda(L+w)\), \(\lambda\) measured "
-            rf"({s['lambda_mean']:.1f}/s); dotted: \(\lambda L\), a post hoc reading. Stable halting trials: "
-            rf"{s['halt_ratio_median']:g}\(\times\) the prediction (median; {lo:g}--{hi:g}; {s['halt_trials']} trials). Halting "
-            rf"and revoking differ by the calls emitted but not yet admitted when the stop takes effect (median {ena[L0]:g} at "
-            rf"\(L = {L0}\){why}; {rest_txt} otherwise); we did not vary where the stop lands. ")
+    why = (rf", just after a burst of {s['burst']} calls" if s["burst_at_decision"] else "")
+    return (rf"\textbf{{(b)}} The same cell, median and range at each delay \(L\) from decision to enforcement. Solid "
+            rf"marks: the plan's halting prediction \(\lambda(L+w)\), \(\lambda\) measured ({s['lambda_mean']:.1f}/s); "
+            rf"observed/predicted {s['halt_ratio_median']:g} (median; {lo:g}--{hi:g}; {s['halt_trials']} stable trials). "
+            rf"Dotted: \(\lambda L\), a post hoc reading. Halting and revoking differ only by the calls emitted but not yet "
+            rf"admitted when the stop lands (median {ena[L0]:g} at \(L = {L0}\){why}; {rest_txt} otherwise); we did not vary "
+            rf"where it lands. ")
 
 
 # ------------------------------------------------------------------ hero panel (c): E6b fenceability
@@ -481,7 +483,7 @@ SURF_SHORT = {"postgresql16": "PostgreSQL 16", "etcd_v3_5_17": "etcd 3.5", "posi
 HERO_MECH = {"pg_trigger_e6": "epoch trigger", "pg_trigger_e6_fair": "trigger + table lock", "pg_trigger_notnull": "trigger, epoch required",
              "pg_foreign_key": "foreign key to epoch", "pg_revoke": "REVOKE writer role", "etcd_txn_compare": "txn compare on floor",
              "etcd_rbac_revoke": "RBAC revoke", "fs_flock": "flock + floor file", "fs_dir_mode": "directory mode bits"}
-FENCE_COLS = ("surface enforces", "forged epoch refused", "holds under writers")
+FENCE_COLS = ("surface", "forgery", "races")
 
 
 def load_e6b(path: Path) -> dict:
@@ -520,7 +522,8 @@ def panel_fence(summ: dict) -> tuple[list[str], dict]:
         rows.append({"mechanism": m, "surface": v["surface"], "cells": [c1, c2, c3], "class": v["class"],
                      "forged": [v["forge_refused"], v["runs"]], "no_stale": [hk, hn]})
     all3 = [r["mechanism"] for r in rows if all(c == 1.0 for c in r["cells"])]
-    h, xs = 0.23, (0.45, 1.15, 1.85)
+    held = [r["mechanism"] for r in rows if r["cells"][2] == 1.0]  # under protocol-following writers only
+    h, xs = 0.268, (0.42, 1.02, 1.62)
     items, last = [], None
     for r in rows:
         if r["surface"] != last:
@@ -530,47 +533,49 @@ def panel_fence(summ: dict) -> tuple[list[str], dict]:
     top = (len(items) - 1) * h
     lines = [r"\begin{tikzpicture}[baseline]"]
     for j, name in enumerate(FENCE_COLS):
-        lines.append(rf"\node[font=\tiny,text=ink,rotate=40,anchor=south west,inner sep=0.5pt] at ({xs[j] - 0.08},{top + 0.18:.2f}) {{{name}}};")
+        lines.append(rf"\node[font=\scriptsize,text=ink,rotate=40,anchor=south west,inner sep=0.5pt] at ({xs[j] - 0.1},{top + 0.18:.2f}) {{{name}}};")
     for i, (kind, it) in enumerate(items):
         y = top - i * h
         if kind == "head":
-            lines.append(rf"\node[font=\tiny\bfseries,text=ink,anchor=east] at (0.1,{y:.2f}) {{{it}}};")
+            lines.append(rf"\node[font=\scriptsize\bfseries,text=ink,anchor=east] at (0.1,{y:.2f}) {{{it}}};")
             continue
         if it["mechanism"] in all3:
-            lines.append(rf"\fill[exoblue!12,rounded corners=1pt] (-2.75,{y - h / 2 + 0.02:.2f}) rectangle ({xs[-1] + 0.3},{y + h / 2 - 0.02:.2f});")
-        lines.append(rf"\node[font=\tiny,text=ink,anchor=east] at (0.1,{y:.2f}) {{{HERO_MECH.get(it['mechanism'], it['mechanism'])}}};")
-        for x, c in zip(xs, it["cells"]):
+            lines.append(rf"\fill[exoblue!12,rounded corners=1pt] (-3.1,{y - h / 2 + 0.02:.2f}) rectangle ({xs[-1] + 0.3},{y + h / 2 - 0.02:.2f});")
+        lines.append(rf"\node[font=\scriptsize,text=ink,anchor=east] at (0.1,{y:.2f}) {{{HERO_MECH.get(it['mechanism'], it['mechanism'])}}};")
+        for j, (x, c) in enumerate(zip(xs, it["cells"])):
             if c is None:
-                lines.append(rf"\node[font=\tiny,text=slate] at ({x},{y:.2f}) {{--}};")
+                lines.append(rf"\node[font=\scriptsize,text=slate] at ({x},{y:.2f}) {{--}};")
+            elif j == 0 and c == 0.5:  # author code installed in the surface (a trigger we wrote): ring with a dot
+                lines.append(rf"\draw[exoblue,line width=0.5pt] ({x},{y:.2f}) circle (2.3pt);\fill[exoblue] ({x},{y:.2f}) circle (0.9pt);")
             elif c == 1.0:
-                lines.append(rf"\fill[exoblue] ({x},{y:.2f}) circle (2.1pt);")
+                lines.append(rf"\fill[exoblue] ({x},{y:.2f}) circle (2.3pt);")
             elif c == 0.0:
-                lines.append(rf"\draw[structgray,line width=0.5pt] ({x},{y:.2f}) circle (2.1pt);")
+                lines.append(rf"\draw[structgray,line width=0.5pt] ({x},{y:.2f}) circle (2.3pt);")
             else:
-                lines.append(rf"\draw[exoblue,line width=0.5pt] ({x},{y:.2f}) circle (2.1pt);"
-                             rf"\fill[exoblue] ({x},{y:.2f}) ++(0,-2.1pt) arc[start angle=-90,end angle=90,radius=2.1pt] -- cycle;")
+                lines.append(rf"\draw[exoblue,line width=0.5pt] ({x},{y:.2f}) circle (2.3pt);"
+                             rf"\fill[exoblue] ({x},{y:.2f}) ++(0,-2.3pt) arc[start angle=-90,end angle=90,radius=2.3pt] -- cycle;")
     # Title at the height pgfplots gives (a) and (b): axis height 3.7 cm plus its 6 pt title shift (all share a baseline).
     lines.append(r"\node[font=\footnotesize,anchor=south,align=center] at (-0.2,3.91) {\textbf{(c)} Where the in-flight term can be closed};")
     lines.append(r"\end{tikzpicture}")
-    return lines, {"rows": rows, "all_three": all3}
+    return lines, {"rows": rows, "all_three": all3, "held_under_writers": held}
 
 
 def caption_fence(s: dict) -> str:
     name = lambda m: next(f"{SURF_SHORT[r['surface']].split(' ')[0]}'s {HERO_MECH[m]}" for r in s["rows"] if r["mechanism"] == m)
     a3 = s["all_three"]
     who = ("No mechanism has all three" if not a3 else
-           f"Only {series([name(m) for m in a3])} {'is' if len(a3) == 1 else 'are'} enforced by the surface, refuse"
-           f"{'s' if len(a3) == 1 else ''} a forged epoch, and hold{'s' if len(a3) == 1 else ''} in every race")
+           f"Only {series([name(m) for m in a3])} {'has' if len(a3) == 1 else 'have'} all three")
     runs = sorted({r["forged"][1] for r in s["rows"]})
     races = sorted({r["no_stale"][1] for r in s["rows"] if r["no_stale"][1]})
     span = lambda xs: str(xs[0]) if len(xs) == 1 else f"{xs[0]}--{xs[-1]}"
-    bound = (rf" With the fence holding in all {races[0]} races, the per-race failure rate is below "
-             rf"{100 * (1 - 0.05 ** (1 / races[0])):.0f}\% (one-sided 95\%)." if len(races) == 1 and a3 else "")
-    return (rf"\textbf{{(c)}} Probes on single-node instances ({span(runs)} deterministic runs, {span(races)} races per "
-            r"mechanism). Columns: the surface enforces the fence even for a writer that omits every fence field; a writer "
-            r"claiming the new epoch is refused; the fence takes effect while protocol-following stale writers still run and "
-            r"none commits after it (a fence that waits for every writer to finish does not count). Filled: every run; open: "
-            r"none; half: some runs, or (first column) a trigger we installed; dash: not measurable. " + who + "." + bound + " ")
+    bound = (rf" (per-race failure below {100 * (1 - 0.05 ** (1 / races[0])):.0f}\%, one-sided 95\%, if races are "
+             rf"independent)" if len(races) == 1 and a3 else "")
+    held = len(s["held_under_writers"])
+    return (rf"\textbf{{(c)}} Probes on single-node instances ({span(runs)} runs, {span(races)} races per mechanism). "
+            r"Columns: \emph{surface}, the surface refuses a writer that omits the fence; \emph{forgery}, a writer claiming "
+            r"the new epoch is refused; \emph{races}, no stale write commits after the fence while protocol-following writers run. Filled: every run; open: none; "
+            r"half: some; ring with dot: a trigger we installed; dash: not measurable. " + who + bound +
+            rf"; if every writer is trusted to follow the protocol, {held} of {len(s['rows'])} held in every race. ")
 
 
 def series(xs: list[str]) -> str:
@@ -718,7 +723,8 @@ def spec_macros(sb: dict, sc: dict, integ: dict) -> str:
         m |= {"vsixStrictInside": frac(a["authority_strict"]["inside_spec_attack"]),
               "vsixDelegatedInside": frac(a["authority_delegated"]["inside_spec_attack"]),
               "vsixUnprotectedInside": frac(a["unprotected"]["inside_spec_attack"]),
-              "vsixOracleInside": frac(a["authority_oracle"]["inside_spec_attack"])}
+              "vsixOracleInside": frac(a["authority_oracle"]["inside_spec_attack"]),
+              "vsixProgentInside": frac(a["progent"]["inside_spec_attack"])}
     return write_macros(m)
 
 
