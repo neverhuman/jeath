@@ -61,6 +61,13 @@ the completed ones are not a random subset. Greedy decoding did not make a verdi
 accepted \vsixEFiveCROneSecondHost{} of the unaltered unauthorized proposals on the second host, against
 \vsixReviewerExact{} of \vsixExactCases{} on E5's.
 
+\para{A structured verdict (E5d, post hoc).} R1's failure might only reflect a poor output format: a single boolean
+gives the model no place to apply the rules one by one. After reading E5c we fixed a plan for a third arm (R3), R1's
+prompt with a reply that states each rule's verdict in order before the decision, still without reasoning, and fixed
+in advance what would count as closing the gap on a checkpoint: accepting at most 3 of the 36 unaltered unauthorized
+proposals and at least 33 of the 36 twins. R3 reviewed every E5c item on the second host in one run.
+\vsixEFiveDSentence{}
+
 \para{What this shows.} A reviewer can check state only if it is shown the state, and E5 shows it everything the gate
 reads: one moment, at most one prior record. Under those conditions the reviewer that replied with a bare verdict
 accepted the approved proposal whatever the state: in E5 where the state forbade it, and in the controls where the
@@ -73,8 +80,7 @@ is the time-of-check-to-time-of-use gap~\cite{bishop1996toctou}: state that chan
 by a concurrent call (Appendix~\ref{sec:systems}), is invisible to the reviewer. And the gate's decision is fixed by
 its predicate, while the reviewer's depends on how it is run: the same unaltered proposals on \vsixEFiveCkpt{} were
 accepted in \vsixReviewerExact{} cases without reasoning, \vsixReasonerExact{} with it, and
-\vsixEFiveCROneSecondHost{} when the same greedy reviewer ran on another CPU. The reviewer spends hundreds of
-generated tokens per action on that decision; the gate spends a database transaction.
+\vsixEFiveCROneSecondHost{} when the same greedy reviewer ran on another CPU. \vsixEFiveDCostSentence
 
 \para{What a gate misses instead.} Remove one clause and the gate admits exactly the violations that break only that
 clause. This holds by construction, and Figure~\ref{fig:v6spec}a draws it as such. What the experiment measures is how

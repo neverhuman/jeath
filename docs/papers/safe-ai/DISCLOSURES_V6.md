@@ -120,7 +120,12 @@ or a reported count; each changes framing or presentation, and the paper says so
     author), the verified kernel in the release decision path (O8, branch cc/b1-kernel), a retitle (O3, author's call).
 - **E5d (post hoc; plan `fixtures/v6/e5d_structured_plan.json`, committed at 305c176 before data).** Prompted by review
   5: does a structured per-rule verdict without reasoning close the gap at tens of tokens? Reporting rule fixed in the
-  plan.
+  plan. Result (promoted 2026-11-13T10:20Z, 641 records, validator clean): by the plan's rule it closed the gap on
+  neither checkpoint. Qwen3-8B accepted 24/36 unaltered unauthorized proposals (R1 on the same host 24/36) and 36/36
+  twins; Qwen3-4B accepted 5/36 but only 24/36 twins (22 false blocks in all), and 27 of its replies contradicted their
+  own rule verdicts. Median 26 generated tokens on both. Applied as the plan says: Section 5 states the reading and keeps
+  the reviewer-cost sentence (generated, so it would have changed had the rule been met); the abstract and
+  contribution 2 add one clause each. The E5d paragraph and the cost sentence were written after the result was read.
 - **E5c R2 retry, first launch aborted.** The 07:52Z launch crashed after 4 reviews on a harness bug (the task returned a
   record instead of a list of keyed records). It is kept as `target/runs/e5c-r2-retry-20261113T0752Z-ABORTED`, contents
   not viewed; the retry was relaunched from scratch at 08:15Z with the fix (commit before relaunch).

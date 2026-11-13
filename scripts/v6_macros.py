@@ -421,7 +421,7 @@ def e5d_macros(args) -> dict:
     as a false block."""
     d = args.sources.get("e5d") or EVIDENCE / SOURCES["e5d"]
     if not (d / "results.json").exists():
-        return {}  # post hoc and optional: the text cites these macros only once E5d is promoted
+        raise Missing("e5d")
     res = json.loads((d / "results.json").read_text())
     agg = res["aggregates"]
     c5 = json.loads((src(args, "e5c") / "results.json").read_text())["aggregates"]
@@ -438,14 +438,26 @@ def e5d_macros(args) -> dict:
         parts.append(rf"On {short(ck)}, R3 accepted {frac(*un)} of the unaltered unauthorized proposals (R1 on the same host: "
                      rf"{frac(r1['accepted'], r1['n'])}), {frac(*alt)} altered and {frac(*vis)} proposal-visible ones, and "
                      rf"{frac(*tw)} twins, at a median of {agg[ck]['median_completion_tokens']:g} generated tokens"
-                     + (rf"; it rejected {fb} authorized items, each a false block" if fb else "") + ".")
+                     + (rf"; it rejected {fb} authorized items, each a false block" if fb else "")
+                     + (rf"; in {dis} replies the decision disagreed with the reply's own rule verdicts"
+                        if (dis := agg[ck]["allow_vs_rules_disagreements"]) else "") + ".")
     yes = [c for c, ok in closed if ok]
     no = [c for c, ok in closed if not ok]
     reading = ("By the plan's rule, the structured verdict closed the gap without reasoning on " + series(yes) +
                (" but not on " + series(no) if no else "") + "." if yes else
                "By the plan's rule, the structured verdict did not close the gap on either checkpoint.")
+    tok = agg[args.ckpt]["median_completion_tokens"]
+    ck = short(args.ckpt)
+    if ck in yes:
+        cost = (rf"On {ck} a per-rule verdict without reasoning, at a median of {tok:g} generated tokens, closed the gap "
+                r"that reasoning closed at hundreds (E5d, post hoc); the gate spends a database transaction.")
+    else:
+        cost = (rf"On {ck} a per-rule verdict without reasoning, at a median of {tok:g} generated tokens, did not close "
+                r"the gap (E5d, post hoc), so the reviewer that read the state spent hundreds of generated tokens per "
+                r"action on that decision; the gate spends a database transaction.")
     return {"vsixEFiveDSentence": " ".join(parts) + " " + reading,
-            "vsixEFiveDClosed": series(yes) if yes else "neither checkpoint"}
+            "vsixEFiveDClosed": series(yes) if yes else "neither checkpoint",
+            "vsixEFiveDTokens": f"{tok:g}", "vsixEFiveDCostSentence": cost}
 
 
 E2_ARMS = ("unprotected", "progent", "authority_strict", "authority_delegated", "authority_oracle")
@@ -860,6 +872,7 @@ PENDING = {"e5c": ["vsixEFiveCSentence", "vsixEFiveCPrecedenceSentence", "vsixEF
            "e8b": ["vsixStageInsideStrict", "vsixStageInsideOracle"],
            "e6": ["vsixESixPgSentence", "vsixESixPgFairSentence", "vsixESixFsSentence", "vsixESixPOneThreeSentence"],
            "e2": ["vsixETwoCkpts", "vsixETwoSentence", "vsixETwoDivergence"],
+           "e5d": ["vsixEFiveDSentence", "vsixEFiveDClosed", "vsixEFiveDTokens", "vsixEFiveDCostSentence"],
            "e1": ["vsixEOneCampaigns", "vsixEOneHeld", "vsixEOneOutcomeSentence", "vsixEOneSFourSentence", "vsixEOneN",
                   "vsixEOneZeroLossBound", "vsixEOneOneLossBound", "vsixEOneLossRuleSentence", "vsixEOneSecondarySentence"],
            "e4b": ["vsixEFourBSentence"],
