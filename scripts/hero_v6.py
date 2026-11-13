@@ -129,7 +129,7 @@ def panel_a(trials: list[dict]) -> tuple[list[str], dict]:
             lines.append(rf"\addplot[{styles[arm]},const plot,opacity=0.85] coordinates {{{' '.join(f'({x:.2f},{y})' for x, y in pts)}}};")
     lines += [
         rf"\node[font=\scriptsize,text=ink,anchor=south east,inner sep=1pt] at (axis cs:{xmax},{max(fin['halt_inference'])}) {{halt the model}};",
-        rf"\node[font=\scriptsize,text=ink,anchor=north east,inner sep=1.5pt] at (axis cs:{xmax},{min(fin['revoke_broker'])}) {{revoke at the broker}};",
+        rf"\node[font=\scriptsize,text=ink,anchor=south east,inner sep=1.5pt] at (axis cs:{xmax},{max(fin['revoke_broker'])}) {{revoke at the broker}};",
         rf"\node[font=\scriptsize,text=ink,anchor=south east,inner sep=1.5pt,align=right] at (axis cs:{xmax},0.4) "
         rf"{{\textbf{{fence the sink: {rng(fin['fence_sink'])}}}\\[-1pt]loses {rng(lost)} legitimate calls}};",
         r"\end{axis}\end{tikzpicture}"]
@@ -431,7 +431,7 @@ SURF_SHORT = {"postgresql16": "PostgreSQL 16", "etcd_v3_5_17": "etcd 3.5", "posi
 HERO_MECH = {"pg_trigger_e6": "epoch trigger", "pg_trigger_e6_fair": "trigger + table lock", "pg_trigger_notnull": "trigger, epoch required",
              "pg_foreign_key": "foreign key to epoch", "pg_revoke": "REVOKE writer role", "etcd_txn_compare": "txn compare on floor",
              "etcd_rbac_revoke": "RBAC revoke", "fs_flock": "flock + floor file", "fs_dir_mode": "directory mode bits"}
-FENCE_COLS = ("enforced by the surface", "forged epoch refused", "no stale write after fence")
+FENCE_COLS = ("surface enforces", "forged epoch refused", "no stale write")
 
 
 def load_e6b(path: Path) -> dict:
@@ -453,7 +453,7 @@ def panel_fence(summ: dict) -> tuple[list[str], dict]:
         rows.append({"mechanism": m, "surface": v["surface"], "cells": [c1, c2, c3], "class": v["class"],
                      "forged": [v["forge_refused"], v["runs"]], "no_stale": [ev["k"], ev["n"]]})
     all3 = [r["mechanism"] for r in rows if all(c == 1.0 for c in r["cells"])]
-    h, xs = 0.27, (0.45, 1.15, 1.85)
+    h, xs = 0.23, (0.45, 1.15, 1.85)
     items, last = [], None
     for r in rows:
         if r["surface"] != last:
@@ -482,7 +482,8 @@ def panel_fence(summ: dict) -> tuple[list[str], dict]:
             else:
                 lines.append(rf"\draw[exoblue,line width=0.5pt] ({x},{y:.2f}) circle (2.1pt);"
                              rf"\fill[exoblue] ({x},{y:.2f}) ++(0,-2.1pt) arc[start angle=-90,end angle=90,radius=2.1pt] -- cycle;")
-    lines.append(rf"\node[font=\footnotesize,anchor=south,align=center] at (-0.4,{top + 1.55:.2f}) {{\textbf{{(c)}} Where the in-flight term can be closed}};")
+    # Title at the height pgfplots gives (a) and (b): axis height 3.7 cm plus its 6 pt title shift (all share a baseline).
+    lines.append(r"\node[font=\footnotesize,anchor=south,align=center] at (-0.2,3.91) {\textbf{(c)} Where the in-flight term can be closed};")
     lines.append(r"\end{tikzpicture}")
     return lines, {"rows": rows, "all_three": all3}
 
@@ -493,8 +494,10 @@ def caption_fence(s: dict) -> str:
     who = ("No mechanism has all three" if not a3 else
            f"Only {series([name(m) for m in a3])} {'is' if len(a3) == 1 else 'are'} enforced by the surface, refuse"
            f"{'s' if len(a3) == 1 else ''} a forged epoch, and let{'s' if len(a3) == 1 else ''} no stale write commit after the fence")
-    return (r"\textbf{(c)} Executable probes on single-node instances (40 deterministic runs and 20 races per mechanism): filled, in "
-            r"every run; open, in none; half, in some or by code we installed; dash, not measurable. " + who + ". ")
+    return (r"\textbf{(c)} Executable probes on single-node instances (40 deterministic runs and 20 races per mechanism). Columns: "
+            r"the surface itself enforces the fence; a stale writer claiming the new epoch is refused; no stale write commits after "
+            r"the fence takes effect. Filled, in every run; open, in none; half, by a trigger we installed; dash, not measurable. "
+            + who + ". ")
 
 
 def series(xs: list[str]) -> str:
