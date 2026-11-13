@@ -480,6 +480,334 @@ B.~A. {Rogers}, H.~{Chicas}, J.~M. {Kelly}, et~al.
 J.~{Campbell}.
 \newblock \emph{{The Hero with a Thousand Faces}}.
 \newblock Pantheon Books, New York, 1949.
+
+% --- v17 confidence audit and high-resolution facial evidence (metadata from Crossref / arXiv by DOI) ---
+\bibitem[{Buss} and {Schmitt}(1993)]{buss1993}
+D.~M.~{Buss} and D.~P.~{Schmitt}.
+\newblock {Sexual strategies theory: An evolutionary perspective on human mating}.
+\newblock \emph{Psychological Review}, 100\penalty0 (2):\penalty0 204--232, 1993.
+\newblock \doi{10.1037/0033-295X.100.2.204}.
+
+\bibitem[{Paulhus}(1998){Paulhus}]{paulhus1998}
+D.~L.~{Paulhus}.
+\newblock {Interpersonal and intrapsychic adaptiveness of trait self-enhancement: A mixed blessing?}
+\newblock \emph{Journal of Personality and Social Psychology}, 74\penalty0 (5):\penalty0 1197--1208, 1998.
+\newblock \doi{10.1037/0022-3514.74.5.1197}.
+
+\bibitem[{Leckelt} et~al.(2015){Leckelt}, {K{\"u}fner}, {Nestler}, and {Back}]{leckelt2015}
+M.~{Leckelt}, A. C.~P.~{K{\"u}fner}, S.~{Nestler}, and M.~D.~{Back}.
+\newblock {Behavioral processes underlying the decline of narcissists' popularity over time}.
+\newblock \emph{Journal of Personality and Social Psychology}, 109\penalty0 (5):\penalty0 856--871, 2015.
+\newblock \doi{10.1037/pspp0000057}.
+
+\bibitem[{Wurst} et~al.(2017){Wurst}, {Gerlach}, {Dufner}, {Rauthmann}, {Grosz}, {K{\"u}fner}, et~al.]{wurst2017}
+S.~N.~{Wurst}, T.~M.~{Gerlach}, M.~{Dufner}, J.~F.~{Rauthmann}, M.~P.~{Grosz}, A. C.~P.~{K{\"u}fner}, et~al.
+\newblock {Narcissism and romantic relationships: The differential impact of narcissistic admiration and rivalry}.
+\newblock \emph{Journal of Personality and Social Psychology}, 112\penalty0 (2):\penalty0 280--306, 2017.
+\newblock \doi{10.1037/pspp0000113}.
+
+\bibitem[{Grijalva} et~al.(2015){Grijalva}, {Harms}, {Newman}, {Gaddis}, and {Fraley}]{grijalva2015}
+E.~{Grijalva}, P.~D.~{Harms}, D.~A.~{Newman}, B.~H.~{Gaddis}, and R.~C.~{Fraley}.
+\newblock {Narcissism and Leadership: A Meta-Analytic Review of Linear and Nonlinear Relationships}.
+\newblock \emph{Personnel Psychology}, 68\penalty0 (1):\penalty0 1--47, 2015.
+\newblock \doi{10.1111/peps.12072}.
+
+\bibitem[{Kennedy} et~al.(2013){Kennedy}, {Anderson}, and {Moore}]{kennedy2013}
+J.~A.~{Kennedy}, C.~{Anderson}, and D.~A.~{Moore}.
+\newblock {When overconfidence is revealed to others: Testing the status-enhancement theory of overconfidence}.
+\newblock \emph{Organizational Behavior and Human Decision Processes}, 122\penalty0 (2):\penalty0 266--279, 2013.
+\newblock \doi{10.1016/j.obhdp.2013.08.005}.
+
+\bibitem[{Tenney} et~al.(2007){Tenney}, {MacCoun}, {Spellman}, and {Hastie}]{tenney2007}
+E.~R.~{Tenney}, R.~J.~{MacCoun}, B.~A.~{Spellman}, and R.~{Hastie}.
+\newblock {Calibration Trumps Confidence as a Basis for Witness Credibility}.
+\newblock \emph{Psychological Science}, 18\penalty0 (1):\penalty0 46--50, 2007.
+\newblock \doi{10.1111/j.1467-9280.2007.01847.x}.
+
+\bibitem[{Johnson} and {Fowler}(2011){Johnson} and {Fowler}]{johnson2011}
+D. D.~P.~{Johnson} and J.~H.~{Fowler}.
+\newblock {The evolution of overconfidence}.
+\newblock \emph{Nature}, 477\penalty0 (7364):\penalty0 317--320, 2011.
+\newblock \doi{10.1038/nature10384}.
+
+\bibitem[{HU} and {MA}(2025){HU} and {MA}]{hu2025}
+A.~{HU} and S.~{MA}.
+\newblock {Persuading Investors: A Video-Based Study}.
+\newblock \emph{The Journal of Finance}, 80\penalty0 (5):\penalty0 2639--2688, 2025.
+\newblock \doi{10.1111/jofi.13471}.
+
+\bibitem[{Chen} et~al.(2009){Chen}, {Yao}, and {Kotha}]{chen2009}
+X.-P.~{Chen}, X.~{Yao}, and S.~{Kotha}.
+\newblock {Entrepreneur Passion And Preparedness In Business Plan Presentations: A Persuasion Analysis Of Venture Capitalists' Funding Decisions}.
+\newblock \emph{Academy of Management Journal}, 52\penalty0 (1):\penalty0 199--214, 2009.
+\newblock \doi{10.5465/amj.2009.36462018}.
+
+\bibitem[{BERNSTEIN} et~al.(2017){BERNSTEIN}, {KORTEWEG}, and {LAWS}]{bernstein2017}
+S.~{BERNSTEIN}, A.~{KORTEWEG}, and K.~{LAWS}.
+\newblock {Attracting Early-Stage Investors: Evidence from a Randomized Field Experiment}.
+\newblock \emph{The Journal of Finance}, 72\penalty0 (2):\penalty0 509--538, 2017.
+\newblock \doi{10.1111/jofi.12470}.
+
+\bibitem[{Gompers} et~al.(2020){Gompers}, {Gornall}, {Kaplan}, and {Strebulaev}]{gompers2020}
+P.~A.~{Gompers}, W.~{Gornall}, S.~N.~{Kaplan}, and I.~A.~{Strebulaev}.
+\newblock {How do venture capitalists make decisions?}
+\newblock \emph{Journal of Financial Economics}, 135\penalty0 (1):\penalty0 169--190, 2020.
+\newblock \doi{10.1016/j.jfineco.2019.06.011}.
+
+\bibitem[{Ewens} and {Townsend}(2020){Ewens} and {Townsend}]{ewens2020}
+M.~{Ewens} and R.~R.~{Townsend}.
+\newblock {Are early stage investors biased against women?}
+\newblock \emph{Journal of Financial Economics}, 135\penalty0 (3):\penalty0 653--677, 2020.
+\newblock \doi{10.1016/j.jfineco.2019.07.002}.
+
+\bibitem[{Gornall} and {Strebulaev}(2025){Gornall} and {Strebulaev}]{gornall2025}
+W.~{Gornall} and I.~A.~{Strebulaev}.
+\newblock {Gender, Race, and Entrepreneurship: A Randomized Field Experiment on Venture Capitalists and Angels}.
+\newblock \emph{Management Science}, 71\penalty0 (6):\penalty0 5308--5327, 2025.
+\newblock \doi{10.1287/mnsc.2024.4990}.
+
+\bibitem[{Graham} et~al.(2017){Graham}, {Harvey}, and {Puri}]{graham2017}
+J.~R.~{Graham}, C.~R.~{Harvey}, and M.~{Puri}.
+\newblock {A Corporate Beauty Contest}.
+\newblock \emph{Management Science}, 63\penalty0 (9):\penalty0 3044--3056, 2017.
+\newblock \doi{10.1287/mnsc.2016.2484}.
+
+\bibitem[{MALMENDIER} and {TATE}(2008){MALMENDIER} and {TATE}]{malmendier2008}
+U.~{MALMENDIER} and G.~{TATE}.
+\newblock {Who makes acquisitions? CEO overconfidence and the market's reaction}.
+\newblock \emph{Journal of Financial Economics}, 89\penalty0 (1):\penalty0 20--43, 2008.
+\newblock \doi{10.1016/j.jfineco.2007.07.002}.
+
+\bibitem[{HIRSHLEIFER} et~al.(2012){HIRSHLEIFER}, {LOW}, and {TEOH}]{hirshleifer2012}
+D.~{HIRSHLEIFER}, A.~{LOW}, and S.~H.~{TEOH}.
+\newblock {Are Overconfident CEOs Better Innovators?}
+\newblock \emph{The Journal of Finance}, 67\penalty0 (4):\penalty0 1457--1498, 2012.
+\newblock \doi{10.1111/j.1540-6261.2012.01753.x}.
+
+\bibitem[{Adams} et~al.(2018){Adams}, {Keloharju}, and {Kn{\"u}pfer}]{adams2018}
+R.~{Adams}, M.~{Keloharju}, and S.~{Kn{\"u}pfer}.
+\newblock {Are CEOs born leaders? Lessons from traits of a million individuals}.
+\newblock \emph{Journal of Financial Economics}, 130\penalty0 (2):\penalty0 392--408, 2018.
+\newblock \doi{10.1016/j.jfineco.2018.07.006}.
+
+\bibitem[{Kaplan} et~al.(2012){Kaplan}, {Klebanov}, and {Sorensen}]{kaplan2012}
+S.~N.~{Kaplan}, M.~M.~{Klebanov}, and M.~{Sorensen}.
+\newblock {Which CEO Characteristics and Abilities Matter?}
+\newblock \emph{The Journal of Finance}, 67\penalty0 (3):\penalty0 973--1007, 2012.
+\newblock \doi{10.1111/j.1540-6261.2012.01739.x}.
+
+\bibitem[{Williams} and {Tiedens}(2016){Williams} and {Tiedens}]{williams2016}
+M.~J.~{Williams} and L.~Z.~{Tiedens}.
+\newblock {The subtle suspension of backlash: A meta-analysis of penalties for women's implicit and explicit dominance behavior}.
+\newblock \emph{Psychological Bulletin}, 142\penalty0 (2):\penalty0 165--197, 2016.
+\newblock \doi{10.1037/bul0000039}.
+
+\bibitem[{Guill{\'e}n} et~al.(2018){Guill{\'e}n}, {Mayo}, and {Karelaia}]{guillen2018}
+L.~{Guill{\'e}n}, M.~{Mayo}, and N.~{Karelaia}.
+\newblock {Appearing self-confident and getting credit for it: Why it may be easier for men than women to gain influence at work}.
+\newblock \emph{Human Resource Management}, 57\penalty0 (4):\penalty0 839--854, 2018.
+\newblock \doi{10.1002/hrm.21857}.
+
+\bibitem[{Amanatullah} and {Morris}(2010){Amanatullah} and {Morris}]{amanatullah2010}
+E.~T.~{Amanatullah} and M.~W.~{Morris}.
+\newblock {Negotiating gender roles: Gender differences in assertive negotiating are mediated by women's fear of backlash and attenuated when negotiating on behalf of others}.
+\newblock \emph{Journal of Personality and Social Psychology}, 98\penalty0 (2):\penalty0 256--267, 2010.
+\newblock \doi{10.1037/a0017094}.
+
+\bibitem[{Exley} and {Kessler}(2022){Exley} and {Kessler}]{exley2022}
+C.~L.~{Exley} and J.~B.~{Kessler}.
+\newblock {The Gender Gap in Self-Promotion}.
+\newblock \emph{The Quarterly Journal of Economics}, 137\penalty0 (3):\penalty0 1345--1381, 2022.
+\newblock \doi{10.1093/qje/qjac003}.
+
+\bibitem[{Paustian-Underdahl} et~al.(2014){Paustian-Underdahl}, {Walker}, and {Woehr}]{paustian2014}
+S.~C.~{Paustian-Underdahl}, L.~S.~{Walker}, and D.~J.~{Woehr}.
+\newblock {Gender and perceptions of leadership effectiveness: A meta-analysis of contextual moderators}.
+\newblock \emph{Journal of Applied Psychology}, 99\penalty0 (6):\penalty0 1129--1145, 2014.
+\newblock \doi{10.1037/a0036751}.
+
+\bibitem[{Koenig} et~al.(2011){Koenig}, {Eagly}, {Mitchell}, and {Ristikari}]{koenig2011}
+A.~M.~{Koenig}, A.~H.~{Eagly}, A.~A.~{Mitchell}, and T.~{Ristikari}.
+\newblock {Are leader stereotypes masculine? A meta-analysis of three research paradigms}.
+\newblock \emph{Psychological Bulletin}, 137\penalty0 (4):\penalty0 616--642, 2011.
+\newblock \doi{10.1037/a0023557}.
+
+\bibitem[{Eagly} et~al.(2020){Eagly}, {Nater}, {Miller}, {Kaufmann}, and {Sczesny}]{eagly2020}
+A.~H.~{Eagly}, C.~{Nater}, D.~I.~{Miller}, M.~{Kaufmann}, and S.~{Sczesny}.
+\newblock {Gender stereotypes have changed: A cross-temporal meta-analysis of U.S. public opinion polls from 1946 to 2018}.
+\newblock \emph{American Psychologist}, 75\penalty0 (3):\penalty0 301--315, 2020.
+\newblock \doi{10.1037/amp0000494}.
+
+\bibitem[{Livingston} et~al.(2012){Livingston}, {Rosette}, and {Washington}]{livingston2012}
+R.~W.~{Livingston}, A.~S.~{Rosette}, and E.~F.~{Washington}.
+\newblock {Can an Agentic Black Woman Get Ahead? The Impact of Race and Interpersonal Dominance on Perceptions of Female Leaders}.
+\newblock \emph{Psychological Science}, 23\penalty0 (4):\penalty0 354--358, 2012.
+\newblock \doi{10.1177/0956797611428079}.
+
+\bibitem[{Liu} et~al.(2026){Liu}, {Blair}, and {Tenney}]{liu2026}
+C.~X.~{Liu}, B.~A.~{Blair}, and E.~R.~{Tenney}.
+\newblock {Registered Report: Can Agentic Black Women Get Ahead? An Experiment Revisited}.
+\newblock \emph{Psychological Science}, 37\penalty0 (5):\penalty0 347--364, 2026.
+\newblock \doi{10.1177/09567976261436988}.
+
+\bibitem[{Lu} et~al.(2020){Lu}, {Nisbett}, and {Morris}]{lu2020}
+J.~G.~{Lu}, R.~E.~{Nisbett}, and M.~W.~{Morris}.
+\newblock {Why East Asians but not South Asians are underrepresented in leadership positions in the United States}.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 117\penalty0 (9):\penalty0 4590--4600, 2020.
+\newblock \doi{10.1073/pnas.1918896117}.
+
+\bibitem[{Todorov} et~al.(2005){Todorov}, {Mandisodza}, {Goren}, and {Hall}]{todorov2005}
+A.~{Todorov}, A.~N.~{Mandisodza}, A.~{Goren}, and C.~C.~{Hall}.
+\newblock {Inferences of Competence from Faces Predict Election Outcomes}.
+\newblock \emph{Science}, 308\penalty0 (5728):\penalty0 1623--1626, 2005.
+\newblock \doi{10.1126/science.1110589}.
+
+\bibitem[{Olivola} and {Todorov}(2010){Olivola} and {Todorov}]{olivola2010}
+C.~Y.~{Olivola} and A.~{Todorov}.
+\newblock {Fooled by first impressions? Reexamining the diagnostic value of appearance-based inferences}.
+\newblock \emph{Journal of Experimental Social Psychology}, 46\penalty0 (2):\penalty0 315--324, 2010.
+\newblock \doi{10.1016/j.jesp.2009.12.002}.
+
+\bibitem[{Jacquart} and {Antonakis}(2015){Jacquart} and {Antonakis}]{jacquart2015}
+P.~{Jacquart} and J.~{Antonakis}.
+\newblock {When Does Charisma Matter for Top-Level Leaders? Effect of Attributional Ambiguity}.
+\newblock \emph{Academy of Management Journal}, 58\penalty0 (4):\penalty0 1051--1074, 2015.
+\newblock \doi{10.5465/amj.2012.0831}.
+
+\bibitem[{Snyder} et~al.(2008){Snyder}, {Kirkpatrick}, and {Barrett}]{snyder2008}
+J.~K.~{Snyder}, L.~A.~{Kirkpatrick}, and H.~C.~{Barrett}.
+\newblock {The dominance dilemma: Do women really prefer dominant mates?}
+\newblock \emph{Personal Relationships}, 15\penalty0 (4):\penalty0 425--444, 2008.
+\newblock \doi{10.1111/j.1475-6811.2008.00208.x}.
+
+\bibitem[{Kelly} and {Dunbar}(2001){Kelly} and {Dunbar}]{kelly2001}
+S.~{Kelly} and R. I.~M.~{Dunbar}.
+\newblock {Who dares, wins}.
+\newblock \emph{Human Nature}, 12\penalty0 (2):\penalty0 89--105, 2001.
+\newblock \doi{10.1007/s12110-001-1018-6}.
+
+\bibitem[{Firebaugh}(1989){Firebaugh}]{firebaugh1989}
+G.~{Firebaugh}.
+\newblock {Methods for Estimating Cohort Replacement Effects}.
+\newblock \emph{Sociological Methodology}, 19:\penalty0 243, 1989.
+\newblock \doi{10.2307/270954}.
+
+\bibitem[{Rao} and {Wu}(1988){Rao} and {Wu}]{raowu1988}
+J. N.~K.~{Rao} and C. F.~J.~{Wu}.
+\newblock {Resampling Inference with Complex Survey Data}.
+\newblock \emph{Journal of the American Statistical Association}, 83\penalty0 (401):\penalty0 231--241, 1988.
+\newblock \doi{10.1080/01621459.1988.10478591}.
+
+\bibitem[{Knowles} et~al.(2001){Knowles}, {Persico}, and {Todd}]{knowles2001}
+J.~{Knowles}, N.~{Persico}, and P.~{Todd}.
+\newblock {Racial Bias in Motor Vehicle Searches: Theory and Evidence}.
+\newblock \emph{Journal of Political Economy}, 109\penalty0 (1):\penalty0 203--229, 2001.
+\newblock \doi{10.1086/318603}.
+
+\bibitem[{Holm}(1979){Holm}]{holm1979}
+S.~{Holm}.
+\newblock {A simple sequentially rejective multiple test procedure}.
+\newblock \emph{Scandinavian Journal of Statistics}, 6\penalty0 (2):\penalty0 65--70, 1979.
+
+\bibitem[{Becker}(1957){Becker}]{becker1957}
+G.~S. {Becker}.
+\newblock \emph{The Economics of Discrimination}.
+\newblock University of Chicago Press, Chicago, 1957.
+
+\bibitem[{Adebayo} et~al.(2018){Adebayo}, {Gilmer}, {Muelly}, {Goodfellow}, {Hardt}, and {Kim}]{adebayo2018}
+J.~{Adebayo}, J.~{Gilmer}, M.~{Muelly}, I.~{Goodfellow}, M.~{Hardt}, and B.~{Kim}.
+\newblock {Sanity checks for saliency maps}.
+\newblock In \emph{Advances in Neural Information Processing Systems 31}, 2018.
+\newblock arXiv:1810.03292.
+
+\bibitem[{Sim{\'e}oni} et~al.(2025){Sim{\'e}oni}, {Vo}, {Seitzer}, {Baldassarre}, {Oquab}, et~al.]{simeoni2025}
+O.~{Sim{\'e}oni}, H.~V. {Vo}, M.~{Seitzer}, F.~{Baldassarre}, M.~{Oquab}, et~al.
+\newblock {DINOv3}.
+\newblock arXiv:2508.10104, 2025.
+
+\bibitem[{Samek} et~al.(2017){Samek}, {Binder}, {Montavon}, {Lapuschkin}, and {M{\"u}ller}]{samek2017}
+W.~{Samek}, A.~{Binder}, G.~{Montavon}, S.~{Lapuschkin}, and K.-R. {M{\"u}ller}.
+\newblock {Evaluating the visualization of what a deep neural network has learned}.
+\newblock \emph{IEEE Transactions on Neural Networks and Learning Systems}, 28(11):2660--2673, 2017.
+\newblock \doi{10.1109/TNNLS.2016.2599820}.
+
+\bibitem[{Kepecs} et~al.(2008){Kepecs}, {Uchida}, {Zariwala}, and {Mainen}]{kepecs2008}
+A.~{Kepecs}, N.~{Uchida}, H.~A.~{Zariwala}, and Z.~F.~{Mainen}.
+\newblock {Neural correlates, computation and behavioural impact of decision confidence}.
+\newblock \emph{Nature}, 455\penalty0 (7210):\penalty0 227--231, 2008.
+\newblock \doi{10.1038/nature07200}.
+
+\bibitem[{Lak} et~al.(2014){Lak}, {Costa}, {Romberg}, {Koulakov}, {Mainen}, and {Kepecs}]{lak2014}
+A.~{Lak}, G.~M.~{Costa}, E.~{Romberg}, A.~A.~{Koulakov}, Z.~F.~{Mainen}, and A.~{Kepecs}.
+\newblock {Orbitofrontal cortex is required for optimal waiting based on decision confidence}.
+\newblock \emph{Neuron}, 84\penalty0 (1):\penalty0 190--201, 2014.
+\newblock \doi{10.1016/j.neuron.2014.08.039}.
+
+\bibitem[{Kiani} and {Shadlen}(2009)]{kiani2009}
+R.~{Kiani} and M.~N.~{Shadlen}.
+\newblock {Representation of confidence associated with a decision by neurons in the parietal cortex}.
+\newblock \emph{Science}, 324\penalty0 (5928):\penalty0 759--764, 2009.
+\newblock \doi{10.1126/science.1169405}.
+
+\bibitem[{Bahrami} et~al.(2010){Bahrami}, {Olsen}, {Latham}, {Roepstorff}, {Rees}, and {Frith}]{bahrami2010}
+B.~{Bahrami}, K.~{Olsen}, P.~E.~{Latham}, A.~{Roepstorff}, G.~{Rees}, and C.~D.~{Frith}.
+\newblock {Optimally interacting minds}.
+\newblock \emph{Science}, 329\penalty0 (5995):\penalty0 1081--1085, 2010.
+\newblock \doi{10.1126/science.1185718}.
+
+\bibitem[{Price} and {Stone}(2004)]{price2004}
+P.~C.~{Price} and E.~R.~{Stone}.
+\newblock {Intuitive evaluation of likelihood judgment producers: Evidence for a confidence heuristic}.
+\newblock \emph{Journal of Behavioral Decision Making}, 17\penalty0 (1):\penalty0 39--57, 2004.
+\newblock \doi{10.1002/bdm.460}.
+
+\bibitem[{Koriat}(2008)]{koriat2008}
+A.~{Koriat}.
+\newblock {Subjective confidence in one's answers: The consensuality principle}.
+\newblock \emph{Journal of Experimental Psychology: Learning, Memory, and Cognition}, 34\penalty0 (4):\penalty0 945--959, 2008.
+\newblock \doi{10.1037/0278-7393.34.4.945}.
+
+\bibitem[{Oskamp}(1965)]{oskamp1965}
+S.~{Oskamp}.
+\newblock {Overconfidence in case-study judgments}.
+\newblock \emph{Journal of Consulting Psychology}, 29\penalty0 (3):\penalty0 261--265, 1965.
+\newblock \doi{10.1037/h0022125}.
+
+\bibitem[{Tsai} et~al.(2008){Tsai}, {Klayman}, and {Hastie}]{tsai2008}
+C.~I.~{Tsai}, J.~{Klayman}, and R.~{Hastie}.
+\newblock {Effects of amount of information on judgment accuracy and confidence}.
+\newblock \emph{Organizational Behavior and Human Decision Processes}, 107\penalty0 (2):\penalty0 97--105, 2008.
+\newblock \doi{10.1016/j.obhdp.2008.01.005}.
+
+\bibitem[{Dana} et~al.(2013){Dana}, {Dawes}, and {Peterson}]{dana2013}
+J.~{Dana}, R.~{Dawes}, and N.~{Peterson}.
+\newblock {Belief in the unstructured interview: The persistence of an illusion}.
+\newblock \emph{Judgment and Decision Making}, 8\penalty0 (5):\penalty0 512--520, 2013.
+\newblock \doi{10.1017/S1930297500003612}.
+
+\bibitem[{Zacharakis} and {Shepherd}(2001)]{zacharakis2001}
+A.~L.~{Zacharakis} and D.~A.~{Shepherd}.
+\newblock {The nature of information and overconfidence on venture capitalists' decision making}.
+\newblock \emph{Journal of Business Venturing}, 16\penalty0 (4):\penalty0 311--332, 2001.
+\newblock \doi{10.1016/S0883-9026(99)00052-X}.
+
+\bibitem[{Barber} and {Odean}(2001)]{barber2001}
+B.~M.~{Barber} and T.~{Odean}.
+\newblock {Boys will be boys: Gender, overconfidence, and common stock investment}.
+\newblock \emph{Quarterly Journal of Economics}, 116\penalty0 (1):\penalty0 261--292, 2001.
+\newblock \doi{10.1162/003355301556400}.
+
+\bibitem[{Lavner} et~al.(2012){Lavner}, {Karney}, and {Bradbury}]{lavner2012}
+J.~A.~{Lavner}, B.~R.~{Karney}, and T.~N.~{Bradbury}.
+\newblock {Do cold feet warn of trouble ahead? Premarital uncertainty and four-year marital outcomes}.
+\newblock \emph{Journal of Family Psychology}, 26\penalty0 (6):\penalty0 1012--1017, 2012.
+\newblock \doi{10.1037/a0029912}.
+
+\bibitem[{Moore} and {Healy}(2008)]{moore2008}
+D.~A.~{Moore} and P.~J.~{Healy}.
+\newblock {The trouble with overconfidence}.
+\newblock \emph{Psychological Review}, 115\penalty0 (2):\penalty0 502--517, 2008.
+\newblock \doi{10.1037/0033-295X.115.2.502}.
 """
 
 
@@ -4059,6 +4387,11 @@ def numbers(data):
 
     for name in values:
         assert name.isalpha(), f"LaTeX macro name must be alphabetic: {name}"
+    from performance_confidence_paper import confidence_macros, decision_confidence_macros, face_highres_macros
+    values.update(confidence_macros(data))
+    values.update(decision_confidence_macros(data))
+    if data.get("face_highres") is not None:
+        values.update(face_highres_macros(data))
     return "".join(f"\\newcommand{{\\{name}}}{{{value}}}\n" for name, value in values.items())
 
 
@@ -4468,6 +4801,11 @@ def primary_secondary_table(data):
 
 
 def macro_kpi_table(data):
+    conf = data["confidence"]
+    wpan = conf["speed_dating_warm_confidence"]["panel"]
+    led = {r["id"]: r for r in conf["ledger"]}
+    gap = conf["gss_audience_women_leaders"]["recent_audience_sex_gap"]
+    sc = conf["scorecard"]["totals"]
     pp = data["paleoclimate_plateau"]
     pvc_500 = data["holoface_benchmark"]["psychometric_voter_ceiling"]["tiers"]["votes_500_plus"]
     speed = data["speed_dating"]
@@ -4550,13 +4888,25 @@ def macro_kpi_table(data):
             rf"Within-marriage births invert all four (${gss_m['number'][0]:+.3f}$ to ${gss_all['schooling']['men']['number'][0]:+.3f}$); height fertility null ($r\!=\!{lid['height']['reproduction_all']['re_mean_r']:+.3f}$; Props.~\ref{{prop:episodes}},~\ref{{prop:waiting}})",
         ),
         (
-            r"\textbf{9. Prestige vs.\ Arrogance \& Alpha Bind}",
-            "What separates outlier confidence from gross arrogance across audiences, alpha sexes, and coalition calls?",
-            r"8,378 dates + 89.2k Kowal + 16,075 POV CEOs + 186 SCCS + 59.9k \texttt{OkCupid}",
-            rf"Warm outlier agency wins \textbf{{{100*speed['confidence_and_backlash']['agency_x_warmth_dyadic']['male_chooser_to_female_target']['warm_outlier_agency']['yes_share']:.1f}\%/{100*speed['confidence_and_backlash']['agency_x_warmth_dyadic']['female_chooser_to_male_target']['warm_outlier_agency']['yes_share']:.1f}\%}} vs.\ \textbf{{{100*speed['confidence_and_backlash']['agency_x_warmth_dyadic']['male_chooser_to_female_target']['warm_humble_low_agency']['yes_share']:.1f}\%/{100*speed['confidence_and_backlash']['agency_x_warmth_dyadic']['female_chooser_to_male_target']['warm_humble_low_agency']['yes_share']:.1f}\%}} humble; 29+ boast penalty surges \textbf{{{speed['confidence_and_backlash']['audience_age_modulation']['mature_to_young_overclaim_penalty_ratio']:.1f}$\times$}}; SCCS bands \textbf{{100\% checked \& {100*osyn['influence_and_prestige']['sccs_coalition_leadership']['regimes']['egalitarian_sccs270_eq1']['persuasion_or_consultation_share']:.1f}\% persuasive}}",
-            rf"Women face \textbf{{{speed['confidence_and_backlash']['agency_x_warmth_dyadic']['female_to_male_coldness_backlash_ratio']:.2f}$\times$}} coldness drop, \textbf{{{speed['confidence_and_backlash']['status_threat']['male_chooser_evaluating_woman']['coefficients']['target_outsmarts_chooser']['slope_pp']:+.1f}\,pp}} male outsmarting threat, \& \textbf{{{100*pov['alpha_executive_and_ethnicity']['executives_ages_30_54']['by_sex']['Female']['executive_founder_owner']['divorced']['share']:.1f}\% vs.\ {100*pov['alpha_executive_and_ethnicity']['executives_ages_30_54']['by_sex']['Male']['executive_founder_owner']['divorced']['share']:.1f}\%}} CEO divorce (Props.~\ref{{prop:despot}},~\ref{{prop:staging}},~\ref{{prop:prestige}})",
+            r"\textbf{9. Entry Display vs.\ Outcome Audit}",
+            "Does legible confidence win selection, and does it survive once outcomes are audited?",
+            rf"{speed['records']:,} dates + {conf['gss_audience_women_leaders']['n_answered']:,} GSS + {conf['hcmst_relative_income']['sample']['n']:,} \texttt{{HCMST}} + {conf['ledger_summary']['rows']} verified estimates",
+            rf"Other raters credit first-date agency \textbf{{${wpan['male_chooser_female_target']['coefficients_pp_per_sd']['agency']['estimate']:+.1f}$/${wpan['female_chooser_male_target']['coefficients_pp_per_sd']['agency']['estimate']:+.1f}$\,pp/SD}}, not warmth; pitch delivery \textbf{{${100*led['hu2025_pitch_funding']['estimate']:+.1f}$\,pp}} funding/SD yet \textbf{{${100*led['hu2025_pitch_exit']['estimate']:+.1f}$\,pp}} exits; status--fitness $Z_r$ \textbf{{{led['vonrueden2016_humans']['estimate']:.2f}}} humans vs.\ {led['vonrueden2016_primates']['estimate']:.2f} primates",
+            rf"Audience sex gap \textbf{{${gap['estimate_pp']:+.1f}$\,pp}} $[{gap['ci_95_pp'][0]:+.1f},{gap['ci_95_pp'][1]:+.1f}]$ (shared stereotype); she-earns-more ${conf['hcmst_relative_income']['confirmatory']['estimate_pp']:+.1f}$\,pp, Holm $p={conf['multiplicity']['holm_adjusted_p']['h1_she_earns_more_vs_he_earns_more_excellent_pp']:.3f}$; PBO predicts {sc['PBO']['predicted']} and fails {sc['PBO']['contradicted']} of {len(conf['scorecard']['rows'])} regularities (Props.~\ref{{prop:prestige}}--\ref{{prop:sharedbias}})",
         ),
     ]
+    dcf = conf.get("speed_dating_decision_confidence")
+    if dcf:
+        dw, dm = dcf["by_chooser_sex"]["women"], dcf["by_chooser_sex"]["men"]
+        cw, cm = dcf["calibration_before_and_after_meeting"]["women"], dcf["calibration_before_and_after_meeting"]["men"]
+        aft = lambda c: c["end_of_night_expected_minus_actual_matches_pp_of_met"]
+        rows.append((
+            r"\textbf{10. Confidence Before Outcomes}",
+            "Does a chooser's certainty at the moment of choice foresee the partner's decision, and what foresees it better?",
+            rf"{dcf['n_decisions']:,} pre-outcome forecasts by {dcf['n_choosers']} choosers in {dcf['n_sessions']} sessions",
+            rf"Four-minute forecast foresees the partner's yes at AUC \textbf{{{dw['forecast_predicts_partner_yes']['auc']:.2f}/{dm['forecast_predicts_partner_yes']['auc']:.2f}}} (W/M) but one's own yes at {dw['forecast_predicts_own_yes']['auc']:.2f}/{dm['forecast_predicts_own_yes']['auc']:.2f}; the partner's record with others reaches \textbf{{{dw['partner_record_predicts_partner_yes']['auc']:.2f}/{dm['partner_record_predicts_partner_yes']['auc']:.2f}}}",
+            rf"End-of-night match estimates: women calibrated (${aft(cw)['estimate']:+.1f}$\,pp), men over by \textbf{{${aft(cm)['estimate']:+.1f}$\,pp}} $[{aft(cm)['ci_95'][0]:+.1f},{aft(cm)['ci_95'][1]:+.1f}]$ (error management, not PBO; Prop.~\ref{{prop:confidence}})",
+        ))
     return "\n".join(" & ".join(r) + r"\\" for r in rows) + "\n"
 
 
@@ -4657,11 +5007,11 @@ def confidence_influence_plot(data):
     ax_a.legend(loc="lower right", bbox_to_anchor=(1.0, 0.25), fontsize=5.3, handlelength=1.1, labelspacing=0.18)
     ax_a.text(
         89.5, 3.38,
-        f"Cold drop: W \u2212{awd['male_chooser_to_female_target']['coldness_backlash_drop_pp']:.0f} vs M \u2212{awd['female_chooser_to_male_target']['coldness_backlash_drop_pp']:.0f} pp\n({awd['female_to_male_coldness_backlash_ratio']:.2f}\u00d7 backlash)",
+        f"Cold cells n={awd['male_chooser_to_female_target']['cold_arrogant_high_agency']['n']} W, {awd['female_chooser_to_male_target']['cold_arrogant_high_agency']['n']} M\nchooser's own ratings (halo)",
         fontsize=4.8, color=INK, ha="right", va="bottom", linespacing=1.02,
         bbox=dict(boxstyle="round,pad=0.14", fc=BAND, ec="none", alpha=0.92),
     )
-    panel(ax_a, "A", "Confidence vs. arrogance (8.4k dates)", xlabel="Live 'Yes' rate (%)", fontsize=7.5, pad=4)
+    panel(ax_a, "A", "Rated agency x sincerity cells", xlabel="Live 'Yes' rate (%)", fontsize=7.5, pad=4)
 
     # Panel B: Audience Age & Ethnic Priors (Columbia Overclaim + POV 805k Ethnic Ambition)
     b_gs = outer[0, 1].subgridspec(2, 1, height_ratios=[1.0, 1.12], hspace=0.50)
@@ -4889,7 +5239,7 @@ def confidence_influence_plot(data):
     )
     ax_f.text(
         2.30, 0.14,
-        f"Hero Triad (OkCupid):\nK={oip['heros_journey_triad']['mean_prompts_filled_k']:.2f} vs {oip['passive_unfilled']['mean_prompts_filled_k']:.2f} ({oip['triad_to_passive_k_ratio']:.2f}\u00d7)\nE24 |\u0394|\u2264{e24['max_abs_diff']:.3f}",
+        f"Derived model, not data\nE24 |\u0394|\u2264{e24['max_abs_diff']:.3f}",
         fontsize=4.55, color=INK, ha="right", va="bottom", linespacing=1.0,
         bbox=dict(boxstyle="round,pad=0.12", fc=BAND, ec="none", alpha=0.92),
     )
@@ -4898,23 +5248,25 @@ def confidence_influence_plot(data):
     ax_f.set_xticks([-1, 0, 1, 2])
     ax_f.set_yticks([0.5, 1.5, 2.5])
     ax_f.legend(loc="upper right", fontsize=4.75, handlelength=1.25, labelspacing=0.12)
-    panel(ax_f, "F", "Prop. 24 saddle & Hero's call", xlabel="Claim shift \u03b4 = c \u2212 b (SD)", ylabel="Standing E[W]", fontsize=7.5, pad=4)
+    panel(ax_f, "F", "Prop. 24 standing curves (model)", xlabel="Claim shift \u03b4 = c \u2212 b (SD)", ylabel="Standing E[W]", fontsize=7.5, pad=4)
 
     return pdf(fig)
 
 
 def generate(data):
+    from performance_confidence_paper import (confidence_audit_plot, confidence_ledger_table, confidence_scorecard_table,
+                                              decision_confidence_plot, face_highres_plot)
     pov, hon, speed = data["pov"], data["hon"], data["speed_dating"]
     responses, sensitivity = pov_tables(pov)
     plateau_tbl = plateau_events_table(data)
     holo_tbl = holoface_table(data)
     macro_tbl = macro_kpi_table(data)
     prim_sec_tbl = primary_secondary_table(data)
-    inf_reg_tbl = influence_regimes_table(data)
     gen_tex = {
         "performance-macro-kpi-table.tex": macro_tbl,
         "performance-primary-secondary-table.tex": prim_sec_tbl,
-        "performance-influence-regimes-table.tex": inf_reg_tbl,
+        "performance-confidence-ledger-table.tex": confidence_ledger_table(data),
+        "performance-confidence-scorecard-table.tex": confidence_scorecard_table(data),
         "performance-pov-responses.tex": responses,
         "performance-pov-sensitivity.tex": sensitivity,
         "performance-hon-sensitivity.tex": rating_table(hon["ratings"]),
@@ -4940,6 +5292,9 @@ def generate(data):
         "performance-fig-love-bond.pdf": love_bond_plot(data),
         "performance-fig-primary-secondary-dynamics.pdf": primary_secondary_dynamics_plot(data),
         "performance-fig-confidence-influence.pdf": confidence_influence_plot(data),
+        "performance-fig-confidence-audit.pdf": confidence_audit_plot(data),
+        "performance-fig-decision-confidence.pdf": decision_confidence_plot(data),
+        **({"performance-fig-face-highres.pdf": face_highres_plot(data, ROOT)} if data.get("face_highres") else {}),
         "performance-fig-hon-architecture.pdf": hon_architecture_plot(data),
         "performance-fig-holoface-ceiling.pdf": holoface_ceiling_plot(data),
         "performance-fig-face-drivers.pdf": face_drivers_plot(data),

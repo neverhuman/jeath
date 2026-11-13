@@ -209,7 +209,10 @@ def check(data):
     assert set(data["analysis_sha256"]) == {
         "scripts/performance_before_outcomes.py",
         "scripts/performance_choice.py",
+        "scripts/performance_confidence.py",
+        "scripts/performance_confidence_ledger.py",
         "scripts/performance_face_attribution.py",
+        "scripts/performance_face_highres.py",
         "scripts/performance_holoface_benchmark.py",
         "scripts/performance_open.py",
         "scripts/performance_paleoclimate_plateau.py",
@@ -779,3 +782,87 @@ def check(data):
         > e24["part_iii_alpha_double_bind_escape"]["alpha_female_playing_small_insecure_pool"]["closed_form"] + 0.35
     )
     assert e24["part_iv_heros_journey_vs_self_aggrandizing"]["standing_ratio"] > 5.0
+
+    # --- v17 confidence audit layer and high-resolution facial evidence maps ---
+    check_confidence(data["confidence"])
+    if data.get("face_highres") is not None:
+        check_face_highres(data["face_highres"])
+
+
+def check_confidence(conf):
+    """Structural, identity and sign checks for the v17 confidence audit; numbers stay data-driven."""
+    assert conf["schema"] == "pbo-confidence-1"
+    gss = conf["gss_audience_women_leaders"]
+    pooled = gss["firebaugh_decomposition"]["pooled"]
+    comp = pooled["components_pp"]
+    assert pooled["identity_abs_error"] < 1e-9
+    for key, cell in comp.items():
+        if isinstance(cell, dict) and "ci_95" in cell and cell["ci_95"] is not None:
+            assert cell["ci_95"][0] <= cell["estimate"] <= cell["ci_95"][1], key
+    h = conf["hcmst_relative_income"]
+    assert 0 <= h["confirmatory"]["p_two_sided"] <= 1
+    mult = conf["multiplicity"]
+    assert set(mult["raw_p"]) == set(mult["confirmatory_family"]) == set(mult["holm_adjusted_p"])
+    for k, raw in mult["raw_p"].items():
+        assert raw <= mult["holm_adjusted_p"][k] + 1e-12 and mult["holm_adjusted_p"][k] <= 1.0
+    warm = conf["speed_dating_warm_confidence"]
+    for source in ("own", "panel"):
+        for direction in ("male_chooser_female_target", "female_chooser_male_target"):
+            cell = warm[source][direction]
+            assert cell["n_decisions"] > 1000 and cell["n_choosers"] > 100
+            for term in warm["terms"]:
+                c = cell["coefficients_pp_per_sd"][term]
+                assert c["interval_95"][0] <= c["interval_95"][1]
+    ledger = conf["ledger"]
+    assert len(ledger) == conf["ledger_summary"]["rows"] == len({r["id"] for r in ledger})
+    assert sum(conf["ledger_summary"]["by_status"].values()) == len(ledger)
+    assert any(r["id"] == "livingston2012_original" for r in ledger)  # superseded row stays visible
+    totals = conf["scorecard"]["totals"]
+    rows = len(conf["scorecard"]["rows"])
+    for tally in totals.values():
+        assert tally["predicted"] + tally["contradicted"] + tally["silent"] == rows
+    assert totals["PBO"]["contradicted"] >= 1  # losses are reported, not hidden
+    if "speed_dating_decision_confidence" in conf:
+        dc = conf["speed_dating_decision_confidence"]
+        assert dc["n_sessions"] == 20 and dc["n_decisions"] > 7000  # the capped wave is excluded
+        for side in ("women", "men"):
+            r = dc["by_chooser_sex"][side]
+            assert r["n_choosers"] > 200
+            for key in ("forecast_predicts_partner_yes", "partner_record_predicts_partner_yes", "forecast_predicts_own_yes"):
+                c = r[key]
+                assert 0.0 <= c["ci_95"][0] <= c["auc"] <= c["ci_95"][1] <= 1.0, (side, key)
+            gain = r["record_minus_forecast_auc"]
+            assert gain["ci_95"][0] <= gain["estimate"] <= gain["ci_95"][1]
+            cal = dc["calibration_before_and_after_meeting"][side]
+            assert cal["n_people"] >= 30 and cal["all_waves_end_of_night"]["n_people"] >= cal["n_people"]
+        levels = dc["by_forecast_level_pooled"]
+        assert [c["forecast"] for c in levels] == list(range(1, 11)) and sum(c["n"] for c in levels) == dc["n_decisions"]
+        e27 = conf["proposition_27_e27"]
+        assert e27["max_abs_error"] < 0.01
+        for row in e27["grid"]:
+            assert row["agreement_confidence"]["closed_form"] >= row["validity_r2"]["closed_form"]  # Prop. 27(i)
+        assert e27["gap_limit_many_judges_one_context"] > e27["gap_limit_many_judges_many_contexts"]  # Prop. 27(iii)
+
+
+def check_face_highres(fh):
+    assert fh["schema"] == "pbo-face-highres-1"
+    ex = fh["extraction"]
+    assert ex["grid"] == 42 and ex["atlas_px"] == 672 and ex["n_ok"] >= 5000
+    # 672 px atlas must be a downsample of the median source face (ArcFace template inter-ocular 70.48 px at 224)
+    assert ex["source_interocular_px"]["median"] * 224 / 70.4755 >= ex["atlas_px"]
+    for res in fh["by_sex"].values():
+        assert res["cross_fitted_all_faces"]["additivity_max_abs_error"] < 1e-6
+        for cell in res["tiers"].values():
+            assert cell["n_faces"] >= 50  # G11 aggregation floor for every published map
+        for cmp_ in res["paired_bootstrap_grid42_minus"].values():
+            assert cmp_["ci_95"][0] <= cmp_["ci_95"][1]
+    for n in fh["composite_counts"].values():
+        assert n >= 50
+    dt = fh.get("deletion_test")
+    if dt is not None:  # pixel-space faithfulness: report whatever sign it has, but every interval must be coherent
+        assert dt["cells_deleted_share"] == 0.10
+        for g in ("Female", "Male"):
+            n = {dt[g][k]["n"] for k in dt[g]}
+            assert len(n) == 1 and n.pop() >= 50, g
+            for k, c in dt[g].items():
+                assert c["ci_95"][0] <= c["estimate"] <= c["ci_95"][1], (g, k)

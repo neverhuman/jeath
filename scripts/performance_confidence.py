@@ -15,6 +15,9 @@ Q1  Speed dating: the institution-median SAT (``mn_sat``) legibility estimate re
     institution, partner, and session clusters (relabelling support; v15 numbers untouched).
 E25 Proposition 25 (dominance direction): closed-form witness threshold versus Monte Carlo.
 E26 Proposition 26 (shared-stereotype ceiling and outcome test): closed forms versus Monte Carlo.
+D1  Speed dating: the chooser's pre-outcome forecast of the partner's decision versus the partner's
+    record with other people, and calibration before meeting and at the end of the night.
+E27 Proposition 27 (agreement breeds confidence): closed-form agreement and validity versus Monte Carlo.
 L1  Cross-arena entry-versus-outcome ledger of verified published estimates (``LEDGER``).
 S1  Cross-theory prediction scorecard (``SCORECARD``; Tier-4 synthesis, explicitly not a test).
 """
@@ -866,14 +869,370 @@ def score(card) -> dict:
     return out
 
 
+# ----------------------------------------------------------------------------- W1: warm confidence, own vs other raters
+WARM_ATTRS = ("attr", "fun", "intel", "amb", "sinc")
+
+
+def analyze_warm_confidence(csv_path: Path) -> dict:
+    """Is the v16 'warm outlier confidence' complementarity a same-rater halo?
+
+    Within-chooser linear probability model of the yes decision on standardized agency (mean of the
+    intel, fun and amb ratings, the v16 definition), warmth (sinc), their product, and attractiveness.
+    Ratings come either from the deciding chooser (``own``, halo-prone) or from the other choosers who
+    met the same partner in the same session (``panel``, leave-one-out, at least three peers).
+    Intervals resample the 21 sessions. Exploratory: outside the confirmatory family.
+    """
+    data = csv_path.read_bytes()
+    if hashlib.sha256(data).hexdigest() != CONFIDENCE_INPUTS["speed_dating.csv"]["sha256"]:
+        raise ValueError("speed-dating checksum mismatch")
+    rows = list(csv.DictReader(data.decode("latin-1").splitlines()))
+
+    def num(v):
+        v = str(v).replace(",", "").strip()
+        return float(v) if v else np.nan
+
+    wave = np.array([num(r["wave"]) for r in rows])
+    sex = np.array([num(r["gender"]) for r in rows])  # 1 = male chooser
+    chooser = np.array([num(r["iid"]) for r in rows])
+    partner = np.array([num(r["pid"]) for r in rows])
+    yes = np.array([num(r["dec"]) for r in rows])
+    own = np.array([[num(r[a]) for a in WARM_ATTRS] for r in rows])
+    if len(np.unique(wave)) != 21 or len(rows) != 8378:
+        raise ValueError("unexpected speed-dating layout")
+    return warm_confidence_from_arrays(wave, sex, chooser, partner, yes, own)
+
+
+def leave_one_out_panel(wave, partner, own, min_peers=3):
+    """Mean rating of each partner by the *other* choosers in the same session (NaN below ``min_peers``)."""
+    panel = np.full_like(own, np.nan)
+    for event in np.unique(wave):
+        for person in np.unique(partner[wave == event]):
+            idx = np.flatnonzero((wave == event) & (partner == person))
+            vals = own[idx]
+            tot = np.nansum(vals, axis=0) - np.nan_to_num(vals)
+            peers = np.isfinite(vals).sum(axis=0) - np.isfinite(vals)
+            panel[idx] = np.divide(tot, peers, out=np.full_like(tot, np.nan), where=peers >= min_peers)
+    return panel
+
+
+def warm_confidence_from_arrays(wave, sex, chooser, partner, yes, own, draws_n=4000, seed=SEED + 1031):
+    """Estimator behind ``analyze_warm_confidence``; columns of ``own`` follow ``WARM_ATTRS``."""
+    own = np.array(own, dtype=np.float64)
+    own[(own < 1) | (own > 10)] = np.nan
+    panel = leave_one_out_panel(wave, partner, own)
+    sessions, s_idx = np.unique(wave, return_inverse=True)
+    rng = np.random.default_rng(seed)
+    draws = rng.integers(len(sessions), size=(draws_n, len(sessions)))
+    terms = ("agency", "warmth", "agency_x_warmth", "attractiveness")
+    out = {"definition": "agency = mean(intel, fun, amb); warmth = sinc; z-scored over complete rows; chooser fixed effects",
+           "terms": list(terms)}
+    boots = {}
+    for source, ratings in (("own", own), ("panel", panel)):
+        ok = np.isfinite(ratings).all(axis=1) & ((yes == 0) | (yes == 1))
+        ag = ratings[:, [1, 2, 3]].mean(axis=1)
+        z = lambda v: (v - v[ok].mean()) / v[ok].std()
+        za, zw, zt = z(ag), z(ratings[:, 4]), z(ratings[:, 0])
+        design = np.column_stack([za, zw, za * zw, zt])
+        res = {}
+        for code, key in ((1.0, "male_chooser_female_target"), (0.0, "female_chooser_male_target")):
+            sel = ok & (sex == code)
+            xx = np.zeros((len(sessions), 4, 4))
+            xy = np.zeros((len(sessions), 4))
+            n_rows = n_people = 0
+            for person in np.unique(chooser[sel]):
+                r_ = np.flatnonzero(sel & (chooser == person))
+                if len(r_) < 2:
+                    continue
+                x = design[r_] - design[r_].mean(axis=0)
+                y = yes[r_] - yes[r_].mean()
+                e = s_idx[r_[0]]
+                xx[e] += x.T @ x
+                xy[e] += x.T @ y
+                n_rows += len(r_)
+                n_people += 1
+            coef = np.linalg.solve(xx.sum(axis=0), xy.sum(axis=0))
+            bt = np.linalg.solve(xx[draws].sum(axis=1), xy[draws].sum(axis=1)[..., None])[..., 0]
+            boots[(source, key)] = bt
+            res[key] = {"n_decisions": n_rows, "n_choosers": n_people,
+                        "coefficients_pp_per_sd": {t: {"estimate": float(100 * c), "interval_95": [float(v) for v in 100 * np.quantile(b, [.025, .975])]}
+                                                   for t, c, b in zip(terms, coef, bt.T)}}
+        diff = 100 * (boots[(source, "male_chooser_female_target")] - boots[(source, "female_chooser_male_target")])
+        res["female_minus_male_target_pp_per_sd"] = {
+            t: {"estimate": float(res["male_chooser_female_target"]["coefficients_pp_per_sd"][t]["estimate"]
+                                  - res["female_chooser_male_target"]["coefficients_pp_per_sd"][t]["estimate"]),
+                "interval_95": [float(v) for v in np.quantile(diff[:, i], [.025, .975])]} for i, t in enumerate(terms)}
+        out[source] = res
+    return out
+
+
+# ----------------------------------------------------------------------------- D1: decision confidence before outcomes
+FORECAST_LEVELS = tuple(range(1, 11))
+CAPPED_WAVE = 12  # Fisman et al. data key: wave 12 limited how many partners a participant could accept
+
+
+def auc_rank(score, label) -> float:
+    """Mann--Whitney AUC with average ranks for ties (0.5 = chance); NaN when one class is empty."""
+    score = np.asarray(score, dtype=np.float64)
+    label = np.asarray(label, dtype=bool)
+    n1 = int(label.sum())
+    n0 = int(label.size - n1)
+    if n1 == 0 or n0 == 0:
+        return float("nan")
+    order = np.argsort(score, kind="mergesort")
+    ranks = np.empty(score.size, dtype=np.float64)
+    s_sorted = score[order]
+    i = 0
+    while i < score.size:
+        j = i
+        while j + 1 < score.size and s_sorted[j + 1] == s_sorted[i]:
+            j += 1
+        ranks[order[i:j + 1]] = 0.5 * (i + j) + 1.0
+        i = j + 1
+    return float((ranks[label].sum() - n1 * (n1 + 1) / 2.0) / (n1 * n0))
+
+
+def wilson(k: int, n: int, z: float = 1.959963984540054) -> list[float]:
+    if n == 0:
+        return [float("nan"), float("nan")]
+    p = k / n
+    den = 1.0 + z * z / n
+    mid = (p + z * z / (2 * n)) / den
+    half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / den
+    return [mid - half, mid + half]
+
+
+def partner_acceptance_record(iid, pid, dec, keep, min_others=2):
+    """For each row (chooser i, partner j): the share of the *other* people j met whom j accepted.
+
+    j's decision about i is left out, so the record never contains the outcome it is used to predict.
+    NaN when j has fewer than ``min_others`` other decisions among the ``keep`` rows.
+    """
+    acc_sum, acc_n, said = {}, {}, {}
+    for person, other, d in zip(iid[keep], pid[keep], dec[keep]):
+        acc_sum[person] = acc_sum.get(person, 0.0) + d
+        acc_n[person] = acc_n.get(person, 0) + 1
+        said[(person, other)] = d
+    record = np.full(np.shape(pid), np.nan)
+    for r_, (person, other) in enumerate(zip(iid, pid)):
+        if other not in acc_n:
+            continue
+        own_row = said.get((other, person))
+        tot = acc_sum[other] - (own_row if own_row is not None else 0.0)
+        cnt = acc_n[other] - (1 if own_row is not None else 0)
+        if cnt >= min_others:
+            record[r_] = tot / cnt
+    return record
+
+
+def analyze_decision_confidence(csv_path: Path) -> dict:
+    data = csv_path.read_bytes()
+    if hashlib.sha256(data).hexdigest() != CONFIDENCE_INPUTS["speed_dating.csv"]["sha256"]:
+        raise ValueError("speed-dating checksum mismatch")
+    rows = list(csv.DictReader(data.decode("latin-1").splitlines()))
+
+    def num(v):
+        v = str(v).replace(",", "").strip()
+        return float(v) if v else np.nan
+
+    cols = {k: np.array([num(r.get(k, "")) for r in rows]) for k in
+            ("wave", "gender", "iid", "pid", "dec", "dec_o", "match", "prob", "expnum", "match_es")}
+    if len(np.unique(cols["wave"])) != 21 or len(rows) != 8378:
+        raise ValueError("unexpected speed-dating layout")
+    return decision_confidence_from_arrays(**cols)
+
+
+def decision_confidence_from_arrays(wave, gender, iid, pid, dec, dec_o, match, prob, expnum, match_es,
+                                    draws_n=4000, seed=SEED + 1041) -> dict:
+    """Does a chooser's pre-outcome forecast predict the partner's decision, and how does it compare with
+    the partner's record with other people?  ``gender`` 1 = male chooser; ``prob`` is the 1--10 answer to
+    "how probable is it that this person will say yes to you?", given before any decision is revealed.
+    """
+    wave, gender, iid, pid = (np.asarray(a, dtype=np.float64) for a in (wave, gender, iid, pid))
+    dec, dec_o, match = (np.asarray(a, dtype=np.float64) for a in (dec, dec_o, match))
+    prob, expnum, match_es = (np.array(a, dtype=np.float64) for a in (prob, expnum, match_es))
+    prob[(prob < 1) | (prob > 10)] = np.nan
+    keep = (wave != CAPPED_WAVE) & np.isin(dec, (0.0, 1.0)) & np.isin(dec_o, (0.0, 1.0)) & np.isfinite(pid)
+    partner_record = partner_acceptance_record(iid, pid, dec, keep)
+    ok = keep & np.isfinite(prob) & np.isfinite(partner_record)
+    if not ok.any():
+        raise ValueError("no decisions with both a forecast and a partner record")
+    level = np.floor(prob + 0.5)
+    sessions = np.unique(wave[ok])
+    rng = np.random.default_rng(seed)
+    draws = rng.integers(len(sessions), size=(draws_n, len(sessions)))
+    out = {
+        "definition": ("Within-chooser AUC (Mann-Whitney, ties = 1/2) averaged over choosers with both outcomes; "
+                       "partner record = partner's acceptance rate of the other people met that night (leave-one-out, >=2 others); "
+                       f"wave {CAPPED_WAVE} excluded (acceptances capped); forecast answers outside 1-10 set missing"),
+        "n_sessions": int(len(sessions)),
+        "bootstrap": f"{draws_n} session-cluster resamples",
+    }
+    by_sex = {}
+    for code, key in ((0.0, "women"), (1.0, "men")):
+        sel = ok & (gender == code)
+        people = np.unique(iid[sel])
+        stats = {m: [] for m in ("forecast_partner", "record_partner", "forecast_own")}
+        sess_of = []
+        for person in people:
+            r_ = np.flatnonzero(sel & (iid == person))
+            a1 = auc_rank(prob[r_], dec_o[r_] == 1)
+            a2 = auc_rank(partner_record[r_], dec_o[r_] == 1)
+            a3 = auc_rank(prob[r_], dec[r_] == 1)
+            stats["forecast_partner"].append(a1)
+            stats["record_partner"].append(a2)
+            stats["forecast_own"].append(a3)
+            sess_of.append(np.searchsorted(sessions, wave[r_[0]]))
+        sess_of = np.array(sess_of)
+        arr = {m: np.array(v) for m, v in stats.items()}
+        both = np.isfinite(arr["forecast_partner"]) & np.isfinite(arr["record_partner"])
+        res = {"n_decisions": int(sel.sum()), "n_choosers": int(len(people))}
+        # Per-session sums let each bootstrap draw re-weight sessions without recomputing AUCs.
+        def boot_mean(vals, mask):
+            s = np.bincount(sess_of[mask], weights=vals[mask], minlength=len(sessions))
+            c = np.bincount(sess_of[mask], minlength=len(sessions)).astype(np.float64)
+            return float(s.sum() / c.sum()), s[draws].sum(axis=1) / c[draws].sum(axis=1)
+        for m, lbl in (("forecast_partner", "forecast_predicts_partner_yes"),
+                       ("record_partner", "partner_record_predicts_partner_yes"),
+                       ("forecast_own", "forecast_predicts_own_yes")):
+            mask = np.isfinite(arr[m]) if m == "forecast_own" else both
+            est, bt = boot_mean(arr[m], mask)
+            res[lbl] = {"auc": est, "ci_95": quantile_ci(bt), "n_choosers": int(mask.sum())}
+        est_d, bt_d = boot_mean(np.where(both, arr["record_partner"] - arr["forecast_partner"], 0.0), both)
+        res["record_minus_forecast_auc"] = {"estimate": est_d, "ci_95": quantile_ci(bt_d)}
+        # Projection: within-chooser regression of the forecast on own and partner decisions.
+        xx = np.zeros((len(sessions), 2, 2))
+        xy = np.zeros((len(sessions), 2))
+        for person in people:
+            r_ = np.flatnonzero(sel & (iid == person))
+            if len(r_) < 2:
+                continue
+            X = np.column_stack([dec[r_], dec_o[r_]])
+            X = X - X.mean(axis=0)
+            y = prob[r_] - prob[r_].mean()
+            e = np.searchsorted(sessions, wave[r_[0]])
+            xx[e] += X.T @ X
+            xy[e] += X.T @ y
+        coef = np.linalg.solve(xx.sum(axis=0), xy.sum(axis=0))
+        bt = np.linalg.solve(xx[draws].sum(axis=1), xy[draws].sum(axis=1)[..., None])[..., 0]
+        res["forecast_points_per_decision"] = {
+            "own_yes": {"estimate": float(coef[0]), "ci_95": quantile_ci(bt[:, 0])},
+            "partner_yes": {"estimate": float(coef[1]), "ci_95": quantile_ci(bt[:, 1])},
+            "own_over_partner_ratio": {"estimate": float(coef[0] / coef[1]), "ci_95": quantile_ci(bt[:, 0] / bt[:, 1])},
+        }
+        res["mean_forecast_tenths_exploratory"] = float(np.mean(prob[sel]) / 10.0)
+        res["partner_yes_rate"] = float(np.mean(dec_o[sel]))
+        by_sex[key] = res
+    out["by_chooser_sex"] = by_sex
+    curve = []
+    for lv in FORECAST_LEVELS:
+        s = ok & (level == lv)
+        n = int(s.sum())
+        k_p = int(dec_o[s].sum())
+        k_o = int(dec[s].sum())
+        curve.append({"forecast": lv, "n": n,
+                      "partner_yes": k_p / n if n else float("nan"), "partner_yes_wilson_95": wilson(k_p, n),
+                      "own_yes": k_o / n if n else float("nan"), "own_yes_wilson_95": wilson(k_o, n)})
+    out["by_forecast_level_pooled"] = curve
+    out["n_decisions"] = int(ok.sum())
+    out["n_choosers"] = int(len(np.unique(iid[ok])))
+    # Calibration in the large, before meeting and at the end of the night (same people).
+    people = np.unique(iid[keep])
+    per = []
+    for person in people:
+        r_ = np.flatnonzero(keep & (iid == person))
+        e0 = expnum[r_][np.isfinite(expnum[r_])]
+        e1 = match_es[r_][np.isfinite(match_es[r_])]
+        per.append((gender[r_[0]], len(r_), dec_o[r_].mean(), np.nansum(match[r_]),
+                    e0[0] if e0.size else np.nan, e1[0] if e1.size else np.nan))
+    per = np.array(per, dtype=np.float64)
+    rng_p = np.random.default_rng(seed + 1)
+    cal = {}
+    for code, key in ((0.0, "women"), (1.0, "men")):
+        g = per[(per[:, 0] == code) & np.isfinite(per[:, 4]) & np.isfinite(per[:, 5]) & (per[:, 4] <= 20)]
+        n_met = g[:, 1]
+        before = 100.0 * (g[:, 4] / 20.0 - g[:, 2])
+        after = 100.0 * (g[:, 5] - g[:, 3]) / n_met
+        idx = rng_p.integers(len(g), size=(draws_n, len(g)))
+        cal[key] = {
+            "n_people": int(len(g)),
+            "before_meeting_expected_minus_actual_share_accepting_pp": {"estimate": float(before.mean()), "ci_95": quantile_ci(before[idx].mean(axis=1))},
+            "end_of_night_expected_minus_actual_matches_pp_of_met": {"estimate": float(after.mean()), "ci_95": quantile_ci(after[idx].mean(axis=1))},
+            "expected_share_accepting_before": float((g[:, 4] / 20.0).mean()),
+            "actual_share_accepting": float(g[:, 2].mean()),
+            "expected_matches_end_of_night": float(g[:, 5].mean()),
+            "actual_matches": float(g[:, 3].mean()),
+        }
+        a = per[(per[:, 0] == code) & np.isfinite(per[:, 5])]
+        cal[key]["all_waves_end_of_night"] = {"n_people": int(len(a)), "expected_matches": float(a[:, 5].mean()), "actual_matches": float(a[:, 3].mean())}
+    out["calibration_before_and_after_meeting"] = cal
+    out["epistemic_tier"] = "measured (exploratory; outside the confirmatory family)"
+    return out
+
+
+# ----------------------------------------------------------------------------- E27: agreement breeds confidence
+def e27_closed_form(var_t, var_h, var_c, var_o, var_e, m, k):
+    """Agreement-based confidence L and validity R^2 for the two-way jury mean (Eq. twoway)."""
+    den = var_t + var_h + var_c / k + var_o / m + var_e / (m * k)
+    agreement = (var_t + var_h + var_c / k) / den
+    validity = var_t / den
+    return agreement, validity
+
+
+def analyze_proposition_27_e27() -> dict:
+    var_t, var_h, var_c, var_o, var_e = 1.0, 0.5, 1.0, 1.5, 2.0
+    rng = np.random.default_rng(SEED + 1051)
+    n = 100_000
+    rows = []
+    for k in (1, 8):
+        for m in (1, 2, 4, 8, 16, 32, 64):
+            t = rng.normal(0, math.sqrt(var_t), n)
+            h = rng.normal(0, math.sqrt(var_h), n)
+            c = rng.normal(0, math.sqrt(var_c / k), n)  # mean of k context states
+            jury = [t + h + c + rng.normal(0, math.sqrt(var_o / m + var_e / (m * k)), n) for _ in range(2)]
+            sim_l = float(np.corrcoef(jury[0], jury[1])[0, 1])
+            sim_r = float(np.corrcoef(jury[0], t)[0, 1] ** 2)
+            cf_l, cf_r = e27_closed_form(var_t, var_h, var_c, var_o, var_e, m, k)
+            rows.append({"judges_m": m, "contexts_k": k,
+                         "agreement_confidence": {"closed_form": cf_l, "monte_carlo": sim_l},
+                         "validity_r2": {"closed_form": cf_r, "monte_carlo": sim_r},
+                         "gap": cf_l - cf_r})
+    lone = []
+    for k in (1, 8):
+        t = rng.normal(0, math.sqrt(var_t), n)
+        shared = t + rng.normal(0, math.sqrt(var_h), n) + rng.normal(0, math.sqrt(var_c / k), n) + rng.normal(0, math.sqrt(var_o), n)
+        imp = [shared + rng.normal(0, math.sqrt(var_e / k), n) for _ in range(2)]
+        den = var_t + var_h + var_c / k + var_o + var_e / k
+        lone.append({"contexts_k": k,
+                     "self_consistency": {"closed_form": (den - var_e / k) / den, "monte_carlo": float(np.corrcoef(imp[0], imp[1])[0, 1])},
+                     "excess_over_jury_agreement": var_o / den})
+    err = max(max(abs(r[q]["closed_form"] - r[q]["monte_carlo"]) for q in ("agreement_confidence", "validity_r2")) for r in rows)
+    err = max(err, max(abs(r["self_consistency"]["closed_form"] - r["self_consistency"]["monte_carlo"]) for r in lone))
+    lim1 = (var_h + var_c) / (var_t + var_h + var_c)
+    lim_inf = var_h / (var_t + var_h)
+    return {
+        "proposition": 27,
+        "parameters": {"var_trait": var_t, "var_halo": var_h, "var_context": var_c, "var_observer": var_o, "var_residual": var_e, "agents_per_cell": n},
+        "grid": rows,
+        "lone_judge_self_consistency": lone,
+        "gap_limit_many_judges_one_context": lim1,
+        "gap_limit_many_judges_many_contexts": lim_inf,
+        "max_abs_error": float(err),
+        "seed": SEED + 1051,
+        "epistemic_tier": "derived + Monte Carlo check",
+    }
+
+
 # ----------------------------------------------------------------------------- entry point
 def analyze_confidence(inputs_dir: Path, root: Path = ROOT) -> dict:
     inputs_dir = Path(inputs_dir)
     gss = analyze_gss_audience(resolve("gss_all.rda", inputs_dir), root)
     hcmst = analyze_hcmst_relative_income(resolve("hcmst2017_public_v1.1.dta", inputs_dir))
     sat = analyze_sat_proxy(resolve("speed_dating.csv", inputs_dir))
+    warm = analyze_warm_confidence(resolve("speed_dating.csv", inputs_dir))
+    decision = analyze_decision_confidence(resolve("speed_dating.csv", inputs_dir))
     e25 = analyze_proposition_25_e25()
     e26 = analyze_proposition_26_e26()
+    e27 = analyze_proposition_27_e27()
     check_ledger(LEDGER)
     check_scorecard(SCORECARD)
     result = {
@@ -884,8 +1243,11 @@ def analyze_confidence(inputs_dir: Path, root: Path = ROOT) -> dict:
         "gss_audience_women_leaders": gss,
         "hcmst_relative_income": hcmst,
         "speed_dating_sat_proxy": sat,
+        "speed_dating_warm_confidence": warm,
         "proposition_25_e25": e25,
         "proposition_26_e26": e26,
+        "speed_dating_decision_confidence": decision,
+        "proposition_27_e27": e27,
         "ledger": list(LEDGER),
     }
     check_scorecard_numbers(SCORECARD, gss, hcmst)
