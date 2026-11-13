@@ -5,26 +5,30 @@
 \begin{center}
 {\fontsize{22}{26}\selectfont\bfseries\color{ink}Intelligence Is {\color{notred}Not} Authority\par}
 \vspace{4pt}
-{\normalsize\bfseries\color{slate}Stopping a Model Is Not Stopping Its Effects, and a Fence Enforces Only What Is Written Down\par}
+{\normalsize\bfseries\color{slate}Stopping a Model Is Not Stopping Its Effects\par}
 \vspace{5pt}
-{\normalsize Jepson Taylor\enspace{\small\color{slate}(\href{mailto:jepson@veox.ai}{\nolinkurl{jepson@veox.ai}})}\enspace\textperiodcentered\enspace{\small\color{slate}12 November 2026}\par}
+{\normalsize Jepson Taylor\enspace{\small\color{slate}(\href{mailto:jepson@veox.ai}{\nolinkurl{jepson@veox.ai}})}\enspace\textperiodcentered\enspace{\small\color{slate}\paperdate}\par}
 \end{center}
 \vspace{2pt}
 \begin{center}\begin{minipage}{.96\textwidth}\small
 \textbf{Abstract.}\enspace
-A model's ability to propose an action is not the right to commit it. We hold that right as state outside the model and
-check it where effects commit. An operator can stop an agent in three places:
-halting inference, revoking admission at a broker, or fencing the sink that commits effects. On real broker and sink
-processes with a \vsixStopLatency\,s mean tool latency, \vsixHaltRange{} effects committed after a halt took
-effect, \vsixRevokeRange{} after a revocation, and \vsixFenceRange{} after a fence, which discarded \vsixFenceLost{}
-legitimate calls in flight. A same-model reviewer admitted \vsixReviewerState{} unauthorized proposals whose violation
-lies in state (a replayed budget, a withdrawn issuer, a stale revision) and \vsixReviewerVisible{} whose violation is
-visible in the proposal. A gate that reads state has no such blind spot by construction. Its blind spot is what its
-specification omits: on AgentDojo, with grants written without the benchmark's solutions, injections that stayed
-inside the grant succeeded in \vsixStrictInside{} episodes, and benign utility was \vsixStrictUtility{} with
-mediation and \vsixUnprotectedUtility{} without. Mediation thus turns a learned blind spot into a written
-specification gap. Every guarantee holds only at sinks that can refuse a stale epoch, for local open-weight models,
-and at a fixed grant.
+AI control protocols act on proposals: a monitor reads what an agent proposes, and an agent that is caught is stopped.
+Stopping the model does not stop the effects it has already dispatched. We hold an agent's authority as state, checked
+where effects commit, which separates three ways to stop an agent: halt inference, revoke admission at a broker, or
+fence the sink so that it refuses work issued before the stop. On real broker and sink processes, effects that commit
+after a stop decision grow as \(\lambda(L+w)\), for call rate \(\lambda\), enforcement delay \(L\) and tool latency
+\(w\). The fence removes the \(\lambda w\) term (\vsixHaltRange{} effects committed after a halt took effect,
+\vsixRevokeRange{} after a revocation and, by design, \vsixFenceRange{} after a fence, which discarded \vsixFenceLost{}
+legitimate calls); only faster enforcement removes \(\lambda L\). A same-model reviewer shown the rules and the state
+admitted \vsixReviewerState{} unauthorized proposals whose violation lay in state and \vsixReviewerVisible{} whose
+violation was visible; reasoning at length (a median of \vsixReasonerTokens{} tokens per review instead of
+\vsixReviewerTokens) brought the first to \vsixReasonerState. A gate is blind instead to what its specification omits.
+On AgentDojo, a specification written without the benchmark's solutions stopped its injections (\vsixStrictNative,
+against \vsixUnprotectedNative{} unprotected) but completed \vsixStrictUtility{} benign tasks against
+\vsixUnprotectedUtility, and injections written to stay inside it succeeded in \vsixStrictInside. A fence needs a sink
+that can refuse a stale epoch: of \vsixFenceMechanisms{} mechanisms on PostgreSQL, etcd and a filesystem, only
+\vsixFenceAllThree{} was enforced by the surface, refused a forged epoch and let no stale write through. All models are
+small open-weight checkpoints run locally.
 \end{minipage}\end{center}
 \vspace{3pt}
 \input{generated/v6-hero-fig}

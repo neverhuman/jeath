@@ -1,13 +1,14 @@
 \section{Conclusion}\label{sec:conclusion}
 
-Intelligence lives in proposals and authority lives in state. Holding authority as state at the sink, and checking it
-when an effect commits, makes an agent's reach independent of how it proposes: halting a model stops new proposals,
-and only a fence stops the effects already in flight. The independence is exactly as wide as the specification. A
-gate that reads state has no learned blind spot for an adversary to search out, but it is blind to whatever its
-specification does not name, and a more capable proposer finds more of that, not less. Mediation does not remove the
-safety problem; it moves it from a model's dispositions, which no one can enumerate, to a written specification, which
-anyone can read, test and argue about. The costs move with it: legitimate work a coarse specification refuses, work in
-flight a fence discards, and surfaces that cannot refuse a stale epoch at all.
+Intelligence lives in proposals and authority lives in state. Holding authority as state at the sink, and checking
+it when an effect commits, separates stopping a model from stopping its effects. Halting a model stops new proposals;
+a fence also stops the effects already in flight; and only faster enforcement shortens the delay before either acts. A
+gate that reads state does not depend on a reviewer's prompt or token budget, but it enforces only what its
+specification names. We conjecture that this is the general shape of mediation: it moves the safety problem from a
+model's dispositions, which no one can enumerate, to a written specification, which anyone can read, test and argue
+about. The costs move with it: legitimate work a coarse specification refuses (Section~\ref{sec:v6cost}), work in
+flight a fence discards (Section~\ref{sec:v6stop}), and surfaces that cannot refuse a stale epoch at all
+(Section~\ref{sec:v6boundary}).
 
 Three questions decide whether this is enough. Which external surfaces can enforce an epoch themselves rather than
 trust the writer to send one (Section~\ref{sec:v6boundary})? How fine must a specification be before its cost in

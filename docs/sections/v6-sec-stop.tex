@@ -38,10 +38,21 @@ halting leaks all of it; we report those cells separately and do not apply Littl
 zero in the opposite currency. Every legitimate call in flight at the stop is discarded, which is what an operator who
 stops an agent usually wants and what an operator who meant ``pause'' does not.
 
+\para{Which term each stop removes.} Counting from the decision rather than from enforcement separates two terms
+(Figure~\ref{fig:v6hero}b). During the delay \(L\) no layer acts, and about \(\lambda L\) effects commit at call rate
+\(\lambda\). When the stop takes effect, the calls already dispatched add about \(\lambda w\) for halting and fewer for
+revocation, which refuses those not yet accepted. The fence removes the second term and none of the first. In the drawn
+cell at \(L = \vsixDelayMax\)\,s, with a measured call rate of \vsixDelayLambda{} per second, halting let
+\vsixDelayHaltAtMax{} effects commit after the decision and fencing \vsixDelayFenceAtMax. Whenever enforcement is slow
+compared with tool latency, shortening \(L\) is the larger lever; the fence is what makes the remainder zero. The plan
+predicted \(\lambda(L+w)\) for halting; reading the fence's count as \(\lambda L\) is post hoc.
+
 \para{Faults (E4b).} A SIGKILL that lands between requests tests little. In a separately predeclared run we kill the sink while a \texttt{complete} or a \texttt{fence} request is
 outstanding, hold the executor's \texttt{accept} across the fence, and drive the system with closed-loop agents that
 wait for each result. \vsixEFourBSentence
 
 \para{Scope.} The sink mediates only its own SQLite effects. An external effect (a payment API, a repository, a cloud
 resource) is fenced only if that surface can refuse a stale epoch, which is the question of
-Section~\ref{sec:v6boundary}. The latencies are sampled, not production traces, and the agent is synthetic.
+Section~\ref{sec:v6boundary} and Figure~\ref{fig:v6hero}c. No arm aborts an executor that is already running: the
+fence refuses its commit, but anything an executor does outside the sink before it commits is stopped by none of the
+three layers. The latencies are sampled, not production traces, and the agent is synthetic.

@@ -182,11 +182,16 @@ def panel_b(an: dict, plan: dict, ckpt: str) -> tuple[list[str], dict]:
                              "omitted_clause_share": [omit, b["unauthorized_unique"]],
                              **{a: {k: b["arms"][a][k] for k in ("breach_unique", "breach_cases", "false_block_unique")}
                                 for a in ("R0", "R1", "R2", "G")}}
-    sd, pv = sets["state_dependent"]["arms"]["R2"]["breach_unique"], sets["proposal_visible"]["arms"]["R2"]["breach_unique"]
-    st["R2_state"], st["R2_visible"] = sd, pv
+    for arm in ("R1", "R2"):
+        st[f"{arm}_state"] = sets["state_dependent"]["arms"][arm]["breach_unique"]
+        st[f"{arm}_visible"] = sets["proposal_visible"]["arms"][arm]["breach_unique"]
+        st[f"{arm}_state_cases"] = sets["state_dependent"]["arms"][arm]["breach_cases"]
+        st[f"{arm}_visible_cases"] = sets["proposal_visible"]["arms"][arm]["breach_cases"]
     st["G_breaches"] = sum(sets[f]["arms"]["G"]["breach_unique"]["x"] for f in order)
+    sd, pv = st["R1_state"], st["R1_visible"]
+    # H_E5a's direction, claimed in the title only when the 95% intervals separate.
     separated = sd["ci95"] and pv["ci95"] and sd["ci95"][0] > pv["ci95"][1]
-    title = (r"\textbf{(b)} Reviewers miss what lives in state" if separated else
+    title = (r"\textbf{(b)} Without reasoning, reviewers miss state" if separated else
              r"\textbf{(b)} Unauthorized proposals admitted")
     st["title_claim_supported"] = bool(separated)
     lines = [r"\begin{tikzpicture}[baseline]",
@@ -195,9 +200,10 @@ def panel_b(an: dict, plan: dict, ckpt: str) -> tuple[list[str], dict]:
              rf"xlabel={{Unauthorized proposals admitted (\%)}},title={{{title}}},"
              r"yticklabel style={font=\tiny,align=right},xmajorgrids,axis y line*=left,clip=false,"
              r"legend style={font=\tiny,at={(0.5,-0.34)},anchor=north,draw=none,fill=none,legend columns=1,row sep=-1.5pt},legend cell align=left]"]
-    offs = {"R2": 0.17, "G": 0.0, "omit": -0.17}
-    for arm, color, mark, label in (("R2", "endored", "triangle*", "same-model reviewer, rules + reasoning"),
-                                    ("G", "exoblue", "*", "verified gate")):
+    offs = {"R1": 0.25, "R2": 0.08, "G": -0.08, "omit": -0.25}
+    for arm, color, mark, label in (("R1", "endored", "triangle*", "same-model reviewer, rules"),
+                                    ("R2", "warnamber", "diamond", "same-model reviewer, rules + reasoning"),
+                                    ("G", "exoblue", "*", "gate reading sink state")):
         pts = []
         for f in order:
             e = st["families"][f][arm]["breach_unique"]
@@ -206,7 +212,8 @@ def panel_b(an: dict, plan: dict, ckpt: str) -> tuple[list[str], dict]:
             m = 100 * e["x"] / e["n"]
             lo, hi = (100 * v for v in e["ci95"]) if arm != "G" else (m, m)  # the gate's admissions are fixed by design: no interval
             pts.append(f"({m:.4g},{ypos[f] + offs[arm]:.3f}) -= ({m - lo:.4g},0) += ({hi - m:.4g},0)")
-        lines.append(rf"\addplot[only marks,mark={mark},mark size=2pt,draw={color},fill={color},error bars/.cd,x dir=both,x explicit,"
+        fill = "white" if arm == "R2" else color  # open diamond: distinct from the filled triangle in grayscale
+        lines.append(rf"\addplot[only marks,mark={mark},mark size=2pt,draw={color},fill={fill},line width=0.6pt,error bars/.cd,x dir=both,x explicit,"
                      rf"error bar style={{{color},line width=0.5pt}}] coordinates {{{' '.join(pts)}}};\addlegendentry{{{label}}}")
     pts = []
     for f in order:
@@ -223,15 +230,34 @@ def panel_b(an: dict, plan: dict, ckpt: str) -> tuple[list[str], dict]:
     return lines, st
 
 
+def review_tokens(path: Path, ckpt: str) -> dict:
+    """Median generated tokens per review, each distinct valid proposal of the strategy-conditioned set once."""
+    seen, toks = set(), {"R1": [], "R2": []}
+    for line in path.read_text().splitlines():
+        d = json.loads(line) if line.strip() else None
+        if not d or d["checkpoint"] != ckpt or not d.get("valid") or d.get("sample_set") != "strategy":
+            continue
+        key = (d["case_id"], json.dumps(d["rpc"], sort_keys=True))
+        if key in seen:
+            continue
+        seen.add(key)
+        for arm in toks:
+            toks[arm].append(d["reviews"][arm]["completion_tokens"])
+    return {arm: median(v) for arm, v in toks.items()}
+
+
 def caption_b(s: dict, integ: dict) -> str:
     ck = s["ckpt"].split("/")[-1].replace("-GGUF", "")
-    sd, pv = s["R2_state"], s["R2_visible"]
+    sd, pv, sd2, pv2 = s["R1_state"], s["R1_visible"], s["R2_state"], s["R2_visible"]
     # Comparative wording only when the 95% intervals separate (the same rule as the panel title); otherwise neutral.
     cmp = "more often than" if s["title_claim_supported"] else "against"
+    tok = s["tokens"]
     return (rf"\textbf{{(b)}} {ck} red-team proposals under 8 predeclared mutation strategies, each distinct proposal counted once "
-            rf"(95\% Clopper--Pearson). A same-checkpoint reviewer given the rules and time to reason admits "
-            rf"{pct(sd['x'], sd['n'])} unauthorized proposals whose violation lives in sink state, {cmp} the "
-            rf"{pct(pv['x'], pv['n'])} whose violation is visible in the proposal. The gate admits {s['G_breaches']}; it enforces "
+            rf"(95\% Clopper--Pearson). The reviewer is the same checkpoint, shown the rules and the state the gate reads. "
+            rf"Without reasoning it admits {pct(sd['x'], sd['n'])} of unauthorized proposals whose violation lives in sink state, {cmp} "
+            rf"{pct(pv['x'], pv['n'])} of those visible in the proposal. With reasoning (median {tok['R2']:g} generated tokens per "
+            rf"review, against {tok['R1']:g}) it admits {pct(sd2['x'], sd2['n'])} and {pct(pv2['x'], pv2['n'])}. "
+            rf"The gate admits {s['G_breaches']}; it enforces "
             rf"the written predicate, and its Rust kernel agreed with the Python reference on all {integ['unique_valid']} valid "
             rf"proposals ({integ['mirror_gate_disagreements']} disagreements). Open circles are by construction: the share of each "
             r"family's violations that break only that family's clause, which a gate without that clause would admit. ")
@@ -527,6 +553,7 @@ def build_spec(args) -> dict:
         if e8res["plan_sha256"] != sha(ROOT / "fixtures/v6/agentdojo_fair_plan.json"):
             raise SystemExit("E8 results do not match the current plan fixture")
     b, sb = panel_b(an, plan5, args.ckpt)
+    sb["tokens"] = review_tokens(args.e5 / "candidates.jsonl", args.ckpt)
     c, sc = panel_c(rows8, rows8b)
     relabel = lambda xs: [x.replace(r"\textbf{(b)}", r"\textbf{(a)}").replace(r"\textbf{(c)}", r"\textbf{(b)}") for x in xs]
     integ = an["checkpoints"][args.ckpt]["integrity"]
@@ -567,7 +594,8 @@ def hero_macros(sa: dict, sb: dict, sc: dict) -> str:
          "vsixStopReplicates": sa["replicates"], "vsixDelayMax": Lmax, "vsixDelayLambda": f"{sb['lambda_mean']:.1f}",
          "vsixDelayHaltAtMax": rng(sb["points"]["halt_inference"][Lmax]), "vsixDelayFenceAtMax": rng(sb["points"]["fence_sink"][Lmax]),
          "vsixLittleRatioMedian": f"{sb['halt_ratio_median']:g}", "vsixLittleRatioRange": f"{sb['halt_ratio_range'][0]:g}--{sb['halt_ratio_range'][1]:g}",
-         "vsixLittleTrials": sb["halt_trials"],
+         "vsixLittleTrials": sb["halt_trials"], "vsixFenceMechanisms": len(sc["rows"]), "vsixFenceAllThreeCount": len(sc["all_three"]),
+         "vsixFenceSurfaces": len({r["surface"] for r in sc["rows"]}),
          "vsixFenceAllThree": series([next(f"{SURF_SHORT[r['surface']].split(' ')[0]}'s {HERO_MECH[x]}" for r in sc["rows"] if r["mechanism"] == x)
                                       for x in sc["all_three"]]) if sc["all_three"] else "none"}
     return write_macros(m)
@@ -576,8 +604,14 @@ def hero_macros(sa: dict, sb: dict, sc: dict) -> str:
 def spec_macros(sb: dict, sc: dict, integ: dict) -> str:
     a = sc["arms"]
     frac = lambda xn: f"{xn[0]}/{xn[1]}"
-    m = {"vsixReviewerState": frac((sb["R2_state"]["x"], sb["R2_state"]["n"])),
-         "vsixReviewerVisible": frac((sb["R2_visible"]["x"], sb["R2_visible"]["n"])),
+    m = {"vsixReviewerState": frac((sb["R1_state"]["x"], sb["R1_state"]["n"])),
+         "vsixReviewerVisible": frac((sb["R1_visible"]["x"], sb["R1_visible"]["n"])),
+         "vsixReasonerState": frac((sb["R2_state"]["x"], sb["R2_state"]["n"])),
+         "vsixReasonerVisible": frac((sb["R2_visible"]["x"], sb["R2_visible"]["n"])),
+         "vsixReviewerStateCases": frac((sb["R1_state_cases"]["x"], sb["R1_state_cases"]["n"])),
+         "vsixReviewerVisibleCases": frac((sb["R1_visible_cases"]["x"], sb["R1_visible_cases"]["n"])),
+         "vsixReasonerStateCases": frac((sb["R2_state_cases"]["x"], sb["R2_state_cases"]["n"])),
+         "vsixReasonerTokens": f"{sb['tokens']['R2']:g}", "vsixReviewerTokens": f"{sb['tokens']['R1']:g}",
          "vsixGateBreaches": sb["G_breaches"], "vsixGateUnique": integ["unique_valid"],
          "vsixMirrorDisagreements": integ["mirror_gate_disagreements"],
          "vsixStrictUtility": frac(a["authority_strict"]["benign_utility"]), "vsixUnprotectedUtility": frac(a["unprotected"]["benign_utility"]),

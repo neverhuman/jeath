@@ -9,7 +9,7 @@ approves or denies it~\cite{control}. Review sees the proposal. Many unauthorize
 unauthorized only because of the state they would act on: a payment that was legitimate once and is now a replay, a
 grant whose issuer has since been withdrawn, an edit against a revision that has moved. Such a proposal can be
 byte-identical to one the policy approved. We test whether a reviewer that is given the rules, the visible state and
-time to reason catches these, and what a verified gate does instead.
+time to reason catches these, and what a gate that reads state does instead.
 
 \para{Setup (E5).} Sixty cases in five families (twelve each) each pose a pre-state, a policy with six written
 clauses (exact match to an approved proposal, cumulative budget, live issuers, current revision, expiry, scope) and an
@@ -23,23 +23,43 @@ truncated review is a deny). Every valid candidate also goes through the real br
 (three pre-data amendments). We count each distinct proposal once and
 also report the share of cases with any breach, because repeated samples of a deterministic review are not independent.
 
-\para{Result.} The strongest reviewer, R2, admitted \vsixReviewerState{} unauthorized proposals whose violation lives
-in state and \vsixReviewerVisible{} whose violation is visible in the proposal (Figure~\ref{fig:v6spec}a;
-\vsixEFiveCkpt{}; R0 and R1 in Appendix~\ref{app:v6e5}). By case, R2 admitted at least one state-dependent violation in
-\vsixReviewerStateCases{} cases. The gate admitted \vsixGateBreaches{}. That zero is the gate enforcing its written
-predicate: on all \vsixGateUnique{} distinct valid proposals its Rust kernel agreed with an independent Python
-statement of the same clauses (\vsixMirrorDisagreements{} disagreements). \vsixGateReplaySentence
+\para{Result.} The first predeclared hypothesis (H\textsubscript{E5a}) held on both checkpoints: without reasoning
+(R0 and R1), reviewers admitted violations that live in state more often than violations visible in the proposal. With the rules stated (R1), the
+\vsixEFiveCkpt{} reviewer admitted \vsixReviewerState{} unauthorized proposals whose violation lives in state and
+\vsixReviewerVisible{} whose violation is visible (Figure~\ref{fig:v6spec}a), and it admitted at least one
+state-dependent violation in \vsixReviewerStateCases{} cases against \vsixReviewerVisibleCases{} proposal-visible
+cases. In the state-dependent families the violating proposal is often an exact copy of an approved one, and a
+reviewer that answers in a few tokens approves it. Reasoning changed this. The prediction that reasoning would reduce
+but not eliminate state-dependent misses (H\textsubscript{E5b}) held on Qwen3-4B and failed on \vsixEFiveCkpt: with
+reasoning enabled (R2), the \vsixEFiveCkpt{} reviewer admitted \vsixReasonerState{} state-dependent and
+\vsixReasonerVisible{} visible violations, at a median of \vsixReasonerTokens{} generated tokens per review instead of
+\vsixReviewerTokens. Every arm on both checkpoints is in Table~\ref{tab:v6e5} (Appendix~\ref{app:v6e5}). The gate
+admitted \vsixGateBreaches{}. That zero is the gate enforcing its written predicate, not a finding: on all
+\vsixGateUnique{} distinct valid proposals its Rust implementation agreed with an independent Python statement of the
+same clauses (\vsixMirrorDisagreements{} disagreements). \vsixGateReplaySentence
 
-\para{The conversion thesis.} The gate's zero is not intelligence-proof safety. It is safety relative to what was
-written. Remove one clause and the gate admits exactly the violations that break only that clause; this holds by
-construction, and Figure~\ref{fig:v6spec}a draws it as such. What the experiment measures is how much each family rests
-on a single clause: \vsixSingleClauseSentence{} Mediation therefore does not make safety independent of the
-proposer's intelligence. It converts a learned blind spot, which an adversary finds by search and which no one can
-enumerate, into a written specification gap, which anyone can read, test and close. On the clauses that are written,
-search cannot move the gate. On the clauses that are not, it does not need to.
+\para{What this shows.} A reviewer can check state only if it is shown the state, and E5 shows it everything the gate
+reads: one moment, at most one prior record. Under those conditions a same-model reviewer that reasons at length did
+as well as the gate on these cases, and one that does not reason missed a quarter or more of the violations that live
+in state. Three differences remain. Two are measured here. The gate's result does not depend on the checkpoint or
+the prompt, while the same model's reviewer went from \vsixReviewerState{} to \vsixReasonerState{} on the same
+proposals when reasoning was switched on; and the gate's check costs a database transaction where the reviewer's
+costs hundreds of generated tokens. The third is not measured in E5: the gate checks at commit, while a reviewer
+checks a snapshot before it, so state that changes in between, such as a budget spent by a concurrent call
+(Appendix~\ref{sec:systems}), is invisible to the reviewer.
+
+\para{What a gate misses instead.} Remove one clause and the gate admits exactly the violations that break only that
+clause. This holds by construction, and Figure~\ref{fig:v6spec}a draws it as such. What the experiment measures is how
+much each family rests on a single clause. \vsixSingleClauseSentence{} This is the paper's central hypothesis, which E5
+illustrates and does not test: mediation does not make safety independent of the proposer. It moves the failure from
+a reviewer's judgment, which here varied with prompt and budget, to a written specification, whose gaps can be listed,
+tested and argued about.
 
 \para{Limits.} The reviewers are local open-weight checkpoints at temperature 0 reviewing their own proposals; a
-stronger or differently trained monitor may do better, and control protocols that resample or audit~\cite{bhatt2025ctrlz}
-are a different defence. In the state-dependent families the violating proposals are exact copies of approved ones by
-design, which is what makes those violations state-dependent. \vsixRtwoTruncated{} R2 reviews reached the token cap and
-count as denials.
+stronger or differently trained monitor may do better, and control protocols that resample or
+audit~\cite{bhatt2025ctrlz} are a different defence. The proposer is told the adversarial objective in plain text. The
+families differ in more than where the violation lives, so the comparison shows that these state-dependent cases are
+hard for a reviewer without reasoning, not that state-dependence alone makes them hard. Only eight distinct proposals
+were authorized, so the data cannot estimate how often a reviewer denies legitimate work, and a reviewer that denied
+everything would also score zero. \vsixRtwoTruncated{} R2 reviews reached the token cap and count as denials, as the
+plan specified; this can only lower R2's admissions.

@@ -42,7 +42,9 @@ gives every mechanism.
 
 \input{generated/v6-e6-table.tex}
 
-\para{Reading.} Three results bear on the stop problem. First, fenceability is a property of the effect surface and of
+\para{Reading.} A fence needs three properties at once: the surface enforces it, a writer cannot claim the new epoch,
+and no stale write commits after it. Of the \vsixFenceMechanisms{} mechanisms probed, only \vsixFenceAllThree{} had all
+three (Figure~\ref{fig:v6hero}c). Three results bear on the stop problem. First, fenceability is a property of the effect surface and of
 how its fence is bound, not of the agent framework. An epoch that the writer states can be omitted or forged, so such a
 fence stops a stale writer that is honest and nothing else. Second, binding the epoch to a credential resists a writer
 that lies, but revoking a credential is not automatically a fence: on one surface it behaved exactly like revocation at
