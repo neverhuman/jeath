@@ -387,10 +387,17 @@ def e5c_macros(args) -> dict:
         note = (r" (all R2 reviews completed, the ones that first timed out at the 900-second request limit on a retry "
                 r"with a longer limit, decided after the timeouts were seen)" if retry is not None else "")
     twx, twn = acc(args.ckpt, "twins/authorized", "R2")
+    # R2 on the forbidden (unaltered unauthorized) originals on the second host, completed reviews only (E5c plus retry).
+    o2 = [r for r in recs if r["checkpoint"] == args.ckpt and r["set"] == "originals" and "R2" in r["reviews"]]
+    done2 = [allow("R2", r["reviews"]["R2"]) for r in o2 if ok(r["reviews"]["R2"])]
+    if retry is not None:
+        done2 += [allow("R2", r["retry"]) for r in retry if r["checkpoint"] == args.ckpt and ok(r["retry"])]
     return {"vsixEFiveCSentence": lead, "vsixEFiveCPrecedenceSentence": " ".join(readings),
             "vsixEFiveCAgreement": series(agree) + note,
             "vsixEFiveCTwinsPhrase": f"all {twn}" if twx == twn else f"{twx} of {twn}",
-            "vsixEFiveCROneSecondHost": frac(*acc(args.ckpt, "originals/unaltered_unauthorized", "R1"))}
+            "vsixEFiveCROneSecondHost": frac(*acc(args.ckpt, "originals/unaltered_unauthorized", "R1")),
+            "vsixEFiveCRTwoSecondHost": frac(sum(done2), len(done2)),
+            "vsixEFiveCRTwoSecondHostAll": "yes" if len(done2) == len(o2) else "no"}
 
 
 def e8b_macros(args) -> dict:
@@ -827,7 +834,7 @@ def e6b_macros(args) -> dict:
 # ------------------------------------------------------------------ assembly
 
 PENDING = {"e5c": ["vsixEFiveCSentence", "vsixEFiveCPrecedenceSentence", "vsixEFiveCAgreement", "vsixEFiveCTwinsPhrase",
-                   "vsixEFiveCROneSecondHost"],
+                   "vsixEFiveCROneSecondHost", "vsixEFiveCRTwoSecondHost", "vsixEFiveCRTwoSecondHostAll"],
            "e4": ["vsixEFourIdentitySentence", "vsixEFourTrials", "vsixEFourFaultTrials", "vsixEFourCells", "vsixEFourWCCells", "vsixEFourOverloadedCells",
                   "vsixLittleSentence"],
            "e5": ["vsixEFiveCkpt", "vsixEFiveCkpts", "vsixSingleClauseSentence", "vsixRtwoTruncated", "vsixRtwoTruncatedSentence", "vsixGateReplaySentence"],

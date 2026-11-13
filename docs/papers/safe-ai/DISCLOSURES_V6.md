@@ -145,6 +145,19 @@ or a reported count; each changes framing or presentation, and the paper says so
 - **E8:** S was written knowing the public injections. Every native banking/Slack injection names something S distrusts,
   so S's near-zero native attack success is by construction. E8b measures injections that stay inside S.
 
+- **#11 fragmentation and d=3 withdrawal (merged into main 2026-11-13, appendix only):**
+  - each per-instance check (static cap, same-checkpoint reviewer) is shown only its own slice and a policy that permits
+    it, so it must admit every slice. Its breach counts equal the cap's in every cell and track how often the
+    sub-agents emitted their slices (always on 8B), not reviewer judgment;
+  - the shared ledger's zero is the conservation theorem;
+  - the unfenced d=3 count is the number of leaves the harness queued before the withdrawal (6 and 12), and the fenced
+    zero is the fence's design property;
+  - the 4B-to-8B rise is proposer compliance, not a capability reversal in review. Reported in u05 with this reading;
+    the generated caption says the same.
+  - `analyze_v2.py` asserted the baseline outcomes (static-cap breaches > 0, unfenced leaks > 0, best-of-K reviewer
+    breach non-decreasing in K, zero benign false blocks). Those asserts are removed so that a null can be published;
+    the mediated-controller invariants (zero breaches) stay, labelled as regression tests.
+
 ## Fixed by predeclared amendment
 
 - **E8 Amendment 1:**
