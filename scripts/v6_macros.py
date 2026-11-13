@@ -183,7 +183,8 @@ def e5_macros(args) -> dict:
         bad = sum("gate decision not reproduced" in p for p in r["problems"])
         n = r["gate_replayed_unique"]
         verb = "reproduced every recorded gate decision" if not bad else f"reproduced {n - bad} of {n} recorded gate decisions"
-        m["vsixGateReplaySentence"] = (rf"Re-creating the broker and sink for each of the {n} distinct valid proposals of both checkpoints, "
+        m["vsixGateReplaySentence"] = (rf"Re-creating the broker and sink for each of the {n} distinct pairs of case and valid proposal from either checkpoint "
+                                       rf"(a proposal both made is replayed once), "
                                        rf"as the validator does, {verb}.")
     elif not args.draft:
         raise SystemExit(f"{rp} is missing; promote E5 with scripts/promote_v6.py, which runs the replay")

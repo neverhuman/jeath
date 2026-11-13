@@ -31,9 +31,12 @@ VISIBLE = ("altered_payload", "injected_exfiltration")
 FAMILY_LABEL = {"duplicate_replay": "Replay, budget spent", "withdrawn_issuer": "Issuer withdrawn",
                 "stale_revision": "Stale revision", "altered_payload": "Altered payload",
                 "injected_exfiltration": "Injected payload"}
-FILLED = {"square": "square*", "diamond": "diamond*", "o": "*", "pentagon": "pentagon*", "triangle": "triangle*"}
+FILLED = {"square": "square*", "diamond": "diamond*", "o": "*", "pentagon": "pentagon*", "triangle": "triangle*",
+          "dtriangle": "triangle*"}
+OPEN = {"dtriangle": "triangle"}  # pgfplots has no inverted triangle: rotate the upright one
+MOPT = {"dtriangle": ",mark options={rotate=180}"}
 E8_ARMS = (("unprotected", "Unprotected", "structgray", "square"), ("progent", "Progent (per call)", "warnamber!85!black", "diamond"),
-           ("authority_strict", "Strict \\(S\\)", "exoblue", "o"), ("authority_delegated", "Delegated", "exoblue", "pentagon"),
+           ("authority_strict", "Strict \\(S\\)", "exoblue", "o"), ("authority_delegated", "Delegated", "safegreen", "dtriangle"),
            ("authority_oracle", "Oracle (solution allowlist)", "exoblue!60!black", "triangle"))
 CONTROLLERS = (("none", "No mediation", "structgray", "square*"), ("stateless", "Per-call policy", "warnamber", "diamond*"),
                ("learned_same_checkpoint", "Same-model reviewer", "endored", "triangle*"),
@@ -393,6 +396,7 @@ def panel_c(rows8: list[dict], rows8b: list[dict] | None) -> tuple[list[str], di
              r"xlabel={Benign tasks completed (\%)},ylabel={Attacks that succeed (\%)},"
              r"title={\textbf{(c)} What a specification costs}," + LEGEND_C + "]"]
     st = {"arms": {}}
+    xmax_seen = 0.0
     for key, label, color, mark in E8_ARMS:
         ben = [r for r in rows8 if r["arm"] == key and r["injection_task"] is None]
         att = [r for r in rows8 if r["arm"] == key and r["injection_task"] is not None]
@@ -405,7 +409,8 @@ def panel_c(rows8: list[dict], rows8b: list[dict] | None) -> tuple[list[str], di
              "ungraded": sum(r["grading_status"] != "completed" for r in ben + att)}
         um, am = 100 * u / nu, 100 * a / na
         (ulo, uhi), (alo, ahi) = cp(u, nu), cp(a, na)
-        lines.append(rf"\addplot[only marks,mark={FILLED[mark]},mark size=2.3pt,draw={color},fill={color},error bars/.cd,x dir=both,x explicit,"
+        xmax_seen = max(xmax_seen, 100 * uhi)
+        lines.append(rf"\addplot[only marks,mark={FILLED[mark]}{MOPT.get(mark, '')},mark size=2.3pt,draw={color},fill={color},error bars/.cd,x dir=both,x explicit,"
                      rf"y dir=both,y explicit,error bar style={{{color},line width=0.45pt}}] coordinates {{({um:.4g},{am:.4g}) "
                      rf"+= ({100 * uhi - um:.4g},{100 * ahi - am:.4g}) -= ({um - 100 * ulo:.4g},{am - 100 * alo:.4g})}};"
                      rf"\addlegendentry{{{label}}}")
@@ -416,11 +421,13 @@ def panel_c(rows8: list[dict], rows8b: list[dict] | None) -> tuple[list[str], di
             bm = 100 * b / nb
             blo, bhi = cp(b, nb)
             lines += [rf"\draw[{color},line width=0.6pt] (axis cs:{um:.4g},{am:.4g}) -- (axis cs:{um:.4g},{bm:.4g});",
-                      rf"\addplot[forget plot,only marks,mark={mark},mark size=2.3pt,draw={color},fill=white,error bars/.cd,y dir=both,y explicit,"
+                      rf"\addplot[forget plot,only marks,mark={OPEN.get(mark, mark)}{MOPT.get(mark, '')},mark size=2.3pt,draw={color},fill=white,error bars/.cd,y dir=both,y explicit,"
                       rf"error bar style={{{color},line width=0.45pt}}] coordinates {{({um:.4g},{bm:.4g}) += (0,{100 * bhi - bm:.4g}) -= (0,{bm - 100 * blo:.4g})}};"]
         st["arms"][key] = e
+    xmax = min(100, math.ceil((xmax_seen + 4) / 10) * 10)  # the benign axis ends just past the widest interval
+    lines[1] = lines[1].replace("xmin=-3,xmax=103", f"xmin=-2,xmax={xmax + 2}")
     if rows8b:
-        lines.append(r"\node[font=\tiny,text=slate,anchor=north east,align=right] at (axis cs:103,103) "
+        lines.append(rf"\node[font=\tiny,text=slate,anchor=north east,align=right] at (axis cs:{xmax + 2},103) "
                      r"{filled: AgentDojo's injections\\open: injections inside S};")
     lines.append(r"\end{axis}\end{tikzpicture}")
     return lines, st
