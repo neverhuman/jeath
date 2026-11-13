@@ -470,8 +470,9 @@ E2_ARM_LABEL = {"unprotected": "Unprotected", "progent": "Progent", "authority_s
 
 
 def e2_figure(qwen: list, other: list) -> str:
-    """The E2 plan's capability axis: per arm, benign utility and attack success per checkpoint with 95% Clopper-Pearson
-    intervals. Qwen3 sizes left to right, then other families after a gap; descriptive only."""
+    """The E2 plan's checkpoint comparison; native attacks only.
+    Binomial intervals are nominal displays, not task-cluster-adjusted coverage.
+    """
     from hero_v6 import E8_ARMS, FILLED, MOPT, cp
     cols = [c for c, _, _ in qwen] + [c for c, _, _ in other]
     rows = [r for _, r, _ in qwen] + [r for _, r, _ in other]
@@ -501,11 +502,14 @@ def e2_figure(qwen: list, other: list) -> str:
                        rf"error bars/.cd,y dir=both,y explicit,error bar style={{{colour}}}] coordinates {{{' '.join(pts)}}};"
                        + (rf"\addlegendentry{{{label}}}" if k else ""))
         out.append(r"\end{axis}\end{tikzpicture}" + (r"\hspace{0.8cm}" if not k else r"\par\vspace{2pt}\pgfplotslegendfromname{vsixetwolegend}"))
-    out += [r"\caption{E2's capability axis, as its plan specifies: per arm, the share of benign tasks completed (a) and of "
-            r"injection episodes in which the attack succeeded (b), with 95\% Clopper--Pearson intervals. Qwen3 checkpoints by "
+    out += [r"\caption{Checkpoint comparison specified in E2: per arm, the share of benign tasks completed (a) and of "
+            r"native AgentDojo injection episodes in which the attack succeeded (b). Inside-specification E8b attacks are "
+            r"excluded here; strict \(S\) excludes the native reference attack paths by construction. Error bars are nominal "
+            r"pointwise 95\% binomial Clopper--Pearson intervals, not task-cluster-adjusted population coverage: each fixed "
+            r"public task has two assigned injections. Qwen3 checkpoints by "
             r"size (the 8B is E8's run, on the first host; the others ran on the second), then "
             + (series([c for c, _, _ in other]) if other else "no other family")
-            + r", which is a different family, not a point on the size axis. Descriptive only; no trend test.}\label{fig:v6e2}",
+            + r", a different family. Parameter counts identify checkpoints, not measured capability. Descriptive only; no trend test.}\label{fig:v6e2}",
             r"\end{figure*}", ""]
     return "\n".join(out)
 
@@ -574,8 +578,10 @@ def e2_macros(args) -> dict:
                  rf"tasks and {nums(st, 'attack')} attacks.")
         inc = lambda xs: all(a < b for a, b in zip(xs, xs[1:]))
         if inc([c["utility"][0] for c in un]) and inc([c["attack"][0] for c in un]) and not any(c["attack"][0] for c in st):
-            qsent += (r" Unprotected, each larger checkpoint was both more useful and more often hijacked; strict \(S\) "
-                      "admitted no attack at any size. Three sizes on two hosts support no trend claim, and the plan "
+            qsent += (r" In these runs, unprotected utility and native attack success both increased across the three "
+                      r"Qwen3 checkpoints. No evaluated native attack succeeded under strict \(S\), whose native reference "
+                      r"attack paths are excluded by construction; E8b tests attacks inside \(S\) separately. "
+                      "Three sizes on two hosts support no trend claim, and the plan "
                       "declares none.")
     return {"vsixETwoCkpts": series(names), "vsixETwoSentence": "; ".join(parts) + ".", "vsixETwoQwenSentence": qsent,
             # E8's determinism count, per checkpoint: pairs of arms of one episode whose replies differed while

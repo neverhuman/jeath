@@ -319,7 +319,7 @@ or a reported count; each changes framing or presentation, and the paper says so
 
 ## Disclosed and not fixed
 
-- **Preregistration timing cannot be verified externally.** No plan commit is on a remote, and hand-typed timestamps
+- **Preregistration timing cannot be verified externally.** Plan commits were not publicly timestamped before their experiments, and hand-typed timestamps
   needed errata (`TIMESTAMPS_ERRATA.md`). Strongest remedy: push the plan commits or signed tags before analysis (needs
   the author's go-ahead).
 - **E6:** the plan was finalized after its two development runs. Its `predeclared_before_any_E6_probe` label is wrong
@@ -337,3 +337,10 @@ or a reported count; each changes framing or presentation, and the paper says so
   - E4 timing is re-derived from the harness log.
 - **General:** temperature 0, local quantized open-weight models on CPU, two of AgentDojo's four suites; the SQLite
   sink mediates only its own effects.
+
+
+## Release-kernel follow-up and E2 figure qualifications (post-data)
+
+The release-kernel agreement guard was integrated after the v6 model and stop measurements. Those datasets retain their original binary identifiers; the guard has separate fresh CPU protocol evidence and production-profile regressions. A recovered-permit encoding compatibility defect found in Gemini review was reproduced before its fix.
+
+E2's checkpoint plot and accompanying sentence were qualified without changing any model output, score, count, interval calculation, or predeclared comparison. The plotted attacks are native AgentDojo injections, with E8b inside-specification attacks reported separately. Strict S excludes the native reference attack paths by construction. The plotted Clopper–Pearson intervals are nominal pointwise binomial displays on fixed public tasks with two injections per task, not task-cluster-adjusted population coverage. Parameter counts identify checkpoints rather than measured capability.
