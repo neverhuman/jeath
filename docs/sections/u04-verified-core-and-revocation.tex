@@ -100,7 +100,9 @@ protocol rule, and the simulation counts how often a randomized schedule exposes
         (\VFourJepsenBrokerOnlyLeakPct\%); \textbf{a sink that ignores epochs:} \VFourJepsenUncoopLeaks{}
         (\VFourJepsenUncoopLeakPct\%).
 \end{itemize}
-These are counts of schedules with at least one leaked commit, not of leaked commits.
+These are counts of schedules with at least one leaked commit, not of leaked commits. The percentages depend on the
+schedule generator's fault rates, which we chose; they are existence witnesses for each class's failure, not
+estimates of how often it occurs in a deployment.
 
 \subsection{Cryptography, Crash Recovery and Confinement}
 
