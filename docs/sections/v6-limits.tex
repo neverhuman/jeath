@@ -39,6 +39,8 @@ reference instances in default configuration, and two surfaces come from documen
 \para{Verification boundary.} The mechanized kernel proves properties of its own state machine and of the permit
 encoding. In the release binaries used by the experiments, the broker and sink decisions on the v2 path are made by
 unverified Rust that calls verified leaf predicates; the full kernel comparison runs only in debug builds. The
+current artifact gates these transitions on kernel agreement in release builds, with fresh process regressions;
+the empirical datasets retain their original implementation provenance. The
 cryptographic primitives are a from-scratch implementation that has not been audited.
 
 \para{Preregistration.} Every v6 plan was committed to this repository's history before the data it governs, and amendments record what was seen

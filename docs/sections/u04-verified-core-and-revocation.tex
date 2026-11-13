@@ -64,10 +64,14 @@ violation.
 
 \input{generated/v2-core-table}
 
-\para{What the proofs cover in the running code.} The proofs are about the verified functions. In the release
-binaries that every experiment here used, the broker and sink decide with unverified Rust that calls the verified
+\para{What the proofs cover in the evaluated code.} The proofs are about the verified functions. In the release
+binaries used for the stop measurements and live-model experiments, the broker and sink decided with unverified Rust that called the verified
 predicates; the comparison of each decision with the verified executable kernel was a debug assertion, compiled out of
-those builds. The decision logic, the RPC handling and SQLite are tested, not proved. The proof
+those builds. The current artifact also gates reservations, settlement, renewal, sink acceptance, completion and
+fencing on the executable kernel's decision and projected post-state, including in release builds. It discards a
+candidate transition on disagreement or when its pre-state has no valid kernel image. Release regressions check
+both refusals and useful permitted work. This does not formally verify the wrapper, state projection, delegation
+bookkeeping, RPC handling or SQLite, and does not retroactively strengthen the evaluated binaries. The proof
 receipt is produced by a separate script and checked by hash. On Linux, both the local gate and continuous integration
 rerun Verus on the policy core and check the soundness mutations; the native macOS check tests functionality.
 

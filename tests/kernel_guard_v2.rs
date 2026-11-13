@@ -3,7 +3,7 @@
 //! divergence or kernel-less state is reachable from outside the crate.
 use authority_lab::protocol_v2::{
     Broker, DispatchedPermit, Effect, KERNEL_DIVERGENCE, KERNEL_UNAVAILABLE, KernelGuardError,
-    Permit, Proposal, Record, Sink, Status,
+    Permit, Proposal, Record, Sink, Status, same_dispatched_permit,
 };
 use serde_json::{Value, json};
 use std::io::{BufRead, BufReader, Write};
@@ -49,6 +49,47 @@ fn snapshot<T: serde::Serialize>(state: &T) -> String {
 }
 
 const HALF: u64 = i64::MAX as u64;
+
+/// Explicit base requirements and their compact spelling describe the same
+/// authority. A durable record from either spelling must remain retryable.
+#[test]
+fn equivalent_required_spellings_survive_recovery_and_retry() {
+    let compact = DispatchedPermit::from(transfer("canonical", 1, vec![0, 0]));
+    let explicit = DispatchedPermit {
+        required: vec![true, false],
+        ..compact.clone()
+    };
+    assert!(same_dispatched_permit(&compact, &explicit).unwrap());
+    let mut sink = Sink::default();
+    sink.records.push(Record {
+        permit: explicit.clone(),
+        status: Status::Pending,
+    });
+    // Exercise the representation loaded by recovery, rather than acceptance's
+    // normalization of a newly received permit.
+    sink = serde_json::from_str(&snapshot(&sink)).unwrap();
+    assert!(sink.to_exec_kernel().is_some());
+    assert_eq!(
+        sink.accept_dispatched(compact.clone()).unwrap()["status"],
+        "pending"
+    );
+    assert_eq!(sink.complete("canonical").unwrap().0["status"], "committed");
+    assert_eq!(
+        sink.accept_dispatched(explicit).unwrap()["status"],
+        "committed"
+    );
+    assert!(sink.complete("canonical").unwrap().1.is_none());
+
+    let strengthened = DispatchedPermit {
+        required: vec![true, true],
+        ..compact.clone()
+    };
+    assert!(!same_dispatched_permit(&compact, &strengthened).unwrap());
+    assert_eq!(
+        sink.accept_dispatched(strengthened).unwrap()["status"],
+        "denied"
+    );
+}
 
 /// The sink does not budget-check direct deliveries. After two commits of
 /// i64::MAX units the committed total is 2^64 - 2, so a third commit of 2 units

@@ -18,12 +18,13 @@ pub const KERNEL_UNAVAILABLE: &str = "kernel_unavailable";
 /// Denial reason when the Rust decision and the verified kernel's decision differ.
 pub const KERNEL_DIVERGENCE: &str = "kernel_divergence";
 
-/// Release-mode refinement guard failure. The request had no effect.
+/// Release-mode kernel agreement failure. The request had no effect.
 ///
-/// Each broker and sink decision that has a counterpart in the Verus-verified
-/// executable kernels (`policy_core::ExecBrokerKernel`, `ExecSinkKernel`) is
+/// Each guarded transition that can issue authority or change state is
 /// computed twice: by the unverified Rust on a copy of the state, and by the
-/// kernel on `to_exec_kernel()` of the same pre-state. The copy is adopted only
+/// Verus-verified executable kernel on `to_exec_kernel()` of the same pre-state.
+/// Stateless broker refusals may return without comparison; the guard does not
+/// establish equivalence for every denial. The copy is adopted only
 /// when both outcomes agree and `to_exec_kernel()` of the copy equals the
 /// kernel's post-state. Otherwise the method returns this error and leaves
 /// `self` unchanged. These checks are ordinary code, not `debug_assert!`, so
@@ -330,8 +331,8 @@ pub fn same_permit(a: &Permit, b: &Permit) -> Result<bool> {
 }
 pub fn same_dispatched_permit(a: &DispatchedPermit, b: &DispatchedPermit) -> Result<bool> {
     Ok(policy_core::same_permit_canonical(
-        &a.to_exec_wire(),
-        &b.to_exec_wire(),
+        &a.to_exec_wire_for_issuers(a.proposal.epochs.len())?,
+        &b.to_exec_wire_for_issuers(b.proposal.epochs.len())?,
     ))
 }
 
@@ -380,8 +381,8 @@ pub struct Broker {
 
 /// Unverified submit outcome, with what the verified kernel needs to re-decide it.
 enum SubmitDecision {
-    /// Refused by a check that has no counterpart in `ExecBrokerKernel`
-    /// (scope, delegation lineage and budgets, missing approval). No state change.
+    /// Refused without issuing authority or changing state. This includes
+    /// policy denials, scope, delegation budgets, and missing approvals.
     Refused,
     /// Answered from an existing record. `permit` carries that record's
     /// broker-bound required issuers; `status` is `None` on a payload mismatch.
@@ -809,9 +810,9 @@ impl Broker {
     }
     /// Admission. A new reservation, or an answer from an existing record, is
     /// re-decided by `ExecBrokerKernel::broker_reserve` and taken only if the
-    /// kernel agrees. Refusals by checks the kernel does not model (scope,
-    /// delegation lineage and budgets) are returned without comparison, since
-    /// they change nothing.
+    /// kernel agrees. Refusals are returned without comparison, since they
+    /// issue no authority and change nothing. Positive controls, rather than
+    /// this guard alone, detect false denials.
     pub fn submit(&mut self, permit: Permit, timestamp: u64) -> Result<serde_json::Value> {
         use policy_core::ExecReserveOutcome as K;
         let mut kernel = self.verified_kernel("submit")?;
