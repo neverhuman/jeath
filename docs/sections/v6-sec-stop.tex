@@ -57,7 +57,9 @@ needs no such control. It acts at the one place every effect must pass, so it al
 cannot reach (a remote runner, a third-party service, a host on the other side of a partition), a commit request
 already sent when the kill arrives, and a retry after the sink restarts; E4b below measures the last two. Killing what
 can be reached and fencing what must not commit are complementary, and the fence is the one that does not depend on
-knowing where every executor is.
+knowing where every executor is. The other natural strengthening, revoking at the broker and also invalidating the
+permits it has already issued, is a fence exactly when something checks the invalidation at commit; checked anywhere
+earlier, a permit already presented is not reached.
 
 \para{Faults (E4b).} A SIGKILL that lands between requests tests little. In a separately predeclared run we kill the sink while a \texttt{complete} or a \texttt{fence} request is
 outstanding, hold the executor's \texttt{accept} across the fence, and drive the system with closed-loop agents that
