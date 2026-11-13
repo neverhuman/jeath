@@ -171,6 +171,14 @@ or a reported count; each changes framing or presentation, and the paper says so
   - Not done: reordering the panels to lead with E4 (the E4c plan fixes panel (a) to E4c), counts in place of glyphs
     in panel (c) (Table 4 has them), horizontal column headers (no room).
 
+- **E2 Qwen3-14B and the capability figure (2026-11-13T12:20Z, post hoc in its reading).** Qwen3-14B finished at
+  12:15Z (555 episodes; validator clean, 13 of 1,110 arm pairs diverged) and was promoted. The paper had shown E2 only
+  as a table, although the E2 plan specifies a per-arm plot with Clopper–Pearson intervals; Figure (app. E2) now draws
+  it. The generated Qwen3 sentence in Section 6 lists each size's counts. Its conditional reading ("each larger
+  checkpoint was both more useful and more often hijacked; strict S admitted no attack at any size", printed only if
+  both unprotected counts strictly increase and strict S has no attack) was written after the 14B result was read; the
+  sentence says three sizes on two hosts support no trend claim, and the plan declares none.
+
 ## By construction (reported as such, never as findings)
 
 - **E1:** `complete` scores 0 unauthorized by construction. Its `permitted` predicate is the scoring predicate, and the
