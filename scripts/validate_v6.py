@@ -46,6 +46,8 @@ def command(kind: str, path: Path):
         return [sys.executable, "scripts/e5_controls_v6.py", "validate", str(path)]
     if kind == "e5c-r2-retry":
         return [sys.executable, "scripts/e5c_r2_retry_v6.py", "validate", str(path)]
+    if kind == "e5d":
+        return [sys.executable, "scripts/e5d_structured_v6.py", "validate", str(path)]
     if kind.startswith("e2:"):
         return ([str(VENV_PY), "scripts/capability_axis_v6.py", "validate", kind.split(":", 1)[1], str(path)]
                 if VENV_PY.exists() else None)

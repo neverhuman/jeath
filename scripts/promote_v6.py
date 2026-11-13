@@ -33,6 +33,7 @@ VALIDATORS = {
     "e8b": [str(VENV_PY), "scripts/agentdojo_inside_spec_v6.py", "validate"],
     "e5c": [sys.executable, "scripts/e5_controls_v6.py", "validate"],
     "e5c-r2-retry": [sys.executable, "scripts/e5c_r2_retry_v6.py", "validate"],
+    "e5d": [sys.executable, "scripts/e5d_structured_v6.py", "validate"],
     "e1": [sys.executable, "scripts/validate_e1_v6.py"],
 }
 FILES = {  # files copied verbatim from the run directory
@@ -43,6 +44,7 @@ FILES = {  # files copied verbatim from the run directory
     "e1": ["freeze.json", "holdout.json", "campaigns.jsonl", "campaign-analysis.json"],
     "e5c": ["results.json", "records.jsonl"],
     "e5c-r2-retry": ["results.json", "records.jsonl"],
+    "e5d": ["results.json", "records.jsonl"],
 }
 
 
@@ -119,7 +121,7 @@ def main():
     # decision and its report is kept with the evidence, because the paper cites it.
     report = validate(kind, run, ("--replay-gate",) if kind == "e5" else ())
     name = {"e4": "e4-revokebench", "e4b": "e4b-revokebench-faults", "e5": "e5-omitted-clause", "e6": "e6-fenceability", "e6b": "e6b-fenceability", "e8": "e8-agentdojo-fair",
-            "e8b": "e8b-inside-spec", "e1": "e1-n128", "e5c": "e5c-controls", "e5c-r2-retry": "e5c-r2-retry"}.get(kind) or f"e2-{kind.split(':', 1)[1]}"
+            "e8b": "e8b-inside-spec", "e1": "e1-n128", "e5c": "e5c-controls", "e5c-r2-retry": "e5c-r2-retry", "e5d": "e5d-structured"}.get(kind) or f"e2-{kind.split(':', 1)[1]}"
     out = DEST / name
     if out.exists():
         shutil.rmtree(out)

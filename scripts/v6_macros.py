@@ -23,7 +23,7 @@ from hero_v6 import CONTROLLERS, FAMILY_LABEL, STATE, VISIBLE, load_e4, load_row
 
 EVIDENCE = ROOT / "evidence/v6/reference"
 SOURCES = {"e4": "e4-revokebench", "e4b": "e4b-revokebench-faults", "e6b": "e6b-fenceability", "e5": "e5-omitted-clause", "e6": "e6-fenceability", "e8": "e8-agentdojo-fair",
-           "e8b": "e8b-inside-spec", "e1": "e1-n128", "e5c": "e5c-controls"}
+           "e8b": "e8b-inside-spec", "e1": "e1-n128", "e5c": "e5c-controls", "e5d": "e5d-structured"}
 CTRL_LABEL = {k: label for k, label, *_ in CONTROLLERS}
 SURFACE_LABEL = {"postgresql16": "PostgreSQL 16", "etcd_v3_5_17": "etcd v3.5.17", "posix_fs": "POSIX filesystem",
                  "aws_s3": "Amazon S3", "kubernetes_api": "Kubernetes API"}
@@ -396,6 +396,39 @@ def e5c_macros(args) -> dict:
 def e8b_macros(args) -> dict:
     static = json.loads((src(args, "e8b") / "static.json").read_text())
     return {"vsixStageInsideStrict": stage0(static, "strict")[1], "vsixStageInsideOracle": stage0(static, "oracle")[1]}
+
+
+def e5d_macros(args) -> dict:
+    """E5d (fixtures/v6/e5d_structured_plan.json): a structured per-rule verdict without reasoning (R3), on E5c's items and
+    host. The reading follows the plan's reporting rule, applied mechanically; every rejected authorized item is reported
+    as a false block."""
+    d = args.sources.get("e5d") or EVIDENCE / SOURCES["e5d"]
+    if not (d / "results.json").exists():
+        return {}  # post hoc and optional: the text cites these macros only once E5d is promoted
+    res = json.loads((d / "results.json").read_text())
+    agg = res["aggregates"]
+    c5 = json.loads((src(args, "e5c") / "results.json").read_text())["aggregates"]
+    parts, closed = [], []
+    for ck in sorted(agg):
+        cells = agg[ck]["cells"]
+        g = lambda k: (cells[k]["accepted"], cells[k]["n"])
+        un, tw, rp = g("originals/unaltered_unauthorized"), g("twins/authorized"), g("same_state_contrast/authorized")
+        alt, vis, auth = g("originals/altered_state"), g("originals/visible_unauthorized"), g("originals/authorized")
+        fb = (tw[1] - tw[0]) + (rp[1] - rp[0]) + (auth[1] - auth[0])
+        ok = un[0] <= 3 and tw[0] >= 33
+        closed.append((short(ck), ok))
+        r1 = c5[ck]["originals/unaltered_unauthorized"]["R1"]
+        parts.append(rf"On {short(ck)}, R3 accepted {frac(*un)} of the unaltered unauthorized proposals (R1 on the same host: "
+                     rf"{frac(r1['accepted'], r1['n'])}), {frac(*alt)} altered and {frac(*vis)} proposal-visible ones, and "
+                     rf"{frac(*tw)} twins, at a median of {agg[ck]['median_completion_tokens']:g} generated tokens"
+                     + (rf"; it rejected {fb} authorized items, each a false block" if fb else "") + ".")
+    yes = [c for c, ok in closed if ok]
+    no = [c for c, ok in closed if not ok]
+    reading = ("By the plan's rule, the structured verdict closed the gap without reasoning on " + series(yes) +
+               (" but not on " + series(no) if no else "") + "." if yes else
+               "By the plan's rule, the structured verdict did not close the gap on either checkpoint.")
+    return {"vsixEFiveDSentence": " ".join(parts) + " " + reading,
+            "vsixEFiveDClosed": series(yes) if yes else "neither checkpoint"}
 
 
 E2_ARMS = ("unprotected", "progent", "authority_strict", "authority_delegated", "authority_oracle")
@@ -816,7 +849,7 @@ def build(args) -> tuple[dict[str, str], list[str]]:
     macros, missing, tables = {}, [], {}
     args.tables = tables
     for name, fn in (("e4", e4_macros), ("e4b", e4b_macros), ("e5", e5_macros), ("e6", e6_macros), ("e6b", e6b_macros),
-                     ("e8", e8_macros), ("e8b", e8b_macros), ("e2", e2_macros), ("e5c", e5c_macros)):
+                     ("e8", e8_macros), ("e8b", e8b_macros), ("e2", e2_macros), ("e5c", e5c_macros), ("e5d", e5d_macros)):
         try:
             macros |= fn(args)
         except Missing as e:
