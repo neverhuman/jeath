@@ -18,7 +18,8 @@ violations, and what injections inside \(S\) achieve.
 
 \para{Models and scale.} All live results use local, quantized, open-weight checkpoints (\vsixCheckpointList) on CPU.
 Agents and reviewers decode greedily; only E5's proposer samples (temperature 0.8). We ran no frontier model, by budget
-decision. A greedy review of a repeated proposal repeats its verdict, so we count distinct proposals and take cases as
+decision. Experiment numbers follow the plan: E3 (all four AgentDojo suites on frontier models) and E7 (the human
+conferral study of Appendix~\ref{app:v6conferral}) were dropped by that decision before any data, not run and omitted. A greedy review of a repeated proposal repeats its verdict, so we count distinct proposals and take cases as
 the unit. On the larger checkpoint, a reviewer that reasoned at length already closed the gap
 Section~\ref{sec:v6reviewers} reports on its small cases; we did not test larger states, other reviewers, or control
 protocols that resample, defer or audit.

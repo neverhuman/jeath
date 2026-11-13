@@ -16,7 +16,12 @@ stream of new proposals. \emph{Revoking admission} at a broker refuses permits f
 an older epoch is refused when it tries to commit, even if it was admitted and dispatched before the stop. Only the
 third reaches work already in flight. It is the fencing-token argument of distributed locking~\cite{kleppmann2016}
 applied to an agent's authority, and it moves the stop from the producer of proposals to the place where effects
-happen.
+happen. The window it closes does not depend on how the monitor runs. Asynchronous monitors, which review actions after
+they run, leave it open by design~\cite{stickland2025async}. A monitor that blocks every call until it has
+read it~\cite{lucassen2026blocking} still approves calls one at a time; when a later call, or a pattern across calls, is flagged, the calls it
+approved earlier are still running. Work in flight at the stop is then the call rate times the tool latency, plus
+whatever the agent emits while the stop is being enforced. It is small when tools return in milliseconds and large when
+a tool runs for minutes or hours before its effect lands, as a build, a deployment or a long job does.
 
 Moving authority out of the model raises an obvious objection: the gate is then only as good as what it was told to
 check. We take that objection as the paper's subject rather than its limitation. The contributions, each with the
@@ -29,7 +34,7 @@ evidence behind it:
   \item \textbf{Without reasoning, reviewers miss violations that live in state} (measured; Section~\ref{sec:v6reviewers}). Shown
         the rules and the state the gate reads, a same-model reviewer that replied with a bare verdict accepted a
         proposal from the approved list that the state had since made unauthorized, in every state-dependent case (on a second CPU, \vsixEFiveCROneSecondHost{} on the larger checkpoint), and on the
-        larger checkpoint none of the altered ones. Reasoning at length closed the gap on the larger checkpoint, at about a hundred
+        larger checkpoint none of the altered ones on the first CPU. Reasoning at length closed the gap on the larger checkpoint, at about a hundred
         times the generated tokens per check, and a post hoc control shows that it read the state: it accepted the
         same proposals where the state permitted them. A gate checks at commit rather than on a snapshot taken before.
   \item \textbf{Mediation moves the failure into a written specification} (a hypothesis, illustrated by

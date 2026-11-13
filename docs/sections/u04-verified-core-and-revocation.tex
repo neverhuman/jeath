@@ -117,7 +117,8 @@ base; a deployment should use an audited library.
 \VFiveClusterFuzzFrames{} malformed frames, \VFiveClusterSubagents{} interleaved sub-agent identities with
 \VFiveClusterHops-hop delegation from one driver thread, and \VFiveClusterSigkillCycles{} SIGKILL-and-restart cycles
 delivered between requests, and reconciles the ledgers with no discrepancy (\(\VFiveClusterMedianUs\,\mu\)s median
-commit latency). Kills inside a request are tested in Section~\ref{sec:v6stop}.
+commit latency, against the tens of milliseconds per commit of Table~\ref{tab:runtime}, which uses
+\texttt{synchronous=FULL} and so waits for the disk). Kills inside a request are tested in Section~\ref{sec:v6stop}.
 
 \para{Confinement.} Landlock~\cite{landlock} file and network rules and seccomp~\cite{seccomp} filters block the
 \VTwoProbes{} direct socket, IPC and resource probes we wrote, so local user-space code must go through the broker

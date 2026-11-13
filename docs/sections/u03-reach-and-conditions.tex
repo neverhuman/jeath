@@ -51,7 +51,7 @@ Concretely, an unacknowledged or timed-out RPC widens \(\mathcal{I}_t\) and ther
 
 \begin{table*}[t]\centering\footnotesize
 \begin{tabularx}{\textwidth}{@{}clP{0.27\textwidth}L@{}}\toprule
- Clause & Structural condition & Formal invariant & Failure mode when omitted (measured witness)\\\midrule
+ Clause & Structural condition & Formal invariant & Failure mode when omitted (witness: simulated or computed; ``live'' marks a measured run)\\\midrule
 \textbf{C1} & Cooperative sink mediation & \(u = 0\) on gated state transitions & Direct or uncooperative API writes bypass broker (\(u > 0\); \VFourJepsenUncoopLeaks/\VFourJepsenSchedulesPerClass{} leaks)\\
 \textbf{C2} & Conservative envelope & \(\widehat{\Delta B}_t \ge \Delta B_t^\star\); no ambiguous refunds & Stale snapshots or timeout refunds overspend shared \(B\) (\(\VThreeUncStaleViolLagFourPct\%\) at lag 4)\\
 \textbf{C3} & \(\delta_{\max}\)-buffered sink fence & Epoch CAS + \(L_m + \delta_{\max}\) quiescence & Queued permits land post-withdrawal (\(\VFourJepsenBrokerOnlyLeaks/\VFourJepsenSchedulesPerClass\) partition; \(\VEightTotalNoFencePostWithdraw/\VEightTotalWithdrawCases\) live)\\

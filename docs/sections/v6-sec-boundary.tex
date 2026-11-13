@@ -26,6 +26,12 @@ probes, assigns an \emph{enforcement class}, strongest first:
 Only the first two hold against a writer that is buggy or compromised, and the second only while the installed code is
 part of the surface's trusted configuration.
 
+\para{Which writers we trust.} The executors that carry an agent's calls to a surface are not the agent, but they run
+the agent's work, and in the settings this paper is about they may be its code, its tools, or software the operator
+does not control. We therefore require that a fence hold against a writer that omits or forges the epoch. If every
+writer is instead trusted to follow the fence protocol, the omission and forgery tests do not apply and only the race
+matters; we report the census under both assumptions.
+
 \para{Probes (E6, E6b).} We probed local single-node reference instances of PostgreSQL~16, etcd~v3.5.17 and a POSIX
 filesystem; Amazon S3 and the Kubernetes API are recorded from documentation only. E6 tested three primitives per
 surface: idempotent retry (P1), an epoch fence atomic with the effect (P2), and a hold that survives an unclean stop and
@@ -46,7 +52,9 @@ gives every mechanism.
 and it takes effect while stale writers are still running, with no stale write committing after it. A fence that is
 acknowledged only once every writer has finished (starved, in Table~\ref{tab:v6fence}) has no write after it by
 default, and we do not count it as holding. Of the \vsixFenceMechanisms{} mechanisms probed, only \vsixFenceAllThree{} had all
-three (Figure~\ref{fig:v6hero}c), and the reason is specific to etcd. Each authenticated request carries the revision
+three (Figure~\ref{fig:v6hero}c). If every writer is trusted to follow the protocol, \vsixFenceHeldCount{} held in every
+race (\vsixFenceHeldList), so for honest writers a fence is common and the census's question is how many survive a
+writer that is not. The reason etcd's revoke survives one is specific to etcd. Each authenticated request carries the revision
 of the authentication store at which its token was checked, any change to users, roles or permissions raises that
 revision, and
 the permission check for a write runs again when the write is applied, after consensus: a request whose revision is
@@ -54,7 +62,7 @@ older than the store's is refused there (\texttt{auth: revision in header is old
 writer's role therefore reaches writes that were already accepted into the log, which a revocation at our broker
 cannot do. The same check refuses legitimate requests issued before any unrelated change to authentication, which a
 client retries with a fresh token. We probed one node, and \vsixFenceAllThreeRaces{} clean races bound the per-race
-failure rate only below \vsixFenceRaceBound{} (one-sided 95\%); on a cluster each member applies the check on its own
+failure rate only below \vsixFenceRaceBound{} (one-sided 95\%, treating races as independent); on a cluster each member applies the check on its own
 apply path, which we did not test. Three results bear on the stop problem. First, fenceability is a property of the effect surface and of
 how its fence is bound, not of the agent framework. An epoch that the writer states can be omitted or forged, so such a
 fence stops a stale writer that is honest and nothing else. Second, binding the epoch to a credential resists a writer

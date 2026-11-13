@@ -50,6 +50,15 @@ cell at \(L = \vsixDelayMax\)\,s, with a measured call rate of \vsixDelayLambda{
 compared with tool latency, shortening \(L\) is the larger lever; the fence is what makes the remainder zero. The plan
 predicted \(\lambda(L+w)\) for halting; reading the fence's count as \(\lambda L\) is post hoc.
 
+\para{Why not kill the executors?} An operator who controls every executor can stop each one before it commits, and
+in this harness that would also leave zero, for the same reason the fence does: the executors are our processes and
+every effect lands at our sink. We did not run that arm, because its zero would hold by construction as well. The fence
+needs no such control. It acts at the one place every effect must pass, so it also covers an executor the operator
+cannot reach (a remote runner, a third-party service, a host on the other side of a partition), a commit request
+already sent when the kill arrives, and a retry after the sink restarts; E4b below measures the last two. Killing what
+can be reached and fencing what must not commit are complementary, and the fence is the one that does not depend on
+knowing where every executor is.
+
 \para{Faults (E4b).} A SIGKILL that lands between requests tests little. In a separately predeclared run we kill the sink while a \texttt{complete} or a \texttt{fence} request is
 outstanding, hold the executor's \texttt{accept} across the fence, and drive the system with closed-loop agents that
 wait for each result. \vsixEFourBSentence

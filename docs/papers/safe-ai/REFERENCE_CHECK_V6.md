@@ -63,3 +63,25 @@ Systems 9(2)).
   the 35-second halting figure reported by secondary coverage is not used.
 - `iasr`: publication page resolves with the cited title.
 
+
+## Added after review 5 (2026-11-13, ~08:45Z)
+
+Each entry was checked against the primary source named here, by a web-fetch pass that read the abstract or page.
+
+| Key | Source checked | Notes |
+|---|---|---|
+| `griffin2024games` | arXiv 2409.07985 (v1 and v2), Crossref record for IASEAI DOI 10.1609/iaseai.v2i1.43025 | Four authors: Thomson is second |
+| `wen2024adaptive` | arXiv 2411.17693, ICLR 2025 proceedings | |
+| `stickland2025async` | arXiv 2512.13526 | arXiv lists the first author as "Stickland, Asa Cooper"; written here as A. Cooper Stickland |
+| `lucassen2026blocking` | Redwood Research blog post (byline and date from page metadata) | Blog post, no abstract |
+| `schlatter2025shutdown` | arXiv 2509.14260 (v1 and v2), OpenReview (TMLR acceptance) | v1 was titled "Shutdown Resistance in Large Language Models" |
+| `chen2025shieldagent` | arXiv 2503.22738, PMLR vol. 267 index | |
+| `chennabasappa2025llamafirewall` | arXiv 2505.03574, arXiv HTML §4.3 | The paper says its offline AgentDojo scoring counts an attack that succeeded and was flagged afterwards as defended (§4.3). |
+| `ruan2023toolemu` | arXiv 2309.15817, ICLR 2024 page | |
+| `gray1978notes` | Crossref and DOI 10.1007/3-540-08755-9_9 | Volume 60 comes from catalogue listings; Springer's own page blocked fetches |
+| `lipcon2012qjm` | Apache JIRA HDFS-3077 metadata and design PDF, §2.3 "Fencing writers" | |
+| `spc3` | t10.org drafts page | The standard's text was not read (members only) |
+| `fencescsi` | Upstream source file in ClusterLabs fence-agents | |
+| `robertson2000heartbeat` | USENIX ALS 2000 PDF, "STONITH Implementation" section | |
+
+Not cited: OpenAI's "How we monitor internal coding agents for misalignment" (March 2026). The page returned 403 to every fetch, so its content could not be confirmed.

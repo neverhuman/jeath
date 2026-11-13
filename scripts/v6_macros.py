@@ -202,7 +202,8 @@ def r2_truncation_sentence(an: dict) -> str:
             a, b = sd["R2"]["breach_unique"], sd["R2_truncated_as_allow"]["breach_unique"]
             sens.append(f"on {short(ck)}, counting them as acceptances would raise R2's state-dependent admissions from "
                         f"{a['x']}/{a['n']} to {b['x']}/{b['n']}")
-    s = (f"R2 reviews that reached the token cap ({series(parts)}) count as denials, as the plan specified, which can only "
+    s = (f"R2 reviews that reached the token cap ({series(parts)}, counting distinct valid proposals of both sample sets) "
+         f"count as denials, as the plan specified, which can only "
          f"lower R2's admissions")
     return s + ("; " + "; ".join(sens) + "." if sens else ".")
 

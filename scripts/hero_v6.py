@@ -286,7 +286,7 @@ def caption_b(s: dict, integ: dict) -> str:
             rf"review, against {tok['R1']:g}) it admits {pct(sd2['x'], sd2['n'])} and {pct(pv2['x'], pv2['n'])}. "
             rf"The gate admits {s['G_breaches']}; it enforces "
             rf"the written predicate, and its Rust kernel agreed with the Python reference on all {integ['unique_valid']} valid "
-            rf"proposals ({integ['mirror_gate_disagreements']} disagreements). Open circles are by construction: the share of each "
+            rf"proposals of both sample sets ({integ['mirror_gate_disagreements']} disagreements). Open circles are by construction: the share of each "
             r"family's violations that break only that family's clause, which a gate without that clause would admit. ")
 
 
@@ -687,7 +687,10 @@ def hero_macros(sa: dict, sb: dict, sc: dict) -> str:
          "vsixLittleTrials": sb["halt_trials"], "vsixFenceMechanisms": len(sc["rows"]), "vsixFenceAllThreeCount": len(sc["all_three"]),
          "vsixFenceSurfaces": len({r["surface"] for r in sc["rows"]}),
          "vsixFenceAllThree": series([next(f"{SURF_SHORT[r['surface']].split(' ')[0]}'s {HERO_MECH[x]}" for r in sc["rows"] if r["mechanism"] == x)
-                                      for x in sc["all_three"]]) if sc["all_three"] else "none"}
+                                      for x in sc["all_three"]]) if sc["all_three"] else "none",
+         "vsixFenceHeldCount": len(sc["held_under_writers"]),
+         "vsixFenceHeldList": series([next(f"{SURF_SHORT[r['surface']].split(' ')[0]}'s {HERO_MECH[x]}" for r in sc["rows"]
+                                           if r["mechanism"] == x) for x in sc["held_under_writers"]]) or "none"}
     return write_macros(m)
 
 
