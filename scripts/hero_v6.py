@@ -159,12 +159,12 @@ def banner(s: dict) -> list[str]:
 def caption_a(s: dict) -> str:
     f = s["final"]
     fence = ("admits none after enforcement in any of its" if s["fence_post_max"] == 0 else f"admits at most {s['fence_post_max']} in its")
-    return (rf"\textbf{{(a)}} Real broker and sink processes driven by a synthetic, non-adversarial agent emitting "
-            rf"{s['lambda_offered']:g} calls/s to {s['C']} concurrent tool calls of {s['w']:g}\,s mean latency (chosen by a fixed rule: the "
-            rf"stable cell with the longest latency), stop enforced at once, {s['replicates']} replicates. After the stop, "
-            rf"{rng(f['halt_inference'])} effects commit when the model is halted and {rng(f['revoke_broker'])} when the broker "
-            rf"revokes; the fence discards {rng(s['fence_lost_legitimate'])} legitimate calls in flight. Its zero is by design; "
-            rf"across all cells it {fence} {s['fence_trials']} trials, {s['fence_fault_trials']} with the sink killed or late completions. ")
+    return (rf"\textbf{{(a)}} Real broker and sink processes; a synthetic, non-adversarial agent whose calls are all "
+            rf"authorized when issued, so an effect committed after the stop is one the operator decided against. It emits "
+            rf"{s['lambda_offered']:g} calls/s to {s['C']} concurrent tool calls of {s['w']:g}\,s mean latency (the stable cell "
+            rf"with the longest latency, by a fixed rule); stop enforced at once; {s['replicates']} replicates. The fence's zero "
+            rf"is by design; across all cells it {fence} {s['fence_trials']} trials, {s['fence_fault_trials']} with the sink "
+            rf"killed or late completions. ")
 
 
 # ------------------------------------------------------------------ panel (b): E5
@@ -399,9 +399,16 @@ def panel_delay(trials: list[dict], w: float, C: int) -> tuple[list[str], dict]:
     Ls = sorted({t["config"]["L"] for t in cell})
     pts = {a: {L: [] for L in Ls} for a in ARM_STYLE}
     lams, backlog0 = [], []
+    gap = {L: {"ena": [], "halt": [], "revoke": []} for L in Ls}
     for t in cell:
         p = per_trial(t)
         pts[t["config"]["arm"]][t["config"]["L"]].append(p["post_decision_commits"])
+        g = gap[t["config"]["L"]]
+        if t["config"]["arm"] == "halt_inference":
+            g["ena"].append(t["metrics"]["emitted_not_accepted_at_enforcement"])
+            g["halt"].append(t["metrics"]["post_enforcement_commits"])
+        elif t["config"]["arm"] == "revoke_broker":
+            g["revoke"].append(t["metrics"]["post_enforcement_commits"])
         if p["lambda_measured_plan_window"]:
             lams.append(p["lambda_measured_plan_window"])
         if t["config"]["arm"] == "halt_inference" and t["config"]["L"] == min(Ls):
@@ -443,6 +450,8 @@ def panel_delay(trials: list[dict], w: float, C: int) -> tuple[list[str], dict]:
         lines.append(rf"\addplot[only marks,mark={mark},mark size=1.8pt,draw={col},fill={col},error bars/.cd,y dir=both,y explicit,"
                      rf"error bar style={{{col}}}] coordinates {{{' '.join(cs)}}};\addlegendentry{{{lbl}}}")
     lines.append(r"\end{axis}\end{tikzpicture}")
+    st["gap"] = {f"{L:g}": {"emitted_not_admitted_median": median(g["ena"]), "halt_after_enforcement": sorted(g["halt"]),
+                            "revoke_after_enforcement": sorted(g["revoke"])} for L, g in gap.items()}
     st |= {"burst": burst, "burst_at_decision": set(backlog0) == {burst},
            "halt_ratio_median": round(median(ratios), 2), "halt_ratio_range": [round(min(ratios), 2), round(max(ratios), 2)],
            "halt_trials": len(ratios)}
@@ -451,12 +460,17 @@ def panel_delay(trials: list[dict], w: float, C: int) -> tuple[list[str], dict]:
 
 def caption_delay(s: dict) -> str:
     lo, hi = s["halt_ratio_range"]
-    burst = (rf" At \(L = {s['L'][0]:g}\) halting exceeds \(\lambda w\) because the decision falls just after the agent emits a "
-             rf"burst of {s['burst']} calls, which a halt cannot recall." if s["burst_at_decision"] else "")
-    return (rf"\textbf{{(b)}} The same cell at every delay \(L\) between the decision and enforcement (median and range). Solid "
-            rf"bars: \(\lambda(L+w)\), the plan's prediction for halting; dotted: \(\lambda L\), a post hoc reading of the part a "
-            rf"fence cannot remove. Over all {s['halt_trials']} stable halting trials the count was "
-            rf"{s['halt_ratio_median']:g}\(\times\) the prediction (median; {lo:g}--{hi:g})." + burst + " ")
+    L0, rest = f"{s['L'][0]:g}", [f"{L:g}" for L in s["L"][1:]]
+    ena = {L: s["gap"][L]["emitted_not_admitted_median"] for L in s["gap"]}
+    rv = sorted({ena[L] for L in rest})
+    rest_txt = f"{rv[0]:g}" if len(rv) == 1 else f"{rv[0]:g}--{rv[-1]:g}"
+    why = (rf", where the decision falls just after a burst of {s['burst']} calls" if s["burst_at_decision"] else "")
+    return (rf"\textbf{{(b)}} The same cell at each delay \(L\) from decision to enforcement (median, range; \(L\) "
+            rf"categorical). Solid marks: the plan's halting prediction \(\lambda(L+w)\), \(\lambda\) measured "
+            rf"({s['lambda_mean']:.1f}/s); dotted: \(\lambda L\), a post hoc reading. Stable halting trials: "
+            rf"{s['halt_ratio_median']:g}\(\times\) the prediction (median; {lo:g}--{hi:g}; {s['halt_trials']} trials). Halting "
+            rf"and revoking differ by the calls emitted but not yet admitted when the stop takes effect (median {ena[L0]:g} at "
+            rf"\(L = {L0}\){why}; {rest_txt} otherwise); we did not vary where the stop lands. ")
 
 
 # ------------------------------------------------------------------ hero panel (c): E6b fenceability
@@ -497,7 +511,8 @@ def panel_fence(summ: dict) -> tuple[list[str], dict]:
     for m, v in det.items():
         r = idle[m]
         c1 = None if v["class"] == "indeterminate" else {"surface_native": 1.0, "author_code_in_surface": 0.5}.get(v["class"], 0.0)
-        c2 = v["forge_refused"] / v["runs"] if v["runs"] else None
+        # A fence that could never be raised refuses a "new" epoch only because that epoch does not exist; not measurable.
+        c2 = v["forge_refused"] / v["runs"] if v["runs"] and v["class"] != "indeterminate" else None
         hk, hn = summ["held_live"].get(m, (0, 0))
         c3 = None if r.get("fence_failed") or not hn else hk / hn
         rows.append({"mechanism": m, "surface": v["surface"], "cells": [c1, c2, c3], "class": v["class"],
@@ -549,12 +564,11 @@ def caption_fence(s: dict) -> str:
     span = lambda xs: str(xs[0]) if len(xs) == 1 else f"{xs[0]}--{xs[-1]}"
     bound = (rf" With the fence holding in all {races[0]} races, the per-race failure rate is below "
              rf"{100 * (1 - 0.05 ** (1 / races[0])):.0f}\% (one-sided 95\%)." if len(races) == 1 and a3 else "")
-    return (rf"\textbf{{(c)}} Executable probes on single-node instances ({span(runs)} deterministic runs and {span(races)} races "
-            r"per mechanism). Columns: the surface itself enforces the fence, even for a writer that omits every fence field; a "
-            r"stale writer claiming the new epoch is refused; the fence takes effect while stale writers are still running and "
-            r"no stale write commits after it (races use writers that follow the mechanism's protocol; a fence that waits until "
-            r"every writer has finished does not count). Filled, in every run; open, in none; half, in some runs or, in the "
-            r"first column, by a trigger we installed; dash, not measurable. " + who + "." + bound + " ")
+    return (rf"\textbf{{(c)}} Probes on single-node instances ({span(runs)} deterministic runs, {span(races)} races per "
+            r"mechanism). Columns: the surface enforces the fence even for a writer that omits every fence field; a writer "
+            r"claiming the new epoch is refused; the fence takes effect while protocol-following stale writers still run and "
+            r"none commits after it (a fence that waits for every writer to finish does not count). Filled: every run; open: "
+            r"none; half: some runs, or (first column) a trigger we installed; dash: not measurable. " + who + "." + bound + " ")
 
 
 def series(xs: list[str]) -> str:
