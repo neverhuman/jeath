@@ -21,7 +21,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from campaign_analysis import analyze, load_freeze  # noqa: E402
+from campaign_analysis import load_freeze  # noqa: E402  (unchanged since the freeze; the analysis itself is loaded by hash)
 from infer_v2 import proposals_for  # noqa: E402
 from reference_v2 import charge  # noqa: E402
 
@@ -60,6 +60,23 @@ def rederive(rec: dict, case: dict) -> dict:
     return {"unauthorized": unauthorized, "task_success": success, "post_fence_effects": post_ack}
 
 
+def frozen_analysis(want: str):
+    """The frozen campaign_analysis.py, taken from git history by its SHA-256 rather than from the working tree, which
+    later gained descriptive metrics (commit c0cb11b). Returns the module and the commit it was read from."""
+    import subprocess
+    import types
+    commits = subprocess.run(["git", "-C", str(ROOT), "log", "--format=%H", "--", "scripts/campaign_analysis.py"],
+                             capture_output=True, text=True, check=True).stdout.split()
+    for c in commits:
+        blob = subprocess.run(["git", "-C", str(ROOT), "show", f"{c}:scripts/campaign_analysis.py"],
+                              capture_output=True, check=True).stdout
+        if hashlib.sha256(blob).hexdigest() == want:
+            mod = types.ModuleType("campaign_analysis_frozen")
+            exec(compile(blob, f"{c}:scripts/campaign_analysis.py", "exec"), mod.__dict__)
+            return mod, c
+    return None, None
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("run", type=Path)
@@ -76,8 +93,9 @@ def main():
     if sha(ROOT / plan_e1["reference_plan"]["path"]) != plan_e1["reference_plan"]["sha256"]:
         problems.append("reference plan fixtures/v2/evaluation.json changed")
     frozen = freeze["manifest"]["frozen_source_sha256"].get("scripts/campaign_analysis.py")
-    if not (frozen == plan_e1["analysis"]["sha256"] == sha(ROOT / "scripts/campaign_analysis.py")):
-        problems.append("campaign_analysis.py differs from the frozen analysis named in the E1 plan")
+    analysis, analysis_commit = frozen_analysis(plan_e1["analysis"]["sha256"])
+    if frozen != plan_e1["analysis"]["sha256"] or analysis is None:
+        problems.append("the frozen analysis named in the E1 plan is not the freeze's, or is not in git history")
     if holdout["freeze_sha256"] != freeze["sha256"]:
         problems.append("holdout roster is not bound to this freeze")
     if freeze["manifest"].get("sample_size") != 128 or len(holdout["campaigns"]) != 128:
@@ -127,7 +145,7 @@ def main():
             problems.append(f"{tag}: safe_useful inconsistent")
 
     try:
-        recomputed = analyze(recs, plan, holdout, freeze)
+        recomputed = analysis.analyze(recs, plan, holdout, freeze) if analysis else None
     except AssertionError as exc:
         problems.append(f"frozen analysis rejected the records: {exc}")
         recomputed = None
@@ -144,7 +162,7 @@ def main():
         fresh = json.loads(out.stdout)
         if {k: v for k, v in fresh.items() if k != "run"} != {k: v for k, v in stored.items() if k != "run"}:
             problems.append("secondary.json not reproduced")
-    report = {"run": str(run), "records": len(recs), "planned": len(planned), "effects_mismatched": mismatched,
+    report = {"run": str(run), "frozen_analysis_commit": analysis_commit, "records": len(recs), "planned": len(planned), "effects_mismatched": mismatched,
               "rederivation_problems": rederived_bad, "expires_only_unauthorized": expiry_findings,
               "problems": problems[:200], "findings": findings[:200]}
     print(json.dumps(report, indent=1))

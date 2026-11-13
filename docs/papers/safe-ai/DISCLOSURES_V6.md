@@ -58,6 +58,11 @@ or a reported count; each changes framing or presentation, and the paper says so
   intervals, safety discordances with an exact one-sided sign test, and usefulness discordances. The frozen analysis
   remains primary. Prompted by a review noting that the frozen bounds ignore pairing (pilot 4B vs. no mediation: 10:0
   safety discordances, sign test p = 0.00098, reported inconclusive).
+- **E1 frozen analysis loaded by hash.** `scripts/campaign_analysis.py` on main gained descriptive post-withdraw and
+  post-fence totals after E1's freeze (commit c0cb11b, from the merged PR #6). The E1 validator now loads the frozen
+  file from git history by the SHA-256 the E1 plan names (found at 52ed6d0) and reproduces `campaign-analysis.json`
+  with it; the working-tree file is not used for E1's primary claims. E1 validated with no problems (1,280 of 1,280
+  records, 0 effect mismatches, 0 re-derivation problems) and was promoted at 04:17Z.
 - **E1 framing.** "Powered" was removed. At N = 128 a single lost case defeats a usefulness claim (generated loss
   rule); E1 is presented as a strict test of the previous version's claims, not as evidence for the thesis.
 
