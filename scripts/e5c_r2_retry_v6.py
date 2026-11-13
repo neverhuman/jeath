@@ -97,7 +97,7 @@ def run(args) -> None:
                         rec_file.flush()
                         with (args.output / "progress.log").open("a") as pl:
                             pl.write(f"{time.strftime('%H:%M:%SZ', time.gmtime())} {ckpt} case {it['case_id']}\n")
-                    return rec
+                    return [((ckpt, it["case_id"], json.dumps(it["rpc"], sort_keys=True)), rec)]  # _run_parallel_tasks' shape
                 return task
 
             _run_parallel_tasks(engines, [make_task(it) for it in mine])
