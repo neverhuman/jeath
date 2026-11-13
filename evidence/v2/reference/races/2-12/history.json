@@ -5,26 +5,26 @@
       "budget": 8,
       "op": "init"
     },
-    "invoked_ns": 242413201961206,
-    "responded_ns": 242413369842508,
+    "invoked_ns": 254438622558154,
+    "responded_ns": 254439081786034,
     "response": {
       "status": "initialized"
     },
     "role": "broker",
-    "unix_time": 1794554554
+    "unix_time": 1794566579
   },
   {
     "effects": [],
     "invocation": {
       "op": "init"
     },
-    "invoked_ns": 242413370595903,
-    "responded_ns": 242413391033865,
+    "invoked_ns": 254439081820440,
+    "responded_ns": 254439137247804,
     "response": {
       "status": "initialized"
     },
     "role": "sink",
-    "unix_time": 1794554554
+    "unix_time": 1794566580
   },
   {
     "effects": null,
@@ -43,18 +43,18 @@
             0,
             0
           ],
-          "expires": 1794558154,
+          "expires": 1794570180,
           "id": "actor-0"
         }
       }
     },
-    "invoked_ns": 242413395664094,
-    "responded_ns": 242413414196300,
+    "invoked_ns": 254439137775442,
+    "responded_ns": 254439183264672,
     "response": {
       "status": "approved"
     },
     "role": "broker",
-    "unix_time": 1794554554
+    "unix_time": 1794566580
   },
   {
     "effects": null,
@@ -73,18 +73,18 @@
             0,
             0
           ],
-          "expires": 1794558154,
+          "expires": 1794570180,
           "id": "actor-1"
         }
       }
     },
-    "invoked_ns": 242413414396529,
-    "responded_ns": 242413438515082,
+    "invoked_ns": 254439183276404,
+    "responded_ns": 254439243298203,
     "response": {
       "status": "approved"
     },
     "role": "broker",
-    "unix_time": 1794554554
+    "unix_time": 1794566580
   },
   {
     "effects": null,
@@ -100,16 +100,16 @@
           0,
           0
         ],
-        "expires": 1794558154,
-        "id": "actor-0"
+        "expires": 1794570180,
+        "id": "actor-1"
       },
-      "session_actor": "actor-0"
+      "session_actor": "actor-1"
     },
-    "invoked_ns": 242413445362585,
-    "responded_ns": 242413486699811,
+    "invoked_ns": 254439245554478,
+    "responded_ns": 254439307363575,
     "response": {
       "permit": {
-        "actor": "actor-0",
+        "actor": "actor-1",
         "proposal": {
           "effect": {
             "kind": "transfer",
@@ -120,14 +120,14 @@
             0,
             0
           ],
-          "expires": 1794558154,
-          "id": "actor-0"
+          "expires": 1794570180,
+          "id": "actor-1"
         }
       },
       "status": "pending"
     },
     "role": "broker",
-    "unix_time": 1794554554
+    "unix_time": 1794566580
   },
   {
     "effects": null,
@@ -143,26 +143,26 @@
           0,
           0
         ],
-        "expires": 1794558154,
-        "id": "actor-1"
+        "expires": 1794570180,
+        "id": "actor-0"
       },
-      "session_actor": "actor-1"
+      "session_actor": "actor-0"
     },
-    "invoked_ns": 242413445704172,
-    "responded_ns": 242413501326620,
+    "invoked_ns": 254439245615473,
+    "responded_ns": 254439325396590,
     "response": {
       "reason": "policy",
       "status": "denied"
     },
     "role": "broker",
-    "unix_time": 1794554554
+    "unix_time": 1794566580
   },
   {
     "effects": null,
     "invocation": {
       "op": "accept",
       "permit": {
-        "actor": "actor-0",
+        "actor": "actor-1",
         "proposal": {
           "effect": {
             "kind": "transfer",
@@ -173,46 +173,46 @@
             0,
             0
           ],
-          "expires": 1794558154,
-          "id": "actor-0"
+          "expires": 1794570180,
+          "id": "actor-1"
         }
       }
     },
-    "invoked_ns": 242413486965954,
-    "responded_ns": 242413524529481,
+    "invoked_ns": 254439307400806,
+    "responded_ns": 254439415489618,
     "response": {
       "status": "pending"
     },
     "role": "sink",
-    "unix_time": 1794554554
+    "unix_time": 1794566580
   },
   {
     "effects": null,
     "invocation": {
-      "id": "actor-0",
+      "id": "actor-1",
       "op": "complete"
     },
-    "invoked_ns": 242413524585918,
-    "responded_ns": 242413544803523,
+    "invoked_ns": 254439415524994,
+    "responded_ns": 254439469518249,
     "response": {
       "status": "committed"
     },
     "role": "sink",
-    "unix_time": 1794554554
+    "unix_time": 1794566580
   },
   {
     "effects": null,
     "invocation": {
-      "id": "actor-0",
+      "id": "actor-1",
       "op": "settle",
       "sink_status": "committed"
     },
-    "invoked_ns": 242413544946102,
-    "responded_ns": 242413561774335,
+    "invoked_ns": 254439469548887,
+    "responded_ns": 254439539668903,
     "response": {
       "status": "committed"
     },
     "role": "broker",
-    "unix_time": 1794554554
+    "unix_time": 1794566580
   }
 ]
