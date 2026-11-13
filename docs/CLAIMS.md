@@ -41,15 +41,15 @@ Every plan is in `fixtures/v6/`, committed before its data; deviations, stopped 
 `docs/papers/safe-ai/DISCLOSURES_V6.md`. Numbers in the paper come only from `scripts/hero_v6.py` and
 `scripts/v6_macros.py` via `scripts/paper.py`.
 
-| ID | Question | Evidence | By construction (never reported as a finding) |
-| --- | --- | --- | --- |
-| **E4** | Effects committed after halt / revoke / fence, and legitimate work lost, on real broker and sink processes | `e4-revokebench/` | Fence admits 0 after enforcement; 0 duplicates (`UNIQUE`) |
-| **E4b** | The same with SIGKILL inside `complete`/`fence`, late `accept`, closed-loop agents | `e4b-revokebench-faults/` | as E4 |
-| **E5** | Same-model reviewer (R0/R1/R2) vs verified gate on state-dependent and proposal-visible violations | `e5-omitted-clause/` | Gate admits 0; gate-minus-clause admits exactly that clause's single-clause violations |
-| **E6, E6b** | Which mechanisms of PostgreSQL, etcd and a POSIX filesystem refuse a stale epoch, and who enforces it | `e6-fenceability/`, `e6b-fenceability/` | — |
-| **E8, E8b** | AgentDojo banking + Slack with grants written without reference solutions; injections inside the grant | `e8-agentdojo-fair/`, `e8b-inside-spec/` | Strict spec refuses the reference attacks it was written against (stage 0) |
-| **E1** | Five controllers, $N=128$ per checkpoint, frozen analysis | `e1-n128/` | `complete` unauthorized = 0; revocation cases favour fenced controllers (S4 removes them) |
-| **E2** | E8 across open-weight checkpoints on one host | `e2-*/` | — |
+| ID | Question | Evidence | By construction (never reported as a finding) | Measured (promoted evidence, 2026-11-13) |
+| --- | --- | --- | --- | --- |
+| **E4** | Effects committed after halt / revoke / fence, and legitimate work lost, on real broker and sink processes | `e4-revokebench/` | Fence admits 0 after enforcement; 0 duplicates (`UNIQUE`) | Drawn cell (`w=5 s`, `C=32`): halt `13-15`, revoke `7-10` effects after enforcement; fence discards `8-11` legitimate calls. Halting vs the plan's `lambda(L+w)`: median ratio `1.25` (`0.87-8.24`) over `36` fault-free stable trials |
+| **E4b** | The same with SIGKILL inside `complete`/`fence`, late `accept`, closed-loop agents | `e4b-revokebench-faults/` | as E4 | Paper Section 4 (`vsixEFourBSentence`) |
+| **E5** | Same-model reviewer (R0/R1/R2) vs gate on state-dependent and proposal-visible violations | `e5-omitted-clause/` | Gate admits 0; gate-minus-clause admits exactly that clause's single-clause violations | H_E5a **held** on both checkpoints (8B R1: `36/133` state vs `2/76` visible; `36/36` state cases). H_E5b **held on 4B** (R2 `9/216`) and **failed on 8B** (R2 `0/133`, median `637` generated tokens per review vs `6`) |
+| **E6, E6b** | Which mechanisms of PostgreSQL, etcd and a POSIX filesystem refuse a stale epoch, and who enforces it | `e6-fenceability/`, `e6b-fenceability/` | — | Of `9` mechanisms, only etcd RBAC revoke is surface-enforced, refuses a forged epoch, and lets no stale write through |
+| **E8, E8b** | AgentDojo banking + Slack with grants written without reference solutions; injections inside the grant | `e8-agentdojo-fair/`, `e8b-inside-spec/` | Strict spec refuses the reference attacks it was written against (stage 0) | Benign utility: unprotected `16/37`, oracle `15/37`, Progent `12/37`, delegated `12/37`, strict `9/37`. Native attack success: unprotected `42/74`, delegated `8/74`, Progent `2/74`, strict `0/74`, oracle `0/74`. E8b pending |
+| **E1** | Five controllers, $N=128$ per checkpoint, frozen analysis | `e1-n128/` | `complete` unauthorized = 0; revocation cases favour fenced controllers (S4 removes them) | pending |
+| **E2** | E8 across open-weight checkpoints on one host | `e2-*/` | — | not run |
 
 ## Preserved V1 Claim Map (Commit `12b5579`)
 

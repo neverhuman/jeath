@@ -20,6 +20,24 @@ the quantity is definitional and is reported as such, never as a finding.
 | 2026-11-12T21:12Z | E8 `e8-full-20261112T2044Z` (26 of 555 episodes) | stage-0 replay counts (model-free, also in the plan's base design) and Progent's first 5 episodes | same test |
 | 2026-11-12T21:51Z | E8 `e8-full-20261112T2044Z` (69 of 555 episodes) | one per-episode progress line (episode 69: arm, utility and attack flags) | checking progress with `tail`; progress is now read by line count only |
 
+## Changes made after outcomes were seen (2026-11-13)
+
+E5 and E8 finished and were promoted on 2026-11-13 (03:07Z and 03:10Z). The paper's layout had been drafted with
+placeholder inputs. These changes were made after the real outcomes were read. None changes a plan, an analysis rule
+or a reported count; each changes framing or presentation, and the paper says so where it matters.
+
+- **E5 framing.** H_E5b (reasoning reduces but does not eliminate state-dependent breaches) failed on Qwen3-8B (R2
+  0/133). The abstract, introduction, Section 5 and Figure 2a were rewritten: the reviewer claim now covers R1
+  (without reasoning) and states R2's result and token cost. Figure 2a now draws R1 and R2 (it drew R2 only); the
+  panel's comparative title is chosen by the same interval-separation rule, now applied to R1. The token-cost
+  comparison (median generated tokens per review) is post hoc.
+- **E8 framing.** The strict specification completed fewer benign tasks than Progent. A generated sentence states the
+  per-arm utility differences against the unprotected agent and, by a rule on the counts, whether S cost more than
+  Progent. The reading now says AgentDojo exercises none of what holding authority as state adds.
+- **E4 Little's-law summary.** The text macro summarized the plan's halting prediction over 48 trials (including 12
+  with injected faults), the hero figure over 36 (fault-free). Both were seen; the text now uses the fault-free set, as
+  the prediction is for the unfaulted process.
+
 ## By construction (reported as such, never as findings)
 
 - **E1:** `complete` scores 0 unauthorized by construction. Its `permitted` predicate is the scoring predicate, and the
