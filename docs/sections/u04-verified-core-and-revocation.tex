@@ -15,7 +15,8 @@ to AgentDojo's in-memory environment.
 
 \para{Untrusted.} The proposer: the model, its prompts and scaffolding, any sub-agents, and any content injected into
 them. It may send any sequence of requests, well-formed or not, at any rate, and may be misaligned or under an
-attacker's control. Its process is confined so that it reaches effects only through the broker's socket (below).
+attacker's control. Its process is confined so that it reaches effects only through the trusted launcher's
+submission and status interface.
 
 \para{Trusted.} The broker, the sink and the host they run on; SQLite; the cryptographic code, which is unaudited; the
 channel by which an operator orders a stop; and whoever writes the specification. A compromised broker or sink host

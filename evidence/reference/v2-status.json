@@ -1,16 +1,21 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "v1_source_commit": "12b5579",
-  "v1_evidence": "retained unchanged",
+  "v1_measurement_files": "preserved unchanged",
   "v2_reference": "evidence/v2/reference",
   "v3_reference": "evidence/v3/reference",
-  "claim_status": "verified policy-core predicates (43 obligations), separate-service local protocol (31 fault histories, 11 Linux confinement probes, bounded concurrent linearization for 1/2/4 actors), and pure-Rust V3 synthetic/analytical suite; local GPU model usefulness claims unrun and unsupported",
+  "release_guard": "Executable kernel agreement is required for guarded release transitions; wrapper and projection are tested, not formally refined.",
+  "current_protocol_code_freeze": "4caae8e0225d89922c4403d7715d0a9e767c1a9f",
+  "proof_receipt": "evidence/v2/reference/proof.json",
+  "fresh_v1_reproduction": "evidence/v2/release-kernel-v1-smoke",
+  "model_results": "Historical CPU pilot and powered v6 replication retain original source/binary provenance. This protocol refresh ran no model campaigns.",
+  "v6_manifest_sha256": "c9cb328af3a9679a6933a80b4cc0a018076f6060ccc5ca489fde4ddf972d5d09",
   "open": [
-    "GPU validation of managed local inference",
-    "five-controller Qwen3-4B and Qwen3-8B paired campaigns",
-    "model-driven AgentDojo/Progent comparison",
-    "end-to-end SQLite/IPC refinement proof",
-    "unbounded concurrent history checking beyond 4 actors / 40 calls"
+    "Whole-runtime parsing/storage refinement",
+    "End-to-end adaptive control evaluation",
+    "Frontier-model and human-participant generalization",
+    "Arbitrary uncooperative external sinks"
   ],
-  "ci_runner_pool": "neverhuman-lan; Linux X64 lan-ci ubuntu24; native macOS check retained"
+  "ci_runner_pool": "neverhuman-lan; Linux X64 lan-ci ubuntu24; native macOS retained",
+  "release_profile_test": "cargo test --locked --release --test kernel_guard_v2"
 }
