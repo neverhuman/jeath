@@ -2,7 +2,9 @@
 
 Intelligence lives in proposals and authority lives in state. Holding authority as state at the sink, and checking
 it when an effect commits, separates stopping a model from stopping its effects. Halting a model stops new proposals;
-a fence also stops the effects already in flight; and only faster enforcement shortens the delay before either acts. A
+a fence also stops the effects already in flight; and only faster enforcement shortens the delay before either acts. For AI control this is a matter of accounting as
+much as engineering: an evaluation that counts a caught attack as prevented should also count what the stop did not
+reach. A
 gate that reads state does not depend on a reviewer's prompt or token budget, but it enforces only what its
 specification names. We conjecture that this is the general shape of mediation: it moves the safety problem from a
 model's dispositions, which no one can enumerate, to a written specification, which anyone can read, test and argue
@@ -11,10 +13,11 @@ inside it (Section~\ref{sec:v6cost}), work in flight a fence discards (Section~\
 (Section~\ref{sec:v6boundary}).
 
 Three questions decide whether this is enough. Which external surfaces can enforce an epoch themselves rather than
-trust the writer to send one (Section~\ref{sec:v6boundary})? How fine must a specification be before its cost in
+trust the writer to send one (Section~\ref{sec:v6boundary}), and how much of what deployed agents do ends in a commit
+that such a surface can refuse? How fine must a specification be before its cost in
 utility is acceptable, and who writes it (Section~\ref{sec:v6cost})? And do people grant more to agents that are more
 capable or more agreeable, so that intelligence regains through conferral the reach that mediation removed
-(Observation~\ref{obs:conferral})? The first is an engineering survey; the second is a measurement this paper starts;
+(Observation~\ref{obs:conferral})? The first is an engineering survey and a measurement of real agents' tool traces; the second is a measurement this paper starts;
 the third needs a study with people, whose design we state in Appendix~\ref{app:v6conferral}.
 
 \para{Scope.} The SQLite broker and sink mediate only their own database effects. Nothing here is a sandbox, external
