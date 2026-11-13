@@ -1389,12 +1389,13 @@ def generate_v6():
     import v6_macros
 
     ref = ROOT / "evidence/v6/reference"
-    need = {k: ref / v6_macros.SOURCES[k] for k in ("e4", "e5", "e8", "e8b")}
+    need = {k: ref / v6_macros.SOURCES[k] for k in ("e4", "e6b", "e5", "e8", "e8b")}
     absent = [k for k, d in need.items() if not (d / "results.json").exists()]
     if absent:
         raise SystemExit(f"v6 evidence not promoted: {', '.join(absent)} (scripts/promote_v6.py)")
-    hero = hero_v6.build(SimpleNamespace(e4=need["e4"], e5=need["e5"], e8=need["e8"], e8b=need["e8b"],
+    hero = hero_v6.build(SimpleNamespace(e4=need["e4"], e6b=need["e6b"], e5=need["e5"], e8=need["e8"], e8b=need["e8b"],
                                          ckpt="Qwen/Qwen3-8B-GGUF", layout_preview=False))
+    assert_pure_float("v6-spec-fig.tex", hero["v6-spec-fig.tex"])
     text, missing = v6_macros.build(SimpleNamespace(ckpt="Qwen/Qwen3-8B-GGUF", draft=False, sources={}))
     assert not missing
     assert hero["v6-hero-fig.tex"].count(r"\captionof{figure}") == 1  # a non-float under the abstract, like v5's

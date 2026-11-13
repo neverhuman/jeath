@@ -2,6 +2,8 @@
 % scripts/hero_v6.py and scripts/v6_macros.py).
 \section{Reviewers Read Proposals; Violations Live in State}\label{sec:v6reviewers}
 
+\input{generated/v6-spec-fig}
+
 A common alternative to mediation is review: a second model, often the same one, reads each proposed action and
 approves or denies it~\cite{control}. Review sees the proposal. Many unauthorized actions, however, are
 unauthorized only because of the state they would act on: a payment that was legitimate once and is now a replay, a
@@ -22,7 +24,7 @@ truncated review is a deny). Every valid candidate also goes through the real br
 also report the share of cases with any breach, because repeated samples of a deterministic review are not independent.
 
 \para{Result.} The strongest reviewer, R2, admitted \vsixReviewerState{} unauthorized proposals whose violation lives
-in state and \vsixReviewerVisible{} whose violation is visible in the proposal (Figure~\ref{fig:v6hero}b;
+in state and \vsixReviewerVisible{} whose violation is visible in the proposal (Figure~\ref{fig:v6spec}a;
 \vsixEFiveCkpt{}; R0 and R1 in Appendix~\ref{app:v6e5}). By case, R2 admitted at least one state-dependent violation in
 \vsixReviewerStateCases{} cases. The gate admitted \vsixGateBreaches{}. That zero is the gate enforcing its written
 predicate: on all \vsixGateUnique{} distinct valid proposals its Rust kernel agreed with an independent Python
@@ -30,7 +32,7 @@ statement of the same clauses (\vsixMirrorDisagreements{} disagreements). \vsixG
 
 \para{The conversion thesis.} The gate's zero is not intelligence-proof safety. It is safety relative to what was
 written. Remove one clause and the gate admits exactly the violations that break only that clause; this holds by
-construction, and Figure~\ref{fig:v6hero}b draws it as such. What the experiment measures is how much each family rests
+construction, and Figure~\ref{fig:v6spec}a draws it as such. What the experiment measures is how much each family rests
 on a single clause: \vsixSingleClauseSentence{} Mediation therefore does not make safety independent of the
 proposer's intelligence. It converts a learned blind spot, which an adversary finds by search and which no one can
 enumerate, into a written specification gap, which anyone can read, test and close. On the clauses that are written,

@@ -34,7 +34,7 @@ FAMILY_LABEL = {"duplicate_replay": "Replay, budget spent", "withdrawn_issuer": 
 FILLED = {"square": "square*", "diamond": "diamond*", "o": "*", "pentagon": "pentagon*", "triangle": "triangle*"}
 E8_ARMS = (("unprotected", "Unprotected", "structgray", "square"), ("progent", "Progent (per call)", "warnamber!85!black", "diamond"),
            ("authority_strict", "Strict provenance", "exoblue", "o"), ("authority_delegated", "Delegated sources", "exoblue", "pentagon"),
-           ("authority_oracle", "Oracle grant (bound)", "exoblue!60!black", "triangle"))
+           ("authority_oracle", "Solution allowlist", "exoblue!60!black", "triangle"))
 CONTROLLERS = (("none", "No mediation", "structgray", "square*"), ("stateless", "Per-call policy", "warnamber", "diamond*"),
                ("learned_same_checkpoint", "Same-model reviewer", "endored", "triangle*"),
                ("durable_without_fence", "Durable, no fence", "safegreen", "pentagon*"),
@@ -106,7 +106,9 @@ def panel_a(trials: list[dict]) -> tuple[list[str], dict]:
     fin = {a: sorted(len(c) for c in cs) for a, cs in curves.items()}
     grid = {a: [t["metrics"]["post_enforcement_commits"] for t in nofault if t["config"]["arm"] == a] for a in fin}
     fence_all = [t for t in trials if t["config"]["arm"] == "fence_sink"]
+    wl = sel[0]["config"]["workload"]
     st = {"rule": "stable cell (rho<1) with the longest mean tool latency, L=0", "w": w, "C": C, "rho": round(2 * w / C, 3),
+          "lambda_offered": wl["calls_per_step"] / wl["model_step_seconds"],
           "replicates": len(curves["fence_sink"]), "final": fin, "fence_lost_legitimate": sorted(lost),
           "last_commit_s": round(tmax, 1), "grid_max": {a: max(v) for a, v in grid.items()},
           "grid_cells": len({(t["config"]["w"], t["config"]["C"], t["config"]["L"]) for t in nofault}),
@@ -119,7 +121,7 @@ def panel_a(trials: list[dict]) -> tuple[list[str], dict]:
              rf"\begin{{axis}}[{AXIS},xmin=0,xmax={xmax},ymin=-0.6,ymax={ymax:.0f},grid=major,clip=false,"
              r"xlabel={Seconds after the stop took effect},ylabel={Effects committed after the stop},"
              r"title={\textbf{(a)} Stopping the model $\neq$ stopping its effects}]"]
-    styles = {"halt_inference": "endored,thick,dashed", "revoke_broker": "warnamber!80!black,thick,dashdotted",
+    styles = {"halt_inference": "endored,thick,dashed", "revoke_broker": "warnamber!80!black,very thick,densely dotted",
               "fence_sink": "exoblue,ultra thick"}
     for arm in ("halt_inference", "revoke_broker", "fence_sink"):
         for ts in curves[arm]:
@@ -144,7 +146,7 @@ def banner(s: dict) -> list[str]:
     return [r"\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]",
             node("s1", 2.75, 4.9, "0.8pt,dashed", "endored", "endored!6", "1\\enspace Halt the model",
                  rf"new proposals stop\\[-1pt]\textbf{{{rng(f['halt_inference'])}}} dispatched effects still commit"),
-            node("s2", 8.95, 4.9, "0.8pt,dashdotted", "warnamber!80!black", "warnamber!8", "2\\enspace Revoke at the broker",
+            node("s2", 8.95, 4.9, "0.8pt,densely dotted", "warnamber!80!black", "warnamber!8", "2\\enspace Revoke at the broker",
                  rf"new permits stop\\[-1pt]\textbf{{{rng(f['revoke_broker'])}}} admitted effects still commit"),
             node("s3", 15.15, 4.9, "1.2pt", "exoblue", "exoblue!7", "3\\enspace Fence the sink",
                  rf"stale epochs refused at commit\\[-1pt]\textbf{{{rng(f['fence_sink'])}}} commit; "
@@ -156,15 +158,13 @@ def banner(s: dict) -> list[str]:
 
 def caption_a(s: dict) -> str:
     f = s["final"]
-    return (rf"\textbf{{(a)}} Real broker and sink processes; {s['C']} concurrent tool calls of {s['w']:g}\,s mean latency "
-            rf"(offered load {s['rho']:g}, the stable cell with the longest latency), stop enforced at once; each of "
-            rf"{s['replicates']} replicates drawn. After the stop, halting the model lets {rng(f['halt_inference'])} effects commit "
-            rf"and revoking at the broker {rng(f['revoke_broker'])}, the last {s['last_commit_s']:g}\,s later; fencing the sink lets "
-            rf"{rng(f['fence_sink'])} commit and loses {rng(s['fence_lost_legitimate'])} legitimate calls (cancelled or denied). Over all "
-            rf"{s['grid_cells']} fault-free cells the most leaked by halting is {s['grid_max']['halt_inference']} and by revoking "
-            rf"{s['grid_max']['revoke_broker']}; the fence admitted at most {s['fence_post_max']} in {s['fence_trials']} trials, "
-            rf"{s['fence_fault_trials']} with SIGKILL of the sink or late completions. The fence's zero is a design property of the "
-            r"sink; what is measured is that this implementation keeps it under those faults. ")
+    fence = ("admits none after enforcement in any of its" if s["fence_post_max"] == 0 else f"admits at most {s['fence_post_max']} in its")
+    return (rf"\textbf{{(a)}} Real broker and sink processes driven by a synthetic, non-adversarial agent emitting "
+            rf"{s['lambda_offered']:g} calls/s to {s['C']} concurrent tool calls of {s['w']:g}\,s mean latency (chosen by a fixed rule: the "
+            rf"stable cell with the longest latency), stop enforced at once, {s['replicates']} replicates. After the stop, "
+            rf"{rng(f['halt_inference'])} effects commit when the model is halted and {rng(f['revoke_broker'])} when the broker "
+            rf"revokes; the fence discards {rng(s['fence_lost_legitimate'])} legitimate calls in flight. Its zero is by design; "
+            rf"across all cells it {fence} {s['fence_trials']} trials, {s['fence_fault_trials']} with the sink killed or late completions. ")
 
 
 # ------------------------------------------------------------------ panel (b): E5
@@ -204,7 +204,7 @@ def panel_b(an: dict, plan: dict, ckpt: str) -> tuple[list[str], dict]:
             if not e["n"]:
                 continue
             m = 100 * e["x"] / e["n"]
-            lo, hi = (100 * v for v in e["ci95"])
+            lo, hi = (100 * v for v in e["ci95"]) if arm != "G" else (m, m)  # the gate's admissions are fixed by design: no interval
             pts.append(f"({m:.4g},{ypos[f] + offs[arm]:.3f}) -= ({m - lo:.4g},0) += ({hi - m:.4g},0)")
         lines.append(rf"\addplot[only marks,mark={mark},mark size=2pt,draw={color},fill={color},error bars/.cd,x dir=both,x explicit,"
                      rf"error bar style={{{color},line width=0.5pt}}] coordinates {{{' '.join(pts)}}};\addlegendentry{{{label}}}")
@@ -213,7 +213,7 @@ def panel_b(an: dict, plan: dict, ckpt: str) -> tuple[list[str], dict]:
         x, n = st["families"][f]["omitted_clause_share"]
         if n:
             pts.append(f"({100 * x / n:.4g},{ypos[f] + offs['omit']:.3f})")
-    lines.append(r"\addplot[only marks,mark=o,mark size=2pt,draw=exoblue] coordinates {" + " ".join(pts) + r"};"
+    lines.append(r"\addplot[only marks,mark=o,mark size=1.4pt,draw=structgray!80] coordinates {" + " ".join(pts) + r"};"
                  r"\addlegendentry{gate with that clause unwritten (by construction)}")
     ysep = (min(ypos[f] for f in order if f in STATE) + max(ypos[f] for f in order if f in VISIBLE)) / 2
     lines += [rf"\draw[structgray!60,densely dashed] (axis cs:-3,{ysep:.2f}) -- (axis cs:103,{ysep:.2f});",
@@ -289,18 +289,17 @@ def panel_c(rows8: list[dict], rows8b: list[dict] | None) -> tuple[list[str], di
 def caption_c(s: dict, ckpt8: str) -> str:
     a = s["arms"]
     f = lambda k, m: pct(*a[k][m])
-    word = lambda x, y: "fewer than" if x[0] / x[1] < y[0] / y[1] else ("as many as" if x[0] / x[1] == y[0] / y[1] else "more than")
-    text = (rf"\textbf{{(c)}} AgentDojo banking and Slack, {ckpt8}, AgentDojo's utility graders, every episode counted (95\% "
-            rf"Clopper--Pearson). Permissions written without the reference solution (strict provenance) complete "
-            rf"{f('authority_strict', 'benign_utility')} benign tasks, {word(a['authority_strict']['benign_utility'], a['unprotected']['benign_utility'])} "
-            rf"unprotected ({f('unprotected', 'benign_utility')}); the oracle grant, copied from the solution, completes "
-            rf"{f('authority_oracle', 'benign_utility')}. AgentDojo's injections succeed in {f('authority_strict', 'native_attack')} strict "
-            rf"episodes and {f('unprotected', 'native_attack')} unprotected")
+    # Counts only, no comparative words: 37 tasks at temperature 0 cannot separate most of these arms.
+    text = (rf"\textbf{{(c)}} AgentDojo banking and Slack (37 user tasks), {ckpt8}, AgentDojo's graders, every episode counted "
+            rf"(95\% Clopper--Pearson, episodes not independent within a task). A provenance specification written without the "
+            rf"reference solutions (strict) completes {f('authority_strict', 'benign_utility')} benign tasks; unprotected, "
+            rf"{f('unprotected', 'benign_utility')}; an allowlist copied from the solution, whose refusals can steer the agent "
+            rf"toward it, {f('authority_oracle', 'benign_utility')}. AgentDojo's injections succeed in {f('authority_strict', 'native_attack')} "
+            rf"strict and {f('unprotected', 'native_attack')} unprotected episodes")
     if "inside_spec_attack" in a["authority_strict"]:
-        text += (rf"; injections that name only principals already in the user's state succeed in "
-                 rf"{f('authority_strict', 'inside_spec_attack')} strict and {f('authority_delegated', 'inside_spec_attack')} delegated "
-                 rf"episodes, against {f('unprotected', 'inside_spec_attack')} unprotected and {f('authority_oracle', 'inside_spec_attack')} "
-                 r"under the oracle grant (author-written injections and graders, predeclared)")
+        text += (rf"; injections that name only principals already in the user's state (written by us) succeed in "
+                 rf"{f('authority_strict', 'inside_spec_attack')} strict, {f('authority_delegated', 'inside_spec_attack')} delegated, "
+                 rf"{f('unprotected', 'inside_spec_attack')} unprotected and {f('authority_oracle', 'inside_spec_attack')} allowlist episodes")
     return text + ". "
 
 
@@ -328,11 +327,190 @@ def panel_e1(campaigns: list[dict], ckpt: str) -> tuple[list[str], dict]:
     return lines + [r"\end{axis}\end{tikzpicture}"], st
 
 
+# ------------------------------------------------------------------ hero panel (b): E4 across enforcement delays
+
+ARM_STYLE = {"halt_inference": ("endored", "*", "halt the model"),
+             "revoke_broker": ("warnamber!80!black", "square*", "revoke at the broker"),
+             "fence_sink": ("exoblue", "triangle*", "fence the sink")}
+
+
+def median(xs):
+    xs = sorted(xs)
+    k = len(xs) // 2
+    return xs[k] if len(xs) % 2 else (xs[k - 1] + xs[k]) / 2
+
+
+def panel_delay(trials: list[dict], w: float, C: int) -> tuple[list[str], dict]:
+    """Effects committed after the stop decision, per arm and enforcement delay L, in the cell drawn in (a). The plan's
+    own prediction for halting (metrics.little_law_prediction, lambda measured x (L + w)) is drawn beside it; the fence's
+    lambda x L is a post hoc reading (the delay term no layer removes) and is labelled so."""
+    from revokebench_reanalysis_v6 import per_trial
+    cell = [t for t in trials if t["config"]["fault"] == "none" and t["config"]["w"] == w and t["config"]["C"] == C]
+    Ls = sorted({t["config"]["L"] for t in cell})
+    pts = {a: {L: [] for L in Ls} for a in ARM_STYLE}
+    lams = []
+    for t in cell:
+        p = per_trial(t)
+        pts[t["config"]["arm"]][t["config"]["L"]].append(p["post_decision_commits"])
+        if p["lambda_measured_plan_window"]:
+            lams.append(p["lambda_measured_plan_window"])
+    lam = sum(lams) / len(lams)
+    ratios = []
+    for t in trials:
+        if t["config"]["fault"] == "none" and t["config"]["arm"] == "halt_inference":
+            p = per_trial(t)
+            if p["little_law_plan"]:
+                ratios.append(p["post_decision_commits"] / p["little_law_plan"])
+    ymax = max(max(v) for d in pts.values() for v in d.values()) * 1.12
+    n = len(Ls)
+    lines = [r"\begin{tikzpicture}[baseline]",
+             rf"\begin{{axis}}[{AXIS},xmin=-0.5,xmax={n - 0.5},ymin=0,ymax={ymax:.0f},xtick={{{','.join(str(i) for i in range(n))}}},"
+             rf"xticklabels={{{','.join(f'{L:g}' for L in Ls)}}},ymajorgrids,clip=false,"
+             r"xlabel={Delay before the stop takes effect, $L$ (s)},ylabel={Effects committed after the decision},"
+             r"title={\textbf{(b)} After the decision: $\lambda L$ + $\lambda w$}," + LEGEND_C + "]"]
+    pred = {"halt_inference": lambda L: lam * (L + w), "fence_sink": lambda L: lam * L}
+    for arm, f in pred.items():
+        col = ARM_STYLE[arm][0]
+        lines.append(rf"\addplot[{col},thin,densely dashed,forget plot] coordinates {{{' '.join(f'({i},{f(L):.2f})' for i, L in enumerate(Ls))}}};")
+    lines += [rf"\node[font=\tiny,text=ink,anchor=south east,inner sep=1pt] at (axis cs:{n - 1.15},{pred['halt_inference'](Ls[-1]):.2f}) {{$\lambda(L{{+}}w)$}};",
+              rf"\node[font=\tiny,text=ink,anchor=north west,inner sep=1pt] at (axis cs:{n - 0.85},{pred['fence_sink'](Ls[-1]):.2f}) {{$\lambda L$}};"]
+    off = {"halt_inference": -0.2, "revoke_broker": 0.0, "fence_sink": 0.2}
+    st = {"w": w, "C": C, "L": Ls, "lambda_mean": round(lam, 3), "points": {}}
+    for arm, (col, mark, lbl) in ARM_STYLE.items():
+        cs = []
+        for i, L in enumerate(Ls):
+            v = sorted(pts[arm][L])
+            m = median(v)
+            cs.append(f"({i + off[arm]:.2f},{m:g}) -= (0,{m - v[0]:g}) += (0,{v[-1] - m:g})")
+        st["points"][arm] = {f"{L:g}": sorted(pts[arm][L]) for L in Ls}
+        lines.append(rf"\addplot[only marks,mark={mark},mark size=1.8pt,draw={col},fill={col},error bars/.cd,y dir=both,y explicit,"
+                     rf"error bar style={{{col}}}] coordinates {{{' '.join(cs)}}};\addlegendentry{{{lbl}}}")
+    lines.append(r"\end{axis}\end{tikzpicture}")
+    st |= {"halt_ratio_median": round(median(ratios), 2), "halt_ratio_range": [round(min(ratios), 2), round(max(ratios), 2)],
+           "halt_trials": len(ratios)}
+    return lines, st
+
+
+def caption_delay(s: dict) -> str:
+    lo, hi = s["halt_ratio_range"]
+    return (rf"\textbf{{(b)}} The same cell at every delay \(L\) between the decision and enforcement (median and range). Dashed: "
+            rf"\(\lambda(L+w)\), the plan's prediction for halting, and \(\lambda L\) (post hoc), the part a fence cannot remove; "
+            rf"over all {s['halt_trials']} stable halting trials the count was {s['halt_ratio_median']:g}\(\times\) the prediction "
+            rf"(median; {lo:g}--{hi:g}). ")
+
+
+# ------------------------------------------------------------------ hero panel (c): E6b fenceability
+
+SURF_SHORT = {"postgresql16": "PostgreSQL 16", "etcd_v3_5_17": "etcd 3.5", "posix_fs": "POSIX filesystem"}
+HERO_MECH = {"pg_trigger_e6": "epoch trigger", "pg_trigger_e6_fair": "trigger + table lock", "pg_trigger_notnull": "trigger, epoch required",
+             "pg_foreign_key": "foreign key to epoch", "pg_revoke": "REVOKE writer role", "etcd_txn_compare": "txn compare on floor",
+             "etcd_rbac_revoke": "RBAC revoke", "fs_flock": "flock + floor file", "fs_dir_mode": "directory mode bits"}
+FENCE_COLS = ("enforced by the surface", "forged epoch refused", "no stale write after fence")
+
+
+def load_e6b(path: Path) -> dict:
+    return json.loads((path / "results.json").read_text())["summary"]
+
+
+def panel_fence(summ: dict) -> tuple[list[str], dict]:
+    """Per mechanism, three properties from E6b's predeclared probes: the class assigned by the plan's rule (surface-native
+    is filled, author code half), the share of forged-epoch writes refused, and the share of idle races with no stale
+    effect ordered after the fence. Combining them is a reading, not a predeclared test."""
+    det, idle = summ["deterministic"], summ["race"]["idle"]
+    rows = []
+    for m, v in det.items():
+        r = idle[m]
+        c1 = None if v["class"] == "indeterminate" else {"surface_native": 1.0, "author_code_in_surface": 0.5}.get(v["class"], 0.0)
+        c2 = v["forge_refused"] / v["runs"] if v["runs"] else None
+        ev = r["events"]["violation_free"]
+        c3 = None if r.get("fence_failed") or not ev["n"] else ev["k"] / ev["n"]
+        rows.append({"mechanism": m, "surface": v["surface"], "cells": [c1, c2, c3], "class": v["class"],
+                     "forged": [v["forge_refused"], v["runs"]], "no_stale": [ev["k"], ev["n"]]})
+    all3 = [r["mechanism"] for r in rows if all(c == 1.0 for c in r["cells"])]
+    h, xs = 0.27, (0.45, 1.15, 1.85)
+    items, last = [], None
+    for r in rows:
+        if r["surface"] != last:
+            items.append(("head", SURF_SHORT.get(r["surface"], r["surface"])))
+            last = r["surface"]
+        items.append(("row", r))
+    top = (len(items) - 1) * h
+    lines = [r"\begin{tikzpicture}[baseline]"]
+    for j, name in enumerate(FENCE_COLS):
+        lines.append(rf"\node[font=\tiny,text=ink,rotate=40,anchor=south west,inner sep=0.5pt] at ({xs[j] - 0.08},{top + 0.18:.2f}) {{{name}}};")
+    for i, (kind, it) in enumerate(items):
+        y = top - i * h
+        if kind == "head":
+            lines.append(rf"\node[font=\tiny\bfseries,text=ink,anchor=east] at (0.1,{y:.2f}) {{{it}}};")
+            continue
+        if it["mechanism"] in all3:
+            lines.append(rf"\fill[exoblue!12,rounded corners=1pt] (-2.75,{y - h / 2 + 0.02:.2f}) rectangle ({xs[-1] + 0.3},{y + h / 2 - 0.02:.2f});")
+        lines.append(rf"\node[font=\tiny,text=ink,anchor=east] at (0.1,{y:.2f}) {{{HERO_MECH.get(it['mechanism'], it['mechanism'])}}};")
+        for x, c in zip(xs, it["cells"]):
+            if c is None:
+                lines.append(rf"\node[font=\tiny,text=slate] at ({x},{y:.2f}) {{--}};")
+            elif c == 1.0:
+                lines.append(rf"\fill[exoblue] ({x},{y:.2f}) circle (2.1pt);")
+            elif c == 0.0:
+                lines.append(rf"\draw[structgray,line width=0.5pt] ({x},{y:.2f}) circle (2.1pt);")
+            else:
+                lines.append(rf"\draw[exoblue,line width=0.5pt] ({x},{y:.2f}) circle (2.1pt);"
+                             rf"\fill[exoblue] ({x},{y:.2f}) ++(0,-2.1pt) arc[start angle=-90,end angle=90,radius=2.1pt] -- cycle;")
+    lines.append(rf"\node[font=\footnotesize,anchor=south,align=center] at (-0.4,{top + 1.55:.2f}) {{\textbf{{(c)}} Where the in-flight term can be closed}};")
+    lines.append(r"\end{tikzpicture}")
+    return lines, {"rows": rows, "all_three": all3}
+
+
+def caption_fence(s: dict) -> str:
+    name = lambda m: next(f"{SURF_SHORT[r['surface']].split(' ')[0]}'s {HERO_MECH[m]}" for r in s["rows"] if r["mechanism"] == m)
+    a3 = s["all_three"]
+    who = ("No mechanism has all three" if not a3 else
+           f"Only {series([name(m) for m in a3])} {'is' if len(a3) == 1 else 'are'} enforced by the surface, refuse"
+           f"{'s' if len(a3) == 1 else ''} a forged epoch, and let{'s' if len(a3) == 1 else ''} no stale write commit after the fence")
+    return (r"\textbf{(c)} Executable probes on single-node instances (40 deterministic runs and 20 races per mechanism): filled, in "
+            r"every run; open, in none; half, in some or by code we installed; dash, not measurable. " + who + ". ")
+
+
+def series(xs: list[str]) -> str:
+    return xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1]
+
+
 # ------------------------------------------------------------------ assembly
 
-def build(args) -> dict:
-    from e5_analysis_v6 import analyse
+def preview_mark(on: bool) -> list[str]:
+    return [r"\begin{tikzpicture}[remember picture,overlay]\node[rotate=18,font=\Huge\bfseries,text=notred,opacity=0.35] at "
+            r"(current page.center) {LAYOUT PREVIEW -- NOT EVIDENCE};\end{tikzpicture}"] if on else []
+
+
+def rel(p: Path) -> str:
+    return str(p.resolve().relative_to(ROOT)) if p.resolve().is_relative_to(ROOT) else str(p)
+
+
+def build_hero(args) -> dict:
+    """Page-1 figure: E4 and E6b only, both about stopping."""
     trials, e4res = load_e4(args.e4)
+    if not args.layout_preview and e4res.get("smoke_test"):
+        raise SystemExit("smoke-test E4 evidence cannot build the hero")
+    summ6 = load_e6b(args.e6b)
+    a, sa = panel_a(trials)
+    b, sb = panel_delay(trials, sa["w"], sa["C"])
+    c, sc = panel_fence(summ6)
+    caption = (r"\captionof{figure}{\textbf{Stopping a model does not stop its effects.} " + caption_a(sa) + caption_delay(sb)
+               + caption_fence(sc) + r"}\label{fig:v6hero}")
+    # Not a float: the hero sits under the abstract inside the two-column header, as the previous version's did.
+    tex = ["% Generated by scripts/hero_v6.py from promoted v6 evidence; do not edit.",
+           r"\begin{center}\begin{minipage}{\textwidth}\centering"]
+    tex += preview_mark(args.layout_preview) + banner(sa) + [r"\par\vspace{4pt}"] + a + [r"\hfill"] + b + [r"\hfill"] + c
+    tex += [r"\par\vspace{2pt}", caption, r"\end{minipage}\end{center}"]
+    stats = {"a": sa, "b": sb, "c": sc, "layout_preview": args.layout_preview, "inputs": {"e4": rel(args.e4), "e6b": rel(args.e6b)}}
+    return {"v6-hero-fig.tex": "\n".join(tex) + "\n",
+            "v6-hero-stats.json": json.dumps(stats, indent=1, sort_keys=True, default=list) + "\n",
+            "v6-hero-macros.tex": hero_macros(sa, sb, sc)}
+
+
+def build_spec(args) -> dict:
+    """Body figure: E5 (reviewers against state) and E8/E8b (what a written specification costs and misses)."""
+    from e5_analysis_v6 import analyse
     plan5_path = ROOT / "fixtures/v6/omitted_clause_plan.json"
     plan5 = json.loads(plan5_path.read_text())
     e5res = json.loads((args.e5 / "results.json").read_text())
@@ -341,47 +519,64 @@ def build(args) -> dict:
     rows8 = load_rows(args.e8)
     rows8b = load_rows(args.e8b) if args.e8b else None
     if not args.layout_preview:
-        for name, res in (("E4", e4res), ("E5", e5res), ("E8", e8res)) + ((("E8b", json.loads((args.e8b / "results.json").read_text())),) if args.e8b else ()):
+        for name, res in (("E5", e5res), ("E8", e8res)) + ((("E8b", json.loads((args.e8b / "results.json").read_text())),) if args.e8b else ()):
             if res.get("smoke_test"):
-                raise SystemExit(f"smoke-test {name} evidence cannot build the hero")
+                raise SystemExit(f"smoke-test {name} evidence cannot build the figure")
         if e5res["plan_sha256"] != sha(plan5_path):
             raise SystemExit("E5 results do not match the current plan fixture")
         if e8res["plan_sha256"] != sha(ROOT / "fixtures/v6/agentdojo_fair_plan.json"):
             raise SystemExit("E8 results do not match the current plan fixture")
-    a, sa = panel_a(trials)
     b, sb = panel_b(an, plan5, args.ckpt)
     c, sc = panel_c(rows8, rows8b)
-    wm = []
-    if args.layout_preview:
-        wm = [r"\begin{tikzpicture}[remember picture,overlay]\node[rotate=18,font=\Huge\bfseries,text=notred,opacity=0.35] at (current page.center) {LAYOUT PREVIEW -- NOT EVIDENCE};\end{tikzpicture}"]
+    relabel = lambda xs: [x.replace(r"\textbf{(b)}", r"\textbf{(a)}").replace(r"\textbf{(c)}", r"\textbf{(b)}") for x in xs]
+    integ = an["checkpoints"][args.ckpt]["integrity"]
     ckpt8 = json.loads((ROOT / "fixtures/v6/agentdojo_fair_plan.json").read_text())["agent"]["checkpoint"].split("/")[-1].replace("-GGUF", "")
-    caption = (r"\captionof{figure}{\textbf{Halting a model stops new proposals, not effects already in flight. Only a fence at the "
-               r"state-bearing sink stops those, and only for what the specification names.} "
-               + caption_a(sa) + caption_b(sb, an["checkpoints"][args.ckpt]["integrity"]) + caption_c(sc, ckpt8)
-               + r"Local quantized open-weight models on CPU, temperature 0 for review and agents; no frontier model.}\label{fig:v6hero}")
-    # Not a float: the hero sits under the abstract inside the two-column header, as the previous version's did.
-    tex = ["% Generated by scripts/hero_v6.py from promoted v6 evidence; do not edit.",
-           r"\begin{center}\begin{minipage}{\textwidth}\centering"]
-    tex += wm + banner(sa) + [r"\par\vspace{4pt}"] + a + [r"\hfill"] + b + [r"\hfill"] + c
-    tex += [r"\par\vspace{2pt}", caption, r"\end{minipage}\end{center}"]
-    rel = lambda p: str(p.resolve().relative_to(ROOT)) if p.resolve().is_relative_to(ROOT) else str(p)
-    stats = {"a": sa, "b": sb, "c": sc, "layout_preview": args.layout_preview,
-             "inputs": {"e4": rel(args.e4), "e5": rel(args.e5), "e8": rel(args.e8), "e8b": rel(args.e8b) if args.e8b else None}}
-    return {"v6-hero-fig.tex": "\n".join(tex) + "\n",
-            "v6-hero-stats.json": json.dumps(stats, indent=1, sort_keys=True, default=list) + "\n",
-            "v6-hero-macros.tex": macros(sa, sb, sc, an["checkpoints"][args.ckpt]["integrity"])}
+    cap = relabel([caption_b(sb, integ) + caption_c(sc, ckpt8)])[0]
+    caption = (r"\caption{\textbf{Reviewers read proposals; a written specification stops what it names.} " + cap
+               + r"Local quantized open-weight models on CPU at temperature 0; no frontier model.}\label{fig:v6spec}")
+    tex = ["% Generated by scripts/hero_v6.py from promoted v6 evidence; do not edit.", r"\begin{figure*}[t]\centering"]
+    tex += preview_mark(args.layout_preview) + relabel(b) + [r"\hspace{1.4cm}"] + relabel(c) + [caption, r"\end{figure*}"]
+    stats = {"reviewers": sb, "cost": sc, "layout_preview": args.layout_preview,
+             "inputs": {"e5": rel(args.e5), "e8": rel(args.e8), "e8b": rel(args.e8b) if args.e8b else None}}
+    return {"v6-spec-fig.tex": "\n".join(tex) + "\n",
+            "v6-spec-stats.json": json.dumps(stats, indent=1, sort_keys=True, default=list) + "\n",
+            "v6-spec-macros.tex": spec_macros(sb, sc, integ)}
 
 
-def macros(sa: dict, sb: dict, sc: dict, integ: dict) -> str:
+def build(args) -> dict:
+    out = build_hero(args)
+    if getattr(args, "e5", None) and getattr(args, "e8", None):
+        out |= build_spec(args)
+    return out
+
+
+def write_macros(m: dict) -> str:
+    assert all(k.isalpha() for k in m)
+    return "% Generated by scripts/hero_v6.py; do not edit.\n" + "".join(f"\\newcommand{{\\{k}}}{{{v}}}\n" for k, v in sorted(m.items()))
+
+
+def hero_macros(sa: dict, sb: dict, sc: dict) -> str:
     """The text's numbers come from the same statistics the figure draws, so prose and figure cannot disagree."""
-    f, a = sa["final"], sc["arms"]
-    frac = lambda xn: f"{xn[0]}/{xn[1]}"
+    f = sa["final"]
+    Lmax = f"{sb['L'][-1]:g}"
     m = {"vsixStopCalls": sa["C"], "vsixStopLatency": f"{sa['w']:g}", "vsixHaltRange": rng(f["halt_inference"]),
          "vsixRevokeRange": rng(f["revoke_broker"]), "vsixFenceRange": rng(f["fence_sink"]),
          "vsixLastCommitSeconds": f"{sa['last_commit_s']:g}", "vsixFenceLost": rng(sa["fence_lost_legitimate"]),
          "vsixGridHaltMax": sa["grid_max"]["halt_inference"], "vsixGridRevokeMax": sa["grid_max"]["revoke_broker"],
          "vsixFenceTrials": sa["fence_trials"], "vsixFencePostMax": sa["fence_post_max"], "vsixFenceFaultTrials": sa["fence_fault_trials"],
-         "vsixReviewerState": frac((sb["R2_state"]["x"], sb["R2_state"]["n"])),
+         "vsixStopReplicates": sa["replicates"], "vsixDelayMax": Lmax, "vsixDelayLambda": f"{sb['lambda_mean']:.1f}",
+         "vsixDelayHaltAtMax": rng(sb["points"]["halt_inference"][Lmax]), "vsixDelayFenceAtMax": rng(sb["points"]["fence_sink"][Lmax]),
+         "vsixLittleRatioMedian": f"{sb['halt_ratio_median']:g}", "vsixLittleRatioRange": f"{sb['halt_ratio_range'][0]:g}--{sb['halt_ratio_range'][1]:g}",
+         "vsixLittleTrials": sb["halt_trials"],
+         "vsixFenceAllThree": series([next(f"{SURF_SHORT[r['surface']].split(' ')[0]}'s {HERO_MECH[x]}" for r in sc["rows"] if r["mechanism"] == x)
+                                      for x in sc["all_three"]]) if sc["all_three"] else "none"}
+    return write_macros(m)
+
+
+def spec_macros(sb: dict, sc: dict, integ: dict) -> str:
+    a = sc["arms"]
+    frac = lambda xn: f"{xn[0]}/{xn[1]}"
+    m = {"vsixReviewerState": frac((sb["R2_state"]["x"], sb["R2_state"]["n"])),
          "vsixReviewerVisible": frac((sb["R2_visible"]["x"], sb["R2_visible"]["n"])),
          "vsixGateBreaches": sb["G_breaches"], "vsixGateUnique": integ["unique_valid"],
          "vsixMirrorDisagreements": integ["mirror_gate_disagreements"],
@@ -393,8 +588,7 @@ def macros(sa: dict, sb: dict, sc: dict, integ: dict) -> str:
               "vsixDelegatedInside": frac(a["authority_delegated"]["inside_spec_attack"]),
               "vsixUnprotectedInside": frac(a["unprotected"]["inside_spec_attack"]),
               "vsixOracleInside": frac(a["authority_oracle"]["inside_spec_attack"])}
-    assert all(k.isalpha() for k in m)
-    return "% Generated by scripts/hero_v6.py; do not edit.\n" + "".join(f"\\newcommand{{\\{k}}}{{{v}}}\n" for k, v in sorted(m.items()))
+    return write_macros(m)
 
 
 def preview(out: Path):
@@ -413,22 +607,26 @@ def preview(out: Path):
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--e4", type=Path, required=True, help="E4 evidence directory (trials.jsonl) or raw results.json")
-    ap.add_argument("--e5", type=Path, required=True, help="E5 directory with candidates.jsonl and results.json")
-    ap.add_argument("--e8", type=Path, required=True, help="E8 directory with episodes.jsonl and results.json")
-    ap.add_argument("--e8b", type=Path, help="E8b directory (injections inside S); adds the open markers to panel (c)")
+    ap.add_argument("--e6b", type=Path, required=True, help="E6b evidence directory (results.json)")
+    ap.add_argument("--e5", type=Path, help="E5 directory with candidates.jsonl and results.json (body figure)")
+    ap.add_argument("--e8", type=Path, help="E8 directory with episodes.jsonl and results.json (body figure)")
+    ap.add_argument("--e8b", type=Path, help="E8b directory (injections inside S); adds the open markers to the body figure")
     ap.add_argument("--out", type=Path, required=True)
-    ap.add_argument("--ckpt", default="Qwen/Qwen3-8B-GGUF", help="E5 checkpoint drawn in panel (b): the larger one")
+    ap.add_argument("--ckpt", default="Qwen/Qwen3-8B-GGUF", help="E5 checkpoint drawn in the body figure: the larger one")
     ap.add_argument("--layout-preview", action="store_true")
-    ap.add_argument("--render", action="store_true", help="compile a standalone preview PDF/PNG (needs pdflatex)")
+    ap.add_argument("--render", action="store_true", help="compile a standalone preview PDF/PNG of the hero (needs pdflatex)")
     args = ap.parse_args()
     if args.layout_preview and str(args.out.resolve()).startswith(str((ROOT / "docs").resolve())):
         raise SystemExit("a layout preview may not be written under docs/")
+    if bool(args.e5) != bool(args.e8):
+        raise SystemExit("--e5 and --e8 go together (the body figure needs both)")
     args.out.mkdir(parents=True, exist_ok=True)
-    for fn, text in build(args).items():
+    files = build(args)
+    for fn, text in files.items():
         (args.out / fn).write_text(text)
     if args.render:
         preview(args.out)
-    print(json.dumps({"panels": ["a", "b", "c"], "layout_preview": args.layout_preview}))
+    print(json.dumps({"files": sorted(files), "layout_preview": args.layout_preview}))
 
 
 if __name__ == "__main__":
