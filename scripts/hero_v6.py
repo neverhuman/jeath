@@ -62,7 +62,7 @@ def pct(x, n) -> str:
     return f"{x}/{n}"
 
 
-LEGEND_B = (r"legend style={font=\tiny,at={(0.03,0.97)},anchor=north west,draw=slate!40,fill=white,fill opacity=0.9,"
+LEGEND_B = (r"legend style={font=\scriptsize,at={(0.03,0.97)},anchor=north west,draw=slate!40,fill=white,fill opacity=0.9,"
             r"text opacity=1,row sep=-2pt,inner sep=1.5pt},legend cell align=left")
 LEGEND_C = (r"legend style={font=\tiny,at={(0.5,-0.34)},anchor=north,draw=none,fill=none,legend columns=2,"
             r"row sep=-1.5pt,column sep=3pt},legend cell align=left")
@@ -173,12 +173,19 @@ def panel_a_phase(trials: list[dict]) -> tuple[list[str], dict]:
     ymax = max(fin["halt_inference"] + fin["revoke_broker"]) * 1.15 + 1
     grid = [xmax * i / 240 for i in range(241)]
     lines = [r"\begin{tikzpicture}[baseline]",
-             rf"\begin{{axis}}[{AXIS},xmin=0,xmax={xmax},ymin=-0.6,ymax={ymax:.0f},grid=major,clip=false,"
+             rf"\begin{{axis}}[{AXIS},xmin=0,xmax={xmax},ymin=-1.8,ymax={ymax:.0f},grid=major,clip=false,"
              r"xlabel={Seconds after the stop took effect},ylabel={Effects committed after enforcement},"
              r"title={\textbf{(a)} Stopping the model $\neq$ stopping its effects}]"]
     styles = {"halt_inference": ("endored", "dashed", "thick"), "revoke_broker": ("warnamber!80!black", "densely dotted", "very thick"),
               "fence_sink": ("exoblue", "solid", "ultra thick")}
-    for arm in ("halt_inference", "revoke_broker", "fence_sink"):
+    meds = {a: [median([sum(1 for x in ts if x <= g) for ts in curves[a]]) for g in grid] for a in styles}
+    # Where the two median curves never differ by more than one effect, draw them as one two-tone line (revoke under
+    # halt), so that two overlapping curves do not read as one ambiguous curve; the label says so.
+    merged = max(abs(h - r) for h, r in zip(meds["halt_inference"], meds["revoke_broker"])) <= 1
+    if merged:
+        styles = dict(styles, revoke_broker=("warnamber", "solid", "line width=2.6pt"), halt_inference=("endored", "dashed", "line width=1pt"))
+    st["merged_halt_revoke"] = merged
+    for arm in (("revoke_broker", "halt_inference", "fence_sink") if merged else ("halt_inference", "revoke_broker", "fence_sink")):
         colour, dash, width = styles[arm]
         at = [[sum(1 for x in ts if x <= g) for ts in curves[arm]] for g in grid]
         lo, hi, md = [min(v) for v in at], [max(v) for v in at], [median(v) for v in at]
@@ -189,14 +196,18 @@ def panel_a_phase(trials: list[dict]) -> tuple[list[str], dict]:
         lines.append(rf"\addplot[{colour},{dash},{width},const plot] coordinates "
                      rf"{{{' '.join(f'({x:.2f},{y:g})' for x, y in zip(grid, md))}}};")
     mh, mr = st["median"]["halt_inference"], st["median"]["revoke_broker"]
-    if abs(mh - mr) < 2:  # the medians coincide: one label for both
+    if merged:
+        both = f"{mh:g}" if mh == mr else f"{mh:g} and {mr:g}"
+        lab = [rf"\node[font=\scriptsize,text=ink,anchor=south east,inner sep=1.5pt,align=right] at (axis cs:{xmax},{max(mh, mr):g}) "
+               rf"{{halt the model = revoke\\[-1pt]at the broker: {both} (median)}};"]
+    elif abs(mh - mr) < 2:  # the final medians coincide: one label for both
         lab = [rf"\node[font=\scriptsize,text=ink,anchor=south east,inner sep=1.5pt,align=right] at (axis cs:{xmax},{max(mh, mr):g}) "
                rf"{{halt the model, or\\[-1pt]revoke at the broker: {mh:g}, {mr:g}}};"]
     else:
         lab = [rf"\node[font=\scriptsize,text=ink,anchor=south east,inner sep=1pt] at (axis cs:{xmax},{mh:g}) {{halt the model}};",
                rf"\node[font=\scriptsize,text=ink,anchor=north east,inner sep=1.5pt] at (axis cs:{xmax},{mr:g}) {{revoke at the broker}};"]
     lines += lab + [
-        rf"\node[font=\scriptsize,text=ink,anchor=south east,inner sep=1.5pt,align=right] at (axis cs:{xmax},0.4) "
+        rf"\node[font=\scriptsize,text=ink,anchor=south east,inner sep=1.5pt,align=right] at (axis cs:{xmax},0.6) "
         rf"{{\textbf{{fence the sink: {rng(fin['fence_sink'])}}}\\[-1pt]loses {st['lost_median']:g} legitimate calls (median)}};",
         r"\end{axis}\end{tikzpicture}"]
     return lines, st
@@ -205,18 +216,6 @@ def panel_a_phase(trials: list[dict]) -> tuple[list[str], dict]:
 def signed_range(lo: int, hi: int) -> str:
     sgn = lambda v: rf"\(-{-v}\)" if v < 0 else f"{v}"
     return sgn(lo) if lo == hi else f"{sgn(lo)} to {sgn(hi)}"
-
-
-def caption_a_phase(s: dict, e4: dict) -> str:
-    d = s["diff"]
-    return (rf"\textbf{{(a)}} Real broker and sink processes. A synthetic agent whose calls are all authorized when issued "
-            rf"emits {s['lambda_offered']:g} calls/s to {s['C']} concurrent tool calls of {s['w']:g}\,s mean latency; the "
-            rf"stop is decided at a random point of the agent's emission cycle and enforced at once; {s['replicates']} "
-            rf"replicates per stop, paired by seed (post hoc, E4c). Lines: median over replicates; shading: their range. "
-            rf"Halting and revoking differed by {d['median']:g} effects in the median replicate (range {signed_range(d['min'], d['max'])}; "
-            rf"no difference in {d['zero']} of {d['n']}): revoking refuses only calls emitted but not yet admitted. The fence's zero is "
-            rf"by design; it admitted none after enforcement in any of E4's {e4['fence_trials']} trials, "
-            rf"{e4['fence_fault_trials']} with the sink killed or late completions. ")
 
 
 def banner(s: dict) -> list[str]:
@@ -243,19 +242,9 @@ def banner(s: dict) -> list[str]:
             node("s3", 15.15, 4.9, "1.2pt", "exoblue", "exoblue!7", "3\\enspace Fence the sink",
                  rf"stale epochs refused at commit\\[-1pt]\textbf{{{show('fence_sink')}}} commit; "
                  rf"\textbf{{{lost}}} calls in flight discarded{sfx}"),
-            r"\draw[->,line width=1pt,draw=slate] (s1.east) -- node[above,font=\scriptsize,text=ink]{in flight} (s2.west);",
-            r"\draw[->,line width=1pt,draw=slate] (s2.east) -- node[above,font=\scriptsize,text=ink]{admitted} (s3.west);",
+            r"\draw[->,line width=1pt,draw=slate] (s1.east) -- node[above,font=\scriptsize,text=ink]{call} (s2.west);",
+            r"\draw[->,line width=1pt,draw=slate] (s2.east) -- node[above,font=\scriptsize,text=ink]{permit} (s3.west);",
             r"\end{tikzpicture}"]
-
-
-def caption_a(s: dict) -> str:
-    f = s["final"]
-    fence = ("admits none after enforcement in any of its" if s["fence_post_max"] == 0 else f"admits at most {s['fence_post_max']} in its")
-    return (rf"\textbf{{(a)}} Real broker and sink processes. A synthetic agent whose calls are all authorized when issued "
-            rf"emits {s['lambda_offered']:g} calls/s to {s['C']} concurrent tool calls of {s['w']:g}\,s mean latency (the "
-            rf"stable cell with the longest latency, by a fixed rule); stop enforced at once; {s['replicates']} replicates. The "
-            rf"fence's zero is by design; it {fence} {s['fence_trials']} trials, {s['fence_fault_trials']} with the sink killed "
-            rf"or late completions. ")
 
 
 # ------------------------------------------------------------------ panel (b): E5
@@ -488,6 +477,16 @@ def median(xs):
     return xs[k] if len(xs) % 2 else (xs[k - 1] + xs[k]) / 2
 
 
+def tick_labels(Ls: list[float]) -> list[str]:
+    """Label each delay tick unless it would crowd the previous labelled one (closer than 8% of the axis)."""
+    out, last = [], None
+    for L in Ls:
+        keep = last is None or (L - last) >= 0.08 * Ls[-1]
+        out.append(f"{L:g}" if keep else "")
+        last = L if keep else last
+    return out
+
+
 def panel_delay(trials: list[dict], w: float, C: int) -> tuple[list[str], dict]:
     """Effects committed after the stop decision, per arm and enforcement delay L, in the cell drawn in (a). The plan's
     own prediction for halting (metrics.little_law_prediction, lambda measured x (L + w)) is drawn beside it; the fence's
@@ -520,30 +519,32 @@ def panel_delay(trials: list[dict], w: float, C: int) -> tuple[list[str], dict]:
             if p["little_law_plan"]:
                 ratios.append(p["post_decision_commits"] / p["little_law_plan"])
     ymax = max(max(v) for d in pts.values() for v in d.values()) * 1.12
-    n = len(Ls)
+    Lmax = Ls[-1]
+    # L is drawn on a linear axis so that the slope (lambda per second of delay) and the offset (lambda w) are visible;
+    # arms are nudged apart horizontally by a fixed share of the axis so their marks do not overlap.
+    dx = Lmax * 0.022
     lines = [r"\begin{tikzpicture}[baseline]",
-             rf"\begin{{axis}}[{AXIS},xmin=-0.5,xmax={n - 0.5},ymin=0,ymax={ymax:.0f},xtick={{{','.join(str(i) for i in range(n))}}},"
-             rf"xticklabels={{{','.join(f'{L:g}' for L in Ls)}}},ymajorgrids,clip=false,"
-             r"xlabel={Delay before the stop takes effect, $L$ (s; categorical)},ylabel={Effects committed after the decision},"
-             r"title={\textbf{(b)} After the decision: $\lambda L$ + $\lambda w$}," + LEGEND_B + "]"]
+             rf"\begin{{axis}}[{AXIS},xmin={-Lmax * 0.06:.2f},xmax={Lmax * 1.06:.2f},ymin=0,ymax={ymax:.0f},"
+             rf"xtick={{{','.join(f'{L:g}' for L in Ls)}}},xticklabels={{{','.join(tick_labels(Ls))}}},ymajorgrids,clip=false,"
+             r"xlabel={Delay before the stop takes effect, $L$ (s)},ylabel={Effects committed after the decision},"
+             r"title={\textbf{(b)} Only faster enforcement removes $\lambda L$}," + LEGEND_B + "]"]
     pred = {"halt_inference": lambda L: lam * (L + w), "fence_sink": lambda L: lam * L}
-    off = {"halt_inference": -0.2, "revoke_broker": 0.0, "fence_sink": 0.2}
-    # Predictions are marks at each delay, not lines: L is categorical here. The plan's halting prediction is solid; the
-    # fence's lambda*L reading, made after the data, is dotted.
+    off = {"halt_inference": -dx, "revoke_broker": 0.0, "fence_sink": dx}
+    # The plan's halting prediction is solid; the fence's lambda*L reading, made after the data, is dotted.
     for arm, f in pred.items():
         col = ARM_STYLE[arm][0]
-        dash = "" if arm == "halt_inference" else ",dash pattern=on 0.8pt off 0.8pt"
-        lines.append(rf"\addplot[only marks,mark=-,mark size=5pt,mark options={{{col},line width=0.8pt{dash}}},forget plot] "
-                     rf"coordinates {{{' '.join(f'({i + off[arm]:.2f},{f(L):.2f})' for i, L in enumerate(Ls))}}};")
-    lines += [rf"\node[font=\tiny,text=ink,anchor=east,inner sep=1pt] at (axis cs:{n - 1 + off['halt_inference'] - 0.22},{pred['halt_inference'](Ls[-1]):.2f}) {{$\lambda(L{{+}}w)$}};",
-              rf"\node[font=\tiny,text=ink,anchor=west,inner sep=1pt] at (axis cs:{n - 1 + off['fence_sink'] + 0.22},{pred['fence_sink'](Ls[-1]):.2f}) {{$\lambda L$}};"]
+        dash = "" if arm == "halt_inference" else ",densely dotted"
+        lines.append(rf"\addplot[{col},line width=0.7pt{dash},forget plot,domain=0:{Lmax:g},samples=2] {{{f(1) - f(0):.4f}*x + {f(0):.4f}}};")
+    lines += [rf"\node[font=\scriptsize,text=ink,anchor=south east,inner sep=1pt] at (axis cs:{Lmax * 0.62:.2f},{pred['halt_inference'](Lmax * 0.62):.2f}) {{$\lambda(L{{+}}w)$}};",
+              rf"\node[font=\scriptsize,text=ink,anchor=north west,inner sep=1pt,align=left] at (axis cs:{Lmax * 0.45:.2f},{pred['fence_sink'](Lmax * 0.45):.2f}) "
+              r"{$\lambda L$: no stop at\\[-1pt]the sink removes it};"]
     st = {"w": w, "C": C, "L": Ls, "lambda_mean": round(lam, 3), "points": {}}
     for arm, (col, mark, lbl) in ARM_STYLE.items():
         cs = []
         for i, L in enumerate(Ls):
             v = sorted(pts[arm][L])
             m = median(v)
-            cs.append(f"({i + off[arm]:.2f},{m:g}) -= (0,{m - v[0]:g}) += (0,{v[-1] - m:g})")
+            cs.append(f"({L + off[arm]:.2f},{m:g}) -= (0,{m - v[0]:g}) += (0,{v[-1] - m:g})")
         st["points"][arm] = {f"{L:g}": sorted(pts[arm][L]) for L in Ls}
         lines.append(rf"\addplot[only marks,mark={mark},mark size=1.8pt,draw={col},fill={col},error bars/.cd,y dir=both,y explicit,"
                      rf"error bar style={{{col}}}] coordinates {{{' '.join(cs)}}};\addlegendentry{{{lbl}}}")
@@ -554,24 +555,6 @@ def panel_delay(trials: list[dict], w: float, C: int) -> tuple[list[str], dict]:
            "halt_ratio_median": round(median(ratios), 2), "halt_ratio_range": [round(min(ratios), 2), round(max(ratios), 2)],
            "halt_trials": len(ratios)}
     return lines, st
-
-
-def caption_delay(s: dict, phase: bool = False) -> str:
-    lo, hi = s["halt_ratio_range"]
-    L0, rest = f"{s['L'][0]:g}", [f"{L:g}" for L in s["L"][1:]]
-    ena = {L: s["gap"][L]["emitted_not_admitted_median"] for L in s["gap"]}
-    rv = sorted({ena[L] for L in rest})
-    rest_txt = f"{rv[0]:g}" if len(rv) == 1 else f"{rv[0]:g}--{rv[-1]:g}"
-    why = (rf", just after a burst of {s['burst']} calls" if s["burst_at_decision"] else "")
-    f0 = rng(s["points"]["fence_sink"][L0])
-    where = (rf"E4 (stop at a fixed phase), same cell:" if phase else "The same cell,")
-    tail = (rf"where it lands; panel (a) varies it. " if phase else "where it lands. ")
-    return (rf"\textbf{{(b)}} {where} median and range at each delay \(L\) from decision to enforcement. Solid "
-            rf"marks: the plan's halting prediction \(\lambda(L+w)\), \(\lambda\) measured ({s['lambda_mean']:.1f}/s); "
-            rf"observed/predicted {s['halt_ratio_median']:g} (median; {lo:g}--{hi:g}; {s['halt_trials']} stable trials). "
-            rf"Dotted: \(\lambda L\), a post hoc reading. Halting and revoking differ only by the calls emitted but not yet "
-            rf"admitted when the stop lands (median {ena[L0]:g} at \(L = {L0}\){why}; {rest_txt} otherwise); E4 did not vary "
-            + tail + rf"Counted from the decision, the fence's {f0} effects at \(L = {L0}\) committed while its enforcement calls ran. ")
 
 
 # ------------------------------------------------------------------ hero panel (c): E6b fenceability
@@ -619,10 +602,13 @@ def panel_fence(summ: dict) -> tuple[list[str], dict]:
         rows.append({"mechanism": m, "surface": v["surface"], "cells": [c1, c2, c3], "class": v["class"],
                      "forged": [v["forge_refused"], v["runs"]], "no_stale": [hk, hn]})
     all3 = [r["mechanism"] for r in rows if all(c == 1.0 for c in r["cells"])]
+    # A mechanism not measurable in any column carries no information in the panel; it stays in Table v6fence.
+    omitted = [r["mechanism"] for r in rows if all(c is None for c in r["cells"])]
+    shown = [r for r in rows if r["mechanism"] not in omitted]
     held = [r["mechanism"] for r in rows if r["cells"][2] == 1.0]  # under protocol-following writers only
     h, xs = 0.268, (0.42, 1.02, 1.62)
     items, last = [], None
-    for r in rows:
+    for r in shown:
         if r["surface"] != last:
             items.append(("head", SURF_SHORT.get(r["surface"], r["surface"])))
             last = r["surface"]
@@ -642,8 +628,8 @@ def panel_fence(summ: dict) -> tuple[list[str], dict]:
         for j, (x, c) in enumerate(zip(xs, it["cells"])):
             if c is None:
                 lines.append(rf"\node[font=\scriptsize,text=slate] at ({x},{y:.2f}) {{--}};")
-            elif j == 0 and c == 0.5:  # author code installed in the surface (a trigger we wrote): ring with a dot
-                lines.append(rf"\draw[exoblue,line width=0.5pt] ({x},{y:.2f}) circle (2.3pt);\fill[exoblue] ({x},{y:.2f}) circle (0.9pt);")
+            elif j == 0 and c == 0.5:  # author code installed in the surface (a trigger we wrote): a dagger, keyed below
+                lines.append(rf"\node[font=\footnotesize\bfseries,text=exoblue,inner sep=0pt] at ({x},{y:.2f}) {{\dag}};")
             elif c == 1.0:
                 lines.append(rf"\fill[exoblue] ({x},{y:.2f}) circle (2.3pt);")
             elif c == 0.0:
@@ -651,39 +637,23 @@ def panel_fence(summ: dict) -> tuple[list[str], dict]:
             else:
                 lines.append(rf"\draw[exoblue,line width=0.5pt] ({x},{y:.2f}) circle (2.3pt);"
                              rf"\fill[exoblue] ({x},{y:.2f}) ++(0,-2.3pt) arc[start angle=-90,end angle=90,radius=2.3pt] -- cycle;")
-    # Key, so the panel reads without its caption: one row under the grid.
-    yl, r0 = top - len(items) * h - 0.1, "1.8pt"
-    key = ((rf"\fill[exoblue] (X,{yl:.2f}) circle ({r0});", "every run"),
-           (rf"\draw[exoblue,line width=0.5pt] (X,{yl:.2f}) circle ({r0});\fill[exoblue] (X,{yl:.2f}) ++(0,-{r0}) arc[start angle=-90,end angle=90,radius={r0}] -- cycle;", "some"),
-           (rf"\draw[structgray,line width=0.5pt] (X,{yl:.2f}) circle ({r0});", "none"),
-           (rf"\draw[exoblue,line width=0.5pt] (X,{yl:.2f}) circle ({r0});\fill[exoblue] (X,{yl:.2f}) circle (0.7pt);", "our trigger"),
-           (rf"\node[font=\tiny,text=slate] at (X,{yl:.2f}) {{--}};", "n/a"))
+    # Key, so the panel reads without its caption: two rows under the grid.
+    yl, r0 = top - len(items) * h - 0.12, "2pt"
+    key = ((rf"\fill[exoblue] (X,Y) circle ({r0});", "every run"),
+           (rf"\draw[exoblue,line width=0.5pt] (X,Y) circle ({r0});\fill[exoblue] (X,Y) ++(0,-{r0}) arc[start angle=-90,end angle=90,radius={r0}] -- cycle;", "some runs"),
+           (rf"\draw[structgray,line width=0.5pt] (X,Y) circle ({r0});", "none"),
+           (r"\node[font=\footnotesize\bfseries,text=exoblue,inner sep=0pt] at (X,Y) {\dag};", "trigger we wrote"),
+           (r"\node[font=\scriptsize,text=slate] at (X,Y) {--};", "not measurable"))
+    if not any(c is None for r in shown for c in r["cells"]):
+        key = key[:-1]  # no cell is "not measurable" once such rows are left out
     for k, (glyph, lab) in enumerate(key):
-        x = -2.95 + k * 0.98
-        lines.append(glyph.replace("(X,", f"({x:.2f},"))
-        lines.append(rf"\node[font=\tiny,text=ink,anchor=west,inner sep=1pt] at ({x + 0.07:.2f},{yl:.2f}) {{{lab}}};")
+        x, y = (-2.95 + (k % 3) * 1.55, yl) if k < 3 else (-2.95 + (k - 3) * 2.2, yl - 0.3)
+        lines.append(glyph.replace("(X,Y)", f"({x:.2f},{y:.2f})"))
+        lines.append(rf"\node[font=\scriptsize,text=ink,anchor=west,inner sep=1pt] at ({x + 0.08:.2f},{y:.2f}) {{{lab}}};")
     # Title at the height pgfplots gives (a) and (b): axis height 3.7 cm plus its 6 pt title shift (all share a baseline).
     lines.append(r"\node[font=\footnotesize,anchor=south,align=center] at (-0.2,3.91) {\textbf{(c)} Where the in-flight term can be closed};")
     lines.append(r"\end{tikzpicture}")
-    return lines, {"rows": rows, "all_three": all3, "held_under_writers": held}
-
-
-def caption_fence(s: dict) -> str:
-    name = lambda m: next(f"{SURF_SHORT[r['surface']].split(' ')[0]}'s {HERO_MECH[m]}" for r in s["rows"] if r["mechanism"] == m)
-    a3 = s["all_three"]
-    who = ("No mechanism has all three" if not a3 else
-           f"Only {series([name(m) for m in a3])} {'has' if len(a3) == 1 else 'have'} all three")
-    runs = sorted({r["forged"][1] for r in s["rows"]})
-    races = sorted({r["no_stale"][1] for r in s["rows"] if r["no_stale"][1]})
-    span = lambda xs: str(xs[0]) if len(xs) == 1 else f"{xs[0]}--{xs[-1]}"
-    bound = (rf" (per-race failure below {100 * (1 - 0.05 ** (1 / races[0])):.0f}\%, one-sided 95\%, if races are "
-             rf"independent)" if len(races) == 1 and a3 else "")
-    held = len(s["held_under_writers"])
-    return (rf"\textbf{{(c)}} Probes on single-node instances ({span(runs)} runs, {span(races)} races per mechanism). "
-            r"Columns: \emph{surface}, the surface refuses a writer that omits the fence; \emph{forgery}, a writer claiming "
-            r"the new epoch is refused; \emph{races}, no stale write commits after the fence while protocol-following writers run. Filled: every run; open: none; "
-            r"half: some; ring with dot: a trigger we installed; dash: not measurable. " + who + bound +
-            rf"; if every writer is trusted to follow the protocol, {held} of {len(s['rows'])} held in every race. ")
+    return lines, {"rows": rows, "all_three": all3, "held_under_writers": held, "omitted": omitted}
 
 
 def series(xs: list[str]) -> str:
@@ -701,6 +671,36 @@ def rel(p: Path) -> str:
     return str(p.resolve().relative_to(ROOT)) if p.resolve().is_relative_to(ROOT) else str(p)
 
 
+def caption_hero(sa: dict, sb: dict, sc: dict, sp: dict | None) -> str:
+    """A short caption that reads at skim speed; the bookkeeping (trial counts, fault trials, observed/predicted ratios,
+    race bounds) is in Sections v6stop and v6boundary, from the same evidence."""
+    s = sp or sa
+    name = lambda m: next(f"{SURF_SHORT[r['surface']].split(' ')[0]}'s {HERO_MECH[m]}" for r in sc["rows"] if r["mechanism"] == m)
+    a3 = sc["all_three"]
+    who = ("No mechanism has all three." if not a3 else
+           f"Only {series([name(m) for m in a3])} {'has' if len(a3) == 1 else 'have'} all three.")
+    races = sorted({r["no_stale"][1] for r in sc["rows"] if r["no_stale"][1]})
+    nr = str(races[0]) if len(races) == 1 else f"{races[0]}--{races[-1]}"
+    om = sc.get("omitted") or []
+    omit = (rf" Not shown: {series([name(m) for m in om])}, measurable in no column (Table~\ref{{tab:v6fence}})." if om else "")
+    a = (rf"\textbf{{(a)}} E4c (post hoc; Section~\ref{{sec:v6stop}}): real broker and sink processes; a synthetic agent, every "
+         rf"call authorized when issued, emits {s['lambda_offered']:g} calls/s to {s['C']} concurrent tool calls of "
+         rf"{s['w']:g}\,s mean latency; the stop is decided at a random phase and enforced at once. Lines: median of "
+         rf"{s['replicates']} paired replicates; shading: their range. " if sp else
+         rf"\textbf{{(a)}} E4 (Section~\ref{{sec:v6stop}}): real broker and sink processes; a synthetic agent, every call "
+         rf"authorized when issued, emits {s['lambda_offered']:g} calls/s to {s['C']} concurrent tool calls of {s['w']:g}\,s "
+         rf"mean latency; stop enforced at once; {s['replicates']} replicates. ")
+    return (r"\textbf{Stopping a model does not stop its effects.} Top: the three places a stop can act on a tool call's "
+            r"path, with panel (a)'s counts. " + a + r"The fence's zero is by design. "
+            rf"\textbf{{(b)}} E4: the same cell{' with the stop at a fixed phase' if sp else ''} and enforcement delayed by \(L\); "
+            rf"marks: median and range. Solid line: the plan's prediction for halting, \(\lambda(L+w)\), with \(\lambda\) "
+            rf"measured ({sb['lambda_mean']:.1f}/s); dotted: \(\lambda L\), a post hoc reading. The fence removes the "
+            r"offset \(\lambda w\) between the lines, not the slope. "
+            r"\textbf{(c)} E6b (Section~\ref{sec:v6boundary}): probes on single-node instances. \emph{Surface}: the "
+            r"surface refuses a writer that omits the fence; \emph{forgery}: it refuses a writer claiming the new epoch; "
+            rf"\emph{{races}}: no stale write committed after the fence in {nr} races. " + who + omit)
+
+
 def build_hero(args) -> dict:
     """Page-1 figure: E4 and E6b only, both about stopping."""
     trials, e4res = load_e4(args.e4)
@@ -716,9 +716,7 @@ def build_hero(args) -> dict:
         a, sp = panel_a_phase(ptrials)
         if (sp["w"], sp["C"]) != (sa["w"], sa["C"]):
             raise SystemExit("E4c's cell is not E4's drawn cell")
-    cap_a = caption_a_phase(sp, sa) if sp else caption_a(sa)
-    caption = (r"\captionof{figure}{\textbf{Stopping a model does not stop its effects.} " + cap_a + caption_delay(sb, bool(sp))
-               + caption_fence(sc) + r"}\label{fig:v6hero}")
+    caption = r"\captionof{figure}{" + caption_hero(sa, sb, sc, sp) + r"}\label{fig:v6hero}"
     # Not a float: the hero sits under the abstract inside the two-column header, as the previous version's did.
     tex = ["% Generated by scripts/hero_v6.py from promoted v6 evidence; do not edit.",
            r"\begin{center}\begin{minipage}{\textwidth}\centering"]

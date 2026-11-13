@@ -281,6 +281,9 @@ def e8_macros(args) -> dict:
     static = json.loads((d / "static.json").read_text())
     rows = load_rows(d)
     m = {"vsixEEightCkpt": short(plan["agent"]["checkpoint"]), "vsixEEightEpisodes": len(rows)}
+    tasks = {(r["suite"], r["user_task"]) for r in rows}
+    nsuites = len({t[0] for t in tasks})
+    m["vsixEEightTasks"] = f"{len(tasks)} user tasks in {['no', 'one', 'two', 'three', 'four'][nsuites]} suites"
     for spec, name in (("strict", "Strict"), ("delegated", "Delegated"), ("oracle", "Oracle")):
         m[f"vsixStage{name}User"], m[f"vsixStage{name}Attack"] = stage0(static, spec)
     pol = json.loads((d / "progent_policies.json").read_text())
@@ -866,7 +869,7 @@ PENDING = {"e5c": ["vsixEFiveCSentence", "vsixEFiveCPrecedenceSentence", "vsixEF
            "e4": ["vsixEFourIdentitySentence", "vsixEFourTrials", "vsixEFourFaultTrials", "vsixEFourCells", "vsixEFourWCCells", "vsixEFourOverloadedCells",
                   "vsixLittleSentence"],
            "e5": ["vsixEFiveCkpt", "vsixEFiveCkpts", "vsixSingleClauseSentence", "vsixRtwoTruncated", "vsixRtwoTruncatedSentence", "vsixGateReplaySentence"],
-           "e8": ["vsixEEightCkpt", "vsixEEightEpisodes", "vsixEEightProgentSentence", "vsixEEightCostSentence",
+           "e8": ["vsixEEightCkpt", "vsixEEightEpisodes", "vsixEEightTasks", "vsixEEightProgentSentence", "vsixEEightCostSentence",
                   "vsixEEightDivergenceSentence", "vsixProgentUtility", "vsixProgentNative", "vsixEEightPairedSentence"] +
                  [f"vsixStage{n}{k}" for n in ("Strict", "Delegated", "Oracle") for k in ("User", "Attack")],
            "e8b": ["vsixStageInsideStrict", "vsixStageInsideOracle"],

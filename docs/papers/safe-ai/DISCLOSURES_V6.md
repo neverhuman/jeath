@@ -125,7 +125,7 @@ or a reported count; each changes framing or presentation, and the paper says so
   twins; Qwen3-4B accepted 5/36 but only 24/36 twins (22 false blocks in all), and 27 of its replies contradicted their
   own rule verdicts. Median 26 generated tokens on both. Applied as the plan says: Section 5 states the reading and keeps
   the reviewer-cost sentence (generated, so it would have changed had the rule been met); the abstract and
-  contribution 2 add one clause each. The E5d paragraph and the cost sentence were written after the result was read.
+  contribution 2 add one clause (the abstract's was later cut for length, see the page-1 review entry). The E5d paragraph and the cost sentence were written after the result was read.
 - **E5c R2 retry, first launch aborted.** The 07:52Z launch crashed after 4 reviews on a harness bug (the task returned a
   record instead of a list of keyed records). It is kept as `target/runs/e5c-r2-retry-20261113T0752Z-ABORTED`, contents
   not viewed; the retry was relaunched from scratch at 08:15Z with the fix (commit before relaunch).
@@ -141,6 +141,21 @@ or a reported count; each changes framing or presentation, and the paper says so
   per-checkpoint counts by a generated sentence; we did not investigate the cause (Granite's chat template, its
   quantization and the second host's thread count are candidates).
 - **Display names.** Granite's checkpoint name is shown as "Granite-3.3-8B" (generated).
+
+- **Page-1 review (fresh reviewer, rendered pages 1–2 only; 2026-11-13T10:30Z).** Changes, none to a number:
+  - Abstract cut to under arXiv's 1,920-character limit. It now says the in-flight effects are not measured for harm,
+    that the gate catches state-dependent violations by construction (only the reviewer's misses are measured), that
+    the arithmetic is Little's law and the fence a fencing token, and it names AgentDojo's task count. E5d moved out of
+    the abstract (it stays in contribution 2 and Section 5).
+  - Progent's rate on the in-specification injections (E8b) is now in the abstract beside its utility; it had been
+    left out after review 6, which made the AgentDojo sentence look selective. Section 6 still says the injections
+    were written against S, not Progent's policies.
+  - Figure 1: panel (b) uses a linear delay axis with λ(L+w) and λL drawn as lines, and is titled by its reading; the
+    halt and revoke curves in (a) are drawn as one two-tone line whenever their medians never differ by more than one
+    effect (rule in `hero_v6.py`); in (c) the author-code glyph is a dagger, the key is larger, and a mechanism
+    measurable in no column (PostgreSQL's foreign key) is left out of the panel and named in the caption. The caption
+    went from about 330 to about 190 words; the trial counts, fault trials, observed/predicted ratios and race bound
+    it dropped are in Sections 4 and 8.
 
 ## By construction (reported as such, never as findings)
 

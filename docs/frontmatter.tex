@@ -13,27 +13,25 @@
 \begin{center}\begin{minipage}{.96\textwidth}\small
 \textbf{Abstract.}\enspace
 AI control protocols act on proposals: a monitor reads what an agent proposes, and an agent that is caught is stopped.
-Calls approved before the catch may still be running, and stopping the model does not stop them. Counted from the
-decision to stop, about \(\lambda(L+w)\) effects still commit, for call rate \(\lambda\), enforcement delay \(L\) and
-tool latency \(w\); a control evaluation that counts a caught attack as prevented does not see them. Halting inference
-or revoking admission at a broker leaves both terms. Fencing the sink, so that it refuses at commit any work issued
-before the stop, removes \(\lambda w\), the larger term when long work ends in a short commit (a merge after a test
-run, a capture after a payment is authorized); only faster enforcement removes \(\lambda L\). On real broker and sink
-processes, with a synthetic agent whose calls were all authorized when issued and the stop enforced at once, a median
-of \vsixPhaseHaltMedian{} effects committed after a halt took effect,
-\vsixPhaseRevokeMedian{} after a revocation and \vsixPhaseFenceRange{} after a fence (by design), which discarded
-\vsixPhaseFenceLostMedian{} legitimate calls. A gate that reads state at commit also catches what a reviewer of
-proposals can miss: shown the rules and the state, a \vsixEFiveCkpt{} reviewer giving a bare verdict accepted, in all
-\vsixExactCases{} cases (\vsixEFiveCROneSecondHost{} on a second CPU), an approved proposal that the state had since
-made unauthorized; with reasoning (median \vsixReasonerTokens{} tokens) it accepted \vsixReasonerExact{}, and in a post
-hoc control \vsixEFiveCTwinsPhrase{} where the state permitted them; a per-rule verdict without reasoning
-(median \vsixEFiveDTokens{} tokens, post hoc) closed the gap on \vsixEFiveDClosed. But a gate admits whatever its specification
-permits. On AgentDojo, under a specification written per suite without the reference solutions, a \vsixEEightCkpt{}
-agent completed \vsixStrictUtility{} benign tasks (\vsixUnprotectedUtility{} unprotected, \vsixProgentUtility{} under
-Progent), and injections written to stay inside the specification succeeded in \vsixStrictInside{} episodes
-(\vsixUnprotectedInside{} unprotected). Of \vsixFenceMechanisms{} fencing mechanisms on PostgreSQL, etcd and a
-filesystem, only \vsixFenceAllThree{} was enforced by the surface, refused a forged epoch and held while stale writers
-ran. All models are small open-weight checkpoints run locally on CPU.
+Stopping the model does not stop the tool calls it has already made. Counted from the decision to stop, about
+\(\lambda(L+w)\) of them still commit, for call rate \(\lambda\), enforcement delay \(L\) and tool latency \(w\). A
+control evaluation that scores a caught attack as prevented does not count them; we do not measure how many
+would be harmful. Halting inference, or revoking permits at the broker that issues them, leaves both terms. Fencing
+the sink that commits the effects, so that it refuses work issued before the stop, removes \(\lambda w\); only faster
+enforcement removes \(\lambda L\). The arithmetic is Little's law and the fence is a fencing token; we measure both
+where AI control stops agents. On real broker and sink processes with a synthetic agent, a median of
+\vsixPhaseHaltMedian{} effects committed after a halt took effect, \vsixPhaseRevokeMedian{} after a revocation and
+\vsixPhaseFenceRange{} after a fence (by design), which discarded \vsixPhaseFenceLostMedian{} legitimate calls. A gate
+that reads state at commit catches by construction what a reviewer of proposals can miss, and reviewers missed it:
+shown the rules and the state, a \vsixEFiveCkpt{} reviewer giving a bare verdict accepted an approved proposal that
+the state had since made unauthorized in \vsixReviewerExact{} of \vsixExactCases{} cases (\vsixEFiveCROneSecondHost{}
+on another CPU); with reasoning it accepted \vsixReasonerExact{}, and \vsixEFiveCTwinsPhrase{} where the state permitted
+them. But a gate admits whatever its specification permits. On AgentDojo's \vsixEEightTasks{}, under a specification
+written per suite, a \vsixEEightCkpt{} agent completed \vsixStrictUtility{} benign tasks (\vsixUnprotectedUtility{}
+unprotected, \vsixProgentUtility{} under Progent), and injections written to fit the specification succeeded in
+\vsixStrictInside{} episodes (\vsixUnprotectedInside{} unprotected, \vsixProgentInside{} under Progent). Of
+\vsixFenceMechanisms{} fencing mechanisms we probed, only \vsixFenceAllThree{} was enforced by the surface, refused a
+forged epoch and held in all \vsixFenceAllThreeRaces{} races. All models are small open-weight checkpoints on CPU.
 \end{minipage}\end{center}
 \vspace{3pt}
 \input{generated/v6-hero-fig}

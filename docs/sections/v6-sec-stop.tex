@@ -57,8 +57,9 @@ stops an agent usually wants and what an operator who meant ``pause'' does not.
 
 \para{Which term each stop removes.} Counting from the decision rather than from enforcement separates two terms
 (Figure~\ref{fig:v6hero}b). During the delay \(L\) no layer acts, and about \(\lambda L\) effects commit at call rate
-\(\lambda\). When the stop takes effect, the calls already dispatched add about \(\lambda w\) for halting and fewer for
-revocation, which refuses those not yet accepted. The fence removes the second term and none of the first. In the drawn
+\(\lambda\). When the stop takes effect, the calls already dispatched add about \(\lambda w\) for halting, and as
+many for revocation less those the broker had not yet accepted (a paired median difference of \vsixPhaseDiffMedian{}
+at a random stop phase, E4c). The fence removes the second term and none of the first. In the drawn
 cell at \(L = \vsixDelayMax\)\,s, with a measured call rate of \vsixDelayLambda{} per second, halting let
 \vsixDelayHaltAtMax{} effects commit after the decision and fencing \vsixDelayFenceAtMax. Whenever enforcement is slow
 compared with tool latency, shortening \(L\) is the larger lever; the fence is what makes the remainder zero. The plan
@@ -73,7 +74,9 @@ already sent when the kill arrives, and a retry after the sink restarts; E4b bel
 can be reached and fencing what must not commit are complementary, and the fence is the one that does not depend on
 knowing where every executor is. The other natural strengthening, revoking at the broker and also invalidating the
 permits it has already issued, is a fence exactly when something checks the invalidation at commit; checked anywhere
-earlier, a permit already presented is not reached.
+earlier, a permit already presented is not reached. Undoing effects after they commit, as a saga's compensating step does, is the remaining
+alternative; it needs an inverse for each effect, and a sent message, a disclosed secret or a transfer to a third party
+has none.
 
 \para{Faults (E4b).} A SIGKILL that lands between requests tests little. In a separately predeclared run we kill the sink while a \texttt{complete} or a \texttt{fence} request is
 outstanding, hold the executor's \texttt{accept} across the fence, and drive the system with closed-loop agents that
