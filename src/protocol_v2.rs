@@ -3,6 +3,7 @@ use rusqlite::{Connection, OptionalExtension, TransactionBehavior, params};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::HashSet,
+    fmt,
     io::{self, Write},
     path::Path,
     time::Duration,
@@ -11,6 +12,95 @@ use std::{
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
 pub const MAX_RPC_BYTES: usize = 65_536;
+
+/// Denial reason when a request's pre-state has no image in the verified kernel.
+pub const KERNEL_UNAVAILABLE: &str = "kernel_unavailable";
+/// Denial reason when the Rust decision and the verified kernel's decision differ.
+pub const KERNEL_DIVERGENCE: &str = "kernel_divergence";
+
+/// Release-mode refinement guard failure. The request had no effect.
+///
+/// Each broker and sink decision that has a counterpart in the Verus-verified
+/// executable kernels (`policy_core::ExecBrokerKernel`, `ExecSinkKernel`) is
+/// computed twice: by the unverified Rust on a copy of the state, and by the
+/// kernel on `to_exec_kernel()` of the same pre-state. The copy is adopted only
+/// when both outcomes agree and `to_exec_kernel()` of the copy equals the
+/// kernel's post-state. Otherwise the method returns this error and leaves
+/// `self` unchanged. These checks are ordinary code, not `debug_assert!`, so
+/// they run in release builds. `serve` reports the error as
+/// `{"status":"denied","reason":"kernel_divergence"}` (or `kernel_unavailable`)
+/// and rolls back its SQLite transaction. Callers treat `denied` as
+/// non-terminal, and `Broker::settle` does not accept it as a sink certificate.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct KernelGuardError {
+    pub reason: &'static str,
+    pub op: &'static str,
+    pub detail: String,
+}
+impl fmt::Display for KernelGuardError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(self.reason)
+    }
+}
+impl std::error::Error for KernelGuardError {}
+
+fn kernel_unavailable(op: &'static str) -> Box<dyn std::error::Error> {
+    Box::new(KernelGuardError {
+        reason: KERNEL_UNAVAILABLE,
+        op,
+        detail: "state is outside the verified kernel's representable invariant".into(),
+    })
+}
+fn kernel_divergence(op: &'static str, detail: String) -> Box<dyn std::error::Error> {
+    Box::new(KernelGuardError {
+        reason: KERNEL_DIVERGENCE,
+        op,
+        detail,
+    })
+}
+fn exec_status(status: &Status) -> Option<policy_core::ExecSlotStatus> {
+    match status {
+        Status::Pending => Some(policy_core::ExecSlotStatus::Pending),
+        Status::Committed => Some(policy_core::ExecSlotStatus::Committed),
+        Status::Cancelled => Some(policy_core::ExecSlotStatus::Cancelled),
+        Status::Denied => None,
+    }
+}
+
+/// Test-only perturbation of the kernel pre-state, used to force a divergence
+/// between the verified kernel and the Rust decision. Absent from non-test builds.
+#[cfg(test)]
+pub(crate) mod kernel_tamper {
+    use policy_core::{ExecBrokerKernel, ExecSinkKernel};
+    use std::cell::RefCell;
+    pub(crate) type Tamper<K> = Option<Box<dyn Fn(&mut K)>>;
+    thread_local! {
+        static SINK: RefCell<Tamper<ExecSinkKernel>> = const { RefCell::new(None) };
+        static BROKER: RefCell<Tamper<ExecBrokerKernel>> = const { RefCell::new(None) };
+    }
+    pub(crate) fn set_sink(hook: Tamper<ExecSinkKernel>) {
+        SINK.with(|h| *h.borrow_mut() = hook);
+    }
+    pub(crate) fn set_broker(hook: Tamper<ExecBrokerKernel>) {
+        BROKER.with(|h| *h.borrow_mut() = hook);
+    }
+    pub(crate) fn sink(mut k: ExecSinkKernel) -> ExecSinkKernel {
+        SINK.with(|h| {
+            if let Some(f) = h.borrow().as_ref() {
+                f(&mut k)
+            }
+        });
+        k
+    }
+    pub(crate) fn broker(mut k: ExecBrokerKernel) -> ExecBrokerKernel {
+        BROKER.with(|h| {
+            if let Some(f) = h.borrow().as_ref() {
+                f(&mut k)
+            }
+        });
+        k
+    }
+}
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
@@ -287,6 +377,34 @@ pub struct Broker {
     #[serde(default)]
     pub delegations: Vec<Delegation>,
 }
+
+/// Unverified submit outcome, with what the verified kernel needs to re-decide it.
+enum SubmitDecision {
+    /// Refused by a check that has no counterpart in `ExecBrokerKernel`
+    /// (scope, delegation lineage and budgets, missing approval). No state change.
+    Refused,
+    /// Answered from an existing record. `permit` carries that record's
+    /// broker-bound required issuers; `status` is `None` on a payload mismatch.
+    Existing {
+        permit: policy_core::ExecPermitWire,
+        status: Option<Status>,
+    },
+    /// A new reservation, with the approval and grants it was admitted against.
+    Reserved {
+        permit: policy_core::ExecPermitWire,
+        approved: policy_core::ExecPermitWire,
+        grants: Vec<bool>,
+    },
+}
+enum SettleDecision {
+    Settled { amount: u64 },
+    NotAuthoritative,
+    NotPending(Status),
+}
+fn refuse(reason: &str) -> Result<(serde_json::Value, SubmitDecision)> {
+    Ok((denied(reason), SubmitDecision::Refused))
+}
+
 impl Broker {
     pub fn new(budget: u64) -> Self {
         Self::with_issuers(budget, 2).expect("valid default issuer count")
@@ -346,6 +464,33 @@ impl Broker {
             .filter(|d| d.parent.as_deref() == Some(approval_id))
             .map(|d| d.charged)
             .sum()
+    }
+    /// Verified-kernel image of the current state. Every reachable broker state
+    /// has one; `None` means duplicate ids, an unrepresentable permit, or a
+    /// ledger with `charged != pending + committed`, so the request fails closed.
+    fn verified_kernel(&self, op: &'static str) -> Result<policy_core::ExecBrokerKernel> {
+        let kernel = self
+            .to_exec_kernel()
+            .ok_or_else(|| kernel_unavailable(op))?;
+        #[cfg(test)]
+        let kernel = kernel_tamper::broker(kernel);
+        Ok(kernel)
+    }
+    /// Adopt `next` only if its kernel image is exactly the kernel's post-state.
+    fn adopt(
+        &mut self,
+        op: &'static str,
+        next: Broker,
+        kernel: &policy_core::ExecBrokerKernel,
+    ) -> Result<()> {
+        if next.to_exec_kernel().as_ref() != Some(kernel) {
+            return Err(kernel_divergence(
+                op,
+                "post-state differs from the verified kernel's".into(),
+            ));
+        }
+        *self = next;
+        Ok(())
     }
     pub fn approve(&mut self, permit: Permit, issuer: usize) -> Result<serde_json::Value> {
         let i = self.check_issuer(issuer)?;
@@ -662,13 +807,72 @@ impl Broker {
         });
         Ok(serde_json::json!({"status": "delegated", "id": id}))
     }
+    /// Admission. A new reservation, or an answer from an existing record, is
+    /// re-decided by `ExecBrokerKernel::broker_reserve` and taken only if the
+    /// kernel agrees. Refusals by checks the kernel does not model (scope,
+    /// delegation lineage and budgets) are returned without comparison, since
+    /// they change nothing.
     pub fn submit(&mut self, permit: Permit, timestamp: u64) -> Result<serde_json::Value> {
+        use policy_core::ExecReserveOutcome as K;
+        let mut kernel = self.verified_kernel("submit")?;
+        let mut next = self.clone();
+        let (response, decision) = next.submit_unverified(permit, timestamp)?;
+        let agrees = match decision {
+            SubmitDecision::Refused => return Ok(response),
+            SubmitDecision::Existing { permit, status } => {
+                // The kernel looks the id up before any policy check, so the
+                // approval and grants arguments are not consulted here.
+                let verified = kernel.broker_reserve(&permit, &permit, &Vec::new(), timestamp);
+                match (status, verified) {
+                    (Some(s), K::DuplicateExisting { status }) => exec_status(&s) == Some(status),
+                    (None, K::PayloadMismatch) => true,
+                    _ => false,
+                }
+            }
+            SubmitDecision::Reserved {
+                permit,
+                approved,
+                grants,
+            } => matches!(
+                kernel.broker_reserve(&permit, &approved, &grants, timestamp),
+                K::ReservedNew { .. }
+            ),
+        };
+        if !agrees {
+            return Err(kernel_divergence(
+                "submit",
+                format!("verified kernel disagrees with response {response}"),
+            ));
+        }
+        self.adopt("submit", next, &kernel)?;
+        Ok(response)
+    }
+    fn submit_unverified(
+        &mut self,
+        permit: Permit,
+        timestamp: u64,
+    ) -> Result<(serde_json::Value, SubmitDecision)> {
         let p = &permit.proposal;
+        let n = self.issuers();
         if let Some(r) = self.records.iter().find(|r| r.permit.proposal.id == p.id) {
+            let mut wire = permit.to_exec_wire();
+            wire.required = r.permit.effective_required(n)?;
             return Ok(if same_permit(&r.permit.base_permit(), &permit)? {
-                serde_json::json!({"status": r.status, "permit": r.permit})
+                (
+                    serde_json::json!({"status": r.status, "permit": r.permit}),
+                    SubmitDecision::Existing {
+                        permit: wire,
+                        status: Some(r.status.clone()),
+                    },
+                )
             } else {
-                denied("payload_mismatch")
+                (
+                    denied("payload_mismatch"),
+                    SubmitDecision::Existing {
+                        permit: wire,
+                        status: None,
+                    },
+                )
             });
         }
         if p.id.is_empty()
@@ -677,10 +881,9 @@ impl Broker {
             || permit.actor.len() > 128
             || !p.effect.scoped()
         {
-            return Ok(denied("scope"));
+            return refuse("scope");
         }
 
-        let n = self.issuers();
         let amount = p.effect.charge();
         let bytes = policy_core::encode_permit_canonical(&permit.to_exec_wire());
 
@@ -700,17 +903,17 @@ impl Broker {
                     &self.epochs,
                     &pa.permit.proposal.epochs,
                 ) {
-                    return Ok(denied("withdrawn_or_stale_grant"));
+                    return refuse("withdrawn_or_stale_grant");
                 }
                 if self.records.iter().any(|r| {
                     r.permit.proposal.id == pa.permit.proposal.id && r.status != Status::Cancelled
                 }) {
-                    return Ok(denied("delegated_budget"));
+                    return refuse("delegated_budget");
                 }
                 let used = self.approval_delegated_charged(&pa.permit.proposal.id);
                 if policy_core::reserve(pa.permit.proposal.effect.charge(), used, amount).is_none()
                 {
-                    return Ok(denied("policy"));
+                    return refuse("policy");
                 }
             }
             let leaf = &self.delegations[d_idx];
@@ -720,7 +923,7 @@ impl Broker {
             for &idx in &chain {
                 let anc = &self.delegations[idx];
                 if anc.scope.get(p.effect.kind_index()) != Some(&true) {
-                    return Ok(denied("scope"));
+                    return refuse("scope");
                 }
                 if !policy_core::current_grants(
                     &anc.required,
@@ -729,7 +932,7 @@ impl Broker {
                     &self.epochs,
                     &anc.epochs,
                 ) {
-                    return Ok(denied("withdrawn_or_stale_grant"));
+                    return refuse("withdrawn_or_stale_grant");
                 }
                 if !policy_core::admit_multi(
                     anc.budget,
@@ -745,7 +948,7 @@ impl Broker {
                     &self.epochs,
                     &anc.epochs,
                 ) {
-                    return Ok(denied("policy"));
+                    return refuse("policy");
                 }
             }
             if !policy_core::admit_multi(
@@ -762,7 +965,7 @@ impl Broker {
                 &self.epochs,
                 &p.epochs,
             ) {
-                return Ok(denied("policy"));
+                return refuse("policy");
             }
             let base_req = p.effect.required_for(n);
             let bound_req = if leaf.required == base_req {
@@ -770,6 +973,14 @@ impl Broker {
             } else {
                 leaf.required.clone()
             };
+            // The kernel re-decides the leaf admission above. The ancestor
+            // chain and its budgets have no counterpart in ExecBrokerKernel.
+            let mut verified_permit = permit.to_exec_wire();
+            verified_permit.required = leaf.required.clone();
+            let mut verified_approval =
+                leaf.permit.as_ref().ok_or("missing permit")?.to_exec_wire();
+            verified_approval.required = leaf.required.clone();
+            let verified_grants = leaf.grants.clone();
             let dispatched = DispatchedPermit {
                 actor: permit.actor,
                 proposal: permit.proposal,
@@ -786,18 +997,25 @@ impl Broker {
                 permit: dispatched.clone(),
                 status: Status::Pending,
             });
-            return Ok(serde_json::json!({"status": "pending", "permit": dispatched}));
+            return Ok((
+                serde_json::json!({"status": "pending", "permit": dispatched}),
+                SubmitDecision::Reserved {
+                    permit: verified_permit,
+                    approved: verified_approval,
+                    grants: verified_grants,
+                },
+            ));
         }
 
         let Some(a) = self.approvals.iter().find(|a| a.permit.proposal.id == p.id) else {
-            return Ok(denied("missing_grant"));
+            return refuse("missing_grant");
         };
         if self.approval_delegated_charged(&p.id) > 0 {
-            return Ok(denied("delegated_budget"));
+            return refuse("delegated_budget");
         }
         let required = p.effect.required_for(n);
         if !policy_core::current_grants(&required, &a.grants, &self.live, &self.epochs, &p.epochs) {
-            return Ok(denied("withdrawn_or_stale_grant"));
+            return refuse("withdrawn_or_stale_grant");
         }
         let approved = policy_core::encode_permit_canonical(&a.permit.to_exec_wire());
         // Revisions are bound in the exact approved payload, then checked against
@@ -816,8 +1034,13 @@ impl Broker {
             &self.epochs,
             &p.epochs,
         ) {
-            return Ok(denied("policy"));
+            return refuse("policy");
         }
+        let mut verified_permit = permit.to_exec_wire();
+        verified_permit.required = required.clone();
+        let mut verified_approval = a.permit.to_exec_wire();
+        verified_approval.required = required;
+        let verified_grants = a.grants.clone();
         self.charged =
             policy_core::reserve(self.budget, self.charged, amount).ok_or("reservation")?;
         let dispatched = DispatchedPermit::from(permit);
@@ -825,7 +1048,14 @@ impl Broker {
             permit: dispatched.clone(),
             status: Status::Pending,
         });
-        Ok(serde_json::json!({"status": "pending", "permit": dispatched}))
+        Ok((
+            serde_json::json!({"status": "pending", "permit": dispatched}),
+            SubmitDecision::Reserved {
+                permit: verified_permit,
+                approved: verified_approval,
+                grants: verified_grants,
+            },
+        ))
     }
     pub fn status(&self, id: &str, actor: &str) -> serde_json::Value {
         match self
@@ -837,6 +1067,12 @@ impl Broker {
             None => denied("unknown_id"),
         }
     }
+    /// Withdrawal is not gated by the kernel guard, although
+    /// `ExecBrokerKernel::broker_withdraw` exists. It only removes authority,
+    /// and its floor is what the revoker needs to fence the sink, a different
+    /// process. Refusing it on a guard failure would keep authority live
+    /// instead of failing closed. Admission stays closed in such a state
+    /// because `submit` is gated.
     pub fn withdraw(&mut self, issuer: usize) -> Result<serde_json::Value> {
         let i = self.check_issuer(issuer)?;
         let n = self.issuers();
@@ -871,23 +1107,70 @@ impl Broker {
     }
     pub fn renew(&mut self, issuer: usize) -> Result<serde_json::Value> {
         let i = self.check_issuer(issuer)?;
-        self.live[i] = true;
+        let mut kernel = self.verified_kernel("renew")?;
+        if !kernel.broker_renew(i) {
+            return Err(kernel_divergence(
+                "renew",
+                "verified kernel rejected an in-range issuer".into(),
+            ));
+        }
+        let mut next = self.clone();
+        next.live[i] = true;
+        self.adopt("renew", next, &kernel)?;
         Ok(serde_json::json!({"status": "renewed"}))
     }
+    /// Settlement, re-decided by `broker_settle_committed` /
+    /// `broker_settle_cancelled`. Releasing ancestor delegation charges has no
+    /// kernel counterpart and is not compared.
     pub fn settle(&mut self, id: &str, sink_status: Status) -> Result<serde_json::Value> {
+        use policy_core::ExecSettleOutcome as K;
+        let mut kernel = self.verified_kernel("settle")?;
+        let mut next = self.clone();
+        let decision = next.settle_unverified(id, &sink_status)?;
+        let id_bytes = id.as_bytes().to_vec();
+        let verified = match sink_status {
+            Status::Committed => kernel.broker_settle_committed(&id_bytes, true),
+            Status::Cancelled => kernel.broker_settle_cancelled(&id_bytes, true),
+            // A pending or denied sink reply is not an authoritative certificate.
+            Status::Pending | Status::Denied => kernel.broker_settle_committed(&id_bytes, false),
+        };
+        let agrees = match (&decision, verified) {
+            (SettleDecision::Settled { amount }, K::Settled { amount: k, .. }) => *amount == k,
+            (SettleDecision::NotAuthoritative, K::SinkNotAuthoritative) => true,
+            (SettleDecision::NotPending(s), K::NotPending { status }) => {
+                exec_status(s) == Some(status)
+            }
+            _ => false,
+        };
+        if !agrees {
+            return Err(kernel_divergence(
+                "settle",
+                format!("verified kernel returned {verified:?}"),
+            ));
+        }
+        self.adopt("settle", next, &kernel)?;
+        Ok(match decision {
+            SettleDecision::Settled { .. } => serde_json::json!({"status": sink_status}),
+            _ => denied("not_authoritative_terminal"),
+        })
+    }
+    fn settle_unverified(&mut self, id: &str, sink_status: &Status) -> Result<SettleDecision> {
         // Trusted sink response only. A timeout is never a certificate.
         let r_idx = self
             .records
             .iter()
             .position(|r| r.permit.proposal.id == id)
             .ok_or("unknown id")?;
-        if self.records[r_idx].status != Status::Pending
-            || !matches!(sink_status, Status::Committed | Status::Cancelled)
-        {
-            return Ok(denied("not_authoritative_terminal"));
+        if !matches!(sink_status, Status::Committed | Status::Cancelled) {
+            return Ok(SettleDecision::NotAuthoritative);
+        }
+        if self.records[r_idx].status != Status::Pending {
+            return Ok(SettleDecision::NotPending(
+                self.records[r_idx].status.clone(),
+            ));
         }
         let amount = self.records[r_idx].permit.proposal.effect.charge();
-        let cancelled = sink_status == Status::Cancelled;
+        let cancelled = *sink_status == Status::Cancelled;
         self.charged = policy_core::release(self.charged, amount, cancelled);
         if let Some(d_idx) = self
             .delegations
@@ -901,7 +1184,7 @@ impl Broker {
             }
         }
         self.records[r_idx].status = sink_status.clone();
-        Ok(serde_json::json!({"status": sink_status}))
+        Ok(SettleDecision::Settled { amount })
     }
     pub fn to_exec_kernel(&self) -> Option<policy_core::ExecBrokerKernel> {
         let n = self.issuers();
@@ -1031,6 +1314,59 @@ impl Default for Sink {
         Self::with_issuers(2).expect("valid default issuer count")
     }
 }
+
+/// Unverified accept outcome, matched one-to-one with `ExecAcceptOutcome`.
+#[derive(Debug)]
+enum AcceptDecision {
+    InvalidIssuerLength,
+    Duplicate(Status),
+    PayloadMismatch,
+    Tombstone,
+    Pending,
+}
+impl AcceptDecision {
+    fn agrees(&self, verified: policy_core::ExecAcceptOutcome) -> bool {
+        use policy_core::ExecAcceptOutcome as K;
+        match (self, verified) {
+            (Self::Duplicate(s), K::Duplicate { status }) => exec_status(s) == Some(status),
+            (Self::InvalidIssuerLength, K::InvalidIssuerLength)
+            | (Self::PayloadMismatch, K::PayloadMismatch)
+            | (Self::Tombstone, K::CancelledTombstone)
+            | (Self::Pending, K::AcceptedPending) => true,
+            _ => false,
+        }
+    }
+    fn response(&self) -> serde_json::Value {
+        match self {
+            Self::InvalidIssuerLength => denied("invalid_issuer_length"),
+            Self::Duplicate(status) => serde_json::json!({"status": status}),
+            Self::PayloadMismatch => denied("payload_mismatch"),
+            Self::Tombstone => serde_json::json!({"status": "cancelled"}),
+            Self::Pending => serde_json::json!({"status": "pending"}),
+        }
+    }
+}
+/// Unverified complete outcome, matched one-to-one with `ExecCompleteOutcome`.
+#[derive(Debug)]
+enum CompleteDecision {
+    Committed(DispatchedPermit),
+    Cancelled,
+    Idempotent(Status),
+}
+impl CompleteDecision {
+    fn agrees(&self, verified: policy_core::ExecCompleteOutcome) -> bool {
+        use policy_core::ExecCompleteOutcome as K;
+        match (self, verified) {
+            (Self::Committed(p), K::NewlyCommitted { amount }) => {
+                amount == p.proposal.effect.charge()
+            }
+            (Self::Cancelled, K::Cancelled) => true,
+            (Self::Idempotent(s), K::Idempotent { status }) => exec_status(s) == Some(status),
+            _ => false,
+        }
+    }
+}
+
 impl Sink {
     pub fn with_issuers(issuers: usize) -> Result<Self> {
         if issuers == 0 || issuers > 64 {
@@ -1091,129 +1427,177 @@ impl Sink {
     pub fn accept(&mut self, permit: Permit) -> Result<serde_json::Value> {
         self.accept_dispatched(DispatchedPermit::from(permit))
     }
+    /// Verified-kernel image of the current state. Every state reachable
+    /// through this API has one; `None` means duplicate ids, a record the
+    /// kernel cannot represent, a fenced pending record, or a committed total
+    /// beyond `u64`, so the request fails closed.
+    fn verified_kernel(&self, op: &'static str) -> Result<policy_core::ExecSinkKernel> {
+        let kernel = self
+            .to_exec_kernel()
+            .ok_or_else(|| kernel_unavailable(op))?;
+        #[cfg(test)]
+        let kernel = kernel_tamper::sink(kernel);
+        Ok(kernel)
+    }
+    /// Adopt `next` only if its kernel image is exactly the kernel's post-state.
+    fn adopt(
+        &mut self,
+        op: &'static str,
+        next: Sink,
+        kernel: &policy_core::ExecSinkKernel,
+    ) -> Result<()> {
+        if next.to_exec_kernel().as_ref() != Some(kernel) {
+            return Err(kernel_divergence(
+                op,
+                "post-state differs from the verified kernel's".into(),
+            ));
+        }
+        *self = next;
+        Ok(())
+    }
+    /// Delivery, re-decided by `ExecSinkKernel::sink_accept`.
     pub fn accept_dispatched(&mut self, permit: DispatchedPermit) -> Result<serde_json::Value> {
         let n = self.issuers();
+        // Refused before any state change. A `required` vector of the wrong
+        // length is the kernel's InvalidIssuerLength; one that weakens the
+        // effect's required issuers is a normalization obligation the kernel
+        // does not model.
         let (permit, eff_req) = match permit.normalized(n) {
             Ok(v) => v,
             Err(_) => return Ok(denied("invalid_required_issuers")),
         };
-        let mut exec_shadow = if permit.proposal.epochs.len() == n {
-            self.to_exec_kernel()
-        } else {
-            None
-        };
-        let exec_outcome = if let Some(ref mut k) = exec_shadow {
-            let mut wire = permit.base_permit().to_exec_wire();
-            wire.required = eff_req.clone();
-            Some(k.sink_accept(&wire))
-        } else {
-            None
-        };
-        let resp = if let Some(r) = self
+        let mut kernel = self.verified_kernel("accept")?;
+        let mut wire = permit.base_permit().to_exec_wire();
+        wire.required = eff_req.clone();
+        let verified = kernel.sink_accept(&wire);
+        let mut next = self.clone();
+        let decision = next.accept_unverified(permit, eff_req)?;
+        if !decision.agrees(verified) {
+            return Err(kernel_divergence(
+                "accept",
+                format!("{decision:?}, verified kernel {verified:?}"),
+            ));
+        }
+        self.adopt("accept", next, &kernel)?;
+        Ok(decision.response())
+    }
+    fn accept_unverified(
+        &mut self,
+        permit: DispatchedPermit,
+        eff_req: Vec<bool>,
+    ) -> Result<AcceptDecision> {
+        if permit.proposal.epochs.len() != self.issuers() {
+            // An epoch vector for another issuer population. The kernel refuses
+            // it (InvalidIssuerLength). Recording a tombstone for it, as the
+            // length-checked `unfenced` alone would, leaves a record that has no
+            // kernel image and so disables every later check at this sink.
+            return Ok(AcceptDecision::InvalidIssuerLength);
+        }
+        if let Some(r) = self
             .records
             .iter()
             .find(|r| r.permit.proposal.id == permit.proposal.id)
         {
-            if same_dispatched_permit(&r.permit, &permit)? {
-                if let Some(out) = exec_outcome {
-                    debug_assert!(matches!(
-                        out,
-                        policy_core::ExecAcceptOutcome::Duplicate { .. }
-                    ));
-                }
-                serde_json::json!({"status": r.status})
+            return Ok(if same_dispatched_permit(&r.permit, &permit)? {
+                AcceptDecision::Duplicate(r.status.clone())
             } else {
-                if let Some(out) = exec_outcome {
-                    debug_assert_eq!(out, policy_core::ExecAcceptOutcome::PayloadMismatch);
-                }
-                denied("payload_mismatch")
-            }
-        } else if !policy_core::unfenced(&eff_req, &permit.proposal.epochs, &self.floors) {
+                AcceptDecision::PayloadMismatch
+            });
+        }
+        if !policy_core::unfenced(&eff_req, &permit.proposal.epochs, &self.floors) {
             // A durable cancellation tombstone also covers a
             // previously issued permit whose first delivery is late.
-            if let Some(out) = exec_outcome {
-                debug_assert_eq!(out, policy_core::ExecAcceptOutcome::CancelledTombstone);
-            }
             self.records.push(Record {
                 permit,
                 status: Status::Cancelled,
             });
-            serde_json::json!({"status": "cancelled"})
+            Ok(AcceptDecision::Tombstone)
         } else {
-            if let Some(out) = exec_outcome {
-                debug_assert_eq!(out, policy_core::ExecAcceptOutcome::AcceptedPending);
-            }
             self.records.push(Record {
                 permit,
                 status: Status::Pending,
             });
-            serde_json::json!({"status": "pending"})
-        };
-        Ok(resp)
+            Ok(AcceptDecision::Pending)
+        }
     }
+    /// Completion, re-decided by `ExecSinkKernel::sink_complete`. The caller
+    /// records an effect only for `Some` permit, which is returned only after
+    /// the kernel agrees.
     pub fn complete(&mut self, id: &str) -> Result<(serde_json::Value, Option<DispatchedPermit>)> {
+        let mut kernel = self.verified_kernel("complete")?;
+        let verified = kernel.sink_complete(&id.as_bytes().to_vec());
+        let mut next = self.clone();
+        let decision = next.complete_unverified(id)?;
+        if !decision.agrees(verified) {
+            return Err(kernel_divergence(
+                "complete",
+                format!("{decision:?}, verified kernel {verified:?}"),
+            ));
+        }
+        self.adopt("complete", next, &kernel)?;
+        Ok(match decision {
+            CompleteDecision::Committed(permit) => (
+                serde_json::json!({"status": Status::Committed}),
+                Some(permit),
+            ),
+            CompleteDecision::Cancelled => (serde_json::json!({"status": Status::Cancelled}), None),
+            CompleteDecision::Idempotent(status) => (serde_json::json!({"status": status}), None),
+        })
+    }
+    fn complete_unverified(&mut self, id: &str) -> Result<CompleteDecision> {
         let n = self.issuers();
-        let mut exec_shadow = self.to_exec_kernel();
-        let exec_outcome = exec_shadow
-            .as_mut()
-            .map(|k| k.sink_complete(&id.as_bytes().to_vec()));
         let r = self
             .records
             .iter_mut()
             .find(|r| r.permit.proposal.id == id)
             .ok_or("unknown id")?;
-        let mut newly_committed = None;
-        if r.status == Status::Pending {
-            let eff_req = r.permit.effective_required(n)?;
-            let p = &r.permit.proposal;
-            let revision = match &p.effect {
-                Effect::Edit {
-                    expected_revision, ..
-                } => policy_core::revision_matches(self.revision, *expected_revision),
-                _ => true,
-            };
-            if !policy_core::unfenced(&eff_req, &p.epochs, &self.floors) || !revision {
-                r.status = Status::Cancelled;
-                if let Some(out) = exec_outcome {
-                    debug_assert_eq!(out, policy_core::ExecCompleteOutcome::Cancelled);
-                }
-            } else {
-                if let Effect::Edit { contents, .. } = &p.effect {
-                    self.revision = self.revision.checked_add(1).ok_or("revision exhausted")?;
-                    self.document = contents.clone();
-                }
-                r.status = Status::Committed;
-                newly_committed = Some(r.permit.clone());
-                if let Some(out) = exec_outcome {
-                    debug_assert_eq!(
-                        out,
-                        policy_core::ExecCompleteOutcome::NewlyCommitted {
-                            amount: p.effect.charge()
-                        }
-                    );
-                }
-            }
-        } else if let Some(out) = exec_outcome {
-            debug_assert!(matches!(
-                out,
-                policy_core::ExecCompleteOutcome::Idempotent { .. }
-            ));
+        if r.status != Status::Pending {
+            return Ok(CompleteDecision::Idempotent(r.status.clone()));
         }
-        if let Some(ref k) = exec_shadow {
-            debug_assert_eq!(k.revision, self.revision);
+        let eff_req = r.permit.effective_required(n)?;
+        let p = &r.permit.proposal;
+        let revision = match &p.effect {
+            Effect::Edit {
+                expected_revision, ..
+            } => policy_core::revision_matches(self.revision, *expected_revision),
+            _ => true,
+        };
+        if !policy_core::unfenced(&eff_req, &p.epochs, &self.floors) || !revision {
+            r.status = Status::Cancelled;
+            return Ok(CompleteDecision::Cancelled);
         }
-        Ok((serde_json::json!({"status": r.status}), newly_committed))
+        if let Effect::Edit { contents, .. } = &p.effect {
+            self.revision = self.revision.checked_add(1).ok_or("revision exhausted")?;
+            self.document = contents.clone();
+        }
+        r.status = Status::Committed;
+        Ok(CompleteDecision::Committed(r.permit.clone()))
     }
+    /// Fence, re-decided by `ExecSinkKernel::sink_fence`. A refused fence
+    /// returns no `fenced` acknowledgement and changes nothing, the same as a
+    /// fence that crashed before commit, so it never certifies a revocation.
     pub fn fence(&mut self, issuer: usize, floor: u64) -> Result<serde_json::Value> {
-        let n = self.issuers();
-        if issuer >= n {
+        if issuer >= self.issuers() {
             return Err("issuer out of range".into());
         }
-        let mut exec_shadow = self.to_exec_kernel();
-        if let Some(ref mut k) = exec_shadow {
-            let ok = k.sink_fence(issuer, floor);
-            debug_assert!(ok);
+        let mut kernel = self.verified_kernel("fence")?;
+        if !kernel.sink_fence(issuer, floor) {
+            return Err(kernel_divergence(
+                "fence",
+                "verified kernel rejected an in-range issuer".into(),
+            ));
         }
+        let mut next = self.clone();
+        next.fence_unverified(issuer, floor)?;
+        self.adopt("fence", next, &kernel)?;
+        Ok(serde_json::json!({
+            "status": "fenced",
+            "issuer": issuer,
+            "floor": self.floors[issuer],
+        }))
+    }
+    fn fence_unverified(&mut self, issuer: usize, floor: u64) -> Result<()> {
+        let n = self.issuers();
         self.floors[issuer] = policy_core::advance_floor(self.floors[issuer], floor);
         for r in &mut self.records {
             if r.status == Status::Pending {
@@ -1223,14 +1607,7 @@ impl Sink {
                 }
             }
         }
-        if let Some(ref k) = exec_shadow {
-            debug_assert_eq!(k.floors, self.floors);
-        }
-        Ok(serde_json::json!({
-            "status": "fenced",
-            "issuer": issuer,
-            "floor": self.floors[issuer],
-        }))
+        Ok(())
     }
     pub fn status(&self, id: &str) -> serde_json::Value {
         match self.records.iter().find(|r| r.permit.proposal.id == id) {
@@ -1305,7 +1682,8 @@ impl Sink {
             .iter()
             .filter(|(_, p, _)| matches!(p.proposal.effect, Effect::Edit { .. }))
             .count() as u64;
-        let exec_kernel_ok = self.to_exec_kernel().is_none_or(|k| {
+        // A state with no kernel image is not kernel-verified, as for the broker.
+        let exec_kernel_ok = self.to_exec_kernel().is_some_and(|k| {
             k.floors == self.floors
                 && k.revision == self.revision
                 && (!effects_match || k.committed_total == effects_charge_sum)
@@ -1880,5 +2258,170 @@ mod tests {
             s.audit_state("ok", &[("p-1".into(), disp, 4)])["verus_exec_kernel_verified"],
             true
         );
+    }
+
+    // Forced divergences. Each hook perturbs only the verified kernel's copy of
+    // the pre-state, so the kernel decides differently from the Rust code. The
+    // request must fail with the guard error, leave the state byte-identical,
+    // and succeed unchanged once the hook is removed. Nothing here depends on
+    // debug assertions; `cargo test --release` runs the same checks.
+
+    struct ClearHooks;
+    impl Drop for ClearHooks {
+        fn drop(&mut self) {
+            kernel_tamper::set_sink(None);
+            kernel_tamper::set_broker(None);
+        }
+    }
+
+    fn guard_reason(err: &(dyn std::error::Error + 'static)) -> Option<&'static str> {
+        err.downcast_ref::<KernelGuardError>().map(|e| e.reason)
+    }
+
+    fn snapshot<T: Serialize>(state: &T) -> String {
+        serde_json::to_string(state).unwrap()
+    }
+
+    fn transfer(id: &str, units: u64) -> Permit {
+        Permit {
+            actor: "alice".into(),
+            proposal: Proposal {
+                id: id.into(),
+                epochs: vec![0, 0],
+                expires: 500,
+                effect: Effect::Transfer {
+                    recipient: "approved".into(),
+                    units,
+                },
+            },
+        }
+    }
+
+    #[test]
+    fn forced_divergence_refuses_sink_accept_and_duplicate_status() {
+        let _clear = ClearHooks;
+        let mut s = Sink::default();
+        let before = snapshot(&s);
+        // The kernel sees issuer 0 fenced, so it would tombstone what Rust accepts.
+        kernel_tamper::set_sink(Some(Box::new(|k| k.floors[0] = 1)));
+        let err = s.accept(transfer("p-1", 2)).unwrap_err();
+        assert_eq!(guard_reason(&*err), Some(KERNEL_DIVERGENCE));
+        assert_eq!(snapshot(&s), before);
+
+        kernel_tamper::set_sink(None);
+        assert_eq!(
+            s.accept(transfer("p-1", 2)).unwrap(),
+            serde_json::json!({"status": "pending"})
+        );
+
+        // A duplicate delivery reports a status the broker settles on. The
+        // kernel's record says committed while Rust's says pending.
+        let before = snapshot(&s);
+        kernel_tamper::set_sink(Some(Box::new(|k| {
+            k.records[0].status = policy_core::ExecSlotStatus::Committed
+        })));
+        let err = s.accept(transfer("p-1", 2)).unwrap_err();
+        assert_eq!(guard_reason(&*err), Some(KERNEL_DIVERGENCE));
+        assert_eq!(snapshot(&s), before);
+    }
+
+    #[test]
+    fn forced_divergence_refuses_sink_complete_without_an_effect() {
+        let _clear = ClearHooks;
+        let mut s = Sink::default();
+        s.accept(transfer("p-1", 2)).unwrap();
+        let before = snapshot(&s);
+        // The kernel would cancel the pending permit; Rust would commit it.
+        kernel_tamper::set_sink(Some(Box::new(|k| k.floors[0] = 1)));
+        let err = s.complete("p-1").unwrap_err();
+        assert_eq!(guard_reason(&*err), Some(KERNEL_DIVERGENCE));
+        assert_eq!(snapshot(&s), before);
+        assert_eq!(s.records[0].status, Status::Pending);
+
+        kernel_tamper::set_sink(None);
+        let (resp, newly) = s.complete("p-1").unwrap();
+        assert_eq!(resp, serde_json::json!({"status": "committed"}));
+        assert_eq!(newly.unwrap().proposal.id, "p-1");
+    }
+
+    #[test]
+    fn forced_divergence_refuses_sink_fence_without_an_ack() {
+        let _clear = ClearHooks;
+        let mut s = Sink::default();
+        s.accept(transfer("p-1", 2)).unwrap();
+        let before = snapshot(&s);
+        // The kernel's floors after the fence would differ from Rust's.
+        kernel_tamper::set_sink(Some(Box::new(|k| k.floors[1] = 7)));
+        let err = s.fence(0, 1).unwrap_err();
+        assert_eq!(guard_reason(&*err), Some(KERNEL_DIVERGENCE));
+        assert_eq!(snapshot(&s), before);
+
+        kernel_tamper::set_sink(None);
+        assert_eq!(
+            s.fence(0, 1).unwrap(),
+            serde_json::json!({"status": "fenced", "issuer": 0, "floor": 1})
+        );
+        assert_eq!(s.records[0].status, Status::Cancelled);
+    }
+
+    #[test]
+    fn forced_divergence_refuses_broker_admission() {
+        let _clear = ClearHooks;
+        let mut b = Broker::new(10);
+        b.approve(transfer("p-1", 4), 0).unwrap();
+        let before = snapshot(&b);
+        // The kernel sees issuer 0 withdrawn, so it denies what Rust admits.
+        kernel_tamper::set_broker(Some(Box::new(|k| k.live[0] = false)));
+        let err = b.submit(transfer("p-1", 4), 10).unwrap_err();
+        assert_eq!(guard_reason(&*err), Some(KERNEL_DIVERGENCE));
+        assert_eq!(snapshot(&b), before);
+        assert_eq!((b.charged, b.records.len()), (0, 0));
+
+        kernel_tamper::set_broker(None);
+        assert_eq!(
+            b.submit(transfer("p-1", 4), 10).unwrap()["status"],
+            "pending"
+        );
+        assert_eq!(b.charged, 4);
+    }
+
+    #[test]
+    fn forced_divergence_refuses_broker_settlement() {
+        let _clear = ClearHooks;
+        let mut b = Broker::new(10);
+        b.approve(transfer("p-1", 4), 0).unwrap();
+        b.submit(transfer("p-1", 4), 10).unwrap();
+        let before = snapshot(&b);
+        // The kernel would release a different amount than Rust.
+        kernel_tamper::set_broker(Some(Box::new(|k| k.records[0].permit.amount = 3)));
+        let err = b.settle("p-1", Status::Cancelled).unwrap_err();
+        assert_eq!(guard_reason(&*err), Some(KERNEL_DIVERGENCE));
+        assert_eq!(snapshot(&b), before);
+        assert_eq!(b.charged, 4);
+
+        kernel_tamper::set_broker(None);
+        assert_eq!(
+            b.settle("p-1", Status::Cancelled).unwrap(),
+            serde_json::json!({"status": "cancelled"})
+        );
+        assert_eq!(b.charged, 0);
+    }
+
+    #[test]
+    fn forced_divergence_refuses_broker_renewal() {
+        let _clear = ClearHooks;
+        let mut b = Broker::new(10);
+        b.withdraw(0).unwrap();
+        let before = snapshot(&b);
+        // The kernel's epoch for issuer 0 differs, so post-states differ.
+        kernel_tamper::set_broker(Some(Box::new(|k| k.epochs[0] = 0)));
+        let err = b.renew(0).unwrap_err();
+        assert_eq!(guard_reason(&*err), Some(KERNEL_DIVERGENCE));
+        assert_eq!(snapshot(&b), before);
+        assert!(!b.live[0]);
+
+        kernel_tamper::set_broker(None);
+        assert_eq!(b.renew(0).unwrap()["status"], "renewed");
+        assert!(b.live[0]);
     }
 }
