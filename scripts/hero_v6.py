@@ -651,6 +651,17 @@ def panel_fence(summ: dict) -> tuple[list[str], dict]:
             else:
                 lines.append(rf"\draw[exoblue,line width=0.5pt] ({x},{y:.2f}) circle (2.3pt);"
                              rf"\fill[exoblue] ({x},{y:.2f}) ++(0,-2.3pt) arc[start angle=-90,end angle=90,radius=2.3pt] -- cycle;")
+    # Key, so the panel reads without its caption: one row under the grid.
+    yl, r0 = top - len(items) * h - 0.1, "1.8pt"
+    key = ((rf"\fill[exoblue] (X,{yl:.2f}) circle ({r0});", "every run"),
+           (rf"\draw[exoblue,line width=0.5pt] (X,{yl:.2f}) circle ({r0});\fill[exoblue] (X,{yl:.2f}) ++(0,-{r0}) arc[start angle=-90,end angle=90,radius={r0}] -- cycle;", "some"),
+           (rf"\draw[structgray,line width=0.5pt] (X,{yl:.2f}) circle ({r0});", "none"),
+           (rf"\draw[exoblue,line width=0.5pt] (X,{yl:.2f}) circle ({r0});\fill[exoblue] (X,{yl:.2f}) circle (0.7pt);", "our trigger"),
+           (rf"\node[font=\tiny,text=slate] at (X,{yl:.2f}) {{--}};", "n/a"))
+    for k, (glyph, lab) in enumerate(key):
+        x = -2.95 + k * 0.98
+        lines.append(glyph.replace("(X,", f"({x:.2f},"))
+        lines.append(rf"\node[font=\tiny,text=ink,anchor=west,inner sep=1pt] at ({x + 0.07:.2f},{yl:.2f}) {{{lab}}};")
     # Title at the height pgfplots gives (a) and (b): axis height 3.7 cm plus its 6 pt title shift (all share a baseline).
     lines.append(r"\node[font=\footnotesize,anchor=south,align=center] at (-0.2,3.91) {\textbf{(c)} Where the in-flight term can be closed};")
     lines.append(r"\end{tikzpicture}")
