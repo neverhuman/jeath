@@ -1,5 +1,5 @@
 \begin{figure}[t]\centering\begin{tikzpicture}
 \begin{axis}[width=.96\columnwidth,height=4.7cm,xmode=log,log basis x=2,xtick={1,2,4,8,16,32},xticklabels={1,2,4,8,16,32},xlabel={Concurrent actors},ylabel={Observed p95 latency (ms)},grid=major]
-\addplot[teal,mark=*] coordinates {(1,897.937) (2,470.733) (4,113.849) (8,331.208) (16,736.47) (32,232.824)};
+\addplot[teal,mark=*] coordinates {(1,201.919) (2,533.549) (4,1010.13) (8,560.259) (16,730.175) (32,1030.03)};
 \end{axis}\end{tikzpicture}
 \caption{Durable shared-budget races across separate OS processes; empirical p95 latency across recorded attempts at each population. Rejected requests and lock contention are included; setup is excluded.}\label{fig:v2latency}\end{figure}
