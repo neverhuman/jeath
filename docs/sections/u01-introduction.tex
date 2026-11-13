@@ -30,7 +30,8 @@ Moving authority out of the model raises an obvious objection: the gate is then 
 check. We take that objection as the paper's subject rather than its limitation. The contributions, each with the
 evidence behind it:
 \begin{enumerate}
-  \item \textbf{Stopping a model is not stopping its effects} (measured; Section~\ref{sec:v6stop}). On real broker and
+  \item \textbf{Stopping a model is not stopping its effects} (measured, except the fence's zero, which holds by
+        design; Section~\ref{sec:v6stop}). On real broker and
         sink processes under a predeclared grid of tool latencies, concurrency and enforcement delays, we count the
         effects that commit after each kind of stop and the legitimate work each discards, including kills of the
         sink inside its own requests.

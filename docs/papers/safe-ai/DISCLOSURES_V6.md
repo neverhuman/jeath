@@ -129,6 +129,10 @@ or a reported count; each changes framing or presentation, and the paper says so
 - **E5c R2 retry, first launch aborted.** The 07:52Z launch crashed after 4 reviews on a harness bug (the task returned a
   record instead of a list of keyed records). It is kept as `target/runs/e5c-r2-retry-20261113T0752Z-ABORTED`, contents
   not viewed; the retry was relaunched from scratch at 08:15Z with the fix (commit before relaunch).
+- **E5c R2 retry, result (promoted 2026-11-13T10:45Z, 36 records, validator clean).** Every R2 review that had timed out
+  in E5c completed under the longer limit. On Qwen3-8B, R2 accepted 0/36 unaltered unauthorized proposals on the
+  second host, as on E5's; the text states this beside R1's 24/36 (Section 5) and the abstract no longer carries it,
+  for length.
 - **E1 framing.** "Powered" was removed. At N = 128 a single lost case defeats a usefulness claim (generated loss
   rule); E1 is presented as a strict test of the previous version's claims, not as evidence for the thesis.
 - **E2 validator change after Granite-3.3-8B's run (post hoc, 2026-11-13T09:50Z).** The replay check failed on one
@@ -156,6 +160,16 @@ or a reported count; each changes framing or presentation, and the paper says so
     measurable in no column (PostgreSQL's foreign key) is left out of the panel and named in the caption. The caption
     went from about 330 to about 190 words; the trial counts, fault trials, observed/predicted ratios and race bound
     it dropped are in Sections 4 and 8.
+
+- **Second page-1 review (fresh reviewer, 2026-11-13T10:45Z).** Changes, none to a number:
+  - The abstract says "Many" control protocols, says a reviewer *without reasoning* missed the state, calls the gate's
+    catch by construction, says the fence "refused" the in-flight calls, and opens the AgentDojo sentence with the
+    reading (a gate moves the failure into its specification). It is 1,910 characters as rendered.
+  - The figure's box 3 says the fence's zero is by design. Panel (b)'s caption now says measured halting counts run
+    above the plan's prediction (median observed/predicted, generated); that was previously only in Section 4.
+  - Contribution 1 says the fence's zero holds by design.
+  - Not done: reordering the panels to lead with E4 (the E4c plan fixes panel (a) to E4c), counts in place of glyphs
+    in panel (c) (Table 4 has them), horizontal column headers (no room).
 
 ## By construction (reported as such, never as findings)
 

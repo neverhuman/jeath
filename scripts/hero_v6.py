@@ -240,8 +240,8 @@ def banner(s: dict) -> list[str]:
             node("s2", 8.95, 4.9, "0.8pt,densely dotted", "warnamber!80!black", "warnamber!8", "2\\enspace Revoke at the broker",
                  rf"new permits stop\\[-1pt]\textbf{{{show('revoke_broker')}}} admitted effects still commit{sfx}"),
             node("s3", 15.15, 4.9, "1.2pt", "exoblue", "exoblue!7", "3\\enspace Fence the sink",
-                 rf"stale epochs refused at commit\\[-1pt]\textbf{{{show('fence_sink')}}} commit; "
-                 rf"\textbf{{{lost}}} calls in flight discarded{sfx}"),
+                 rf"stale epochs refused at commit\\[-1pt]\textbf{{{show('fence_sink')}}} commit (by design); "
+                 rf"\textbf{{{lost}}} refused{sfx}"),
             r"\draw[->,line width=1pt,draw=slate] (s1.east) -- node[above,font=\scriptsize,text=ink]{call} (s2.west);",
             r"\draw[->,line width=1pt,draw=slate] (s2.east) -- node[above,font=\scriptsize,text=ink]{permit} (s3.west);",
             r"\end{tikzpicture}"]
@@ -671,6 +671,12 @@ def rel(p: Path) -> str:
     return str(p.resolve().relative_to(ROOT)) if p.resolve().is_relative_to(ROOT) else str(p)
 
 
+def above(sb: dict) -> str:
+    """Where the measured halting counts sit against the plan's prediction, by the median observed/predicted ratio."""
+    r = sb["halt_ratio_median"]
+    return "above" if r > 1.05 else "below" if r < 0.95 else "close to"
+
+
 def caption_hero(sa: dict, sb: dict, sc: dict, sp: dict | None) -> str:
     """A short caption that reads at skim speed; the bookkeeping (trial counts, fault trials, observed/predicted ratios,
     race bounds) is in Sections v6stop and v6boundary, from the same evidence."""
@@ -694,7 +700,9 @@ def caption_hero(sa: dict, sb: dict, sc: dict, sp: dict | None) -> str:
             r"path, with panel (a)'s counts. " + a + r"The fence's zero is by design. "
             rf"\textbf{{(b)}} E4: the same cell{' with the stop at a fixed phase' if sp else ''} and enforcement delayed by \(L\); "
             rf"marks: median and range. Solid line: the plan's prediction for halting, \(\lambda(L+w)\), with \(\lambda\) "
-            rf"measured ({sb['lambda_mean']:.1f}/s); dotted: \(\lambda L\), a post hoc reading. The fence removes the "
+            rf"measured ({sb['lambda_mean']:.1f}/s); measured halting counts run {above(sb)} it (observed/predicted "
+            rf"{sb['halt_ratio_median']:g} at the median of {sb['halt_trials']} stable trials). Dotted: \(\lambda L\), "
+            r"a post hoc reading. The fence removes the "
             r"offset \(\lambda w\) between the lines, not the slope. "
             r"\textbf{(c)} E6b (Section~\ref{sec:v6boundary}): probes on single-node instances. \emph{Surface}: the "
             r"surface refuses a writer that omits the fence; \emph{forgery}: it refuses a writer claiming the new epoch; "
