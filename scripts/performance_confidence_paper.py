@@ -63,6 +63,7 @@ LEDGER_MACROS = (
     ("barber2001_men_trade_more", "BarberTrade", 1, 0),
     ("barber2001_men_return_cost", "BarberMen", 1, 2),
     ("barber2001_women_return_cost", "BarberWomen", 1, 2),
+    ("dyrenforth2010_partner_effects", "DyrPartner", 1, 0),
 )
 
 

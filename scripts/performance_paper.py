@@ -808,6 +808,24 @@ D.~A.~{Moore} and P.~J.~{Healy}.
 \newblock {The trouble with overconfidence}.
 \newblock \emph{Psychological Review}, 115\penalty0 (2):\penalty0 502--517, 2008.
 \newblock \doi{10.1037/0033-295X.115.2.502}.
+
+\bibitem[{Dyrenforth} et~al.(2010){Dyrenforth}, {Kashy}, {Donnellan}, and {Lucas}]{dyrenforth2010}
+P.~S.~{Dyrenforth}, D.~A.~{Kashy}, M.~B.~{Donnellan}, and R.~E.~{Lucas}.
+\newblock {Predicting relationship and life satisfaction from personality in nationally representative samples from three countries: The relative importance of actor, partner, and similarity effects}.
+\newblock \emph{Journal of Personality and Social Psychology}, 99\penalty0 (4):\penalty0 690--702, 2010.
+\newblock \doi{10.1037/a0020385}.
+
+\bibitem[{Bagues} et~al.(2017){Bagues}, {Sylos-Labini}, and {Zinovyeva}]{bagues2017}
+M.~{Bagues}, M.~{Sylos-Labini}, and N.~{Zinovyeva}.
+\newblock {Does the gender composition of scientific committees matter?}
+\newblock \emph{American Economic Review}, 107\penalty0 (4):\penalty0 1207--1238, 2017.
+\newblock \doi{10.1257/aer.20151211}.
+
+\bibitem[{Bohnet} et~al.(2016){Bohnet}, {van Geen}, and {Bazerman}]{bohnet2016}
+I.~{Bohnet}, A.~{van Geen}, and M.~{Bazerman}.
+\newblock {When performance trumps gender bias: Joint vs.\ separate evaluation}.
+\newblock \emph{Management Science}, 62\penalty0 (5):\penalty0 1225--1234, 2016.
+\newblock \doi{10.1287/mnsc.2015.2186}.
 """
 
 
@@ -3986,6 +4004,9 @@ def numbers(data):
         "PboJoelRelBaseRTwo": f"{joel_b['satisfaction']['models']['ActorRelBaseline']['unweighted_mean_r2_pct']:.1f}\\%",
         "PboJoelTraitBaseRTwo": f"{joel_b['satisfaction']['models']['PartnerTraitBaseline']['unweighted_mean_r2_pct']:.1f}\\%",
         "PboJoelBaseRatio": f"{joel_b['satisfaction']['actor_rel_to_partner_trait_baseline_ratio']:.1f}",
+        "PboJoelActorTraitBaseRTwo": f"{joel_b['satisfaction']['models']['ActorTraitBaseline']['unweighted_mean_r2_pct']:.1f}\\%",
+        "PboJoelPartnerRelBaseRTwo": f"{joel_b['satisfaction']['models']['PartnerRelBaseline']['unweighted_mean_r2_pct']:.1f}\\%",
+        "PboJoelRelChangeRTwo": f"{joel_b['satisfaction']['models']['ActorRelChange']['unweighted_mean_r2_pct']:.1f}\\%",
         "PboJoelRelFollowRTwo": f"{joel_b['satisfaction']['models']['ActorRelFollowup']['unweighted_mean_r2_pct']:.1f}\\%",
         "PboJoelTraitFollowRTwo": f"{joel_b['satisfaction']['models']['PartnerTraitFollowup']['unweighted_mean_r2_pct']:.1f}\\%",
         "PboLoveArcN": f"{tla_b['n_total']:,}",
